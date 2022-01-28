@@ -1,7 +1,21 @@
 @extends('template.index')
 
 @push('styles')
+<style>
+    .table-item-content { 
+        /** Equivalent to pt-3 */
+        padding-top:1rem!important;
+    }
 
+    #thead-actions {
+        /** Fixed width, increase if adding addt. buttons **/
+        width:120px;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
 @endpush
 
 @section('content')
@@ -41,7 +55,37 @@
         {{-- Page Content --}}
         <div class="card">
             <div class="card-body">
-                <h1>Customers > Customer</h1>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th id="thead-actions">Actions</th>
+                            <th>Customer Name</th>
+                            <th>Address</th>
+                            <th>Telephone</th>
+                            <th>Account Receivable</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-pen"></i>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                                <td class="table-item-content">PocketDevs</td>
+                                <td class="table-item-content">Cebu City, Philippines</td>
+                                <td class="table-item-content">+63 (012) 3456</td>
+                                <td class="table-item-content">Birr 1,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
