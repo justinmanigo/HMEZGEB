@@ -18,10 +18,10 @@
             <span class="text">New</span>
         </button>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="#">Receipt</a>
-            <a class="dropdown-item" href="#">Advance Revenue</a>
-            <a class="dropdown-item" href="#">Credit Receipt</a>
-            <a class="dropdown-item" href="#">Proformat</a>
+            <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-receipt">Receipt</a>
+            <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-advance-revenue">Advance Revenue</a>
+            <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-credit-receipt">Credit Receipt</a>
+            <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-proforma">Proforma</a>
         </div>
     </div>
     <button type="button" class="btn btn-secondary">
@@ -59,6 +59,86 @@
         </div>
         <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
             <h1>Proforma Contents</h1>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-new-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-new-receipt-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-new-receipt-label">New Receipt</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-new-advance-revenue" tabindex="-1" role="dialog" aria-labelledby="modal-new-advance-revenue-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-new-advance-revenue-label">New Advance Revenue</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-new-credit-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-new-credit-receipt-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-new-credit-receipt-label">New Advance Revenue</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-new-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-new-proforma-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-new-proforma-label">New Advance Revenue</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
         </div>
     </div>
 </div>
