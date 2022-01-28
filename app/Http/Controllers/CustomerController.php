@@ -27,6 +27,16 @@ class CustomerController extends Controller
     }
 
     /**
+     * Show the new customer form of customers menu.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function newcustomer()
+    {
+        return view('customers.newcustomer');
+    }
+
+    /**
      * Shows the deposit page of customers menu.
      * 
      * @return \Illuminate\Contracts\Support\Renderable
