@@ -47,7 +47,7 @@
     </div>
 
     {{-- Sidebar Content Section --}}
-    <div class="col-xl-2 col-lg-3 d-md-none d-lg-block">
+    <div class="col-xl-2 col-lg-3 d-none d-lg-block">
         <h4 class="">Account Receivable</h4>
         {{-- Account Receivable Active --}}
         <div class="mb-4">
