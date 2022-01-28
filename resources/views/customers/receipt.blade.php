@@ -9,6 +9,7 @@
 @endpush
 
 @section('content')
+{{-- Button Group Navigation --}}
 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
     <div class="btn-group" role="group">
         <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,6 +45,7 @@
     </button>    
 </div>
 
+{{-- Tab Navigation --}}
 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="true">Transactions</a>
@@ -52,17 +54,23 @@
         <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proforma" role="tab" aria-controls="proforma" aria-selected="false">Proforma</a>
     </li>
 </ul>
+
+{{-- Tab Contents --}}
 <div class="card" id="content-card">
     <div class="card-body tab-content" id="myTabContent">
+        {{-- Transaction Contents --}}
         <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
             <h1>Transaction Contents</h1>
         </div>
+        {{-- Proforma Contents --}}
         <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
             <h1>Proforma Contents</h1>
         </div>
     </div>
 </div>
 
+{{-- Modals --}}
+{{-- New Receipt --}}
 <div class="modal fade" id="modal-new-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-new-receipt-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -83,6 +91,7 @@
     </div>
 </div>
 
+{{-- New Advance Revenue --}}
 <div class="modal fade" id="modal-new-advance-revenue" tabindex="-1" role="dialog" aria-labelledby="modal-new-advance-revenue-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -103,6 +112,7 @@
     </div>
 </div>
 
+{{-- New Credit Receipt --}}
 <div class="modal fade" id="modal-new-credit-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-new-credit-receipt-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -123,6 +133,7 @@
     </div>
 </div>
 
+{{-- New Proforma --}}
 <div class="modal fade" id="modal-new-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-new-proforma-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
