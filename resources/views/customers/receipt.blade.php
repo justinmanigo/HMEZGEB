@@ -10,7 +10,7 @@
 
 @section('content')
 {{-- Button Group Navigation --}}
-<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+<div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
     <div class="btn-group" role="group">
         <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="icon text-white-50">
@@ -46,7 +46,7 @@
 </div>
 
 {{-- Tab Navigation --}}
-<ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+<ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="true">Transactions</a>
     </li>
