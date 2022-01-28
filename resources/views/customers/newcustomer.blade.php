@@ -87,7 +87,6 @@
                     <input type="file" id="inputPicture">
                 </div>
             </div>
-            {{-- TODO: Add Picture --}}
             <div class="form-check">
                 <input class="form-check-input" id="inputActive" type="checkbox" value="">
                 <label class="form-check-label" for="inputActive">Mark Customer as Active</label>
