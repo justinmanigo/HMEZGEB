@@ -24,7 +24,7 @@
                     <span class="text">New</span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-receipt">Receipt</a>
+                    <a class="dropdown-item" href="{{ route('customers.newreceipt') }}">Receipt</a>
                     <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-advance-revenue">Advance Revenue</a>
                     <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-credit-receipt">Credit Receipt</a>
                     <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-proforma">Proforma</a>

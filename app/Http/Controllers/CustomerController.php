@@ -17,6 +17,14 @@ class CustomerController extends Controller
     }
 
     /**
+     * Show the new receipt form of customers menu.
+     */
+    public function newreceipt()
+    {
+        return view('customers.newreceipt');
+    }
+
+    /**
      * Show the customers page of customers menu.
      * 
      * @return \Illuminate\Contracts\Support\Renderable

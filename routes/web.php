@@ -64,6 +64,9 @@ Route::post('/userlogin', function (Request $request){
  * Customer Menu
  */
 Route::get('/customers/receipt', [App\Http\Controllers\CustomerController::class, 'receipt'])->name('customers.receipt');
+Route::get('/customers/receipt/newreceipt', [App\Http\Controllers\CustomerController::class, 'newreceipt'])->name('customers.newreceipt');
+
 Route::get('/customers/customer', [App\Http\Controllers\CustomerController::class, 'customer'])->name('customers.customer');
 Route::get('/customers/customer/new', [App\http\Controllers\CustomerController::class, 'newcustomer'])->name('customers.newcustomer');
+
 Route::get('/customers/deposit', [App\Http\Controllers\CustomerController::class, 'deposit'])->name('customers.deposit');
