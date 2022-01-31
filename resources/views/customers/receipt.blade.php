@@ -36,7 +36,7 @@
                     <a class="dropdown-item" href="{{ route('customers.newreceipt') }}">Receipt</a>
                     <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-advance-revenue">Advance Revenue</a>
                     <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-credit-receipt">Credit Receipt</a>
-                    <a class="dropdown-item" href="javascript:void(0)" type="button" data-toggle="modal" data-target="#modal-new-proforma">Proforma</a>
+                    <a class="dropdown-item" href="{{ route('customers.newproforma') }}">Proforma</a>
                 </div>
             </div>
             <button type="button" class="btn btn-secondary">

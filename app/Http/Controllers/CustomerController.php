@@ -25,6 +25,14 @@ class CustomerController extends Controller
     }
 
     /**
+     * Show the new proforma form of customers menu.
+     */
+    public function newproforma()
+    {
+        return view('customers.newproforma');
+    }
+
+    /**
      * Show the customers page of customers menu.
      * 
      * @return \Illuminate\Contracts\Support\Renderable
