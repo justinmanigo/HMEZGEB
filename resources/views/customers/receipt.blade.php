@@ -2,6 +2,15 @@
 
 @push('styles')
     <style>
+        .table-item-content { 
+        /** Equivalent to pt-3 */
+        padding-top:1rem!important;
+        }
+
+        #thead-actions {
+            /** Fixed width, increase if adding addt. buttons **/
+            width:120px;
+        }
         #content-card {
             border-radius:0px 0px 5px 5px;
         }
@@ -65,11 +74,71 @@
             <div class="card-body tab-content" id="myTabContent">
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
-                    <h1>Transaction Contents</h1>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th id="thead-actions">Actions</th>
+                                <th>Invoice Number</th>
+                                <th>Customer Name</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="table-item-content">1483681825</td>
+                                    <td class="table-item-content">PocketDevs</td>
+                                    <td class="table-item-content">01/31/2022</td>
+                                    <td class="table-item-content">Birr 1,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 {{-- Proforma Contents --}}
                 <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
-                    <h1>Proforma Contents</h1>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th id="thead-actions">Actions</th>
+                                <th>Invoice Number</th>
+                                <th>Customer Name</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="table-item-content">1483681825</td>
+                                    <td class="table-item-content">PocketDevs</td>
+                                    <td class="table-item-content">01/31/2022</td>
+                                    <td class="table-item-content">Birr 1,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
