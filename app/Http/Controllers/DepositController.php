@@ -15,4 +15,12 @@ class DepositController extends Controller
     {
         return view('deposit.index');
     }
+
+    /**
+     * Shows the new deposit page of customers / banking menu.
+     */
+    public function new()
+    {
+        return view('deposit.new');
+    }
 }

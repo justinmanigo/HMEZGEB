@@ -71,3 +71,4 @@ Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'
 Route::get('/customer/new', [App\http\Controllers\CustomerController::class, 'new'])->name('customer.new');
 
 Route::get('/deposit', [App\Http\Controllers\DepositController::class, 'index'])->name('deposit.index');
+Route::get('/deposit/new', [App\Http\Controllers\DepositController::class, 'new'])->name('deposit.new');
