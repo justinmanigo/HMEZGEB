@@ -71,7 +71,7 @@
         </form>
     </div>
     <div class="card-footer bg-white">
-        <button type="button" class="btn btn-primary">Deposit Sales</button>
+        <button type="button" class="btn btn-primary">Save Deposit</button>
         <a role="button" class="btn btn-secondary" href="{{ route('deposit.index') }}">Cancel</a>
     </div>
 </div>

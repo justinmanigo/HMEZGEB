@@ -94,7 +94,7 @@
         </form>
     </div>
     <div class="card-footer bg-white">
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary">Save Customer</button>
         <a role="button" class="btn btn-secondary" href="{{ route('customer.index') }}">Cancel</a>
     </div>
 </div>
