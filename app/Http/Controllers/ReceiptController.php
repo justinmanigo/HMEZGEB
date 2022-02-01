@@ -25,6 +25,14 @@ class ReceiptController extends Controller
     }
 
     /**
+     * Show the new advance revenue form of customers menu.
+     */
+    public function new_advance_revenue()
+    {
+        return view('receipt.new_advance_revenue');
+    }
+
+    /**
      * Show the new proforma form of customers menu.
      */
     public function new_proforma()
