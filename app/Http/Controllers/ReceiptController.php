@@ -33,6 +33,14 @@ class ReceiptController extends Controller
     }
 
     /**
+     * Show the new credit receipt form of customers menu.
+     */
+    public function new_credit_receipt()
+    {
+        return view('receipt.new_credit_receipt');
+    }
+
+    /**
      * Show the new proforma form of customers menu.
      */
     public function new_proforma()
