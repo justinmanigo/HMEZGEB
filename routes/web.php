@@ -63,11 +63,11 @@ Route::post('/userlogin', function (Request $request){
 /**
  * Customer Menu
  */
-Route::get('/customers/receipt', [App\Http\Controllers\CustomerController::class, 'receipt'])->name('customers.receipt');
-Route::get('/customers/receipt/newreceipt', [App\Http\Controllers\CustomerController::class, 'newreceipt'])->name('customers.newreceipt');
-Route::get('/customers/receipt/newproforma', [App\Http\Controllers\CustomerController::class, 'newproforma'])->name('customers.newproforma');
+Route::get('/receipt', [App\Http\Controllers\ReceiptController::class, 'index'])->name('receipt.index');
+Route::get('/receipt/new', [App\Http\Controllers\ReceiptController::class, 'new_receipt'])->name('receipt.new_receipt');
+Route::get('/proforma/new', [App\Http\Controllers\ReceiptController::class, 'new_proforma'])->name('receipt.new_proforma');
 
-Route::get('/customers/customer', [App\Http\Controllers\CustomerController::class, 'customer'])->name('customers.customer');
-Route::get('/customers/customer/new', [App\http\Controllers\CustomerController::class, 'newcustomer'])->name('customers.newcustomer');
+Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
+Route::get('/customer/new', [App\http\Controllers\CustomerController::class, 'new'])->name('customer.new');
 
-Route::get('/customers/deposit', [App\Http\Controllers\CustomerController::class, 'deposit'])->name('customers.deposit');
+Route::get('/deposit', [App\Http\Controllers\CustomerController::class, 'index'])->name('deposit.index');

@@ -209,7 +209,7 @@
     </div>
     <div class="card-footer bg-white">
         <button type="button" class="btn btn-primary">Save Receipt</button>
-        <a role="button" class="btn btn-secondary" href="{{ route('customers.receipt') }}">Cancel</a>
+        <a role="button" class="btn btn-secondary" href="{{ route('receipt.index') }}">Cancel</a>
     </div>
 </div>
 @endsection

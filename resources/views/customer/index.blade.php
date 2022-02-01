@@ -26,7 +26,7 @@
     <div class="col-xl-10 col-lg-9 col-12">
         {{-- Button Group Navigation --}}
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <a role="button" class="btn btn-primary" href="{{ route('customers.newcustomer') }}">
+            <a role="button" class="btn btn-primary" href="{{ route('customer.new') }}">
                 <span class="icon text-white-50">
                     <i class="fas fa-pen"></i>
                 </span>
