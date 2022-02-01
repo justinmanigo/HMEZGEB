@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class DepositController extends Controller
 {
     /**
-     * Shows the deposit page of customers menu.
+     * Shows the deposit page of customers / banking menu.
      * 
      * @return \Illuminate\Contracts\Support\Renderable
      */
