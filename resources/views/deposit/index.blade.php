@@ -1,24 +1,59 @@
 @extends('template.index')
 
 @push('styles')
+<style>
+    .table-item-content { 
+        /** Equivalent to pt-3 */
+        padding-top:1rem!important;
+    }
 
+    #thead-actions {
+        /** Fixed width, increase if adding addt. buttons **/
+        width:120px;
+    }
+</style>
 @endpush
 
 @section('content')
 {{-- Button Group Navigation --}}
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-new-deposit">
+    <a role="button" class="btn btn-primary" href="{{ route('deposit.new') }}">
         <span class="icon text-white-50">
             <i class="fas fa-pen"></i>
         </span>
         <span class="text">New</span>
-    </button>   
+    </a> 
 </div>
 
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
-        <h1>Customers > Deposit</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <table class="table table-bordered">
+                    <thead>
+                        <th id="thead-actions">Actions</th>
+                        <th>Date</th>
+                        <th>Bank</th>
+                        <th>Amount</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{-- <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                </button> --}}
+                            </td>
+                            <td>Feb. 1, 2022</td>
+                            <td>Bank A</td>
+                            <td>Birr 1,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </table>
+        </div>
     </div>
 </div>
 
