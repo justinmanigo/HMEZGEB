@@ -26,12 +26,12 @@
     <div class="col-xl-10 col-lg-9 col-12">
         {{-- Button Group Navigation --}}
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <a role="button" class="btn btn-primary" href="{{ route('customer.new') }}">
+            <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-customer">
                 <span class="icon text-white-50">
                     <i class="fas fa-pen"></i>
                 </span>
                 <span class="text">New</span>
-            </a>
+            </button>
             <button type="button" class="btn btn-secondary">
                 <span class="icon text-white-50">
                     <i class="fas fa-file-import"></i>
@@ -126,6 +126,110 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Customer Modal --}}
+<div class="modal fade" id="modal-customer" tabindex="-1" role="dialog" aria-labelledby="modal-customer-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">New Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-customer" method="post" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <label for="inputCustomerName" class="col-sm-3 col-form-label">Customer Name<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputCustomerName" name="name" placeholder="" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputTinNumber" class="col-sm-3 col-form-label">Tin Number</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputTinNumber" name="tin_number" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputAddress" name="address" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputCity" class="col-sm-3 col-form-label">City</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputCity" name="city" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputCountry" class="col-sm-3 col-form-label">Country</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputCountry" name="country" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPhone1" class="col-sm-3 col-form-label">Phone 1</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputPhone1" name="phone_1" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPhone2" class="col-sm-3 col-form-label">Phone 2</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputPhone2" name="phone_2" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputFax" class="col-sm-3 col-form-label">Fax</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputFax" name="fax" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputMobileNumber" class="col-sm-3 col-form-label">Mobile Number</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputMobileNumber" name="mobile_number" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputContactPerson" class="col-sm-3 col-form-label">Contact Person</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputContactPerson" name="contact_person" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-3 col-form-label">E-mail</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputEmail" name="email" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputWebsite" class="col-sm-3 col-form-label">Website</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="inputWebsite" name="website" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPicture" class="col-sm-3 col-form-label">Picture</label>
+                        <div class="col-sm-9">
+                            <input type="file" id="inputPicture" name="picture">
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="inputActive" type="checkbox" value="" name="is_active">
+                        <label class="form-check-label" for="inputActive">Mark Customer as Active</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" form="modal-customer">Save changes</button>
             </div>
         </div>
     </div>
