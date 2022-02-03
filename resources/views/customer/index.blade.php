@@ -229,7 +229,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="modal-customer">Save changes</button>
+                <button type="button" class="btn btn-primary" form="modal-customer">Save Customer</button>
             </div>
         </div>
     </div>
