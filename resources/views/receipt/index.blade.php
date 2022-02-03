@@ -7,12 +7,18 @@
         padding-top:1rem!important;
         }
 
-        #thead-actions {
+        .thead-actions {
             /** Fixed width, increase if adding addt. buttons **/
             width:120px;
         }
-        #content-card {
+        .content-card {
             border-radius:0px 0px 5px 5px;
+        }
+
+        .inputPrice::-webkit-inner-spin-button, .inputTax::-webkit-inner-spin-button,
+        .inputPrice::-webkit-outer-spin-button, .inputTax::-webkit-outer-spin-button {
+            -webkit-appearance: none; 
+            margin: 0; 
         }
     </style>
 @endpush
@@ -33,10 +39,10 @@
                     <span class="text">New</span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <a class="dropdown-item" href="{{ route('receipt.new_receipt') }}">Receipt</a>
-                    <a class="dropdown-item" href="{{ route('receipt.new_advance_revenue') }}">Advance Revenue</a>
-                    <a class="dropdown-item" href="{{ route('receipt.new_credit_receipt') }}">Credit Receipt</a>
-                    <a class="dropdown-item" href="{{ route('receipt.new_proforma') }}">Proforma</a>
+                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Receipt</a>
+                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-advance-revenue">Advance Revenue</a>
+                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-credit-receipt">Credit Receipt</a>
+                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-proforma">Proforma</a>
                 </div>
             </div>
             <button type="button" class="btn btn-secondary">
@@ -70,14 +76,14 @@
         </ul>
 
         {{-- Tab Contents --}}
-        <div class="card" id="content-card">
+        <div class="card" class="content-card">
             <div class="card-body tab-content" id="myTabContent">
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
-                                <th id="thead-actions">Actions</th>
+                                <th class="thead-actions">Actions</th>
                                 <th>Invoice Number</th>
                                 <th>Customer Name</th>
                                 <th>Date</th>
@@ -111,7 +117,7 @@
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
-                                <th id="thead-actions">Actions</th>
+                                <th class="thead-actions">Actions</th>
                                 <th>Invoice Number</th>
                                 <th>Customer Name</th>
                                 <th>Date</th>
@@ -190,84 +196,84 @@
 
 {{-- Modals --}}
 {{-- New Receipt --}}
-<div class="modal fade" id="modal-new-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-new-receipt-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="modal-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-new-receipt-label">New Receipt</h5>
+                <h5 class="modal-title" id="modal-receipt-label">New Receipt</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                @include('receipt.forms.receipt')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" form="form-receipt">Save Receipt</button>
             </div>
         </div>
     </div>
 </div>
 
 {{-- New Advance Revenue --}}
-<div class="modal fade" id="modal-new-advance-revenue" tabindex="-1" role="dialog" aria-labelledby="modal-new-advance-revenue-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog" aria-labelledby="modal-advance-revenue-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-new-advance-revenue-label">New Advance Revenue</h5>
+                <h5 class="modal-title" id="modal-advance-revenue-label">New Advance Revenue</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                @include('receipt.forms.advance_revenue')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" form="form-advance-revenue">Save Advance Revenue</button>
             </div>
         </div>
     </div>
 </div>
 
 {{-- New Credit Receipt --}}
-<div class="modal fade" id="modal-new-credit-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-new-credit-receipt-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-credit-receipt-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-new-credit-receipt-label">New Advance Revenue</h5>
+                <h5 class="modal-title" id="modal-credit-receipt-label">New Credit Receipt</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                @include('receipt.forms.credit_receipt')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" form="form-credit-receipt">Save Credit Receipt</button>
             </div>
         </div>
     </div>
 </div>
 
 {{-- New Proforma --}}
-<div class="modal fade" id="modal-new-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-new-proforma-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-new-proforma-label">New Advance Revenue</h5>
+                <h5 class="modal-title" id="modal-proforma-label">New Proforma</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                @include('receipt.forms.proforma')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" form="form-proforma">Save Proforma</button>
             </div>
         </div>
     </div>

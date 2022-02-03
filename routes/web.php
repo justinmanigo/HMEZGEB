@@ -64,11 +64,6 @@ Route::post('/userlogin', function (Request $request){
  * Customer Menu
  */
 Route::get('/receipt', [App\Http\Controllers\ReceiptController::class, 'index'])->name('receipt.index');
-Route::get('/receipt/new', [App\Http\Controllers\ReceiptController::class, 'new_receipt'])->name('receipt.new_receipt');
-Route::get('/advance_revenue/new', [App\Http\Controllers\ReceiptController::class, 'new_advance_revenue'])->name('receipt.new_advance_revenue');
-Route::get('/credit_receipt/new', [App\Http\Controllers\ReceiptController::class, 'new_credit_receipt'])->name('receipt.new_credit_receipt');
-Route::get('/proforma/new', [App\Http\Controllers\ReceiptController::class, 'new_proforma'])->name('receipt.new_proforma');
-
 Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
 Route::get('/customer/new', [App\http\Controllers\CustomerController::class, 'new'])->name('customer.new');
 
