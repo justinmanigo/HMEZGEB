@@ -195,6 +195,14 @@
 
 
 {{-- Modals --}}
+
+{{-- 
+    KNOWN POTENTIAL PROBLEMS:
+    > Modal Contents have similar IDs for its contents.
+    POTENTIAL SOLUTIONS:
+    > Update form on button click via JS.
+--}}
+
 {{-- New Receipt --}}
 <div class="modal fade" id="modal-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
