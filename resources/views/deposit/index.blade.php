@@ -11,6 +11,10 @@
         /** Fixed width, increase if adding addt. buttons **/
         width:120px;
     }
+
+    input[type="checkbox"], label {
+        cursor: pointer;
+    }
 </style>
 @endpush
 
