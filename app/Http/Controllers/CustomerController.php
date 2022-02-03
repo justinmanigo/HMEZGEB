@@ -16,13 +16,4 @@ class CustomerController extends Controller
         return view('customer.index');
     }
 
-    /**
-     * Show the new customer form of customers menu.
-     * 
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function new()
-    {
-        return view('customer.new');
-    }
 }

@@ -65,7 +65,4 @@ Route::post('/userlogin', function (Request $request){
  */
 Route::get('/receipt', [App\Http\Controllers\ReceiptController::class, 'index'])->name('receipt.index');
 Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
-Route::get('/customer/new', [App\http\Controllers\CustomerController::class, 'new'])->name('customer.new');
-
 Route::get('/deposit', [App\Http\Controllers\DepositController::class, 'index'])->name('deposit.index');
-Route::get('/deposit/new', [App\Http\Controllers\DepositController::class, 'new'])->name('deposit.new');
