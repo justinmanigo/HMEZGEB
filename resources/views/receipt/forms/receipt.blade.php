@@ -9,23 +9,23 @@
     {{-- Insert Customer, Date, Invoice Number, etc. --}}
 
     <div class="form-group row">
-        <label for="invoice_number" class="col-lg-2 col-form-label">Invoice Number</label>
+        <label for="r_invoice_number" class="col-lg-2 col-form-label">Invoice Number</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control" id="invoice_number" name="invoice_number" placeholder="1483681825" disabled>
+            <input type="text" class="form-control" id="r_invoice_number" name="invoice_number" placeholder="1483681825" disabled>
         </div>
-        <label for="date" class="col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
+        <label for="r_date" class="col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
         <div class="col-lg-4">
-            <input type="date" class="form-control" id="date" name="date" placeholder="" required>
+            <input type="date" class="form-control" id="r_date" name="date" placeholder="" required>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="customer" class="col-md-4 col-lg-2 col-form-label">Customer<span class="text-danger ml-1">*</span></label>
+        <label for="r_customer" class="col-md-4 col-lg-2 col-form-label">Customer<span class="text-danger ml-1">*</span></label>
         <div class="input-group col-md-8 col-lg-10">
             <div class="input-group-prepend">
-              <button class="btn btn-primary" type="button" id="btn_customer_select">Select</button>
+              <button class="btn btn-primary" type="button" id="r_btn_customer_select">Select</button>
             </div>
-            <input type="text" class="form-control" placeholder="Customer's Name" name="customer" disabled>
+            <input type="text" id="r_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
             <input type="hidden" name="customer_id" value="">
         </div>
     </div>
@@ -33,7 +33,7 @@
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
-                <th id="thead-actions">Actions</th>
+                <th class="thead-actions">Actions</th>
                 <th>Name<span class="text-danger ml-1">*</span></th>
                 <th>Quantity<span class="text-danger ml-1">*</span></th>
                 <th>Price</th>
@@ -54,7 +54,7 @@
                             <div class="input-group-prepend">
                               <button class="btn btn-primary" type="button">Select</button>
                             </div>
-                            <input type="text" class="form-control" name="name[]" placeholder="Item Name" disabled>
+                            <input type="text" class="form-control" name="item_name[]" placeholder="Item Name" disabled>
                             <input type="hidden" name="item_id[]" value="">
                         </div>
                     </td>
@@ -87,7 +87,9 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-right table-item-content" colspan="5"><strong>Sub Total: </strong></td>
+                    <td class="text-right table-item-content" colspan="5">
+                        <strong>Sub Total: </strong>
+                    </td>
                     <td>
                         <input type="text" class="form-control text-right" name="subtotal" placeholder="0.00" disabled>
                     </td>
@@ -123,33 +125,33 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group row">
-                <label for="attachment" class="col-sm-3 col-form-label">Picture</label>
+                <label for="r_attachment" class="col-sm-3 col-form-label">Picture</label>
                 <div class="col-sm-9">
-                    <input type="file" id="attachment" name="attachment">
+                    <input type="file" id="r_attachment" name="attachment">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="note" class="col-sm-3 col-form-label">Note</label>
+                <label for="r_note" class="col-sm-3 col-form-label">Note</label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" id="note" name="note"></textarea>
+                    <textarea class="form-control" id="r_note" name="note"></textarea>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="commission" class="col-sm-3 col-form-label">Commission</label>
+                <label for="r_commission" class="col-sm-3 col-form-label">Commission</label>
                 <div class="input-group col-sm-9">
                     <div class="input-group-prepend">
-                      <button class="btn btn-primary" type="button" id="btn_commission_select">Select</button>
+                      <button class="btn btn-primary" type="button" id="r_btn_commission_select">Select</button>
                     </div>
-                    <input type="text" class="form-control" id="commission" name="commission" placeholder="Select Commission" disabled>
-                    <input type="hidden" name="commission_employee_id" value="">
+                    <input type="text" class="form-control" id="r_commission" name="commission" placeholder="Select Commission" disabled>
+                    <input type="hidden" id="r_commission_employee_id" name="commission_employee_id" value="">
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group row">
-                <label for="revenue_type" class="col-sm-4 col-form-label">Revenue Type<span class="text-danger ml-1">*</span></label>
+                <label for="r_revenue_type" class="col-sm-4 col-form-label">Revenue Type<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
-                    <select class="form-control" id="revenue_type" name="revenue_type">
+                    <select class="form-control" id="r_revenue_type" name="revenue_type">
                         <option>Sales</option>
                     </select>
                 </div>
@@ -158,23 +160,23 @@
                 <label for="payment" class="col-sm-4 col-form-label">Payment Type<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentType" id="paymentType_credit" value="credit">
-                        <label class="form-check-label" for="paymentType_credit">
+                        <input class="form-check-input" type="radio" name="paymentType" id="r_paymentType_credit" value="credit">
+                        <label class="form-check-label" for="r_paymentType_credit">
                         Credit
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentType" id="paymentType_cash" value="cash">
-                        <label class="form-check-label" for="paymentType_cash">
+                        <input class="form-check-input" type="radio" name="paymentType" id="r_paymentType_cash" value="cash">
+                        <label class="form-check-label" for="r_paymentType_cash">
                         Cash
                         </label>
                     </div>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
+                <label for="r_payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control text-right" id="payment" name="payment" placeholder="0.00">
+                    <input type="text" class="form-control text-right" id="r_payment" name="payment" placeholder="0.00">
                 </div>
             </div>
         </div>

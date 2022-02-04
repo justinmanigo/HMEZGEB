@@ -9,31 +9,31 @@
     {{-- Insert Customer, Date, Invoice Number, etc. --}}
 
     <div class="form-group row">
-        <label for="invoice_number" class="col-lg-2 col-form-label">Invoice Number</label>
+        <label for="p_invoice_number" class="col-lg-2 col-form-label">Invoice Number</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control" id="invoice_number" name="invoice_number" placeholder="1483681825" disabled>
+            <input type="text" class="form-control" id="p_invoice_number" name="invoice_number" placeholder="1483681825" disabled>
         </div>
-        <label for="date" class="col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
+        <label for="p_date" class="col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
         <div class="col-lg-4">
-            <input type="date" class="form-control" id="date" name="date" placeholder="" required>
+            <input type="date" class="form-control" id="p_date" name="date" placeholder="" required>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="customer" class="col-md-4 col-lg-2 col-form-label">Customer<span class="text-danger ml-1">*</span></label>
+        <label for="p_customer" class="col-md-4 col-lg-2 col-form-label">Customer<span class="text-danger ml-1">*</span></label>
         <div class="input-group col-md-8 col-lg-10">
             <div class="input-group-prepend">
-              <button class="btn btn-primary" type="button" id="btn_customer_select">Select</button>
+              <button class="btn btn-primary" type="button" id="p_btn_customer_select">Select</button>
             </div>
-            <input type="text" class="form-control" placeholder="Customer's Name" name="customer" disabled>
-            <input type="hidden" name="customer_id" value="">
+            <input type="text" class="form-control" placeholder="Customer's Name" id="p_customer" name="customer" disabled>
+            <input type="hidden" id="p_customer_id" name="customer_id" value="">
         </div>
     </div>
 
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
-                <th id="thead-actions">Actions</th>
+                <th class="thead-actions">Actions</th>
                 <th>Name<span class="text-danger ml-1">*</span></th>
                 <th>Quantity<span class="text-danger ml-1">*</span></th>
                 <th>Price</th>
@@ -54,7 +54,7 @@
                             <div class="input-group-prepend">
                               <button class="btn btn-primary" type="button">Select</button>
                             </div>
-                            <input type="text" class="form-control" name="name[]" placeholder="Item Name" disabled>
+                            <input type="text" class="form-control" name="item_name[]" placeholder="Item Name" disabled>
                             <input type="hidden" name="item_id[]" value="">
                         </div>
                     </td>
@@ -123,25 +123,25 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group row">
-                <label for="attachment" class="col-sm-3 col-form-label">Picture</label>
+                <label for="p_attachment" class="col-sm-3 col-form-label">Picture</label>
                 <div class="col-sm-9">
-                    <input type="file" id="attachment" name="attachment">
+                    <input type="file" id="p_attachment" name="attachment">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="note" class="col-sm-3 col-form-label">Note</label>
+                <label for="p_note" class="col-sm-3 col-form-label">Note</label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" id="note" name="note"></textarea>
+                    <textarea class="form-control" id="p_note" name="note"></textarea>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="commission" class="col-sm-3 col-form-label">Commission</label>
+                <label for="p_commission" class="col-sm-3 col-form-label">Commission</label>
                 <div class="input-group col-sm-9">
                     <div class="input-group-prepend">
-                      <button class="btn btn-primary" type="button" id="btn_commission_select">Select</button>
+                      <button class="btn btn-primary" type="button" id="p_btn_commission_select">Select</button>
                     </div>
-                    <input type="text" class="form-control" id="commission" name="commission" placeholder="Select Commission" disabled>
-                    <input type="hidden" name="commission_employee_id" value="">
+                    <input type="text" class="form-control" id="p_commission" name="commission" placeholder="Select Commission" disabled>
+                    <input type="hidden" id="p_commission_employee_id" name="commission_employee_id" value="">
                 </div>
             </div>
         </div>

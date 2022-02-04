@@ -144,86 +144,86 @@
             <div class="modal-body">
                 <form id="form-customer" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="inputCustomerName" class="col-sm-3 col-form-label">Customer Name<span class="text-danger ml-1">*</span></label>
+                        <label for="c_name" class="col-sm-3 col-form-label">Customer Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputCustomerName" name="name" placeholder="" required>
+                            <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputTinNumber" class="col-sm-3 col-form-label">Tin Number</label>
+                        <label for="c_tin_number" class="col-sm-3 col-form-label">Tin Number</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputTinNumber" name="tin_number" placeholder="">
+                            <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputAddress" class="col-sm-3 col-form-label">Address</label>
+                        <label for="c_address" class="col-sm-3 col-form-label">Address</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputAddress" name="address" placeholder="">
+                            <input type="text" class="form-control" id="c_address" name="address" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputCity" class="col-sm-3 col-form-label">City</label>
+                        <label for="c_city" class="col-sm-3 col-form-label">City</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputCity" name="city" placeholder="">
+                            <input type="text" class="form-control" id="c_city" name="city" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputCountry" class="col-sm-3 col-form-label">Country</label>
+                        <label for="c_country" class="col-sm-3 col-form-label">Country</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputCountry" name="country" placeholder="">
+                            <input type="text" class="form-control" id="c_country" name="country" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputPhone1" class="col-sm-3 col-form-label">Phone 1</label>
+                        <label for="c_phone_1" class="col-sm-3 col-form-label">Phone 1</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputPhone1" name="phone_1" placeholder="">
+                            <input type="text" class="form-control" id="c_phone_1" name="phone_1" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputPhone2" class="col-sm-3 col-form-label">Phone 2</label>
+                        <label for="c_phone_2" class="col-sm-3 col-form-label">Phone 2</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputPhone2" name="phone_2" placeholder="">
+                            <input type="text" class="form-control" id="c_phone_2" name="phone_2" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputFax" class="col-sm-3 col-form-label">Fax</label>
+                        <label for="c_fax" class="col-sm-3 col-form-label">Fax</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputFax" name="fax" placeholder="">
+                            <input type="text" class="form-control" id="c_fax" name="fax" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputMobileNumber" class="col-sm-3 col-form-label">Mobile Number</label>
+                        <label for="c_mobile_number" class="col-sm-3 col-form-label">Mobile Number</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputMobileNumber" name="mobile_number" placeholder="">
+                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputContactPerson" class="col-sm-3 col-form-label">Contact Person</label>
+                        <label for="c_contact_person" class="col-sm-3 col-form-label">Contact Person</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputContactPerson" name="contact_person" placeholder="">
+                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-3 col-form-label">E-mail</label>
+                        <label for="c_email" class="col-sm-3 col-form-label">E-mail</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputEmail" name="email" placeholder="">
+                            <input type="text" class="form-control" id="c_email" name="email" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputWebsite" class="col-sm-3 col-form-label">Website</label>
+                        <label for="c_website" class="col-sm-3 col-form-label">Website</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputWebsite" name="website" placeholder="">
+                            <input type="text" class="form-control" id="c_website" name="website" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputPicture" class="col-sm-3 col-form-label">Picture</label>
+                        <label for="c_picture" class="col-sm-3 col-form-label">Picture</label>
                         <div class="col-sm-9">
-                            <input type="file" id="inputPicture" name="picture">
+                            <input type="file" id="c_picture" name="picture">
                         </div>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" id="inputActive" type="checkbox" value="" name="is_active">
-                        <label class="form-check-label" for="inputActive">Mark Customer as Active</label>
+                        <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
+                        <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
                     </div>
                 </form>
             </div>
@@ -248,9 +248,9 @@
             <div class="modal-body">
                 <form id="form-import" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="revenue_type" class="col-sm-4 col-form-label">File<span class="text-danger ml-1">*</span></label>
+                        <label for="i_file" class="col-sm-4 col-form-label">File<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-8">
-                            <input type="file" id="file" name="file" class="mt-1" required>
+                            <input type="file" id="i_file" name="file" class="mt-1" required>
                         </div>
                     </div>
                 </form>
@@ -276,9 +276,9 @@
             <div class="modal-body">
                 <form id="form-export" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="file_type" class="col-sm-4 col-form-label">File Type<span class="text-danger ml-1">*</span></label>
+                        <label for="e_file_type" class="col-sm-4 col-form-label">File Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="file_type" name="file_type" required>
+                            <select class="form-control" id="e_file_type" name="file_type" required>
                                 <option>HTML</option>
                                 <option>PDF</option>
                                 <option>CSV</option>

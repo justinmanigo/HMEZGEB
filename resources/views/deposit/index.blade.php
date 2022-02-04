@@ -73,11 +73,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-new-deposit" method="post" enctype="multipart/form-data">
+                <form id="form-deposit" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="bank_account" class="col-sm-3 col-form-label">Select Bank<span class="text-danger ml-1">*</span></label>
+                        <label for="d_bank_account" class="col-sm-3 col-form-label">Select Bank<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9">
-                            <select class="form-control" id="bank_account" name="bank_account">
+                            <select class="form-control" id="d_bank_account" name="bank_account">
                                 <option>Bank A</option>
                             </select>
                         </div>
@@ -97,10 +97,10 @@
                                 <tr>
                                     <td class="table-item-content">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="invoices_1483681825" name="invoices[]" value="">
+                                            <input type="checkbox" class="form-check-input" id="d_invoices_1483681825" name="invoices[]" value="">
                                         </div>
                                     </td>
-                                    <td class="table-item-content"><label for="invoices_1483681825">1483681825</label></td>
+                                    <td class="table-item-content"><label for="d_invoices_1483681825">1483681825</label></td>
                                     <td class="table-item-content">PocketDevs</td>
                                     <td class="table-item-content">01/31/2022</td>
                                     <td class="table-item-content">Birr 1,000</td>
@@ -108,10 +108,10 @@
                                 <tr>
                                     <td class="table-item-content">
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="invoices_1483681826" name="invoices[]" value="">
+                                            <input type="checkbox" class="form-check-input" id="d_invoices_1483681826" name="invoices[]" value="">
                                         </div>
                                     </td>
-                                    <td class="table-item-content"><label for="invoices_1483681826">1483681826</label></td>
+                                    <td class="table-item-content"><label for="d_invoices_1483681826">1483681826</label></td>
                                     <td class="table-item-content">Fullstack HQ</td>
                                     <td class="table-item-content">02/01/2022</td>
                                     <td class="table-item-content">Birr 2,000</td>
@@ -123,7 +123,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save Deposit</button>
+                <button type="button" class="btn btn-primary" form="form-deposit">Save Deposit</button>
             </div>
         </div>
     </div>

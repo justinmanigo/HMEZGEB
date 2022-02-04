@@ -304,9 +304,9 @@
             <div class="modal-body">
                 <form id="form-import" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="revenue_type" class="col-sm-4 col-form-label">File<span class="text-danger ml-1">*</span></label>
+                        <label for="i_file" class="col-sm-4 col-form-label">File<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-8">
-                            <input type="file" id="file" name="file" class="mt-1" required>
+                            <input type="file" id="i_file" name="file" class="mt-1" required>
                         </div>
                     </div>
                 </form>
@@ -332,9 +332,9 @@
             <div class="modal-body">
                 <form id="form-export" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="file_type" class="col-sm-4 col-form-label">File Type<span class="text-danger ml-1">*</span></label>
+                        <label for="e_file_type" class="col-sm-4 col-form-label">File Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="file_type" name="file_type" required>
+                            <select class="form-control" id="e_file_type" name="file_type" required>
                                 <option>HTML</option>
                                 <option>PDF</option>
                                 <option>CSV</option>
