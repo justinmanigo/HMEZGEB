@@ -20,6 +20,10 @@
             -webkit-appearance: none; 
             margin: 0; 
         }
+
+        input[type="checkbox"], label {
+            cursor: pointer;
+        }
     </style>
 @endpush
 

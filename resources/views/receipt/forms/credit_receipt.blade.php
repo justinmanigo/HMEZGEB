@@ -9,111 +9,156 @@
     {{-- Insert Customer, Date, Invoice Number, etc. --}}
 
     <div class="form-group row">
-        <label for="invoice_number" class="col-lg-2 col-form-label">Invoice Number</label>
-        <div class="col-lg-4">
-            <input type="text" class="form-control" id="invoice_number" name="invoice_number" placeholder="1483681825" disabled>
+        <div class="col-lg-6">
+            {{-- Deposit Ticket ID --}}
+            <div class="row mb-2">
+                <label for="deposit_ticket_id" class="col-md-4 col-form-label">Deposit Ticket ID</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" placeholder="" name="deposit_ticket_id">
+                </div>
+            </div>
+
+            {{-- Customer --}}
+            <div class="row mb-2">
+                <label for="customer" class="col-md-4 col-form-label">Customer<span class="text-danger ml-1">*</span></label>
+                <div class="input-group col-md-8">
+                    <div class="input-group-prepend">
+                    <button class="btn btn-primary" type="button" id="btn_customer_select">Select</button>
+                    </div>
+                    <input type="text" class="form-control" placeholder="ARMSTRONG" name="customer" disabled>
+                    <input type="hidden" name="customer_id" value="">
+                </div>
+            </div>
+
+            {{-- Customer Details --}}
+            <div class="row mb-2">
+                <div class="col-md-4">
+                    
+                </div>
+                <div class="col-md-8">
+                    <p>
+                        Armstrong Landscaping<br>
+                        2300 Club Drive<br>
+                        Suite A<br>
+                        Nocross, GA 30093
+                    </p>
+                </div>
+            </div>
         </div>
-        <label for="date" class="col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
-        <div class="col-lg-4">
-            <input type="date" class="form-control" id="date" name="date" placeholder="" required>
+        <div class="col-lg-6">
+            {{-- Reference --}}
+            <div class="row mb-2">
+                <label for="reference" class="col-md-4 col-form-label">Reference</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="reference" placeholder="">
+                </div>
+            </div>
+
+            {{-- Receipt Number --}}
+            <div class="row mb-2">
+                <label for="receipt_number" class="col-md-4 col-form-label">Receipt Number</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="receipt_number" placeholder="">
+                </div>
+            </div>
+
+            {{-- Date --}}
+            <div class="row mb-2">
+                <label for="date" class="col-md-4 col-form-label">Date<span class="text-danger ml-1">*</span></label>
+                <div class="col-md-8">
+                    <input type="date" class="form-control" name="date" placeholder="" required>
+                </div>
+            </div>
+
+            {{-- Payment Method --}}
+            <div class="row mb-2">
+                <label for="date" class="col-md-4 col-form-label">Payment Method<span class="text-danger ml-1">*</span></label>
+                <div class="col-md-8">
+                    <select class="form-control" name="payment_method" required>
+                        <option>Cash</option>
+                        <option>Check</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="customer" class="col-md-4 col-lg-2 col-form-label">Customer<span class="text-danger ml-1">*</span></label>
-        <div class="input-group col-md-8 col-lg-10">
-            <div class="input-group-prepend">
-              <button class="btn btn-primary" type="button" id="btn_customer_select">Select</button>
-            </div>
-            <input type="text" class="form-control" placeholder="Customer's Name" name="customer" disabled>
-            <input type="hidden" name="customer_id" value="">
-        </div>
+        
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive mb-3">
         <table class="table table-bordered">
             <thead>
-                <th id="thead-actions">Actions</th>
-                <th>Name<span class="text-danger ml-1">*</span></th>
-                <th>Quantity<span class="text-danger ml-1">*</span></th>
-                <th>Price</th>
-                <th>Tax<span class="text-danger ml-1">*</span></th>
-                <th>Total</th>
+                <th id="thead-actions">Pay</th>
+                <th>Invoice</th>
+                <th>Date Due</th>
+                <th>Amount Due</th>
+                <th>Description</th>
+                <th>Discount</th>
+                <th>Amount Paid<span class="text-danger ml-1">*</span></th>
             </thead>
             <tbody>
                 <tr>
-                    <td>
-                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </button>
-                    </td>
-                    <td>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                              <button class="btn btn-primary" type="button">Select</button>
-                            </div>
-                            <input type="text" class="form-control" name="name[]" placeholder="Item Name" disabled>
-                            <input type="hidden" name="item_id[]" value="">
+                    <td class="table-item-content"> {{-- Actions --}}
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="invoices_1483681825" name="invoices[]" value="1483681825">
                         </div>
                     </td>
-                    <td>
-                        <input type="number" class="form-control" name="quantity[]" placeholder="Enter Quantity" required>
+                    <td class="table-item-content"> {{-- Invoice --}}
+                        <label for="invoices_1483681825">1483681825</label>
                     </td>
-                    <td>
-                        <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+                    <td> {{-- Date Due --}}
+                        <input type="number" class="form-control" name="date_due[]" value="04/02/2022" disabled>
                     </td>
-                    <td>
+                    <td> {{-- Amount Due --}}
+                        <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="2,383.94" disabled>
+                    </td>
+                    <td> {{-- Description --}}
                         <div class="form-group">
-                            <select class="form-control" name="tax[]">
-                              <option>Sales Tax (15%)</option>
-                            </select>
+                            <input type="text" class="form-control" name="description[]" placeholder="">
                         </div>
                     </td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
+                    <td> {{-- Discount --}}
+                        <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
+                    </td>
+                    <td> {{-- Amount Paid --}}
+                        <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6">
-                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                        </button>
+                    <td class="table-item-content"> {{-- Actions --}}
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="invoices_1483681826" name="invoices[]" value="">
+                        </div>
+                    </td>
+                    <td class="table-item-content"> {{-- Invoice --}}
+                        <label for="invoices_1483681826">1483681826</label>
+                    </td>
+                    <td> {{-- Date Due --}}
+                        <input type="number" class="form-control" name="date_due[]" value="05/02/2022" disabled>
+                    </td>
+                    <td> {{-- Amount Due --}}
+                        <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="9,645.26" disabled>
+                    </td>
+                    <td> {{-- Description --}}
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="description[]" placeholder="">
+                        </div>
+                    </td>
+                    <td> {{-- Discount --}}
+                        <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
+                    </td>
+                    <td> {{-- Amount Paid --}}
+                        <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
                     </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-right table-item-content" colspan="5"><strong>Sub Total: </strong></td>
+                    <td class="text-right table-item-content" colspan="6"><strong>Receipt Amount: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="subtotal" placeholder="0.00" disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-right table-item-content" colspan="5"><strong>Add Discount: </strong></td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-right table-item-content" colspan="5"><strong>Tax: </strong></td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-right table-item-content" colspan="5"><strong>Total: </strong></td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="total" placeholder="0.00" disabled>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-right table-item-content" colspan="5"><strong>Withholding: </strong></td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
+                        <input type="text" class="form-control text-right" name="receipt_amount" placeholder="0.00" disabled>
                     </td>
                 </tr>
             </tfoot>
@@ -121,62 +166,21 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group row">
-                <label for="attachment" class="col-sm-3 col-form-label">Picture</label>
-                <div class="col-sm-9">
-                    <input type="file" id="attachment" name="attachment">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="note" class="col-sm-3 col-form-label">Note</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" id="note" name="note"></textarea>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="commission" class="col-sm-3 col-form-label">Commission</label>
-                <div class="input-group col-sm-9">
+        <div class="col-lg-6">
+            {{-- Discount Account --}}
+            <div class="row">
+                <label for="customer" class="col-md-4 col-form-label">Discount Account</label>
+                <div class="input-group col-md-8">
                     <div class="input-group-prepend">
-                      <button class="btn btn-primary" type="button" id="btn_commission_select">Select</button>
+                    <button class="btn btn-primary" type="button" id="btn_discount_account_select">Select</button>
                     </div>
-                    <input type="text" class="form-control" id="commission" name="commission" placeholder="Select Commission" disabled>
-                    <input type="hidden" name="commission_employee_id" value="">
+                    <input type="text" class="form-control" placeholder="Discount Account" name="discount_account" disabled>
+                    <input type="hidden" name="discount_account_id" value="">
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group row">
-                <label for="revenue_type" class="col-sm-4 col-form-label">Revenue Type<span class="text-danger ml-1">*</span></label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="revenue_type" name="revenue_type">
-                        <option>Sales</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="payment" class="col-sm-4 col-form-label">Payment Type<span class="text-danger ml-1">*</span></label>
-                <div class="col-sm-8">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentType" id="paymentType_credit" value="credit">
-                        <label class="form-check-label" for="paymentType_credit">
-                        Credit
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentType" id="paymentType_cash" value="cash">
-                        <label class="form-check-label" for="paymentType_cash">
-                        Cash
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control text-right" id="payment" name="payment" placeholder="0.00">
-                </div>
-            </div>
+        <div class="col-lg-6">
+            
         </div>
     </div>
 </form>
