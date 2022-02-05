@@ -59,3 +59,10 @@ Route::post('/userlogin', function (Request $request){
 
    
 })->name('userlogin');
+
+/**
+ * Customer Menu
+ */
+Route::get('/receipt', [App\Http\Controllers\ReceiptController::class, 'index'])->name('receipt.index');
+Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
+Route::get('/deposit', [App\Http\Controllers\DepositController::class, 'index'])->name('deposit.index');
