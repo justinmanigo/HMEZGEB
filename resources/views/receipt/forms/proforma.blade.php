@@ -23,7 +23,7 @@
         <label for="p_customer" class="col-md-4 col-lg-2 col-form-label">Customer<span class="text-danger ml-1">*</span></label>
         <div class="input-group col-md-8 col-lg-10">
             <div class="input-group-prepend">
-              <button class="btn btn-primary" type="button" id="p_btn_customer_select">Select</button>
+                <button class="btn btn-primary" type="button" id="p_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
             </div>
             <input type="text" class="form-control" placeholder="Customer's Name" id="p_customer" name="customer" disabled>
             <input type="hidden" id="p_customer_id" name="customer_id" value="">
@@ -52,7 +52,7 @@
                     <td>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                              <button class="btn btn-primary" type="button">Select</button>
+                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-item">Select</button>
                             </div>
                             <input type="text" class="form-control" name="item_name[]" placeholder="Item Name" disabled>
                             <input type="hidden" name="item_id[]" value="">
