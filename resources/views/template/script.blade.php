@@ -14,6 +14,15 @@
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
+    {{-- The following script allows nested modals. --}}
+    <script>
+        $(document).on('show.bs.modal', '.modal', function() {
+            const zIndex = 1040 + 10 * $('.modal:visible').length;
+            $(this).css('z-index', zIndex);
+            setTimeout(() => $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack'));
+        });
+    </script>
+
        <!-- Dump all dynamic scripts into template -->
         @stack('scripts')
 

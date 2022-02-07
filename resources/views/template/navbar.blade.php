@@ -37,9 +37,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="#">Receipt</a>
-                        <a class="collapse-item" href="#">Customer</a>
-                        <a class="collapse-item" href="#">Deposit</a>
+                        <a class="collapse-item" href="{{ route('receipt.index') }}">Receipt</a>
+                        <a class="collapse-item" href="{{ route('customer.index') }}">Customer</a>
+                        <a class="collapse-item" href="{{ route('deposit.index') }}">Deposit</a>
                     </div>
                 </div>
             </li>
