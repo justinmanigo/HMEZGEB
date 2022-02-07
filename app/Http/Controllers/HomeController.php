@@ -36,5 +36,9 @@ class HomeController extends Controller
     {
         return view('bill');
     }
+    public function individualVendor()
+    {
+        return view('individualVendor');
+    }
 
 }

@@ -17,9 +17,9 @@
             <!----buttons----->
     <div class="d-flex justify-content-around">      
             <!--------add vendor modal---->
-        <div id="contact"><button type="button" class="btn btn-info btn mx-1" data-toggle="modal" data-target="#contact-modal">Enter bill</button></div>
-            <div id="contact-modal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+        <button type="button" class="btn btn-info btn mx-1" data-toggle="modal" data-target=".bd-example-modal-lg">Enter bill</button>
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header d-flex">
                             <h3>Add bill</h3>
@@ -41,21 +41,25 @@
                                     <label for="name">Vendor name:</label>
                                     <input type="text" name="name" required class="form-control">
                                 </div>
-                                <div class="form-group">
-                                    <label for="email">Date:</label>
-                                    <input type="text" name="address" class="form-control">
+                                <div class="row form-group">
+                                    <div class="col">
+                                        <label for="email">Date:</label>
+                                        <input type="date" name="address" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <label for="email">Due date:</label>
+                                        <input type="date" name="city" class="form-control">
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="email">Due date:</label>
-                                    <input type="text" name="city" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Bill number:</label>
-                                    <input type="text" name="country" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Order number:</label>
-                                    <input type="text" name="tinNum" class="form-control">
+                                <div class="row form-group">
+                                    <div class="col">
+                                        <label for="email">Bill number:</label>
+                                        <input type="text" name="country" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <label for="email">Order number:</label>
+                                        <input type="text" name="tinNum" class="form-control">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Item table:</label>
@@ -63,11 +67,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Bill note:</label>
-                                    <input type="text" name="phone2" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Attachment:</label>
-                                    <input type="text" name="mobile_num" class="form-control">
+                                    <textarea type="text" name="phone2" style="min-height: 2.5rem" class="form-control"></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="cars">Bill type:</label>
@@ -87,7 +87,13 @@
                                     <option value="#">Sample2</option>
                                     </select>
                                 </div>
-                                
+                                <label for="email">Attachment:</label>
+                                <div class="input-group mb-3">
+                                    <div class="custom-file">
+                                      <input type="file" class="custom-file-input" id="inputGroupFile03">
+                                      <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">					
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
