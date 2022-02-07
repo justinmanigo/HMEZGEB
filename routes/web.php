@@ -67,3 +67,13 @@ Route::post('/userlogin', function (Request $request){
 Route::get('/receipt', [App\Http\Controllers\ReceiptController::class, 'index'])->name('receipt.index');
 Route::get('/customer', [App\Http\Controllers\CustomerController::class, 'index'])->name('customer.index');
 Route::get('/deposit', [App\Http\Controllers\DepositController::class, 'index'])->name('deposit.index');
+
+/**
+ * Human Resource Menu
+ */
+Route::get('/payroll', [App\Http\Controllers\PayrollController::class, 'index'])->name('payroll.index');
+Route::get('/employees', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employee.index');
+Route::get('/overtime', [App\Http\Controllers\OvertimeController::class, 'index'])->name('overtime.index');
+Route::get('/addition', [App\Http\Controllers\AdditionController::class, 'index'])->name('addition.index');
+Route::get('/deduction', [App\Http\Controllers\DeductionController::class, 'index'])->name('deduction.index');
+Route::get('/loan', [App\Http\Controllers\LoanController::class, 'index'])->name('loan.index');
