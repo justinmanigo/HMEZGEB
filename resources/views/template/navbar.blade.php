@@ -55,9 +55,9 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="#">Bill</a>
+                        <a class="collapse-item" href="/bill">Bill</a>
                         <a class="collapse-item" href="#">Payment</a>
-                        <a class="collapse-item" href="#">Vendor</a>
+                        <a class="collapse-item" href="/vendorPage">Vendor</a>
                     </div>
                 </div>
             </li>

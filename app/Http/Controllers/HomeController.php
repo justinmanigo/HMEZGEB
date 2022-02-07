@@ -32,4 +32,9 @@ class HomeController extends Controller
         return view('vendor');
     }
 
+    public function bill()
+    {
+        return view('bill');
+    }
+
 }
