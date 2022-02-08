@@ -84,7 +84,7 @@
 
                <!-- Nav Item - Journal Voucher -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="/journals">
                     <i class="fas fa-fw fa-pencil-alt"></i>
                     <span>Journal Voucher</span></a>
             </li>
