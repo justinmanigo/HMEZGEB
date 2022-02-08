@@ -25,8 +25,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+/**
+ * Vendor Pages
+ */
 Route::get('/bill',[App\Http\Controllers\HomeController::class, 'bill'])->name('bill');
 Route::get('/vendorPage',[App\Http\Controllers\HomeController::class, 'vendor'])->name('vendors');
+Route::get('/individualVendor',[App\Http\Controllers\HomeController::class, 'individualVendor'])->name('individualVendor');
 
 Route::post('/userlogin', function (Request $request){
    
