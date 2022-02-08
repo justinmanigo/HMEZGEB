@@ -6,10 +6,32 @@
 
 @section('content')
 <div class="container-fluid">
-
+    <div class="d-sm-flex align-items-start justify-content-between">
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Bills</h1>
-
+    <!--- card for account payable--->
+    <div class="col-xl-3 col-md-6 mb-4 border-1">
+        <div class="card border-left-primary shadow h-100 pt-2">
+            <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
+                Account Payable 
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row no-gutters d-flex align-items-center justify-content-around">
+                        <div class="h6 mb-0">
+                        <span class="font-weight-bold text-gray-800">$40,000</span><br>
+                        <small>Active</small>
+                        </div>
+                        <div class="h6 mb-0">
+                        <span class="font-weight-bold text-danger">$3,500</span><br>
+                        <small>Over Due</small>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex align-items-center justify-content-between">

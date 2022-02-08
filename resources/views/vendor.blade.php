@@ -11,6 +11,7 @@
 
 <div class="d-sm-flex align-items-start justify-content-between mb-2">
     <h1 class="h3 mb-0 text-gray-800">Vendors</h1>
+    <!--- card for account payable--->
 
     <div class="col-xl-3 col-md-6 mb-4 border-1">
         <div class="card border-left-primary shadow h-100 pt-2">
@@ -21,14 +22,14 @@
             </div>
             <div class="card-body">
                 <div class="row no-gutters d-flex align-items-center justify-content-around">
-                        <div class="h6 mb-0">
-                        <span class="font-weight-bold text-gray-800">$40,000</span><br>
-                        <small>Active</small>
-                        </div>
-                        <div class="h6 mb-0">
-                        <span class="font-weight-bold text-danger">$3,500</span><br>
-                        <small>Over Due</small>
-                        </div>
+                    <div class="h6 mb-0">
+                    <span class="font-weight-bold text-gray-800">$40,000</span><br>
+                    <small>Active</small>
+                    </div>
+                    <div class="h6 mb-0">
+                    <span class="font-weight-bold text-danger">$3,500</span><br>
+                    <small>Over Due</small>
+                    </div>
                 </div>
             </div>
         </div>
