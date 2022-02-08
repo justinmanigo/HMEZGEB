@@ -3,14 +3,27 @@
 use Illuminate\Support\Facades\Route;
  
 use App\Models\User;
+// Customer module
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
+// Vendor module
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\TransfersController;
 use App\Http\Controllers\DepositsController;
-use App\Http\Controllers\TransactionsController;
- 
+use App\Http\Controllers\TransactionsController;  
+// Banking module
+use App\Http\Controllers\BillsController;
+use App\Http\Controllers\VendorsController;
+use App\Http\Controllers\PaymentsController; 
+// Journal module
+
+// Human Resource module
+
+// Inventory module
+
+// Settings module
+
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;   
@@ -34,13 +47,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-/**
- * Vendor Pages
- */
-Route::get('/bill',[App\Http\Controllers\HomeController::class, 'bill'])->name('bill');
-Route::get('/vendorPage',[App\Http\Controllers\HomeController::class, 'vendor'])->name('vendors');
-Route::get('/individualVendor',[App\Http\Controllers\HomeController::class, 'individualVendor'])->name('individualVendor');
-
+ 
 Route::post('/userlogin', function (Request $request){
    
 
@@ -71,22 +78,104 @@ Route::post('/userlogin', function (Request $request){
     }
     // if failed login
 
-   
 })->name('userlogin');
+
+
 
 /**
  * Customer Menu
  */
-Route::get('/receipt', [ReceiptController::class, 'index'])->name('receipt.index');
-Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
-Route::get('/deposit', [DepositController::class, 'index'])->name('deposit.index');
+    
+    Route::group([
+        'as'=>'receipts.'
+    ], function(){
+        Route::get('/receipt', [ReceiptController::class, 'index']);
+        
+    });
+
+    Route::group([
+        'as'=>'customers.'
+    ], function(){ 
+        Route::get('/customer', [CustomerController::class, 'index']);
+
+    });
+
+    Route::group([
+        'as'=>'deposits.'
+    ], function(){ 
+        Route::get('/deposit', [DepositController::class, 'index']);
+    });
+
+ 
+ 
+
+/**
+ * Vendor Menu
+ */  
+ 
+    Route::group([
+        'as'=>'bills.'
+    ], function(){ 
+        Route::get('/bill',[BillsController::class,'index']);
+
+    });
+
+    Route::group([
+        'as'=>'vendors.'
+    ], function(){ 
+
+        Route::get('/vendorPage',[VendorsController::class,'index']);
+        Route::get('/individualVendor',[VendorsController::class,'individualVendor']);
+    });
+
+    Route::group([
+        'as'=>'payments.'
+    ], function(){ 
+        
+        
+    });
+ 
+ 
+ 
  
 
 /**
  * Banking Menu
  */ 
  
-Route::get('/accounts', [AccountsController::class, 'index'])->name('bank.accounts.index');
-Route::get('/transfers', [TransfersController::class, 'index'])->name('bank.transfers.index');
-Route::get('/transactions', [TransactionsController::class, 'index'])->name('bank.transactions');
-Route::get('/deposits', [DepositsController::class, 'index'])->name('bank.deposits.index');
+    Route::group([
+        'as'=>'accounts.'
+    ], function(){ 
+
+        Route::get('/accounts', [AccountsController::class, 'index'])->name('bank.accounts');
+
+    });
+
+    Route::group([
+        'as'=>'transfers.'
+    ], function(){ 
+        Route::get('/transfers', [TransfersController::class, 'index'])->name('bank.transfers');
+        
+    });
+
+  
+
+    Route::group([
+        'as'=>'deposits.'
+    ], function(){ 
+        Route::get('/deposits', [DepositsController::class, 'index'])->name('bank.deposits');
+        
+    });
+
+    Route::group([
+        'as'=>'transactions.'
+    ], function(){ 
+
+        Route::get('/transactions', [TransactionsController::class, 'index'])->name('bank.transactions');
+    });
+ 
+ 
+ 
+ 
+
+ 

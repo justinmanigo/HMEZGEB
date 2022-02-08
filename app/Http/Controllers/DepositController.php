@@ -13,7 +13,7 @@ class DepositController extends Controller
      */
     public function index()
     {
-        return view('deposit.index');
+        return view('customer.deposit.index');
     }
 
 }
