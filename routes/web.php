@@ -17,7 +17,7 @@ use App\Http\Controllers\BillsController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\PaymentsController; 
 // Journal module
-
+use App\Http\Controllers\JournalVouchersController; 
 // Human Resource module
 
 // Inventory module
@@ -171,11 +171,21 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'transactions.'
     ], function(){ 
 
-        Route::get('/transactions', [TransactionsController::class, 'index'])->name('bank.transactions');
+        Route::get('/transactions', [TransactionsController::class, 'index']);
     });
+     
  
  
+ /**
+ * Journal Menu
+ */ 
  
- 
+
+Route::group([
+    'as'=>'journals.'
+], function(){ 
+
+    Route::get('/journals', [JournalVouchersController::class, 'index']);
+});
 
  
