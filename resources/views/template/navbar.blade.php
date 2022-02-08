@@ -73,10 +73,10 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="#">Accounts</a>
-                        <a class="collapse-item" href="#">Transfer</a>
-                        <a class="collapse-item" href="#">Deposit</a>
-                        <a class="collapse-item" href="#">Transactions</a>
+                        <a class="collapse-item" href="/accounts">Accounts</a>
+                        <a class="collapse-item" href="/transfers">Transfer</a>
+                        <a class="collapse-item" href="/deposits">Deposit</a>
+                        <a class="collapse-item" href="/transactions">Transactions</a>
                         <a class="collapse-item" href="#">Bank Reconciliation</a>
                     </div>
                 </div>
