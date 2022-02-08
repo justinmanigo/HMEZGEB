@@ -247,7 +247,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @include('receipt.forms.select_customer')
+                @include('customer.receipt.forms.select_customer')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -269,7 +269,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @include('receipt.forms.select_item')
+                @include('customer.receipt.forms.select_item')
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
