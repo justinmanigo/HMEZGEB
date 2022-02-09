@@ -79,84 +79,85 @@
             </div>
 
             <div class="modal-body">
-                <div class="form-group row">
-                    <label for="l_date" class="col-sm-3 col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
-                    <div class="col-sm-9 col-lg-4">
-                        <input type="date" class="form-control" id="l_date" name="date" placeholder="" required>
-                    </div>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <th>Actions</th>
-                            <th>Employee Name</th>
-                            <th>Price</th>
-                            <th>Paid In</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </button>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-employee">Select</button>
-                                        </div>
-                                        <div class="input-group-append">
-                                            <input type="text" class="form-control" name="employee_name[]" placeholder="Employee Name" disabled>
-                                        </div>
-                                        <input type="hidden" name="employee_id[]" value="">
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control text-right" name="price[]" placeholder="0.00" required>
-                                </td>
-                                <td>
-                                    <select class="form-control" name="paid_in[]" required>
-                                        <option>-Select Paid In-</option>
-                                        <option value="1 Month">1 Month</option>
-                                        <option value="3 Months">3 Months</option>
-                                        <option value="6 Months">6 Months</option>
-                                        <option value="9 Months">9 Months</option>
-                                        <option value="12 Months">12 Months</option>
-                                        <option value="18 Months">18 Months</option>
-                                        <option value="24 Months">24 Months</option>
-                                        <option value="30 Months">30 Months</option>
-                                        <option value="36 Months">36 Months</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4">
-                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-plus"></i>
-                                        </span>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
+                <form id="form-loan" method="POST">
                     <div class="form-group row">
-                        <label for="l_description" class="col-sm-3 col-lg-2 col-form-label">Description</label>
-                        <div class="col-sm-9 col-lg-10">
-                            <textarea class="form-control" id="l_description" name="description"></textarea>
+                        <label for="l_date" class="col-sm-3 col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="date" class="form-control" id="l_date" name="date" placeholder="" required>
                         </div>
                     </div>
-                </div>
 
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Actions</th>
+                                <th>Employee Name</th>
+                                <th>Price</th>
+                                <th>Paid In</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-employee">Select</button>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <input type="text" class="form-control" name="employee_name[]" placeholder="Employee Name" disabled>
+                                            </div>
+                                            <input type="hidden" name="employee_id[]" value="">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control text-right" name="price[]" placeholder="0.00" required>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="paid_in[]" required>
+                                            <option value="">-Select Paid In-</option>
+                                            <option value="1 Month">1 Month</option>
+                                            <option value="3 Months">3 Months</option>
+                                            <option value="6 Months">6 Months</option>
+                                            <option value="9 Months">9 Months</option>
+                                            <option value="12 Months">12 Months</option>
+                                            <option value="18 Months">18 Months</option>
+                                            <option value="24 Months">24 Months</option>
+                                            <option value="30 Months">30 Months</option>
+                                            <option value="36 Months">36 Months</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-plus"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="form-group row">
+                            <label for="l_description" class="col-sm-3 col-lg-2 col-form-label">Description</label>
+                            <div class="col-sm-9 col-lg-10">
+                                <textarea class="form-control" id="l_description" name="description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="modal-loan">Save Loan</button>
+                <button type="submit" class="btn btn-primary" form="form-loan">Save Loan</button>
             </div>
         </div>
     </div>

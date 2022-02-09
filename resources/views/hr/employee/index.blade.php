@@ -162,10 +162,6 @@
                     </div>
 
                     <div class="form-group row">
-                        
-                    </div>
-
-                    <div class="form-group row">
                         <label for="e_emergency_contact_person" class="col-sm-3 col-lg-2  col-form-label">Emergency Contact Person</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="e_emergency_contact_person" name="emergency_contact_person" placeholder="" required>
@@ -181,7 +177,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="modal-employee">Save Customer</button>
+                <button type="submit" class="btn btn-primary" form="form-employee">Save Customer</button>
             </div>
         </div>
     </div>
