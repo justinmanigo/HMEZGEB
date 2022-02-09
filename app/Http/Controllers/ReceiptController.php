@@ -13,7 +13,7 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        return view('receipt.index');
+        return view('customer.receipt.index');
     }
 
 }
