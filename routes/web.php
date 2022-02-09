@@ -6,6 +6,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;   
 use Illuminate\Support\Facades\Auth;
+
+// Human Resource Module
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\OvertimeController;
+use App\Http\Controllers\AdditionController;
+use App\Http\Controllers\DeductionController;
+use App\Http\Controllers\LoanController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -71,9 +80,44 @@ Route::get('/deposit', [App\Http\Controllers\DepositController::class, 'index'])
 /**
  * Human Resource Menu
  */
-Route::get('/payroll', [App\Http\Controllers\PayrollController::class, 'index'])->name('payroll.index');
-Route::get('/employees', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employee.index');
-Route::get('/overtime', [App\Http\Controllers\OvertimeController::class, 'index'])->name('overtime.index');
-Route::get('/addition', [App\Http\Controllers\AdditionController::class, 'index'])->name('addition.index');
-Route::get('/deduction', [App\Http\Controllers\DeductionController::class, 'index'])->name('deduction.index');
-Route::get('/loan', [App\Http\Controllers\LoanController::class, 'index'])->name('loan.index');
+Route::group([
+    'as' => 'payrolls.'
+], function(){
+    Route::get('/payroll', [PayrollController::class, 'index']);
+
+});
+
+Route::group([
+    'as' => 'employees.'
+], function(){
+    Route::get('/employee', [EmployeeController::class, 'index']);
+
+});
+
+Route::group([
+    'as' => 'overtime.'
+], function(){
+    Route::get('/overtime', [OvertimeController::class, 'index']);
+    
+});
+
+Route::group([
+    'as' => 'additions.'
+], function(){
+    Route::get('/addition', [AdditionController::class, 'index']);
+
+});
+
+Route::group([
+    'as' => 'deductions.'
+], function(){
+    Route::get('/deduction', [DeductionController::class, 'index']);
+
+});
+
+Route::group([
+    'as' => 'loans.'
+], function(){
+    Route::get('/loan', [LoanController::class, 'index']);
+
+});
