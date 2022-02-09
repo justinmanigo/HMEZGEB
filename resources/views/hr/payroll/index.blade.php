@@ -12,10 +12,40 @@
         width:120px;
     }
 </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+<script>
+    // Commented AJAX can be used to fetch select2 entries from server.
+    // Guide: https://www.nicesnippets.com/blog/laravel-select2-ajax-autocomplete-example
+    $('#employee').select2({
+        placeholder: 'Select Employee',
+        // ajax: {
+        //     url: '/select2-autocomplete-ajax',
+        //     dataType: 'json',
+        //     delay: 250,
+        //     processResults: function (data) {
+        //     return {
+        //         results:  $.map(data, function (item) {
+        //             return {
+        //                 text: item.name,
+        //                 id: item.id
+        //             }
+        //         })
+        //     };
+        //     },
+        //     cache: true
+        // }
+    });
+
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
+</script>
 @endpush
 
 @section('content')
@@ -28,12 +58,11 @@
             <div class="form-group row">
                 <label for="employee" class="col-12 col-md-3">Employee</label>
                 <div class="col-12 col-lg-6">
-                    <input type="text" class="form-control" id="employee" name="employee" list="list_employees">
-                    <datalist id="list_employees">
+                    <select class="form-control select2" id="employee" name="employee">
                         <option>Graeme Xyber Pastoril</option>
                         <option>Justin Manigo</option>
                         <option>Lester Fong</option>
-                    </datalist>
+                    </select>
                 </div>
             </div>
             <div class="form-group row">
