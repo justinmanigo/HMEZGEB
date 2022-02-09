@@ -100,12 +100,12 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="{{ route('payroll.index') }}">Payroll</a>
-                        <a class="collapse-item" href="{{ route('employee.index') }}">Employees</a>
-                        <a class="collapse-item" href="{{ route('overtime.index') }}">Overtime</a>
-                        <a class="collapse-item" href="{{ route('addition.index') }}">Addition</a>
-                        <a class="collapse-item" href="{{ route('deduction.index') }}">Deduction</a>
-                        <a class="collapse-item" href="{{ route('loan.index') }}">Loan</a>
+                        <a class="collapse-item" href="/payroll">Payroll</a>
+                        <a class="collapse-item" href="/employee">Employees</a>
+                        <a class="collapse-item" href="/overtime">Overtime</a>
+                        <a class="collapse-item" href="/addition">Addition</a>
+                        <a class="collapse-item" href="/deduction">Deduction</a>
+                        <a class="collapse-item" href="/loan">Loan</a>
                     </div>
                 </div>
             </li>
