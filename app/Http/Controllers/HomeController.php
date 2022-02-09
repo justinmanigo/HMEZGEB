@@ -40,5 +40,9 @@ class HomeController extends Controller
     {
         return view('individualVendor');
     }
+    public function individualBill()
+    {
+        return view('individualBill');
+    }
 
 }

@@ -157,8 +157,8 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr>
-                            <td>A mr. Clean</td>
+                        <tr onclick="window.location='/individualBill'">
+                            <td>Anna Clean</td>
                             <td>December 20, 2021</td>
                             <td>February 14, 2022</td>
                             <td>000293</td>
@@ -194,94 +194,6 @@
                             <td>January 11, 2021</td>
                             <td>February 15, 2022</td>
                             <td>000255</td>
-                            <td>Credit Invoice</td>
-                            <td>Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Jovi Lee</td>
-                            <td>August 10, 2021</td>
-                            <td>February 10, 2022</td>
-                            <td>000631</td>
-                            <td>Credit Invoice</td>
-                            <td>Unpaid</td>
-                        </tr>
-                        <tr>
-                            <td>Rookie Monster</td>
-                            <td>October 10, 2021</td>
-                            <td>April 19, 2022</td>
-                            <td>000012</td>
-                            <td>Credit Invoice</td>
-                            <td>Partially Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Sovi Lee</td>
-                            <td>August 10, 2021</td>
-                            <td>February 10, 2022</td>
-                            <td>000631</td>
-                            <td>Credit Invoice</td>
-                            <td>Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Xookie Monster</td>
-                            <td>October 10, 2021</td>
-                            <td>April 19, 2022</td>
-                            <td>000012</td>
-                            <td>Credit Invoice</td>
-                            <td>Partially Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Povi Lee</td>
-                            <td>August 10, 2021</td>
-                            <td>February 10, 2022</td>
-                            <td>000631</td>
-                            <td>Credit Invoice</td>
-                            <td>Unpaid</td>
-                        </tr>
-                        <tr>
-                            <td>Kookie Monster</td>
-                            <td>October 10, 2021</td>
-                            <td>April 19, 2022</td>
-                            <td>000012</td>
-                            <td>Credit Invoice</td>
-                            <td>Partially Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Covi Lee</td>
-                            <td>August 10, 2021</td>
-                            <td>February 10, 2022</td>
-                            <td>000631</td>
-                            <td>Credit Invoice</td>
-                            <td>Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Tookie Monster</td>
-                            <td>October 10, 2021</td>
-                            <td>April 19, 2022</td>
-                            <td>000012</td>
-                            <td>Credit Invoice</td>
-                            <td>Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Movi Lee</td>
-                            <td>August 10, 2021</td>
-                            <td>February 10, 2022</td>
-                            <td>000631</td>
-                            <td>Credit Invoice</td>
-                            <td>Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Lookie Monster</td>
-                            <td>October 10, 2021</td>
-                            <td>April 19, 2022</td>
-                            <td>000012</td>
-                            <td>Credit Invoice</td>
-                            <td>Partially Paid</td>
-                        </tr>
-                        <tr>
-                            <td>Dookie Monster</td>
-                            <td>October 10, 2021</td>
-                            <td>April 19, 2022</td>
-                            <td>000012</td>
                             <td>Credit Invoice</td>
                             <td>Paid</td>
                         </tr>

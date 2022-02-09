@@ -154,16 +154,16 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        <tr>
-                            <td><a href="/individualVendor">0001</a></td>
+                        <tr onclick="window.location='/individualVendor'">
+                            <td>0001</td>
                             <td>PocketDevs</td>
                             <td>123523765</td>
                             <td>Cebu City, Philippines</td>
                             <td>Justin Manigo</td>
                             <td>09208765910</td>
                         </tr>
-                        <tr>
-                            <td><a href="/individualVendor">0002</a></td>
+                        <tr onclick="window.location='/individualVendor'">
+                            <td>0002</td>
                             <td>Pocketteams</td>
                             <td>053678123</td>
                             <td>Brgy. Langkiwa, Binan City, Laguna</td>

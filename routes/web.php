@@ -31,6 +31,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/bill',[App\Http\Controllers\HomeController::class, 'bill'])->name('bill');
 Route::get('/vendorPage',[App\Http\Controllers\HomeController::class, 'vendor'])->name('vendors');
 Route::get('/individualVendor',[App\Http\Controllers\HomeController::class, 'individualVendor'])->name('individualVendor');
+Route::get('/individualBill',[App\Http\Controllers\HomeController::class, 'individualBill'])->name('individualBill');
 
 Route::post('/userlogin', function (Request $request){
    
