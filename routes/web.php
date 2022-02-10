@@ -21,7 +21,7 @@ use App\Http\Controllers\JournalVouchersController;
 // Human Resource module
 
 // Inventory module
-
+use App\Http\Controllers\InventoryController; 
 // Settings module
 
 
@@ -117,15 +117,14 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'bills.'
     ], function(){ 
         Route::get('/bill',[BillsController::class,'index']);
-
+        Route::get('/individualBill',[BillsController::class,'show']);
     });
 
     Route::group([
         'as'=>'vendors.'
     ], function(){ 
-
         Route::get('/vendorPage',[VendorsController::class,'index']);
-        Route::get('/individualVendor',[VendorsController::class,'individualVendor']);
+        Route::get('/individualVendor',[VendorsController::class,'show']);
     });
 
     Route::group([
@@ -188,4 +187,16 @@ Route::group([
     Route::get('/journals', [JournalVouchersController::class, 'index']);
 });
 
+ 
+ 
+ /**
+ *  Inventory
+ */ 
+ 
+
+Route::group([
+    'as'=>'inventory.'
+], function(){ 
+    Route::get('/inventory', [InventoryController::class, 'index']);
+});
  

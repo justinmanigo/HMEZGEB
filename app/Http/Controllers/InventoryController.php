@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bills;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 
-class BillsController extends Controller
+class InventoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class BillsController extends Controller
      */
     public function index()
     {
-        return view('vendors.bills.bill');
+        return view('inventory.inventory');
     }
 
     /**
@@ -41,21 +41,21 @@ class BillsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show(Bills $bills)
+    public function show(Inventory $inventory)
     {
-        return view('vendors.bills.individualBill');
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bills $bills)
+    public function edit(Inventory $inventory)
     {
         //
     }
@@ -64,10 +64,10 @@ class BillsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bills $bills)
+    public function update(Request $request, Inventory $inventory)
     {
         //
     }
@@ -75,10 +75,10 @@ class BillsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bills $bills)
+    public function destroy(Inventory $inventory)
     {
         //
     }

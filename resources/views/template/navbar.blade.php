@@ -112,7 +112,7 @@
 
             <!-- Nav Item - Inventory Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="/inventory">
                     <i class="fas fa-fw fa-clipboard-list"></i>
                     <span>Inventory</span></a>
             </li>
