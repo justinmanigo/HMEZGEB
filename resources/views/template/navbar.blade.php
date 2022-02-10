@@ -100,12 +100,12 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="#">Payroll</a>
-                        <a class="collapse-item" href="#">Employees</a>
-                        <a class="collapse-item" href="#">Overtime</a>
-                        <a class="collapse-item" href="#">Addition</a>
-                        <a class="collapse-item" href="#">Deduction</a>
-                        <a class="collapse-item" href="#">Loan</a>
+                        <a class="collapse-item" href="/payroll">Payroll</a>
+                        <a class="collapse-item" href="/employee">Employees</a>
+                        <a class="collapse-item" href="/overtime">Overtime</a>
+                        <a class="collapse-item" href="/addition">Addition</a>
+                        <a class="collapse-item" href="/deduction">Deduction</a>
+                        <a class="collapse-item" href="/loan">Loan</a>
                     </div>
                 </div>
             </li>

@@ -28,6 +28,15 @@ use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;   
 use Illuminate\Support\Facades\Auth;
+
+// Human Resource Module
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\OvertimeController;
+use App\Http\Controllers\AdditionController;
+use App\Http\Controllers\DeductionController;
+use App\Http\Controllers\LoanController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -180,12 +189,12 @@ Route::post('/userlogin', function (Request $request){
  */ 
  
 
-Route::group([
-    'as'=>'journals.'
-], function(){ 
+  Route::group([
+      'as'=>'journals.'
+  ], function(){ 
 
-    Route::get('/journals', [JournalVouchersController::class, 'index']);
-});
+      Route::get('/journals', [JournalVouchersController::class, 'index']);
+  });
 
  
  
@@ -200,3 +209,48 @@ Route::group([
     Route::get('/inventory', [InventoryController::class, 'index']);
 });
  
+
+/**
+ * Human Resource Menu
+ */
+    Route::group([
+        'as' => 'payrolls.'
+    ], function(){
+        Route::get('/payroll', [PayrollController::class, 'index']);
+
+    });
+
+    Route::group([
+        'as' => 'employees.'
+    ], function(){
+        Route::get('/employee', [EmployeeController::class, 'index']);
+
+    });
+
+    Route::group([
+        'as' => 'overtime.'
+    ], function(){
+        Route::get('/overtime', [OvertimeController::class, 'index']);
+
+    });
+
+    Route::group([
+        'as' => 'additions.'
+    ], function(){
+        Route::get('/addition', [AdditionController::class, 'index']);
+
+    });
+
+    Route::group([
+        'as' => 'deductions.'
+    ], function(){
+        Route::get('/deduction', [DeductionController::class, 'index']);
+
+    });
+
+    Route::group([
+        'as' => 'loans.'
+    ], function(){
+        Route::get('/loan', [LoanController::class, 'index']);
+
+    });
