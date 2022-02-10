@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bills;
+use App\Models\IndividualVendor;
 use Illuminate\Http\Request;
 
-class BillsController extends Controller
+class IndividualVendorController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('vendors.bills.bill');
-    }
+    // public function index()
+    // {
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -41,21 +40,21 @@ class BillsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\IndividualVendor  $individualVendor
      * @return \Illuminate\Http\Response
      */
-    public function show(Bills $bills)
+    public function show(IndividualVendor $individualVendor)
     {
-        return view('vendors.bills.individualBill');
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\IndividualVendor  $individualVendor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bills $bills)
+    public function edit(IndividualVendor $individualVendor)
     {
         //
     }
@@ -64,10 +63,10 @@ class BillsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\IndividualVendor  $individualVendor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bills $bills)
+    public function update(Request $request, IndividualVendor $individualVendor)
     {
         //
     }
@@ -75,10 +74,10 @@ class BillsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Bills  $bills
+     * @param  \App\Models\IndividualVendor  $individualVendor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bills $bills)
+    public function destroy(IndividualVendor $individualVendor)
     {
         //
     }

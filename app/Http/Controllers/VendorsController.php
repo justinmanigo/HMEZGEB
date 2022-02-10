@@ -17,11 +17,6 @@ class VendorsController extends Controller
         return view('vendors.vendors.vendor');
     }
 
-
-    public function individualVendor()
-    {
-        return view('individualVendor');
-    }
     /**
      * Show the form for creating a new resource.
      *
@@ -51,7 +46,7 @@ class VendorsController extends Controller
      */
     public function show(Vendors $vendors)
     {
-        //
+        return view('vendors.vendors.individualVendor');
     }
 
     /**
