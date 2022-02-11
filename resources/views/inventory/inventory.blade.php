@@ -66,8 +66,8 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
-                        <th class="w-15">Item Code</th>
                         <th class="w-15"></th>
+                        <th class="w-15">Item Code</th>
                         <th>Item Name</th>
                         <th>QTY</th>
                         <th>Purchase Price</th>
@@ -75,10 +75,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>04296</td>
                             <td class=" d-flex justify-content-center">
                                <img src="https://i.guim.co.uk/img/media/b48037b5f51bbaa96617d75715faadda1fd8af72/0_65_2018_1210/master/2018.jpg?width=465&quality=45&auto=format&fit=max&dpr=2&s=8d37b9fb6b31437b8f4c52eceb756fef" class="w-100">
                             </td>
+                            <td>04296</td>
                             <td class="table-item-content">Rubber Shoe</td>
                             <td class="table-item-content">12</td>
                             <td class="table-item-content">Birr 5,000</td>
