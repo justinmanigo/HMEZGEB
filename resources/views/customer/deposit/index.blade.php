@@ -34,7 +34,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered">
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
                         <th id="thead-actions">Actions</th>
                         <th>Date</th>
@@ -85,7 +85,7 @@
                     <hr>
                     <h2>Undeposited Sales</h2>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
                                 <th id="thead-actions">Actions</th>
                                 <th>Invoice Number</th>
@@ -128,4 +128,11 @@
         </div>
     </div>
 </div>
+
+<script>
+        $(document).ready(function () {
+            $('#dataTables').DataTable();
+            $('.dataTables_filter').addClass('pull-right');
+        });
+</script>
 @endsection
