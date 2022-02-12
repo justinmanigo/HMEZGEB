@@ -56,7 +56,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
                             <th id="thead-actions">Actions</th>
                             <th>Customer Name</th>
@@ -290,4 +290,17 @@
         </div>
     </div>
 </div>
+
+ <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+
+ <script>
+        $(document).ready(function () {
+            $('#dataTables').DataTable();
+            $('.dataTables_filter').addClass('pull-right');
+        });
+
+        //$('#details').trumbowyg();
+        //$('#features').trumbowyg();
+
+    </script>
 @endsection

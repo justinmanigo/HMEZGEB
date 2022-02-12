@@ -34,7 +34,7 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
                     <th id="thead-actions">Actions</th>
                     <th>Date</th>
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
                                 <th>Actions</th>
                                 <th>Employee Name</th>
@@ -151,4 +151,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+    $('#dataTables').DataTable();
+    $('.dataTables_filter').addClass('pull-right');
+    });
+</script>
 @endsection

@@ -85,11 +85,11 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
                                 <th class="thead-actions">Actions</th>
                                 <th>Account Number</th>
-                                <th>Customer Name</th>
+                                <th>Bank Name</th>
                                 <th>Current Balance </th>
                                 <th>Status</th>
                             </thead>
@@ -356,5 +356,12 @@
         </div>
     </div>
 </div>
+
+<script>
+        $(document).ready(function () {
+            $('#dataTables').DataTable();
+            $('.dataTables_filter').addClass('pull-right');
+        });
+</script>
 
 @endsection

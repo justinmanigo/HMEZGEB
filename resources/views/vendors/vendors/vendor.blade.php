@@ -132,7 +132,7 @@
 </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table" style="width: 100%" id="dataTables" cellspacing="100">
+                <table class="table table-bordered" style="width: 100%" id="dataTables" cellspacing="100">
                     <thead>
                         <tr>
                             <th>VendorID</th>
@@ -143,16 +143,7 @@
                             <th>Phone No.</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>VendorID</th>
-                            <th>Vendor Name</th>
-                            <th>TIN No.</th>
-                            <th>Address</th>
-                            <th>Contact Person</th>
-                            <th>Phone No.</th>
-                        </tr>
-                    </tfoot>
+                   
                     <tbody>
                         <tr onclick="window.location='/individualVendor'">
                             <td>0001</td>
@@ -176,4 +167,17 @@
         </div>
     </div>
 </div>
+
+ <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+
+ <script>
+        $(document).ready(function () {
+            $('#dataTables').DataTable();
+            $('.dataTables_filter').addClass('pull-right');
+        });
+
+        //$('#details').trumbowyg();
+        //$('#features').trumbowyg();
+
+    </script>
 @endsection

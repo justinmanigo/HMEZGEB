@@ -13,6 +13,9 @@
     <!-- Page level plugins -->
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     {{-- The following script allows nested modals. --}}
     <script>
@@ -25,6 +28,9 @@
 
        <!-- Dump all dynamic scripts into template -->
         @stack('scripts')
+ 
+    
+
 
 </body>
 
