@@ -56,13 +56,15 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
                             <th id="thead-actions">Actions</th>
-                            <th>Customer Name</th>
-                            <th>Address</th>
-                            <th>Telephone</th>
-                            <th>Account Receivable</th>
+                            <th>Date</th>
+                            <th>Bank Name</th>
+                            <th>Description</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                            <th>Account</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -77,11 +79,13 @@
                                             <i class="fas fa-trash"></i>
                                         </span>
                                     </button>
-                                </td>
+                                </td>  
+                                <td class="table-item-content">01/31/2022</td>
                                 <td class="table-item-content">PocketDevs</td>
-                                <td class="table-item-content">Cebu City, Philippines</td>
-                                <td class="table-item-content">+63 (012) 3456</td>
-                                <td class="table-item-content">Birr 1,000</td>
+                                <td class="table-item-content">Sampel Desc</td>
+                                <td class="table-item-content">1,000</td>
+                                <td class="table-item-content">0</td>
+                                <td class="table-item-content">1,000</td>
                             </tr>
                         </tbody>
                     </table>
@@ -289,5 +293,11 @@
             </div>
         </div>
     </div>
-</div>
+</div>            
+<script>
+    $(document).ready(function () {
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
+    });
+</script>
 @endsection

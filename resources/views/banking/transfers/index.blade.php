@@ -37,9 +37,9 @@
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
             <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-customer">
                 <span class="icon text-white-50">
-                    <i class="fas fa-pen"></i>
+                    <i class="fas fa-exchange-alt"></i>
                 </span>
-                <span class="text">New</span>
+                <span class="text">Transfer</span>
             </button>
           
         </div>
@@ -95,7 +95,7 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">                        
                             <thead>
                                 <th class="thead-actions">Actions</th>
                                 <th>Date</th>
@@ -278,5 +278,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+    $('#dataTables').DataTable();
+    $('.dataTables_filter').addClass('pull-right');
+    });
+</script>
 
 @endsection
