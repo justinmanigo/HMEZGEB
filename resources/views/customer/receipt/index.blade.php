@@ -24,7 +24,87 @@
         input[type="checkbox"], label {
             cursor: pointer;
         }
+
+        /*
+            TEMPORARY
+        */
+        /* Suggestions items */
+        .tagify__dropdown.customers-list .tagify__dropdown__item{
+            padding: .5em .7em;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0 1em;
+            grid-template-areas: "avatar name"
+                                "avatar email";
+        }
+
+        .tagify__dropdown.customers-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap{
+            transform: scale(1.2);
+        }
+
+        .tagify__dropdown.customers-list .tagify__dropdown__item__avatar-wrap{
+            grid-area: avatar;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #EEE;
+            transition: .1s ease-out;
+        }
+
+        .tagify__dropdown.customers-list img{
+            width: 100%;
+            vertical-align: top;
+        }
+
+        .tagify__dropdown.customers-list strong{
+            grid-area: name;
+            width: 100%;
+            align-self: center;
+        }
+
+        .tagify__dropdown.customers-list span{
+            grid-area: email;
+            width: 100%;
+            font-size: .9em;
+            opacity: .6;
+        }
+
+        .tagify__dropdown.customers-list .addAll{
+            border-bottom: 1px solid #DDD;
+            gap: 0;
+        }
+
+
+        /* Tags items */
+         .tagify__tag{
+            white-space: nowrap;
+        }
+
+         .tagify__tag:hover .tagify__tag__avatar-wrap{
+            transform: scale(1.6) translateX(-10%);
+        }
+
+         .tagify__tag .tagify__tag__avatar-wrap{
+            width: 16px;
+            height: 16px;
+            white-space: normal;
+            border-radius: 50%;
+            background: silver;
+            margin-right: 5px;
+            transition: .12s ease-out;
+        }
+
+         .tagify__tag img{
+            width: 100%;
+            vertical-align: top;
+            pointer-events: none;
+        }
     </style>
+
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -445,6 +525,172 @@
         $('#dataTables2').DataTable();
         $('.dataTables_filter').addClass('pull-right');
     });
+    // https://www.mockaroo.com/
+
+
+    var inputElm = document.querySelector('input[name=customer]');
+
+    function tagTemplate(tagData){
+        return `
+            <tag title="${tagData.email}"
+                    contenteditable='false'
+                    spellcheck='false'
+                    tabIndex="-1"
+                    class="tagify__tag ${tagData.class ? tagData.class : ""}"
+                    ${this.getAttributes(tagData)}>
+                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+                <div>
+                    <div class='tagify__tag__avatar-wrap'>
+                        <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+                    </div>
+                    <span class='tagify__tag-text'>${tagData.name}</span>
+                </div>
+            </tag>
+        `
+    }
+
+    function suggestionItemTemplate(tagData){
+        return `
+            <div ${this.getAttributes(tagData)}
+                class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+                tabindex="0"
+                role="option">
+                ${ tagData.avatar ? `
+                <div class='tagify__dropdown__item__avatar-wrap'>
+                    <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+                </div>` : ''
+                }
+                <strong>${tagData.name}</strong>
+                <span>${tagData.email}</span>
+            </div>
+        `
+    }
+
+    // initialize Tagify on the above input node reference
+    var tagify = new Tagify(inputElm, {
+        tagTextProp: 'name', // very important since a custom template is used with this property as text
+        enforceWhitelist: true,
+        mode : "select",
+        skipInvalid: false, // do not remporarily add invalid tags
+        dropdown: {
+            closeOnSelect: true,
+            enabled: 0,
+            classname: 'customers-list',
+            searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
+        },
+        templates: {
+            tag: tagTemplate,
+            dropdownItem: suggestionItemTemplate
+        },
+        whitelist: [
+            {
+                "value": 1,
+                "name": "Justinian Hattersley",
+                "avatar": "https://i.pravatar.cc/80?img=1",
+                "email": "jhattersley0@ucsd.edu"
+            },
+            {
+                "value": 2,
+                "name": "Antons Esson",
+                "avatar": "https://i.pravatar.cc/80?img=2",
+                "email": "aesson1@ning.com"
+            },
+            {
+                "value": 3,
+                "name": "Ardeen Batisse",
+                "avatar": "https://i.pravatar.cc/80?img=3",
+                "email": "abatisse2@nih.gov"
+            },
+            {
+                "value": 4,
+                "name": "Graeme Yellowley",
+                "avatar": "https://i.pravatar.cc/80?img=4",
+                "email": "gyellowley3@behance.net"
+            },
+            {
+                "value": 5,
+                "name": "Dido Wilford",
+                "avatar": "https://i.pravatar.cc/80?img=5",
+                "email": "dwilford4@jugem.jp"
+            },
+            {
+                "value": 6,
+                "name": "Celesta Orwin",
+                "avatar": "https://i.pravatar.cc/80?img=6",
+                "email": "corwin5@meetup.com"
+            },
+            {
+                "value": 7,
+                "name": "Sally Main",
+                "avatar": "https://i.pravatar.cc/80?img=7",
+                "email": "smain6@techcrunch.com"
+            },
+            {
+                "value": 8,
+                "name": "Grethel Haysman",
+                "avatar": "https://i.pravatar.cc/80?img=8",
+                "email": "ghaysman7@mashable.com"
+            },
+            {
+                "value": 9,
+                "name": "Marvin Mandrake",
+                "avatar": "https://i.pravatar.cc/80?img=9",
+                "email": "mmandrake8@sourceforge.net"
+            },
+            {
+                "value": 10,
+                "name": "Corrie Tidey",
+                "avatar": "https://i.pravatar.cc/80?img=10",
+                "email": "ctidey9@youtube.com"
+            },
+            {
+                "value": 11,
+                "name": "foo",
+                "avatar": "https://i.pravatar.cc/80?img=11",
+                "email": "foo@bar.com"
+            },
+            {
+                "value": 12,
+                "name": "foo",
+                "avatar": "https://i.pravatar.cc/80?img=12",
+                "email": "foo.aaa@foo.com"
+            },
+        ]
+    })
+
+    tagify.on('dropdown:show dropdown:updated', onDropdownShow)
+    tagify.on('dropdown:select', onSelectSuggestion)
+
+    var addAllSuggestionsElm;
+
+    function onDropdownShow(e){
+        var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
+
+        if( tagify.suggestedListItems.length > 1 ){
+            // addAllSuggestionsElm = getAddAllSuggestionsElm();
+
+            // insert "addAllSuggestionsElm" as the first element in the suggestions list
+            dropdownContentElm.insertBefore(addAllSuggestionsElm, dropdownContentElm.firstChild)
+        }
+    }
+
+    function onSelectSuggestion(e){
+        if( e.detail.elm == addAllSuggestionsElm )
+            tagify.dropdown.selectAll();
+    }
+
+    // create a "add all" custom suggestion element every time the dropdown changes
+    function getAddAllSuggestionsElm(){
+        // suggestions items should be based on "dropdownItem" template
+        return tagify.parseTemplate('dropdownItem', [{
+                class: "addAll",
+                name: "Add all",
+                email: tagify.whitelist.reduce(function(remainingSuggestions, item){
+                    return tagify.isTagDuplicate(item.value) ? remainingSuggestions : remainingSuggestions + 1
+                }, 0) + " Members"
+            }]
+        )
+    }
 </script>
 
 @endsection

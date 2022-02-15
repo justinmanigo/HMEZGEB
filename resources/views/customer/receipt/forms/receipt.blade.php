@@ -4,7 +4,7 @@
             <h5>Customer Details:</h5>
             <div class="form-group row">
                 <label for="r_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                <div class="input-group col-8">
+                {{-- <div class="input-group col-8">
                     <div class="input-group-prepend">
                         <button class="btn btn-primary" type="button" id="r_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
                     </div>
@@ -12,9 +12,9 @@
                         <input type="text" id="r_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
                     </div>
                     
-                    <input type="hidden" name="customer_id" value="">
-                </div>
-
+                </div> --}}
+                <input class="col-md-4 col-lg-4" id="r_customer" name='customer'>
+                <input type="hidden" name="customer_id" value="">
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
