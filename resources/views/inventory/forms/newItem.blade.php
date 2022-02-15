@@ -51,19 +51,19 @@
     </div>
     <div class="row mb-3">
         <label for="#" class="col-sm-2 col-form-label">Inventory Type:</label>
-        <div class="form-check col-sm-2 mt-2">
+        <div class="form-check mx-2 mt-2">
             <input class="form-check-input" type="radio" name="paymentType" id="ar_paymentType_credit" value="inventory_item">
             <label class="form-check-label" for="ar_paymentType_credit">
             Inventory item
             </label>
         </div>
-        <div class="form-check col-sm-2 mt-2">
+        <div class="form-check col-md-2 ml-3 mr-4 mt-2">
             <input class="form-check-input" type="radio" name="paymentType" id="ar_paymentType_cash" value="non_inventory_item">
             <label class="form-check-label" for="ar_paymentType_cash">
             Non-inventory item
             </label>
         </div>
-        <label for="email" class="col-sm-2 mt-2">Item Picture:</label>
+        <label for="email" class="col ml-2 mt-2">Item Picture:</label>
         <div class="input-group mb-3 col-lg-4">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="inputGroupFile03">

@@ -7,12 +7,12 @@ use App\Models\User;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
-// Vendor module
+// Banking module
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\TransfersController;
 use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\TransactionsController;  
-// Banking module
+// Vendor module
 use App\Http\Controllers\BillsController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\PaymentsController; 
@@ -139,8 +139,7 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'payments.'
     ], function(){ 
-        
-        
+        Route::get('/payment',[PaymentsController::class,'index']);
     });
  
  
