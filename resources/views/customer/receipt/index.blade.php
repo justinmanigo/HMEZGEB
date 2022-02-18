@@ -119,7 +119,7 @@
                 {{-- Proforma Contents --}}
                 <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                             <thead>
                                 <th class="thead-actions">Actions</th>
                                 <th>Invoice Number</th>
@@ -398,6 +398,7 @@
 <script>
     $(document).ready(function () {
         $('#dataTables').DataTable();
+        $('#dataTables2').DataTable();
         $('.dataTables_filter').addClass('pull-right');
     });
 </script>
