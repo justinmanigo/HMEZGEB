@@ -44,9 +44,9 @@
     <!--------BUTTONS---->
     <div class="d-flex justify-content-around">
     <!--------add vendor modal---->
-    <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target=".bd-example-modal-lg">Add vendor</button>
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target=".bd-example-modal-xl">Add vendor</button>
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-content">
                     <div class="modal-header d-flex">
@@ -72,10 +72,10 @@
                                     <label for="email">Country:</label>
                                     <input type="text" name="country" class="form-control">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input type="email" name="email" class="form-control">
+                                <div class="col">
+                                    <label for="email">Email:</label>
+                                    <input type="email" name="email" class="form-control">
+                                </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col">
@@ -86,6 +86,10 @@
                                     <label for="email">Phone number 2:</label>
                                     <input type="text" name="phone1" class="form-control">
                                 </div>
+                                <div class="col">
+                                    <label for="email">TIN number:</label>
+                                    <input type="text" name="tinNum" class="form-control">
+                                </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col">
@@ -93,25 +97,19 @@
                                     <input type="text" name="fax" class="form-control">
                                 </div>
                                 <div class="col">
-                                    <div class="form-group">
-                                        <label for="email">TIN number:</label>
-                                        <input type="text" name="tinNum" class="form-control">
-                                    </div>
+                                    <label for="email">Mobile number:</label>
+                                    <input type="text" name="mobile_num" class="form-control">
                                 </div>
                             </div>
                             <div class="row form-group">
                                 <div class="col">
-                                    <label for="email">Mobile number:</label>
-                                    <input type="text" name="mobile_num" class="form-control">
-                                </div>
-                                <div class="col">
                                     <label for="email">Contact Person:</label>
                                     <input type="text" name="contact_person" class="form-control">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Website:</label>
-                                <input type="text" name="website" class="form-control">
+                                <div class="col">
+                                    <label for="email">Website:</label>
+                                    <input type="text" name="website" class="form-control">
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">					

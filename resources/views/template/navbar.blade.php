@@ -56,7 +56,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
                         <a class="collapse-item" href="/bill">Bill</a>
-                        <a class="collapse-item" href="#">Payment</a>
+                        <a class="collapse-item" href="/payment">Payment</a>
                         <a class="collapse-item" href="/vendorPage">Vendor</a>
                     </div>
                 </div>
@@ -335,7 +335,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">   {{ Auth::user()->firstName}} {{Auth::user()->lastName }} </span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">  
+                                     {{-- {{ Auth::user()->firstName}} {{Auth::user()->lastName }}  --}}
+                                </span>
                                 {{-- <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg"> --}}
                             </a>
