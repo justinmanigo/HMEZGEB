@@ -33,29 +33,27 @@
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered">
-                <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
-                    <thead>
-                        <th id="thead-actions">Actions</th>
-                        <th>Date</th>
-                        <th>Bank</th>
-                        <th>Amount</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                {{-- <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                </button> --}}
-                            </td>
-                            <td>Feb. 1, 2022</td>
-                            <td>Bank A</td>
-                            <td>Birr 1,000</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+                <thead>
+                    <th id="thead-actions">Actions</th>
+                    <th>Date</th>
+                    <th>Bank</th>
+                    <th>Amount</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{-- <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-trash"></i>
+                                </span>
+                            </button> --}}
+                        </td>
+                        <td>Feb. 1, 2022</td>
+                        <td>Bank A</td>
+                        <td>Birr 1,000</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
