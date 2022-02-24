@@ -101,34 +101,34 @@
                     <div class="table-responsive">
                           <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
-                                <th id="thead-actions">Actions</th>
                                 <th>Invoice Number</th>
                                 <th>Customer Name</th>
                                 <th>Date</th>
                                 <th>Total</th>
+                                <th id="thead-actions">Actions</th>
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td class="table-item-content"><label for="d_invoices_1483681825">1483681825</label></td>
+                                    <td class="table-item-content">PocketDevs</td>
+                                    <td class="table-item-content">01/31/2022</td>
+                                    <td class="table-item-content">Birr 1,000</td>
                                     <td class="table-item-content">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="d_invoices_1483681825" name="invoices[]" value="">
                                         </div>
                                     </td>
-                                    <td class="table-item-content"><label for="d_invoices_1483681825">1483681825</label></td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">01/31/2022</td>
-                                    <td class="table-item-content">Birr 1,000</td>
                                 </tr>
                                 <tr>
+                                    <td class="table-item-content"><label for="d_invoices_1483681826">1483681826</label></td>
+                                    <td class="table-item-content">Fullstack HQ</td>
+                                    <td class="table-item-content">02/01/2022</td>
+                                    <td class="table-item-content">Birr 2,000</td>
                                     <td class="table-item-content">
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" id="d_invoices_1483681826" name="invoices[]" value="">
                                         </div>
                                     </td>
-                                    <td class="table-item-content"><label for="d_invoices_1483681826">1483681826</label></td>
-                                    <td class="table-item-content">Fullstack HQ</td>
-                                    <td class="table-item-content">02/01/2022</td>
-                                    <td class="table-item-content">Birr 2,000</td>
                                 </tr>
                             </tbody>
                         </table>
