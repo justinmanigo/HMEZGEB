@@ -62,9 +62,9 @@
 </div>
 
 {{-- Modals --}}
-{{-- New Receipt --}}
+{{-- New Deposit --}}
 <div class="modal fade" id="modal-deposit" tabindex="-1" role="dialog" aria-labelledby="modal-deposit-label" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal-deposit-label">New Deposit</h5>
@@ -75,11 +75,25 @@
             <div class="modal-body">
                 <form id="form-deposit" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="d_bank_account" class="col-sm-3 col-form-label">Select Bank<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9">
+                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-4">
                             <select class="form-control" id="d_bank_account" name="bank_account">
                                 <option>Bank A</option>
                             </select>
+                        </div>
+
+                        <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Date<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="date" class="form-control" id="d_deposit_date" name="deposit_date">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{-- Temporarily blank first column --}}
+                        <div class="col-lg-6 d-none d-lg-flex"></div>
+
+                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Deposit ID<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
                         </div>
                     </div>
                     <hr>
