@@ -26,7 +26,13 @@ class PermissionsTableSeeder extends Seeder
             ['guard_name' => 'web', 'name' => 'Member'],        // Profile
         ]);
 
-        // Super Admin is defined in 
-        // /app/Providers/AuthServiceProvider::boot()
+        // To hide user's ability to see specific menu, it shall not have
+        // either of the two permissions.
+        Permission::insert([
+            ['guard_name' => 'web', 'module' => 'Receipts',    'name' => 'Read Receipts'],
+            ['guard_name' => 'web', 'module' => 'Receipts',    'name' => 'Read and Write Receipts']
+        ]);
+
+        // To insert some later ...
     }
 }
