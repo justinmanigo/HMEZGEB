@@ -19,9 +19,12 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     { 
-        Role::create(['name' => 'Super Admin']);
-        Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'Staff']);
+        Role::insert([
+            ['guard_name' => 'web', 'name' => 'Super Admin'],   // Super Admin
+            ['guard_name' => 'web', 'name' => 'Admin'],         // Admin
+            ['guard_name' => 'web', 'name' => 'Staff'],         // Manage Users
+            ['guard_name' => 'web', 'name' => 'Member'],        // Profile
+        ]);
 
         // Super Admin is defined in 
         // /app/Providers/AuthServiceProvider::boot()
