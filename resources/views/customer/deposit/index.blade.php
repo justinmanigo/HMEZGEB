@@ -36,8 +36,10 @@
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
                     <th id="thead-actions">Actions</th>
-                    <th>Date</th>
-                    <th>Bank</th>
+                    <th>Deposit Date</th>
+                    <th>Deposit ID</th>
+                    <th>Account</th>
+                    <th>Label</th>
                     <th>Amount</th>
                 </thead>
                 <tbody>
@@ -49,9 +51,11 @@
                                 </span>
                             </button> --}}
                         </td>
-                        <td>Feb. 1, 2022</td>
-                        <td>Bank A</td>
-                        <td>Birr 1,000</td>
+                        <td>03-Mar-2022</td>
+                        <td>DS003</td>
+                        <td>Commercial Bank</td>
+                        <td><span class="badge badge-primary">Self</span></td>
+                        <td>21,000.00</td>
                     </tr>
                 </tbody>
             </table>
