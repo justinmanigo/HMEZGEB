@@ -44,7 +44,7 @@
     <!--------BUTTONS---->
     <div class="d-flex justify-content-around">
     <!--------add vendor modal---->
-    <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target=".bd-example-modal-xl">Add vendor</button>
+    <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target=".bd-example-modal-xl">New Vendor</button>
     <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -54,64 +54,7 @@
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" name="contact" role="form">
-                        <div class="modal-body h6">				
-                            <div class="form-group">
-                                <label for="name">Vendor name:</label>
-                                <input type="text" name="name" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Address:</label>
-                                <input type="text" name="address" class="form-control">
-                            </div>
-                            <div class="row form-group">
-                                <div class="col">
-                                    <label for="email">City:</label>
-                                    <input type="text" name="city" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="email">Country:</label>
-                                    <input type="text" name="country" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="email">Email:</label>
-                                    <input type="email" name="email" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col">
-                                    <label for="email">Phone number 1:</label>
-                                    <input type="text" name="phone1" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="email">Phone number 2:</label>
-                                    <input type="text" name="phone1" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="email">TIN number:</label>
-                                    <input type="text" name="tinNum" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col">
-                                    <label for="email">FAX:</label>
-                                    <input type="text" name="fax" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="email">Mobile number:</label>
-                                    <input type="text" name="mobile_num" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col">
-                                    <label for="email">Contact Person:</label>
-                                    <input type="text" name="contact_person" class="form-control">
-                                </div>
-                                <div class="col">
-                                    <label for="email">Website:</label>
-                                    <input type="text" name="website" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                       @include('vendors.vendors.forms.addVendorModal')
                         <div class="modal-footer">					
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <input type="submit" class="btn btn-success" id="submit">
@@ -133,31 +76,43 @@
                 <table class="table table-bordered" style="width: 100%" id="dataTables" cellspacing="100">
                     <thead>
                         <tr>
-                            <th>VendorID</th>
                             <th>Vendor Name</th>
-                            <th>TIN No.</th>
-                            <th>Address</th>
+                            <th>TIN#</th>
+                            <th>City</th>
                             <th>Contact Person</th>
-                            <th>Phone No.</th>
+                            <th>Mobile#</th>
+                            <th>Lable</th>
+                            <th>Balance</th>
                         </tr>
                     </thead>
                    
                     <tbody>
                         <tr onclick="window.location='/individualVendor'">
-                            <td>0001</td>
                             <td>PocketDevs</td>
-                            <td>123523765</td>
-                            <td>Cebu City, Philippines</td>
+                            <td>289123585</td>
+                            <td>Cebu</td>
                             <td>Justin Manigo</td>
                             <td>09208765910</td>
+                            <td><span class="badge badge-primary">VIP</span></td>
+                            <td>12,000.00</td>
                         </tr>
                         <tr onclick="window.location='/individualVendor'">
-                            <td>0002</td>
                             <td>Pocketteams</td>
-                            <td>053678123</td>
-                            <td>Brgy. Langkiwa, Binan City, Laguna</td>
-                            <td>Lester Fong</td>
-                            <td>09124561120</td>
+                            <td>362162217</td>
+                            <td>Cebu</td>
+                            <td>John Doe</td>
+                            <td>09208642910</td>
+                            <td><span class="badge badge-info">ISP</span></td>
+                            <td>1,000.00</td>
+                        </tr>
+                        <tr onclick="window.location='/individualVendor'">
+                            <td>IKEA</td>
+                            <td>521677826</td>
+                            <td>Manila</td>
+                            <td>Jane Doe</td>
+                            <td>09084378189</td>
+                            <td><span class="badge badge-secondary">New</span></td>
+                            <td>8,000.00</td>
                         </tr>
                     </tbody>
                 </table>
