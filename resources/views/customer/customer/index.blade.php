@@ -60,9 +60,12 @@
                         <thead>
                             <th id="thead-actions">Actions</th>
                             <th>Customer Name</th>
-                            <th>Address</th>
-                            <th>Telephone</th>
-                            <th>Account Receivable</th>
+                            <th>Tin #</th>
+                            <th>City</th>
+                            <th>Contact Person</th>
+                            <th>Mobile #</th>
+                            <th>Label</th>
+                            <th>Balance</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -79,9 +82,33 @@
                                     </button>
                                 </td>
                                 <td class="table-item-content">PocketDevs</td>
+                                <td class="table-item-content">0012347001</td>
                                 <td class="table-item-content">Cebu City, Philippines</td>
+                                <td class="table-item-content">Example Key Person</td>
                                 <td class="table-item-content">+63 (012) 3456</td>
-                                <td class="table-item-content">Birr 1,000</td>
+                                <td class="table-item-content"><span class="badge badge-primary">New</span></td>
+                                <td class="table-item-content">1,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-pen"></i>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                                <td class="table-item-content">PocketDevs</td>
+                                <td class="table-item-content">0012347001</td>
+                                <td class="table-item-content">Cebu City, Philippines</td>
+                                <td class="table-item-content">Example Key Person</td>
+                                <td class="table-item-content">+63 (012) 3456</td>
+                                <td class="table-item-content"><span class="badge badge-success">VIP</span></td>
+                                <td class="table-item-content">1,000.00</td>
                             </tr>
                         </tbody>
                     </table>
