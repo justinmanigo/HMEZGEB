@@ -20,16 +20,21 @@
         <input type="date" name="city" class="form-control col-lg-4">
     </div>
     <div class="row form-group">
-        <label for="email" class="col-form-label col-lg-2">Bill number:</label>
-        <input type="number" name="country" class="form-control col-lg-4">
+        <label for="email" class="col-form-label col-lg-2">Contact Person:</label>
+        <input type="text" name="fax" class="form-control col-lg-4">
         <label for="email" class="col-form-label col-lg-2">Order number:</label>
         <input type="number" name="tinNum" class="form-control col-lg-4">
     </div>
-    <div class="form-group row">
-        <label for="email" class="col-form-label col-lg-2">Contact Person:</label>
-        <input type="text" name="fax" class="form-control col-lg-4">
+    <div class="row form-group">
         <label for="email" class="col-form-label col-lg-2">Telephone:</label>
         <input type="number" name="fax" class="form-control col-lg-4">
+        <label for="email" class="col-form-label col-lg-2">Attachment:</label>
+        <div class="input-group col-md-2 col-lg-4">
+            <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile03">
+            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+            </div>
+        </div>
     </div>
 {{-- Table --}}
 <div class="table-responsive">
@@ -97,13 +102,6 @@
                 </td>
             </tr>
             <tr>
-                <td class="text-right" colspan="4">Toggle here</td>
-                <td class="text-right table-item-content" ><strong>Add Discount: </strong></td>
-                <td>
-                    <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
-                </td>
-            </tr>
-            <tr>
                 <td class="text-right table-item-content" colspan="5"><strong>Tax: </strong></td>
                 <td>
                     <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
@@ -115,37 +113,11 @@
                     <input type="text" class="form-control text-right" name="total" placeholder="0.00" disabled>
                 </td>
             </tr>
-            <tr>
-                <td class="text-right" colspan="4">Toggle here</td>
-                <td class="text-right table-item-content"><strong>Withholding: </strong></td>
-                <td>
-                    <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
-                </td>
-            </tr>
         </tfoot>
     </table>
 </div>
-<div class="row form-group">
-    <label for="cars" class="col-form-label col-2">Cash from:</label>
-
-    <select id="cars" class="form-control col-lg-4">
-    <option value="#">Cash on hand</option>
-    <option value="#">sample1</option>
-    <option value="#">Sample2</option>
-    </select>
-    <label for="cars" class="col-form-label col-2">Bill type:</label>
-</div>
-
 <div class="form-group row">
-    <label for="r_note" class="col-lg-2 col-form-label">Note:</label>
-    <textarea class="form-control col-lg-4" id="r_note" name="note"></textarea>
-    <label for="email" class="col-form-label col-lg-2">Attachment:</label>
-    <div class="input-group col-md-2 col-lg-4">
-        <div class="custom-file">
-        <input type="file" class="custom-file-input" id="inputGroupFile03">
-        <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
-        </div>
-    </div>
+    
 </div>
 </div>
 <div class="modal-footer">					
