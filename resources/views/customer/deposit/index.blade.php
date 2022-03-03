@@ -100,20 +100,22 @@
                     </div>
                     <hr>
                     <h2>Undeposited Sales</h2>
-                    <div class="table-responsive">
-                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                             <thead>
-                                <th>Invoice Number</th>
-                                <th>Customer Name</th>
                                 <th>Date</th>
-                                <th>Total</th>
+                                <th>Customer Name</th>
+                                <th>Payment Method</th>
+                                <th>Cheque/Reference #</th>
+                                <th>Amount</th>
                                 <th id="thead-actions">Actions</th>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="table-item-content"><label for="d_invoices_1483681825">1483681825</label></td>
-                                    <td class="table-item-content">PocketDevs</td>
                                     <td class="table-item-content">01/31/2022</td>
+                                    <td class="table-item-content">PocketDevs</td>
+                                    <td class="table-item-content">Cash</td>
+                                    <td class="table-item-content"><label for="d_invoices_1483681825">1483681825</label></td>
                                     <td class="table-item-content">Birr 1,000</td>
                                     <td class="table-item-content">
                                         <div class="form-check">
@@ -122,9 +124,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="table-item-content"><label for="d_invoices_1483681826">1483681826</label></td>
-                                    <td class="table-item-content">Fullstack HQ</td>
                                     <td class="table-item-content">02/01/2022</td>
+                                    <td class="table-item-content">Fullstack HQ</td>
+                                    <td class="table-item-content">Cheque</td>
+                                    <td class="table-item-content"><label for="d_invoices_1483681826">1483681826</label></td>
                                     <td class="table-item-content">Birr 2,000</td>
                                     <td class="table-item-content">
                                         <div class="form-check">
@@ -134,6 +137,41 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <tfoot>
+                                <th class="text-center">
+                                    Total Cash<br>
+                                    <b>7,000.00</b>
+                                </th>
+                                <th class="text-center">
+                                    Total Cheque<br>
+                                    <b>2,500.00</b>
+                                </th>
+                                <th class="text-center">
+                                    Total Other<br>
+                                    <b>0.00</b>
+                                </th>
+                                <th class="text-center">
+                                    Total Deposit<br>
+                                    <b>9,500.00</b>
+                                </th>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="d_remark" class="col-sm-3 col-form-label">Remark</label>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" id="d_remark" name="remark"></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -148,6 +186,7 @@
 <script>
         $(document).ready(function () {
             $('#dataTables').DataTable();
+            $('#dataTables2').DataTable();
             $('.dataTables_filter').addClass('pull-right');
         });
 </script>
