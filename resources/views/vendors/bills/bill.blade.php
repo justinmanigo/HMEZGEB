@@ -41,91 +41,139 @@
 </div>
     <!-- DataTales Example -->
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+    <div class="card-header pt-3">
         <div class="row d-flex align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary col-md-2 my-2">Bills</h6>
-            <!----buttons----->
-        <div class="d-flex">      
-                <!--------add vendor modal---->
-            <div class="row">
-                <button type="button" class="btn btn-primary btn ml-2 mr-1 responsive-btn" data-toggle="modal" data-target=".bd-example-modal-xl">Enter bill</button>
-                <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-header d-flex">
-                                    <h3>Add bill</h3>
-                                    <a class="close" data-dismiss="modal">×</a>
-                                </div>
-                                <form id="contactForm" name="contact" role="form">
-                                     @include('vendors.bills.forms.addBillModal')
-                                </form>
-                            </div>
-                        </div>
+            <h6 class="m-0 font-weight-bold text-primary col-md-2">Bills</h6>
+                <!----buttons----->    
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group" role="group" >
+                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-pen"></i>
+                        </span>
+                        <span class="text">New</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a role="button" class="dropdown-item" data-toggle="modal" data-target=".bd-example-modal-xl">Bill</a>
+                        <a role="button" class="dropdown-item" data-toggle="modal" data-target=".bd-purchaseOrder-modal-xl">Purchase Order</a>
                     </div>
-                        <!--------end of add vendor modal---->
-                    <div id="contact"><button type="button" class="btn btn-info btn mx-1 responsive-btn" data-toggle="modal" data-target="#import">Import</button></div>
-                    <div id="contact"><button type="button" class="btn btn-info btn mx-1 responsive-btn" data-toggle="modal" data-target="#import">Export</button></div>
-                    <div id="contact"><button type="button" class="btn btn-info btn mr-2 ml-1 responsive-btn" data-toggle="modal" data-target="#import">Download file</button></div>
-                </div>  
-                    <!---- end buttons----->
-            </div>
+                </div>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-file-import"></i>
+                    </span>
+                    <span class="text">Import</span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-download"></i>
+                    </span>
+                    <span class="text">Export</span>
+                </button>
+                <button type="button" class="btn btn-secondary">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-download"></i>
+                    </span>
+                    <span class="text">Download Excel Format</span>
+                </button>
+            </div>  
+                <!---- end buttons----->
         </div>
     </div>
+                {{-- Modal Contents --}}
+            <!--------For add vendor--->
+            <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between align-items-center">
+                            <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                            <p class="h3 pl-4 m-auto">New Bill</p>
+                            <a class="close" data-dismiss="modal">×</a>
+                        </div>
+                        <form id="contactForm" name="contact" role="form">
+                                @include('vendors.bills.forms.addBillModal')
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--------For purchase order--->
+            <div class="modal fade bd-purchaseOrder-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between align-items-center">
+                            <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                            <p class="h3 pl-4 m-auto">Purchase Order</p>
+                            <a class="close" data-dismiss="modal">×</a>
+                        </div>
+                        <form id="contactForm" name="contact" role="form">
+                                @include('vendors.bills.forms.purchaseOrderModal')
+                        </form>
+                    </div>
+                </div>
+            </div>
                     <!---------Table--------->
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Vendor Name</th>
                                 <th>Date</th>
-                                <th>Due Date</th>
-                                <th>Bill No.</th>
-                                <th>Bill Type</th>
+                                <th>Reference#</th>
+                                <th>Type</th>
+                                <th>Vendor Name</th>
                                 <th>Status</th>
+                                <th>Amount</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             <tr onclick="window.location='/individualBill'">
-                                <td>Anna Clean</td>
-                                <td>December 20, 2021</td>
-                                <td>February 14, 2022</td>
-                                <td>000293</td>
-                                <td>Credit Invoice</td>
-                                <td>Paid</td>
+                                <td>10-Aug-2019</td>
+                                <td>Bill#008</td>
+                                <td class="h6"><span class="badge badge-primary">Bill</span></td>
+                                <td>John Doe</td>
+                                <td class="h6"><span class="badge badge-success">Paid</span></td>
+                                <td>2,900.00</td>
                             </tr>
                             <tr>
-                                <td>Bonifacio Marciano</td>
-                                <td>December 11, 2021</td>
-                                <td>March 14, 2022</td>
-                                <td>002593</td>
-                                <td>Credit Invoice</td>
-                                <td>Unpaid</td>
+                                <td>22-June-2022</td>
+                                <td>Bill#022</td>
+                                <td class="h6"><span class="badge badge-primary">Bill</span></td>
+                                <td>Jane Dough</td>
+                                <td class="h6"><span class="badge badge-info">Partially Paid</span></td>
+                                <td>11,000.00</td>
                             </tr>
                             <tr>
-                                <td>Cookie Monster</td>
-                                <td>October 10, 2021</td>
-                                <td>April 19, 2022</td>
-                                <td>000012</td>
-                                <td>Credit Invoice</td>
-                                <td>Partially Paid</td>
+                                <td>24-Jan-2022</td>
+                                <td>Bill#017</td>
+                                <td class="h6"><span class="badge badge-primary">Bill</span></td>
+                                <td>Jang Na Ra</td>
+                                <td class="h6"><span class="badge badge-danger">Unpaid</span></td>
+                                <td>2,000.00</td>
                             </tr>
                             <tr>
-                                <td>Deborah Aira</td>
-                                <td>December 22, 2021</td>
-                                <td>February 10, 2022</td>
-                                <td>000293</td>
-                                <td>Credit Invoice</td>
-                                <td>Partially Paid</td>
+                                <td>17-Dec-2022</td>
+                                <td>Bill#001</td>
+                                <td class="h6"><span class="badge badge-primary">Bill</span></td>
+                                <td>Joy San Hee</td>
+                                <td class="h6"><span class="badge badge-dark">Void</span></td>
+                                <td>2,000.00</td>
                             </tr>
                             <tr>
-                                <td>Naelia Devorah</td>
-                                <td>January 11, 2021</td>
-                                <td>February 15, 2022</td>
-                                <td>000255</td>
-                                <td>Credit Invoice</td>
-                                <td>Paid</td>
+                                <td>22-Nov-2022</td>
+                                <td>Bill#005</td>
+                                <td class="h6"><span class="badge badge-secondary">Bill Order</span></td>
+                                <td>John Smith</td>
+                                <td class="h6"><span class="badge badge-dark">Expired</span></td>
+                                <td>2,800.00</td>
+                            </tr>
+                            <tr>
+                                <td>22-Nov-2022</td>
+                                <td>Bill#009</td>
+                                <td class="h6"><span class="badge badge-secondary">Bill Order</span></td>
+                                <td>John Cena</td>
+                                <td class="h6"><span class="badge badge-warning">Active</span></td>
+                                <td>5,000.00</td>
                             </tr>
                         </tbody>
                     </table>
