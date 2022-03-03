@@ -35,23 +35,29 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
-                    <th>Date</th>
-                    <th>Bank</th>
+                   
+                    <th>Deposit Date</th>
+                    <th>Deposit ID</th>
+                    <th>Account</th>
+                    <th>Label</th>
                     <th>Amount</th>
+                    <th id="thead-actions">Actions</th>
                 </thead>
-                <tbody>
+                <tbody> 	 	 	 	 
                     <tr>
+                        
+                        <td>Feb. 1, 2022</td>
+                        <td>DS003 </td>
+                        <td>Commercial Bank </td>
+                        <td>Self </td>
+                        <td>20,000.00 </td>
                         <td>
-                            {{-- <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                            <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-trash"></i>
                                 </span>
-                            </button> --}}
+                            </button>
                         </td>
-                        <td>Feb. 1, 2022</td>
-                        <td>Bank A</td>
-                        <td>Birr 1,000</td>
                     </tr>
                 </tbody>
             </table>

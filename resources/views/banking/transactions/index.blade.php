@@ -32,7 +32,7 @@
                 </span>
                 <span class="text">New</span>
             </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                 <span class="icon text-white-50">
                     <i class="fas fa-file-import"></i>
                 </span>
@@ -43,13 +43,22 @@
                     <i class="fas fa-download"></i>
                 </span>
                 <span class="text">Export</span>
-            </button>
-            <button type="button" class="btn btn-secondary">
-                <span class="icon text-white-50">
-                    <i class="fas fa-download"></i>
-                </span>
-                <span class="text">Download Excel Format</span>
-            </button>    
+            </button> --}}
+           
+
+           
+                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-download"></i>
+                    </span>
+                    <span class="text">Download</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Excel</a>
+                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-advance-revenue">PDF</a>
+                    
+                </div>
+            
         </div>
 
         {{-- Page Content --}}
@@ -58,16 +67,21 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
-                            <th id="thead-actions">Actions</th>
-                            <th>Date</th>
-                            <th>Bank Name</th>
-                            <th>Description</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
+                          
+                            <th>Deposit Date</th>
+                            <th>Deposit ID</th>
                             <th>Account</th>
+                            <th>Label</th>
+                            <th>Amount</th>
+                            <th id="thead-actions">Actions</th>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr>  	 	 	 	 
+                                <td class="table-item-content">01/31/2022</td>
+                                <td class="table-item-content">DS003</td>
+                                <td class="table-item-content">Commercial Bank</td>
+                                <td class="table-item-content">Self</td>
+                                <td class="table-item-content">20,000.00</td>
                                 <td>
                                     <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                         <span class="icon text-white-50">
@@ -80,12 +94,6 @@
                                         </span>
                                     </button>
                                 </td>  
-                                <td class="table-item-content">01/31/2022</td>
-                                <td class="table-item-content">PocketDevs</td>
-                                <td class="table-item-content">Sampel Desc</td>
-                                <td class="table-item-content">1,000</td>
-                                <td class="table-item-content">0</td>
-                                <td class="table-item-content">1,000</td>
                             </tr>
                         </tbody>
                     </table>
@@ -140,7 +148,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-customer-label">New Customer</h5>
+                <h5 class="modal-title" id="modal-customer-label">New Bank ACcount</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
