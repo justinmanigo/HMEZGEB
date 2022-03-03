@@ -108,7 +108,7 @@
                                 <th>Payment Method</th>
                                 <th>Cheque/Reference #</th>
                                 <th>Amount</th>
-                                <th id="thead-actions">Actions</th>
+                                <th id="thead-actions">Deposit?</th>
                             </thead>
                             <tbody>
                                 <tr>
