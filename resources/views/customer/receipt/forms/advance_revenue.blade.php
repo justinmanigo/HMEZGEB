@@ -8,7 +8,7 @@
 
     {{-- Insert Customer, Date, Invoice Number, etc. --}}
 
-    <div class="form-group row">
+    {{-- <div class="form-group row">
         <label for="ar_invoice_number" class="col-lg-2 col-form-label">Invoice Number</label>
         <div class="col-lg-4">
             <input type="text" class="form-control" id="ar_invoice_number" name="invoice_number" placeholder="1483681825" disabled>
@@ -28,9 +28,67 @@
             <input type="text" id="ar_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
             <input type="hidden" name="customer_id" value="">
         </div>
+    </div> --}}
+
+    {{-- OLD VS NEW BOUNDARY --}}
+
+    <div class="row">
+        <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+            <h5>Customer Details:</h5>
+            <div class="form-group row">
+                <label for="ar_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
+                <div class="input-group col-8">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-primary" type="button" id="ar_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
+                    </div>
+                    <div class="input-group-append">
+                        <input type="text" id="ar_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
+                    </div>
+                    
+                    <input type="hidden" name="customer_id" value="">
+                </div>
+
+            </div>
+            {{-- Contact Details --}}
+            <div class="form-group row mb-0">
+                <label for="ar_tin_number" class="col-4 col-form-label text-lg-right">Tin # :</label>
+                <input type="text" id="ar_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="0042101026" name="tin_number" disabled readonly>
+            </div>
+            <div class="form-group row mb-0">
+                <label for="ar_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
+                <input type="text" id="ar_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="Example Key Person" name="contact_person" disabled readonly>
+            </div>
+            <div class="form-group row mb-0">
+                <label for="ar_contact_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
+                <input type="text" id="ar_contact_number" class="form-control-plaintext col-8 pl-3" placeholder="0911223344" name="contact_number" disabled readonly>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="form-group row">
+                <label for="ar_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
+                <div class="col-8">
+                    <input type="date" class="form-control" id="ar_date" name="date" placeholder="" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ar_advance_revenue_number" class="col-4 col-form-label text-lg-right">Reference #<span class="text-danger ml-1">*</span> :</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="ar_advance_revenue_number" name="reference_number" placeholder="" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ar_account" class="col-4 col-form-label text-lg-right">Account :</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="ar_account" name="account" placeholder="Change later to use either Tagify/Select2" required>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="table-responsive">
+    <hr>
+
+    {{-- <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <th class="thead-actions">Actions</th>
@@ -120,23 +178,23 @@
                 </tr>
             </tfoot>
         </table>
-    </div>
+    </div> --}}
 
     <div class="row">
         <div class="col-md-6">
             <div class="form-group row">
-                <label for="ar_attachment" class="col-sm-3 col-form-label">Picture</label>
+                <label for="ar_remark" class="col-sm-3 col-form-label">Remark</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="ar_remark" name="remark"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ar_attachment" class="col-sm-3 col-form-label">Attachment</label>
                 <div class="col-sm-9">
                     <input type="file" id="ar_attachment" name="attachment">
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="ar_note" class="col-sm-3 col-form-label">Note</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" id="ar_note" name="note"></textarea>
-                </div>
-            </div>
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <label for="ar_commission" class="col-sm-3 col-form-label">Commission</label>
                 <div class="input-group col-sm-9">
                     <div class="input-group-prepend">
@@ -145,18 +203,18 @@
                     <input type="text" class="form-control" id="ar_commission" name="commission" placeholder="Select Commission" disabled>
                     <input type="hidden" id="ar_commission_employee_id" name="commission_employee_id" value="">
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="col-md-6">
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <label for="ar_revenue_type" class="col-sm-4 col-form-label">Revenue Type<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
                     <select class="form-control" id="ar_revenue_type" name="revenue_type">
                         <option>Sales</option>
                     </select>
                 </div>
-            </div>
-            <div class="form-group row">
+            </div> --}}
+            {{-- <div class="form-group row">
                 <label for="payment" class="col-sm-4 col-form-label">Payment Type<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
                     <div class="form-check">
@@ -172,13 +230,50 @@
                         </label>
                     </div>
                 </div>
+            </div> --}}
+            <div class="form-group row">
+                <label for="ar_amount_received" class="col-sm-4 col-form-label">Amount Received<span class="text-danger ml-1">*</span></label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control text-right" id="ar_amount_received" name="amount_received" placeholder="0.00">
+                </div>
             </div>
             <div class="form-group row">
-                <label for="ar_payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
+                <label for="ar_reason" class="col-sm-4 col-form-label">Reason</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control text-right" id="ar_payment" name="payment" placeholder="0.00">
+                    <textarea class="form-control" id="ar_reason" name="reason"></textarea>
                 </div>
             </div>
         </div>
+    </div>
+
+    <hr>
+
+    <h5>Journal Entry Review</h5>
+    {{-- Double Entry Review --}}
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <th>Chart of Accounts # & Name</th>
+                <th>Debit</th>
+                <th>Credit</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="">Cash on Hand (1010)</span></td>
+                    <td class="text-right">2,000.00</td>
+                    <td class="text-right"></td>
+                </tr>
+                <tr>
+                    <td><span class="ml-3">Other Current Liability (2600)</span></td>
+                    <td class="text-right"></td>
+                    <td class="text-right">2,000.00</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <th>Total</th>
+                <th class="text-right">2,000.00</th>
+                <th class="text-right">2,000.00</th>
+            </tfoot>
+        </table>
     </div>
 </form>
