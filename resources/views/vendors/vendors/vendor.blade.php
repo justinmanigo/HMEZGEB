@@ -49,8 +49,9 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-content">
-                    <div class="modal-header d-flex">
-                        <h3>Add Vendor</h3>
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                        <p class="h3 pl-4 m-auto">Add New Vendor</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" name="contact" role="form">
