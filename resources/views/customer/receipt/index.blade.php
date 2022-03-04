@@ -85,13 +85,15 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
-                             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
-                                <th class="thead-actions">Actions</th>
-                                <th>Invoice Number</th>
-                                <th>Customer Name</th>
+                                <th id="thead-actions">Actions</th>
                                 <th>Date</th>
-                                <th>Total</th>
+                                <th>Reference #</th>
+                                <th>Type</th>
+                                <th>Customer Name</th>
+                                <th>Status</th>
+                                <th>Amount</th>
                             </thead>
                             <tbody>
                                 <tr>
@@ -107,10 +109,52 @@
                                             </span>
                                         </button>
                                     </td>
-                                    <td class="table-item-content">1483681825</td>
+                                    <td class="table-item-content">02-Mar-2022</td>
+                                    <td class="table-item-content">Fs#10107</td>
+                                    <td class="table-item-content"><span class="badge badge-success">Receipt</span></td>
                                     <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">01/31/2022</td>
-                                    <td class="table-item-content">Birr 1,000</td>
+                                    <td class="table-item-content"><span class="badge badge-success">Paid</span></td>
+                                    <td class="table-item-content">1,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="table-item-content">02-Mar-2022</td>
+                                    <td class="table-item-content">Fs#10107</td>
+                                    <td class="table-item-content"><span class="badge badge-danger">Credit Receipt</span></td>
+                                    <td class="table-item-content">PocketDevs</td>
+                                    <td class="table-item-content"><span class="badge badge-danger">Unpaid</span></td>
+                                    <td class="table-item-content">1,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    <td class="table-item-content">02-Mar-2022</td>
+                                    <td class="table-item-content">Fs#10107</td>
+                                    <td class="table-item-content"><span class="badge badge-primary">Advance Receipt</span></td>
+                                    <td class="table-item-content">PocketDevs</td>
+                                    <td class="table-item-content"><span class="badge badge-warning">Partially Paid</span></td>
+                                    <td class="table-item-content">1,000.00</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -121,11 +165,11 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                             <thead>
-                                <th class="thead-actions">Actions</th>
-                                <th>Invoice Number</th>
-                                <th>Customer Name</th>
+                                <th id="thead-actions">Actions</th>
                                 <th>Date</th>
-                                <th>Total</th>
+                                <th>Reference #</th>
+                                <th>Customer Name</th>
+                                <th>Amount</th>
                             </thead>
                             <tbody>
                                 <tr>
@@ -141,10 +185,10 @@
                                             </span>
                                         </button>
                                     </td>
-                                    <td class="table-item-content">1483681825</td>
+                                    <td class="table-item-content">02-Mar-2022</td>
+                                    <td class="table-item-content">Fs#10107</td>
                                     <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">01/31/2022</td>
-                                    <td class="table-item-content">Birr 1,000</td>
+                                    <td class="table-item-content">1,000.00</td>
                                 </tr>
                             </tbody>
                         </table>

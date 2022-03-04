@@ -97,16 +97,25 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">                        
                             <thead>
-                                <th class="thead-actions">Actions</th>
+                                
                                 <th>Date</th>
-                                <th>Transfer Id</th>
-                                <th>Transfer From</th>
-                                <th>Transfer To</th>
+                                <th>Rerence</th>
+                                <th>From Bank</th>
+                                <th>To Bank</th>
                                 <th>Amount</th>
+                                <th>Reason</th>
+                                <th class="thead-actions">Actions</th>
                                  
                             </thead>
                             <tbody>
                                 <tr>
+                                   
+                                    <td class="table-item-content">February 2, 2021</td>
+                                    <td class="table-item-content">B2B-003</td>
+                                    <td class="table-item-content">Awash Bank</td>
+                                    <td class="table-item-content">CBE</td>
+                                    <td class="table-item-content">65,000.00</td>
+                                    <td class="table-item-content">Salary Payment</td>
                                     <td>
                                         <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
@@ -118,12 +127,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button>
-                                    </td>
-                                    <td class="table-item-content">February 2, 2021</td>
-                                    <td class="table-item-content">00001</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">Birr 1,000</td>
+                                    </td> 	 	  
                                   
                                 </tr>
                             </tbody>

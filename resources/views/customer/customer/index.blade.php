@@ -60,9 +60,12 @@
                         <thead>
                             <th id="thead-actions">Actions</th>
                             <th>Customer Name</th>
-                            <th>Address</th>
-                            <th>Telephone</th>
-                            <th>Account Receivable</th>
+                            <th>Tin #</th>
+                            <th>City</th>
+                            <th>Contact Person</th>
+                            <th>Mobile #</th>
+                            <th>Label</th>
+                            <th>Balance</th>
                         </thead>
                         <tbody>
                             <tr>
@@ -79,9 +82,33 @@
                                     </button>
                                 </td>
                                 <td class="table-item-content">PocketDevs</td>
+                                <td class="table-item-content">0012347001</td>
                                 <td class="table-item-content">Cebu City, Philippines</td>
+                                <td class="table-item-content">Example Key Person</td>
                                 <td class="table-item-content">+63 (012) 3456</td>
-                                <td class="table-item-content">Birr 1,000</td>
+                                <td class="table-item-content"><span class="badge badge-primary">New</span></td>
+                                <td class="table-item-content">1,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-pen"></i>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                                <td class="table-item-content">PocketDevs</td>
+                                <td class="table-item-content">0012347001</td>
+                                <td class="table-item-content">Cebu City, Philippines</td>
+                                <td class="table-item-content">Example Key Person</td>
+                                <td class="table-item-content">+63 (012) 3456</td>
+                                <td class="table-item-content"><span class="badge badge-success">VIP</span></td>
+                                <td class="table-item-content">1,000.00</td>
                             </tr>
                         </tbody>
                     </table>
@@ -144,77 +171,82 @@
             <div class="modal-body">
                 <form id="form-customer" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name<span class="text-danger ml-1">*</span></label>
+                        <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name<span class="text-danger ml-1">*</span> :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
                         </div>
 
-                        <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number</label>
+                        <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number :</label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address</label>
+                        <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address :</label>
                         <div class="col-sm-9 col-lg-10">
                             <input type="text" class="form-control" id="c_address" name="address" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_city" class="col-sm-3 col-lg-2 col-form-label">City</label>
+                        <label for="c_city" class="col-sm-3 col-lg-2 col-form-label">City :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_city" name="city" placeholder="">
                         </div>
 
-                        <label for="c_country" class="col-sm-3 col-lg-2 col-form-label">Country</label>
+                        <label for="c_country" class="col-sm-3 col-lg-2 col-form-label">Country :</label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="text" class="form-control" id="c_country" name="country" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone 1</label>
+                        <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone 1 :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_phone_1" name="phone_1" placeholder="">
                         </div>
 
-                        <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone 2</label>
+                        <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone 2 :</label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="text" class="form-control" id="c_phone_2" name="phone_2" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_fax" class="col-sm-3 col-lg-2 col-form-label">Fax</label>
+                        <label for="c_fax" class="col-sm-3 col-lg-2 col-form-label">Fax :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_fax" name="fax" placeholder="">
                         </div>
 
-                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number</label>
+                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number :</label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_contact_person" class="col-sm-2 col-form-label">Contact Person</label>
+                        <label for="c_contact_person" class="col-sm-2 col-form-label">Contact Person :</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_email" class="col-sm-2 col-form-label">E-mail</label>
+                        <label for="c_email" class="col-sm-2 col-form-label">E-mail :</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="c_email" name="email" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_website" class="col-sm-2 col-form-label">Website</label>
+                        <label for="c_website" class="col-sm-2 col-form-label">Website :</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="c_website" name="website" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_picture" class="col-sm-2 col-form-label">Picture</label>
-                        <div class="col-sm-10">
+                        <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
+                        <div class="col-sm-9 col-lg-4">
                             <input type="file" id="c_picture" name="picture">
+                        </div>
+
+                        <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="text" class="form-control" id="c_label" name="label" placeholder="New">
                         </div>
                     </div>
                 </form>
