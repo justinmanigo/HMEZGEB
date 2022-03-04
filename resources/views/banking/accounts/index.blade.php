@@ -34,40 +34,14 @@
     {{-- Main Content Section --}}
     <div class="col-xl-12 col-lg-12 col-12">
         {{-- Button Group Navigation --}}
-        {{-- <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-pen"></i>
-                    </span>
-                    <span class="text">New</span>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Receipt</a>
-                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-advance-revenue">Advance Revenue</a>
-                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-credit-receipt">Credit Receipt</a>
-                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-proforma">Proforma</a>
-                </div>
-            </div>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+        <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
+            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit">
                 <span class="icon text-white-50">
-                    <i class="fas fa-file-import"></i>
+                    <i class="fas fa-pen"></i>
                 </span>
-                <span class="text">Import</span>
-            </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
-                <span class="icon text-white-50">
-                    <i class="fas fa-download"></i>
-                </span>
-                <span class="text">Export</span>
-            </button>
-            <button type="button" class="btn btn-secondary">
-                <span class="icon text-white-50">
-                    <i class="fas fa-download"></i>
-                </span>
-                <span class="text">Download Excel Format</span>
-            </button>    
-        </div> --}}
+                <span class="text">New</span>
+            </button> 
+        </div>
 
         {{-- Tab Navigation --}}
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -87,14 +61,25 @@
                     <div class="table-responsive">
                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
-                                <th class="thead-actions">Actions</th>
-                                <th>Account Number</th>
+                                
+                                <th>Chart of Acct#</th>
                                 <th>Bank Name</th>
-                                <th>Current Balance </th>
-                                <th>Status</th>
+                                <th>Branch</th>
+                                <th>Type</th>
+                                <th>Account Number</th>
+                                <th>Balance</th>
+                                <th class="thead-actions">Actions</th>
+                                
                             </thead>
                             <tbody>
                                 <tr>
+                                    
+                                    <td class="table-item-content">1030</td>
+                                    <td class="table-item-content">Commercail Bank of Ethiopia	</td> 
+                                    <td class="table-item-content"> Main Branch	</td>
+                                    <td class="table-item-content"> Checking Account </td>
+                                    <td class="table-item-content">100002344758</td>
+                                    <td class="table-item-content">700,000.00 </td>
                                     <td>
                                         <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
@@ -107,10 +92,6 @@
                                             </span>
                                         </button>
                                     </td>
-                                    <td class="table-item-content">1483681825</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">Birr 1,000</td>
-                                    <td class="table-item-content">Active</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -352,6 +333,69 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="si_btn_select_item">Select Item</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- Modals --}}
+{{-- New Deposit --}}
+<div class="modal fade" id="modal-deposit" tabindex="-1" role="dialog" aria-labelledby="modal-deposit-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-deposit-label">New Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-deposit" method="post" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
+                        <div class="col-sm-9 col-lg-6">
+                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id" value="1031" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Bank Name<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <select class="form-control" id="d_bank_account" name="bank_account">
+                                <option>Bank A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Account Number<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Account Type<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <select class="form-control" id="d_bank_account" name="bank_account">
+                                <option>Savings </option>
+                                <option>Checking </option>
+                            </select>
+                        </div>
+                    </div>
+
+ 
+                
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" form="form-deposit">Save Account</button>
             </div>
         </div>
     </div>
