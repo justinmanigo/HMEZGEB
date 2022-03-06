@@ -23,13 +23,13 @@
                 <span class="text">New</span>
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Bill</a>
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-advance-revenue">VAT</a>
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-credit-receipt">Withholding</a>
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-proforma">Payroll</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target=".bill-payment-modal">Bill</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target=".VAT-payment-modal">VAT</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target=".Withholding-payment-modal">Withholding</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target=".payroll-payment-modal">Payroll</a>
                 <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-proforma">Income Tax</a>
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-proforma">Pension</a>
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-proforma">Commision</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target=".pension-payment-modal">Pension</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target=".commission-payment-modal">Commision</a>
             </div>
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                 <span class="icon text-white-50">
@@ -51,6 +51,137 @@
             </button>
         </div>
     </div>
+
+    {{-- Modals --}}
+    {{-- BillPayment  --}}
+    <div class="modal fade bill-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                        <p class="h3 pl-4 m-auto">New Bill</p>
+                        <a class="close" data-dismiss="modal">×</a>
+                    </div>
+                    <form id="contactForm" name="contact" role="form">
+                       @include('vendors.payments.forms.billPaymentModal')
+                        <div class="modal-footer">					
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-success" id="submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- BillPayment  --}}
+    <div class="modal fade bill-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                        <p class="h3 pl-4 m-auto">New Bill</p>
+                        <a class="close" data-dismiss="modal">×</a>
+                    </div>
+                    <form id="contactForm" name="contact" role="form">
+                       @include('vendors.payments.forms.billPaymentModal')
+                        <div class="modal-footer">					
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-success" id="submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- VAT --}}
+    <div class="modal fade VAT-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                        <p class="h3 pl-4 m-auto">VAT Payment/Receivable</p>
+                        <a class="close" data-dismiss="modal">×</a>
+                    </div>
+                    <form id="contactForm" name="contact" role="form">
+                       @include('vendors.payments.forms.VATPaymentModal')
+                        <div class="modal-footer">					
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-success" id="submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Withholding --}}
+    <div class="modal fade Withholding-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                        <p class="h3 pl-4 m-auto">Withholding</p>
+                        <a class="close" data-dismiss="modal">×</a>
+                    </div>
+                    <form id="contactForm" name="contact" role="form">
+                       @include('vendors.payments.forms.withholdingPaymentModal')
+                        <div class="modal-footer">					
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-success" id="submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Payroll --}}
+    <div class="modal fade payroll-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                        <p class="h3 pl-4 m-auto">Payroll</p>
+                        <a class="close" data-dismiss="modal">×</a>
+                    </div>
+                    <form id="contactForm" name="contact" role="form">
+                       @include('vendors.payments.forms.payrollPaymentModal')
+                        <div class="modal-footer">					
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-success" id="submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Income TAX --}}
+    {{-- Pension  --}}
+    {{-- Commission  --}}
+    <div class="modal fade commission-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                        <p class="h3 pl-4 m-auto">Commission</p>
+                        <a class="close" data-dismiss="modal">×</a>
+                    </div>
+                    <form id="contactForm" name="contact" role="form">
+                       @include('vendors.payments.forms.commissionPaymentModal')
+                        <div class="modal-footer">					
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-success" id="submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
         {{-- Tab Contents --}}
     <div class="card">
         <div class="card-body tab-content">
