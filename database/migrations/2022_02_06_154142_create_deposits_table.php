@@ -15,7 +15,12 @@ class CreateDepositsTable extends Migration
     {
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('receipt_id');
+            $table->unsignedBigInteger('bank_account_id');
+
             $table->timestamps();
+             // $table->foreign('brandNavItem_id')->references('id')->on('brands_nav_items');
+             // $table->foreign('brandNavItem_id')->references('id')->on('brands_nav_items');
         });
     }
 
