@@ -20,16 +20,16 @@
         <input type="date" name="city" class="form-control col-lg-4">
     </div>
     <div class="row form-group">
-        <label for="email" class="col-form-label col-lg-2">Bill number:</label>
-        <input type="number" name="country" class="form-control col-lg-4">
+        <label for="email" class="col-form-label col-lg-2">Contact Person:</label>
+        <input type="text" name="fax" class="form-control col-lg-4">
         <label for="email" class="col-form-label col-lg-2">Order number:</label>
         <input type="number" name="tinNum" class="form-control col-lg-4">
     </div>
     <div class="form-group row">
-        <label for="email" class="col-form-label col-lg-2">Contact Person:</label>
-        <input type="text" name="fax" class="form-control col-lg-4">
         <label for="email" class="col-form-label col-lg-2">Telephone:</label>
         <input type="number" name="fax" class="form-control col-lg-4">
+        <label for="email" class="col-form-label col-lg-2">Bill number:</label>
+        <input type="number" name="country" class="form-control col-lg-4">
     </div>
 {{-- Table --}}
 <div class="table-responsive">
@@ -147,6 +147,41 @@
         </div>
     </div>
 </div>
+
+<hr>
+    <h5>Journal Entry Review</h5>
+    
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <th>Chart of Accounts # & Name</th>
+                <th>Debit</th>
+                <th>Credit</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="">Telephone Expense (6117)</span></td>
+                    <td class="text-right">1,000.00</td>
+                    <td class="text-right"></td>
+                </tr>
+                <tr>
+                    <td><span class="ml-3">VAT receivable (1204)</span></td>
+                    <td class="text-right">150.00</td>
+                    <td class="text-right"></td>
+                </tr>
+                <tr>
+                    <td><span class="ml-3">Cash on Hand (1010)</span></td>
+                    <td class="text-right"></td>
+                    <td class="text-right">1,150.00</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <th>Total</th>
+                <th class="text-right">1,150.00</th>
+                <th class="text-right">1,150.00</th>
+            </tfoot>
+        </table>
+    </div>
 </div>
 <div class="modal-footer">					
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

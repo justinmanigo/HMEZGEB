@@ -28,13 +28,6 @@
     <div class="row form-group">
         <label for="email" class="col-form-label col-lg-2">Telephone:</label>
         <input type="number" name="fax" class="form-control col-lg-4">
-        <label for="email" class="col-form-label col-lg-2">Attachment:</label>
-        <div class="input-group col-md-2 col-lg-4">
-            <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile03">
-            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
-            </div>
-        </div>
     </div>
 {{-- Table --}}
 <div class="table-responsive">
@@ -116,9 +109,18 @@
         </tfoot>
     </table>
 </div>
-<div class="form-group row">
-    
+<div class="row form-group">
+    <label for="email" class="col-form-label col-lg-2">Terms & Conditions:</label>
+    <textarea name="#" class="form-control col-lg-4"></textarea>
+    <label for="email" class="col-form-label col-lg-2">Attachment:</label>
+    <div class="input-group col-md-2 col-lg-4">
+        <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputGroupFile03">
+        <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+        </div>
+    </div>
 </div>
+
 </div>
 <div class="modal-footer">					
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
