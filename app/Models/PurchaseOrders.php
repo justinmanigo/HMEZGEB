@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Bills extends Model
+class PurchaseOrders extends Model
 {
     use HasFactory;
 
@@ -13,4 +13,5 @@ class Bills extends Model
         {
             return $this->belongsTo(Vendors::class, 'vendor_id');
         }
+        
 }
