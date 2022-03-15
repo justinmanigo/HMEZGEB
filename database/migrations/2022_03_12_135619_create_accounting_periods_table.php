@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJournalVouchersTable extends Migration
+class CreateAccountingPeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateJournalVouchersTable extends Migration
      */
     public function up()
     {
-        Schema::create('journal_vouchers', function (Blueprint $table) {
+        Schema::create('accounting_periods', function (Blueprint $table) {
             $table->id();
-            $table->string('jv_reference_number');
+             $table->date('month');
+            $table->date('year');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateJournalVouchersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('journal_vouchers');
+        Schema::dropIfExists('accounting_periods');
     }
 }
