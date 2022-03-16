@@ -254,8 +254,33 @@ Route::group([
 
     });
 
-    // Settings
-Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
-Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');
-Route::view('/setting_chartofaccounts', 'settings.chart_of_account.index')->name('setting_chartofaccounts');
-Route::view('/setting_payrollrules', 'settings.payroll_rules.index')->name('setting_payrollrules');
+    /**
+ * Settings Menu
+ */ 
+
+
+    // Route::get('/company-info', function () {
+    //     return view('settings.company_info.index');
+    // })->name('company-info');
+    // Route::get('/users', function () {
+    //     return view('settings.users.index');
+    // })->name('users');
+    // Route::get('/taxes', function () {
+    //     return view('settings.taxes.index');
+    // })->name('taxes');
+    // Route::get('/withholding', function () {
+    //     return view('settings.withholding.index');
+    // })->name('withholding');
+    // Route::get('/theme', function () {
+    //     return view('settings.theme.index');
+    // })->name('theme');
+    Route::view('/company-info', 'settings.company_info.index')->name('company-info');
+    Route::view('/users', 'settings.users.index')->name('users');
+    Route::view('/taxes', 'settings.taxes.index')->name('taxes');
+    Route::view('/withholding', 'settings.withholding.index')->name('withholding');
+    Route::view('/themes', 'settings.themes.index')->name('themes');
+
+    Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
+    Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');
+    Route::view('/setting_chartofaccounts', 'settings.chart_of_account.index')->name('setting_chartofaccounts');
+    Route::view('/setting_payrollrules', 'settings.payroll_rules.index')->name('setting_payrollrules');
