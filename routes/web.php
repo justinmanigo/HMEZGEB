@@ -253,3 +253,9 @@ Route::group([
         Route::get('/loan', [LoanController::class, 'index']);
 
     });
+
+    // Settings
+Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
+Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');
+Route::view('/setting_chartofaccounts', 'settings.chart_of_account.index')->name('setting_chartofaccounts');
+Route::view('/setting_payrollrules', 'settings.payroll_rules.index')->name('setting_payrollrules');
