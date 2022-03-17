@@ -37,6 +37,8 @@ use App\Http\Controllers\AdditionController;
 use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\LoanController;
 
+// Settings
+use App\Http\Controllers\SettingChartOfAccountsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -282,5 +284,10 @@ Route::group([
 
     Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
     Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');
-    Route::view('/setting_chartofaccounts', 'settings.chart_of_account.index')->name('setting_chartofaccounts');
     Route::view('/setting_payrollrules', 'settings.payroll_rules.index')->name('setting_payrollrules');
+    Route::group([
+        'as' => 'settings.'
+    ], function(){
+        Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
+
+    });
