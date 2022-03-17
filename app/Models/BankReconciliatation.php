@@ -11,6 +11,6 @@ class BankReconciliatation extends Model
 
     public function journalEntry()
     {
-        return $this->belongsTo(JournalEntries::class, 'journal_entry_id');
+        return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
     }
 }

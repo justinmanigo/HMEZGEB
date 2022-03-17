@@ -21,7 +21,7 @@ class CreateJournalEntriesTable extends Migration
             $table->enum('model_reference_name',['customer','vendors','banking']); 
             $table->timestamps();
 
-            // $table->foreign('model_reference_id')->references('id')->on('bank_reconciliations');
+            $table->foreign('model_reference_id')->references('id')->on('bank_reconciliations');
 
 
         });

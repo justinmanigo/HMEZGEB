@@ -27,7 +27,7 @@ class PaymentReferences extends Model
     }
     public function journalEntry()
     {
-        return $this->hasOne(JournalEntries::class, 'moedl_reference_id','id');
+        return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
     }
 
     

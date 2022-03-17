@@ -19,6 +19,14 @@ class JournalEntries extends Model
     }
     public function bankReconciliation()
     {
-        return $this->hasOne(BankReconciliations::class, 'journal_entry_id','id');
+        return $this->belongsTo(BankReconciliations::class, 'model_reference_id','id');
+    }
+    public function receiptReferences()
+    {
+        return $this->belongsTo(ReceiptReferences::class, 'model_reference_id','id');
+    }
+    public function paymentReferences()
+    {
+        return $this->belongsTo(PaymentReferences::class, 'model_reference_id','id');
     }
 }
