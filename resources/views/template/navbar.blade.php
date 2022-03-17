@@ -128,14 +128,15 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="#">Company Info</a>
-                        <a class="collapse-item" href="#">Users</a>
-                        <a class="collapse-item" href="#">Theme</a>
-                        <a class="collapse-item" href="#">Taxes</a>
-                        <a class="collapse-item" href="#">Withholding</a>
-                        <a class="collapse-item" href="#">Payroll Rules</a>
-                        <a class="collapse-item" href="#">Chart of Account</a>
-                        <a class="collapse-item" href="#">Inventory</a>
+                        <a class="collapse-item" href="/company-info">Company Info</a>
+                        <a class="collapse-item" href="/users">Users</a>
+                        <a class="collapse-item" href="/themes">Theme</a>
+                        <a class="collapse-item" href="/taxes">Taxes</a>
+                        <a class="collapse-item" href="/withholding">Withholding</a>
+                        <a class="collapse-item" href="/setting_payrollrules">Payroll Rules</a>
+                        <a class="collapse-item" href="/setting_chartofaccounts">Chart of Account</a>
+                        <a class="collapse-item" href="/setting_inventory">Inventory</a>
+                        <a class="collapse-item" href="/setting_defaults">Defaults</a>
                         {{-- <a class="collapse-item" href="utilities-other.html">Taxes</a> --}}
                     </div>
                 </div>
