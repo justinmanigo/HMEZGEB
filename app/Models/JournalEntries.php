@@ -13,4 +13,20 @@ class JournalEntries extends Model
     {
         return $this->hasMany(JournalPostings::class, 'journal_entry_id','id');
     }
+    public function journalVoucher()
+    {
+        return $this->hasOne(JournalVouchers::class, 'journal_entry_id','id');
+    }
+    public function bankReconciliation()
+    {
+        return $this->belongsTo(BankReconciliations::class, 'model_reference_id','id');
+    }
+    public function receiptReferences()
+    {
+        return $this->belongsTo(ReceiptReferences::class, 'model_reference_id','id');
+    }
+    public function paymentReferences()
+    {
+        return $this->belongsTo(PaymentReferences::class, 'model_reference_id','id');
+    }
 }

@@ -34,4 +34,12 @@ class ReceiptReferences extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+    public function bankReconciliation()
+    {
+        return $this->hasOne(BankReconciliations::class, 'journal_entry_id','id');
+    }
+    public function journalEntry()
+    {
+        return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
+    }
 }
