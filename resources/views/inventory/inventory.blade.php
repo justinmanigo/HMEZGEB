@@ -25,17 +25,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            @include('inventory.forms.newItem')
-                        </div>
-                        <div class="modal-footer">
-                            <div class="form-check mr-3">
-                                <input class="form-check-input" id="c_is_active" type="checkbox" value="Notify" name="is_active">
-                                <label class="form-check-label" for="c_is_active">Notify me when Quantity below</label>
-                            </div>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" form="form-receipt">Add Item</button>
-                        </div>
+                        @include('inventory.forms.newItem')
                     </div>
                 </div>
             </div>

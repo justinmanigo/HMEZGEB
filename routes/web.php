@@ -208,7 +208,9 @@ Route::group([
     'as'=>'inventory.'
 ], function(){ 
     Route::get('/inventory', [InventoryController::class, 'index']);
+    Route::post('/inventory', [InventoryController::class, 'store']);
 });
+
  
 
 /**
