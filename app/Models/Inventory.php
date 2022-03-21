@@ -13,13 +13,15 @@ class Inventory extends Model
         'item_name',
         'sale_price',
         'purchase_price',
-        'quantity',
+        'purchase_quantity',
+        'sold_quantity',
         'tax',
         'default_income_account',
         'default_expense_account',
         'inventory_type',
         'picture',
         'description',
+        'is_enabled',
     ];
 
 

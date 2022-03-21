@@ -23,28 +23,33 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label for=""class="col-lg-2 col-form-label">Quantity:</label>
+        <label for=""class="col-lg-2 col-form-label">Sold Quantity:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control"  name="quantity">
+            <input type="number" class="form-control"  name="sold_quantity">
         </div>
-        <label for="" class="col-sm-2">Tax:</label>
+         <label for="#" class="col-lg-2 col-form-label">Purchase Quantity:</label>
         <div class="col-lg-4">
-            <select  class="form-control" id="" name="tax">
-                <option selected disabled hidden>Choose</option>
-                <option name="tax" value="0%">0%</option>
-                <option name="tax" value="2%">2%</option>
-                <option name="tax" value="15%">15%</option>
-            </select>
+            <input type="text" class="form-control"  name="purchase_quantity">
         </div>
+        
     </div>
     <div class="row mb-3">
-        <label for="" class="col-sm-3 mt-2">Default Expense Account:</label>
+        <label for="" class="col-sm-2">Tax:</label>
+            <div class="col">
+                <select  class="form-control" id="" name="tax">
+                    <option selected disabled hidden>Choose</option>
+                    <option name="tax" value="0%">0%</option>
+                    <option name="tax" value="2%">2%</option>
+                    <option name="tax" value="15%">15%</option>
+                </select>
+            </div>
+        <label for="" class="col-sm-2 mt-2">Default Expense Account:</label>
         <div class="col">
             <select name="default_income_account" class="form-control" id="">
                 <option>Choose</option>
             </select>
         </div>
-        <label for="" class="col-sm-3 mt-2">Default Income Account:</label>
+        <label for="" class="col-sm-2 mt-2">Default Income Account:</label>
         <div class="col">
             <select name="default_expense_account" class="form-control" id="">
                 <option>Choose</option>
