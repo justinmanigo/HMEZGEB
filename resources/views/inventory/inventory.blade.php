@@ -67,20 +67,21 @@
                         <th>Inventory Value</th>
                     </thead>
                     <tbody>
-                        <tr>
                         @foreach($inventories as $inventory)
+           
+                        <tr>
                             <td class=" d-flex justify-content-center">
-                               <img src="{{ url('storage/inventories/' .$inventory->picture)}}" class="w-100 img-responsive" style="min-width:100px">
+                                <img src="{{ url('storage/inventories/' .$inventory->picture)}}" class="w-100 img-responsive" style="min-width:100px">
                             </td>
                             <td>{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
-                            <td class="table-item-content">{{ $inventory->quantity }}</td>
-                            <td class="table-item-content">Birr {{ $inventory->purchase_price }}</td>
+                            <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
+                            <td class="table-item-content">{{  $inventory->purchase_quantity }}</td>        
                             <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
                             <td class="table-item-content">{{ $inventory->sold_quantity }}</td>
-                            <td class="table-item-content">{{  $inventory->purchase_quantity }}</td>
-                            @endforeach
+                            
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

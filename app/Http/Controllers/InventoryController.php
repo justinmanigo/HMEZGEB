@@ -37,7 +37,7 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-    
+        
         $imageName = time().'.'.$request->picture->extension();  
         $request->picture->storeAs('inventories', $imageName);
         $inventory = new Inventory();

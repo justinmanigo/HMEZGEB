@@ -5,47 +5,39 @@
     <div class="row mb-3">
         <label for="#" class="col-lg-2 col-form-label">Item Code:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control" name="item_code">
+            <input type="number" class="form-control" name="item_code" required>
         </div>
         <label for="#" class="col-lg-2 col-form-label">Item Name:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control" name="item_name">
+            <input type="text" class="form-control" name="item_name" required>
         </div>
     </div>
     <div class="row mb-3">
         <label for="#" class="col-lg-2 col-form-label">Sale Price:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control"  name="sale_price" >
+            <input type="number" class="form-control"  name="sale_price" required >
         </div>
         <label for="#" class="col-lg-2 col-form-label">Purchase Price:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control"  name="purchase_price">
+            <input type="text" class="form-control"  name="purchase_price" required>
         </div>
     </div>
     <div class="row mb-3">
         <label for=""class="col-lg-2 col-form-label">Sold Quantity:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control"  name="sold_quantity">
+            <input type="number" class="form-control"  name="sold_quantity" required>
         </div>
          <label for="#" class="col-lg-2 col-form-label">Purchase Quantity:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control"  name="purchase_quantity">
+            <input type="text" class="form-control"  name="purchase_quantity" required>
         </div>
         
     </div>
     <div class="row mb-3">
-        <label for="" class="col-sm-2">Tax:</label>
-            <div class="col">
-                <select  class="form-control" id="" name="tax">
-                    <option selected disabled hidden>Choose</option>
-                    <option name="tax" value="0%">0%</option>
-                    <option name="tax" value="2%">2%</option>
-                    <option name="tax" value="15%">15%</option>
-                </select>
-            </div>
+        
         <label for="" class="col-sm-2 mt-2">Default Expense Account:</label>
         <div class="col">
-            <select name="default_income_account" class="form-control" id="">
+            <select name="default_income_account" class="form-control" id="" >
                 <option>Choose</option>
             </select>
         </div>
@@ -55,6 +47,15 @@
                 <option>Choose</option>
             </select>
         </div>
+        <label for="" class="col-sm-2">Tax:</label>
+            <div class="col">
+                <select  class="form-control" id="" name="tax">
+                    <option selected disabled hidden>Choose</option>
+                    <option name="tax" value="0%">0%</option>
+                    <option name="tax" value="2%">2%</option>
+                    <option name="tax" value="15%">15%</option>
+                </select>
+            </div>
     </div>
     <div class="row mb-3">
         <label for="#" class="col-sm-2 col-form-label">Inventory Type:</label>
@@ -81,7 +82,7 @@
     <div class="row mb-3">
         <div class="col-lg">
             <label for="">Description:</label>
-            <textarea  id="" class="form-control" style="min-height: 2.5rem"  name="description"></textarea>
+            <textarea  id="" class="form-control" style="min-height: 2.5rem"  name="description" required></textarea>
         </div>
     </div>
 </div>
