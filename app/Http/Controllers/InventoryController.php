@@ -39,7 +39,7 @@ class InventoryController extends Controller
     {
         
         $imageName = time().'.'.$request->picture->extension();  
-        $request->picture->storeAs('inventories', $imageName);
+        $request->picture->storeAs('public/inventories', $imageName);
         
         $inventory = new Inventory();
         $inventory->item_code =  $request->item_code;
