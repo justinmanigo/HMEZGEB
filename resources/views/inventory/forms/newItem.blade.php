@@ -23,14 +23,23 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label for=""class="col-lg-2 col-form-label">Sold Quantity:</label>
+        <label for=""class="col-lg-2 col-form-label">Quantity:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control"  name="sold_quantity" required>
+            <input type="number" class="form-control"  name="quantity" required>
         </div>
-         <label for="#" class="col-lg-2 col-form-label">Purchase Quantity:</label>
+        <label for="" class="col-sm-2">Tax:</label>
+        <div class="col">
+            <select  class="form-control" id="" name="tax">
+                <option selected disabled hidden>Choose</option>
+                <option name="tax" value="0%">0%</option>
+                <option name="tax" value="2%">2%</option>
+                <option name="tax" value="15%">15%</option>
+            </select>
+        </div>
+         {{-- <label for="#" class="col-lg-2 col-form-label">Purchase Quantity:</label>
         <div class="col-lg-4">
             <input type="text" class="form-control"  name="purchase_quantity" required>
-        </div>
+        </div> --}}
         
     </div>
     <div class="row mb-3">
@@ -47,15 +56,7 @@
                 <option>Choose</option>
             </select>
         </div>
-        <label for="" class="col-sm-2">Tax:</label>
-            <div class="col">
-                <select  class="form-control" id="" name="tax">
-                    <option selected disabled hidden>Choose</option>
-                    <option name="tax" value="0%">0%</option>
-                    <option name="tax" value="2%">2%</option>
-                    <option name="tax" value="15%">15%</option>
-                </select>
-            </div>
+      
     </div>
     <div class="row mb-3">
         <label for="#" class="col-sm-2 col-form-label">Inventory Type:</label>

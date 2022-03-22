@@ -61,9 +61,9 @@
                         <th class="w-15">Item Code</th>
                         <th>Item Name</th>
                         <th>Purchase Price</th>
-                        <th>Purchase Quantity</th>
+                        {{-- <th>Purchase Quantity</th> --}}
                         <th>Sale Price</th>
-                        <th>Sold Quantity</th>
+                        <th>Quantity</th>
                         <th>Inventory Value</th>
                     </thead>
                     <tbody>
@@ -76,9 +76,9 @@
                             <td>{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
                             <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
-                            <td class="table-item-content">{{  $inventory->purchase_quantity }}</td>        
+                            {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td>         --}}
                             <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
-                            <td class="table-item-content">{{ $inventory->sold_quantity }}</td>
+                            <td class="table-item-content">{{ $inventory->quantity }}</td>
                             
                         </tr>
                         @endforeach
