@@ -16,20 +16,20 @@ class CreateVendorsTable extends Migration
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('tin_number');
-            $table->string('address');
-            $table->string('city');
-            $table->string('country');
-            $table->string('mobile_number'); 
-            $table->string('telephone_one');
+            $table->string('tin_number')->unique()->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->string('mobile_number')->nullable(); 
+            $table->string('telephone_one')->nullable();
             $table->string('telephone_two')->nullable();
-            $table->string('fax');   
-            $table->string('website');   
-            $table->string('email');   
-            $table->string('contact_person');
-            $table->string('label');
+            $table->string('fax')->nullable();   
+            $table->string('website')->nullable();   
+            $table->string('email')->nullable();   
+            $table->string('contact_person')->nullable();
+            $table->string('label')->nullable();
             $table->string('image')->nullable();
-            $table->enum('is_active',['Yes','No'])->default('Yes');
+            $table->enum('is_active',['Yes','No'])->default('Yes')->nullable();
 
 
             $table->timestamps();

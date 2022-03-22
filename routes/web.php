@@ -136,6 +136,7 @@ Route::post('/userlogin', function (Request $request){
     ], function(){ 
         Route::get('/vendorPage',[VendorsController::class,'index']);
         Route::get('/individualVendor',[VendorsController::class,'show']);
+        Route::post('/vendorPage', [VendorsController::class, 'store']);
     });
 
     Route::group([
