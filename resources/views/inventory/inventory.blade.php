@@ -42,7 +42,9 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Inventory Value</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 215,000</div>
+                            @foreach($inventories as $inventory)
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inventory->totalInventory }}</div>
+                            @endforeach
                         </div>
                         <div class="col-auto">
                         </div>
@@ -71,7 +73,7 @@
            
                         <tr>
                             <td class=" d-flex justify-content-center">
-                                <img src="{{ url('storage/inventories/' .$inventory->picture)}}" class="w-100 img-responsive" style="min-width:100px">
+                                <img src="{{ url('storage/inventories/$inventory->picture')}}" class="w-100 img-responsive" style="min-width:100px">
                             </td>
                             <td>{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
@@ -79,7 +81,8 @@
                             {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td>         --}}
                             <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
                             <td class="table-item-content">{{ $inventory->quantity }}</td>
-                            
+                            <td class="table-item-content">{{ $inventory->inventoryValue }}</td>
+                        
                         </tr>
                         @endforeach
                     </tbody>

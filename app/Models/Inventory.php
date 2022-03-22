@@ -23,6 +23,8 @@ class Inventory extends Model
         'picture',
         'description',
         'is_enabled',
+        'inventoryValue',
+        'totalInventory',
     ];
 
 
