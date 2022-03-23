@@ -57,7 +57,7 @@
                 </div>
                 <div class="col">
                     <label for="#">Mobile number</label>
-                    <input type="number" value="{{$vendor->mobile_number}}" name="mobile_number" class="form-control">
+                    <input type="text" value="{{$vendor->mobile_number}}" name="mobile_number" class="form-control">
                 </div>
             </div>
             <div class="row my-2">
@@ -67,21 +67,21 @@
                 </div>
                 <div class="col-3">
                     <label for="#">Phone one</label>
-                    <input type="number" class="form-control" name="telephone_one" value="{{$vendor->telephone_one}}">
+                    <input type="text" class="form-control" name="telephone_one" value="{{$vendor->telephone_one}}">
                 </div>
                 <div class="col-3">
                     <label for="#">Phone two</label>
-                    <input type="number" class="form-control" name="telephone_two" value="{{$vendor->telephone_two}}">
+                    <input type="text" class="form-control" name="telephone_two" value="{{$vendor->telephone_two}}">
                 </div>
             </div>
             <div class="row my-2">
                 <div class="col">
                     <label for="#">TIN number</label>
-                    <input type="number" class="form-control" name="tin_number" value="{{$vendor->tin_number}}">
+                    <input type="text" class="form-control" name="tin_number" value="{{$vendor->tin_number}}">
                 </div>
                 <div class="col">
                     <label for="#">FAX</label>
-                    <input type="number" class="form-control" name="fax" value="{{$vendor->fax}}">
+                    <input type="text" class="form-control" name="fax" value="{{$vendor->fax}}">
                 </div>
             </div>
             <div class="row my-2">
