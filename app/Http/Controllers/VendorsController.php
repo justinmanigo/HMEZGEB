@@ -79,9 +79,8 @@ class VendorsController extends Controller
     public function edit($id)
     {
         //view edit customer info
-        $individualVendors = Vendors::where('id',$id)->get();
-        return view('vendors.vendors.individualVendor',compact('individualVendors'));
-
+        $vendor = Vendors::where('id',$id)->first();
+        return view('vendors.vendors.individualVendor', compact('vendor'));
     }
 
     /**

@@ -6,7 +6,6 @@
 
 @section('content')
 
-@foreach($individualVendors as $vendor):
 <div class="container">
     <div class="d-sm-flex align-items-start justify-content-between mb-2">
         <h1>{{$vendor->name}}</h1>
@@ -159,5 +158,4 @@
   </div>
 </div>
 </form>
-@endforeach
 @endsection
