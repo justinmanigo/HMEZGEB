@@ -38,9 +38,10 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {   
-        
-        $imageName = time().'.'.$request->image->extension();  
-        $request->image->storeAs('customers', $imageName);
+        if($request->image) {
+            $imageName = time().'.'.$request->image->extension();  
+            $request->image->storeAs('customers', $imageName);
+        }
         
         $customers = new Customers();
         $customers->name =  $request->name;
@@ -56,7 +57,7 @@ class CustomerController extends Controller
         $customers->email = $request->email;
         $customers->contact_person = $request->contact_person;
         $customers->label = $request->label;
-        $customers->image =  $imageName;
+        $customers->image =  isset($imageName) ? $imageName : null;
         $customers->is_active ='Yes';
         $customers->save();
         return back();
