@@ -25,17 +25,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            @include('inventory.forms.newItem')
-                        </div>
-                        <div class="modal-footer">
-                            <div class="form-check mr-3">
-                                <input class="form-check-input" id="c_is_active" type="checkbox" value="Notify" name="is_active">
-                                <label class="form-check-label" for="c_is_active">Notify me when Quantity below</label>
-                            </div>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" form="form-receipt">Add Item</button>
-                        </div>
+                        @include('inventory.forms.newItem')
                     </div>
                 </div>
             </div>
@@ -52,7 +42,9 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Inventory Value</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 215,000</div>
+                            @foreach($inventories as $inventory)
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inventory->totalInventory }}</div>
+                            @endforeach
                         </div>
                         <div class="col-auto">
                         </div>
@@ -61,6 +53,7 @@
             </div>
         </div>
     </div>
+
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
@@ -69,32 +62,42 @@
                         <th class="w-15"></th>
                         <th class="w-15">Item Code</th>
                         <th>Item Name</th>
-                        <th>QTY</th>
                         <th>Purchase Price</th>
+                        {{-- <th>Purchase Quantity</th> --}}
                         <th>Sale Price</th>
+                        <th>Quantity</th>
+                        <th>Inventory Value</th>
                     </thead>
                     <tbody>
+                        @foreach($inventories as $inventory)
+           
                         <tr>
                             <td class=" d-flex justify-content-center">
-                               <img src="https://i.guim.co.uk/img/media/b48037b5f51bbaa96617d75715faadda1fd8af72/0_65_2018_1210/master/2018.jpg?width=465&quality=45&auto=format&fit=max&dpr=2&s=8d37b9fb6b31437b8f4c52eceb756fef" class="w-100">
+                                <img src="{{ asset("/storage/inventories/{$inventory->picture}") }}" class="w-100 img-responsive" style="min-width:100px">
                             </td>
-                            <td>04296</td>
-                            <td class="table-item-content">Rubber Shoe</td>
-                            <td class="table-item-content">12</td>
-                            <td class="table-item-content">Birr 5,000</td>
-                            <td class="table-item-content">Birr 10,000</td>
+                            <td>{{ $inventory->item_code }}</td>
+                            <td class="table-item-content">{{ $inventory->item_name }}</td>
+                            <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
+                            {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td>         --}}
+                            <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
+                            <td class="table-item-content">{{ $inventory->quantity }}</td>
+                            <td class="table-item-content">{{ $inventory->inventoryValue }}</td>
+                        
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+
 </main>
 
 <script>
     $(document).ready(function () {
-    $('#dataTables').DataTable();
-    $('.dataTables_filter').addClass('pull-right');
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
     });
 </script>
 @endsection
