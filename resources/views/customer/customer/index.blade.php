@@ -68,48 +68,32 @@
                             <th>Balance</th>
                         </thead>
                         <tbody>
+                            @foreach ($customers as $customer)
                             <tr>
                                 <td>
-                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    
+                                    <a type="button" class="btn btn-primary" href="{{ url('edit-customer/'.$customer->id) }}">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-pen"></i>
                                         </span>
-                                    </button>
-                                    <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </button>
-                                </td>
-                                <td class="table-item-content">PocketDevs</td>
-                                <td class="table-item-content">0012347001</td>
-                                <td class="table-item-content">Cebu City, Philippines</td>
-                                <td class="table-item-content">Example Key Person</td>
-                                <td class="table-item-content">+63 (012) 3456</td>
-                                <td class="table-item-content"><span class="badge badge-primary">New</span></td>
-                                <td class="table-item-content">1,000.00</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </button>
-                                    <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
+                                    </a>
+                                    <button type="button" class="btn btn-danger "
+                                    onClick='showModel({!! $customer->id !!})'>
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
                                     </button>
                                 </td>
-                                <td class="table-item-content">PocketDevs</td>
-                                <td class="table-item-content">0012347001</td>
-                                <td class="table-item-content">Cebu City, Philippines</td>
-                                <td class="table-item-content">Example Key Person</td>
-                                <td class="table-item-content">+63 (012) 3456</td>
-                                <td class="table-item-content"><span class="badge badge-success">VIP</span></td>
-                                <td class="table-item-content">1,000.00</td>
+                                <td class="table-item-content"> {{$customer->name}} </td>
+                                <td class="table-item-content"> {{$customer->tin_number}}</td>
+                                <td class="table-item-content"> {{$customer->city}}</td>
+                                <td class="table-item-content"> {{$customer->contact_person}}</td>
+                                <td class="table-item-content"> {{$customer->mobile_number}}</td>
+                                <td class="table-item-content"><span class="badge badge-primary"> {{$customer->label}}</span></td>
+                                <td class="table-item-content"> </td>
                             </tr>
+                            @endforeach
+                           
                         </tbody>
                     </table>
                 </div>
@@ -158,7 +142,7 @@
     </div>
 </div>
 
-{{-- Customer Modal --}}
+{{-- Customer new Modal --}}
 <div class="modal fade" id="modal-customer" tabindex="-1" role="dialog" aria-labelledby="modal-customer-label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -168,8 +152,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="form-customer" method="post" enctype="multipart/form-data">
+            
+                <form id="form-customer" action="/customer" method="post" enctype="multipart/form-data">
+                    @csrf
+                <div class="modal-body">
                     <div class="form-group row">
                         <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name<span class="text-danger ml-1">*</span> :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
@@ -178,35 +164,35 @@
 
                         <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="">
+                            <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="" >
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address :</label>
                         <div class="col-sm-9 col-lg-10">
-                            <input type="text" class="form-control" id="c_address" name="address" placeholder="">
+                            <input type="text" class="form-control" id="c_address" name="address" placeholder="" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="c_city" class="col-sm-3 col-lg-2 col-form-label">City :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_city" name="city" placeholder="">
+                            <input type="text" class="form-control" id="c_city" name="city" placeholder="" required>
                         </div>
 
                         <label for="c_country" class="col-sm-3 col-lg-2 col-form-label">Country :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_country" name="country" placeholder="">
+                            <input type="text" class="form-control" id="c_country" name="country" placeholder="" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone 1 :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_phone_1" name="phone_1" placeholder="">
+                            <input type="text" class="form-control" id="c_phone_1" name="telephone_one" placeholder="" required>
                         </div>
 
                         <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone 2 :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_phone_2" name="phone_2" placeholder="">
+                            <input type="text" class="form-control" id="c_phone_2" name="telephone_two" placeholder="">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -217,19 +203,19 @@
 
                         <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="">
+                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="c_contact_person" class="col-sm-2 col-form-label">Contact Person :</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder="">
+                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder=" " required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="c_email" class="col-sm-2 col-form-label">E-mail :</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_email" name="email" placeholder="">
+                            <input type="text" class="form-control" id="c_email" name="email" placeholder="" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -241,27 +227,52 @@
                     <div class="form-group row">
                         <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="file" id="c_picture" name="picture">
+                            <input type="file" id="c_picture" name="image">
                         </div>
 
                         <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_label" name="label" placeholder="New">
+                            <input type="text" class="form-control" id="c_label" name="label" placeholder="Label" required>
                         </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <div class="form-check mr-3">
-                    <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
-                    <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
+                    </div> 
                 </div>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="modal-customer">Save Customer</button>
-            </div>
+                <div class="modal-footer">
+                    <div class="form-check mr-3">
+                        <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
+                        <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" >Save Customer</button>
+                </div>
+                </form>
         </div>
     </div>
 </div>
+<div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+			<div class="modal-body">Are you sure to delete this record?</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" onClick="dismissModel()">Cancel</button>
+				<form id="delete-frm" class="" action="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 
 {{-- Import --}}
 <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label" aria-hidden="true">
@@ -326,13 +337,20 @@
  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
  <script>
-        $(document).ready(function () {
-            $('#dataTables').DataTable();
-            $('.dataTables_filter').addClass('pull-right');
-        });
-
-        //$('#details').trumbowyg();
-        //$('#features').trumbowyg();
-
+    function showModel(id) {
+        var frmDelete = document.getElementById("delete-frm");
+        frmDelete.action = 'delete-customer/'+id;
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'block';
+        confirmationModal.classList.remove('fade');
+        confirmationModal.classList.add('show');
+    }
+    
+    function dismissModel() {
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'none';
+        confirmationModal.classList.remove('show');
+        confirmationModal.classList.add('fade');
+    }
     </script>
 @endsection

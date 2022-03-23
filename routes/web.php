@@ -108,6 +108,12 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'customers.'
     ], function(){ 
         Route::get('/customer', [CustomerController::class, 'index']);
+        Route::post('/customer', [CustomerController::class, 'store']); 
+        Route::get('edit-customer/{id}', [CustomerController::class, 'edit']);
+        Route::put('update-customer/{id}', [CustomerController::class, 'update']);
+        Route::delete('delete-customer/{id}', [CustomerController::class, 'destroy']);
+        
+        
 
     });
 
