@@ -135,7 +135,9 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'vendors.'
     ], function(){ 
         Route::get('/vendorPage',[VendorsController::class,'index']);
-        Route::get('/individualVendor',[VendorsController::class,'show']);
+        Route::get('/individualVendor/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
+        Route::post('/individualVendor/{id}',[VendorsController::class,'update'])->name('vendors.update');
+        Route::delete('/individualVendor/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
         Route::post('/vendorPage', [VendorsController::class, 'store']);
     });
 

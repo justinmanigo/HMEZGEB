@@ -76,9 +76,12 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vendors $vendors)
+    public function edit($id)
     {
-        //
+        //view edit customer info
+        $individualVendors = Vendors::where('id',$id)->get();
+        return view('vendors.vendors.individualVendor',compact('individualVendors'));
+
     }
 
     /**
@@ -88,9 +91,30 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Vendors $vendors)
+    public function update(Request $request, $id)
     {
-        //
+        // Update the form
+      
+        $vendor = Vendors::where('id',$id)->first();
+        
+        $vendor->name =  $request->name;
+        $vendor->tin_number =  $request->tin_number;
+        $vendor->address =  $request->address;
+        $vendor->city =  $request->city;
+        $vendor->country =  $request->country;
+        $vendor->mobile_number =  $request->mobile_number;
+        $vendor->telephone_one =  $request->telephone_one;
+        $vendor->telephone_two =  $request->telephone_two;
+        $vendor->fax =  $request->fax;
+        $vendor->website =  $request->website;
+        $vendor->email =  $request->email;
+        $vendor->contact_person =  $request->contact_person;
+        $vendor->label =  $request->label;
+        $vendor->image =  $request->email;
+        $vendor->is_active =  $request->is_active;
+
+        $vendor->save();
+        return back()->withSuccess('Successfully Updated');    
     }
 
     /**
@@ -99,8 +123,11 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vendors $vendors)
+    public function destroy($id)
     {
-        //
+        $vendor = Vendors::where('id',$id)->first();
+        $vendor->delete();
+        return redirect('/vendorPage')->withSuccess('Successfully Deleted');;
+    
     }
 }

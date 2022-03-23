@@ -54,7 +54,7 @@
                         <p class="h3 pl-4 m-auto">Add New Vendor</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form action="/vendorPage"  method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('/vendorPage/') }}"  method="POST" enctype="multipart/form-data">
                      @csrf
                        @include('vendors.vendors.forms.addVendorModal')
                         <div class="modal-footer">					
@@ -87,10 +87,10 @@
                             <th>Balance</th>
                         </tr>
                     </thead>
-                   
+
                     <tbody>
                     @foreach($vendors as $vendor)
-                        <tr onclick="window.location='/individualVendor'">
+                        <tr onclick="window.location='{{ url("individualVendor/$vendor->id") }}'" >
                             <td>{{$vendor->name}}</td>
                             <td>{{$vendor->tin_number}}</td>
                             <td>{{$vendor->City}}</td>
