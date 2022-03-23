@@ -80,6 +80,7 @@ class VendorsController extends Controller
     {
         //view edit customer info
         $vendor = Vendors::where('id',$id)->first();
+        if(!$vendor) return abort(404);
         return view('vendors.vendors.individualVendor', compact('vendor'));
     }
 
