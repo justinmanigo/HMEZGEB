@@ -73,7 +73,7 @@
            
                         <tr>
                             <td class=" d-flex justify-content-center">
-                                <img src="{{ url('storage/inventories/$inventory->picture')}}" class="w-100 img-responsive" style="min-width:100px">
+                                <img src="{{ asset("/storage/inventories/{$inventory->picture}") }}" class="w-100 img-responsive" style="min-width:100px">
                             </td>
                             <td>{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
@@ -96,8 +96,8 @@
 
 <script>
     $(document).ready(function () {
-    $('#dataTables').DataTable();
-    $('.dataTables_filter').addClass('pull-right');
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
     });
 </script>
 @endsection
