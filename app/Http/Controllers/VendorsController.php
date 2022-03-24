@@ -39,8 +39,12 @@ class VendorsController extends Controller
     {
            
         $vendor = new Vendors();
-        $imageName = time().'.'.$request->image->extension();  
-        $request->image->storeAs('public/vendors/vendor', $imageName);
+
+        if($request->image)
+        {
+            $imageName = time().'.'.$request->image->extension();  
+            $request->image->storeAs('public/vendors/vendor', $imageName);
+        }
         $vendor->name =  $request->name;
         $vendor->tin_number =  $request->tin_number;
         $vendor->address =  $request->address;
@@ -54,7 +58,7 @@ class VendorsController extends Controller
         $vendor->email =  $request->email;
         $vendor->contact_person =  $request->contact_person;
         $vendor->label =  $request->label;
-        $vendor->image =  $request->image;
+        $vendor->image = isset($imageName) ? $imageName : null;
         $vendor->is_active =  $request->is_active;
 
         $vendor->save();
