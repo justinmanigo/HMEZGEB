@@ -15,11 +15,11 @@
     <div class="row mb-3">
         <label for="#" class="col-lg-2 col-form-label">Sale Price:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control inputPrice"  name="sale_price" required >
+            <input type="number" class="form-control inputPrice"  name="sale_price" step=".01" required >
         </div>
         <label for="#" class="col-lg-2 col-form-label">Purchase Price:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control inputPrice"  name="purchase_price" required>
+            <input type="number" class="form-control inputPrice"  name="purchase_price" step=".01" required>
         </div>
     </div>
     <div class="row mb-3">
