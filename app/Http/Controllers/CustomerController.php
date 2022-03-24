@@ -105,7 +105,7 @@ class CustomerController extends Controller
         $customers->is_active ='Yes';
         $customers->update();
 
-        return redirect('customer/')->with('message', "Successfully edited customer.");
+        return redirect('customer/')->with('success', "Successfully edited customer.");
 
     }
 
