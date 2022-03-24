@@ -26,7 +26,7 @@ class CreateInventoriesTable extends Migration
             $table->string('default_income_account')->nullable();
             $table->string('default_expense_account')->nullable();
             $table->enum('inventory_type',['inventory_item','non_inventory_item']);           
-            $table->string('picture');      
+            $table->string('picture')->nullable();      
             $table->longText('description');
             $table->enum('is_enabled',['Yes','No']);
             $table->timestamps();
