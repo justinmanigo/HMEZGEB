@@ -47,7 +47,6 @@ class InventoryController extends Controller
         $inventory->sale_price =  $request->sale_price;
         $inventory->purchase_price =  $request->purchase_price;
         $inventory->quantity =  $request->quantity;
-
         // $inventory->purchase_quantity =  $request->purchase_quantity;
         // $inventory->sold_quantity =  $request->sold_quantity;
         $inventory->default_income_account = $request->default_income_account;

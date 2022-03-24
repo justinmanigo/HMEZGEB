@@ -54,7 +54,8 @@
                         <p class="h3 pl-4 m-auto">Add New Vendor</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
+                    <form action="{{ route('vendors.vendors.store') }}"  method="POST" enctype="multipart/form-data">
+                     @csrf
                        @include('vendors.vendors.forms.addVendorModal')
                         <div class="modal-footer">					
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -86,18 +87,30 @@
                             <th>Balance</th>
                         </tr>
                     </thead>
-                   
+
                     <tbody>
-                        <tr onclick="window.location='/individualVendor'">
-                            <td>PocketDevs</td>
-                            <td>289123585</td>
-                            <td>Cebu</td>
-                            <td>Justin Manigo</td>
-                            <td>09208765910</td>
-                            <td><span class="badge badge-primary">VIP</span></td>
+                    @foreach($vendors as $vendor)
+                        <tr onclick="window.location='{{ route('vendors.vendors.edit',$vendor->id) }}'" >
+                            <td>{{$vendor->name}}</td>
+                            <td>{{$vendor->tin_number}}</td>
+                            <td>{{$vendor->city}}</td>
+                            <td>{{$vendor->contact_person}}</td>
+                            <td>{{$vendor->mobile_number}}</td>
+                            <td>
+                                @if($vendor->label=='VIP')
+                                <span class="badge badge-primary">{{$vendor->label}}</span>
+                                @endif
+                                @if($vendor->label=='ISP')
+                                <span class="badge badge-info">{{$vendor->label}}</span>
+                                @endif
+                                @if($vendor->label=='New')
+                                <span class="badge badge-secondary">{{$vendor->label}}</span>
+                                @endif
+                            </td>
                             <td>12,000.00</td>
                         </tr>
-                        <tr onclick="window.location='/individualVendor'">
+                     @endforeach  
+                        <!-- <tr onclick="window.location='/individualVendor'">
                             <td>Pocketteams</td>
                             <td>362162217</td>
                             <td>Cebu</td>
@@ -114,7 +127,7 @@
                             <td>09084378189</td>
                             <td><span class="badge badge-secondary">New</span></td>
                             <td>8,000.00</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>

@@ -9,7 +9,22 @@ class Vendors extends Model
 {
     use HasFactory;
 
-    
+    protected $fillable = [
+        'name',
+        'tin_number',
+        'address',
+        'city',
+        'country',
+        'mobile_number',
+        'telephone_one',
+        'website',
+        'email',
+        'contact_person',
+        'label',
+        'image',
+        'is_active',
+    ];
+
     public function bills()
     {
         return $this->hasMany(Bills::class, 'vendor_id','id');

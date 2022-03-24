@@ -134,8 +134,11 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'vendors.'
     ], function(){ 
-        Route::get('/vendorPage',[VendorsController::class,'index']);
-        Route::get('/individualVendor',[VendorsController::class,'show']);
+        Route::get('/vendors',[VendorsController::class,'index']);
+        Route::get('/vendors/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
+        Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
+        Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
+        Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');;
     });
 
     Route::group([
