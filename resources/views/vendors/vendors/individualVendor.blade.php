@@ -34,7 +34,7 @@
     
     </div>
     <div class="container card shadow px-4 py-3">
-        <form action='{{ url("/individualVendor/$vendor->id") }}' method="POST" enctype="multipart/form-data">
+        <form action="{{ route('vendors.vendors.update',$vendor->id) }}" method="POST" enctype="multipart/form-data">
         @CSRF    
         <div class="row my-2">
                 <div class="col">
@@ -104,7 +104,7 @@
                 <label for="image" class="mx-3 col-form-label">Image:</label>
                 <div class="input-group col-md-4 col-lg-4">
                     <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile03" name="image">
+                    <input type="file" class="custom-file-input" id="inputGroupFile03" name="image" >
                     <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
                     </div>
                 </div>

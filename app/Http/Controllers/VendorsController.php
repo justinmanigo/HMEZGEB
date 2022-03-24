@@ -15,7 +15,7 @@ class VendorsController extends Controller
     public function index()
     {
         $vendors = Vendors::all();
-
+        
         return view('vendors.vendors.vendor',compact('vendors'));
     }
 
@@ -39,6 +39,8 @@ class VendorsController extends Controller
     {
            
         $vendor = new Vendors();
+        $imageName = time().'.'.$request->image->extension();  
+        $request->image->storeAs('public/vendors/vendor', $imageName);
         $vendor->name =  $request->name;
         $vendor->tin_number =  $request->tin_number;
         $vendor->address =  $request->address;
@@ -52,7 +54,7 @@ class VendorsController extends Controller
         $vendor->email =  $request->email;
         $vendor->contact_person =  $request->contact_person;
         $vendor->label =  $request->label;
-        $vendor->image =  $request->email;
+        $vendor->image =  $request->image;
         $vendor->is_active =  $request->is_active;
 
         $vendor->save();
@@ -67,7 +69,7 @@ class VendorsController extends Controller
      */
     public function show(Vendors $vendors)
     {
-        return view('vendors.vendors.individualVendor',compact('vendors'));
+        return view('vendors.vendors.vendors',compact('vendors'));
     }
 
     /**
@@ -96,7 +98,9 @@ class VendorsController extends Controller
         // Update the form
       
         $vendor = Vendors::where('id',$id)->first();
-        
+        $imageName = time().'.'.$request->image->extension();  
+        $request->image->storeAs('public/vendors/vendor', $imageName);
+
         $vendor->name =  $request->name;
         $vendor->tin_number =  $request->tin_number;
         $vendor->address =  $request->address;
@@ -110,7 +114,7 @@ class VendorsController extends Controller
         $vendor->email =  $request->email;
         $vendor->contact_person =  $request->contact_person;
         $vendor->label =  $request->label;
-        $vendor->image =  $request->email;
+        $vendor->image = $imageName;
         $vendor->is_active =  $request->is_active;
 
         $vendor->save();
@@ -127,7 +131,7 @@ class VendorsController extends Controller
     {
         $vendor = Vendors::where('id',$id)->first();
         $vendor->delete();
-        return redirect('/vendorPage')->withSuccess('Successfully Deleted');;
+        return redirect('/vendors')->withSuccess('Successfully Deleted');;
     
     }
 }

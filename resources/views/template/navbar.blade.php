@@ -57,7 +57,7 @@
                         <h6 class="collapse-header">Menu:</h6>
                         <a class="collapse-item" href="/bill">Bill</a>
                         <a class="collapse-item" href="/payment">Payment</a>
-                        <a class="collapse-item" href="/vendorPage">Vendor</a>
+                        <a class="collapse-item" href="/vendors">Vendor</a>
                     </div>
                 </div>
             </li>
