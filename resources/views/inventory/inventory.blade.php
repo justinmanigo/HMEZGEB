@@ -79,7 +79,13 @@
            
                         <tr>
                             <td class=" d-flex justify-content-center">
-                                <img src="{{ asset("/storage/inventories/{$inventory->picture}") }}" class="w-100 img-responsive" style="min-width:100px">
+                                <img src="
+                                    @if($inventory->picture)
+                                        {{ asset("/storage/inventories/{$inventory->picture}") }}
+                                    @else
+                                        {{ asset("/img/blank.jpg") }}
+                                    @endif
+                                " class="w-100 img-responsive" style="min-width:100px">
                             </td>
                             <td>{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
