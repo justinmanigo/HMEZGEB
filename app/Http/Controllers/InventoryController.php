@@ -37,9 +37,10 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $imageName = time().'.'.$request->picture->extension();  
-        $request->picture->storeAs('public/inventories', $imageName);
+        if($request->picture) {
+            $imageName = time().'.'.$request->picture->extension();  
+            $request->picture->storeAs('public/inventories', $imageName);
+        }
         
         $inventory = new Inventory();
         $inventory->item_code =  $request->item_code;
@@ -52,7 +53,7 @@ class InventoryController extends Controller
         $inventory->default_income_account = $request->default_income_account;
         $inventory->default_expense_account = $request->default_expense_account;
         $inventory->inventory_type = $request->inventory_type;
-        $inventory->picture =  $imageName;
+        $inventory->picture =  isset($imageName) ? $imageName : null;
         $inventory->description = $request->description;
         $inventory->is_enabled =  'Yes';
         $inventory->save();
