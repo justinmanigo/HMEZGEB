@@ -16,18 +16,19 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('tin_number');
-            $table->string('address');
+            $table->string('tin_number')->nullable();;
+            $table->longText('address');
             $table->string('city');
             $table->string('country');
             $table->string('mobile_number'); 
             $table->string('telephone_one');
             $table->string('telephone_two')->nullable();
-            $table->string('fax');   
-            $table->string('website');   
+            $table->string('fax')->nullable();;   
+            $table->string('website')->nullable();;   
             $table->string('email');   
             $table->string('contact_person');
             $table->string('image')->nullable();
+            $table->string('label');
             $table->enum('is_active',['Yes','No'])->default('Yes');
             $table->timestamps();
         });
