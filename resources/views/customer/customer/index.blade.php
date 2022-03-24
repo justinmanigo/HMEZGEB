@@ -51,7 +51,23 @@
                 <span class="text">Download Excel Format</span>
             </button>    
         </div>
-
+        @if(session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session()->get('sucess') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        @if(session()->has('danger'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session()->get('danger') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+       
         {{-- Page Content --}}
         <div class="card">
             <div class="card-body">
@@ -72,7 +88,7 @@
                             <tr>
                                 <td>
                                     
-                                    <a type="button" class="btn btn-primary" href="{{ url('edit-customer/'.$customer->id) }}">
+                                    <a type="button" class="btn btn-primary" href="{{ url('customer/'.$customer->id) }}">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-pen"></i>
                                         </span>
@@ -93,7 +109,6 @@
                                 <td class="table-item-content"> </td>
                             </tr>
                             @endforeach
-                           
                         </tbody>
                     </table>
                 </div>
@@ -248,6 +263,7 @@
         </div>
     </div>
 </div>
+{{-- Customer new Modal --}}
 <div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -339,7 +355,7 @@
  <script>
     function showModel(id) {
         var frmDelete = document.getElementById("delete-frm");
-        frmDelete.action = 'delete-customer/'+id;
+        frmDelete.action = 'customer/'+id;
         var confirmationModal = document.getElementById("deleteConfirmationModel");
         confirmationModal.style.display = 'block';
         confirmationModal.classList.remove('fade');

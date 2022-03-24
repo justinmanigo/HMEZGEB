@@ -109,9 +109,9 @@ Route::post('/userlogin', function (Request $request){
     ], function(){ 
         Route::get('/customer', [CustomerController::class, 'index']);
         Route::post('/customer', [CustomerController::class, 'store']); 
-        Route::get('edit-customer/{id}', [CustomerController::class, 'edit']);
-        Route::put('update-customer/{id}', [CustomerController::class, 'update']);
-        Route::delete('delete-customer/{id}', [CustomerController::class, 'destroy']);
+        Route::get('/customer/{id}', [CustomerController::class, 'edit']);
+        Route::put('/customer/{id}', [CustomerController::class, 'update']);
+        Route::delete('/customer/{id}', [CustomerController::class, 'destroy']);
         
         
 

@@ -6,7 +6,8 @@
                 <h5 class="modal-title" id="modal-customer-label">Edit Customer</h5>
             </div>
             <br/>
-            <form id="form-customer" action="{{ url('update-customer/'.$customers->id) }}" method="post" enctype="multipart/form-data">
+            
+            <form id="form-customer" action="{{ url('customer/'.$customers->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 

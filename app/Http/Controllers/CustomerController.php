@@ -59,7 +59,8 @@ class CustomerController extends Controller
         $customers->image =  $imageName;
         $customers->is_active ='Yes';
         $customers->save();
-        return back();
+        return redirect('customer/')->with('success', "Successfully added new customer.");
+
     }
 
     /**
@@ -103,7 +104,8 @@ class CustomerController extends Controller
         $customers->is_active ='Yes';
         $customers->update();
 
-        return redirect()->back();
+        return redirect('customer/')->with('message', "Successfully edited customer.");
+
     }
 
     /**
@@ -118,7 +120,8 @@ class CustomerController extends Controller
         $customers = Customers::find($id);
         $customers->delete();
         
-        return redirect()->back();
+        return redirect('customer/')->with('danger', "Successfully deleted customer");
+
     }
 
 }
