@@ -93,7 +93,7 @@
                         <tr onclick="window.location='{{ url("individualVendor/$vendor->id") }}'" >
                             <td>{{$vendor->name}}</td>
                             <td>{{$vendor->tin_number}}</td>
-                            <td>{{$vendor->City}}</td>
+                            <td>{{$vendor->city}}</td>
                             <td>{{$vendor->contact_person}}</td>
                             <td>{{$vendor->mobile_number}}</td>
                             <td>
