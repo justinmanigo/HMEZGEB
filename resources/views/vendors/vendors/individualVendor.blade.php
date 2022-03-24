@@ -125,11 +125,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row d-flex justify-content-end mt-3">
-                <div>
-                    <button class="btn btn-secondary mx-1" type="submit">Edit</button>
+            <div class="row  mt-3 d-flex justify-content-between">
                     <button class="btn btn-danger mr-3 " type="button" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                </div>
+                    <button class="btn btn-secondary mx-1" type="submit">Update Vendor</button>
             </div>
         </form>
     </div>
