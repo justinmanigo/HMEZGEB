@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Receipts;
+use App\Models\Customers;
 use Illuminate\Http\Request;
 
 class ReceiptController extends Controller
@@ -13,7 +14,16 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        return view('customer.receipt.index');
+        $customers = Customers::all();
+        return view('customer.receipt.index',compact('customers'));
+    }
+    public function selectCustomer(Request $request){
+       
+        $customers = Customers::where('id',$request->customer_id)->first();
+    
+       return response()->json([
+            'customers' => $customers,
+        ]);
     }
 
 }

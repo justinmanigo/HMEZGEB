@@ -1,4 +1,3 @@
-<form id="form-select-customer" method="post" enctype="multipart/form-data">
 
     <div class="form-group row">
         <div class="input-group col-12">
@@ -18,20 +17,14 @@
                 <td>Customer Name</td>
             </thead>
             <tbody>
+                @foreach($customers as $customer)
                 <tr>
                     <td>
-                        <input type="radio" name="sc_customer" id="sc_customer_1" value="1">
+                        <input type="radio" name="id" id="sc_customers" value="{{$customer->id}}">
                     </td>
-                    <td><label for="sc_customer_1">PocketDevs</label></td>
+                    <td><label for="sc_customers">{{$customer->name}} </label></td>
                 </tr>
-                <tr>
-                    <td>
-                        <input type="radio" name="sc_customer" id="sc_customer_2" value="2">
-                    </td>
-                    <td><label for="sc_customer_2">Fullstack HQ</label></td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
-
-</form>

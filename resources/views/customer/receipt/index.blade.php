@@ -475,8 +475,10 @@
     </div>
 </div>
 
-{{-- STACK 2 > Select Customer --}}
+{{-- STACK 2 > Receipt Select Customer --}}
 {{-- To be planned carefully on how can this be implemented across 4 receipt types/modals. --}}
+<!-- <form action="{{route('receipts.receipt.selectCustomer') }}" id="form-select-customer" method="post" enctype="multipart/form-data"> -->
+<!-- @csrf -->
 <div class="modal fade" id="modal-select-customer" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -491,14 +493,16 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="sc_btn_select_customer">Select Customer</button>
+                <button type="submit" class="btn btn-primary"  id="sc_btn_select_customers">Select Customer</button>
             </div>
         </div>
     </div>
 </div>
+<!-- </form> -->
 
 {{-- STACK 2 > Select Item (Inventory) --}}
 {{-- To be planned carefully on how can this be implemented across 3 receipt types/modals. --}}
+
 <div class="modal fade" id="modal-select-item" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -524,7 +528,26 @@
         $('#dataTables').DataTable();
         $('#dataTables2').DataTable();
         $('.dataTables_filter').addClass('pull-right');
-    });
+         
+        // $("#sc_btn_select_customers").click(function() {   
+    })            
+
+//    var id=$('#sc_customers').val();     
+            
+    // $.ajax({    //create an ajax request to display.php
+    //   method: "POST",
+    //   data:{id:id},
+    //   route: "receipts.receipt.selectCustomer",             
+    //   dataType: "json",                 
+    //   success: function(response){ 
+    //       console.log("Hello");                   
+    //       // $.each(response.customers,function(key,item)){
+    //       //     $('#r_tin_number').attr("placeholder", "Search Whatever you want");
+    //       // }
+    //   }
+
+    //     });
+    // });
     // https://www.mockaroo.com/
 
 
@@ -711,5 +734,6 @@
             })
     }
 </script>
+
 
 @endsection

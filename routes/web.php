@@ -101,7 +101,8 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'receipts.'
     ], function(){
         Route::get('/receipt', [ReceiptController::class, 'index']);
-        
+        Route::post('/receipt',[ReceiptController::class,'selectCustomer'])->name('receipt.selectCustomer');
+
     });
 
     Route::group([
@@ -144,7 +145,7 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/vendors/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
         Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
         Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
-        Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');;
+        Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');
     });
 
     Route::group([
