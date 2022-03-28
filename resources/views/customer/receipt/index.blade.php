@@ -529,6 +529,7 @@
 
 
     var inputElm = document.querySelector('input[name=customer]');
+    var customer_id;
 
     function tagTemplate(tagData){
         return `
@@ -666,31 +667,34 @@
     function onDropdownShow(e){
         var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
 
-        if( tagify.suggestedListItems.length > 1 ){
+        // if( tagify.suggestedListItems.length > 1 ){
             // addAllSuggestionsElm = getAddAllSuggestionsElm();
 
             // insert "addAllSuggestionsElm" as the first element in the suggestions list
-            dropdownContentElm.insertBefore(addAllSuggestionsElm, dropdownContentElm.firstChild)
-        }
+            // dropdownContentElm.insertBefore(addAllSuggestionsElm, dropdownContentElm.firstChild)
+        // }
     }
 
     function onSelectSuggestion(e){
-        if( e.detail.elm == addAllSuggestionsElm )
-            tagify.dropdown.selectAll();
+        // to get id of value
+        console.log(e.detail.data.value);
+        customer_id = e.detail.data.value;
+
+        // you can call ajax to get the customer data
     }
 
     // create a "add all" custom suggestion element every time the dropdown changes
-    function getAddAllSuggestionsElm(){
-        // suggestions items should be based on "dropdownItem" template
-        return tagify.parseTemplate('dropdownItem', [{
-                class: "addAll",
-                name: "Add all",
-                email: tagify.whitelist.reduce(function(remainingSuggestions, item){
-                    return tagify.isTagDuplicate(item.value) ? remainingSuggestions : remainingSuggestions + 1
-                }, 0) + " Members"
-            }]
-        )
-    }
+    // function getAddAllSuggestionsElm(){
+    //     // suggestions items should be based on "dropdownItem" template
+    //     return tagify.parseTemplate('dropdownItem', [{
+    //             class: "addAll",
+    //             name: "Add all",
+    //             email: tagify.whitelist.reduce(function(remainingSuggestions, item){
+    //                 return tagify.isTagDuplicate(item.value) ? remainingSuggestions : remainingSuggestions + 1
+    //             }, 0) + " Members"
+    //         }]
+    //     )
+    // }
 </script>
 
 @endsection
