@@ -113,7 +113,7 @@ Route::post('/userlogin', function (Request $request){
         Route::put('/customer/{id}', [CustomerController::class, 'update']);
         Route::delete('/customer/{id}', [CustomerController::class, 'destroy']);
         
-        
+        Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
 
     });
 

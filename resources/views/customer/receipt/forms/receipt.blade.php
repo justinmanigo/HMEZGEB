@@ -4,7 +4,10 @@
             <h5>Customer Details:</h5>
             <div class="form-group row">
                 <label for="r_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                {{-- <div class="input-group col-8">
+                {{-- this is the old code with select customer. we may delete this later on when
+                     its no longer needed na talaga :D
+                    
+                <div class="input-group col-8">
                     <div class="input-group-prepend">
                         <button class="btn btn-primary" type="button" id="r_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
                     </div>
@@ -14,20 +17,20 @@
                     
                 </div> --}}
                 <input class="col-md-4 col-lg-4" id="r_customer" name='customer'>
-                <input type="hidden" name="customer_id" value="">
+                <input type="hidden" id="r_customer_id" name="customer_id" value="">
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
                 <label for="r_tin_number" class="col-4 col-form-label text-lg-right">Tin # :</label>
-                <input type="text" id="r_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="0042101026" name="tin_number" disabled readonly>
+                <input type="text" id="r_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="tin_number" disabled readonly>
             </div>
             <div class="form-group row mb-0">
                 <label for="r_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
-                <input type="text" id="r_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="Example Key Person" name="contact_person" disabled readonly>
+                <input type="text" id="r_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
             </div>
             <div class="form-group row mb-0">
                 <label for="r_contact_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
-                <input type="text" id="r_contact_number" class="form-control-plaintext col-8 pl-3" placeholder="0911223344" name="contact_number" disabled readonly>
+                <input type="text" id="r_contact_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_number" disabled readonly>
             </div>
         </div>
 
