@@ -66,14 +66,11 @@
                 <th>Total</th>
                 <th class="thead-actions">Actions</th>
             </thead>
-            <tbody>
-                <tr>
+            <tbody id="r_items">
+                {{-- <tr>
                     <td>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-item">Select</button>
-                            </div>
-                            <input type="text" class="form-control" name="item_name[]" placeholder="Item Name" disabled>
+                            <input id="r_item" class="r_item" name='item[]'>
                             <input type="hidden" name="item_id[]" value="">
                         </div>
                     </td>
@@ -84,9 +81,9 @@
                         <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
                     </td>
                     <td>
-                        {{-- <select class="form-control" name="tax[]">
+                        <select class="form-control" name="tax[]">
                             <option>Sales Tax (15%)</option>
-                        </select> --}}
+                        </select>
                     </td>
                     <td>
                         <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
@@ -103,7 +100,7 @@
                             </span>
                         </button>
                     </td>
-                </tr>
+                </tr> --}}
             </tbody>
             <tfoot>
                 <tr>

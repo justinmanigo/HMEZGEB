@@ -557,5 +557,8 @@
 <script src="/js/customer/receipt/select_customer_receipt.js"></script>
 <script src="/js/customer/receipt/select_customer_proforma.js"></script>
 
+<script src="/js/customer/receipt/template_select_item.js"></script>
+<script src="/js/customer/receipt/select_item_receipt.js"></script>
+
 
 @endsection
