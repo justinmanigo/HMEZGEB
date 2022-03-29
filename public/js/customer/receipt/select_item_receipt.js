@@ -4,16 +4,10 @@ $(document).ready(function () {
     // console.log(receipt_items.length)
     // Create first <tr> for receipt items
     createReceiptItemEntry()
-    createReceiptItemEntry()
-});  
+});
 
-function createReceiptItemEntry()
-{
-    // check length
-    console.log(receipt_items.length)
-    receipt_items.length++;
+function createReceiptItemEntry() {
 
-    // Create <tr> entry
     let inner = `
     <tr data-id="${receipt_items.length}" id="r_item_entry_${receipt_items.length}">
         <td>
@@ -23,7 +17,7 @@ function createReceiptItemEntry()
             </div>
         </td>
         <td>
-            <input type="number" id="r_item_quantity_${receipt_items.length}" class="form-control" name="quantity[]" placeholder="Enter Quantity" required>
+            <input type="number" id="r_item_quantity_${receipt_items.length}" class="form-control" name="quantity[]" placeholder="0" disabled>
         </td>
         <td>
             <input type="text" id="r_item_price_${receipt_items.length}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
@@ -37,7 +31,7 @@ function createReceiptItemEntry()
             <input type="text" id="r_item_total_${receipt_items.length}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
         </td>
         <td>
-            <button type="button" id="r_item_delete_${receipt_items.length}" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
+            <button type="button" id="r_item_delete_${receipt_items.length}" class="btn btn-icon btn-danger r_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
                 <span class="icon text-white-50">
                     <i class="fas fa-trash"></i>
                 </span>
@@ -57,13 +51,13 @@ function createReceiptItemEntry()
     let elm_tagify = new Tagify(elm, {
         tagTextProp: 'name', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
-        mode : "select",
+        mode: "select",
         skipInvalid: false, // do not remporarily add invalid tags
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
             classname: 'item-list',
-            searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
+            searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
             tag: ItemTagTemplate,
@@ -99,6 +93,20 @@ function createReceiptItemEntry()
 
     receipt_items.push(item_entry);
 }
+// add table row for receipt item
+$(document).on('click', '.r_add_item_entry', function () {
+    createReceiptItemEntry()
+
+})
+
+
+$(document).on('click', '.r_item_delete', function (event) {
+    $(this).parents('tr').remove();
+
+});
+
+
+
 
 var receipt_select_item_elm = document.querySelector('#r_item');
 
@@ -106,13 +114,13 @@ var receipt_select_item_elm = document.querySelector('#r_item');
 var receipt_select_item_tagify = new Tagify(receipt_select_item_elm, {
     tagTextProp: 'name', // very important since a custom template is used with this property as text
     enforceWhitelist: true,
-    mode : "select",
+    mode: "select",
     skipInvalid: false, // do not remporarily add invalid tags
     dropdown: {
         closeOnSelect: true,
         enabled: 0,
         classname: 'item-list',
-        searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
+        searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
     },
     templates: {
         tag: ItemTagTemplate,
@@ -142,11 +150,11 @@ receipt_select_item_tagify.on('remove', onReceiptItemRemove)
 
 var addAllSuggestionsElm;
 
-function onReceiptItemDropdownShow(e){
+function onReceiptItemDropdownShow(e) {
     var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
 }
 
-function onReceiptItemSelectSuggestion(e){
+function onReceiptItemSelectSuggestion(e) {
     // checks for data of selected customer
     console.log(e.detail.data);
 
@@ -158,7 +166,7 @@ function onReceiptItemSelectSuggestion(e){
     // $("#r_contact_number").val(e.detail.data.contact_number)
 }
 
-function onReceiptItemRemove(e){
+function onReceiptItemRemove(e) {
     // $("#r_customer_id").val("")
     // $("#r_tin_number").val("")
     // $("#r_contact_person").val("")
@@ -183,9 +191,11 @@ function onReceiptItemInput(e) {
     // show loading animation and hide the suggestions dropdown
     tagify.loading(true).dropdown.hide()
 
-    fetch('/select/search/inventory/' + value, {signal:controller.signal})
+    fetch('/select/search/inventory/' + value, {
+            signal: controller.signal
+        })
         .then(RES => RES.json())
-        .then(function(newWhitelist){
+        .then(function (newWhitelist) {
             tagify.whitelist = newWhitelist // update whitelist Array in-place
             tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
