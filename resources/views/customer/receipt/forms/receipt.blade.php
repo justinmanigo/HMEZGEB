@@ -4,19 +4,7 @@
             <h5>Customer Details:</h5>
             <div class="form-group row">
                 <label for="r_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                {{-- this is the old code with select customer. we may delete this later on when
-                     its no longer needed na talaga :D
-                    
-                <div class="input-group col-8">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-primary" type="button" id="r_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
-                    </div>
-                    <div class="input-group-append">
-                        <input type="text" id="r_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
-                    </div>
-                    
-                </div> --}}
-                <input class="col-md-4 col-lg-4" id="r_customer" name='customer'>
+                <input class="col-8 col-lg-7" id="r_customer" name='customer'>
                 <input type="hidden" id="r_customer_id" name="customer_id" value="">
             </div>
             {{-- Contact Details --}}
@@ -62,7 +50,7 @@
             <div class="form-group row">
                 <label for="r_account" class="col-4 col-form-label text-lg-right">Account :</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" id="r_account" name="account" placeholder="Change later to use either Tagify/Select2" required>
+                    <input class="col-md-4 col-lg-4" id="r_account" name='account'>
                 </div>
             </div>
         </div>
