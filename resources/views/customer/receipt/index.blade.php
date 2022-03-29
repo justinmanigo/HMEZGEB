@@ -477,9 +477,9 @@
 
 {{-- STACK 2 > Receipt Select Customer --}}
 {{-- To be planned carefully on how can this be implemented across 4 receipt types/modals. --}}
-<!-- <form action="{{route('receipts.receipt.selectCustomer') }}" id="form-select-customer" method="post" enctype="multipart/form-data"> -->
-<!-- @csrf -->
-<div class="modal fade" id="modal-select-customer" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
+{{-- <form action="{{route('receipts.receipt.selectCustomer') }}" id="form-select-customer" method="post" enctype="multipart/form-data"> --}}
+{{--   @csrf --}}
+{{-- <div class="modal fade" id="modal-select-customer" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -497,13 +497,13 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- </form> -->
 
 {{-- STACK 2 > Select Item (Inventory) --}}
 {{-- To be planned carefully on how can this be implemented across 3 receipt types/modals. --}}
 
-<div class="modal fade" id="modal-select-item" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
+{{-- <div class="modal fade" id="modal-select-item" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -521,7 +521,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 <script>
     $(document).ready(function () {
@@ -554,7 +554,7 @@
     var inputElm = document.querySelector('input[name=customer]');
     var customer_id;
 
-    function tagTemplate(tagData){
+    function customerTagTemplate(tagData){
         return `
             <tag title="${tagData.email}"
                     contenteditable='false'
@@ -573,7 +573,7 @@
         `
     }
 
-    function suggestionItemTemplate(tagData){
+    function customerSuggestionItemTemplate(tagData){
         return `
             <div ${this.getAttributes(tagData)}
                 class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
@@ -603,8 +603,8 @@
             searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
-            tag: tagTemplate,
-            dropdownItem: suggestionItemTemplate
+            tag: customerTagTemplate,
+            dropdownItem: customerSuggestionItemTemplate
         },
         whitelist: [],
         // whitelist: [
