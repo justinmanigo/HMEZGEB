@@ -129,8 +129,7 @@ class CustomerController extends Controller
 
     public function queryCustomers($query)
     {   
-        // missing contact_number
-        $customers = Customers::select('id as value', 'name', 'tin_number', 'contact_person')
+        $customers = Customers::select('id as value', 'name', 'tin_number', 'contact_person','mobile_number')
             ->where('name', 'LIKE', '%' . $query . '%')->get();
         return $customers;
     }

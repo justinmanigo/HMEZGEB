@@ -51,16 +51,14 @@ function onProformaCustomerSelectSuggestion(e){
     $("#p_customer_id").val(e.detail.data.value)
     $("#p_tin_number").val(e.detail.data.tin_number)
     $("#p_contact_person").val(e.detail.data.contact_person)
-
-    // contact number seems to be missing in migration, so i'm skipping this
-    // $("#p_contact_number").val(e.detail.data.contact_number)
+    $("#p_mobile_number").val(e.detail.data.mobile_number)
 }
 
 function onProformaCustomerRemove(e){
     $("#p_customer_id").val("")
     $("#p_tin_number").val("")
     $("#p_contact_person").val("")
-    $("#p_contact_number").val("")
+    $("#p_mobile_number").val("")
 }
 
 function onProformaCustomerInput(e) {

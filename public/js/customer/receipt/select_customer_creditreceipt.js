@@ -1,7 +1,7 @@
-var receipt_select_customer_elm = document.querySelector('#r_customer');
+var creditreceipt_select_customer_elm = document.querySelector('#cr_customer');
 
 // initialize Tagify on the above input node reference
-var receipt_select_customer_tagify = new Tagify(receipt_select_customer_elm, {
+var creditreceipt_select_customer_tagify = new Tagify(creditreceipt_select_customer_elm, {
     tagTextProp: 'name', // very important since a custom template is used with this property as text
     enforceWhitelist: true,
     mode : "select",
@@ -33,49 +33,49 @@ var receipt_select_customer_tagify = new Tagify(receipt_select_customer_elm, {
     // ]
 })
 
-receipt_select_customer_tagify.on('dropdown:show dropdown:updated', onDropdownShow)
-receipt_select_customer_tagify.on('dropdown:select', onReceiptCustomerSelectSuggestion)
-receipt_select_customer_tagify.on('input', onReceiptCustomerInput)
-receipt_select_customer_tagify.on('remove', onReceiptCustomerRemove)
+creditreceipt_select_customer_tagify.on('dropdown:show dropdown:updated', onDropdownShow)
+creditreceipt_select_customer_tagify.on('dropdown:select', oncreditreceiptCustomerSelectSuggestion)
+creditreceipt_select_customer_tagify.on('input', oncreditreceiptCustomerInput)
+creditreceipt_select_customer_tagify.on('remove', oncreditreceiptCustomerRemove)
 
 var addAllSuggestionsElm;
 
 function onDropdownShow(e){
-    var dropdownContentElm = e.detail.receipt_select_customer_tagify.DOM.dropdown.content;
+    var dropdownContentElm = e.detail.creditreceipt_select_customer_tagify.DOM.dropdown.content;
 }
 
-function onReceiptCustomerSelectSuggestion(e){
+function oncreditreceiptCustomerSelectSuggestion(e){
     // checks for data of selected customer
     console.log(e.detail.data);
 
-    $("#r_customer_id").val(e.detail.data.value)
-    $("#r_tin_number").val(e.detail.data.tin_number)
-    $("#r_contact_person").val(e.detail.data.contact_person)
-    $("#r_mobile_number").val(e.detail.data.mobile_number)
+    $("#cr_customer_id").val(e.detail.data.value)
+    $("#cr_tin_number").val(e.detail.data.tin_number)
+    $("#cr_contact_person").val(e.detail.data.contact_person)
+    $("#cr_mobile_number").val(e.detail.data.mobile_number)
 }
 
-function onReceiptCustomerRemove(e){
-    $("#r_customer_id").val("")
-    $("#r_tin_number").val("")
-    $("#r_contact_person").val("")
-    $("#r_mobile_number").val("")
+function oncreditreceiptCustomerRemove(e){
+    $("#cr_customer_id").val("")
+    $("#cr_tin_number").val("")
+    $("#cr_contact_person").val("")
+    $("#cr_mobile_number").val("")
 }
 
-function onReceiptCustomerInput(e) {
+function oncreditreceiptCustomerInput(e) {
     var value = e.detail.value
-    receipt_select_customer_tagify.whitelist = null // reset the whitelist
+    creditreceipt_select_customer_tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    receipt_select_customer_tagify.loading(true).dropdown.hide()
+    creditreceipt_select_customer_tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/customer/' + value, {signal:controller.signal})
         .then(RES => RES.json())
         .then(function(newWhitelist){
-            receipt_select_customer_tagify.whitelist = newWhitelist // update whitelist Array in-place
-            receipt_select_customer_tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            creditreceipt_select_customer_tagify.whitelist = newWhitelist // update whitelist Array in-place
+            creditreceipt_select_customer_tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
 }

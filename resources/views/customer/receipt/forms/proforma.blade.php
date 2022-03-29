@@ -51,8 +51,8 @@
                 <input type="text" id="p_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
             </div>
             <div class="form-group row mb-0">
-                <label for="p_contact_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
-                <input type="text" id="p_contact_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_number" disabled readonly>
+                <label for="p_mobile_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
+                <input type="text" id="p_mobile_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="mobile_number" disabled readonly>
             </div>
         </div>
 

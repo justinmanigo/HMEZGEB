@@ -529,25 +529,7 @@
         $('#dataTables2').DataTable();
         $('.dataTables_filter').addClass('pull-right');
          
-        // $("#sc_btn_select_customers").click(function() {   
-    })            
-
-//    var id=$('#sc_customers').val();     
-            
-    // $.ajax({    //create an ajax request to display.php
-    //   method: "POST",
-    //   data:{id:id},
-    //   route: "receipts.receipt.selectCustomer",             
-    //   dataType: "json",                 
-    //   success: function(response){ 
-    //       console.log("Hello");                   
-    //       // $.each(response.customers,function(key,item)){
-    //       //     $('#r_tin_number').attr("placeholder", "Search Whatever you want");
-    //       // }
-    //   }
-
-    //     });
-    // });
+    });
     // https://www.mockaroo.com/
     
     var controller;
@@ -556,6 +538,8 @@
 <script src="/js/customer/receipt/template_select_customer.js"></script>
 <script src="/js/customer/receipt/select_customer_receipt.js"></script>
 <script src="/js/customer/receipt/select_customer_proforma.js"></script>
+<script src="/js/customer/receipt/select_customer_advancerevenue.js"></script>
+<script src="/js/customer/receipt/select_customer_creditreceipt.js"></script>
 
 <script src="/js/customer/receipt/template_select_item.js"></script>
 <script src="/js/customer/receipt/select_item_receipt.js"></script>

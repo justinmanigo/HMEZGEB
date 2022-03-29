@@ -85,30 +85,22 @@
             <h5>Customer Details:</h5>
             <div class="form-group row">
                 <label for="cr_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                <div class="input-group col-8">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-primary" type="button" id="cr_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
-                    </div>
-                    <div class="input-group-append">
-                        <input type="text" id="cr_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
-                    </div>
-                    
-                    <input type="hidden" name="customer_id" value="">
-                </div>
+                <input class="col-8 col-lg-7" id="cr_customer" name='customer'>
+                <input type="hidden" id="cr_customer_id" name="customer_id" value="">
 
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
                 <label for="cr_tin_number" class="col-4 col-form-label text-lg-right">Tin # :</label>
-                <input type="text" id="cr_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="0042101026" name="tin_number" disabled readonly>
+                <input type="text" id="cr_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="tin_number" disabled readonly>
             </div>
             <div class="form-group row mb-0">
                 <label for="cr_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
-                <input type="text" id="cr_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="Example Key Person" name="contact_person" disabled readonly>
+                <input type="text" id="cr_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
             </div>
             <div class="form-group row mb-0">
-                <label for="cr_contact_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
-                <input type="text" id="cr_contact_number" class="form-control-plaintext col-8 pl-3" placeholder="0911223344" name="contact_number" disabled readonly>
+                <label for="cr_mobile_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
+                <input type="text" id="cr_mobile_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="mobile_number" disabled readonly>
             </div>
         </div>
 
