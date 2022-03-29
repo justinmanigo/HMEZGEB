@@ -9,6 +9,15 @@ class AdvanceRevenues extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'receipt_reference_id',
+        'advance_revenue_number',
+        'total_amount_received',
+        'reason',
+        'remark',
+        'attachment',
+    ];
+
     public function receiptReference()
     {
         return $this->belongsTo(ReceiptReferences::class, 'receipt_reference_id');

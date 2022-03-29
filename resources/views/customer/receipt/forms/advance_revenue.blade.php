@@ -1,5 +1,6 @@
-<form id="form-advance-revenue" method="post" enctype="multipart/form-data">
-    {{-- <div class="form-group row">
+<form action="{{route('receipts.receipt.storeAdvanceRevenue')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
+@csrf    
+{{-- <div class="form-group row">
         <label for="inputCustomerName" class="col-sm-3 col-form-label">Customer Name<span class="text-danger ml-1">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="inputCustomerName" placeholder="" required>
@@ -37,7 +38,7 @@
             <h5>Customer Details:</h5>
             <div class="form-group row">
                 <label for="ar_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                <input class="col-8 col-lg-7" id="ar_customer" name='customer'>
+                <input class="col-8 col-lg-7" id="ar_customer" name='customer' required>
                 <input type="hidden" id="ar_customer_id" name="customer_id" value="">
             </div>
             {{-- Contact Details --}}
@@ -59,7 +60,7 @@
             <div class="form-group row">
                 <label for="ar_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
-                    <input type="date" class="form-control" id="ar_date" name="date" placeholder="" required>
+                    <input type="date" class="form-control" id="ar_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                 </div>
             </div>
             <div class="form-group row">

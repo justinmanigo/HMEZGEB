@@ -108,7 +108,7 @@
             <div class="form-group row">
                 <label for="cr_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
-                    <input type="date" class="form-control" id="cr_date" name="date" placeholder="" required>
+                    <input type="date" class="form-control" id="cr_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                 </div>
             </div>
             <div class="form-group row">

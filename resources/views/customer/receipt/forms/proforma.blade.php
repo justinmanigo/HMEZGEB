@@ -60,7 +60,7 @@
             <div class="form-group row">
                 <label for="p_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
-                    <input type="date" class="form-control" id="p_date" name="date" placeholder="" required>
+                    <input type="date" class="form-control" id="p_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -72,7 +72,7 @@
             <div class="form-group row">
                 <label for="p_due_date" class="col-4 col-form-label text-lg-right">Due Date :</label>
                 <div class="col-8">
-                    <input type="date" class="form-control" id="p_due_date" name="due_date" placeholder="" required>
+                    <input type="date" class="form-control" id="p_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
                 </div>
             </div>
         </div>

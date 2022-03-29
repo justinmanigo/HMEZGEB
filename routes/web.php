@@ -102,6 +102,7 @@ Route::post('/userlogin', function (Request $request){
     ], function(){
         Route::get('/receipt', [ReceiptController::class, 'index']);
         Route::post('/receipt',[ReceiptController::class,'selectCustomer'])->name('receipt.selectCustomer');
+        Route::post('/receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('receipt.storeAdvanceRevenue');
 
     });
 
