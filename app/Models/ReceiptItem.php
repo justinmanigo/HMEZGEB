@@ -16,5 +16,8 @@ class ReceiptItem extends Model
         'total_price'
     ];
 
-
+    public function receipt()
+    {
+        return $this->belongsTo(Receipts::class);
+    }
 }
