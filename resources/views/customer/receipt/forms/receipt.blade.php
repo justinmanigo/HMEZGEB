@@ -84,9 +84,9 @@
                         <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
                     </td>
                     <td>
-                        <select class="form-control" name="tax[]">
+                        {{-- <select class="form-control" name="tax[]">
                             <option>Sales Tax (15%)</option>
-                        </select>
+                        </select> --}}
                     </td>
                     <td>
                         <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
@@ -115,36 +115,36 @@
                     </td>
                     <td></td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
                     <td class="text-right table-item-content"><strong>Discount: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
                     </td>
                     <td></td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
                     <td class="text-right table-item-content"><strong>Withholding: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
                     </td>
                     <td></td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
                     </td>
                     <td></td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
                     </td>
                     <td></td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
