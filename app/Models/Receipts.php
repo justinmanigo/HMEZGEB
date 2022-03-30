@@ -9,7 +9,22 @@ class Receipts extends Model
 {
     use HasFactory;
 
-    
+    protected $fillable = [
+        'receipt_reference_id',
+        'proforma_id',
+        'receipt_number',
+        'due_date',
+        'sub_total',
+        'discount',
+        'tax',
+        'grand_total',
+        'withholding',
+        'remark',
+        'attachment',
+        'payment_method',
+        'total_amount_received'
+
+    ];
     public function receiptReference()
     {
         return $this->belongsTo(ReceiptReferences::class, 'receipt_reference_id');

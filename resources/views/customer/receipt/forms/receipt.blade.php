@@ -1,5 +1,5 @@
-<form id="form-receipt" method="post" enctype="multipart/form-data">
-    <div class="row">
+
+<div class="row">
         <div class="col-12 col-lg-6 mb-3 mb-lg-0">
             <h5>Customer Details:</h5>
             <div class="form-group row">
@@ -108,7 +108,7 @@
                         <strong>Sub Total: </strong>
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right" name="subtotal" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right" name="sub_total" id="sub_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
@@ -145,7 +145,7 @@
                 <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="total" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right" name="grand_total" id="grand_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
@@ -187,7 +187,7 @@
                     </select>
                 </div>
             </div> --}}
-            <div class="form-group row">
+            {{--<div class="form-group row">
                 <label for="payment" class="col-sm-4 col-form-label">Payment Type<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
                     <div class="form-check">
@@ -203,11 +203,11 @@
                         </label>
                     </div>
                 </div>
-            </div>
+            </div>--}}
             <div class="form-group row">
                 <label for="r_payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control text-right" id="r_payment" name="payment" placeholder="0.00">
+                    <input type="text" class="form-control text-right" id="r_total_amount_received" name="total_amount_received" placeholder="0.00">
                 </div>
             </div>
         </div>
@@ -248,4 +248,3 @@
             </tfoot>
         </table>
     </div>
-</form>

@@ -1,6 +1,6 @@
-<form action="{{route('receipts.receipt.storeAdvanceRevenue')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
+{{--<form action="{{route('receipts.receipt.storeAdvanceRevenue')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
 @csrf    
-{{-- <div class="form-group row">
+ <div class="form-group row">
         <label for="inputCustomerName" class="col-sm-3 col-form-label">Customer Name<span class="text-danger ml-1">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="inputCustomerName" placeholder="" required>

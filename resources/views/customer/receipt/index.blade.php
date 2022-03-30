@@ -332,6 +332,8 @@
 --}}
 
 {{-- New Receipt --}}
+<form action="{{route('receipts.receipt.store') }}" id="form-receipt" method="post" enctype="multipart/form-data">
+@csrf   
 <div class="modal fade" id="modal-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -346,11 +348,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-receipt">Save Receipt</button>
+                <button type="submit" class="btn btn-primary" form="form-receipt">Save Receipt</button>
             </div>
         </div>
     </div>
 </div>
+</form>
 
 {{-- New Advance Revenue --}}
 <div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog" aria-labelledby="modal-advance-revenue-label" aria-hidden="true">

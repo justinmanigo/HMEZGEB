@@ -9,6 +9,14 @@ class ReceiptReferences extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'reference_number',
+        'date',
+        'type',
+        'status',
+        'is_void',
+        'customer_id',
+    ];
         
     public function receipt()
     {

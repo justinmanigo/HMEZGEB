@@ -100,9 +100,9 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'receipts.'
     ], function(){
-        Route::get('/receipt', [ReceiptController::class, 'index']);
-        Route::post('/receipt',[ReceiptController::class,'selectCustomer'])->name('receipt.selectCustomer');
-        Route::post('/receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('receipt.storeAdvanceRevenue');
+        Route::get('/receipt', [ReceiptController::class, 'index'])->name('receipt.index');
+        Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
+        Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
 
     });
 
