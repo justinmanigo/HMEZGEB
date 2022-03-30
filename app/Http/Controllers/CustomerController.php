@@ -18,8 +18,6 @@ class CustomerController extends Controller
 
         return view('customer.customer.index',compact('customers'));
     }
-   
-
     /**
      * Show the form for creating a new resource.
      *
@@ -73,10 +71,6 @@ class CustomerController extends Controller
     public function show(Customers $customers)
     {
         $customers = Customers::all();
-
-        // Compute for each inventory value and total value.
-         
-
         return view('customer.customer.index',compact('customers'));
     }
     public function edit($id)

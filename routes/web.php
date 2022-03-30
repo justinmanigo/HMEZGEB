@@ -103,7 +103,9 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/receipt', [ReceiptController::class, 'index'])->name('receipt.index');
         Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
         Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
-
+        Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
+        Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
+        Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
     });
 
     Route::group([

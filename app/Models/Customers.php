@@ -26,7 +26,7 @@ class Customers extends Model
         'label',
         'is_active'
     ];
-
+    
     public function receiptReference()
     {
         return $this->hasOne(ReceiptReferences::class, 'customer_id','id');
