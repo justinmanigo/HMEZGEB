@@ -108,7 +108,7 @@
                         <strong>Sub Total: </strong>
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right" name="sub_total" id="sub_total" placeholder="0.00" value="0.00" readonly>
+                        <input type="text" class="form-control text-right" name="sub_total" id="r_sub_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
@@ -145,7 +145,7 @@
                 <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="grand_total" id="grand_total" placeholder="0.00" value="0.00" readonly>
+                        <input type="text" class="form-control text-right" name="grand_total" id="r_grand_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
