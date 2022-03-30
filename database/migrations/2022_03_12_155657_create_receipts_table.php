@@ -17,14 +17,14 @@ class CreateReceiptsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
             $table->unsignedBigInteger('proforma_id')->nullable();
-            $table->string('receipt_number');
+            $table->string('receipt_number')->nullable();
             $table->date('due_date');
             $table->float('sub_total');
-            $table->float('discount');
-            $table->float('tax');
+            $table->float('discount')->nullable();
+            $table->float('tax')->nullable();
             $table->float('grand_total');
             $table->float('total_amount_received');
-            $table->float('withholding');
+            $table->float('withholding')->nullable();
             $table->longText('remark')->nullable();
             $table->string('attachment')->nullable();
             $table->enum('payment_method',['credit','cash']);

@@ -194,9 +194,9 @@ function onReceiptItemSelectSuggestion(e) {
     $(`#r_item_price_${receipt_count}`).val(e.detail.data.sale_price)
     $(`#r_item_total_${receipt_count}`).val(e.detail.data.sale_price * e.detail.data.quantity)
     // Add all item total to subtotal
-    $('#sub_total').val(parseFloat($('#sub_total').val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
+    $('#r_sub_total').val(parseFloat($('#r_sub_total').val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
     // Add all item total to grand_total
-    $(`#grand_total`).val(parseFloat($(`#grand_total`).val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
+    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
 
 }
 
@@ -204,8 +204,8 @@ function onReceiptItemRemove(e) {
     $(`#r_item_quantity_${receipt_count}`).val("")
     $(`#r_item_price_${receipt_count}`).val("")
     $(`#r_item_total_${receipt_count}`).val("0.00")
-    $('#sub_total').val("0.00")
-    $(`#grand_total`).val("0.00")
+    $('#r_sub_total').val("0.00")
+    $(`#r_grand_total`).val("0.00")
 }
 
 function onReceiptItemInput(e) {
