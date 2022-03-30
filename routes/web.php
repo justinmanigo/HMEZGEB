@@ -304,3 +304,4 @@ Route::group([
     });
 
     Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+    Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);

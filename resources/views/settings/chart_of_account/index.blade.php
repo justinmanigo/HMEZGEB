@@ -104,7 +104,7 @@
     <div class="col-xl-12 col-lg-12 col-12">
         {{-- Button Group Navigation --}}
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit">
+            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-coa">
                 <span class="icon text-white-50">
                     <i class="fas fa-pen"></i>
                 </span>
@@ -112,7 +112,7 @@
             </button> 
         </div>
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit">
+            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-coa">
                 <span class="icon text-white-50">
                     <i class="fas fa-pen"></i>
                 </span>
@@ -144,6 +144,15 @@
         <div class="card" class="content-card">
             <div class="card-body tab-content" id="myTabContent">
                 {{-- Transaction Contents --}}
+                @if(session()->has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session()->get('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -192,17 +201,18 @@
 
 {{-- Modals --}}
 {{-- New Account --}}
-<div class="modal fade" id="modal-deposit" tabindex="-1" role="dialog" aria-labelledby="modal-deposit-label" aria-hidden="true">
+<div class="modal fade" id="modal-coa" tabindex="-1" role="dialog" aria-labelledby="modal-deposit-label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-deposit-label">New Account</h5>
+                <h5 class="modal-title" id="modal-deposit-label">New Chart of Account</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" method="post" enctype="multipart/form-data">
+                <form id="form-coa" method="post" action="/settings/coa">
+                    @csrf
                     <div class="form-group row">
                         <label for="coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
                         <div class="col-sm-9 col-lg-6">
@@ -226,7 +236,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-deposit">Save Account</button>
+                <button type="submit" class="btn btn-primary" form="form-coa">Save Account</button>
             </div>
         </div>
     </div>

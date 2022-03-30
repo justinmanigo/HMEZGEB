@@ -36,7 +36,21 @@ class SettingChartOfAccountsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $coa = json_decode($request->coa_category, true);
+        
+        // To get the category_id of coa, use
+        // $coa[0]['value'];
+        // other related info such as type, category name,
+        // can be seen by changing `value` to its corresponding
+        // column name.
+
+        ChartOfAccounts::create([
+            'chart_of_account_category_id' => $coa[0]['value'],
+            'chart_of_account_no' => $request->coa_number,
+            'name' => $request->coa_name,
+        ]);
+
+        return back()->with('success', 'Successfully stored new Chart of Account.');
     }
 
     /**
