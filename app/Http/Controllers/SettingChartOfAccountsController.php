@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChartOfAccounts;
+use App\Models\ChartOfAccountCategory;;
 use Illuminate\Http\Request;
 
 class SettingChartOfAccountsController extends Controller
@@ -24,7 +25,7 @@ class SettingChartOfAccountsController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -81,5 +82,18 @@ class SettingChartOfAccountsController extends Controller
     public function destroy(ChartOfAccounts $chartOfAccounts)
     {
         //
+    }
+
+    /*======================================================*/
+
+    public function ajaxSearchCategories($query)
+    {
+        $categories = ChartOfAccountCategory::select(
+            'id as value', 
+            'category',
+            'type',
+            'normal_balance')
+            ->where('category', 'LIKE', '%' . $query . '%')->get();
+        return $categories;
     }
 }

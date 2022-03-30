@@ -24,7 +24,76 @@
         input[type="checkbox"], label {
             cursor: pointer;
         }
+        
+        /*
+            TEMPORARY
+        */
+        /* Suggestions items */
+        .tagify__dropdown.customers-list .tagify__dropdown__item{
+            padding: .5em .7em;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0 1em;
+            grid-template-areas: "avatar name"
+                                "avatar email";
+        }
+        .tagify__dropdown.customers-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap{
+            transform: scale(1.2);
+        }
+        .tagify__dropdown.customers-list .tagify__dropdown__item__avatar-wrap{
+            grid-area: avatar;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #EEE;
+            transition: .1s ease-out;
+        }
+        .tagify__dropdown.customers-list img{
+            width: 100%;
+            vertical-align: top;
+        }
+        .tagify__dropdown.customers-list strong{
+            grid-area: name;
+            width: 100%;
+            align-self: center;
+        }
+        .tagify__dropdown.customers-list span{
+            grid-area: email;
+            width: 100%;
+            font-size: .9em;
+            opacity: .6;
+        }
+        .tagify__dropdown.customers-list .addAll{
+            border-bottom: 1px solid #DDD;
+            gap: 0;
+        }
+        /* Tags items */
+         .tagify__tag{
+            white-space: nowrap;
+        }
+         .tagify__tag:hover .tagify__tag__avatar-wrap{
+            transform: scale(1.6) translateX(-10%);
+        }
+         .tagify__tag .tagify__tag__avatar-wrap{
+            width: 16px;
+            height: 16px;
+            white-space: normal;
+            border-radius: 50%;
+            background: silver;
+            margin-right: 5px;
+            transition: .12s ease-out;
+        }
+         .tagify__tag img{
+            width: 100%;
+            vertical-align: top;
+            pointer-events: none;
+        }
     </style>
+
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -90,7 +159,7 @@
                                 
                             </thead>
                             <tbody>
-                                <tr>
+                                {{-- <tr>
                                     
                                     <td class="table-item-content">1030</td>
                                     <td class="table-item-content">Cash on Hand	</td> 
@@ -110,7 +179,7 @@
                                             </span>
                                         </button>
                                     </td>
-                                </tr>
+                                </tr> --}}
                             </tbody>
                         </table>
                     </div>
@@ -135,52 +204,24 @@
             <div class="modal-body">
                 <form id="form-deposit" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
+                        <label for="coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id" value="1031" readonly>
+                            <input type="text" class="form-control" id="coa_number" name="coa_number">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Account Name<span class="text-danger ml-1">*</span></label>
+                        <label for="coa_name" class="col-sm-3 col-lg-2 col-form-label">Account Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
+                            <input type="text" class="form-control" id="coa_name" name="coa_name">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Account Type<span class="text-danger ml-1">*</span></label>
+                        <label for="coa_category" class="col-sm-3 col-lg-2 col-form-label">Category<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <select class="form-control" id="d_bank_account" name="bank_account">
-                                <option>Bank A</option>
-                            </select>
+                            {{-- <input type="text" class="form-control" id="coa_category" name="coa_category"> --}}
+                            <input id="coa_category" name='coa_category'>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Category<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Balance<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-6">
-                            <select class="form-control" id="d_bank_account" name="bank_account">
-                                <option>Savings </option>
-                                <option>Checking </option>
-                            </select>
-                        </div>
-                  
-                    </div>
-                    <div class="form-group row">
-                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Status<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-6">
-                            <select class="form-control" id="d_bank_account" name="bank_account">
-                                <option>Active </option>
-                                <option>Offline </option>
-                            </select>
-                        </div>
-                    </div>
-                
-                    
+                    </div>          
                 </form>
             </div>
             <div class="modal-footer">
@@ -192,10 +233,14 @@
 </div>
 
 <script>
-        $(document).ready(function () {
-            $('#dataTables').DataTable();
-            $('.dataTables_filter').addClass('pull-right');
-        });
+    $(document).ready(function () {
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
+    });
+
+
 </script>
+<script src="/js/settings/chart_of_accounts/template_select_coa_category.js"></script>
+<script src="/js/settings/chart_of_accounts/select_coa_category.js"></script>
 
 @endsection

@@ -302,3 +302,5 @@ Route::group([
         Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
 
     });
+
+    Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
