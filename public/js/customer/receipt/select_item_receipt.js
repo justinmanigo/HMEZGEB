@@ -190,20 +190,22 @@ function onReceiptItemSelectSuggestion(e) {
     // console.log("Checks receipt items if value already exists in the list. If so, it won't be added.")
     // console.log(receipt_items)
 
-    // $("#r_customer_id").val(e.detail.data.value)
-    // $("#r_tin_number").val(e.detail.data.tin_number)
-    // $("#r_contact_person").val(e.detail.data.contact_person)
+    $(`#r_item_quantity_${receipt_count}`).val(e.detail.data.quantity)
+    $(`#r_item_price_${receipt_count}`).val(e.detail.data.sale_price)
+    $(`#r_item_total_${receipt_count}`).val(e.detail.data.sale_price * e.detail.data.quantity)
+    // Add all item total to subtotal
+    $('#sub_total').val(parseFloat($('#sub_total').val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
+    // Add all item total to grand_total
+    $(`#grand_total`).val(parseFloat($(`#grand_total`).val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
 
-    // contact number seems to be missing in migration, so i'm skipping this
-    // $("#r_contact_number").val(e.detail.data.contact_number)
 }
 
 function onReceiptItemRemove(e) {
-    console.log("onReceiptItemRemove")
-    // $("#r_customer_id").val("")
-    // $("#r_tin_number").val("")
-    // $("#r_contact_person").val("")
-    // $("#r_contact_number").val("")
+    $(`#r_item_quantity_${receipt_count}`).val("")
+    $(`#r_item_price_${receipt_count}`).val("")
+    $(`#r_item_total_${receipt_count}`).val("0.00")
+    $('#sub_total').val("0.00")
+    $(`#grand_total`).val("0.00")
 }
 
 function onReceiptItemInput(e) {
