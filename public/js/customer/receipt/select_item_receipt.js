@@ -33,7 +33,7 @@ function createReceiptItemEntry()
             <input type="text" id="r_item_total_${receipt_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
         </td>
         <td>
-            <button type="button" id="r_item_delete_${receipt_count}" class="btn btn-icon btn-danger r_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
+            <button type="button" data-id="${receipt_count}" id="r_item_delete_${receipt_count}" class="btn btn-icon btn-danger r_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
                 <span class="icon text-white-50">
                     <i class="fas fa-trash"></i>
                 </span>
@@ -96,17 +96,27 @@ function createReceiptItemEntry()
     }
 
     receipt_items.push(item_entry);
+    console.log(receipt_items);
 }
 // add table row for receipt item
 $(document).on('click', '.r_add_item_entry', function () {
     createReceiptItemEntry()
-
 })
 
 
 $(document).on('click', '.r_item_delete', function (event) {
+    console.log($(this)[0].dataset.id)
+    removeReceiptItemEntry( $(this)[0].dataset.id )
+    console.log("Check if its successfully removed.");
+    console.log(receipt_items);
+
     $(this).parents('tr').remove();
 
+    if(receipt_items.length < 1)
+    {
+        console.log("No items left. Generating new one.");
+        createReceiptItemEntry();
+    }
 });
 
 
@@ -205,33 +215,54 @@ function onReceiptItemInput(e) {
     var tagify;
 
     console.log(receipt_items);
-    for(let i = 0; i < receipt_items.length; i++)
-    {
-        if(receipt_items[i].entry_id == entry_id)
-        {
-            console.log("Found entry.");
-            tagify = receipt_items[i].tagify;
-        }
-    }
+    entry_obj = getReceiptItemEntry(entry_id);
+    // tagify = entry_obj.tagify;
 
     console.log("Obtained value from array");
     console.log(tagify);
     
-    tagify.whitelist = null // reset the whitelist
+    entry_obj.tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    tagify.loading(true).dropdown.hide()
+    entry_obj.tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/inventory/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
         .then(function (newWhitelist) {
-            tagify.whitelist = newWhitelist // update whitelist Array in-place
-            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
+            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
+}
+
+function getReceiptItemEntry(entry_id)
+{
+    for(let i = 0; i < receipt_items.length; i++)
+    {
+        if(receipt_items[i].entry_id == entry_id)
+        {
+            console.log("Found entry.");
+            return receipt_items[i];
+        }
+    }   
+    return undefined;
+}
+
+function removeReceiptItemEntry(entry_id)
+{
+    for(let i = 0; i < receipt_items.length; i++)
+    {
+        if(receipt_items[i].entry_id == entry_id)
+        {
+            console.log("Removing entry " + entry_id);
+            receipt_items.splice(i, 1);
+            return true;
+        }
+    }   
+    return false;
 }
