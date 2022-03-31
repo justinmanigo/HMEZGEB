@@ -68,11 +68,11 @@
                                     <i class="fas fa-pen"></i>
                                 </span>
                             </button>
-                            {{-- <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-tax-delete" onclick="initDeleteTax({{ $tax->id }})">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-trash"></i>
                                 </span>
-                            </button> --}}
+                            </button>
                         </td>
                     </tr>
                     @endforeach
@@ -117,6 +117,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary" id="t_submit_btn" form="form-tax">Save Tax</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{--  Delete Modal --}}
+<div class="modal fade" id="modal-tax-delete" tabindex="-1" role="dialog" aria-labelledby="Modal Delete Tax">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Tax</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete this record?
+                <form id="form-tax-delete" class="" action="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger" form="form-tax-delete">Delete Tax</button>
             </div>
         </div>
     </div>
@@ -170,6 +195,11 @@
         $("#t_name").val("");
         $("#t_percentage").val("");
         $("#t_submit_btn").removeAttr("disabled");
+    }
+
+    function initDeleteTax(id)
+    {
+        $("#form-tax-delete").attr("action", "/settings/taxes/" + id);
     }
 
 </script>

@@ -95,7 +95,13 @@ class TaxController extends Controller
      */
     public function destroy(Tax $tax)
     {
-        //
+        // TODO: Add restriction
+
+        // Delete Tax
+        Tax::where('id', '=', $tax->id)
+            ->delete();
+
+        return back()->with('success', 'Successfully deleted tax reccord.');
     }
 
     /*===========================*/
