@@ -310,9 +310,9 @@ Route::group([
         Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
 
         // Taxes
-        Route::get('/settings/taxes', [TaxController::class, 'index'])->name('index');
-        Route::post('/settings/taxes', [TaxController::class, 'store'])->name('store');
-        Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('update');
+        Route::get('/settings/taxes', [TaxController::class, 'index'])->name('tax.index');
+        Route::post('/settings/taxes', [TaxController::class, 'store'])->name('tax.store');
+        Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('tax.update');
         Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('tax.destroy');
         Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
     });

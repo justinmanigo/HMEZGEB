@@ -97,7 +97,7 @@
                 <div id="modal-tax-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-tax" method="post" action="{{ route('settings.store') }}">
+                <form id="form-tax" method="post" action="{{ route('settings.tax.store') }}">
                     @csrf
                     <input type="hidden" id="t_http_method" name="_method" value="POST">
                     <div class="form-group row">
@@ -188,7 +188,7 @@
     function initCreateTax()
     {
         $("#t_http_method").val("POST");
-        $("#form-tax").attr("action", "{{ route('settings.store') }}")
+        $("#form-tax").attr("action", "{{ route('settings.tax.store') }}")
         $("#t_submit_btn").html("Save Tax");
         $("#modal-tax-label").html("New Tax");
 
