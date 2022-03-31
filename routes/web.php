@@ -312,4 +312,6 @@ Route::group([
         // Taxes
         Route::get('/settings/taxes', [TaxController::class, 'index'])->name('index');
         Route::post('/settings/taxes', [TaxController::class, 'store'])->name('store');
+        Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('update');
+        Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
     });

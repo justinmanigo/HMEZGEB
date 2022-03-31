@@ -12,7 +12,7 @@
 <div class="d-sm-flex align-items-start justify-content-between mb-2">
     <h1>Taxes</h1>
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-tax">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-tax" onclick="initCreateTax()">
             <span class="icon text-white-50">
                 <i class="fas fa-file-import"></i>
             </span>
@@ -54,6 +54,7 @@
                     <th>Serial No.</th>
                     <th>Name</th>
                     <th class="text-right">Tax Amount in %</th>
+                    <th>Actions</th>
                 </thead>
                 <tbody>
                     @foreach($taxes as $tax)
@@ -61,6 +62,18 @@
                         <td>{{ $tax->id }}</th></td>
                         <td>{{ $tax->name }}</td>
                         <td class="text-right">{{ number_format($tax->percentage, 2) }}%</td>
+                        <td>
+                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="modal" data-target="#modal-tax" onclick="initEditTax({{ $tax->id }})">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-pen"></i>
+                                </span>
+                            </button>
+                            {{-- <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-trash"></i>
+                                </span>
+                            </button> --}}
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -81,8 +94,12 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div id="modal-tax-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
                 <form id="form-tax" method="post" action="{{ route('settings.store') }}">
                     @csrf
+                    <input type="hidden" id="t_http_method" name="_method" value="POST">
                     <div class="form-group row">
                         <label for="t_name" class="col-12 col-lg-6 col-form-label">Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
@@ -99,16 +116,61 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-tax">Save Tax</button>
+                <button type="submit" class="btn btn-primary" id="t_submit_btn" form="form-tax">Save Tax</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-        $(document).ready(function () {
-            $('#dataTables').DataTable();
-            $('.dataTables_filter').addClass('pull-right');
+    // $(document).ready(function () {
+    //     $('#dataTables').DataTable();
+    //     $('.dataTables_filter').addClass('pull-right');
+    // });
+
+    function initEditTax(id)
+    {
+        $("#form-tax").hide();
+        $("#modal-tax-spinner").show();
+        $("#t_http_method").val("PUT");
+        $("#form-tax").attr("action", "/settings/taxes/" + id)
+        $("#t_submit_btn").html("Update Tax").attr("disabled", 'disabled');
+        $("#modal-tax-label").html("Edit Tax");
+        
+        // Get data from server.
+        var request = $.ajax({
+            url: "/ajax/settings/taxes/get/" + id,
+            method: "GET",
         });
+            
+        request.done(function(res, status, jqXHR ) {
+            $("#form-tax").show();
+            $("#modal-tax-spinner").hide();
+            $("#t_submit_btn").removeAttr("disabled");
+
+            console.log("Request successful.");
+            console.log(res);
+            $("#t_name").val(res.name);
+            $("#t_percentage").val(res.percentage);
+        });
+        
+        request.fail(function(jqXHR, status, error) {
+            console.log("Request failed.");
+        });
+
+    }
+
+    function initCreateTax()
+    {
+        $("#t_http_method").val("POST");
+        $("#form-tax").attr("action", "{{ route('settings.store') }}")
+        $("#t_submit_btn").html("Save Tax");
+        $("#modal-tax-label").html("New Tax");
+
+        $("#t_name").val("");
+        $("#t_percentage").val("");
+        $("#t_submit_btn").removeAttr("disabled");
+    }
+
 </script>
 @endsection

@@ -77,7 +77,14 @@ class TaxController extends Controller
      */
     public function update(Request $request, Tax $tax)
     {
-        //
+        // Update Tax
+        Tax::where('id', '=', $tax->id)
+            ->update([
+                'name' => $request->name,
+                'percentage' => $request->percentage,
+            ]);
+
+        return back()->with('success', 'Successfully updated tax entry.');
     }
 
     /**
@@ -89,5 +96,12 @@ class TaxController extends Controller
     public function destroy(Tax $tax)
     {
         //
+    }
+
+    /*===========================*/
+
+    public function ajaxGetTax(Tax $tax)
+    {
+        return $tax;
     }
 }
