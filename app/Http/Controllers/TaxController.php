@@ -35,7 +35,13 @@ class TaxController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Create Tax
+        Tax::create([
+            'name' => $request->name,
+            'percentage' => $request->percentage,
+        ]);
+
+        return back()->with('success', 'Successfully created a tax entry.');
     }
 
     /**
