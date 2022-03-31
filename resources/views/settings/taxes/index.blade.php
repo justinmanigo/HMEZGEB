@@ -51,26 +51,18 @@
         <div class="table-responsive">
             <table class="table table-bordered"  width="100%" cellspacing="0">
                 <thead>
-                    <th>S. No</th>
-                    <th>Description</th>
+                    <th>Serial No.</th>
+                    <th>Name</th>
                     <th>Tax Amount in %</th>
                 </thead>
                 <tbody>
+                    @foreach($taxes as $tax)
                     <tr>
-                        <td>1.</th></td>
-                        <td>Tax Amount in %</td>
-                        <td> 0.00%</td>
+                        <td>{{ $tax->id }}</th></td>
+                        <td>{{ $tax->name }}</td>
+                        <td>{{ $tax->percentage }}</td> {{-- Add formatting later with 2 decimal digits. --}}
                     </tr>
-                    <tr>
-                        <td>2.</th></td>
-                        <td>TOT</td>
-                        <td> 2.00%</td>
-                    </tr>
-                    <tr>
-                        <td>3.</th></td>
-                        <td>VAT</td>
-                        <td> 15.00%</td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

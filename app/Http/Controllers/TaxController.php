@@ -14,7 +14,9 @@ class TaxController extends Controller
      */
     public function index()
     {
-        return view('settings.taxes.index');
+        return view('settings.taxes.index', [
+            'taxes' => Tax::get()
+        ]);
     }
 
     /**
