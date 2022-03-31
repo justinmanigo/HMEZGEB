@@ -43,7 +43,7 @@ class TaxController extends Controller
             'percentage' => $request->percentage,
         ]);
 
-        return back()->with('success', 'Successfully created a tax entry.');
+        return back()->with('success', 'Successfully created tax record.');
     }
 
     /**
@@ -84,7 +84,7 @@ class TaxController extends Controller
                 'percentage' => $request->percentage,
             ]);
 
-        return back()->with('success', 'Successfully updated tax entry.');
+        return back()->with('success', 'Successfully updated tax record.');
     }
 
     /**
