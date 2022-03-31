@@ -1,4 +1,4 @@
-<form id="form-proforma" method="post" enctype="multipart/form-data">
+
     {{-- <div class="form-group row">
         <label for="inputCustomerName" class="col-sm-3 col-form-label">Customer Name<span class="text-danger ml-1">*</span></label>
         <div class="col-sm-9">
@@ -88,14 +88,11 @@
                 <th>Total</th>
                 <th class="thead-actions">Actions</th>
             </thead>
-            <tbody>
-                <tr>
+            <tbody id="p_items">
+                {{-- <tr>
                     <td>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-item">Select</button>
-                            </div>
-                            <input type="text" class="form-control" name="item_name[]" placeholder="Item Name" disabled>
+                            <input id="p_item" class="p_item" name='item[]'>
                             <input type="hidden" name="item_id[]" value="">
                         </div>
                     </td>
@@ -114,7 +111,7 @@
                         <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
                             <span class="icon text-white-50">
                                 <i class="fas fa-trash"></i>
                             </span>
@@ -125,7 +122,7 @@
                             </span>
                         </button>
                     </td>
-                </tr>
+                </tr> --}}
             </tbody>
             <tfoot>
                 <tr>
@@ -133,7 +130,7 @@
                         <strong>Sub Total: </strong>
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right" name="subtotal" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right" name="sub_total" id="p_sub_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
@@ -160,17 +157,17 @@
                     </td>
                     <td></td>
                 </tr> --}}
-                <tr>
+                {{-- <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
                     </td>
                     <td></td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="total" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right" name="grand_total" id="p_grand_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
@@ -178,12 +175,13 @@
         </table>
     </div>
 
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group row">
-                <label for="p_remark" class="col-sm-3 col-form-label">Terms and Conditions:</label>
+                <label for="p_terms_and_condition" class="col-sm-3 col-form-label">Terms and Conditions:</label>
                 <div class="col-sm-9">
-                    <textarea class="form-control" id="p_remark" name="remark"></textarea>
+                    <textarea class="form-control" id="p_terms_and_condition" name="terms_and_condition"></textarea>
                 </div>
             </div>
             <div class="form-group row">
@@ -197,4 +195,3 @@
             
         </div>
     </div>
-</form>

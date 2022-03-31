@@ -89,7 +89,7 @@
                         <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
                             <span class="icon text-white-50">
                                 <i class="fas fa-trash"></i>
                             </span>
@@ -207,7 +207,7 @@
             <div class="form-group row">
                 <label for="r_payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control text-right" id="r_total_amount_received" name="total_amount_received" placeholder="0.00">
+                    <input type="text" class="form-control text-right" id="r_total_amount_received" name="total_amount_received" placeholder="0.00" required>
                 </div>
             </div>
         </div>

@@ -16,11 +16,11 @@ class CreateProformasTable extends Migration
         Schema::create('proformas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
-            $table->string('proforma_number');
+            $table->string('proforma_number')->nullable();
             $table->date('due_date');
             $table->float('amount');
-            $table->longText('terms_and_conditions');
-            $table->string('attachement');
+            $table->longText('terms_and_conditions')->nullable();
+            $table->string('attachment')->nullable();
             $table->timestamps();
 
             $table->foreign('receipt_reference_id')->references('id')->on('receipt_references'); 

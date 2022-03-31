@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Proformas;
+use App\Models\CreditReceipts;
 use App\Models\AdvanceRevenues;
 use App\Models\ReceiptReferences;
 use App\Models\Receipts;
@@ -69,10 +71,18 @@ class ReceiptController extends Controller
     public function storeReceipt(Request $request)
     {
 
-        // if(// insert logic)
-        //     {
-                $status = 'unpaid';
-            // }
+        if($request->grand_total==$request->total_amount_received)
+        {
+            $status = 'paid';
+        }
+        if($request->grand_total>$request->total_amount_received)
+        {
+            $status = 'partially_paid';
+        }
+        else
+        {
+            $status = 'unpaid';
+        }
 
             $reference = ReceiptReferences::create([
                 'customer_id' => $request->customer_id,
@@ -145,6 +155,7 @@ class ReceiptController extends Controller
     
 
     }
+
     public function edit($id)
     {
         $receipts = Receipts::find($id);
@@ -175,10 +186,70 @@ class ReceiptController extends Controller
         return redirect('receipt/')->with('success', "Successfully edited customer.");
 
     }
+    
     public function show(Receipts $receipt)
     {   
         $receipt = Receipts::all();
         return view('customer.receipt.index',compact('receipt'));
+    }
+
+    public function destroy($id)
+    {
+        $receipts = Receipts::find($id);
+        $receipts->delete();
+  
+        return redirect('receipt/')->with('danger', "Successfully deleted customer");
+    }
+
+    public function storeProforma(Request $request)
+    {
+        // if($request->grand_total==$request->total_amount_received)
+        // {
+        //     $status = 'paid';
+        // }
+        // if($request->grand_total>$request->total_amount_received)
+        // {
+        //     $status = 'partially_paid';
+        // }
+        // else
+        // {
+            // Temporary status
+            $status = 'unpaid';
+        // }
+
+            // Receipt References
+            $reference = ReceiptReferences::create([
+                'customer_id' => $request->customer_id,
+                // Temporary Proforma
+                'reference_number' => $request->proforma_number,
+                'date' => $request->date,
+                'type' => 'proforma',
+                'is_void' => 'no',
+                'status' => $status
+            ]);
+
+            // Create child database entry
+            if($reference)        
+            {
+                if($request->attachment) {
+                    $fileAttachment = time().'.'.$request->attachment->extension();  
+                    $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
+                }
+
+                $reference->id;
+                $proformas = Proformas::create([
+                    'receipt_reference_id' => $reference->id,
+                    'proforma_number' => $request->proforma_number,
+                    'due_date' => $request->due_date,
+                    'amount' => $request->grand_total,
+                    'terms_and_conditions' => $request->terms_and_conditions,
+                    // image upload
+                    'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+                ]);
+                return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+            }
+     
+
     }
 
     public function storeAdvanceRevenue(Request $request){
@@ -192,16 +263,6 @@ class ReceiptController extends Controller
         $advanceRevenue->save();
         $advanceRevenue->customer_id = $request->customer_id;
         return view('customer.receipt.index',compact('customers'));
-    }
-    public function destroy($id)
-    {
-        
-        $receipts = Receipts::find($id);
-        $receipts->delete();
-        
-        
-        return redirect('receipt/')->with('danger', "Successfully deleted customer");
-
     }
 
 }

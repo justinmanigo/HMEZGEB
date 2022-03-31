@@ -402,8 +402,9 @@ POTENTIAL SOLUTIONS:
 </div>
 
 {{-- New Proforma --}}
-<div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label"
-    aria-hidden="true">
+<form action="{{route('receipts.proforma.store') }}" id="form-proforma" method="post" enctype="multipart/form-data">
+@csrf   
+<div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -417,11 +418,12 @@ POTENTIAL SOLUTIONS:
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-proforma">Save Proforma</button>
+                <button type="submit" class="btn btn-primary" form="form-proforma">Save Proforma</button>
             </div>
         </div>
     </div>
 </div>
+</form>
 
 {{-- Import --}}
 <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label"
@@ -573,6 +575,7 @@ POTENTIAL SOLUTIONS:
 
     <script src="/js/customer/receipt/template_select_item.js"></script>
     <script src="/js/customer/receipt/select_item_receipt.js"></script>
+    <script src="/js/customer/receipt/select_item_proforma.js"></script>
 
 
     @endsection
