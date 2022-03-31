@@ -131,7 +131,7 @@
                         <a class="collapse-item" href="/company-info">Company Info</a>
                         <a class="collapse-item" href="/users">Users</a>
                         <a class="collapse-item" href="/themes">Theme</a>
-                        <a class="collapse-item" href="/taxes">Taxes</a>
+                        <a class="collapse-item" href="/settings/taxes">Taxes</a>
                         <a class="collapse-item" href="/withholding">Withholding</a>
                         <a class="collapse-item" href="/setting_payrollrules">Payroll Rules</a>
                         <a class="collapse-item" href="/setting_chartofaccounts">Chart of Account</a>

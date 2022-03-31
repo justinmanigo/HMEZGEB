@@ -38,6 +38,7 @@ use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\LoanController;
 
 // Settings
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\SettingChartOfAccountsController;
 /*
 |--------------------------------------------------------------------------
@@ -289,16 +290,26 @@ Route::group([
     // })->name('theme');
     Route::view('/company-info', 'settings.company_info.index')->name('company-info');
     Route::view('/users', 'settings.users.index')->name('users');
-    Route::view('/taxes', 'settings.taxes.index')->name('taxes');
+    // Route::view('/taxes', 'settings.taxes.index')->name('taxes');
+
+    
+
     Route::view('/withholding', 'settings.withholding.index')->name('withholding');
     Route::view('/themes', 'settings.themes.index')->name('themes');
 
     Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
     Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');
     Route::view('/setting_payrollrules', 'settings.payroll_rules.index')->name('setting_payrollrules');
+
+    // Settings
     Route::group([
         'as' => 'settings.'
-    ], function(){
+    ], function() {
+
+        // Chart of Accounts
         Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
 
+        // Taxes
+        Route::get('/settings/taxes', [TaxController::class, 'index'])->name('index');
+        Route::post('/settings/taxes', [TaxController::class, 'store'])->name('store');
     });
