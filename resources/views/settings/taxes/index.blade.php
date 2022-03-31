@@ -53,14 +53,14 @@
                 <thead>
                     <th>Serial No.</th>
                     <th>Name</th>
-                    <th>Tax Amount in %</th>
+                    <th class="text-right">Tax Amount in %</th>
                 </thead>
                 <tbody>
                     @foreach($taxes as $tax)
                     <tr>
                         <td>{{ $tax->id }}</th></td>
                         <td>{{ $tax->name }}</td>
-                        <td>{{ $tax->percentage }}</td> {{-- Add formatting later with 2 decimal digits. --}}
+                        <td class="text-right">{{ number_format($tax->percentage, 2) }}%</td>
                     </tr>
                     @endforeach
                 </tbody>
