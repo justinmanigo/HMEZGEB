@@ -253,16 +253,51 @@ class ReceiptController extends Controller
     }
 
     public function storeAdvanceRevenue(Request $request){
+        // if($request->grand_total==$request->total_amount_received)
+        // {
+        //     $status = 'paid';
+        // }
+        // if($request->grand_total>$request->total_amount_received)
+        // {
+        //     $status = 'partially_paid';
+        // }
+        // else
+        // {
+            // Temporary status
+            $status = 'unpaid';
+        // }
 
-        $advanceRevenue = new AdvanceRevenue();
-        // $advanceRevenue -> receipt_reference_id = $request -> receipt_reference_id;
-        $advanceRevenue->advance_revenue_number = $request->advance_revenue_number;
-        $advanceRevenue->total_amount_received = $request->amount_received;
-        $advanceRevenue->reason = $request->reason;
-        $advanceRevenue->remark = $request->remark;
-        $advanceRevenue->save();
-        $advanceRevenue->customer_id = $request->customer_id;
-        return view('customer.receipt.index',compact('customers'));
+            // Receipt References
+            $reference = ReceiptReferences::create([
+                'customer_id' => $request->customer_id,
+                'reference_number' => $request->reference_number,
+                'date' => $request->date,
+                'type' => 'advance_receipt',
+                'is_void' => 'no',
+                'status' => $status
+            ]);
+
+            // Create child database entry
+            if($reference)        
+            {
+                if($request->attachment) {
+                    $fileAttachment = time().'.'.$request->attachment->extension();  
+                    $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
+                }
+
+                $reference->id;
+                $proformas = AdvanceRevenues::create([
+                    'receipt_reference_id' => $reference->id,
+                    'advance_revenue_number' => $request->reference_number,
+                    'total_amount_received' => $request->amount_received,
+                    'reason' => $request->reason,
+                    'remark' => $request->remark,
+                    // image upload
+                    'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+                ]);
+                return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+            }
+
     }
 
 }

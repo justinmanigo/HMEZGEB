@@ -356,7 +356,8 @@ POTENTIAL SOLUTIONS:
         </div>
     </div>
 </form>
-
+<form action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
+@csrf   
 {{-- New Advance Revenue --}}
 <div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog"
     aria-labelledby="modal-advance-revenue-label" aria-hidden="true">
@@ -378,6 +379,7 @@ POTENTIAL SOLUTIONS:
         </div>
     </div>
 </div>
+</form>
 
 {{-- New Credit Receipt --}}
 <div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog"
