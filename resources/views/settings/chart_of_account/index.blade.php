@@ -168,16 +168,22 @@
                                 
                             </thead>
                             <tbody>
-                                {{-- <tr>
-                                    
-                                    <td class="table-item-content">1030</td>
-                                    <td class="table-item-content">Cash on Hand	</td> 
-                                    <td class="table-item-content"> Asset	</td>
-                                    <td class="table-item-content"> Cash </td>
-                                    <td class="table-item-content">00.00</td>
-                                    <td class="h6"><span class="badge badge-warning">Active</span></td>
+                                @foreach($chart_of_accounts as $coa)
+                                <tr>
+                                    <td class="table-item-content">{{ $coa->chart_of_account_no }}</td>
+                                    <td class="table-item-content">{{ $coa->name }}</td> 
+                                    <td class="table-item-content">{{ $coa->type }}</td>
+                                    <td class="table-item-content">{{ $coa->category }}</td>
+                                    <td class="table-item-content">{{ $coa->current_balance }}</td>
+                                    <td class="table-item-content h6">
+                                        @if($coa->status == 'Active')
+                                            <span class="badge badge-success">{{ $coa->status }}</span>
+                                        @else
+                                            <span class="badge badge-secondary">{{ $coa->status }}</span>
+                                        @endif
+                                    </td>
                                     <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                        {{-- <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
                                             </span>
@@ -186,16 +192,17 @@
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
                                             </span>
-                                        </button>
+                                        </button> --}}
                                     </td>
-                                </tr> --}}
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
 
 </div>
-
+{{-- {{ $chart_of_accounts[0]->id }} --}}
 
 
 

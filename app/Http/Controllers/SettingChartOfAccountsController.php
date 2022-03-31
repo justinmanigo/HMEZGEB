@@ -16,7 +16,19 @@ class SettingChartOfAccountsController extends Controller
      */
     public function index()
     {
-        return view('settings.chart_of_account.index');
+        $chart_of_accounts = ChartOfAccounts::select(
+                'chart_of_accounts.id',
+                'chart_of_accounts.chart_of_account_no',
+                'chart_of_accounts.name',
+                'chart_of_account_categories.type',
+                'chart_of_account_categories.category',
+                'chart_of_accounts.current_balance',
+                'chart_of_accounts.status',
+            )
+            ->leftJoin('chart_of_account_categories', 'chart_of_account_category_id', '=', 'chart_of_account_categories.id')
+            ->get();
+
+        return view('settings.chart_of_account.index', compact('chart_of_accounts'));
     }
 
     /**
