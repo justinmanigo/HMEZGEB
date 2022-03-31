@@ -77,6 +77,8 @@ class TaxController extends Controller
      */
     public function update(Request $request, Tax $tax)
     {
+        // TODO: Add restriction when already linked to another . . .
+
         // Update Tax
         Tax::where('id', '=', $tax->id)
             ->update([
@@ -106,6 +108,12 @@ class TaxController extends Controller
 
     /*===========================*/
 
+    /**
+     * Returns the specified resource queried from routes.
+     * 
+     * @param \App\models\Tax $tax
+     * @return \App\models\Tax $tax
+     */
     public function ajaxGetTax(Tax $tax)
     {
         return $tax;
