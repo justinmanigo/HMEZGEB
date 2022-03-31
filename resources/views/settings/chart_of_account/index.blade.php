@@ -231,7 +231,14 @@
                             {{-- <input type="text" class="form-control" id="coa_category" name="coa_category"> --}}
                             <input id="coa_category" name='coa_category'>
                         </div>
-                    </div>          
+                    </div>   
+                    <div class="form-group row">
+                        <label for="coa_beginning_balance" class="col-sm-3 col-lg-2 col-form-label">Beginning Balance<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            {{-- <input type="text" class="form-control" id="coa_category" name="coa_category"> --}}
+                            <input type="number" step=".01" class="form-control inputPrice" id="coa_beginning_balance" name="coa_beginning_balance" placeholder="0.00">
+                        </div>
+                    </div>         
                 </form>
             </div>
             <div class="modal-footer">

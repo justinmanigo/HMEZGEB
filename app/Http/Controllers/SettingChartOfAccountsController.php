@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChartOfAccounts;
-use App\Models\ChartOfAccountCategory;;
+use App\Models\ChartOfAccountCategory;
+use App\Models\PeriodOfAccounts;
 use Illuminate\Http\Request;
 
 class SettingChartOfAccountsController extends Controller
@@ -36,7 +37,7 @@ class SettingChartOfAccountsController extends Controller
      */
     public function store(Request $request)
     {
-        $coa = json_decode($request->coa_category, true);
+        $coa_category = json_decode($request->coa_category, true);
         
         // To get the category_id of coa, use
         // $coa[0]['value'];
@@ -44,10 +45,23 @@ class SettingChartOfAccountsController extends Controller
         // can be seen by changing `value` to its corresponding
         // column name.
 
-        ChartOfAccounts::create([
-            'chart_of_account_category_id' => $coa[0]['value'],
+        // Validation
+        // TODO: Check if specific COA number already exists.
+
+        // Create Chart of Account Entry
+        $coa = ChartOfAccounts::create([
+            'chart_of_account_category_id' => $coa_category[0]['value'],
             'chart_of_account_no' => $request->coa_number,
             'name' => $request->coa_name,
+            'current_balance' => $request->coa_beginning_balance,
+        ]);
+
+        // Create Period of Account Entry for $coa
+        // TODO: Integrate with Accounting Period later. At the moment, 
+        // temporary value will be null.
+        $poa = PeriodOfAccounts::create([
+            'chart_of_account_id' => $coa->id,
+            'beginning_balance' => $request->coa_beginning_balance,
         ]);
 
         return back()->with('success', 'Successfully stored new Chart of Account.');
