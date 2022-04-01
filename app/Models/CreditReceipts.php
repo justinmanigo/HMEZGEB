@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class CreditReceipts extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'credit_receipt_number',
+        'total_amount_received',
+        'reason',
+        'remark',
+        'attachment',
+    ];
 
     
     public function receiptReference()

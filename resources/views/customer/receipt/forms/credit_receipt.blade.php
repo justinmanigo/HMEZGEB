@@ -1,4 +1,5 @@
-<form id="form-credit-receipt" method="post" enctype="multipart/form-data">
+<form id="form-credit-receipt" action="{{route('receipts.creditReceipt.store')}}" method="post" enctype="multipart/form-data">
+    @csrf
     <div class="form-group row">
         <div class="col-lg-6">
             {{-- Deposit Ticket ID --}}
@@ -140,6 +141,7 @@
                 <th class="thead-actions">Pay</th>
             </thead>
             <tbody>
+            
                 <tr>
                     <td class="table-item-content"> {{-- Invoice --}}
                         <label for="cr_invoices_1023">Fs#1023</label>
@@ -162,31 +164,6 @@
                     <td class="table-item-content"> {{-- Actions --}}
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="cr_invoices_1023" name="invoices[]">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="table-item-content"> {{-- Invoice --}}
-                        <label for="cr_invoices_1024">Fs#1024</label>
-                    </td>
-                    <td> {{-- Date Due --}}
-                        <input type="number" class="form-control" name="date_due[]" value="05/02/2022" disabled>
-                    </td>
-                    <td> {{-- Amount Due --}}
-                        <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="9,645.26" disabled>
-                    </td>
-                    <td> {{-- Description --}}
-                        <input type="text" class="form-control" name="description[]" placeholder="">
-                    </td>
-                    <td> {{-- Discount --}}
-                        <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
-                    </td>
-                    <td> {{-- Amount Paid --}}
-                        <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
-                    </td>
-                    <td class="table-item-content"> {{-- Actions --}}
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="cr_invoices_1024" name="invoices[]">
                         </div>
                     </td>
                 </tr>

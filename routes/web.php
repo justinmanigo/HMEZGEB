@@ -105,7 +105,7 @@ Route::post('/userlogin', function (Request $request){
         Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
         Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
         Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
-
+        Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipts'])->name('creditReceipt.store');
         Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
         Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
 

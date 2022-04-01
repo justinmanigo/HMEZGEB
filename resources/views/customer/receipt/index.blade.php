@@ -188,6 +188,7 @@
                             </thead>
                             <tbody>
                                 @foreach($transactions as $transaction)
+                      
                                 <tr>
                                     <td> <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->receipt_id) }}">
                                         <span class="icon text-white-50">
@@ -209,7 +210,7 @@
                                     <td class="table-item-content">{{$transaction->name}}</td>
                                     <td class="table-item-content"><span class="badge badge-success">
                                             {{$transaction->status}} </span></td>
-                                    <td class="table-item-content">{{$transaction->grand_total}}</td>
+                                    <td class="table-item-content">{{$transaction->total_amount_received}}</td>
                                 </tr>
                                 @endforeach
 
@@ -356,75 +357,76 @@ POTENTIAL SOLUTIONS:
         </div>
     </div>
 </form>
-<form action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
-@csrf   
 {{-- New Advance Revenue --}}
-<div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog"
-    aria-labelledby="modal-advance-revenue-label" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-advance-revenue-label">New Advance Revenue</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.advance_revenue')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-advance-revenue">Save Advance Revenue</button>
+<form action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
+    @csrf   
+    <div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog"
+        aria-labelledby="modal-advance-revenue-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-advance-revenue-label">New Advance Revenue</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @include('customer.receipt.forms.advance_revenue')
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-advance-revenue">Save Advance Revenue</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </form>
-
 {{-- New Credit Receipt --}}
-<div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog"
-    aria-labelledby="modal-credit-receipt-label" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-credit-receipt-label">New Credit Receipt</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.credit_receipt')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-credit-receipt">Save Credit Receipt</button>
+<form  action="{{route('receipts.creditReceipt.store')}} "id="form-credit-receipt" method="post" enctype="multipart/form-data">
+    @csrf
+    <div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog"
+        aria-labelledby="modal-credit-receipt-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-credit-receipt-label">New Credit Receipt</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @include('customer.receipt.forms.credit_receipt')
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-credit-receipt">Save Credit Receipt</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+</form>
 {{-- New Proforma --}}
 <form action="{{route('receipts.proforma.store') }}" id="form-proforma" method="post" enctype="multipart/form-data">
-@csrf   
-<div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-proforma-label">New Proforma</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.proforma')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-proforma">Save Proforma</button>
+    @csrf   
+    <div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-proforma-label">New Proforma</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @include('customer.receipt.forms.proforma')
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-proforma">Save Proforma</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </form>
 
 {{-- Import --}}

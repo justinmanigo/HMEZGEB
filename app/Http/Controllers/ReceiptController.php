@@ -18,8 +18,10 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        
-        $transactions = Customers::join(
+    
+
+        // customers join receipt_references on customers.id = receipt_references.customer_id join 
+        $receipt = Customers::join(
             'receipt_references',
             'receipt_references.customer_id',
             '=',
@@ -31,39 +33,51 @@ class ReceiptController extends Controller
             'receipt_references.id'
         )->select(
             'customers.name',
-        //    'customers.tin_number',
-        //      'customers.address',
-        //     'customers.city',
-        //     'customers.country',
-        //     'customers.mobile_number',
-        //     'customers.telephone_one',
-        //     'customers.telephone_two',
-        //     'customers.fax',
-        //     'customers.website',
-        //     'customers.email',
-        //     'customers.contact_person',
-        //     'customers.image',
-        //     'customers.label',
-        //     'customers.is_active',
             'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',
             'receipt_references.status',
-            // 'receipt_references.is_void',
-            // 'receipt_references.customer_id',
-            'receipts.id as receipt_id',
-            'receipts.receipt_number',
-            'receipts.due_date',
-            'receipts.sub_total',
-            'receipts.discount',
-            'receipts.tax',
-            'receipts.grand_total',
-            'receipts.withholding',
-            'receipts.remark',
-            'receipts.attachment',
-            'receipts.payment_method',
             'receipts.total_amount_received'
-        )->get();
+        );
+        $advance = Customers::join(
+            'receipt_references',
+            'receipt_references.customer_id',
+            '=',
+            'customers.id'
+        )->join(
+            'advance_revenues',
+            'advance_revenues.receipt_reference_id',
+            '=',
+            'receipt_references.id'
+        )->select(
+            'customers.name',
+            'receipt_references.reference_number',
+            'receipt_references.date',
+            'receipt_references.type',
+            'receipt_references.status',
+            'advance_revenues.total_amount_received'
+        )->union($receipt);
+
+        $transactions = Customers::join(
+            'receipt_references',
+            'receipt_references.customer_id',
+            '=',
+            'customers.id'
+        )->join(
+            'credit_receipts',
+            'credit_receipts.receipt_reference_id',
+            '=',
+            'receipt_references.id'
+        )->select(
+            'customers.name',
+            'receipt_references.reference_number',
+            'receipt_references.date',
+            'receipt_references.type',
+            'receipt_references.status',
+            'credit_receipts.total_amount_received'
+        )->union($advance)->get();
+     
+         
 
         return view('customer.receipt.index',compact('transactions'));
     }
@@ -94,10 +108,8 @@ class ReceiptController extends Controller
             ]);
             if($request->attachment) {
                 $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
+                $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
             }
-            
-          
                    // Create child database entry
             if($reference)        
             {
@@ -282,7 +294,7 @@ class ReceiptController extends Controller
             {
                 if($request->attachment) {
                     $fileAttachment = time().'.'.$request->attachment->extension();  
-                    $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
+                    $request->attachment->storeAs('public/receipt-attachment'/'advance-revenues', $fileAttachment);
                 }
 
                 $reference->id;
@@ -299,5 +311,47 @@ class ReceiptController extends Controller
             }
 
     }
+    public function storeCreditReceipts(Request $request){
+            // Temporary status
+            $status = 'unpaid';
+            // Receipt References
+            $reference = ReceiptReferences::create([
+                'customer_id' => $request->customer_id,
+                'reference_number' => $request->reference_number,
+                'date' => $request->date,
+                'type' => 'credit_receipt',
+                'is_void' => 'no',
+                'status' => $status
+            ]);
+            $receipts = Receipts::all();
+            return view('receipt.forms.credit_receipt',compact('receipts'));
+
+            // Create child database entry
+            if($reference)        
+            {
+                if($request->attachment) {
+                    $fileAttachment = time().'.'.$request->attachment->extension();  
+                    $request->attachment->storeAs('public/receipt-attachment/credit-receipts', $fileAttachment);
+                }
+
+                $reference->id;
+                $creditReceipts = CreditReceipts::create([
+                    'receipt_reference_id' => $reference->id,
+                    'credit_receipt_number' => $request->reference_number,
+                    'total_amount_received' => $request->amount_received,
+                    'reason' => $request->reason,
+                    'remark' => $request->remark,
+                    // image upload
+                    'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+                ]);
+                return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+            }
+            
+            
+            
+
+    }
+
+  
 
 }
