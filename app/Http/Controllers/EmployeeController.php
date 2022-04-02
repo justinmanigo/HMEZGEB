@@ -68,6 +68,13 @@ class EmployeeController extends Controller
         return back()->with('success', 'Successfully updated an employee record.');
     }
 
+    public function destroy(Employee $employee)
+    {
+        // TODO: Restrictions if any
+
+        $employee->delete();
+        return back()->with('success', 'Successfully deleted an employee record.');
+    }
 
     /*======================== */
 

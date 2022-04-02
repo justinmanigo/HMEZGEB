@@ -51,6 +51,9 @@
                                         <i class="fas fa-pen"></i>
                                     </span>
                                 </button>
+                                <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-employee-delete" onclick="initDeleteEmployee({{ $employee->id }})">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
                             </td>
                             <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->given_father_name }}</td>
                             <td class="table-item-content">{{ $employee->tin_number }}</td>
@@ -192,6 +195,31 @@
     </div>
 </div>
 
+{{-- Delete Employee Modal --}}
+<div class="modal fade" id="modal-employee-delete" tabindex="-1" role="dialog" aria-labelledby="Modal Delete Tax">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete this record?
+                <form id="form-employee-delete" class="" action="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger" form="form-employee-delete">Delete Tax</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         $('#dataTables').DataTable();
@@ -286,6 +314,11 @@
             $('#e_is_still_working').click();
         }
     }
+    function initDeleteEmployee(id)
+    {
+        $("#form-employee-delete").attr("action", "/employee/" + id);
+    }
+
     $('#e_is_still_working').on('change',function(){
         var _val = $(this).is(':checked') ? 'checked' : 'unchecked';
         if(_val == 'checked')

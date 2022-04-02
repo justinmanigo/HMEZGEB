@@ -238,6 +238,7 @@ Route::group([
         Route::get('/employee', [EmployeeController::class, 'index'])->name('index');
         Route::post('/employee', [EmployeeController::class, 'store'])->name('store');
         Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
+        Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
         Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
 
     });
