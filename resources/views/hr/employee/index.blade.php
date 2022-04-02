@@ -43,24 +43,24 @@
                     <th>Type</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-pen"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-trash"></i>
-                                </span>
-                            </button>
-                        </td>
-                        <td class="table-item-content">Graeme Xyber Pastoril</td>
-                        <td class="table-item-content">1234567890</td>
-                        <td class="table-item-content">+63 912 345 6789</td>
-                        <td class="table-item-content"><span class="badge badge-secondary">Employee</span></td>
-                    </tr>
+                    @foreach($employees as $employee)
+                        <tr>
+                            <td>
+                            </td>
+                            <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->given_father_name }}</td>
+                            <td class="table-item-content">{{ $employee->tin_number }}</td>
+                            <td class="table-item-content">{{ $employee->mobile_number }}</td>
+                            <td class="table-item-content">
+                                @if($employee->type == 'employee')
+                                    <span class="badge badge-success">Employee</span>
+                                @elseif($employee->type == 'commission_agent')
+                                    <span class="badge badge-primary">Commission Agent</span>
+                                @else {{-- This is only included to visually catch errors. --}}
+                                    <span class="badge badge-secondary">Other</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

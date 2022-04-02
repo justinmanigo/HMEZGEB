@@ -14,7 +14,10 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        return view('hr.employee.index');
+        $employees = Employee::get();
+        return view('hr.employee.index', compact('employees'));
+    }
+
     public function store(Request $request)
     {
 
