@@ -45,5 +45,34 @@ class EmployeeController extends Controller
         ]);
         return back()->with('success', 'Successfully created an employee record.');
     }
+
+    public function update(Employee $employee, Request $request)
+    {
+        // TODO: Restrictions if any
+
+        $employee->update([
+            'first_name' => $request->first_name,
+            'father_name' => $request->father_name,
+            'given_father_name' => $request->given_father_name,
+            'date_of_birth' => $request->date_of_birth,
+            'mobile_number' => $request->mobile_number,
+            'telephone' => $request->telephone,
+            'email' => $request->email,
+            'tin_number' => $request->tin_number,
+            'type' => $request->type,
+            'date_started_working' => $request->date_started_working,
+            'date_ended_working' => $request->date_ended_working,
+            'emergency_contact_person' => $request->emergency_contact_person,
+            'contact_number' => $request->contact_number,
+        ]);
+        return back()->with('success', 'Successfully updated an employee record.');
+    }
+
+
+    /*======================== */
+
+    public function ajaxGetEmployee(Employee $employee)
+    {
+        return $employee;
     }
 }

@@ -237,6 +237,8 @@ Route::group([
     ], function(){
         Route::get('/employee', [EmployeeController::class, 'index'])->name('index');
         Route::post('/employee', [EmployeeController::class, 'store'])->name('store');
+        Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
+        Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
 
     });
 

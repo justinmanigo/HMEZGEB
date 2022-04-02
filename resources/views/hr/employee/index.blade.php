@@ -46,6 +46,11 @@
                     @foreach($employees as $employee)
                         <tr>
                             <td>
+                                <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="modal" data-target="#modal-employee" onclick="initEditEmployee({{ $employee->id }})">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </button>
                             </td>
                             <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->given_father_name }}</td>
                             <td class="table-item-content">{{ $employee->tin_number }}</td>
@@ -78,6 +83,9 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div id="modal-employee-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
                 <form id="form-employee" method="post" action="{{ route('employees.store') }}">
                     @csrf
                     <input type="hidden" id="e_http_method" name="_method" value="POST">
@@ -190,6 +198,63 @@
         $('.dataTables_filter').addClass('pull-right');
     });
 
+    function initEditEmployee(id)
+    {
+        $("#form-employee").hide();
+        $("#modal-employee-spinner").show();
+        $("#e_http_method").val("PUT");
+        $("#form-employee").attr("action", "/employee/" + id)
+        $("#e_submit_btn").html("Update Employee").attr("disabled", 'disabled');
+        $("#modal-employee-label").html("Edit Employee");
+        
+        // Get data from server.
+        var request = $.ajax({
+            url: "/ajax/hr/employees/get/" + id,
+            method: "GET",
+        });
+            
+        request.done(function(res, status, jqXHR ) {
+            $("#form-employee").show();
+            $("#modal-employee-spinner").hide();
+            $("#e_submit_btn").removeAttr("disabled");
+            console.log("Request successful.");
+            console.log(res);
+
+            if($('#e_is_still_working').is(':checked'))
+            {
+                $("#e_date_ended_working").attr('disabled', 'disabled');
+                $("#e_date_ended_working").removeAttr('required');
+            }
+
+            // Fields
+            $("#e_first_name").val(res.first_name);
+            $("#e_father_name").val(res.father_name);
+            $("#e_given_father_name").val(res.given_father_name);
+            $("#e_date_of_birth").val(res.date_of_birth);
+            $("#e_mobile_number").val(res.mobile_number);
+            $("#e_telephone").val(res.telephone);
+            $("#e_email").val(res.email);
+            $("#e_tin_number").val(res.tin_number);
+            $("#e_type").val(res.type);
+            $("#e_basic_salary").val(res.basic_salary);
+            $("#e_date_started_working").val(res.date_started_working);
+            $("#e_date_ended_working").val(res.date_ended_working == undefined ? '' : res.date_ended_working);
+
+            $("#e_emergency_contact_person").val(res.emergency_contact_person);
+            $("#e_contact_number").val(res.contact_number);
+            
+            // If Date Ended Working is null
+            if(res.date_ended_working == undefined)
+                $('#e_is_still_working').click();
+
+            // $("#e_name").val(res.name);
+            // $("#e_percentage").val(res.percentage);
+        });
+        
+        request.fail(function(jqXHR, status, error) {
+            console.log("Request failed.");
+        });
+    }
     function initCreateEmployee()
     {
         $("#e_http_method").val("POST");
