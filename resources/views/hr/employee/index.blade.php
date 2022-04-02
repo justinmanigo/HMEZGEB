@@ -22,7 +22,7 @@
 
 {{-- Button Group Navigation --}}
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-    <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-employee">
+    <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-employee" onclick="initCreateEmployee()">
         <span class="icon text-white-50">
             <i class="fas fa-pen"></i>
         </span>
@@ -39,7 +39,7 @@
                     <th id="thead-actions">Actions</th>
                     <th>Employee Name</th>
                     <th>Tin Number</th>
-                    <th>Contact Number</th>
+                    <th>Mobile Number</th>
                     <th>Type</th>
                 </thead>
                 <tbody>
@@ -78,8 +78,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-employee" method="post" enctype="multipart/form-data">
-                    
+                <form id="form-employee" method="post" action="{{ route('employees.store') }}">
+                    @csrf
+                    <input type="hidden" id="e_http_method" name="_method" value="POST">
                     <div class="form-group row">
                         <label for="e_first_name" class="col-sm-3 col-lg-2 col-form-label">First Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-10">
@@ -93,9 +94,9 @@
                             <input type="text" class="form-control" id="e_father_name" name="father_name" placeholder="" required>
                         </div>
 
-                        <label for="e_grandfather_name" class="col-sm-3 col-lg-2 col-form-label">G. Father Name<span class="text-danger ml-1">*</span></label>
+                        <label for="e_given_father_name" class="col-sm-3 col-lg-2 col-form-label">Given Father Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-xl-4">
-                            <input type="text" class="form-control" id="e_grandfather_name" name="grandfather_name" placeholder="" required>
+                            <input type="text" class="form-control" id="e_given_father_name" name="given_father_name" placeholder="" required>
                         </div>
                     </div>
 
@@ -133,9 +134,9 @@
                     <div class="form-group row">
                         <label for="e_type" class="col-sm-3 col-lg-2 col-form-label">Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <select class="form-control" id="e_type" name="type">
-                                <option>Employee</option>
-                                <option>Commission Agent</option>
+                            <select class="form-control" id="e_type" name="type" required>
+                                <option value='employee'>Employee</option>
+                                <option value='commission_agent'>Commission Agent</option>
                             </select>
                         </div>
 
@@ -153,9 +154,9 @@
 
                         <label for="e_date_ended_working" class="col-sm-3 col-lg-2  col-form-label">Date Ended Working</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="" required>
+                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="">
                             <div class="form-check">
-                                <input class="form-check-input" id="e_is_still_working" type="checkbox" value="" name="is_still_working">
+                                <input class="form-check-input" id="e_is_still_working" type="checkbox" name="is_still_working">
                                 <label class="form-check-label" for="e_is_still_working">Still Working</label>
                             </div>
                         </div>
@@ -167,9 +168,9 @@
                             <input type="text" class="form-control" id="e_emergency_contact_person" name="emergency_contact_person" placeholder="" required>
                         </div>
 
-                        <label for="e_emergency_contact_number" class="col-sm-3 col-lg-2  col-form-label">Emergency Contact Number</label>
+                        <label for="e_contact_number" class="col-sm-3 col-lg-2  col-form-label">Emergency Contact Number</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_emergency_contact_number" name="emergency_contact_number" placeholder="" required>
+                            <input type="text" class="form-control" id="e_contact_number" name="contact_number" placeholder="" required>
                         </div>
                     </div>
                     
@@ -177,7 +178,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-employee">Save Customer</button>
+                <button type="submit" class="btn btn-primary" form="form-employee" id="e_submit_btn">Save Customer</button>
             </div>
         </div>
     </div>
@@ -185,8 +186,54 @@
 
 <script>
     $(document).ready(function () {
-    $('#dataTables').DataTable();
-    $('.dataTables_filter').addClass('pull-right');
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
+    });
+
+    function initCreateEmployee()
+    {
+        $("#e_http_method").val("POST");
+        $("#form-employee").attr("action", "{{ route('employees.store') }}")
+        $("#e_submit_btn").html("Save Employee");
+        $("#modal-employee-label").html("New Employee");
+        $("#e_submit_btn").removeAttr("disabled");
+        
+        // Fields
+        $("#e_first_name").val('');
+        $("#e_father_name").val('');
+        $("#e_given_father_name").val('');
+        $("#e_date_of_birth").val('');
+        $("#e_mobile_number").val('');
+        $("#e_telephone").val('');
+        $("#e_email").val('');
+        $("#e_tin_number").val('');
+        $("#e_type").val('');
+        $("#e_basic_salary").val('');
+        $("#e_date_started_working").val('');
+        $("#e_date_ended_working").val('');
+        $("#e_emergency_contact_person").val('');
+        $("#e_contact_number").val('');
+
+        if($('#e_is_still_working').is(':checked'))
+        {
+            $("#e_date_ended_working").attr('disabled', 'disabled');
+            $("#e_date_ended_working").removeAttr('required');
+            $('#e_is_still_working').click();
+        }
+    }
+    $('#e_is_still_working').on('change',function(){
+        var _val = $(this).is(':checked') ? 'checked' : 'unchecked';
+        if(_val == 'checked')
+        {
+            $("#e_date_ended_working").attr('disabled', 'disabled');
+            $("#e_date_ended_working").removeAttr('required');
+        }
+        else
+        {
+            $("#e_date_ended_working").removeAttr('disabled');
+            $("#e_date_ended_working").attr('required', 'required');
+        }
+        console.log(_val);
     });
 </script>
 @endsection
