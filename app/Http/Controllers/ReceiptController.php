@@ -6,6 +6,7 @@ use App\Models\CreditReceipts;
 use App\Models\AdvanceRevenues;
 use App\Models\ReceiptReferences;
 use App\Models\Receipts;
+use App\Models\ReceiptItem;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 
@@ -81,92 +82,95 @@ class ReceiptController extends Controller
 
         return view('customer.receipt.index',compact('transactions'));
     }
-    
+
+    /** === STORE RECEIPTS === */
+
     public function storeReceipt(Request $request)
     {
-
-        if($request->grand_total==$request->total_amount_received)
+        // Decode json of item tagify fields.
+        for($i = 0; $i < count($request->item); $i++)
         {
+            $item = json_decode($request->item[$i]);
+
+            // Resulting json_decode will turn into an array of
+            // object, thus it has to be merged.
+            $items[$i] = $item[0];
+        }
+
+        // Determine receipt status.
+        if($request->grand_total == $request->total_amount_received)
             $status = 'paid';
-        }
-        if($request->grand_total>$request->total_amount_received)
-        {
+        else if($request->grand_total > $request->total_amount_received)
             $status = 'partially_paid';
-        }
         else
-        {
             $status = 'unpaid';
+
+        // Create ReceiptReference Record
+        $reference = ReceiptReferences::create([
+            'customer_id' => $request->customer_id,
+            'reference_number' => $request->reference_number,
+            'date' => $request->date,
+            'type' => 'receipt',
+            'is_void' => 'no',
+            'status' => $status
+        ]);
+
+        // If request has attachment, store it to file storage.
+        if($request->attachment) {
+            $fileAttachment = time().'.'.$request->attachment->extension();  
+            $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
+        }
+        
+        // Create child database entry
+        if($request->grand_total==$request->total_amount_received)
+            $payment_method = 'cash';
+        else
+            $payment_method = 'credit';
+        
+        // Create Receipt Record
+        $receipt = Receipts::create([
+            'receipt_reference_id' => $reference->id,
+            'due_date' => $request->due_date,
+            'sub_total' => $request->sub_total,
+            'discount' => $request->discount,
+            'grand_total' => $request->grand_total,
+            'remark' => $request->remark,           
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
+            'discount' => '0.00', // Temporary discount
+            'withholding' => '0.00', // Temporary Withholding
+            'tax' => '0.00', // Temporary Tax value
+            'receipt_number' => $request->proforma_number, // Temporary reference number
+            'proforma_id' => null, // Temporary proforma id
+            'payment_method' => $payment_method,
+            'total_amount_received' => $request->total_amount_received
+        ]);
+
+        // Create Receipt Item Records
+        foreach($items as $item)
+        {
+            ReceiptItem::create([
+                'inventory_id' => $item->value,
+                'receipt_id' => $receipt->id,
+                'quantity' => $item->quantity,
+                'price' => $item->sale_price,
+                'total_price' => $item->quantity * $item->sale_price,
+            ]);
         }
 
-            $reference = ReceiptReferences::create([
-                'customer_id' => $request->customer_id,
-                'reference_number' => $request->reference_number,
-                'date' => $request->date,
-                'type' => 'receipt',
-                'is_void' => 'no',
-                'status' => $status
-            ]);
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
-            }
-                   // Create child database entry
-            if($reference)        
-            {
-                if($request->grand_total==$request->total_amount_received)
-                {
-                    $payment_method = 'cash';
-                }
-                else
-                {
-                    $payment_method = 'credit';
-                }
-                $reference->id;
-
-                
-                $receipt = Receipts::create([
-                    'receipt_reference_id' => $reference->id,
-                    'due_date' => $request->due_date,
-                    'sub_total' => $request->sub_total,
-                    'discount' => $request->discount,
-                    // 'tax' => $request->tax,
-                    'grand_total' => $request->grand_total,
-                    // 'withholding' => $request->withholding,
-                    'remark' => $request->remark,
-
-                    // file upload and save to database
-                    
-                    'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-                    // Temporary discount
-                    'discount' => '0.00',
-                    // Temporary Withholding
-                    'withholding' => '0.00',
-                    // Temporary Tax value
-                    'tax' => '0.00',
-                    // Temporary reference number
-                    'receipt_number' => $request->proforma_number,
-                    // Temporary proforma id
-                    'proforma_id' => null,
-
-                    'payment_method' => $payment_method,
-                    'total_amount_received' => $request->total_amount_received
-                    
-                ]);
-                //  image upload and save to database 
-                // if($request->hasFile('attachment'))
-                // {
-                //     $file = $request->file('attachment');
-                //     $filename = $file->getClientOriginalName();
-                //     $file->move(public_path('images'), $filename);
-                //     $receipt->attachment = $filename;
-                //     $receipt->save();
-                // }
-                
-                return redirect()->route('receipts.receipt.index')->with('success', 'Receipt has been added successfully');
-            }
-    
-
+        //  image upload and save to database 
+        // if($request->hasFile('attachment'))
+        // {
+        //     $file = $request->file('attachment');
+        //     $filename = $file->getClientOriginalName();
+        //     $file->move(public_path('images'), $filename);
+        //     $receipt->attachment = $filename;
+        //     $receipt->save();
+        // }
+        
+        return redirect()->route('receipts.receipt.index')->with('success', 'Receipt has been added successfully');
     }
+
+    /** === === */
 
     public function edit($id)
     {
