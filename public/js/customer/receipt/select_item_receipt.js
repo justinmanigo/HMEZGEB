@@ -20,6 +20,23 @@ $(document).on('click', '.r_item_delete', function (event) {
     if(receipt_items.length < 1) createReceiptItemEntry();
 });
 
+// Set events of quantity field.
+$(document).on('change', '.r_item_quantity', function(event) {
+    id = $(this)[0].dataset.id;
+    quantity = $(this)[0].value;
+    sale_price = $(`#r_item_price_${id}`).val()
+    console.log(sale_price)
+    
+    // Update item total
+    $(`#r_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
+
+    // Update overall total
+    item_idx = getReceiptItemIndex(id);
+    receipt_items[item_idx].total_price = sale_price * quantity;
+    calculateReceiptSubTotal();
+    calculateReceiptGrandTotal();
+});
+
 // Creates a Receipt Item Entry on the Table.
 function createReceiptItemEntry() 
 {
@@ -36,7 +53,7 @@ function createReceiptItemEntry()
             </div>
         </td>
         <td>
-            <input type="number" id="r_item_quantity_${receipt_count}" class="form-control" name="quantity[]" placeholder="0" min="1" disabled>
+            <input type="number" data-id="${receipt_count}" id="r_item_quantity_${receipt_count}" class="form-control r_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
         </td>
         <td>
             <input type="text" id="r_item_price_${receipt_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
@@ -97,7 +114,8 @@ function createReceiptItemEntry()
     let item_entry = {
         "entry_id": receipt_count,
         "tagify": elm_tagify,
-        "price": 0,
+        "sale_price": 0,
+        "total_price": 0,
         "value": null,
     }
 
@@ -136,6 +154,39 @@ function getReceiptItemEntry(entry_id)
         }
     }   
     return undefined;
+}
+
+// Gets the receipt item index from the table.
+function getReceiptItemIndex(entry_id)
+{
+    for(let i = 0; i < receipt_items.length; i++)
+    {
+        if(receipt_items[i].entry_id == entry_id)
+        {
+            console.log("Found entry.");
+            return i;
+        }
+    }   
+    return undefined;
+}
+
+/** === Calculation Functions === */
+function calculateReceiptSubTotal()
+{
+    subtotal = 0;
+    for(i = 0; i < receipt_items.length; i++)
+        subtotal += receipt_items[i].total_price;
+
+    $(`#r_sub_total`).val(parseFloat(subtotal).toFixed(2))
+}
+
+function calculateReceiptGrandTotal()
+{
+    grandtotal = 0;
+    for(i = 0; i < receipt_items.length; i++)
+    grandtotal += receipt_items[i].total_price;
+
+    $(`#r_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
 
 /** === Tagify Related Functions === */
