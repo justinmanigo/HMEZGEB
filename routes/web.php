@@ -112,7 +112,7 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
         Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
 
-
+        
     });
 
     Route::group([
@@ -125,7 +125,7 @@ Route::post('/userlogin', function (Request $request){
         Route::delete('/customer/{id}', [CustomerController::class, 'destroy']);
         
         Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
-
+        Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
     });
 
     Route::group([

@@ -34,9 +34,9 @@ var creditreceipt_select_customer_tagify = new Tagify(creditreceipt_select_custo
 })
 
 creditreceipt_select_customer_tagify.on('dropdown:show dropdown:updated', onDropdownShow)
-creditreceipt_select_customer_tagify.on('dropdown:select', oncreditreceiptCustomerSelectSuggestion)
-creditreceipt_select_customer_tagify.on('input', oncreditreceiptCustomerInput)
-creditreceipt_select_customer_tagify.on('remove', oncreditreceiptCustomerRemove)
+creditreceipt_select_customer_tagify.on('dropdown:select', onCreditReceiptCustomerSelectSuggestion)
+creditreceipt_select_customer_tagify.on('input', onCreditReceiptCustomerInput)
+creditreceipt_select_customer_tagify.on('remove', onCreditReceiptCustomerRemove)
 
 var addAllSuggestionsElm;
 
@@ -44,7 +44,7 @@ function onDropdownShow(e){
     var dropdownContentElm = e.detail.creditreceipt_select_customer_tagify.DOM.dropdown.content;
 }
 
-function oncreditreceiptCustomerSelectSuggestion(e){
+function onCreditReceiptCustomerSelectSuggestion(e){
     // checks for data of selected customer
     console.log(e.detail.data);
 
@@ -52,16 +52,44 @@ function oncreditreceiptCustomerSelectSuggestion(e){
     $("#cr_tin_number").val(e.detail.data.tin_number)
     $("#cr_contact_person").val(e.detail.data.contact_person)
     $("#cr_mobile_number").val(e.detail.data.mobile_number)
+
+    // Get data from server.
+    var request = $.ajax({
+        url: "/ajax/customer/receipts/topay/" + e.detail.data.value,
+        method: "GET",
+    });
+        
+    request.done(function(res, status, jqXHR ) {
+        console.log(res);
+        for(i = 0; i < res.length; i++)
+        {
+            createReceiptToPayEntry(res[i]);
+        }
+        // $("#form-tax").show();
+        // $("#modal-tax-spinner").hide();
+        // $("#t_submit_btn").removeAttr("disabled");
+        // console.log("Request successful.");
+        // console.log(res);
+        // $("#t_name").val(res.name);
+        // $("#t_percentage").val(res.percentage);
+    });
+    
+    request.fail(function(jqXHR, status, error) {
+        console.log("Request failed.");
+    });
 }
 
-function oncreditreceiptCustomerRemove(e){
+function onCreditReceiptCustomerRemove(e){
     $("#cr_customer_id").val("")
     $("#cr_tin_number").val("")
     $("#cr_contact_person").val("")
     $("#cr_mobile_number").val("")
+
+    // Reset <tr>
+    $("#cr_receipts_to_pay").html("");
 }
 
-function oncreditreceiptCustomerInput(e) {
+function onCreditReceiptCustomerInput(e) {
     var value = e.detail.value
     creditreceipt_select_customer_tagify.whitelist = null // reset the whitelist
 

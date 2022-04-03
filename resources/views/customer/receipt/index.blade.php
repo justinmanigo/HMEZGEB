@@ -580,6 +580,7 @@ POTENTIAL SOLUTIONS:
     <script src="/js/customer/receipt/template_select_item.js"></script>
     <script src="/js/customer/receipt/select_item_receipt.js"></script>
     <script src="/js/customer/receipt/select_item_proforma.js"></script>
+    <script src="/js/customer/receipt/select_receipt_creditreceipt.js"></script>
 
 
     @endsection
