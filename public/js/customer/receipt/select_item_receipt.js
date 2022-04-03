@@ -2,7 +2,6 @@ var receipt_items = [];
 var receipt_count = 0;
 
 $(document).ready(function () {
-    // console.log(receipt_items.length)
     // Create first <tr> for receipt items
     createReceiptItemEntry()
 });
@@ -66,20 +65,6 @@ function createReceiptItemEntry()
             dropdownItem: ItemSuggestionItemTemplate
         },
         whitelist: [],
-        // whitelist: [
-        //     {
-        //         "value": 1,
-        //         "name": "Justinian Hattersley",
-        //         "avatar": "https://i.pravatar.cc/80?img=1",
-        //         "email": "jhattersley0@ucsd.edu"
-        //     },
-        //     {
-        //         "value": 2,
-        //         "name": "Antons Esson",
-        //         "avatar": "https://i.pravatar.cc/80?img=2",
-        //         "email": "aesson1@ning.com"
-        //     },
-        // ]
     })
 
     elm_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
@@ -122,51 +107,6 @@ $(document).on('click', '.r_item_delete', function (event) {
     }
 });
 
-
-
-
-// var receipt_select_item_elm = document.querySelector('#r_item');
-
-// initialize Tagify on the above input node reference
-// var receipt_select_item_tagify = new Tagify(receipt_select_item_elm, {
-//     tagTextProp: 'name', // very important since a custom template is used with this property as text
-//     enforceWhitelist: true,
-//     mode: "select",
-//     skipInvalid: false, // do not remporarily add invalid tags
-//     dropdown: {
-//         closeOnSelect: true,
-//         enabled: 0,
-//         classname: 'item-list',
-//         searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
-//     },
-//     templates: {
-//         tag: ItemTagTemplate,
-//         dropdownItem: ItemSuggestionItemTemplate
-//     },
-//     whitelist: [],
-    // whitelist: [
-    //     {
-    //         "value": 1,
-    //         "name": "Justinian Hattersley",
-    //         "avatar": "https://i.pravatar.cc/80?img=1",
-    //         "email": "jhattersley0@ucsd.edu"
-    //     },
-    //     {
-    //         "value": 2,
-    //         "name": "Antons Esson",
-    //         "avatar": "https://i.pravatar.cc/80?img=2",
-    //         "email": "aesson1@ning.com"
-    //     },
-    // ]
-// })
-
-// receipt_select_item_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
-// receipt_select_item_tagify.on('dropdown:select', onReceiptItemSelectSuggestion)
-// receipt_select_item_tagify.on('input', onReceiptItemInput)
-// receipt_select_item_tagify.on('remove', onReceiptItemRemove)
-
-// var addAllSuggestionsElm;
-
 function onReceiptItemDropdownShow(e) {
     console.log("onReceiptItemDropdownShow")
     var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
@@ -174,25 +114,6 @@ function onReceiptItemDropdownShow(e) {
 
 function onReceiptItemSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
-    // console.log("onReceiptItemSelectSuggestion")
-    // // checks for data of selected customer
-    // console.log("Checks for data of selected customer");
-    // console.log(e.detail.data);
-    // console.log(e.detail.data.value.toString());
-    // value = e.detail.data.value;
-
-    // // checks for data of selected element
-    // console.log("Get selected element instance.");
-    // console.log(e.detail.tagify);
-    // tagify = e.detail.tagify;
-
-    // NOT WORKING ATM
-    // tagify.removeTags(value.toString(), false, 500)
-
-    // checks receipt items if value already exists in the list. if so,
-    // it won't be added.
-    // console.log("Checks receipt items if value already exists in the list. If so, it won't be added.")
-    // console.log(receipt_items)
       
     $(`#r_item_quantity_${id}`).val(e.detail.data.quantity)
     $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
@@ -271,9 +192,6 @@ function getReceiptItemEntry(entry_id)
 
 function removeReceiptItemEntry(entry_id)
 {
-    //Subtract total when delete button is clicked
-    // $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val())-parseFloat($(`#r_item_total_${entry_id}`).val()))
-    // $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val())-parseFloat($(`#r_item_total_${entry_id}`).val()))
     $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
     $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
 
