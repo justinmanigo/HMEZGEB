@@ -1,14 +1,32 @@
-var receipt_items = [];
-var receipt_count = 0;
+// This array lists down the items within the receipt.
+var receipt_items = []; 
 
-$(document).ready(function () {
-    // Create first <tr> for receipt items
+// This variable counts how many instances of receipt items are made.
+// This ensures that there will be no conflict ids on receipt item elements.
+var receipt_count = 0; 
+
+// Create a receipt item entry when document is fully loaded or when add entry button is clicked.
+$(document).ready(createReceiptItemEntry());
+$(document).on('click', '.r_add_item_entry', function(){
     createReceiptItemEntry()
+})
+
+// Delete the receipt item entry when the row's delete button is clicked.
+$(document).on('click', '.r_item_delete', function (event) {
+    removeReceiptItemEntry( $(this)[0].dataset.id )
+    $(this).parents('tr').remove();
+
+    // If there are no longer item entries in table, generate a new one.
+    if(receipt_items.length < 1) createReceiptItemEntry();
 });
 
+// Creates a Receipt Item Entry on the Table.
 function createReceiptItemEntry() 
 {
+    // Increment receipt_count to avoid element conflicts.
     receipt_count++;
+
+    // <tr> template
     let inner = `
     <tr data-id="${receipt_count}" id="r_item_entry_${receipt_count}">
         <td>
@@ -46,8 +64,10 @@ function createReceiptItemEntry()
     </tr>
     `
 
+    // Append template to the table.
     $("#r_items").append(inner)
 
+    // Create new tagify instance of item selector of newly created row.
     let elm = document.querySelector(`#r_item_${receipt_count}`);
     let elm_tagify = new Tagify(elm, {
         tagTextProp: 'name', // very important since a custom template is used with this property as text
@@ -67,6 +87,7 @@ function createReceiptItemEntry()
         whitelist: [],
     })
 
+    // Set events of tagify instance.
     elm_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
     elm_tagify.on('dropdown:select', onReceiptItemSelectSuggestion)
     elm_tagify.on('input', onReceiptItemInput)
@@ -83,29 +104,40 @@ function createReceiptItemEntry()
     receipt_items.push(item_entry);
     console.log(receipt_items);
 }
-// add table row for receipt item
-$(document).on('click', '.r_add_item_entry', function () {
-    createReceiptItemEntry()
-})
 
+// Removes a Receipt Item Entry from the Table.
+function removeReceiptItemEntry(entry_id)
+{
+    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
+    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
 
-$(document).on('click', '.r_item_delete', function (event) {
-    console.log($(this)[0].dataset.id)
-    removeReceiptItemEntry( $(this)[0].dataset.id )
-    console.log("Check if its successfully removed.");
-    console.log(receipt_items);
-
-    $(this).parents('tr').remove();
-
-    if(receipt_items.length < 1)
+    for(let i = 0; i < receipt_items.length; i++)
     {
-        // Convert to zero if no items in receipt
-        $(`#r_sub_total`).val('0.00')
-        $(`#r_grand_total`).val('0.00')
-        console.log("No items left. Generating new one.");
-        createReceiptItemEntry();
-    }
-});
+        if(receipt_items[i].entry_id == entry_id)
+        {   
+            console.log("Removing entry " + entry_id);
+            receipt_items.splice(i, 1);
+            return true;
+        }
+    }   
+    return false;
+}
+
+// Gets the receipt item entry from the table.
+function getReceiptItemEntry(entry_id)
+{
+    for(let i = 0; i < receipt_items.length; i++)
+    {
+        if(receipt_items[i].entry_id == entry_id)
+        {
+            console.log("Found entry.");
+            return receipt_items[i];
+        }
+    }   
+    return undefined;
+}
+
+/** === Tagify Related Functions === */
 
 function onReceiptItemDropdownShow(e) {
     console.log("onReceiptItemDropdownShow")
@@ -153,7 +185,6 @@ function onReceiptItemInput(e) {
 
     console.log(receipt_items);
     entry_obj = getReceiptItemEntry(entry_id);
-    // tagify = entry_obj.tagify;
 
     console.log("Obtained value from array");
     console.log(tagify);
@@ -175,34 +206,4 @@ function onReceiptItemInput(e) {
             entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
             entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
-}
-
-function getReceiptItemEntry(entry_id)
-{
-    for(let i = 0; i < receipt_items.length; i++)
-    {
-        if(receipt_items[i].entry_id == entry_id)
-        {
-            console.log("Found entry.");
-            return receipt_items[i];
-        }
-    }   
-    return undefined;
-}
-
-function removeReceiptItemEntry(entry_id)
-{
-    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
-    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
-
-    for(let i = 0; i < receipt_items.length; i++)
-    {
-        if(receipt_items[i].entry_id == entry_id)
-        {   
-            console.log("Removing entry " + entry_id);
-            receipt_items.splice(i, 1);
-            return true;
-        }
-    }   
-    return false;
 }
