@@ -27,5 +27,10 @@ class Proformas extends Model
     {
         return $this->belongsTo(ReceiptReferences::class, 'receipt_reference_id');
     }
+
+    public function receiptItems()
+    {
+        return $this->hasMany(ReceiptItem::class);
+    }
     
 }
