@@ -100,10 +100,10 @@ class ReceiptController extends Controller
         // Determine receipt status.
         if($request->grand_total == $request->total_amount_received)
             $status = 'paid';
-        else if($request->grand_total > $request->total_amount_received)
-            $status = 'partially_paid';
-        else
+        else if($request->total_amount_received == 0)
             $status = 'unpaid';
+        else
+            $status = 'partially_paid';
 
         // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
