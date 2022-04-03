@@ -101,13 +101,16 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'receipts.'
     ], function(){
         Route::get('/receipt', [ReceiptController::class, 'index'])->name('receipt.index');
+        
+        // Store
         Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
+        Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
+        Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
+        Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
+
         Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
         Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
         Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
-        Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipts'])->name('creditReceipt.store');
-        Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
-        Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
 
 
     });
