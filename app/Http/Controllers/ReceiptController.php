@@ -353,8 +353,46 @@ class ReceiptController extends Controller
 
     public function destroy($id)
     {
-        $receipts = Receipts::find($id);
-        $receipts->delete();
+        $receipt = ReceiptReferences::find($id);
+
+        // If receipt
+        if($receipt->type == 'receipt')
+        {
+            // Get receipt id
+            $r = $receipt->receipt()->first();
+
+            // Delete receipt items
+            ReceiptItem::where('receipt_id', '=', $r->id);
+
+            // Delete receipt
+            $r->delete();
+        }
+        else if($receipt->type == 'advance_receipt')
+        {
+            // TODO: Other deletions later
+            $receipt->advanceRevenue()->delete();
+        }
+        else if($receipt->type == 'credit_receipt')
+        {
+            // TODO: Other deletions later
+            $receipt->creditReceipt()->delete();
+        }
+        else if($receipt->type == 'proforma')
+        {
+            // TODO: Other deletions later
+            // // Get receipt id
+            // $p = $receipt->proforma()->first();
+
+            // // Delete receipt items
+            // ReceiptItem::where('receipt_id', '=', $p->id);
+
+            // // Delete receipt
+            // $r->delete();
+
+            // $receipt->proforma()->receiptItems()->delete();
+            $receipt->proforma()->delete();
+        }
+        $receipt->delete();
   
         return redirect('receipt/')->with('danger', "Successfully deleted customer");
     }
