@@ -195,13 +195,17 @@ function onReceiptItemSelectSuggestion(e) {
     // console.log(receipt_items)
       
     $(`#r_item_quantity_${id}`).val(e.detail.data.quantity)
-    $(`#r_item_price_${id}`).val(e.detail.data.sale_price)
-    $(`#r_item_total_${id}`).val(e.detail.data.sale_price * e.detail.data.quantity)
+    $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
+    $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * e.detail.data.quantity).toFixed(2))
+
+    item_total = e.detail.data.sale_price * e.detail.data.quantity;
+    console.log(parseFloat(item_total).toFixed(2));
+    console.log($(`#r_sub_total`).val())
+    console.log()
     
     // Add all item total to subtotal
-    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val())+parseFloat($(`#r_item_total_${id}`).val()))
-    // Add all item total to grand_total
-    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val())+parseFloat($(`#r_item_total_${id}`).val()))
+    $(`#r_sub_total`).val(parseFloat(parseFloat($(`#r_sub_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
+    $(`#r_grand_total`).val(parseFloat(parseFloat($(`#r_grand_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
 
 }
 
@@ -209,11 +213,11 @@ function onReceiptItemRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     
     //Subtract total when x is clicked in tagify
-    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val())-parseFloat($(`#r_item_total_${id}`).val()))
-    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val())-parseFloat($(`#r_item_total_${id}`).val()))
+    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
+    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
 
-    $(`#r_item_quantity_${id}`).val("")
-    $(`#r_item_price_${id}`).val("")
+    $(`#r_item_quantity_${id}`).val("0")
+    $(`#r_item_price_${id}`).val("0.00")
     $(`#r_item_total_${id}`).val("0.00")
 
 }
@@ -268,8 +272,10 @@ function getReceiptItemEntry(entry_id)
 function removeReceiptItemEntry(entry_id)
 {
     //Subtract total when delete button is clicked
-    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val())-parseFloat($(`#r_item_total_${entry_id}`).val()))
-    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val())-parseFloat($(`#r_item_total_${entry_id}`).val()))
+    // $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val())-parseFloat($(`#r_item_total_${entry_id}`).val()))
+    // $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val())-parseFloat($(`#r_item_total_${entry_id}`).val()))
+    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
+    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
 
     for(let i = 0; i < receipt_items.length; i++)
     {

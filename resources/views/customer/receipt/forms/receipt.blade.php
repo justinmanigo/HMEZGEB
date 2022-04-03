@@ -38,7 +38,7 @@
             <div class="form-group row">
                 <label for="r_proforma_number" class="col-4 col-form-label text-lg-right">Proforma # :</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" id="r_proforma_number" name="proforma_number" placeholder="" required>
+                    <input type="text" class="form-control" id="r_proforma_number" name="proforma_number" placeholder="">
                 </div>
             </div>
             <div class="form-group row">
