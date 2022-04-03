@@ -9,7 +9,7 @@ class ReceiptItem extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'item_id',
+        'inventory_id',
         'receipt_id',
         'quantity',
         'price',
