@@ -34,12 +34,14 @@ class ReceiptController extends Controller
             'receipt_references.id'
         )->select(
             'customers.name',
+            'receipt_references.id',
             'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',
             'receipt_references.status',
             'receipts.total_amount_received'
         );
+
         $advance = Customers::join(
             'receipt_references',
             'receipt_references.customer_id',
@@ -52,6 +54,7 @@ class ReceiptController extends Controller
             'receipt_references.id'
         )->select(
             'customers.name',
+            'receipt_references.id',
             'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',
@@ -71,6 +74,7 @@ class ReceiptController extends Controller
             'receipt_references.id'
         )->select(
             'customers.name',
+            'receipt_references.id',
             'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',

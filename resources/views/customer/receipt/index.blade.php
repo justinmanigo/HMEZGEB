@@ -190,14 +190,14 @@
                                 @foreach($transactions as $transaction)
                       
                                 <tr>
-                                    <td> <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->receipt_id) }}">
+                                    <td> <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-pen"></i>
                                         </span>
                                     </a>
                                         </button>
                                         <button type="button" class="btn btn-danger "
-                                        onClick='showModel({!! $transaction->receipt_id !!})'>
+                                        onClick="showModel({!! $transaction->id !!})">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-trash"></i>
                                         </span>
