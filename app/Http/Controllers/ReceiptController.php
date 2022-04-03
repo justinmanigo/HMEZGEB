@@ -146,14 +146,14 @@ class ReceiptController extends Controller
         ]);
 
         // Create Receipt Item Records
-        foreach($items as $item)
+        for($i = 0; $i < count($items); $i++)
         {
             ReceiptItem::create([
-                'inventory_id' => $item->value,
+                'inventory_id' => $items[$i]->value,
                 'receipt_id' => $receipt->id,
-                'quantity' => $item->quantity,
-                'price' => $item->sale_price,
-                'total_price' => $item->quantity * $item->sale_price,
+                'quantity' => $request->quantity[$i],
+                'price' => $items[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
             ]);
         }
 
