@@ -36,7 +36,7 @@ function createReceiptItemEntry()
             </div>
         </td>
         <td>
-            <input type="number" id="r_item_quantity_${receipt_count}" class="form-control" name="quantity[]" placeholder="0" disabled>
+            <input type="number" id="r_item_quantity_${receipt_count}" class="form-control" name="quantity[]" placeholder="0" min="1" disabled>
         </td>
         <td>
             <input type="text" id="r_item_price_${receipt_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
@@ -108,6 +108,7 @@ function createReceiptItemEntry()
 // Removes a Receipt Item Entry from the Table.
 function removeReceiptItemEntry(entry_id)
 {
+    
     $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
     $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
 
@@ -146,10 +147,10 @@ function onReceiptItemDropdownShow(e) {
 
 function onReceiptItemSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
-      
-    $(`#r_item_quantity_${id}`).val(e.detail.data.quantity)
+    
+    $(`#r_item_quantity_${id}`).val(1).removeAttr('disabled')
     $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
-    $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * e.detail.data.quantity).toFixed(2))
+    $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     console.log(parseFloat(item_total).toFixed(2));
@@ -168,6 +169,7 @@ function onReceiptItemRemove(e) {
     //Subtract total when x is clicked in tagify
     $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
+    $(`#r_item_quantity_${id}`).attr('disabled', 'disabled')
 
     $(`#r_item_quantity_${id}`).val("0")
     $(`#r_item_price_${id}`).val("0.00")
