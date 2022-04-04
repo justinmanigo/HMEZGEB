@@ -312,6 +312,8 @@ Route::group([
 
         // Chart of Accounts
         Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
+        
+        Route::get('/ajax/settings/coa/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCOA']);
 
         // Taxes
         Route::get('/settings/taxes', [TaxController::class, 'index'])->name('tax.index');

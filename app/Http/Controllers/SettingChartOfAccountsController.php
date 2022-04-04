@@ -124,7 +124,14 @@ class SettingChartOfAccountsController extends Controller
         //
     }
 
-    /*======================================================*/
+    /**====================== */
+
+    function ajaxSearchCOA($query)
+    {
+        // return ChartOfAccounts::select('*')
+        //     ->where('chart_of_account_no', 'LIKE', '%' . $query . '%')
+        //     ->get();
+    }
 
     public function ajaxSearchCategories($query)
     {
@@ -135,5 +142,4 @@ class SettingChartOfAccountsController extends Controller
             'normal_balance')
             ->where('category', 'LIKE', '%' . $query . '%')->get();
         return $categories;
-    }
 }
