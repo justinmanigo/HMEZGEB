@@ -16,9 +16,9 @@ class CreatePeriodOfAccountsTable extends Migration
         Schema::create('period_of_accounts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('chart_of_account_id'); 
-            $table->unsignedBigInteger('accounting_period_id');
-            $table->float('beggining_balance');
-            $table->float('closing_balance');
+            $table->unsignedBigInteger('accounting_period_id')->nullable();
+            $table->float('beginning_balance');
+            $table->float('closing_balance')->nullable();
             $table->timestamps();
 
               $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');

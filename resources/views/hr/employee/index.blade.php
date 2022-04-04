@@ -22,7 +22,7 @@
 
 {{-- Button Group Navigation --}}
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-    <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-employee">
+    <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-employee" onclick="initCreateEmployee()">
         <span class="icon text-white-50">
             <i class="fas fa-pen"></i>
         </span>
@@ -33,34 +33,50 @@
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
+        @if(session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session()->get('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
                     <th id="thead-actions">Actions</th>
                     <th>Employee Name</th>
                     <th>Tin Number</th>
-                    <th>Contact Number</th>
+                    <th>Mobile Number</th>
                     <th>Type</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-pen"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-trash"></i>
-                                </span>
-                            </button>
-                        </td>
-                        <td class="table-item-content">Graeme Xyber Pastoril</td>
-                        <td class="table-item-content">1234567890</td>
-                        <td class="table-item-content">+63 912 345 6789</td>
-                        <td class="table-item-content"><span class="badge badge-secondary">Employee</span></td>
-                    </tr>
+                    @foreach($employees as $employee)
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="modal" data-target="#modal-employee" onclick="initEditEmployee({{ $employee->id }})">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </button>
+                                <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-employee-delete" onclick="initDeleteEmployee({{ $employee->id }})">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                            </td>
+                            <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->given_father_name }}</td>
+                            <td class="table-item-content">{{ $employee->tin_number }}</td>
+                            <td class="table-item-content">{{ $employee->mobile_number }}</td>
+                            <td class="table-item-content">
+                                @if($employee->type == 'employee')
+                                    <span class="badge badge-success">Employee</span>
+                                @elseif($employee->type == 'commission_agent')
+                                    <span class="badge badge-primary">Commission Agent</span>
+                                @else {{-- This is only included to visually catch errors. --}}
+                                    <span class="badge badge-secondary">Other</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -78,8 +94,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-employee" method="post" enctype="multipart/form-data">
-                    
+                <div id="modal-employee-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-employee" method="post" action="{{ route('employees.store') }}">
+                    @csrf
+                    <input type="hidden" id="e_http_method" name="_method" value="POST">
                     <div class="form-group row">
                         <label for="e_first_name" class="col-sm-3 col-lg-2 col-form-label">First Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-10">
@@ -93,9 +113,9 @@
                             <input type="text" class="form-control" id="e_father_name" name="father_name" placeholder="" required>
                         </div>
 
-                        <label for="e_grandfather_name" class="col-sm-3 col-lg-2 col-form-label">G. Father Name<span class="text-danger ml-1">*</span></label>
+                        <label for="e_given_father_name" class="col-sm-3 col-lg-2 col-form-label">Given Father Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-xl-4">
-                            <input type="text" class="form-control" id="e_grandfather_name" name="grandfather_name" placeholder="" required>
+                            <input type="text" class="form-control" id="e_given_father_name" name="given_father_name" placeholder="" required>
                         </div>
                     </div>
 
@@ -133,9 +153,9 @@
                     <div class="form-group row">
                         <label for="e_type" class="col-sm-3 col-lg-2 col-form-label">Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <select class="form-control" id="e_type" name="type">
-                                <option>Employee</option>
-                                <option>Commission Agent</option>
+                            <select class="form-control" id="e_type" name="type" required>
+                                <option value='employee'>Employee</option>
+                                <option value='commission_agent'>Commission Agent</option>
                             </select>
                         </div>
 
@@ -153,9 +173,9 @@
 
                         <label for="e_date_ended_working" class="col-sm-3 col-lg-2  col-form-label">Date Ended Working</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="" required>
+                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="">
                             <div class="form-check">
-                                <input class="form-check-input" id="e_is_still_working" type="checkbox" value="" name="is_still_working">
+                                <input class="form-check-input" id="e_is_still_working" type="checkbox" name="is_still_working">
                                 <label class="form-check-label" for="e_is_still_working">Still Working</label>
                             </div>
                         </div>
@@ -167,9 +187,9 @@
                             <input type="text" class="form-control" id="e_emergency_contact_person" name="emergency_contact_person" placeholder="" required>
                         </div>
 
-                        <label for="e_emergency_contact_number" class="col-sm-3 col-lg-2  col-form-label">Emergency Contact Number</label>
+                        <label for="e_contact_number" class="col-sm-3 col-lg-2  col-form-label">Emergency Contact Number</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_emergency_contact_number" name="emergency_contact_number" placeholder="" required>
+                            <input type="text" class="form-control" id="e_contact_number" name="contact_number" placeholder="" required>
                         </div>
                     </div>
                     
@@ -177,7 +197,32 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-employee">Save Customer</button>
+                <button type="submit" class="btn btn-primary" form="form-employee" id="e_submit_btn">Save Customer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Delete Employee Modal --}}
+<div class="modal fade" id="modal-employee-delete" tabindex="-1" role="dialog" aria-labelledby="Modal Delete Tax">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure to delete this record?
+                <form id="form-employee-delete" class="" action="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger" form="form-employee-delete">Delete Tax</button>
             </div>
         </div>
     </div>
@@ -185,8 +230,116 @@
 
 <script>
     $(document).ready(function () {
-    $('#dataTables').DataTable();
-    $('.dataTables_filter').addClass('pull-right');
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
+    });
+
+    function initEditEmployee(id)
+    {
+        $("#form-employee").hide();
+        $("#modal-employee-spinner").show();
+        $("#e_http_method").val("PUT");
+        $("#form-employee").attr("action", "/employee/" + id)
+        $("#e_submit_btn").html("Update Employee").attr("disabled", 'disabled');
+        $("#modal-employee-label").html("Edit Employee");
+        
+        // Get data from server.
+        var request = $.ajax({
+            url: "/ajax/hr/employees/get/" + id,
+            method: "GET",
+        });
+            
+        request.done(function(res, status, jqXHR ) {
+            $("#form-employee").show();
+            $("#modal-employee-spinner").hide();
+            $("#e_submit_btn").removeAttr("disabled");
+            console.log("Request successful.");
+            console.log(res);
+
+            if($('#e_is_still_working').is(':checked'))
+            {
+                $("#e_date_ended_working").attr('disabled', 'disabled');
+                $("#e_date_ended_working").removeAttr('required');
+            }
+
+            // Fields
+            $("#e_first_name").val(res.first_name);
+            $("#e_father_name").val(res.father_name);
+            $("#e_given_father_name").val(res.given_father_name);
+            $("#e_date_of_birth").val(res.date_of_birth);
+            $("#e_mobile_number").val(res.mobile_number);
+            $("#e_telephone").val(res.telephone);
+            $("#e_email").val(res.email);
+            $("#e_tin_number").val(res.tin_number);
+            $("#e_type").val(res.type);
+            $("#e_basic_salary").val(res.basic_salary);
+            $("#e_date_started_working").val(res.date_started_working);
+            $("#e_date_ended_working").val(res.date_ended_working == undefined ? '' : res.date_ended_working);
+
+            $("#e_emergency_contact_person").val(res.emergency_contact_person);
+            $("#e_contact_number").val(res.contact_number);
+            
+            // If Date Ended Working is null
+            if(res.date_ended_working == undefined)
+                $('#e_is_still_working').click();
+
+            // $("#e_name").val(res.name);
+            // $("#e_percentage").val(res.percentage);
+        });
+        
+        request.fail(function(jqXHR, status, error) {
+            console.log("Request failed.");
+        });
+    }
+    function initCreateEmployee()
+    {
+        $("#e_http_method").val("POST");
+        $("#form-employee").attr("action", "{{ route('employees.store') }}")
+        $("#e_submit_btn").html("Save Employee");
+        $("#modal-employee-label").html("New Employee");
+        $("#e_submit_btn").removeAttr("disabled");
+        
+        // Fields
+        $("#e_first_name").val('');
+        $("#e_father_name").val('');
+        $("#e_given_father_name").val('');
+        $("#e_date_of_birth").val('');
+        $("#e_mobile_number").val('');
+        $("#e_telephone").val('');
+        $("#e_email").val('');
+        $("#e_tin_number").val('');
+        $("#e_type").val('');
+        $("#e_basic_salary").val('');
+        $("#e_date_started_working").val('');
+        $("#e_date_ended_working").val('');
+        $("#e_emergency_contact_person").val('');
+        $("#e_contact_number").val('');
+
+        if($('#e_is_still_working').is(':checked'))
+        {
+            $("#e_date_ended_working").attr('disabled', 'disabled');
+            $("#e_date_ended_working").removeAttr('required');
+            $('#e_is_still_working').click();
+        }
+    }
+    function initDeleteEmployee(id)
+    {
+        $("#form-employee-delete").attr("action", "/employee/" + id);
+    }
+
+    $('#e_is_still_working').on('change',function(){
+        var _val = $(this).is(':checked') ? 'checked' : 'unchecked';
+        if(_val == 'checked')
+        {
+            $("#e_date_ended_working").attr('disabled', 'disabled');
+            $("#e_date_ended_working").removeAttr('required');
+        }
+        else
+        {
+            $("#e_date_ended_working").removeAttr('disabled');
+            $("#e_date_ended_working").attr('required', 'required');
+        }
+        console.log(_val);
     });
 </script>
 @endsection

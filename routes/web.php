@@ -38,6 +38,7 @@ use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\LoanController;
 
 // Settings
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\SettingChartOfAccountsController;
 /*
 |--------------------------------------------------------------------------
@@ -235,7 +236,11 @@ Route::group([
     Route::group([
         'as' => 'employees.'
     ], function(){
-        Route::get('/employee', [EmployeeController::class, 'index']);
+        Route::get('/employee', [EmployeeController::class, 'index'])->name('index');
+        Route::post('/employee', [EmployeeController::class, 'store'])->name('store');
+        Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
+        Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
+        Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
 
     });
 
@@ -289,17 +294,34 @@ Route::group([
     // })->name('theme');
     Route::view('/company-info', 'settings.company_info.index')->name('company-info');
     Route::view('/users', 'settings.users.index')->name('users');
-    Route::view('/taxes', 'settings.taxes.index')->name('taxes');
+    // Route::view('/taxes', 'settings.taxes.index')->name('taxes');
+
+    
+
     Route::view('/withholding', 'settings.withholding.index')->name('withholding');
     Route::view('/themes', 'settings.themes.index')->name('themes');
 
     Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
     Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');
     Route::view('/setting_payrollrules', 'settings.payroll_rules.index')->name('setting_payrollrules');
+
+    // Settings
     Route::group([
         'as' => 'settings.'
-    ], function(){
+    ], function() {
+
+        // Chart of Accounts
         Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
         
         Route::get('/ajax/settings/coa/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCOA']);
+
+        // Taxes
+        Route::get('/settings/taxes', [TaxController::class, 'index'])->name('tax.index');
+        Route::post('/settings/taxes', [TaxController::class, 'store'])->name('tax.store');
+        Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('tax.update');
+        Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('tax.destroy');
+        Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
     });
+
+    Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+    Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);
