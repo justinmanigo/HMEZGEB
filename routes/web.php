@@ -316,3 +316,6 @@ Route::group([
         Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('tax.destroy');
         Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
     });
+
+    Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+    Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);

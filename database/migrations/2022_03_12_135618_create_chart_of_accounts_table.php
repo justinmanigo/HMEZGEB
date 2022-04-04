@@ -15,15 +15,14 @@ class CreateChartOfAccountsTable extends Migration
     {
         Schema::create('chart_of_accounts', function (Blueprint $table) {
             $table->id();
+            $table->string('chart_of_account_category_id');
             $table->string('chart_of_account_no');
             $table->string('name');
-            $table->string('category');
-            $table->string('account_type');
-            $table->string('bank_account_number');
-            $table->string('bank_branch'); 
-            $table->string('bank_account_type'); 
-            $table->float('current_balance'); 
-            $table->enum('status',['active','closed'])->default('active');
+            $table->string('bank_account_number')->nullable();
+            $table->string('bank_branch')->nullable(); 
+            $table->string('bank_account_type')->nullable(); 
+            $table->float('current_balance')->default(0); 
+            $table->enum('status',['Active','Closed'])->default('Active');
             $table->timestamps();
         });
     }
