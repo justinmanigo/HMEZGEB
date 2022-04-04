@@ -22,6 +22,25 @@ $(document).on('click', '.jv_credit_add', function(){
     createCreditEntry();
 });
 
+// When delete entry button for debit is clicked.
+$(document).on('click', '.jv_debit_delete', function(e){
+    removeDebitEntry($(this)[0].dataset.id)
+    $(this).parents('tr').remove();
+
+    // If there are no longer entries in table, generate a new one.
+    if(debit_items.length < 1) createDebitEntry();
+});
+
+// When delete entry button for credit is clicked.
+$(document).on('click', '.jv_credit_delete', function(e){
+    removeCreditEntry($(this)[0].dataset.id)
+    $(this).parents('tr').remove();
+
+    // If there are no longer entries in table, generate a new one.
+    if(credit_items.length < 1) createCreditEntry();
+});
+
+
 // Create Debit
 function createDebitEntry()
 {
@@ -70,6 +89,8 @@ function createDebitEntry()
     }
 
     debit_items.push(item);
+    console.log("Add debit entry.")
+    console.log(debit_items);
 }
 
 // Create Credit
@@ -115,11 +136,47 @@ function createCreditEntry()
 
     // Push item to array debit_items
     let item = {
-        "item_id": debit_count,
+        "item_id": credit_count,
         "tagify": elm_tagify,
     }
 
     credit_items.push(item);
+    console.log("Add credit entry.")
+    console.log(credit_items);
+}
+
+// Remove Debit
+function removeDebitEntry(id)
+{
+    console.log("Removing debit entry.")
+    for(let i = 0; i < debit_items.length; i++)
+    {
+        if(id == debit_items[i].item_id)
+        {
+            console.log("Removed debit entry.")
+            debit_items.splice(i, 1);
+            console.log(debit_items);
+            return true;
+        }
+    }
+    return false;
+}
+
+// Remove Credit
+function removeCreditEntry(id)
+{
+    console.log("Removing credit entry.")
+    for(let i = 0; i < credit_items.length; i++)
+    {
+        if(id == credit_items[i].item_id)
+        {
+            console.log("Removed credit entry.")
+            credit_items.splice(i, 1);
+            console.log(credit_items);
+            return true;
+        }
+    }
+    return false;
 }
 
 function createTagifyInstance(elm)
