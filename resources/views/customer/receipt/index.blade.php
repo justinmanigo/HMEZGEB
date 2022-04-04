@@ -230,6 +230,7 @@
                                 <th>Amount</th>
                             </thead>
                             <tbody>
+                                @foreach($proformas as $proforma)
                                 <tr>
                                     <td>
                                         <button type="button" class="btn btn-small btn-icon btn-primary"
@@ -238,18 +239,20 @@
                                                 <i class="fas fa-pen"></i>
                                             </span>
                                         </button>
-                                        <button type="button" class="btn btn-small btn-icon btn-danger"
-                                            data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
+                                        <button type="button" class="btn btn-danger "
+                                        onClick="showModel({!! $proforma->id !!})">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                        </button>
                                         </button>
                                     </td>
-                                    <td class="table-item-content">02-Mar-2022</td>
-                                    <td class="table-item-content">Fs#10107</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">1,000.00</td>
+                                    <td class="table-item-content">{{$proforma->date}}</td>
+                                    <td class="table-item-content">{{$proforma->reference_number}}</td>
+                                    <td class="table-item-content">{{$proforma->name}}</td>
+                                    <td class="table-item-content">{{$proforma->amount}}</td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

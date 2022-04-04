@@ -26,7 +26,7 @@ function createReceiptToPayEntry(data)
             <input type="text" class="form-control inputPrice text-right" id="cr_amount_due_${data.receipt_reference_id}" name="amount_due[]" value="${amount_due}" disabled>
         </td>
         <td>
-            <input type="text" class="form-control" id="cr_description_${data.receipt_reference_id}" name="description[]" placeholder="">
+            <input type="text" class="form-control" id="cr_description_${data.receipt_reference_id}" name="description" placeholder="" disabled>
         </td>
         <td>
             <input type="number" step="0.01" min="0" class="form-control text-right inputPrice" id="cr_discount_${data.receipt_reference_id}" name="discount[]" placeholder="0.00">

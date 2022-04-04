@@ -153,7 +153,7 @@
                         <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="2,383.94" disabled>
                     </td>
                     <td>
-                        <input type="text" class="form-control" name="description[]" placeholder="">
+                        <input type="text" class="form-control" name="description[] name="reason[]"" placeholder="">
                     </td>
                     <td>
                         <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
@@ -172,7 +172,7 @@
                 <tr>
                     <td class="text-right table-item-content" colspan="5"><strong>Total Received: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="total_received" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right" name="total_received" placeholder="0.00" >
                     </td>
                     <td></td>
                 </tr>
