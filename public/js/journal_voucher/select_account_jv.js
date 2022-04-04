@@ -8,65 +8,91 @@ var credit_count = 0;
 
 // When ready, create entries for debits and credits.
 $(document).ready(function(){
-    createDebitEntry();
-    createCreditEntry();
+    createEntry('debit');
+    createEntry('credit');
 });
 
 // When add entry button for debit is clicked.
 $(document).on('click', '.jv_debit_add', function(){
-    createDebitEntry();
+    createEntry('debit');
 });
 
 // When add entry button for credit is clicked.
 $(document).on('click', '.jv_credit_add', function(){
-    createCreditEntry();
+    createEntry('credit');
 });
 
 // When delete entry button for debit is clicked.
 $(document).on('click', '.jv_debit_delete', function(e){
-    removeDebitEntry($(this)[0].dataset.id)
+    removeEntry('debit', $(this)[0].dataset.id)
     $(this).parents('tr').remove();
 
     // If there are no longer entries in table, generate a new one.
-    if(debit_items.length < 1) createDebitEntry();
+    if(debit_items.length < 1) createEntry('debit');
 });
 
 // When delete entry button for credit is clicked.
 $(document).on('click', '.jv_credit_delete', function(e){
-    removeCreditEntry($(this)[0].dataset.id)
+    removeEntry('credit', $(this)[0].dataset.id)
     $(this).parents('tr').remove();
 
     // If there are no longer entries in table, generate a new one.
-    if(credit_items.length < 1) createCreditEntry();
+    if(credit_items.length < 1) createEntry('credit');
 });
 
-
-// Create Debit
-function createDebitEntry()
+// Create Entry
+function createEntry(type)
 {
     // Increment count to avoid element conflicts.
-    debit_count++;
+    if(type == 'debit')
+    {
+        debit_count++;
+        count = debit_count;
+    }
+    else if(type == 'credit') 
+    {
+        credit_count++;
+        count = credit_count;
+    }
 
     // <tr> template
     let inner = `
     <tr>
         <td>
-            <input id="jv_debit_account_${debit_count}" data-id="${debit_count}" class="jv_debit_account" name='debit_accounts[]'>
+            <input id="jv_${type}_account_${count}" data-id="${count}" class="jv_${type}_account" name='${type}_accounts[]'>
         </td>
         <td>
-            <input id="jv_debit_description_${debit_count}" type="text" class="form-control" name="debit_description[]" placeholder="">
+            <input id="jv_${type}_description_${count}" type="text" class="form-control" name="${type}_description[]" placeholder="">
         </td>
+    `
+
+    if(type == 'debit')
+    {
+        inner += `
         <td>
-            <input id="jv_debit_amount_${debit_count}" type="number" min="0.00" step="0.01" class="form-control inputPrice text-right" name="debit_amount[]" placeholder="0.00" required>
+            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" class="form-control inputPrice text-right" name="${type}_amount[]" placeholder="0.00" required>
         </td>
         <td></td>
+        `;
+    }
+    else if(type == 'credit')
+    {
+        inner += `
+        <td></td>
         <td>
-            <button type="button" data-id="${debit_count}" id="jv_debit_delete_${debit_count}" class="btn btn-icon btn-danger jv_debit_delete" data-toggle="tooltip" data-placement="bottom" title="Delete">
+            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" class="form-control inputPrice text-right" name="${type}_amount[]" placeholder="0.00" required>
+        </td>
+        `;
+    }
+
+    inner += `
+        <td>
+            <button type="button" data-id="${count}" id="jv_${type}_delete_${count}" class="btn btn-icon btn-danger jv_${type}_delete" data-toggle="tooltip" data-placement="bottom" title="Delete">
                 <span class="icon text-white-50">
                     <i class="fas fa-trash"></i>
                 </span>
             </button>
-            <button type="button" class="btn btn-small btn-icon btn-primary jv_debit_add" data-toggle="tooltip" data-placement="bottom" title="Add">
+            <button type="button" class="btn btn-small btn-icon btn-primary jv_${type}_add" data-toggle="tooltip" data-placement="bottom" title="Add">
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
@@ -76,103 +102,36 @@ function createDebitEntry()
     `;
 
     // Append template to the table.
-    $("#jv_debits").append(inner);
+    if(type == 'debit') $("#jv_debits").append(inner);
+    else if(type == 'credit') $("#jv_credits").append(inner);
 
     // Create new tagify instance for the selection of COA
-    let elm = document.querySelector(`#jv_debit_account_${debit_count}`);
+    let elm = document.querySelector(`#jv_${type}_account_${count}`);
     let elm_tagify = createTagifyInstance(elm);
 
     // Push item to array debit_items
     let item = {
-        "item_id": debit_count,
+        "item_id": count,
         "tagify": elm_tagify,
     }
 
-    debit_items.push(item);
-    console.log("Add debit entry.")
-    console.log(debit_items);
+    if(type == 'debit') debit_items.push(item);
+    else if(type == 'credit') credit_items.push(item);
 }
 
-// Create Credit
-function createCreditEntry()
+// Remove entry
+function removeEntry(type, id)
 {
-    // Increment count to avoid element conflicts.
-    credit_count++;
+    var items;
+    if(type == 'debit') items = debit_items;
+    else if(type == 'credit') items = credit_items;
 
-    // <tr> template
-    let inner = `
-    <tr>
-        <td>
-            <input id="jv_credit_account_${credit_count}" data-id="${credit_count}" class="jv_credit_account" name='credit_accounts[]'>
-        </td>
-        <td>
-            <input id="jv_credit_description_${credit_count}" type="text" class="form-control" name="credit_description[]" placeholder="">
-        </td>
-        <td></td>
-        <td>
-            <input id="jv_credit_amount_${credit_count}" type="number" min="0.00" step="0.01" class="form-control inputPrice text-right" name="credit_amount[]" placeholder="0.00" required>
-        </td>
-        <td>
-            <button type="button" data-id="${credit_count}" id="jv_credit_delete_${credit_count}" class="btn btn-icon btn-danger jv_credit_delete" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                <span class="icon text-white-50">
-                    <i class="fas fa-trash"></i>
-                </span>
-            </button>
-            <button type="button" class="btn btn-small btn-icon btn-primary jv_credit_add" data-toggle="tooltip" data-placement="bottom" title="Add">
-                <span class="icon text-white-50">
-                    <i class="fas fa-plus"></i>
-                </span>
-            </button>
-        </td>
-    </tr>
-    `;
-
-    // Append template to the table.
-    $("#jv_credits").append(inner);
-
-    // Create new tagify instance for the selection of COA
-    let elm = document.querySelector(`#jv_credit_account_${credit_count}`);
-    let elm_tagify = createTagifyInstance(elm);
-
-    // Push item to array debit_items
-    let item = {
-        "item_id": credit_count,
-        "tagify": elm_tagify,
-    }
-
-    credit_items.push(item);
-    console.log("Add credit entry.")
-    console.log(credit_items);
-}
-
-// Remove Debit
-function removeDebitEntry(id)
-{
-    console.log("Removing debit entry.")
-    for(let i = 0; i < debit_items.length; i++)
+    for(let i = 0; i < items.length; i++)
     {
-        if(id == debit_items[i].item_id)
+        if(id == items[i].item_id)
         {
-            console.log("Removed debit entry.")
-            debit_items.splice(i, 1);
-            console.log(debit_items);
-            return true;
-        }
-    }
-    return false;
-}
-
-// Remove Credit
-function removeCreditEntry(id)
-{
-    console.log("Removing credit entry.")
-    for(let i = 0; i < credit_items.length; i++)
-    {
-        if(id == credit_items[i].item_id)
-        {
-            console.log("Removed credit entry.")
-            credit_items.splice(i, 1);
-            console.log(credit_items);
+            if(type == 'debit') debit_items.splice(i, 1);
+            else if(type == 'credit') credit_items.splice(i, 1);
             return true;
         }
     }
