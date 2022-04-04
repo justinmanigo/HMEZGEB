@@ -82,4 +82,13 @@ class SettingChartOfAccountsController extends Controller
     {
         //
     }
+
+    /**====================== */
+
+    function ajaxSearchCOA($query)
+    {
+        // return ChartOfAccounts::select('*')
+        //     ->where('chart_of_account_no', 'LIKE', '%' . $query . '%')
+        //     ->get();
+    }
 }

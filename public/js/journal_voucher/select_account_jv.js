@@ -166,3 +166,75 @@ function createTagifyInstance(elm)
 
     return elm_tagify;
 }
+
+/** ===== Tagify Related Functions ===== **/
+
+function onJournalVoucherAccountDropdownShow(e) {
+    console.log("onJournalVoucherAccountDropdownShow")
+    var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
+}
+
+function onJournalVoucherAccountSelectSuggestion(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    
+    // $(`#r_item_quantity_${id}`).val(1).removeAttr('disabled')
+    // $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
+    // $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
+
+    // item_total = e.detail.data.sale_price * e.detail.data.quantity;
+    // console.log(parseFloat(item_total).toFixed(2));
+    // console.log($(`#r_sub_total`).val())
+    // console.log()
+    
+    // // Add all item total to subtotal
+    // $(`#r_sub_total`).val(parseFloat(parseFloat($(`#r_sub_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
+    // $(`#r_grand_total`).val(parseFloat(parseFloat($(`#r_grand_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
+
+}
+
+function onJournalVoucherAccountRemove(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    
+    //Subtract total when x is clicked in tagify
+    // $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
+    // $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
+    // $(`#r_item_quantity_${id}`).attr('disabled', 'disabled')
+
+    // $(`#r_item_quantity_${id}`).val("0")
+    // $(`#r_item_price_${id}`).val("0.00")
+    // $(`#r_item_total_${id}`).val("0.00")
+
+}
+
+function onJournalVoucherAccountInput(e) {
+    console.log(e.detail);
+    console.log(e.detail.tagify.DOM.originalInput.dataset.id)
+    
+    var item_id = e.detail.tagify.DOM.originalInput.dataset.id
+    var value = e.detail.value;
+    var tagify;
+
+    console.log(receipt_items);
+    entry_obj = getJournalVoucherAccountEntry(item_id);
+
+    console.log("Obtained value from array");
+    console.log(tagify);
+    
+    entry_obj.tagify.whitelist = null // reset the whitelist
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+    controller && controller.abort()
+    controller = new AbortController()
+
+    // show loading animation and hide the suggestions dropdown
+    entry_obj.tagify.loading(true).dropdown.hide()
+
+    fetch('/ajax/settings/coa/search/' + value, {
+            signal: controller.signal
+        })
+        .then(RES => RES.json())
+        .then(function (newWhitelist) {
+            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
+            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+        })
+}

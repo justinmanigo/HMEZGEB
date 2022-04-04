@@ -300,5 +300,6 @@ Route::group([
         'as' => 'settings.'
     ], function(){
         Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
-
+        
+        Route::get('/ajax/settings/coa/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCOA']);
     });
