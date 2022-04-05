@@ -15,11 +15,25 @@ $(document).ready(function(){
 // When add entry button for debit is clicked.
 $(document).on('click', '.jv_debit_add', function(){
     createEntry('debit');
+
+    setTimeout(function() {
+        dc_match = checkDebitCreditMatch();
+        accounts_filled = checkAccountsFilled();
+
+        toggleJVSaveButton(dc_match, accounts_filled);
+    }, 100);
 });
 
 // When add entry button for credit is clicked.
 $(document).on('click', '.jv_credit_add', function(){
     createEntry('credit');
+
+    setTimeout(function() {
+        dc_match = checkDebitCreditMatch();
+        accounts_filled = checkAccountsFilled();
+
+        toggleJVSaveButton(dc_match, accounts_filled);
+    }, 100);
 });
 
 // When delete entry button for debit is clicked.
@@ -27,12 +41,13 @@ $(document).on('click', '.jv_debit_delete', function(e){
     removeEntry('debit', $(this)[0].dataset.id)
     $(this).parents('tr').remove();
 
-    updateAndGetJVTotalAmount('debit');
-    dc_match = checkIfDebitCreditMatch();
-    toggleJVSaveButton(dc_match)
-
-    if(dc_match) $("#form-jv-save-btn").removeAttr('disabled');
-    else $("#form-jv-save-btn").attr('disabled', 'disabled');
+    setTimeout(function() {
+        updateAndGetJVTotalAmount('debit');
+        dc_match = checkDebitCreditMatch();
+        accounts_filled = checkAccountsFilled();
+        
+        toggleJVSaveButton(dc_match, accounts_filled);
+    }, 100);
 
     // If there are no longer entries in table, generate a new one.
     if(debit_items.length < 1) createEntry('debit');
@@ -43,9 +58,13 @@ $(document).on('click', '.jv_credit_delete', function(e){
     removeEntry('credit', $(this)[0].dataset.id)
     $(this).parents('tr').remove();
 
-    updateAndGetJVTotalAmount('credit');
-    dc_match = checkIfDebitCreditMatch();
-    toggleJVSaveButton(dc_match)
+    setTimeout(function() {
+        updateAndGetJVTotalAmount('debit');
+        dc_match = checkDebitCreditMatch();
+        accounts_filled = checkAccountsFilled();
+        
+        toggleJVSaveButton(dc_match, accounts_filled);
+    }, 100);
 
     // If there are no longer entries in table, generate a new one.
     if(credit_items.length < 1) createEntry('credit');
@@ -200,11 +219,19 @@ function onJournalVoucherAccountDropdownShow(e) {
 }
 
 function onJournalVoucherAccountSelectSuggestion(e) {
-    
+    setTimeout(function() {
+        dc_match = checkDebitCreditMatch();
+        accounts_filled = checkAccountsFilled();
+        toggleJVSaveButton(dc_match, accounts_filled);
+    }, 100);
 }
 
 function onJournalVoucherAccountRemove(e) {
-
+    setTimeout(function() {
+        dc_match = checkDebitCreditMatch();
+        accounts_filled = checkAccountsFilled();
+        toggleJVSaveButton(dc_match, accounts_filled);
+    }, 100);
 }
 
 function onJournalVoucherAccountInput(e) {  
@@ -240,8 +267,12 @@ $(document).on('change', '.jv_amount', function(e){
 
     // Compute JV's Total Amount
     updateAndGetJVTotalAmount(type);
-    dc_match = checkIfDebitCreditMatch();
-    toggleJVSaveButton(dc_match)
+    
+    setTimeout(function() {
+        dc_match = checkDebitCreditMatch();
+        accounts_filled = checkAccountsFilled();
+        toggleJVSaveButton(dc_match, accounts_filled);
+    }, 100);
 
     // // removeEntry('credit', $(this)[0].dataset.id)
     // $(this).parents('tr').remove();
@@ -252,13 +283,13 @@ $(document).on('change', '.jv_amount', function(e){
 
 function updateAndGetJVTotalAmount(type)
 {
-    var items, total_amount = 0;
-    if(type == 'debit') items = document.querySelectorAll(".jv_debit");
-    else if(type == 'credit') items = document.querySelectorAll(".jv_credit");
+    var amounts, total_amount = 0;
+    if(type == 'debit') amounts = document.querySelectorAll(".jv_debit");
+    else if(type == 'credit') amounts = document.querySelectorAll(".jv_credit");
 
-    items.forEach(function(item){
-        total_amount += item.value != '' ? parseFloat(item.value) : 0;
-        console.log(item.value);
+    amounts.forEach(function(amount){
+        total_amount += amount.value != '' ? parseFloat(amount.value) : 0;
+        console.log(amount.value);
     });
     console.log(`Total Amount of ${type}: ${total_amount}`);
 
@@ -267,17 +298,17 @@ function updateAndGetJVTotalAmount(type)
     return total_amount;
 }
 
-function checkIfDebitCreditMatch()
+function checkDebitCreditMatch()
 {
-    var debit_items = document.querySelectorAll(".jv_debit");
-    var credit_items = document.querySelectorAll(".jv_credit");
+    var debit_amounts = document.querySelectorAll(".jv_debit");
+    var credit_amounts = document.querySelectorAll(".jv_credit");
     var debit_total = 0, credit_total = 0;
 
-    debit_items.forEach(function(item){
-        debit_total += item.value != '' ? parseFloat(item.value) : 0;
+    debit_amounts.forEach(function(amount){
+        debit_total += amount.value != '' ? parseFloat(amount.value) : 0;
     });
-    credit_items.forEach(function(item){
-        credit_total += item.value != '' ? parseFloat(item.value) : 0;
+    credit_amounts.forEach(function(amount){
+        credit_total += amount.value != '' ? parseFloat(amount.value) : 0;
     });
 
     if(debit_total == credit_total && debit_total != 0 && credit_total != 0)
@@ -292,8 +323,39 @@ function checkIfDebitCreditMatch()
     }
 }
 
-function toggleJVSaveButton(dc_match)
+function checkAccountsFilled()
 {
-    if(dc_match) $("#form-jv-save-btn").removeAttr('disabled');
+    console.log("Checking if all accounts filled.");
+    var debit = false, credit = false;
+
+    debit_items.forEach(function(item){
+        console.log(item.tagify.state.lastOriginalValueReported);
+        if(item.tagify.state.lastOriginalValueReported == ''){
+            console.log("Found unfilled account in debits.");
+            debit = false;
+            return false;
+        }
+        debit = true;
+    });
+
+    credit_items.forEach(function(item){
+        console.log(item.tagify.state.lastOriginalValueReported);
+        if(item.tagify.state.lastOriginalValueReported == ''){
+            console.log("Found unfilled account in credits.");
+            credit = false;
+            return false;
+        }
+        credit = true;
+    });
+
+    console.log(`Filled Account Result: ${debit} + ${credit} = ` + (debit && credit))
+
+    return debit && credit;
+}
+
+function toggleJVSaveButton(dc_match, account_filled)
+{
+    console.log("Toggle JV Save Button" + (dc_match && account_filled));
+    if(dc_match && account_filled) $("#form-jv-save-btn").removeAttr('disabled');
     else $("#form-jv-save-btn").attr('disabled', 'disabled');
 }
