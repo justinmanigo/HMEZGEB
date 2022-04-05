@@ -1,6 +1,6 @@
 function chartOfAccountTagTemplate(tagData){
     return `
-        <tag title="${tagData.id}"
+        <tag title="${tagData.category}"
                 contenteditable='false'
                 spellcheck='false'
                 tabIndex="-1"
@@ -11,7 +11,7 @@ function chartOfAccountTagTemplate(tagData){
                 <div class='tagify__tag__avatar-wrap'>
                     <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
                 </div>
-                <span class='tagify__tag-text'>${tagData.name}</span>
+                <span class='tagify__tag-text'>${tagData.category}</span>
             </div>
         </tag>
     `

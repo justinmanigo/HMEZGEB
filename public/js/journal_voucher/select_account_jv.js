@@ -138,10 +138,23 @@ function removeEntry(type, id)
     return false;
 }
 
+// Get entry
+function getEntryIndex(type, id)
+{
+    var items;
+    if(type == 'debit') items = debit_items;
+    else if(type == 'credit') items = credit_items;
+
+    for(let i = 0; i < items.length; i++)
+        if(id == items[i].item_id)
+            return i;
+    return undefined;
+}
+
 function createTagifyInstance(elm)
 {
     let elm_tagify = new Tagify(elm, {
-        tagTextProp: 'name', // very important since a custom template is used with this property as text
+        tagTextProp: 'category', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode: "select",
         skipInvalid: false, // do not remporarily add invalid tags
@@ -149,7 +162,7 @@ function createTagifyInstance(elm)
             closeOnSelect: true,
             enabled: 0,
             classname: 'coa-list',
-            searchKeys: ['name', 'chart_of_account_no'] // very important to set by which keys to search for suggesttions when typing
+            searchKeys: ['category', 'chart_of_account_no', 'type'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
             tag: chartOfAccountTagTemplate,
@@ -159,10 +172,10 @@ function createTagifyInstance(elm)
     })
 
     // Set events of tagify instance.
-    // elm_tagify.on('dropdown:show dropdown:updated', onJournalVoucherAccountDropdownShow)
-    // elm_tagify.on('dropdown:select', onJournalVoucherAccountSelectSuggestion)
-    // elm_tagify.on('input', onJournalVoucherAccountInput)
-    // elm_tagify.on('remove', onJournalVoucherAccountRemove)
+    elm_tagify.on('dropdown:show dropdown:updated', onJournalVoucherAccountDropdownShow)
+    elm_tagify.on('dropdown:select', onJournalVoucherAccountSelectSuggestion)
+    elm_tagify.on('input', onJournalVoucherAccountInput)
+    elm_tagify.on('remove', onJournalVoucherAccountRemove)
 
     return elm_tagify;
 }
@@ -171,7 +184,8 @@ function createTagifyInstance(elm)
 
 function onJournalVoucherAccountDropdownShow(e) {
     console.log("onJournalVoucherAccountDropdownShow")
-    var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
+    e.detail.tagify.loading(false);
+    var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
 }
 
 function onJournalVoucherAccountSelectSuggestion(e) {
@@ -206,35 +220,25 @@ function onJournalVoucherAccountRemove(e) {
 
 }
 
-function onJournalVoucherAccountInput(e) {
-    console.log(e.detail);
-    console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
-    var item_id = e.detail.tagify.DOM.originalInput.dataset.id
+function onJournalVoucherAccountInput(e) {  
     var value = e.detail.value;
-    var tagify;
-
-    console.log(receipt_items);
-    entry_obj = getJournalVoucherAccountEntry(item_id);
-
-    console.log("Obtained value from array");
-    console.log(tagify);
+    var tagify = e.detail.tagify;
     
-    entry_obj.tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    entry_obj.tagify.loading(true).dropdown.hide()
+    tagify.loading(true).dropdown.hide()
 
     fetch('/ajax/settings/coa/search/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
         .then(function (newWhitelist) {
-            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
-            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
 }
