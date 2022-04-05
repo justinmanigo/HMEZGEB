@@ -157,6 +157,9 @@ Route::post('/userlogin', function (Request $request){
         Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
         Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
         Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');
+        
+        Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
+
     });
 
     Route::group([
