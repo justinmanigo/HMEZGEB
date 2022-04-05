@@ -17,8 +17,8 @@
                 <input type="text" id="b_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
             </div>
             <div class="form-group row mb-0">
-                <label for="b_mobile_number" class="col-4 col-form-label text-lg-right">Telephone # :</label>
-                <input type="text" id="b_mobile_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="mobile_number" disabled readonly>
+                <label for="b_telephone_number" class="col-4 col-form-label text-lg-right">Telephone # :</label>
+                <input type="text" id="b_telephone_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="telephone_number" disabled readonly>
             </div>
         </div>
         
@@ -154,12 +154,7 @@
     <option value="#">sample1</option>
     <option value="#">Sample2</option>
     </select>
-    <label for="cars" class="col-form-label col-2">Bill type:</label>
-</div>
 
-<div class="form-group row">
-    <label for="b_note" class="col-lg-2 col-form-label">Note:</label>
-    <textarea class="form-control col-lg-4" id="b_note" name="note"></textarea>
     <label for="email" class="col-form-label col-lg-2">Attachment:</label>
     <div class="input-group col-md-2 col-lg-4">
         <div class="custom-file">
@@ -167,6 +162,12 @@
         <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
         </div>
     </div>
+</div>
+
+<div class="form-group row">
+    <label for="b_note" class="col-lg-2 col-form-label">Note:</label>
+    <textarea class="form-control col-lg-4" id="b_note" name="note"></textarea>
+    
 </div>
 
 <hr>
