@@ -73,6 +73,7 @@ class VendorsController extends Controller
      */
     public function show(Vendors $vendors)
     {
+        $vendors = Customers::all();
         return view('vendors.vendors.vendors',compact('vendors'));
     }
 
@@ -138,4 +139,12 @@ class VendorsController extends Controller
         return redirect('/vendors')->withSuccess('Successfully Deleted');;
     
     }
+
+    public function queryVendors($query)
+    {   
+        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','mobile_number')
+            ->where('name', 'LIKE', '%' . $query . '%')->get();
+        return $vendors;
+    }
 }
+
