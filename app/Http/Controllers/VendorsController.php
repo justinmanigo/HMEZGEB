@@ -142,7 +142,7 @@ class VendorsController extends Controller
 
     public function queryVendors($query)
     {   
-        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','mobile_number')
+        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one')
             ->where('name', 'LIKE', '%' . $query . '%')->get();
         return $vendors;
     }

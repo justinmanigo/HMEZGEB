@@ -51,14 +51,14 @@ function onBillVendorSelectSuggestion(e){
     $("#b_vendor_id").val(e.detail.data.value)
     $("#b_address").val(e.detail.data.address)
     $("#b_contact_person").val(e.detail.data.contact_person)
-    $("#b_mobile_number").val(e.detail.data.mobile_number)
+    $("#b_telephone_number").val(e.detail.data.telephone_one)
 }
 
 function onBillVendorRemove(e){
     $("#b_vendor_id").val("")
     $("#b_address").val("")
     $("#b_contact_person").val("")
-    $("#b_mobile_number").val("")
+    $("#b_telephone_number").val("")
 }
 
 function onBillVendorInput(e) {
