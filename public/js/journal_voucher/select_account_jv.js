@@ -189,34 +189,10 @@ function onJournalVoucherAccountDropdownShow(e) {
 }
 
 function onJournalVoucherAccountSelectSuggestion(e) {
-    id = e.detail.tagify.DOM.originalInput.dataset.id;
     
-    // $(`#r_item_quantity_${id}`).val(1).removeAttr('disabled')
-    // $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
-    // $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
-
-    // item_total = e.detail.data.sale_price * e.detail.data.quantity;
-    // console.log(parseFloat(item_total).toFixed(2));
-    // console.log($(`#r_sub_total`).val())
-    // console.log()
-    
-    // // Add all item total to subtotal
-    // $(`#r_sub_total`).val(parseFloat(parseFloat($(`#r_sub_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
-    // $(`#r_grand_total`).val(parseFloat(parseFloat($(`#r_grand_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
-
 }
 
 function onJournalVoucherAccountRemove(e) {
-    id = e.detail.tagify.DOM.originalInput.dataset.id;
-    
-    //Subtract total when x is clicked in tagify
-    // $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
-    // $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
-    // $(`#r_item_quantity_${id}`).attr('disabled', 'disabled')
-
-    // $(`#r_item_quantity_${id}`).val("0")
-    // $(`#r_item_price_${id}`).val("0.00")
-    // $(`#r_item_total_${id}`).val("0.00")
 
 }
 
