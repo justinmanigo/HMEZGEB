@@ -235,6 +235,16 @@
                                 <th colspan="5">Credits</th>
                             </thead>
                             <tbody id="jv_credits"></tbody>
+                            <tfoot>
+                                <th colspan="2" class="pt-2">Total</th>
+                                <th>
+                                    <p id="jv_debit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                                <th>
+                                    <p id="jv_credit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                                <th></th>
+                            </tfoot>
                         </table>
                     </div>
                     {{-- <div class="form-group row">
@@ -319,7 +329,7 @@
                     <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
                 </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="modal-jv">Save Customer</button>
+                <button type="button" class="btn btn-primary" id="form-jv-save-btn" form="modal-jv" disabled>Save Customer</button>
             </div>
         </div>
     </div>
@@ -386,5 +396,5 @@
 </div>
 
 <script src="/js/journal_voucher/template_select_account.js"></script>
-<script src="/js/journal_voucher/select_account_jv.js"></script>
+<script src="/js/journal_voucher/jv_functions.js"></script>
 @endsection

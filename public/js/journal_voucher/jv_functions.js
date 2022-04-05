@@ -27,6 +27,13 @@ $(document).on('click', '.jv_debit_delete', function(e){
     removeEntry('debit', $(this)[0].dataset.id)
     $(this).parents('tr').remove();
 
+    updateAndGetJVTotalAmount('debit');
+    dc_match = checkIfDebitCreditMatch();
+    toggleJVSaveButton(dc_match)
+
+    if(dc_match) $("#form-jv-save-btn").removeAttr('disabled');
+    else $("#form-jv-save-btn").attr('disabled', 'disabled');
+
     // If there are no longer entries in table, generate a new one.
     if(debit_items.length < 1) createEntry('debit');
 });
@@ -35,6 +42,10 @@ $(document).on('click', '.jv_debit_delete', function(e){
 $(document).on('click', '.jv_credit_delete', function(e){
     removeEntry('credit', $(this)[0].dataset.id)
     $(this).parents('tr').remove();
+
+    updateAndGetJVTotalAmount('credit');
+    dc_match = checkIfDebitCreditMatch();
+    toggleJVSaveButton(dc_match)
 
     // If there are no longer entries in table, generate a new one.
     if(credit_items.length < 1) createEntry('credit');
@@ -70,7 +81,7 @@ function createEntry(type)
     {
         inner += `
         <td>
-            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" class="form-control inputPrice text-right" name="${type}_amount[]" placeholder="0.00" required>
+            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" data-type="${type}" class="form-control inputPrice text-right jv_amount jv_debit" name="${type}_amount[]" placeholder="0.00" required>
         </td>
         <td></td>
         `;
@@ -80,7 +91,7 @@ function createEntry(type)
         inner += `
         <td></td>
         <td>
-            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" class="form-control inputPrice text-right" name="${type}_amount[]" placeholder="0.00" required>
+            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" data-type="${type}" class="form-control inputPrice text-right jv_amount jv_credit" name="${type}_amount[]" placeholder="0.00" required>
         </td>
         `;
     }
@@ -217,4 +228,72 @@ function onJournalVoucherAccountInput(e) {
             tagify.whitelist = newWhitelist // update whitelist Array in-place
             tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
+}
+
+/** JV Computation */
+
+// When delete entry button for credit is clicked.
+$(document).on('change', '.jv_amount', function(e){
+    // Get type & value
+    var type = $(this)[0].dataset.type;
+    var value = $(this)[0].value;
+
+    // Compute JV's Total Amount
+    updateAndGetJVTotalAmount(type);
+    dc_match = checkIfDebitCreditMatch();
+    toggleJVSaveButton(dc_match)
+
+    // // removeEntry('credit', $(this)[0].dataset.id)
+    // $(this).parents('tr').remove();
+
+    // // If there are no longer entries in table, generate a new one.
+    // if(credit_items.length < 1) createEntry('credit');
+});
+
+function updateAndGetJVTotalAmount(type)
+{
+    var items, total_amount = 0;
+    if(type == 'debit') items = document.querySelectorAll(".jv_debit");
+    else if(type == 'credit') items = document.querySelectorAll(".jv_credit");
+
+    items.forEach(function(item){
+        total_amount += item.value != '' ? parseFloat(item.value) : 0;
+        console.log(item.value);
+    });
+    console.log(`Total Amount of ${type}: ${total_amount}`);
+
+    $(`#jv_${type}_total`).html(parseFloat(total_amount).toFixed(2));
+
+    return total_amount;
+}
+
+function checkIfDebitCreditMatch()
+{
+    var debit_items = document.querySelectorAll(".jv_debit");
+    var credit_items = document.querySelectorAll(".jv_credit");
+    var debit_total = 0, credit_total = 0;
+
+    debit_items.forEach(function(item){
+        debit_total += item.value != '' ? parseFloat(item.value) : 0;
+    });
+    credit_items.forEach(function(item){
+        credit_total += item.value != '' ? parseFloat(item.value) : 0;
+    });
+
+    if(debit_total == credit_total && debit_total != 0 && credit_total != 0)
+    {
+        console.log("DC Match");
+        return true;
+    }
+    else
+    {
+        console.log("DC Unmatch");
+        return false;
+    }
+}
+
+function toggleJVSaveButton(dc_match)
+{
+    if(dc_match) $("#form-jv-save-btn").removeAttr('disabled');
+    else $("#form-jv-save-btn").attr('disabled', 'disabled');
 }
