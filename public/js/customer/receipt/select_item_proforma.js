@@ -1,15 +1,49 @@
-var proforma_items = [];
-var proforma_count = 0;
+// This array lists down the items within the proforma.
+var proforma_items = []; 
 
-$(document).ready(function () {
-    // console.log(proforma_items.length)
-    // Create first <tr> for proforma items
+// This variable counts how many instances of proforma items are made.
+// This ensures that there will be no conflict ids on proforma item elements.
+var proforma_count = 0; 
+
+// Create a proforma item entry when document is fully loaded or when add entry button is clicked.
+$(document).ready(createproformaItemEntry());
+$(document).on('click', '.p_add_item_entry', function(){
     createproformaItemEntry()
+})
+
+// Delete the proforma item entry when the row's delete button is clicked.
+$(document).on('click', '.p_item_delete', function (event) {
+    removeproformaItemEntry( $(this)[0].dataset.id )
+    $(this).parents('tr').remove();
+
+    // If there are no longer item entries in table, generate a new one.
+    if(proforma_items.length < 1) createproformaItemEntry();
 });
 
+// Set events of quantity field.
+$(document).on('change', '.p_item_quantity', function(event) {
+    id = $(this)[0].dataset.id;
+    quantity = $(this)[0].value;
+    sale_price = $(`#p_item_price_${id}`).val()
+    console.log(sale_price)
+    
+    // Update item total
+    $(`#p_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
+
+    // Update overall total
+    item_idx = getproformaItemIndex(id);
+    proforma_items[item_idx].total_price = sale_price * quantity;
+    calculateproformaSubTotal();
+    calculateproformaGrandTotal();
+});
+
+// Creates a proforma Item Entry on the Table.
 function createproformaItemEntry() 
 {
+    // Increment proforma_count to avoid element conflicts.
     proforma_count++;
+
+    // <tr> template
     let inner = `
     <tr data-id="${proforma_count}" id="p_item_entry_${proforma_count}">
         <td>
@@ -19,7 +53,7 @@ function createproformaItemEntry()
             </div>
         </td>
         <td>
-            <input type="number" id="p_item_quantity_${proforma_count}" class="form-control" name="quantity[]" placeholder="0" disabled>
+            <input type="number" data-id="${proforma_count}" id="p_item_quantity_${proforma_count}" class="form-control p_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
         </td>
         <td>
             <input type="text" id="p_item_price_${proforma_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
@@ -33,7 +67,7 @@ function createproformaItemEntry()
             <input type="text" id="p_item_total_${proforma_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
         </td>
         <td>
-            <button type="button" data-id="${proforma_count}" id="p_item_delete_${proforma_count}" class="btn btn-icon btn-danger p_item_delete" data-toggle="tooltip" data-placement="bottom" title="Delete">
+            <button type="button" data-id="${proforma_count}" id="p_item_delete_${proforma_count}" class="btn btn-icon btn-danger p_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
                 <span class="icon text-white-50">
                     <i class="fas fa-trash"></i>
                 </span>
@@ -47,8 +81,10 @@ function createproformaItemEntry()
     </tr>
     `
 
+    // Append template to the table.
     $("#p_items").append(inner)
 
+    // Create new tagify instance of item selector of newly created row.
     let elm = document.querySelector(`#p_item_${proforma_count}`);
     let elm_tagify = new Tagify(elm, {
         tagTextProp: 'name', // very important since a custom template is used with this property as text
@@ -66,22 +102,9 @@ function createproformaItemEntry()
             dropdownItem: ItemSuggestionItemTemplate
         },
         whitelist: [],
-        // whitelist: [
-        //     {
-        //         "value": 1,
-        //         "name": "Justinian Hattersley",
-        //         "avatar": "https://i.pravatar.cc/80?img=1",
-        //         "email": "jhattersley0@ucsd.edu"
-        //     },
-        //     {
-        //         "value": 2,
-        //         "name": "Antons Esson",
-        //         "avatar": "https://i.pravatar.cc/80?img=2",
-        //         "email": "aesson1@ning.com"
-        //     },
-        // ]
     })
 
+    // Set events of tagify instance.
     elm_tagify.on('dropdown:show dropdown:updated', onproformaItemDropdownShow)
     elm_tagify.on('dropdown:select', onproformaItemSelectSuggestion)
     elm_tagify.on('input', onproformaItemInput)
@@ -91,78 +114,82 @@ function createproformaItemEntry()
     let item_entry = {
         "entry_id": proforma_count,
         "tagify": elm_tagify,
-        "price": 0,
+        "sale_price": 0,
+        "total_price": 0,
         "value": null,
     }
 
     proforma_items.push(item_entry);
     console.log(proforma_items);
 }
-// add table row for proforma item
-$(document).on('click', '.p_add_item_entry', function () {
-    createproformaItemEntry()
-})
 
+// Removes a proforma Item Entry from the Table.
+function removeproformaItemEntry(entry_id)
+{
+    
+    $(`#p_sub_total`).val(parseFloat($(`#p_sub_total`).val() - $(`#p_item_total_${entry_id}`).val()).toFixed(2))
+    $(`#p_grand_total`).val(parseFloat($(`#p_grand_total`).val() - $(`#p_item_total_${entry_id}`).val()).toFixed(2))
 
-$(document).on('click', '.p_item_delete', function (event) {
-    console.log($(this)[0].dataset.id)
-    removeproformaItemEntry( $(this)[0].dataset.id )
-    console.log("Check if its successfully removed.");
-    console.log(proforma_items);
-
-    $(this).parents('tr').remove();
-
-    if(proforma_items.length < 1)
+    for(let i = 0; i < proforma_items.length; i++)
     {
-        console.log("No items left. Generating new one.");
-        createproformaItemEntry();
-    }
-});
+        if(proforma_items[i].entry_id == entry_id)
+        {   
+            console.log("Removing entry " + entry_id);
+            proforma_items.splice(i, 1);
+            return true;
+        }
+    }   
+    return false;
+}
 
+// Gets the proforma item entry from the table.
+function getproformaItemEntry(entry_id)
+{
+    for(let i = 0; i < proforma_items.length; i++)
+    {
+        if(proforma_items[i].entry_id == entry_id)
+        {
+            console.log("Found entry.");
+            return proforma_items[i];
+        }
+    }   
+    return undefined;
+}
 
+// Gets the proforma item index from the table.
+function getproformaItemIndex(entry_id)
+{
+    for(let i = 0; i < proforma_items.length; i++)
+    {
+        if(proforma_items[i].entry_id == entry_id)
+        {
+            console.log("Found entry.");
+            return i;
+        }
+    }   
+    return undefined;
+}
 
+/** === Calculation Functions === */
+function calculateproformaSubTotal()
+{
+    subtotal = 0;
+    for(i = 0; i < proforma_items.length; i++)
+        subtotal += proforma_items[i].total_price;
 
-// var proforma_select_item_elm = document.querySelector('#p_item');
+    $(`#p_sub_total`).val(parseFloat(subtotal).toFixed(2))
+}
 
-// initialize Tagify on the above input node reference
-// var proforma_select_item_tagify = new Tagify(proforma_select_item_elm, {
-//     tagTextProp: 'name', // very important since a custom template is used with this property as text
-//     enforceWhitelist: true,
-//     mode: "select",
-//     skipInvalid: false, // do not remporarily add invalid tags
-//     dropdown: {
-//         closeOnSelect: true,
-//         enabled: 0,
-//         classname: 'item-list',
-//         searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
-//     },
-//     templates: {
-//         tag: ItemTagTemplate,
-//         dropdownItem: ItemSuggestionItemTemplate
-//     },
-//     whitelist: [],
-    // whitelist: [
-    //     {
-    //         "value": 1,
-    //         "name": "Justinian Hattersley",
-    //         "avatar": "https://i.pravatar.cc/80?img=1",
-    //         "email": "jhattersley0@ucsd.edu"
-    //     },
-    //     {
-    //         "value": 2,
-    //         "name": "Antons Esson",
-    //         "avatar": "https://i.pravatar.cc/80?img=2",
-    //         "email": "aesson1@ning.com"
-    //     },
-    // ]
-// })
+function calculateproformaGrandTotal()
+{
+    grandtotal = 0;
+    for(i = 0; i < proforma_items.length; i++)
+    grandtotal += proforma_items[i].total_price;
 
-// proforma_select_item_tagify.on('dropdown:show dropdown:updated', onproformaItemDropdownShow)
-// proforma_select_item_tagify.on('dropdown:select', onproformaItemSelectSuggestion)
-// proforma_select_item_tagify.on('input', onproformaItemInput)
-// proforma_select_item_tagify.on('remove', onproformaItemRemove)
+    $(`#p_grand_total`).val(parseFloat(grandtotal).toFixed(2))
+}
 
-// var addAllSuggestionsElm;
+/** === Tagify Related Functions === */
 
 function onproformaItemDropdownShow(e) {
     console.log("onproformaItemDropdownShow")
@@ -170,43 +197,34 @@ function onproformaItemDropdownShow(e) {
 }
 
 function onproformaItemSelectSuggestion(e) {
-    // console.log("onproformaItemSelectSuggestion")
-    // // checks for data of selected customer
-    // console.log("Checks for data of selected customer");
-    // console.log(e.detail.data);
-    // console.log(e.detail.data.value.toString());
-    // value = e.detail.data.value;
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    
+    $(`#p_item_quantity_${id}`).val(1).removeAttr('disabled')
+    $(`#p_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
+    $(`#p_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
 
-    // // checks for data of selected element
-    // console.log("Get selected element instance.");
-    // console.log(e.detail.tagify);
-    // tagify = e.detail.tagify;
-
-    // NOT WORKING ATM
-    // tagify.removeTags(value.toString(), false, 500)
-
-    // checks proforma items if value already exists in the list. if so,
-    // it won't be added.
-    // console.log("Checks proforma items if value already exists in the list. If so, it won't be added.")
-    // console.log(proforma_items)
-
-    $(`#p_item_quantity_${proforma_count}`).val(e.detail.data.quantity)
-    $(`#p_item_price_${proforma_count}`).val(e.detail.data.sale_price)
-    $(`#p_item_total_${proforma_count}`).val(e.detail.data.sale_price * e.detail.data.quantity)
+    item_total = e.detail.data.sale_price * e.detail.data.quantity;
+    console.log(parseFloat(item_total).toFixed(2));
+    console.log($(`#p_sub_total`).val())
+    console.log()
+    
     // Add all item total to subtotal
-    $('#p_sub_total').val(parseFloat($('#p_sub_total').val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
-    // Add all item total to grand_total
-    $(`#p_grand_total`).val(parseFloat($(`#p_grand_total`).val()) + parseFloat(e.detail.data.sale_price * e.detail.data.quantity))
+    $(`#p_sub_total`).val(parseFloat(parseFloat($(`#p_sub_total`).val()) + parseFloat($(`#p_item_total_${id}`).val())).toFixed(2))
+    $(`#p_grand_total`).val(parseFloat(parseFloat($(`#p_grand_total`).val()) + parseFloat($(`#p_item_total_${id}`).val())).toFixed(2))
 
 }
 
 function onproformaItemRemove(e) {
-    $(`#p_item_quantity_${proforma_count}`).val("")
-    $(`#p_item_price_${proforma_count}`).val("")
-    $(`#p_item_total_${proforma_count}`).val("0.00")
-    $('#p_sub_total').val("0.00")
-    $(`#p_grand_total`).val("0.00")
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    
+    //Subtract total when x is clicked in tagify
+    $(`#p_sub_total`).val(parseFloat($(`#p_sub_total`).val() - $(`#p_item_total_${id}`).val()).toFixed(2))
+    $(`#p_grand_total`).val(parseFloat($(`#p_grand_total`).val() - $(`#p_item_total_${id}`).val()).toFixed(2))
+    $(`#p_item_quantity_${id}`).attr('disabled', 'disabled')
 
+    $(`#p_item_quantity_${id}`).val("0")
+    $(`#p_item_price_${id}`).val("0.00")
+    $(`#p_item_total_${id}`).val("0.00")
 
 }
 
@@ -220,7 +238,6 @@ function onproformaItemInput(e) {
 
     console.log(proforma_items);
     entry_obj = getproformaItemEntry(entry_id);
-    // tagify = entry_obj.tagify;
 
     console.log("Obtained value from array");
     console.log(tagify);
@@ -242,31 +259,4 @@ function onproformaItemInput(e) {
             entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
             entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
-}
-
-function getproformaItemEntry(entry_id)
-{
-    for(let i = 0; i < proforma_items.length; i++)
-    {
-        if(proforma_items[i].entry_id == entry_id)
-        {
-            console.log("Found entry.");
-            return proforma_items[i];
-        }
-    }   
-    return undefined;
-}
-
-function removeproformaItemEntry(entry_id)
-{
-    for(let i = 0; i < proforma_items.length; i++)
-    {
-        if(proforma_items[i].entry_id == entry_id)
-        {
-            console.log("Removing entry " + entry_id);
-            proforma_items.splice(i, 1);
-            return true;
-        }
-    }   
-    return false;
 }
