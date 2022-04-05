@@ -142,4 +142,5 @@ class SettingChartOfAccountsController extends Controller
             'normal_balance')
             ->where('category', 'LIKE', '%' . $query . '%')->get();
         return $categories;
+    }
 }
