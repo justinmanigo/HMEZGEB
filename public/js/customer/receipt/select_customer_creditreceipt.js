@@ -87,6 +87,7 @@ function onCreditReceiptCustomerRemove(e){
 
     // Reset <tr>
     $("#cr_receipts_to_pay").html("");
+    $("#cr_total_amount_received").val("");
 }
 
 function onCreditReceiptCustomerInput(e) {

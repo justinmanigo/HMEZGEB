@@ -172,7 +172,7 @@
                 <tr>
                     <td class="text-right table-item-content" colspan="5"><strong>Total Received: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="total_received" placeholder="0.00" >
+                        <input type="text" id="cr_total_amount_received" class="form-control-plaintext text-right pr-2" name="total_received" placeholder="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
