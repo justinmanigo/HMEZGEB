@@ -19,8 +19,6 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-    
-
         // Views Transactions 
         $receipt = Customers::join(
             'receipt_references',
@@ -197,88 +195,66 @@ class ReceiptController extends Controller
 
     public function storeAdvanceRevenue(Request $request)
     {
-        // if($request->grand_total==$request->total_amount_received)
-        // {
-        //     $status = 'paid';
-        // }
-        // if($request->grand_total>$request->total_amount_received)
-        // {
-        //     $status = 'partially_paid';
-        // }
-        // else
-        // {
-            // Temporary status
-            $status = 'Paid';
-        // }
-
-        // Receipt References
+        // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
             'customer_id' => $request->customer_id,
             'reference_number' => $request->reference_number,
             'date' => $request->date,
             'type' => 'advance_receipt',
-            'is_void' => 'no',
-            'status' => $status
+            'status' => 'paid' // Advance Revenue's status is always paid.
         ]);
 
         // Create child database entry
-        if($reference)        
-        {
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment'/'advance-revenues', $fileAttachment);
-            }
-
-            $reference->id;
-            $proformas = AdvanceRevenues::create([
-                'receipt_reference_id' => $reference->id,
-                'advance_revenue_number' => $request->reference_number,
-                'total_amount_received' => $request->amount_received,
-                'reason' => $request->reason,
-                'remark' => $request->remark,
-                // image upload
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            ]);
-            return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+        if($request->attachment) {
+            $fileAttachment = time().'.'.$request->attachment->extension();  
+            $request->attachment->storeAs('public/receipt-attachment'/'advance-revenues', $fileAttachment);
         }
 
+        $reference->id;
+        $advanceRevenue = AdvanceRevenues::create([
+            'receipt_reference_id' => $reference->id,
+            'advance_revenue_number' => $request->reference_number,
+            'total_amount_received' => $request->amount_received,
+            'reason' => $request->reason,
+            'remark' => $request->remark,
+            // image upload
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+        ]);
+        
+        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
     }
 
     public function storeCreditReceipt(Request $request)
     {
-    
-        // Temporary status
-        $status = 'unpaid';
-        // Receipt References
+        
+        // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
             'customer_id' => $request->customer_id,
             'date' => $request->date,
             'type' => 'credit_receipt',
             'is_void' => 'no',
-            'status' => $status
+            'status' => 'paid', // Credit Receipt's status is always paid.
         ]);
 
         // Create child database entry
-        if($reference)        
-        {
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment/credit-receipts', $fileAttachment);
-            }
-
-            $reference->id;
-            $creditReceipts = CreditReceipts::create([
-                'receipt_reference_id' => $reference->id,
-                'credit_receipt_number' => $request->credit_receipt_number,
-                'total_amount_received' => $request->total_received,
-                'description' => $request->description,
-                'remark' => $request->remark,
-                // image upload
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            ]);
-            
-            return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+        if($request->attachment) {
+            $fileAttachment = time().'.'.$request->attachment->extension();  
+            $request->attachment->storeAs('public/receipt-attachment/credit-receipts', $fileAttachment);
         }
+
+        $reference->id;
+        $creditReceipts = CreditReceipts::create([
+            'receipt_reference_id' => $reference->id,
+            'credit_receipt_number' => $request->credit_receipt_number,
+            'total_amount_received' => $request->total_received,
+            'description' => $request->description,
+            'remark' => $request->remark,
+            // image upload
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+        ]);
+        
+
+        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
     }
 
     public function storeProforma(Request $request)
