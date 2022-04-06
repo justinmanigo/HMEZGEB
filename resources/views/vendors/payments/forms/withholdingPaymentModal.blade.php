@@ -1,27 +1,53 @@
 <div class="modal-body h6">				
-    <div class="form-group row">
-        <label for="name" class="col-md-4 col-lg-2 col-form-label">Vendor Name:<span class="text-danger ml-1">*</span></label>
-        <input type="text" name="name" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Date:</label>
-        <input type="date" name="address" class="form-control col-lg-4">
-    </div>
-    <div class="row form-group">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Address:</label>
-        <input type="text" name="city" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Payment Ref:</label>
-        <input type="text" name="country" class="form-control col-lg-4">
-    </div>
-    <div class="form-group row">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Contact Person:</label>
-        <input type="text" name="tinNum" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Cheque Number:</label>
-        <input type="number" name="email" class="form-control col-lg-4">
-    </div>
-    <div class="row form-group">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Telephone:</label>
-        <input type="number" name="phone1" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Account:</label>
-        <input type="text" name="phone1" class="form-control col-lg-4">
+    <div class="row form-group">	
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <h5>Vendor Details:</h5>
+                <div class="form-group row">
+                    <label for="w_vendor" class="col-4 col-form-label text-left">Vendor<span class="text-danger ml-1">*</span> :</label>
+                    <input class="col-8 col-lg-7" id="w_vendor" name='vendor'>
+                    <input type="hidden" id="w_vendor_id" name="vendor_id" value="">
+                </div>
+                {{-- Contact Details --}}
+                <div class="form-group row mb-0">
+                    <label for="w_address" class="col-4 col-form-label text-lg-right">Address</label>
+                    <input type="text" id="w_address" class="form-control-plaintext col-8 pl-3" placeholder="" name="address" disabled readonly>
+                </div>
+                <div class="form-group row mb-0">
+                    <label for="w_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
+                    <input type="text" id="w_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
+                </div>
+                <div class="form-group row mb-0">
+                    <label for="w_telephone_number" class="col-4 col-form-label text-lg-right">Telephone # :</label>
+                    <input type="text" id="w_telephone_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="telephone_number" disabled readonly>
+                </div>
+            </div>
+            
+            <div class="col-12 col-lg-6">
+                <div class="form-group row">
+                    <label for="w_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
+                    <div class="col-8">
+                        <input type="date" class="form-control" id="w_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="w_payment_reference" class="col-4 col-form-label text-lg-right">Payment Reference:</label>
+                    <div class="col-8">
+                        <input type="date" class="form-control" id="w_payment_reference" name="payment_reference" placeholder="" value="" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="w_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="w_cheque_number" name="cheque_number" placeholder="" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="w_bill_number" class="col-4 col-form-label text-lg-right">Account #:</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="w_bill_number" name="account_number" placeholder="">
+                    </div>
+                </div>
+            </div>
     </div>
     {{-- start of the table  --}}
     <table class="table table-bordered" width="100%" cellspacing="0">
