@@ -226,35 +226,74 @@ class ReceiptController extends Controller
 
     public function storeCreditReceipt(Request $request)
     {
-        
-        // Create ReceiptReference Record
-        $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer_id,
-            'date' => $request->date,
-            'type' => 'credit_receipt',
-            'is_void' => 'no',
-            'status' => 'paid', // Credit Receipt's status is always paid.
-        ]);
+        // return $request;
 
-        // Create child database entry
-        if($request->attachment) {
-            $fileAttachment = time().'.'.$request->attachment->extension();  
-            $request->attachment->storeAs('public/receipt-attachment/credit-receipts', $fileAttachment);
+        // Update Receipts to Pay
+        $c = 0;
+        for($i = 0; $i < count($request->receipt_reference_id); $i++)
+        {
+            if(!$request->is_paid[$i]) continue;
+
+            // Get receipt
+            $receipt = Receipts::leftJoin('receipt_references', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+                ->where('receipts.receipt_reference_id', '=', $request->receipt_reference_id[$i])->first();
+
+            // return $receipt;
+
+            $receipt->total_amount_received += $request->amount_paid[$i];
+            if($receipt->total_amount_received >= $receipt->grand_total)
+            {
+                ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
+                    ->update(['status' => 'paid']);
+            }
+            else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0)
+            {
+                ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
+                    ->update(['status' => 'partially_paid']);
+            }
+            else if($receipt->status == 'paid')
+            {
+                continue;
+            }
+
+            $receipt->save();
+            $c++;
         }
 
-        $reference->id;
-        $creditReceipts = CreditReceipts::create([
-            'receipt_reference_id' => $reference->id,
-            'credit_receipt_number' => $request->credit_receipt_number,
-            'total_amount_received' => $request->total_received,
-            'description' => $request->description,
-            'remark' => $request->remark,
-            // image upload
-            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-        ]);
+        if($c > 0) {
+            // Create ReceiptReference Record
+            $reference = ReceiptReferences::create([
+                'customer_id' => $request->customer_id,
+                'date' => $request->date,
+                'type' => 'credit_receipt',
+                'is_void' => 'no',
+                'status' => 'paid', // Credit Receipt's status is always paid.
+            ]);
+    
+            // Create child database entry
+            if($request->attachment) {
+                $fileAttachment = time().'.'.$request->attachment->extension();  
+                $request->attachment->storeAs('public/receipt-attachment/credit-receipts', $fileAttachment);
+            }
+    
+            $creditReceipts = CreditReceipts::create([
+                'receipt_reference_id' => $reference->id,
+                'credit_receipt_number' => $request->credit_receipt_number,
+                'total_amount_received' => floatval($request->total_received),
+                'description' => $request->description,
+                'remark' => $request->remark,
+                // image upload
+                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+            ]);
+            
+            $messageContent = 'Credit Receipt has been added successfully.';
+        }
+        else {
+            $messageContent = 'There are no receipts to pay.';
+        }
         
+        return redirect()->route('receipts.receipt.index')->with('success', $messageContent);
 
-        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
     }
 
     public function storeProforma(Request $request)
