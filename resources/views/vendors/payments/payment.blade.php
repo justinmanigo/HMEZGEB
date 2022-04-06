@@ -2,6 +2,88 @@
 
 @section('content')
 
+<style>
+/*
+            TEMPORARY
+        */
+    /* Suggestions items */
+    .tagify__dropdown.vendors-list .tagify__dropdown__item {
+        padding: .5em .7em;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0 1em;
+        grid-template-areas: "avatar name"
+            "avatar email";
+    }
+
+    .tagify__dropdown.vendors-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
+        transform: scale(1.2);
+    }
+
+    .tagify__dropdown.vendors-list .tagify__dropdown__item__avatar-wrap {
+        grid-area: avatar;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #EEE;
+        transition: .1s ease-out;
+    }
+
+    .tagify__dropdown.vendors-list img {
+        width: 100%;
+        vertical-align: top;
+    }
+
+    .tagify__dropdown.vendors-list strong {
+        grid-area: name;
+        width: 100%;
+        align-self: center;
+    }
+
+    .tagify__dropdown.vendors-list span {
+        grid-area: email;
+        width: 100%;
+        font-size: .9em;
+        opacity: .6;
+    }
+
+    .tagify__dropdown.vendors-list .addAll {
+        border-bottom: 1px solid #DDD;
+        gap: 0;
+    }
+
+
+    /* Tags items */
+    .tagify__tag {
+        white-space: nowrap;
+    }
+
+    .tagify__tag:hover .tagify__tag__avatar-wrap {
+        transform: scale(1.6) translateX(-10%);
+    }
+
+    .tagify__tag .tagify__tag__avatar-wrap {
+        width: 16px;
+        height: 16px;
+        white-space: normal;
+        border-radius: 50%;
+        background: silver;
+        margin-right: 5px;
+        transition: .12s ease-out;
+    }
+
+    .tagify__tag img {
+        width: 100%;
+        vertical-align: top;
+        pointer-events: none;
+    }
+</style>
+
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
 <div>
     
     <div class="d-flex justify-content-between align-items-end">
@@ -274,10 +356,23 @@
 </div>
 
 <script>
+    var controller;
     $(document).ready(function () {
         $('#dataTables').DataTable();
         $('#dataTables2').DataTable();
         $('.dataTables_filter').addClass('pull-right');
     });
 </script>
+
+<!-- Vendors -->
+<script src="/js/vendors/template_select_vendor.js"></script>
+<script src="/js/vendors/payment/select_vendor_bill.js"></script>
+<script src="/js/vendors/payment/select_vendor_payroll.js"></script>
+<script src="/js/vendors/payment/select_vendor_vat.js"></script>
+<script src="/js/vendors/payment/select_vendor_withholding.js"></script>
+
+
+<!-- Items -->
+<script src="/js/vendors/template_select_item.js"></script>
+
 @endsection
