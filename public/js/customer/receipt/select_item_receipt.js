@@ -229,34 +229,34 @@ function onReceiptItemRemove(e) {
 }
 
 function onReceiptItemInput(e) {
-    console.log(e.detail);
-    console.log(e.detail.tagify.DOM.originalInput.dataset.id)
+    // console.log(e.detail);
+    // console.log(e.detail.tagify.DOM.originalInput.dataset.id)
     
-    var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
+    // var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
     var value = e.detail.value;
-    var tagify;
+    var tagify = e.detail.tagify;
 
-    console.log(receipt_items);
-    entry_obj = getReceiptItemEntry(entry_id);
+    // console.log(receipt_items);
+    // entry_obj = getReceiptItemEntry(entry_id);
 
-    console.log("Obtained value from array");
-    console.log(tagify);
+    // console.log("Obtained value from array");
+    // console.log(tagify);
     
-    entry_obj.tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    entry_obj.tagify.loading(true).dropdown.hide()
+    tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/inventory/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
         .then(function (newWhitelist) {
-            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
-            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
 }
