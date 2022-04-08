@@ -173,7 +173,7 @@ class ReceiptController extends Controller
         {
             ReceiptItem::create([
                 'inventory_id' => $items[$i]->value,
-                'receipt_id' => $receipt->id,
+                'receipt_reference_id' => $reference->id,
                 'quantity' => $request->quantity[$i],
                 'price' => $items[$i]->sale_price,
                 'total_price' => $request->quantity[$i] * $items[$i]->sale_price,

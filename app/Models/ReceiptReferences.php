@@ -50,4 +50,8 @@ class ReceiptReferences extends Model
     {
         return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
     }
+    public function receiptItems()
+    {
+        return $this->hasMany(ReceiptItem::class);
+    }
 }
