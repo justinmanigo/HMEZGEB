@@ -145,7 +145,7 @@ class ReceiptController extends Controller
         }
         
         // Create child database entry
-        if($request->grand_total==$request->total_amount_received)
+        if($request->grand_total == $request->total_amount_received)
             $payment_method = 'cash';
         else
             $payment_method = 'credit';
