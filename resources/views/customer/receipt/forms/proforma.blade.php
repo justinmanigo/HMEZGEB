@@ -89,40 +89,6 @@
                 <th class="thead-actions">Actions</th>
             </thead>
             <tbody id="p_items">
-                {{-- <tr>
-                    <td>
-                        <div class="input-group">
-                            <input id="p_item" class="p_item" name='item[]'>
-                            <input type="hidden" name="item_id[]" value="">
-                        </div>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="quantity[]" placeholder="Enter Quantity" required>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
-                    </td>
-                    <td>
-                        <select class="form-control" name="tax[]">
-                            <option>Sales Tax (15%)</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </button>
-                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                        </button>
-                    </td>
-                </tr> --}}
             </tbody>
             <tfoot>
                 <tr>
