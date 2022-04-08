@@ -31,8 +31,6 @@ $(document).on('change', '.p_item_quantity', function(event) {
     $(`#p_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
 
     // Update overall total
-    item_idx = getproformaItemIndex(id);
-    proforma_items[item_idx].total_price = sale_price * quantity;
     calculateproformaSubTotal();
     calculateproformaGrandTotal();
 });
@@ -114,8 +112,6 @@ function createproformaItemEntry()
     let item_entry = {
         "entry_id": proforma_count,
         "tagify": elm_tagify,
-        "sale_price": 0,
-        "total_price": 0,
         "value": null,
     }
 
@@ -241,34 +237,24 @@ function onproformaItemRemove(e) {
 }
 
 function onproformaItemInput(e) {
-    console.log(e.detail);
-    console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
-    var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
     var value = e.detail.value;
-    var tagify;
-
-    console.log(proforma_items);
-    entry_obj = getproformaItemEntry(entry_id);
-
-    console.log("Obtained value from array");
-    console.log(tagify);
+    var tagify = e.detail.tagify;
     
-    entry_obj.tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    entry_obj.tagify.loading(true).dropdown.hide()
+    tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/inventory/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
         .then(function (newWhitelist) {
-            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
-            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
 }
