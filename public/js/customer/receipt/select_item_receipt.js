@@ -30,9 +30,6 @@ $(document).on('change', '.r_item_quantity', function(event) {
     // Update item total
     $(`#r_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
 
-    // Update overall total
-    item_idx = getReceiptItemIndex(id);
-    receipt_items[item_idx].total_price = sale_price * quantity;
     calculateReceiptSubTotal();
     calculateReceiptGrandTotal();
 });
@@ -64,7 +61,7 @@ function createReceiptItemEntry()
             </select>
         </td>
         <td>
-            <input type="text" id="r_item_total_${receipt_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
+            <input type="text" id="r_item_total_${receipt_count}" class="form-control text-right r_item_total" name="total[]" placeholder="0.00" disabled>
         </td>
         <td>
             <button type="button" data-id="${receipt_count}" id="r_item_delete_${receipt_count}" class="btn btn-icon btn-danger r_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -114,8 +111,6 @@ function createReceiptItemEntry()
     let item_entry = {
         "entry_id": receipt_count,
         "tagify": elm_tagify,
-        "sale_price": 0,
-        "total_price": 0,
         "value": null,
     }
 
@@ -174,8 +169,14 @@ function getReceiptItemIndex(entry_id)
 function calculateReceiptSubTotal()
 {
     subtotal = 0;
-    for(i = 0; i < receipt_items.length; i++)
-        subtotal += receipt_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".r_item_total");
+    console.log("Calculate Receipt Subtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        subtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#r_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
@@ -183,8 +184,14 @@ function calculateReceiptSubTotal()
 function calculateReceiptGrandTotal()
 {
     grandtotal = 0;
-    for(i = 0; i < receipt_items.length; i++)
-    grandtotal += receipt_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".r_item_total");
+    console.log("Calculate Receipt Grandtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        grandtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#r_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
