@@ -1,33 +1,24 @@
-<form id="form-receipt" method="post" enctype="multipart/form-data">
-    <div class="row">
+
+<div class="row">
         <div class="col-12 col-lg-6 mb-3 mb-lg-0">
             <h5>Customer Details:</h5>
             <div class="form-group row">
                 <label for="r_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                <div class="input-group col-8">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-primary" type="button" id="r_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
-                    </div>
-                    <div class="input-group-append">
-                        <input type="text" id="r_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
-                    </div>
-                    
-                    <input type="hidden" name="customer_id" value="">
-                </div>
-
+                <input class="col-8 col-lg-7" id="r_customer" name='customer'>
+                <input type="hidden" id="r_customer_id" name="customer_id" value="">
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
                 <label for="r_tin_number" class="col-4 col-form-label text-lg-right">Tin # :</label>
-                <input type="text" id="r_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="0042101026" name="tin_number" disabled readonly>
+                <input type="text" id="r_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="tin_number" disabled readonly>
             </div>
             <div class="form-group row mb-0">
                 <label for="r_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
-                <input type="text" id="r_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="Example Key Person" name="contact_person" disabled readonly>
+                <input type="text" id="r_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
             </div>
             <div class="form-group row mb-0">
-                <label for="r_contact_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
-                <input type="text" id="r_contact_number" class="form-control-plaintext col-8 pl-3" placeholder="0911223344" name="contact_number" disabled readonly>
+                <label for="r_mobile_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
+                <input type="text" id="r_mobile_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="mobile_number" disabled readonly>
             </div>
         </div>
 
@@ -35,7 +26,7 @@
             <div class="form-group row">
                 <label for="r_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
-                    <input type="date" class="form-control" id="r_date" name="date" placeholder="" required>
+                    <input type="date" class="form-control" id="r_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -47,19 +38,19 @@
             <div class="form-group row">
                 <label for="r_proforma_number" class="col-4 col-form-label text-lg-right">Proforma # :</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" id="r_proforma_number" name="proforma_number" placeholder="" required>
+                    <input type="text" class="form-control" id="r_proforma_number" name="proforma_number" placeholder="">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="r_due_date" class="col-4 col-form-label text-lg-right">Due Date :</label>
                 <div class="col-8">
-                    <input type="date" class="form-control" id="r_due_date" name="due_date" placeholder="" required>
+                    <input type="date" class="form-control" id="r_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="r_account" class="col-4 col-form-label text-lg-right">Account :</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" id="r_account" name="account" placeholder="Change later to use either Tagify/Select2" required>
+                    <input class="col-md-4 col-lg-4" id="r_account" name='account'>
                 </div>
             </div>
         </div>
@@ -75,44 +66,7 @@
                 <th>Total</th>
                 <th class="thead-actions">Actions</th>
             </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-item">Select</button>
-                            </div>
-                            <input type="text" class="form-control" name="item_name[]" placeholder="Item Name" disabled>
-                            <input type="hidden" name="item_id[]" value="">
-                        </div>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="quantity[]" placeholder="Enter Quantity" required>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
-                    </td>
-                    <td>
-                        <select class="form-control" name="tax[]">
-                            <option>Sales Tax (15%)</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </button>
-                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                        </button>
-                    </td>
-                </tr>
+            <tbody id="r_items">
             </tbody>
             <tfoot>
                 <tr>
@@ -120,44 +74,44 @@
                         <strong>Sub Total: </strong>
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right" name="subtotal" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right" name="sub_total" id="r_sub_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
                     <td class="text-right table-item-content"><strong>Discount: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
                     </td>
                     <td></td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
                     <td class="text-right table-item-content"><strong>Withholding: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
                     </td>
                     <td></td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
                     </td>
                     <td></td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
                     </td>
                     <td></td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="total" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right" name="grand_total" id="r_grand_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
@@ -199,7 +153,7 @@
                     </select>
                 </div>
             </div> --}}
-            <div class="form-group row">
+            {{--<div class="form-group row">
                 <label for="payment" class="col-sm-4 col-form-label">Payment Type<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
                     <div class="form-check">
@@ -215,11 +169,11 @@
                         </label>
                     </div>
                 </div>
-            </div>
+            </div>--}}
             <div class="form-group row">
                 <label for="r_payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control text-right" id="r_payment" name="payment" placeholder="0.00">
+                    <input type="text" class="form-control text-right" id="r_total_amount_received" name="total_amount_received" placeholder="0.00" required>
                 </div>
             </div>
         </div>
@@ -260,4 +214,3 @@
             </tfoot>
         </table>
     </div>
-</form>

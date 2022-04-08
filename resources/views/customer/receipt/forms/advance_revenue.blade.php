@@ -1,5 +1,5 @@
-<form id="form-advance-revenue" method="post" enctype="multipart/form-data">
-    {{-- <div class="form-group row">
+
+{{-- <div class="form-group row">
         <label for="inputCustomerName" class="col-sm-3 col-form-label">Customer Name<span class="text-danger ml-1">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="inputCustomerName" placeholder="" required>
@@ -33,34 +33,25 @@
     {{-- OLD VS NEW BOUNDARY --}}
 
     <div class="row">
-        <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
             <h5>Customer Details:</h5>
             <div class="form-group row">
                 <label for="ar_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                <div class="input-group col-8">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-primary" type="button" id="ar_btn_customer_select" data-toggle="modal" data-target="#modal-select-customer">Select</button>
-                    </div>
-                    <div class="input-group-append">
-                        <input type="text" id="ar_customer" class="form-control" placeholder="Customer's Name" name="customer" disabled>
-                    </div>
-                    
-                    <input type="hidden" name="customer_id" value="">
-                </div>
-
+                <input class="col-8 col-lg-7" id="ar_customer" name='customer' required>
+                <input type="hidden" id="ar_customer_id" name="customer_id" value="">
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
                 <label for="ar_tin_number" class="col-4 col-form-label text-lg-right">Tin # :</label>
-                <input type="text" id="ar_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="0042101026" name="tin_number" disabled readonly>
+                <input type="text" id="ar_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="tin_number" disabled readonly>
             </div>
             <div class="form-group row mb-0">
                 <label for="ar_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
-                <input type="text" id="ar_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="Example Key Person" name="contact_person" disabled readonly>
+                <input type="text" id="ar_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
             </div>
             <div class="form-group row mb-0">
-                <label for="ar_contact_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
-                <input type="text" id="ar_contact_number" class="form-control-plaintext col-8 pl-3" placeholder="0911223344" name="contact_number" disabled readonly>
+                <label for="ar_mobile_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
+                <input type="text" id="ar_mobile_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="mobile_number" disabled readonly>
             </div>
         </div>
 
@@ -68,7 +59,7 @@
             <div class="form-group row">
                 <label for="ar_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
-                    <input type="date" class="form-control" id="ar_date" name="date" placeholder="" required>
+                    <input type="date" class="form-control" id="ar_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                 </div>
             </div>
             <div class="form-group row">
@@ -276,4 +267,3 @@
             </tfoot>
         </table>
     </div>
-</form>

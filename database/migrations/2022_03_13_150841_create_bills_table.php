@@ -25,7 +25,7 @@ class CreateBillsTable extends Migration
             $table->float('discount');
             $table->float('tax');
             $table->float('grand_total');
-            $table->float('witholding');
+            $table->float('withholding');
             $table->string('terms_and_conditions');
             $table->string('attachment')->nullable();
             $table->float('amount_received');

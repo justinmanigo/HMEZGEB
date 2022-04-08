@@ -18,7 +18,7 @@ class CreateCreditReceiptsTable extends Migration
             $table->unsignedBigInteger('receipt_reference_id');
             $table->string('credit_receipt_number');
             $table->float('total_amount_received');
-            $table->longText('reason')->nullable();
+            $table->longText('description')->nullable();
             $table->longText('remark')->nullable();
             $table->string('attachment')->nullable();
             $table->timestamps();

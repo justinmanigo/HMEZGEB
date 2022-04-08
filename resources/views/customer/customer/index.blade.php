@@ -263,7 +263,7 @@
         </div>
     </div>
 </div>
-{{-- Customer new Modal --}}
+{{-- Customer Delete Modal --}}
 <div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog"
 	aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">

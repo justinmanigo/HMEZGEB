@@ -101,7 +101,18 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'receipts.'
     ], function(){
-        Route::get('/receipt', [ReceiptController::class, 'index']);
+        Route::get('/receipt', [ReceiptController::class, 'index'])->name('receipt.index');
+        
+        // Store
+        Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
+        Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
+        Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
+        Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
+
+        Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
+        Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
+        Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
+
         
     });
 
@@ -114,8 +125,8 @@ Route::post('/userlogin', function (Request $request){
         Route::put('/customer/{id}', [CustomerController::class, 'update']);
         Route::delete('/customer/{id}', [CustomerController::class, 'destroy']);
         
-        
-
+        Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
+        Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
     });
 
     Route::group([
@@ -145,7 +156,7 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/vendors/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
         Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
         Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
-        Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');;
+        Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');
     });
 
     Route::group([
@@ -219,6 +230,8 @@ Route::group([
 ], function(){ 
     Route::get('/inventory', [InventoryController::class, 'index']);
     Route::post('/inventory', [InventoryController::class, 'store']);
+
+    Route::get('/select/search/inventory/{query}', [InventoryController::class, 'ajaxSearchInventory']);
 });
 
  

@@ -16,21 +16,21 @@ class CreateReceiptsTable extends Migration
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
-            $table->unsignedBigInteger('proforma_id');
-            $table->string('receipt_number');
+            $table->unsignedBigInteger('proforma_id')->nullable();
+            $table->string('receipt_number')->nullable();
             $table->date('due_date');
             $table->float('sub_total');
-            $table->float('discount');
-            $table->float('tax');
+            $table->float('discount')->nullable();
+            $table->float('tax')->nullable();
             $table->float('grand_total');
-            $table->float('witholding');
+            $table->float('total_amount_received');
+            $table->float('withholding')->nullable();
             $table->longText('remark')->nullable();
-            $table->string('attachement');
-            $table->enum('payment_method',['credit','debit']);
+            $table->string('attachment')->nullable();
+            $table->enum('payment_method',['credit','cash']);
             $table->timestamps();
             $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
-            $table->foreign('proforma_id')->references('id')->on('proformas');
-            
+            $table->foreign('proforma_id')->references('id')->on('proformas');   
         });
     }
 

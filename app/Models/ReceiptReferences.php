@@ -9,6 +9,14 @@ class ReceiptReferences extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'reference_number',
+        'date',
+        'type',
+        'status',
+        'is_void',
+        'customer_id',
+    ];
         
     public function receipt()
     {
@@ -41,5 +49,9 @@ class ReceiptReferences extends Model
     public function journalEntry()
     {
         return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
+    }
+    public function receiptItems()
+    {
+        return $this->hasMany(ReceiptItem::class);
     }
 }

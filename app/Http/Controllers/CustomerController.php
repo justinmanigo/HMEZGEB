@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Customers;
-
+use App\Models\ReceiptReferences;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -18,8 +18,6 @@ class CustomerController extends Controller
 
         return view('customer.customer.index',compact('customers'));
     }
-   
-
     /**
      * Show the form for creating a new resource.
      *
@@ -73,10 +71,6 @@ class CustomerController extends Controller
     public function show(Customers $customers)
     {
         $customers = Customers::all();
-
-        // Compute for each inventory value and total value.
-         
-
         return view('customer.customer.index',compact('customers'));
     }
     public function edit($id)
@@ -125,4 +119,21 @@ class CustomerController extends Controller
 
     }
 
+    /*=================================*/
+
+    public function queryCustomers($query)
+    {   
+        $customers = Customers::select('id as value', 'name', 'tin_number', 'contact_person','mobile_number')
+            ->where('name', 'LIKE', '%' . $query . '%')->get();
+        return $customers;
+    }
+
+    public function ajaxGetReceiptsToPay(Customers $customer)
+    {
+        return ReceiptReferences::select('*')
+            ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
+            ->where('receipt_references.type', '=', 'receipt')
+            ->where('receipt_references.customer_id', '=', $customer->id)
+            ->where('receipt_references.status', '!=', 'paid')->get();
+    }
 }

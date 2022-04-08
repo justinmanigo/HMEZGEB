@@ -133,4 +133,13 @@ class InventoryController extends Controller
     {
         //
     }
+
+    /*=================================*/
+
+    public function ajaxSearchInventory($query)
+    {   
+        $inventory = Inventory::select('id as value', 'item_name as name', 'sale_price',  'quantity')
+            ->where('item_name', 'LIKE', '%' . $query . '%')->get();
+        return $inventory;
+    }
 }
