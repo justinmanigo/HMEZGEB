@@ -64,7 +64,7 @@ function createproformaItemEntry()
             </select>
         </td>
         <td>
-            <input type="text" id="p_item_total_${proforma_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
+            <input type="text" id="p_item_total_${proforma_count}" class="form-control text-right p_item_total" name="total[]" placeholder="0.00" disabled>
         </td>
         <td>
             <button type="button" data-id="${proforma_count}" id="p_item_delete_${proforma_count}" class="btn btn-icon btn-danger p_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -174,8 +174,14 @@ function getproformaItemIndex(entry_id)
 function calculateproformaSubTotal()
 {
     subtotal = 0;
-    for(i = 0; i < proforma_items.length; i++)
-        subtotal += proforma_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".p_item_total");
+    console.log("Calculate Proforma Subtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        subtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#p_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
@@ -183,8 +189,14 @@ function calculateproformaSubTotal()
 function calculateproformaGrandTotal()
 {
     grandtotal = 0;
-    for(i = 0; i < proforma_items.length; i++)
-    grandtotal += proforma_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".p_item_total");
+    console.log("Calculate Proforma Grandtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        grandtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#p_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
