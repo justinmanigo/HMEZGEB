@@ -294,13 +294,15 @@ class ReceiptController extends Controller
                 'attachment' => isset($fileAttachment) ? $fileAttachment : null,
             ]);
             
+            $messageType = 'success';
             $messageContent = 'Credit Receipt has been added successfully.';
         }
         else {
+            $messageType = 'warning';
             $messageContent = 'There are no receipts to pay.';
         }
         
-        return redirect()->route('receipts.receipt.index')->with('success', $messageContent);
+        return redirect()->route('receipts.receipt.index')->with($messageType, $messageContent);
 
     }
 
