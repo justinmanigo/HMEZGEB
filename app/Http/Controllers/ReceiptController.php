@@ -230,34 +230,42 @@ class ReceiptController extends Controller
 
         // Update Receipts to Pay
         $c = 0;
-        for($i = 0; $i < count($request->receipt_reference_id); $i++)
+        if(isset($request->is_paid))
         {
-            if(!$request->is_paid[$i]) continue;
-
-            // Get receipt
-            $receipt = Receipts::leftJoin('receipt_references', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
-                ->where('receipts.receipt_reference_id', '=', $request->receipt_reference_id[$i])->first();
-
-            // return $receipt;
-
-            $receipt->total_amount_received += $request->amount_paid[$i];
-            if($receipt->total_amount_received >= $receipt->grand_total)
+            for($i = 0; $i < count($request->receipt_reference_id); $i++)
             {
-                ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                    ->update(['status' => 'paid']);
-            }
-            else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0)
-            {
-                ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                    ->update(['status' => 'partially_paid']);
-            }
-            else if($receipt->status == 'paid')
-            {
-                continue;
-            }
+                // If to pay wasn't checked for certain id, skip.
+                if(!in_array($request->receipt_reference_id[$i], $request->is_paid))
+                    continue;
+    
+                // Get receipt
+                $receipt = Receipts::leftJoin('receipt_references', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+                    ->where('receipts.receipt_reference_id', '=', $request->receipt_reference_id[$i])->first();
+    
+                // return $receipt;
 
-            $receipt->save();
-            $c++;
+                // If amount paid wasn't even set, skip.
+                if($request->amount_paid[$i] <= 0) continue;
+    
+                $receipt->total_amount_received += $request->amount_paid[$i];
+                if($receipt->total_amount_received >= $receipt->grand_total)
+                {
+                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
+                        ->update(['status' => 'paid']);
+                }
+                else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0)
+                {
+                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
+                        ->update(['status' => 'partially_paid']);
+                }
+                else if($receipt->status == 'paid')
+                {
+                    continue;
+                }
+    
+                $receipt->save();
+                $c++;
+            }
         }
 
         if($c > 0) {

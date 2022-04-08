@@ -36,7 +36,7 @@ function createReceiptToPayEntry(data)
         </td>
         <td class="table-item-content">
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="cr_is_paid_${data.receipt_reference_id}" name="is_paid[]">
+                <input type="checkbox" data-id="${data.receipt_reference_id}" class="form-check-input" id="cr_is_paid_${data.receipt_reference_id}" name="is_paid[]" value="${data.receipt_reference_id}">
             </div>
         </td>
     </tr>
