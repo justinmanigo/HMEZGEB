@@ -248,7 +248,7 @@
 <!-- Vendors -->
 <script src="/js/vendors/template_select_vendor.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
-<script src="/js/vendors/bill/select_vendor_purchsaseorder.js"></script>
+<script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>
 
 <!-- Items -->
 <script src="/js/vendors/template_select_item.js"></script>
