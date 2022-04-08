@@ -206,18 +206,19 @@
                                 @foreach($transactions as $transaction)
                       
                                 <tr>
-                                    <td> <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
+                                    <td> 
+                                        {{-- <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
                                         </button>
                                         <button type="button" class="btn btn-danger "
                                         onClick="showModel({!! $transaction->id !!})">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                        </button>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button> --}}
                                     </td>
                                     <td class="table-item-content">{{$transaction->date}}</td>
                                     <td class="table-item-content">{{$transaction->reference_number}}</td>
@@ -249,7 +250,7 @@
                                 @foreach($proformas as $proforma)
                                 <tr>
                                     <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary"
+                                        {{-- <button type="button" class="btn btn-small btn-icon btn-primary"
                                             data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
@@ -257,11 +258,10 @@
                                         </button>
                                         <button type="button" class="btn btn-danger "
                                         onClick="showModel({!! $proforma->id !!})">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                        </button>
-                                        </button>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button> --}}
                                     </td>
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->reference_number}}</td>
