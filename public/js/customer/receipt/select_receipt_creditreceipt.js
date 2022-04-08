@@ -32,7 +32,7 @@ function createReceiptToPayEntry(data)
             <input type="number" step="0.01" min="0" class="form-control text-right inputPrice" id="cr_discount_${data.receipt_reference_id}" name="discount[]" placeholder="0.00">
         </td>
         <td>
-            <input type="number" step="0.01" min="0" class="form-control text-right inputPrice cr_amount_paid" data-id="${data.receipt_reference_id} " id="cr_amount_paid_${data.receipt_reference_id}" name="amount_paid[]" placeholder="0.00">
+            <input type="number" step="0.01" min="0" class="form-control text-right inputPrice cr_amount_paid" data-id="${data.receipt_reference_id}" id="cr_amount_paid_${data.receipt_reference_id}" name="amount_paid[]" placeholder="0.00">
         </td>
         <td class="table-item-content">
             <div class="form-check">
@@ -54,6 +54,16 @@ $(document).on('change', '.cr_amount_paid', function(){
     var amount_due = parseFloat($(`#cr_amount_due_${id}`).val());
     if(amount_paid > amount_due)
         $(`#cr_amount_paid_${id}`).val(amount_due);
+
+    // In case the client prefers automatically setting is_paid to true when amount_paid is filled up.
+    // $(`#cr_is_paid_${id}`).attr('disabled', false);
+
+    // if(amount_paid > 0)
+    //     $(`#cr_is_paid_${id}`).attr('checked', true);
+    // else
+    //     $(`#cr_is_paid_${id}`).attr('checked', false);
+
+    // $(`#cr_is_paid_${id}`).attr('disabled', true);
 
     // Compute total amount
     var total_amount = computeTotalAmountReceived();
