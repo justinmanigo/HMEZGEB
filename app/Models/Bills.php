@@ -10,21 +10,18 @@ class Bills extends Model
     use HasFactory;
         
     protected $fillable = [
-        'name',
-        'tin_number',
-        'address',
-        'city',
-        'country',
-        'mobile_number',
-        'telephone_one',
-        'telephone_two',
-        'fax',
-        'website',
-        'email',
-        'contact_person',
-        'image',
-        'label',
-        'is_active'
+        'date',
+        'due_date',
+        'vendor_id',
+        'bill_number',
+        'order_number',
+        'sub_total',
+        'tax',
+        'grand_total',
+        'cash_from',
+        'attachment',
+        'note',
+        'total_amount_received'
     ];
 
         public function vendor()
