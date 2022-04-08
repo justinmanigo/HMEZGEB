@@ -174,8 +174,9 @@
                             <p class="h3 pl-4 m-auto">New Bill</p>
                             <a class="close" data-dismiss="modal">×</a>
                         </div>
-                        <form id="contactForm" name="contact" role="form">
-                                @include('vendors.bills.forms.addBillModal')
+                        <form action="{{route('bills.bill.store') }}"  method="post" id="contactForm" name="contact" role="form">
+                            @csrf    
+                            @include('vendors.bills.forms.addBillModal')
                         </form>
                     </div>
                 </div>
@@ -211,53 +212,14 @@
                         </thead>
                         
                         <tbody>
-                            <tr onclick="window.location='/individualBill'">
-                                <td>10-Aug-2019</td>
-                                <td>Bill#008</td>
+                            
+                                <tr onclick="window.location='/'">
+                                <td>asdasdasd</td>
+                                <td>sadasdasd</td>
                                 <td class="h6"><span class="badge badge-primary">Bill</span></td>
-                                <td>John Doe</td>
+                                <td>asdasdasd</td>
                                 <td class="h6"><span class="badge badge-success">Paid</span></td>
-                                <td>2,900.00</td>
-                            </tr>
-                            <tr>
-                                <td>22-June-2022</td>
-                                <td>Bill#022</td>
-                                <td class="h6"><span class="badge badge-primary">Bill</span></td>
-                                <td>Jane Dough</td>
-                                <td class="h6"><span class="badge badge-info">Partially Paid</span></td>
-                                <td>11,000.00</td>
-                            </tr>
-                            <tr>
-                                <td>24-Jan-2022</td>
-                                <td>Bill#017</td>
-                                <td class="h6"><span class="badge badge-primary">Bill</span></td>
-                                <td>Jang Na Ra</td>
-                                <td class="h6"><span class="badge badge-danger">Unpaid</span></td>
-                                <td>2,000.00</td>
-                            </tr>
-                            <tr>
-                                <td>17-Dec-2022</td>
-                                <td>Bill#001</td>
-                                <td class="h6"><span class="badge badge-primary">Bill</span></td>
-                                <td>Joy San Hee</td>
-                                <td class="h6"><span class="badge badge-dark">Void</span></td>
-                                <td>2,000.00</td>
-                            </tr>
-                            <tr>
-                                <td>22-Nov-2022</td>
-                                <td>Bill#005</td>
-                                <td class="h6"><span class="badge badge-secondary">Bill Order</span></td>
-                                <td>John Smith</td>
-                                <td class="h6"><span class="badge badge-dark">Expired</span></td>
-                                <td>2,800.00</td>
-                            </tr>
-                            <tr>
-                                <td>22-Nov-2022</td>
-                                <td>Bill#009</td>
-                                <td class="h6"><span class="badge badge-secondary">Bill Order</span></td>
-                                <td>John Cena</td>
-                                <td class="h6"><span class="badge badge-warning">Active</span></td>
-                                <td>5,000.00</td>
+                                <td>dasdsd</td>
                             </tr>
                         </tbody>
                     </table>

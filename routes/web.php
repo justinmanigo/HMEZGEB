@@ -145,8 +145,9 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'bills.'
     ], function(){ 
-        Route::get('/bill',[BillsController::class,'index']);
-        Route::get('/individualBill',[BillsController::class,'show']);
+        Route::get('/bill', [BillsController::class, 'index'])->name('bill.index');
+        Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
+        Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
     });
 
     Route::group([
@@ -157,7 +158,7 @@ Route::post('/userlogin', function (Request $request){
         Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
         Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
         Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');
-        
+
         Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
 
     });

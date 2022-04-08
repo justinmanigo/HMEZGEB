@@ -149,22 +149,26 @@
 <div class="row form-group">
     <label for="cars" class="col-form-label col-2">Cash from:</label>
 
-    <select id="cars" class="form-control col-lg-4">
-    <option value="#">Cash on hand</option>
-    <option value="#">sample1</option>
-    <option value="#">Sample2</option>
+    <select id="cars" class="form-control col-lg-4" name="cash_from">
+    <option value="Cash" selected>Cash on hand</option>
+    <option value="sample1">sample1</option>
+    <option value="sample2">Sample2</option>
     </select>
+
+    <label for="payment" class="col-form-label col-2">Payment<span class="text-danger ml-1">*</span></label>
+    <input type="text" class="form-control text-right  col-lg-4" id="total_amount_received" name="total_amount_received" placeholder="0.00" required>
+</div>
+
+<div class="form-group row">
 
     <label for="email" class="col-form-label col-lg-2">Attachment:</label>
     <div class="input-group col-md-2 col-lg-4">
         <div class="custom-file">
         <input type="file" class="custom-file-input" id="inputGroupFile03">
-        <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+        <label class="custom-file-label" for="inputGroupFile03" name="attachment">Choose file</label>
         </div>
     </div>
-</div>
 
-<div class="form-group row">
     <label for="b_note" class="col-lg-2 col-form-label">Note:</label>
     <textarea class="form-control col-lg-4" id="b_note" name="note"></textarea>
     
