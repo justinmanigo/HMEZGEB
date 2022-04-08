@@ -199,8 +199,7 @@ function calculateReceiptGrandTotal()
 /** === Tagify Related Functions === */
 
 function onReceiptItemDropdownShow(e) {
-    console.log("onReceiptItemDropdownShow")
-    var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
+    // var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
 }
 
 function onReceiptItemSelectSuggestion(e) {
@@ -211,9 +210,6 @@ function onReceiptItemSelectSuggestion(e) {
     $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
-    console.log(parseFloat(item_total).toFixed(2));
-    console.log($(`#r_sub_total`).val())
-    console.log()
     
     // Add all item total to subtotal
     $(`#r_sub_total`).val(parseFloat(parseFloat($(`#r_sub_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
@@ -235,20 +231,10 @@ function onReceiptItemRemove(e) {
 
 }
 
-function onReceiptItemInput(e) {
-    // console.log(e.detail);
-    // console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
-    // var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
+function onReceiptItemInput(e) {    
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
-    // console.log(receipt_items);
-    // entry_obj = getReceiptItemEntry(entry_id);
-
-    // console.log("Obtained value from array");
-    // console.log(tagify);
-    
     tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
