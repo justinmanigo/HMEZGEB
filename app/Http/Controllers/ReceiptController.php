@@ -308,52 +308,64 @@ class ReceiptController extends Controller
 
     public function storeProforma(Request $request)
     {
-        // if($request->grand_total==$request->total_amount_received)
-        // {
-        //     $status = 'paid';
-        // }
-        // if($request->grand_total>$request->total_amount_received)
-        // {
-        //     $status = 'partially_paid';
-        // }
-        // else
-        // {
-            // Temporary status
-            $status = 'unpaid';
-        // }
+        // Decode json of item tagify fields.
+        for($i = 0; $i < count($request->item); $i++)
+        {
+            $item = json_decode($request->item[$i]);
 
-            // Receipt References
-            $reference = ReceiptReferences::create([
-                'customer_id' => $request->customer_id,
-                // Temporary Proforma
-                'reference_number' => $request->proforma_number,
-                'date' => $request->date,
-                'type' => 'proforma',
-                'is_void' => 'no',
-                'status' => $status
-            ]);
+            // Resulting json_decode will turn into an array of
+            // object, thus it has to be merged.
+            $items[$i] = $item[0];
+        }
+        
+        // Temporary status
+        $status = 'unpaid';
 
-            // Create child database entry
-            if($reference)        
-            {
-                if($request->attachment) {
-                    $fileAttachment = time().'.'.$request->attachment->extension();  
-                    $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
-                }
+        // Receipt References
+        $reference = ReceiptReferences::create([
+            'customer_id' => $request->customer_id,
+            // Temporary Proforma
+            'reference_number' => $request->proforma_number,
+            'date' => $request->date,
+            'type' => 'proforma',
+            'is_void' => 'no',
+            'status' => $status
+        ]);
 
-                $reference->id;
-                $proformas = Proformas::create([
-                    'receipt_reference_id' => $reference->id,
-                    'proforma_number' => $request->proforma_number,
-                    'due_date' => $request->due_date,
-                    'amount' => $request->grand_total,
-                    'terms_and_conditions' => $request->terms_and_conditions,
-                    // image upload
-                    'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-                ]);
-                return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+        // Create child database entry
+        if($reference)        
+        {
+            if($request->attachment) {
+                $fileAttachment = time().'.'.$request->attachment->extension();  
+                $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
             }
-     
+
+            $reference->id;
+            $proformas = Proformas::create([
+                'receipt_reference_id' => $reference->id,
+                'proforma_number' => $request->proforma_number,
+                'due_date' => $request->due_date,
+                'amount' => $request->grand_total,
+                'terms_and_conditions' => $request->terms_and_conditions,
+                // image upload
+                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+            ]);
+        }
+
+        // TODO: Merge with ReceiptItems (use ReceiptReference instead of ReceiptId for Receipts)
+        // Create Receipt Item Records
+        for($i = 0; $i < count($items); $i++)
+        {
+            ReceiptItem::create([
+                'inventory_id' => $items[$i]->value,
+                'receipt_reference_id' => $reference->id,
+                'quantity' => $request->quantity[$i],
+                'price' => $items[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+            ]);
+        }
+        
+        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
 
     }
 
