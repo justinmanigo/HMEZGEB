@@ -9,6 +9,15 @@ class JournalPostings extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'journal_entry_id',
+        'chart_of_account_id',
+        'accounting_period_id',
+        'type',
+        'amount',
+        'updated_balance',
+    ];
+
     public function chartOfAccount()
     {
         return $this->belongsTo(ChartOfAccounts::class, 'chart_of_accounts_id');

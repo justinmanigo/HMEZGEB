@@ -23,9 +23,9 @@ class CreateJournalPostingsTable extends Migration
             $table->float('updated_balance');
             $table->timestamps();
 
-             $table->foreign('journal_entry_id')->references('id')->on('journal_entries');
+            $table->foreign('journal_entry_id')->references('id')->on('journal_entries');
             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
-            $table->foreign('accounting_period_id')->references('id')->on('chart_of_accounts');
+            // $table->foreign('accounting_period_id')->references('id')->on('chart_of_accounts');
         });
     }
 

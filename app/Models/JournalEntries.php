@@ -9,6 +9,11 @@ class JournalEntries extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'date',
+        'notes',
+    ];
+
     public function journalPostings()
     {
         return $this->hasMany(JournalPostings::class, 'journal_entry_id','id');
