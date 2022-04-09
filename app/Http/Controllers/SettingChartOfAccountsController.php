@@ -134,6 +134,7 @@ class SettingChartOfAccountsController extends Controller
                 // 'chart_of_account_categories.id',
                 'chart_of_account_categories.category',
                 'chart_of_account_categories.type',
+                'chart_of_account_categories.normal_balance',
             )
             ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id')
             ->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
