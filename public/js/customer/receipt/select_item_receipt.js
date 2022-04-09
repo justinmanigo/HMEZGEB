@@ -212,8 +212,10 @@ function onReceiptItemSelectSuggestion(e) {
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     
     // Add all item total to subtotal
-    $(`#r_sub_total`).val(parseFloat(parseFloat($(`#r_sub_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
-    $(`#r_grand_total`).val(parseFloat(parseFloat($(`#r_grand_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
+    calculateReceiptSubTotal();
+    calculateReceiptGrandTotal();
+    // $(`#r_sub_total`).val(parseFloat(parseFloat($(`#r_sub_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
+    // $(`#r_grand_total`).val(parseFloat(parseFloat($(`#r_grand_total`).val()) + parseFloat($(`#r_item_total_${id}`).val())).toFixed(2))
 
 }
 
