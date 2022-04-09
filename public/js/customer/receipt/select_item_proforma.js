@@ -216,12 +216,9 @@ function onproformaItemSelectSuggestion(e) {
     console.log($(`#p_sub_total`).val())
     console.log()
     
-    // Add all item total to subtotal
+    // Recalculate total
     calculateproformaSubTotal();
     calculateproformaGrandTotal();
-    // $(`#p_sub_total`).val(parseFloat(parseFloat($(`#p_sub_total`).val()) + parseFloat($(`#p_item_total_${id}`).val())).toFixed(2))
-    // $(`#p_grand_total`).val(parseFloat(parseFloat($(`#p_grand_total`).val()) + parseFloat($(`#p_item_total_${id}`).val())).toFixed(2))
-
 }
 
 function onproformaItemRemove(e) {
