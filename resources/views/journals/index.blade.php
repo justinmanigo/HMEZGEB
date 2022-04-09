@@ -217,7 +217,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-jv" method="post" enctype="multipart/form-data">
+                <form id="form-jv" method="post" action="{{ route('journals.store') }}">
+                    @csrf
+                    <div class="form-group row">
+                        <label for="jv_reference_number" class="col-sm-3 col-lg-2 col-form-label">Reference #<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="jv_reference_number" name="reference_number" placeholder="" required>
+                        </div>
+
+                        <label for="jv_date" class="col-sm-3 col-lg-2 col-form-label">Date</label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="date" class="form-control" id="jv_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead>
@@ -247,18 +259,11 @@
                             </tfoot>
                         </table>
                     </div>
-                    {{-- <div class="form-group row">
-                        <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
-                        </div>
-
-                        <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="">
-                        </div>
+                    <div>
+                        <label for="jv_notes" class="col-form-label">Notes:</label>
+                        <textarea class="form-control" id="jv_notes" name="notes"></textarea>
                     </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address</label>
                         <div class="col-sm-9 col-lg-10">
                             <input type="text" class="form-control" id="c_address" name="address" placeholder="">
@@ -325,11 +330,11 @@
             </div>
             <div class="modal-footer">
                 <div class="form-check mr-3">
-                    <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
-                    <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
+                    {{-- <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
+                    <label class="form-check-label" for="c_is_active">Mark Customer as Active</label> --}}
                 </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="form-jv-save-btn" form="modal-jv" disabled>Save Customer</button>
+                <button type="submit" class="btn btn-primary" id="form-jv-save-btn" form="form-jv" disabled>Save Journal Voucher</button>
             </div>
         </div>
     </div>
