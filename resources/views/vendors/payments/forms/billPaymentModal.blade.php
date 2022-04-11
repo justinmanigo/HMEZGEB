@@ -57,68 +57,44 @@
                 <th>Bill #</th>
                 <th>Date Due</th>
                 <th>Amount Due</th>
-                <th class="w-25">Description</th>
+                <th>Description</th>
                 <th>Discount</th>
                 <th>Amount Paid<span class="text-danger ml-1">*</span></th>
                 <th class="thead-actions">Pay</th>
             </thead>
-            <tbody>
+            <tbody id="b_payments_to_pay">
+            
                 <tr>
-                    <td class="table-item-content"> {{-- Invoice --}}
-                        <label for="cr_invoices_1023">LL-15029684</label>
+                    {{-- <td class="table-item-content">
+                        <label for="b_invoices_1023">Fs#1023</label>
                     </td>
-                    <td> {{-- Date Due --}}
+                    <td>
                         <input type="number" class="form-control" name="date_due[]" value="04/02/2022" disabled>
                     </td>
-                    <td> {{-- Amount Due --}}
+                    <td>
                         <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="2,383.94" disabled>
                     </td>
-                    <td> {{-- Description --}}
-                        <input type="text" class="form-control" name="description[]" placeholder="">
+                    <td>
+                        <input type="text" class="form-control" name="description[] name="reason[]"" placeholder="">
                     </td>
-                    <td> {{-- Discount --}}
+                    <td>
                         <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
                     </td>
-                    <td> {{-- Amount Paid --}}
+                    <td>
                         <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
                     </td>
-                    <td class="table-item-content"> {{-- Actions --}}
+                    <td class="table-item-content">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="cr_invoices_1023" name="invoices[]">
+                            <input type="checkbox" class="form-check-input" id="b_invoices_1023" name="invoices[]">
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="table-item-content"> {{-- Invoice --}}
-                        <label for="cr_invoices_1024">SG-01024</label>
-                    </td>
-                    <td> {{-- Date Due --}}
-                        <input type="number" class="form-control" name="date_due[]" value="05/02/2022" disabled>
-                    </td>
-                    <td> {{-- Amount Due --}}
-                        <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="9,645.26" disabled>
-                    </td>
-                    <td> {{-- Description --}}
-                        <input type="text" class="form-control" name="description[]" placeholder="">
-                    </td>
-                    <td> {{-- Discount --}}
-                        <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
-                    </td>
-                    <td> {{-- Amount Paid --}}
-                        <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
-                    </td>
-                    <td class="table-item-content"> {{-- Actions --}}
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="cr_invoices_1024" name="invoices[]">
-                        </div>
-                    </td>
+                    </td> --}}
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td class="text-right table-item-content" colspan="5"><strong>Total Received: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="total_received" placeholder="0.00" disabled>
+                        <input type="text" id="b_total_amount_received" class="form-control-plaintext text-right pr-2" name="total_received" placeholder="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
