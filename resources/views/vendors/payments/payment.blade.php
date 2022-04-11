@@ -370,6 +370,8 @@
 <script src="/js/vendors/payment/select_vendor_payroll.js"></script>
 <script src="/js/vendors/payment/select_vendor_vat.js"></script>
 <script src="/js/vendors/payment/select_vendor_withholding.js"></script>
+<!-- Select newbill -->
+<script src="/js/vendors/payment/select_payment_bill.js"></script>
 
 
 <!-- Items -->

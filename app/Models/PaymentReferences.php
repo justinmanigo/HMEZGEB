@@ -9,6 +9,14 @@ class PaymentReferences extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'reference_number',
+        'cheque_number',
+        'remark',
+        'attachment',
+        // 'customer_id',
+    ];
+
     public function billPayment()
     {
         return $this->hasOne(BillPayments::class, 'payment_reference_id','id');
