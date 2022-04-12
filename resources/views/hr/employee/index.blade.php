@@ -122,31 +122,31 @@
                     <div class="form-group row">
                         <label for="e_date_of_birth" class="col-sm-3 col-lg-2 col-form-label">Date of Birth</label>
                         <div class="col-sm-9 col-lg-10">
-                            <input type="date" class="form-control" id="e_date_of_birth" name="date_of_birth" placeholder="">
+                            <input type="date" class="form-control" id="e_date_of_birth" name="date_of_birth" placeholder="" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="e_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_mobile_number" name="mobile_number" placeholder="">
+                            <input type="text" class="form-control" id="e_mobile_number" name="mobile_number" placeholder="" required>
                         </div>
 
                         <label for="e_telephone" class="col-sm-3 col-lg-2 col-form-label">Telephone</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_telephone" name="telephone" placeholder="">
+                            <input type="text" class="form-control" id="e_telephone" name="telephone" placeholder="" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="e_email" class="col-sm-3 col-lg-2 col-form-label">Email</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_email" name="email" placeholder="">
+                            <input type="text" class="form-control" id="e_email" name="email" placeholder="" required>
                         </div>
 
                         <label for="e_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_tin_number" name="tin_number" placeholder="">
+                            <input type="text" class="form-control" id="e_tin_number" name="tin_number" placeholder="" required>
                         </div>
                     </div>
 
@@ -161,7 +161,7 @@
 
                         <label for="e_basic_salary" class="col-sm-3 col-lg-2 col-form-label">Basic Salary</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="">
+                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="" required>
                         </div>
                     </div>
 
