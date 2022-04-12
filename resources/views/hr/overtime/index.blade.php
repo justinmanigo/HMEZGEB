@@ -172,9 +172,9 @@
                                 <th>To</th>
                                 <th>Actions</th>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
+                            <tbody id="ot_entries">
+                            {{-- <tr>
+                                   <td>
 
                                         <input class="col-8 col-lg-7" id="ot_employee" name='employee'>
                                         <input type="hidden" id="ot_employee_id" name="employee_id" value="">
@@ -200,7 +200,7 @@
                                             </span>
                                         </button>
                                     </td>
-                                </tr>
+                                </tr>--}}
 
                             </tbody>
                         </table>

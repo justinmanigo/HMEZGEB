@@ -162,14 +162,14 @@
                             <thead>
                                 
                                 <th>Employee Name</th>
-                                <th>Price</th>
+                                <th>Loan</th>
                                 <th>Paid In</th>
                                 <th>Actions</th>
                             </thead>
-                            <tbody>
-                                <tr>
-
-                                    <td>
+                            <tbody id="l_entries">
+                            {{-- <tr >
+                                
+                                  <td>
                                     <input class="col-8 col-lg-7" id="l_employee" name='employee'>
                                         <input type="hidden" id="l_employee_id" name="employee_id" value="">
 
@@ -205,7 +205,7 @@
                                             </span>
                                         </button>
                                     </td>
-                                </tr>
+                                </tr>--}}
                               
                             </tbody>
                         </table>

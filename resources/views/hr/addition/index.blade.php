@@ -165,8 +165,8 @@
                                 <th>Price</th>
                                 <th>Actions</th>
                             </thead>
-                            <tbody>
-                                <tr>
+                            <tbody id="a_entries">
+                                {{--<tr>
                                     <td>
                                         <input class="col-8 col-lg-7" id="a_employee" name='employee'>
                                         <input type="hidden" id="a_employee_id" name="employee_id" value="">
@@ -189,7 +189,7 @@
                                             </span>
                                         </button>
                                     </td>
-                                </tr>
+                                </tr>--}}
                           
                             </tbody>
                         </table>
