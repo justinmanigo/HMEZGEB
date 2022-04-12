@@ -15,6 +15,7 @@ class PayrollController extends Controller
     public function index()
     {
         //
+        return view('hr.payroll.index');
     }
 
     /**
