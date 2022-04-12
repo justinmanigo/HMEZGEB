@@ -15,6 +15,7 @@ class AdditionController extends Controller
     public function index()
     {
         //
+        return view('hr.addition.index');
     }
 
     /**
