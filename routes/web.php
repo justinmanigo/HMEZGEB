@@ -260,6 +260,10 @@ Route::group([
         Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
         Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
         Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
+        Route::get('/employee', [EmployeeController::class, 'index']);
+        Route::post('/employee', [EmployeeController::class, 'store']); 
+
+        Route::get('/select/search/employee/{query}', [EmployeeController::class, 'queryEmployees']);
 
     });
 
