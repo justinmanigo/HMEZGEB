@@ -104,4 +104,12 @@ class EmployeeController extends Controller
     {
         //
     }
+
+    
+    public function queryEmployees($query)
+    {   
+        $employee = Employee::select('id as value', 'first_name','tin_number')
+            ->where('first_name', 'LIKE', '%' . $query . '%')->get();
+        return $employee;
+    }
 }
