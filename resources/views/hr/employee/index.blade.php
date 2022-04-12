@@ -43,24 +43,28 @@
                     <th>Type</th>
                 </thead>
                 <tbody>
+                    @foreach($employees as $employee)
                     <tr>
                         <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-pen"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-trash"></i>
-                                </span>
-                            </button>
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-employee">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </button>
+                                <button type="button" class="btn btn-danger" href="javascript:void(0)" data-toggle="modal" data-target="#modal-employee">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                </button>
+                            </div>
                         </td>
-                        <td class="table-item-content">Graeme Xyber Pastoril</td>
-                        <td class="table-item-content">1234567890</td>
-                        <td class="table-item-content">+63 912 345 6789</td>
-                        <td class="table-item-content"><span class="badge badge-secondary">Employee</span></td>
+                        <td>{{ $employee->first_name}}</td>
+                        <td>{{ $employee->tin_number}}</td>
+                        <td>{{ $employee->mobile_number}}</td>
+                        <td>{{ $employee->type}}</td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -77,9 +81,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="form-employee" method="post" enctype="multipart/form-data">
-                    
+            <form id="form-employee" action="/employee" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
                     <div class="form-group row">
                         <label for="e_first_name" class="col-sm-3 col-lg-2 col-form-label">First Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-10">
@@ -102,31 +106,31 @@
                     <div class="form-group row">
                         <label for="e_date_of_birth" class="col-sm-3 col-lg-2 col-form-label">Date of Birth</label>
                         <div class="col-sm-9 col-lg-10">
-                            <input type="date" class="form-control" id="e_date_of_birth" name="date_of_birth" placeholder="">
+                            <input type="date" class="form-control" id="e_date_of_birth" name="date_of_birth" placeholder="" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="e_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_mobile_number" name="mobile_number" placeholder="">
+                            <input type="text" class="form-control" id="e_mobile_number" name="mobile_number" placeholder="" required>
                         </div>
 
                         <label for="e_telephone" class="col-sm-3 col-lg-2 col-form-label">Telephone</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_telephone" name="telephone" placeholder="">
+                            <input type="text" class="form-control" id="e_telephone" name="telephone" placeholder="" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="e_email" class="col-sm-3 col-lg-2 col-form-label">Email</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_email" name="email" placeholder="">
+                            <input type="text" class="form-control" id="e_email" name="email" placeholder="" required>
                         </div>
 
                         <label for="e_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_tin_number" name="tin_number" placeholder="">
+                            <input type="text" class="form-control" id="e_tin_number" name="tin_number" placeholder="" required>
                         </div>
                     </div>
 
@@ -134,14 +138,14 @@
                         <label for="e_type" class="col-sm-3 col-lg-2 col-form-label">Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <select class="form-control" id="e_type" name="type">
-                                <option>Employee</option>
-                                <option>Commission Agent</option>
+                                <option value="employee" >Employee</option>
+                                <option value="commission_agent">Commission Agent</option>
                             </select>
                         </div>
 
                         <label for="e_basic_salary" class="col-sm-3 col-lg-2 col-form-label">Basic Salary</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="">
+                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="" required>
                         </div>
                     </div>
 
@@ -173,12 +177,13 @@
                         </div>
                     </div>
                     
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-employee">Save Customer</button>
-            </div>
+                </div> 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-employee">Save Customer</button>
+                </div>
+            </form>
+           
         </div>
     </div>
 </div>

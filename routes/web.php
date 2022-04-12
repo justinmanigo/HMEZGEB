@@ -253,6 +253,8 @@ Route::group([
         'as' => 'employees.'
     ], function(){
         Route::get('/employee', [EmployeeController::class, 'index']);
+        Route::post('/employee', [EmployeeController::class, 'store']); 
+
 
     });
 
