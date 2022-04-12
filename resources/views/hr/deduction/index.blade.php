@@ -11,7 +11,77 @@
         /** Fixed width, increase if adding addt. buttons **/
         width:120px;
     }
+    
+/*
+            TEMPORARY
+        */
+/* Suggestions items */
+.tagify__dropdown.employees-list .tagify__dropdown__item {
+    padding: .5em .7em;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 1em;
+    grid-template-areas: "avatar name"
+        "avatar email";
+}
+
+.tagify__dropdown.employees-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
+    transform: scale(1.2);
+}
+
+.tagify__dropdown.employees-list .tagify__dropdown__item__avatar-wrap {
+    grid-area: avatar;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #EEE;
+    transition: .1s ease-out;
+}
+
+.tagify__dropdown.employees-list strong {
+    grid-area: name;
+    width: 100%;
+    align-self: center;
+}
+
+.tagify__dropdown.employees-list span {
+    grid-area: email;
+    width: 100%;
+    font-size: .9em;
+    opacity: .6;
+}
+
+.tagify__dropdown.employees-list .addAll {
+    border-bottom: 1px solid #DDD;
+    gap: 0;
+}
+
+
+/* Tags items */
+.tagify__tag {
+    white-space: nowrap;
+}
+
+.tagify__tag:hover .tagify__tag__avatar-wrap {
+    transform: scale(1.6) translateX(-10%);
+}
+
+.tagify__tag .tagify__tag__avatar-wrap {
+    width: 16px;
+    height: 16px;
+    white-space: normal;
+    border-radius: 50%;
+    background: silver;
+    margin-right: 5px;
+    transition: .12s ease-out;
+}
 </style>
+
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
 @endpush
 
 @push('scripts')
@@ -91,43 +161,37 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
-                                <th>Actions</th>
+                              
                                 <th>Employee Name</th>
                                 <th>Price</th>
+                                <th>Actions</th>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-employee">Select</button>
-                                            </div>
-                                            <div class="input-group-append">
-                                                <input type="text" class="form-control" name="employee_name[]" placeholder="Employee Name" disabled>
-                                            </div>
-                                            <input type="hidden" name="employee_id[]" value="">
-                                        </div>
+                                    <input class="col-8 col-lg-7" id="d_employee" name='employee'>
+                                        <input type="hidden" id="d_employee_id" name="employee_id" value="">
+
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-right" name="price[]" placeholder="0.00" required>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <td>
+                                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip"
+                                            data-placement="bottom" title="Delete">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="btn btn-small btn-icon btn-primary"
+                                            data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-plus"></i>
                                             </span>
                                         </button>
                                     </td>
                                 </tr>
+                            
                             </tbody>
                         </table>
 
@@ -151,9 +215,14 @@
 
 
 <script>
-    $(document).ready(function () {
+var controller;
+$(document).ready(function() {
     $('#dataTables').DataTable();
     $('.dataTables_filter').addClass('pull-right');
-    });
+});
 </script>
+
+
+<script src="/js/human_resource/template_select_employee.js"></script>
+<script src="/js/human_resource/select_employee_deduction.js"></script>
 @endsection
