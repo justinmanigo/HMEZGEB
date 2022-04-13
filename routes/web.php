@@ -205,6 +205,7 @@ Route::post('/userlogin', function (Request $request){
   ], function(){ 
 
       Route::get('/journals', [JournalVouchersController::class, 'index'])->name('index');
+      Route::get('/journals/{journalVoucher}', [JournalVouchersController::class, 'show'])->name('show');
       Route::post('/journals', [JournalVouchersController::class, 'store'])->name('store');
   });
 

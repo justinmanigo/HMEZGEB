@@ -117,12 +117,35 @@ class JournalVouchersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\JournalVouchers  $journalVouchers
+     * @param  \App\Models\JournalVouchers  $journalVoucher
      * @return \Illuminate\Http\Response
      */
-    public function show(JournalVouchers $journalVouchers)
+    public function show(JournalVouchers $journalVoucher)
     {
-        //
+        // Call relationships.
+        $journalVoucher->journalEntry->journalPostings;
+
+        // Initialize total values.
+        $totalDebit = 0;
+        $totalCredit = 0;
+
+        for($i = 0; $i < count($journalVoucher->journalEntry->journalPostings); $i++)
+        {
+            // Call inner relationships each.
+            $journalVoucher->journalEntry->journalPostings[$i]->chartOfAccount;
+
+            // Accumulate total
+            if($journalVoucher->journalEntry->journalPostings[$i]->type == 'debit')
+                $totalDebit += $journalVoucher->journalEntry->journalPostings[$i]->amount;
+            else if($journalVoucher->journalEntry->journalPostings[$i]->type == 'credit')
+                $totalCredit += $journalVoucher->journalEntry->journalPostings[$i]->amount;
+        }
+        
+        return view('journals.show', [
+            'journalVoucher' => $journalVoucher,
+            'totalDebit' => $totalDebit,
+            'totalCredit' => $totalCredit,
+        ]);
     }
 
     /**
