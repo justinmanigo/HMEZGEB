@@ -20,7 +20,7 @@ class JournalPostings extends Model
 
     public function chartOfAccount()
     {
-        return $this->belongsTo(ChartOfAccounts::class, 'chart_of_accounts_id');
+        return $this->belongsTo(ChartOfAccounts::class, 'chart_of_account_id');
     }
     public function accountingPeriod()
     {
