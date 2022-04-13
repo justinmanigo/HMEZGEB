@@ -131,33 +131,33 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
                             <th id="thead-actions">Actions</th>
-                            <th>Customer Name</th>
-                            <th>Address</th>
-                            <th>Telephone</th>
-                            <th>Account Receivable</th>
+                            <th>Reference Number</th>
+                            <th>Date</th>
+                            <th class="text-right">Amount</th>
                         </thead>
                         <tbody>
+                            @for($i = 0; $i < count($journalVouchers); $i++)
                             <tr>
                                 <td>
-                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <a href="{{ route('journals.show', $journalVouchers[$i]['id']) }}" role="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                         <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
+                                            <i class='fa fa-eye text-white'></i>
                                         </span>
-                                    </button>
-                                    <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                    </a>
+                                    {{-- <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-trash"></i>
                                         </span>
-                                    </button>
+                                    </button> --}}
                                 </td>
-                                <td class="table-item-content">PocketDevs</td>
-                                <td class="table-item-content">Cebu City, Philippines</td>
-                                <td class="table-item-content">+63 (012) 3456</td>
-                                <td class="table-item-content">Birr 1,000</td>
+                                <td class="table-item-content">{{ $journalVouchers[$i]['reference_number'] }}</td>
+                                <td class="table-item-content">{{ $journalVouchers[$i]->journalEntry['date'] }}</td>
+                                <td class="table-item-content text-right">{{ number_format($totalAmount[$i], 2) }}</td>
                             </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>
@@ -400,6 +400,12 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
+    });
+</script>
 <script src="/js/journal_voucher/template_select_account.js"></script>
 <script src="/js/journal_voucher/jv_functions.js"></script>
 @endsection
