@@ -131,33 +131,33 @@
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
                             <th id="thead-actions">Actions</th>
-                            <th>Customer Name</th>
-                            <th>Address</th>
-                            <th>Telephone</th>
-                            <th>Account Receivable</th>
+                            <th>Reference Number</th>
+                            <th>Date</th>
+                            <th class="text-right">Amount</th>
                         </thead>
                         <tbody>
+                            @for($i = 0; $i < count($journalVouchers); $i++)
                             <tr>
                                 <td>
-                                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <a href="{{ route('journals.show', $journalVouchers[$i]['id']) }}" role="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                         <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
+                                            <i class='fa fa-eye text-white'></i>
                                         </span>
-                                    </button>
-                                    <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                    </a>
+                                    {{-- <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-trash"></i>
                                         </span>
-                                    </button>
+                                    </button> --}}
                                 </td>
-                                <td class="table-item-content">PocketDevs</td>
-                                <td class="table-item-content">Cebu City, Philippines</td>
-                                <td class="table-item-content">+63 (012) 3456</td>
-                                <td class="table-item-content">Birr 1,000</td>
+                                <td class="table-item-content">{{ $journalVouchers[$i]['reference_number'] }}</td>
+                                <td class="table-item-content">{{ $journalVouchers[$i]->journalEntry['date'] }}</td>
+                                <td class="table-item-content text-right">{{ number_format($totalAmount[$i], 2) }}</td>
                             </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>
@@ -217,7 +217,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-jv" method="post" enctype="multipart/form-data">
+                <form id="form-jv" method="post" action="{{ route('journals.store') }}">
+                    @csrf
+                    <div class="form-group row">
+                        <label for="jv_reference_number" class="col-sm-3 col-lg-2 col-form-label">Reference #<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="jv_reference_number" name="reference_number" placeholder="" required>
+                        </div>
+
+                        <label for="jv_date" class="col-sm-3 col-lg-2 col-form-label">Date</label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="date" class="form-control" id="jv_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead>
@@ -235,20 +247,23 @@
                                 <th colspan="5">Credits</th>
                             </thead>
                             <tbody id="jv_credits"></tbody>
+                            <tfoot>
+                                <th colspan="2" class="pt-2">Total</th>
+                                <th>
+                                    <p id="jv_debit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                                <th>
+                                    <p id="jv_credit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                                <th></th>
+                            </tfoot>
                         </table>
                     </div>
-                    {{-- <div class="form-group row">
-                        <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
-                        </div>
-
-                        <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="">
-                        </div>
+                    <div>
+                        <label for="jv_notes" class="col-form-label">Notes:</label>
+                        <textarea class="form-control" id="jv_notes" name="notes"></textarea>
                     </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address</label>
                         <div class="col-sm-9 col-lg-10">
                             <input type="text" class="form-control" id="c_address" name="address" placeholder="">
@@ -315,11 +330,11 @@
             </div>
             <div class="modal-footer">
                 <div class="form-check mr-3">
-                    <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
-                    <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
+                    {{-- <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
+                    <label class="form-check-label" for="c_is_active">Mark Customer as Active</label> --}}
                 </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="modal-jv">Save Customer</button>
+                <button type="submit" class="btn btn-primary" id="form-jv-save-btn" form="form-jv" disabled>Save Journal Voucher</button>
             </div>
         </div>
     </div>
@@ -385,6 +400,12 @@
     </div>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
+    });
+</script>
 <script src="/js/journal_voucher/template_select_account.js"></script>
-<script src="/js/journal_voucher/select_account_jv.js"></script>
+<script src="/js/journal_voucher/jv_functions.js"></script>
 @endsection
