@@ -33,7 +33,7 @@ class JournalVouchersController extends Controller
 
         return view('journals.index', [
             'journalVouchers' => $journalVouchers,
-            'totalAmount' => $totalAmount,
+            'totalAmount' => isset($totalAmount) ? $totalAmount : [],
         ]);
     }
 
