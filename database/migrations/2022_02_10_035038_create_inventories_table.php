@@ -22,7 +22,7 @@ class CreateInventoriesTable extends Migration
             $table->float('quantity');
             // $table->float('sold_quantity')->nullable();
             // $table->float('purchase_quantity')->nullable();;
-            $table->enum('tax',['0%','2%','15%']); 
+            $table->integer('tax_id')->nullable(); 
             $table->string('default_income_account')->nullable();
             $table->string('default_expense_account')->nullable();
             $table->enum('inventory_type',['inventory_item','non_inventory_item']);           
