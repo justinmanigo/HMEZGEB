@@ -28,7 +28,7 @@ class CreateInventoriesTable extends Migration
             $table->enum('inventory_type',['inventory_item','non_inventory_item']);           
             $table->string('picture')->nullable();      
             $table->longText('description');
-            $table->enum('is_enabled',['Yes','No']);
+            $table->enum('is_enabled',['Yes','No'])->default('Yes');
             $table->timestamps();
         });
     }
