@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Overtime;
 use Illuminate\Http\Request;
 
+
 class OvertimeController extends Controller
 {
     /**
@@ -37,15 +38,27 @@ class OvertimeController extends Controller
     public function store(Request $request)
     {
         //
-        // return $request;
+
         for($i = 0; $i < count($request->employee); $i++)
         {
-          $employee = json_decode($request->employee[$i]);
-          $e[$i] = $employee[0];
+        $employee = json_decode($request->employee[$i]);
+            $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
+            
+            // Store
+            $overtime = new Overtime;
+            $overtime->employee_id = $e[$i]->value;
+            $overtime->date = $request->date;
+            $overtime->from = $request->from[$i];
+            $overtime->to = $request->to[$i];
+            $overtime->description = $request->description;
+            $overtime->save();
         }
-        // return $e[0]->value;
+        return redirect()->back()->with('success', 'Overtime has been added.');
+        
+        // check polished employee[].
+        // return $e;
         // return $request->from[0];
-        return $request->description;
+        // return $request->description;
     }
 
     /**

@@ -278,6 +278,7 @@ Route::group([
         'as' => 'additions.'
     ], function(){
         Route::get('/addition', [AdditionController::class, 'index']);
+        Route::post('/addition', [AdditionController::class, 'store'])->name('store');
 
     });
 
@@ -285,6 +286,7 @@ Route::group([
         'as' => 'deductions.'
     ], function(){
         Route::get('/deduction', [DeductionController::class, 'index']);
+        Route::post('/deduction', [DeductionController::class, 'store'])->name('store');
 
     });
 
@@ -292,6 +294,8 @@ Route::group([
         'as' => 'loans.'
     ], function(){
         Route::get('/loan', [LoanController::class, 'index']);
+        Route::post('/loan', [LoanController::class, 'store'])->name('store');
+
 
     });
 
