@@ -37,6 +37,21 @@ class AdditionController extends Controller
     public function store(Request $request)
     {
         //
+
+         for($i = 0; $i < count($request->employee); $i++)
+         {
+         $employee = json_decode($request->employee[$i]);
+             $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
+             
+             // Store
+                $addition = new Addition;
+                $addition->employee_id = $e[$i]->value;
+                $addition->date = $request->date;
+                $addition->price = $request->price[$i];
+                $addition->description = $request->description;
+                $addition->save();
+         }
+         return redirect()->back()->with('success', 'Addition has been added.');
     }
 
     /**

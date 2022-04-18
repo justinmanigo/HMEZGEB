@@ -149,7 +149,8 @@
             </div>
 
             <div class="modal-body">
-                <form id="form-addition" method="POST">
+                <form action="{{route('additions.store')}}" id="form-addition" method="POST">
+                    @csrf
                     <div class="form-group row">
                         <label for="a_date" class="col-sm-3 col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
