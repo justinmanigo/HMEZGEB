@@ -271,7 +271,7 @@ Route::group([
         'as' => 'overtime.'
     ], function(){
         Route::get('/overtime', [OvertimeController::class, 'index']);
-
+        Route::post('/overtime', [OvertimeController::class, 'store'])->name('store');
     });
 
     Route::group([

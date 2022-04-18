@@ -37,6 +37,15 @@ class OvertimeController extends Controller
     public function store(Request $request)
     {
         //
+        // return $request;
+        for($i = 0; $i < count($request->employee); $i++)
+        {
+          $employee = json_decode($request->employee[$i]);
+          $e[$i] = $employee[0];
+        }
+        // return $e[0]->value;
+        // return $request->from[0];
+        return $request->description;
     }
 
     /**

@@ -154,7 +154,8 @@
             </div>
 
             <div class="modal-body">
-                <form id="form-overtime" method="POST">
+                <form action="{{route('overtime.store')}}" id="form-overtime" method="POST">
+                    @csrf
                     <div class="form-group row">
                         <label for="o_date" class="col-sm-3 col-lg-2 col-form-label">Date<span
                                 class="text-danger ml-1">*</span></label>
