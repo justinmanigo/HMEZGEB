@@ -149,8 +149,9 @@
             </div>
 
             <div class="modal-body">
-                <form id="form-loan" method="POST">
-                    <div class="form-group row">
+                <form action="{{route('loans.store')}}"  id="form-loan" method="POST">
+                @csrf    
+                <div class="form-group row">
                         <label for="l_date" class="col-sm-3 col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="date" class="form-control" id="l_date" name="date" placeholder="" required>

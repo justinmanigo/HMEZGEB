@@ -37,6 +37,22 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         //
+        
+        for($i = 0; $i < count($request->employee); $i++)
+        {
+        $employee = json_decode($request->employee[$i]);
+            $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
+            
+            // Store
+               $loan = new Loan;
+               $loan->employee_id = $e[$i]->value;
+               $loan->date = $request->date;
+               $loan->loan = $request->loan[$i];
+               $loan->paid_in = $request->paid_in[$i];
+               $loan->description = $request->description;
+               $loan->save();
+        }
+        return redirect()->back()->with('success', 'Loan has been added.');
     }
 
     /**
