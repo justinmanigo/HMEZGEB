@@ -37,6 +37,21 @@ class DeductionController extends Controller
     public function store(Request $request)
     {
         //
+        
+        for($i = 0; $i < count($request->employee); $i++)
+        {
+        $employee = json_decode($request->employee[$i]);
+            $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
+            
+            // Store
+               $deduction = new Deduction;
+               $deduction->employee_id = $e[$i]->value;
+               $deduction->date = $request->date;
+               $deduction->price = $request->price[$i];
+               $deduction->description = $request->description;
+               $deduction->save();
+        }
+        return redirect()->back()->with('success', 'Deduction has been added.');
     }
 
     /**
