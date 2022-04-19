@@ -133,6 +133,7 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'deposits.'
     ], function(){ 
         Route::get('/deposit', [DepositController::class, 'index']);
+        Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositController::class, 'ajaxSearchBank']);
     });
 
  
