@@ -48,17 +48,17 @@ function onReceiptCustomerSelectSuggestion(e){
     // checks for data of selected customer
     console.log(e.detail.data);
 
-    $("#r_customer_id").val(e.detail.data.value)
-    $("#r_tin_number").val(e.detail.data.tin_number)
-    $("#r_contact_person").val(e.detail.data.contact_person)
-    $("#r_mobile_number").val(e.detail.data.mobile_number)
+    $("#r_customer_id").html(e.detail.data.value)
+    $("#r_tin_number").html(e.detail.data.tin_number)
+    $("#r_contact_person").html(e.detail.data.contact_person)
+    $("#r_mobile_number").html(e.detail.data.mobile_number)
 }
 
 function onReceiptCustomerRemove(e){
-    $("#r_customer_id").val("")
-    $("#r_tin_number").val("")
-    $("#r_contact_person").val("")
-    $("#r_mobile_number").val("")
+    $("#r_customer_id").html("")
+    $("#r_tin_number").html("")
+    $("#r_contact_person").html("")
+    $("#r_mobile_number").html("")
 }
 
 function onReceiptCustomerInput(e) {
