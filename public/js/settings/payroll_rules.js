@@ -41,21 +41,26 @@ function defaultIncomeTaxRules() {
     let inner = `
          <tr data-id="1" id="pr_rule_entry_1">
          <td>
-            
-             IF Taxable Income >
-       
+         <div class="d-flex justify-content-between">
+         <p>IF Taxable Income</p> >
+     </div>
          </td>
          <td>
-             <input type="number" data-id="1" id="pr_rule_income_1" class="form-control" name="income[]" required value="10900">
+             <input type="text" data-id="1" id="pr_rule_income_1" class="form-control" name="income[]" required value="10900">
          </td>
             <td>
-            Taxable Income
+                <div class="d-flex justify-content-between">
+                <p>Taxable Income</p> * 
+            </div>
         </td>
              <td>
-             <input type="number" data-id="1" id="pr_rule_rate_1" class="form-control" name="rate[]" required value="35">
-         </td>
+             <div class="d-flex justify-content-between">
+             <input type="text" data-id="1" id="pr_rule_rate_1" class="form-control" name="rate[]" style="width:90%"  required value="35">
+                -
+                </div>       
+             </td>
          <td>
-         <input type="number" data-id="1" id="pr_rule_deduction_1" class="form-control" name="deduction[]" required value="1500">
+         <input type="text" data-id="1" id="pr_rule_deduction_1" class="form-control" name="deduction[]" required value="1500">
      </td>
          <td>
              <button type="button" data-id="1" id="pr_rule_delete_1" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -73,21 +78,26 @@ function defaultIncomeTaxRules() {
      
      <tr data-id="2" id="pr_rule_entry_2">
          <td>
-            
-             IF Taxable Income >
-       
+         <div class="d-flex justify-content-between">
+         <p>IF Taxable Income</p> >
+     </div>
          </td>
          <td>
-             <input type="number" data-id="2" id="pr_rule_income_2" class="form-control" name="income[]" required value="7800">
+             <input type="text" data-id="2" id="pr_rule_income_2" class="form-control" name="income[]" required value="7800">
          </td>
          <td>
-            Taxable Income
+            <div class="d-flex justify-content-between">
+            <p>Taxable Income</p> * 
+        </div>
          </td>
              <td>
-             <input type="number" data-id="2" id="pr_rule_rate_2" class="form-control" name="rate[]" required value="30">
-         </td>
+             <div class="d-flex justify-content-between">
+             <input type="text" data-id="2" id="pr_rule_rate_2" class="form-control" name="rate[]" style="width:90%"  required value="30">
+                -
+                </div>       
+             </td>
          <td>
-         <input type="number" data-id="2" id="pr_rule_deduction_2" class="form-control" name="deduction[]" required value="955">
+         <input type="text" data-id="2" id="pr_rule_deduction_2" class="form-control" name="deduction[]" required value="955">
      </td>
          <td>
              <button type="button" data-id="2" id="pr_rule_delete_2" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -105,19 +115,24 @@ function defaultIncomeTaxRules() {
      
      <tr data-id="3" id="pr_rule_entry_3">
          <td>
-            
-             IF Taxable Income >
-       
+         <div class="d-flex justify-content-between">
+         <p>IF Taxable Income</p> >
+     </div>
          </td>
          <td>
              <input type="text" data-id="3" id="pr_rule_income_3" class="form-control" name="income[]" required value="5250">
          </td>
          <td>
-            Taxable Income
+                <div class="d-flex justify-content-between">
+                <p>Taxable Income</p> * 
+            </div>
          </td>
              <td>
-             <input type="text" data-id="3" id="pr_rule_rate_3" class="form-control" name="rate[]" required value="25">
-         </td>
+             <div class="d-flex justify-content-between">
+             <input type="text" data-id="3" id="pr_rule_rate_3" class="form-control" name="rate[]" style="width:90%"  required value="25">
+                -
+                </div>       
+             </td>
          <td>
          <input type="text" data-id="3" id="pr_rule_deduction_3" class="form-control" name="deduction[]" required value="565">
      </td>
@@ -137,19 +152,24 @@ function defaultIncomeTaxRules() {
 
      <tr data-id="4" id="pr_rule_entry_4">
          <td>
-            
-             IF Taxable Income >
-       
+         <div class="d-flex justify-content-between">
+         <p>IF Taxable Income</p> >
+     </div>
          </td>
          <td>
              <input type="text" data-id="4" id="pr_rule_income_4" class="form-control" name="income[]" required value="3200">
          </td>
          <td>
-            Taxable Income
+                <div class="d-flex justify-content-between">
+                <p>Taxable Income</p> * 
+            </div>
          </td>
              <td>
-             <input type="text" data-id="4" id="pr_rule_rate_4" class="form-control" name="rate[]" required value="20">
-         </td>
+             <div class="d-flex justify-content-between">
+             <input type="text" data-id="4" id="pr_rule_rate_4" class="form-control" name="rate[]" style="width:90%"  required value="20">
+                -
+                </div>       
+             </td>
          <td>
          <input type="text" data-id="4" id="pr_rule_deduction_4" class="form-control" name="deduction[]" required value="302.5">
      </td>
@@ -169,19 +189,25 @@ function defaultIncomeTaxRules() {
 
      <tr data-id="5" id="pr_rule_entry_5">
          <td>
-            
-             IF Taxable Income >
-       
+         <div class="d-flex justify-content-between">
+                <p>IF Taxable Income</p> >
+            </div>
          </td>
          <td>
              <input type="text" data-id="5" id="pr_rule_income_5" class="form-control" name="income[]" required value="1650">
          </td>
          <td>
-            Taxable Income
-         </td>
+            
+                    <div class="d-flex justify-content-between">
+                    <p>Taxable Income</p> * 
+                </div>
+              </td>
              <td>
-             <input type="text" data-id="5" id="pr_rule_rate_5" class="form-control" name="rate[]" required value="15">
-         </td>
+             <div class="d-flex justify-content-between">
+             <input type="text" data-id="5" id="pr_rule_rate_5" class="form-control" name="rate[]" style="width:90%"  required value="15">
+                -
+                </div>       
+             </td>
          <td>
          <input type="text" data-id="5" id="pr_rule_deduction_5" class="form-control" name="deduction[]" required value="142.5">
      </td>
@@ -201,19 +227,24 @@ function defaultIncomeTaxRules() {
 
      <tr data-id="6" id="pr_rule_entry_6">
          <td>
-            
-             IF Taxable Income >
-       
+                <div class="d-flex justify-content-between">
+                <p>IF Taxable Income</p> >
+            </div>
          </td>
          <td>
              <input type="text" data-id="6" id="pr_rule_income_6" class="form-control" name="income[]" required value="600">
          </td>
          <td>
-            Taxable Income
+            <div class="d-flex justify-content-between">
+            <p>Taxable Income</p> * 
+        </div>
          </td>
              <td>
-             <input type="text" data-id="6" id="pr_rule_rate_6" class="form-control" name="rate[]" required value="10">
-         </td>
+             <div class="d-flex justify-content-between">
+             <input type="text" data-id="6" id="pr_rule_rate_6" class="form-control" name="rate[]" style="width:90%"  required value="10">
+                -
+                </div>       
+             </td>
          <td>
          <input type="text" data-id="6" id="pr_rule_deduction_6" class="form-control" name="deduction[]" required value="60">
      </td>
@@ -263,21 +294,28 @@ function createRuleEntry() {
     let inner = `
         <tr data-id="${payroll_count}" id="pr_rule_entry_${payroll_count}">
         <td>
-           
-            IF Taxable Income >
-      
+            <div class="d-flex justify-content-between">
+                <p>IF Taxable Income</p> >
+            </div>
         </td>
         <td>
-            <input type="number" data-id="${payroll_count}" id="pr_rule_income_${payroll_count}" class="form-control" name="income[]" required>
-        </td>
-            <td>
-            Taxable Income 
-        </td>
-            <td>
-            <input type="number" data-id="${payroll_count}" id="pr_rule_rate_${payroll_count}" class="form-control" name="rate[]" required>
+            <div class="d-flex justify-content-between">
+                <input type="text" data-id="${payroll_count}" id="pr_rule_income_${payroll_count}" class="form-control" name="income[]" required>
+            </div>
         </td>
         <td>
-        <input type="number" data-id="${payroll_count}" id="pr_rule_deduction_${payroll_count}" class="form-control" name="deduction[]" required>
+            <div class="d-flex justify-content-between">
+                <p>Taxable Income</p> * 
+            </div>
+        </td>
+        <td>
+            <div class="d-flex justify-content-between">
+                    <input type="text" data-id="${payroll_count}" id="pr_rule_rate_${payroll_count}" class="form-control" name="rate[]" style="width:90%"  required>
+            -
+            </div>
+        </td>
+        <td>
+        <input type="text" data-id="${payroll_count}" id="pr_rule_deduction_${payroll_count}" class="form-control" name="deduction[]" required>
     </td>
         <td>
             <button type="button" data-id="${payroll_count}" id="pr_rule_delete_${payroll_count}" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
