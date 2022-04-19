@@ -39,6 +39,7 @@ use App\Http\Controllers\LoanController;
 
 // Settings
 use App\Http\Controllers\SettingChartOfAccountsController;
+use App\Http\Controllers\SettingPayrollRulesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -314,11 +315,16 @@ Route::group([
     Route::view('/themes', 'settings.themes.index')->name('themes');
 
     Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
-    Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');
-    Route::view('/setting_payrollrules', 'settings.payroll_rules.index')->name('setting_payrollrules');
+    Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');    
+   
     Route::group([
         'as' => 'settings.'
     ], function(){
         Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
+
+        Route::get('/setting_payrollrules', [SettingPayrollRulesController::class, 'index']);
+        Route::post('/payrollrules-income-tax', [SettingPayrollRulesController::class, 'storeIncomeTaxRules'])->name('store_income_tax');
+        Route::post('/payrollrules-overtime', [SettingPayrollRulesController::class, 'storeOvertimeRules'])->name('store_overtime');
+
 
     });
