@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Overtime;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,18 @@ class OvertimeController extends Controller
      */
     public function index()
     {
-                //
-        return view('hr.overtime.index');
+        $overtimes = Employee::join(
+            'overtimes',
+            'overtimes.employee_id',
+            '=',
+            'employees.id'
+        )->select(
+            'overtimes.id',
+            'overtimes.date',
+            'employees.first_name',
+            'employees.type',
+        )->get();
+        return view('hr.overtime.index', compact('overtimes'));
     }
 
     /**
@@ -101,8 +112,12 @@ class OvertimeController extends Controller
      * @param  \App\Models\Overtime  $overtime
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Overtime $overtime)
+    public function destroy($id)
     {
-        //
+        // Delete
+        $overtime = Overtime::find($id);
+        $overtime->delete();
+        
+        return redirect('overtime/')->with('danger', "Successfully deleted overtime");
     }
 }

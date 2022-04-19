@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Addition;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class AdditionController extends Controller
@@ -15,7 +16,18 @@ class AdditionController extends Controller
     public function index()
     {
         //
-        return view('hr.addition.index');
+        $additions = Employee::join(
+            'additions',
+            'additions.employee_id',
+            '=',
+            'employees.id'
+        )->select(
+            'additions.id',
+            'additions.date',
+            'employees.first_name',
+            'employees.type',
+        )->get();
+        return view('hr.addition.index' ,compact('additions'));
     }
 
     /**
@@ -94,8 +106,12 @@ class AdditionController extends Controller
      * @param  \App\Models\Addition  $addition
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Addition $addition)
+    public function destroy($id)
     {
         //
+        $addition = Addition::find($id);
+        $addition->delete();
+        
+        return redirect('addition/')->with('danger', "Successfully deleted addition");
     }
 }

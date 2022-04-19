@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Deduction;
+use App\Models\Employee;
+
 use Illuminate\Http\Request;
 
 class DeductionController extends Controller
@@ -15,7 +17,18 @@ class DeductionController extends Controller
     public function index()
     {
         //
-        return view('hr.deduction.index');
+        $deductions = Employee::join(
+            'deductions',
+            'deductions.employee_id',
+            '=',
+            'employees.id'
+        )->select(
+            'deductions.id',
+            'deductions.date',
+            'employees.first_name',
+            'employees.type',
+        )->get();
+        return view('hr.deduction.index' ,compact('deductions'));
     }
 
     /**
@@ -94,8 +107,12 @@ class DeductionController extends Controller
      * @param  \App\Models\Deduction  $deduction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Deduction $deduction)
+    public function destroy($id)
     {
         //
+        $deduction = Deduction::find($id);
+        $deduction->delete();
+        
+        return redirect('deduction/')->with('danger', "Successfully deleted deduction");
     }
 }

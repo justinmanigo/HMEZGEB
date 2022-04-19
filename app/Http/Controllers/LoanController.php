@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Employee;
+
 use Illuminate\Http\Request;
 
 class LoanController extends Controller
@@ -15,7 +17,18 @@ class LoanController extends Controller
     public function index()
     {
         //
-        return view('hr.loan.index');
+        $loans = Employee::join(
+            'loans',
+            'loans.employee_id',
+            '=',
+            'employees.id'
+        )->select(
+            'loans.id',
+            'loans.date',
+            'employees.first_name',
+            'employees.type',
+        )->get();
+        return view('hr.loan.index' , compact('loans'));
     }
 
     /**
@@ -95,8 +108,12 @@ class LoanController extends Controller
      * @param  \App\Models\Loan  $loan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Loan $loan)
+    public function destroy($id)
     {
         //
+        $loan = Loan::find($id);
+        $loan->delete();
+        
+        return redirect('loan/')->with('danger', "Successfully deleted loan");
     }
 }

@@ -2,81 +2,81 @@
 
 @push('styles')
 <style>
-.table-employee-content {
-    /** Equivalent to pt-3 */
-    padding-top: 1rem !important;
-}
+    .table-employee-content {
+        /** Equivalent to pt-3 */
+        padding-top: 1rem !important;
+    }
 
-#thead-actions {
-    /** Fixed width, increase if adding addt. buttons **/
-    width: 120px;
-}
+    #thead-actions {
+        /** Fixed width, increase if adding addt. buttons **/
+        width: 120px;
+    }
 
 
-/*
+    /*
             TEMPORARY
         */
-/* Suggestions items */
-.tagify__dropdown.employees-list .tagify__dropdown__item {
-    padding: .5em .7em;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0 1em;
-    grid-template-areas: "avatar name"
-        "avatar email";
-}
+    /* Suggestions items */
+    .tagify__dropdown.employees-list .tagify__dropdown__item {
+        padding: .5em .7em;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0 1em;
+        grid-template-areas: "avatar name"
+            "avatar email";
+    }
 
-.tagify__dropdown.employees-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
-    transform: scale(1.2);
-}
+    .tagify__dropdown.employees-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
+        transform: scale(1.2);
+    }
 
-.tagify__dropdown.employees-list .tagify__dropdown__item__avatar-wrap {
-    grid-area: avatar;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #EEE;
-    transition: .1s ease-out;
-}
+    .tagify__dropdown.employees-list .tagify__dropdown__item__avatar-wrap {
+        grid-area: avatar;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #EEE;
+        transition: .1s ease-out;
+    }
 
-.tagify__dropdown.employees-list strong {
-    grid-area: name;
-    width: 100%;
-    align-self: center;
-}
+    .tagify__dropdown.employees-list strong {
+        grid-area: name;
+        width: 100%;
+        align-self: center;
+    }
 
-.tagify__dropdown.employees-list span {
-    grid-area: email;
-    width: 100%;
-    font-size: .9em;
-    opacity: .6;
-}
+    .tagify__dropdown.employees-list span {
+        grid-area: email;
+        width: 100%;
+        font-size: .9em;
+        opacity: .6;
+    }
 
-.tagify__dropdown.employees-list .addAll {
-    border-bottom: 1px solid #DDD;
-    gap: 0;
-}
+    .tagify__dropdown.employees-list .addAll {
+        border-bottom: 1px solid #DDD;
+        gap: 0;
+    }
 
 
-/* Tags items */
-.tagify__tag {
-    white-space: nowrap;
-}
+    /* Tags items */
+    .tagify__tag {
+        white-space: nowrap;
+    }
 
-.tagify__tag:hover .tagify__tag__avatar-wrap {
-    transform: scale(1.6) translateX(-10%);
-}
+    .tagify__tag:hover .tagify__tag__avatar-wrap {
+        transform: scale(1.6) translateX(-10%);
+    }
 
-.tagify__tag .tagify__tag__avatar-wrap {
-    width: 16px;
-    height: 16px;
-    white-space: normal;
-    border-radius: 50%;
-    background: silver;
-    margin-right: 5px;
-    transition: .12s ease-out;
-}
+    .tagify__tag .tagify__tag__avatar-wrap {
+        width: 16px;
+        height: 16px;
+        white-space: normal;
+        border-radius: 50%;
+        background: silver;
+        margin-right: 5px;
+        transition: .12s ease-out;
+    }
 </style>
 
 <script src="https://unpkg.com/@yaireo/tagify"></script>
@@ -101,7 +101,22 @@
         <span class="text">New</span>
     </button>
 </div>
-
+@if(session()->has('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session()->get('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+@if(session()->has('danger'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session()->get('danger') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
@@ -115,26 +130,31 @@
                     <th>Price</th>
                 </thead>
                 <tbody>
+                    @foreach ($overtimes as $overtime)
                     <tr>
                         <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip"
-                                data-placement="bottom" title="Edit">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-pen"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip"
-                                data-placement="bottom" title="Delete">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip"
+                                    data-placement="bottom" title="Edit">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </button>
+                                <button type="button" class="btn btn-danger "
+                                onClick='showModel({!! $overtime->id !!})'>
                                 <span class="icon text-white-50">
                                     <i class="fas fa-trash"></i>
                                 </span>
-                            </button>
+                                </button>
+                            </div>
                         </td>
-                        <td class="table-employee-content">Feb. 8, 2022</td>
-                        <td class="table-employee-content">Graeme Xyber Pastoril</td>
-                        <td class="table-employee-content"><span class="badge badge-secondary">Employee</span></td>
-                        <td class="table-employee-content">Birr 300.00</td>
+                        <td>{{ $overtime->date }}</td>
+                        <td>{{ $overtime->first_name }}</td>
+                        <td>{{ $overtime->type }}</td>
+                        <td>{{ $overtime->price }}</td>
                     </tr>
+                    @endforeach
+                    </tr> 
                 </tbody>
             </table>
         </div>
@@ -174,8 +194,8 @@
                                 <th>Actions</th>
                             </thead>
                             <tbody id="ot_entries">
-                            {{-- <tr>
-                                   <td>
+                                {{-- <tr>
+                                    <td>
 
                                         <input class="col-8 col-lg-7" id="ot_employee" name='employee'>
                                         <input type="hidden" id="ot_employee_id" name="employee_id" value="">
@@ -223,13 +243,51 @@
         </div>
     </div>
 </div>
+{{-- Delete Overtime --}}
+<div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Overtime</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+			<div class="modal-body">Are you sure to delete this record?</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" onClick="dismissModel()">Cancel</button>
+				<form id="delete-frm" class="" action="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script>
-var controller;
-$(document).ready(function() {
-    $('#dataTables').DataTable();
-    $('.dataTables_filter').addClass('pull-right');
-});
+    var controller;
+    $(document).ready(function() {
+        $('#dataTables').DataTable();
+        $('.dataTables_filter').addClass('pull-right');
+    });
+    function showModel(id) {
+        var frmDelete = document.getElementById("delete-frm");
+        frmDelete.action = 'overtime/'+id;
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'block';
+        confirmationModal.classList.remove('fade');
+        confirmationModal.classList.add('show');
+    }
+    
+    function dismissModel() {
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'none';
+        confirmationModal.classList.remove('show');
+        confirmationModal.classList.add('fade');
+    }
 </script>
 
 

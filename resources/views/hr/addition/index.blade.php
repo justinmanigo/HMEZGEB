@@ -99,7 +99,22 @@
         <span class="text">New</span>
     </button>   
 </div>
-
+@if(session()->has('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session()->get('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+@if(session()->has('danger'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session()->get('danger') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
@@ -113,24 +128,30 @@
                     <th>Price</th>
                 </thead>
                 <tbody>
+                    @foreach($additions as $addition)
                     <tr>
                         <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-pen"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip"
+                                    data-placement="bottom" title="Edit">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </button>
+                                <button type="button" class="btn btn-danger "
+                                onClick='showModel({!! $addition->id !!})'>
                                 <span class="icon text-white-50">
                                     <i class="fas fa-trash"></i>
                                 </span>
-                            </button>
+                                </button>
+                            </div>
                         </td>
-                        <td class="table-employee-content">Feb. 8, 2022</td>
-                        <td class="table-employee-content">Graeme Xyber Pastoril</td>
-                        <td class="table-employee-content"><span class="badge badge-secondary">Employee</span></td>
-                        <td class="table-employee-content">Birr 300.00</td>
+                        <td class="table-employee-content">{{ $addition->date }}</td>
+                        <td class="table-employee-content">{{ $addition->first_name }}</td>
+                        <td class="table-employee-content"><span class="badge badge-secondary">{{ $addition->type }}</span></td>
+                        <td class="table-employee-content"{{ $addition->price }}</td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -212,6 +233,29 @@
         </div>
     </div>
 </div>
+{{-- Delete Modal --}}
+<div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Overtime</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+			<div class="modal-body">Are you sure to delete this record?</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" onClick="dismissModel()">Cancel</button>
+				<form id="delete-frm" class="" action="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script>
 var controller;
@@ -219,6 +263,21 @@ $(document).ready(function() {
     $('#dataTables').DataTable();
     $('.dataTables_filter').addClass('pull-right');
 });
+function showModel(id) {
+        var frmDelete = document.getElementById("delete-frm");
+        frmDelete.action = 'addition/'+id;
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'block';
+        confirmationModal.classList.remove('fade');
+        confirmationModal.classList.add('show');
+    }
+    
+    function dismissModel() {
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'none';
+        confirmationModal.classList.remove('show');
+        confirmationModal.classList.add('fade');
+    }
 </script>
 
 

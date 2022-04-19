@@ -262,7 +262,9 @@ Route::group([
         Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
         Route::get('/employee', [EmployeeController::class, 'index']);
         Route::post('/employee', [EmployeeController::class, 'store']); 
-
+        Route::delete('/employee/{id}', [EmployeeController::class, 'destroy']);
+        Route::get('/employee/{id}', [EmployeeController::class, 'edit']);
+        Route::put('/employee/{id}', [EmployeeController::class, 'update']);
         Route::get('/select/search/employee/{query}', [EmployeeController::class, 'queryEmployees']);
 
     });
@@ -272,6 +274,8 @@ Route::group([
     ], function(){
         Route::get('/overtime', [OvertimeController::class, 'index']);
         Route::post('/overtime', [OvertimeController::class, 'store'])->name('store');
+        Route::delete('/overtime/{id}', [OvertimeController::class, 'destroy']);
+
     });
 
     Route::group([
@@ -279,7 +283,8 @@ Route::group([
     ], function(){
         Route::get('/addition', [AdditionController::class, 'index']);
         Route::post('/addition', [AdditionController::class, 'store'])->name('store');
-
+        Route::delete('/addition/{id}', [AdditionController::class, 'destroy']);
+        
     });
 
     Route::group([
@@ -287,6 +292,8 @@ Route::group([
     ], function(){
         Route::get('/deduction', [DeductionController::class, 'index']);
         Route::post('/deduction', [DeductionController::class, 'store'])->name('store');
+        Route::delete('/deduction/{id}', [DeductionController::class, 'destroy']);
+
 
     });
 
@@ -295,6 +302,7 @@ Route::group([
     ], function(){
         Route::get('/loan', [LoanController::class, 'index']);
         Route::post('/loan', [LoanController::class, 'store'])->name('store');
+        Route::delete('/loan/{id}', [LoanController::class, 'destroy']);
 
 
     });
