@@ -32,6 +32,6 @@ class ChartOfAccounts extends Model
 
     public function category()
     {
-        return $this->hasOne(ChartOfAccountCategory::class);
+        return $this->hasOne(ChartOfAccountCategory::class, 'id','chart_of_account_category_id');
     }
 }
