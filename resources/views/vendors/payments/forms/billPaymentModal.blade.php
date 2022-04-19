@@ -5,7 +5,7 @@
                 <div class="form-group row">
                     <label for="b_vendor" class="col-4 col-form-label text-left">Vendor<span class="text-danger ml-1">*</span> :</label>
                     <input class="col-8 col-lg-7" id="b_vendor" name='vendor'>
-                    <input type="hidden" id="b_vendob_id" name="vendob_id" value="">
+                    <input type="hidden" id="b_vendor_id" name="vendor_id" value="">
                 </div>
                 {{-- Contact Details --}}
                 <div class="form-group row mb-0">

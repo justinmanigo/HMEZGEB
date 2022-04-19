@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="v_account_number" class="col-4 col-form-label text-lg-right">Account #:</label>
+                    <label for="v_account_number" class="col-4 col-form-label text-lg-right">Account:</label>
                     <div class="col-8">
                         <input type="text" class="form-control" id="v_account_number" name="account_number" placeholder="">
                     </div>
