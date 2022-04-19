@@ -549,5 +549,6 @@ POTENTIAL SOLUTIONS:
     <script src="/js/customer/receipt/select_item_proforma.js"></script>
     <script src="/js/customer/receipt/select_receipt_creditreceipt.js"></script>
 
-
+    <script src="/js/customer/receipt/template_select_proforma.js"></script>
+    <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
     @endsection

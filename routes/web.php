@@ -113,6 +113,8 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
         Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
 
+        Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
+
         
     });
 

@@ -452,4 +452,23 @@ class ReceiptController extends Controller
   
         return redirect('receipt/')->with('danger', "Successfully deleted customer");
     }
+
+    /*********** AJAX *************/
+
+    public function ajaxSearchCustomerProforma(Customers $customer, $value)
+    {
+        $proformas = ReceiptReferences::select(
+                'receipt_references.id as value',
+                'receipt_references.reference_number',
+                'receipt_references.date',
+                'proformas.amount',
+                'proformas.due_date',
+            )
+            ->leftJoin('proformas', 'proformas.receipt_reference_id', '=', 'receipt_references.id')
+            ->where('customer_id', $customer->id)
+            ->where('type', 'proforma')
+            ->get();
+
+        return $proformas;
+    }
 }

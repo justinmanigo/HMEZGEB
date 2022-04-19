@@ -1,4 +1,5 @@
 var receipt_select_customer_elm = document.querySelector('#r_customer');
+var receipt_customer_id = undefined;
 
 // initialize Tagify on the above input node reference
 var receipt_select_customer_tagify = new Tagify(receipt_select_customer_elm, {
@@ -59,6 +60,12 @@ function onReceiptCustomerRemove(e){
     $("#r_tin_number").val("")
     $("#r_contact_person").val("")
     $("#r_mobile_number").val("")
+    $("#r-proforma-remove").click();
+
+    if(proforma_select_customer_tagify !== undefined)
+    {
+        proforma_select_customer_tagify.whitelist = null; // reset the whitelist
+    }
 }
 
 function onReceiptCustomerInput(e) {
