@@ -24,6 +24,7 @@ class Employee extends Model
         'date_started_working',
         'date_ended_working',
         'emergency_contact_person',
-        'contact_number',
+        'emergency_contact_number'
     ];
+    use HasFactory;
 }

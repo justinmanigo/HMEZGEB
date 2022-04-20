@@ -18,24 +18,24 @@ class CreateBillsTable extends Migration
             $table->date('date');
             $table->date('due_date');
             $table->unsignedBigInteger('vendor_id');
-            $table->unsignedBigInteger('chart_of_account_id');
             $table->string('bill_number');
             $table->string('order_number');
             $table->float('sub_total');
-            $table->float('discount');
+            $table->float('discount')->nullable();
             $table->float('tax');
             $table->float('grand_total');
-            $table->float('withholding');
-            $table->string('terms_and_conditions');
+            $table->float('withholding')->default('0.00');
+            $table->string('cash_from');
             $table->string('attachment')->nullable();
-            $table->float('amount_received');
+            $table->string('note');
+            $table->float('total_amount_received');
             $table->timestamps();
 
           
          
 
              $table->foreign('vendor_id')->references('id')->on('vendors');
-             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
+            
             
         });
     }

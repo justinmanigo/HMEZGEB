@@ -1,28 +1,55 @@
 <div class="modal-body h6">				
-    <div class="form-group row">
-        <label for="name" class="col-md-4 col-lg-2 col-form-label">Vendor Name:<span class="text-danger ml-1">*</span></label>
-        <input type="text" name="name" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Date:</label>
-        <input type="date" name="address" class="form-control col-lg-4">
+    <div class="row form-group">	
+            <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                <h5>Vendor Details:</h5>
+                <div class="form-group row">
+                    <label for="b_vendor" class="col-4 col-form-label text-left">Vendor<span class="text-danger ml-1">*</span> :</label>
+                    <input class="col-8 col-lg-7" id="b_vendor" name='vendor'>
+                    <input type="hidden" id="b_vendob_id" name="vendob_id" value="">
+                </div>
+                {{-- Contact Details --}}
+                <div class="form-group row mb-0">
+                    <label for="b_address" class="col-4 col-form-label text-lg-right">Address</label>
+                    <input type="text" id="b_address" class="form-control-plaintext col-8 pl-3" placeholder="" name="address" disabled readonly>
+                </div>
+                <div class="form-group row mb-0">
+                    <label for="b_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
+                    <input type="text" id="b_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
+                </div>
+                <div class="form-group row mb-0">
+                    <label for="b_telephone_number" class="col-4 col-form-label text-lg-right">Telephone # :</label>
+                    <input type="text" id="b_telephone_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="telephone_number" disabled readonly>
+                </div>
+            </div>
+            
+            <div class="col-12 col-lg-6">
+                <div class="form-group row">
+                    <label for="b_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
+                    <div class="col-8">
+                        <input type="date" class="form-control" id="b_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="b_payment_reference" class="col-4 col-form-label text-lg-right">Payment Reference:</label>
+                    <div class="col-8">
+                        <input type="date" class="form-control" id="b_payment_reference" name="payment_reference" placeholder="" value="" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="b_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="b_cheque_number" name="cheque_number" placeholder="" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="b_bill_number" class="col-4 col-form-label text-lg-right">Account #:</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="b_bill_number" name="account_number" placeholder="">
+                    </div>
+                </div>
+            </div>
     </div>
-    <div class="row form-group">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Address:</label>
-        <input type="text" name="city" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Payment Ref:</label>
-        <input type="text" name="country" class="form-control col-lg-4">
-    </div>
-    <div class="form-group row">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Contact Person:</label>
-        <input type="text" name="tinNum" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Cheque Number:</label>
-        <input type="number" name="email" class="form-control col-lg-4">
-    </div>
-    <div class="row form-group">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Telephone:</label>
-        <input type="number" name="phone1" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Account:</label>
-        <input type="text" name="phone1" class="form-control col-lg-4">
-    </div>
+
     {{-- table  --}}
     <div class="table-responsive mb-3">
         <table class="table table-sm table-bordered">
@@ -30,68 +57,44 @@
                 <th>Bill #</th>
                 <th>Date Due</th>
                 <th>Amount Due</th>
-                <th class="w-25">Description</th>
+                <th>Description</th>
                 <th>Discount</th>
                 <th>Amount Paid<span class="text-danger ml-1">*</span></th>
                 <th class="thead-actions">Pay</th>
             </thead>
-            <tbody>
+            <tbody id="b_payments_to_pay">
+            
                 <tr>
-                    <td class="table-item-content"> {{-- Invoice --}}
-                        <label for="cr_invoices_1023">LL-15029684</label>
+                    {{-- <td class="table-item-content">
+                        <label for="b_invoices_1023">Fs#1023</label>
                     </td>
-                    <td> {{-- Date Due --}}
+                    <td>
                         <input type="number" class="form-control" name="date_due[]" value="04/02/2022" disabled>
                     </td>
-                    <td> {{-- Amount Due --}}
+                    <td>
                         <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="2,383.94" disabled>
                     </td>
-                    <td> {{-- Description --}}
-                        <input type="text" class="form-control" name="description[]" placeholder="">
+                    <td>
+                        <input type="text" class="form-control" name="description[] name="reason[]"" placeholder="">
                     </td>
-                    <td> {{-- Discount --}}
+                    <td>
                         <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
                     </td>
-                    <td> {{-- Amount Paid --}}
+                    <td>
                         <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
                     </td>
-                    <td class="table-item-content"> {{-- Actions --}}
+                    <td class="table-item-content">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="cr_invoices_1023" name="invoices[]">
+                            <input type="checkbox" class="form-check-input" id="b_invoices_1023" name="invoices[]">
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="table-item-content"> {{-- Invoice --}}
-                        <label for="cr_invoices_1024">SG-01024</label>
-                    </td>
-                    <td> {{-- Date Due --}}
-                        <input type="number" class="form-control" name="date_due[]" value="05/02/2022" disabled>
-                    </td>
-                    <td> {{-- Amount Due --}}
-                        <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="9,645.26" disabled>
-                    </td>
-                    <td> {{-- Description --}}
-                        <input type="text" class="form-control" name="description[]" placeholder="">
-                    </td>
-                    <td> {{-- Discount --}}
-                        <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
-                    </td>
-                    <td> {{-- Amount Paid --}}
-                        <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
-                    </td>
-                    <td class="table-item-content"> {{-- Actions --}}
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="cr_invoices_1024" name="invoices[]">
-                        </div>
-                    </td>
+                    </td> --}}
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td class="text-right table-item-content" colspan="5"><strong>Total Received: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="total_received" placeholder="0.00" disabled>
+                        <input type="text" id="b_total_amount_received" class="form-control-plaintext text-right pr-2" name="total_received" placeholder="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>

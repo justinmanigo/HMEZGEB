@@ -29,7 +29,22 @@
         <span class="text">New</span>
     </button>   
 </div>
-
+@if(session()->has('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session()->get('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+@if(session()->has('danger'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session()->get('danger') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
@@ -122,31 +137,31 @@
                     <div class="form-group row">
                         <label for="e_date_of_birth" class="col-sm-3 col-lg-2 col-form-label">Date of Birth</label>
                         <div class="col-sm-9 col-lg-10">
-                            <input type="date" class="form-control" id="e_date_of_birth" name="date_of_birth" placeholder="">
+                            <input type="date" class="form-control" id="e_date_of_birth" name="date_of_birth" placeholder="" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="e_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_mobile_number" name="mobile_number" placeholder="">
+                            <input type="text" class="form-control" id="e_mobile_number" name="mobile_number" placeholder="" required>
                         </div>
 
                         <label for="e_telephone" class="col-sm-3 col-lg-2 col-form-label">Telephone</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_telephone" name="telephone" placeholder="">
+                            <input type="text" class="form-control" id="e_telephone" name="telephone" placeholder="" required>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="e_email" class="col-sm-3 col-lg-2 col-form-label">Email</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_email" name="email" placeholder="">
+                            <input type="text" class="form-control" id="e_email" name="email" placeholder="" required>
                         </div>
 
                         <label for="e_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_tin_number" name="tin_number" placeholder="">
+                            <input type="text" class="form-control" id="e_tin_number" name="tin_number" placeholder="" required>
                         </div>
                     </div>
 
@@ -161,7 +176,7 @@
 
                         <label for="e_basic_salary" class="col-sm-3 col-lg-2 col-form-label">Basic Salary</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="">
+                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="" required>
                         </div>
                     </div>
 
@@ -227,6 +242,29 @@
         </div>
     </div>
 </div>
+{{-- Delete Overtime --}}
+<div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog" aria-labelledby="modal-employee-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+		<div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+			<div class="modal-body">Are you sure to delete this record?</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" onClick="dismissModel()">Cancel</button>
+				<form id="delete-frm" class="" action="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <script>
     $(document).ready(function () {
@@ -341,5 +379,20 @@
         }
         console.log(_val);
     });
+    function showModel(id) {
+        var frmDelete = document.getElementById("delete-frm");
+        frmDelete.action = 'employee/'+id;
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'block';
+        confirmationModal.classList.remove('fade');
+        confirmationModal.classList.add('show');
+    }
+    
+    function dismissModel() {
+        var confirmationModal = document.getElementById("deleteConfirmationModel");
+        confirmationModal.style.display = 'none';
+        confirmationModal.classList.remove('show');
+        confirmationModal.classList.add('fade');
+    }
 </script>
 @endsection
