@@ -15,18 +15,14 @@ class CreatePurchaseOrdersTable extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('vendor_id');
-            $table->date('date');
-            $table->string('order_number');
+            $table->unsignedBigInteger('payment_reference_id');
+            $table->unsignedBigInteger('order_number')->nullable();
             $table->date('due_date');
             $table->float('sub_total');
-            $table->float('tax');
+            $table->float('tax')->nullable();
             $table->float('grand_total');
-            $table->longText('terms_and_conditions');
-            $table->string('attachment');
             $table->timestamps();
-
-            $table->foreign('vendor_id')->references('id')->on('vendors'); 
+            $table->foreign('payment_reference_id')->references('id')->on('payment_references'); 
         });
     }
 
