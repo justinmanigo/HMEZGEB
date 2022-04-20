@@ -10,7 +10,7 @@ var receipt_select_proforma_tagify = new Tagify(receipt_select_proforma_elm, {
         closeOnSelect: true,
         enabled: 0,
         classname: 'receipts-proforma-list',
-        searchKeys: ['value', ]  // very important to set by which keys to search for suggesttions when typing
+        searchKeys: ['value', 'reference_number']  // very important to set by which keys to search for suggesttions when typing
     },
     templates: {
         tag: proformaTagTemplate,
