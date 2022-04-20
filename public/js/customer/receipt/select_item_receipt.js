@@ -85,19 +85,21 @@ function createReceiptItemEntry(item = undefined)
 
     // Set values if item exists.
     if(item != undefined) {
-        $(`#r_item_${receipt_count}`).val(item.id);
-        $(`#r_item_quantity_${receipt_count}`).val(item.quantity).removeAttr('disabled');
-        $(`#r_item_price_${receipt_count}`).val(parseFloat(item.price).toFixed(2))
-        $(`#r_item_total_${receipt_count}`).val(parseFloat(item.price * item.quantity).toFixed(2))
-
         whitelist = [
             {
-                "value": item.id,
-                "name": item.name,
-                "sale_price": item.price,
+                "value": item.inventory.id,
+                "name": item.inventory.item_name,
+                "sale_price": item.inventory.sale_price,
                 "quantity": item.quantity,
             },
         ];
+        
+        
+        $(`#r_item_${receipt_count}`).val(item.inventory.item_name);
+        $(`#r_item_quantity_${receipt_count}`).val(item.quantity).removeAttr('disabled');
+        $(`#r_item_price_${receipt_count}`).val(parseFloat(item.inventory.sale_price).toFixed(2))
+        $(`#r_item_total_${receipt_count}`).val(parseFloat(item.inventory.sale_price * item.quantity).toFixed(2))
+        
     }
 
     // Create new tagify instance of item selector of newly created row.
