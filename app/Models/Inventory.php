@@ -8,17 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Inventory extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'item_code',
         'item_name',
         'sale_price',
         'purchase_price',
         'quantity',
-        // 'purchase_quantity',
-        // 'sold_quantity',
-        'tax',
-        'default_income_account',
-        'default_expense_account',
+        'tax_id',
+        // 'default_income_account',
+        // 'default_expense_account',
         'inventory_type',
         'picture',
         'description',
@@ -26,7 +25,7 @@ class Inventory extends Model
         'inventoryValue',
         'totalInventory',
     ];
-
+  
     public function receiptItems()
     {
         return $this->hasMany(ReceiptItems::class);
