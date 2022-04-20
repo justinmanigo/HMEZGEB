@@ -1,7 +1,7 @@
-var proforma_select_customer_elm = document.querySelector('#r_proforma');
+var receipt_select_proforma_elm = document.querySelector('#r_proforma');
 
 // initialize Tagify on the above input node reference
-var proforma_select_customer_tagify = new Tagify(proforma_select_customer_elm, {
+var receipt_select_proforma_tagify = new Tagify(receipt_select_proforma_elm, {
     tagTextProp: 'reference_number', // very important since a custom template is used with this property as text
     enforceWhitelist: true,
     mode : "select",
@@ -27,15 +27,15 @@ var proforma_select_customer_tagify = new Tagify(proforma_select_customer_elm, {
     // ]
 })
 
-// proforma_select_customer_tagify.on('dropdown:show dropdown:updated', onDropdownShow)
-proforma_select_customer_tagify.on('dropdown:select', onReceiptProformaSelectSuggestion)
-proforma_select_customer_tagify.on('input', onReceiptProformaInput)
-proforma_select_customer_tagify.on('remove', onReceiptProformaRemove)
+// receipt_select_proforma_tagify.on('dropdown:show dropdown:updated', onDropdownShow)
+receipt_select_proforma_tagify.on('dropdown:select', onReceiptProformaSelectSuggestion)
+receipt_select_proforma_tagify.on('input', onReceiptProformaInput)
+receipt_select_proforma_tagify.on('remove', onReceiptProformaRemove)
 
 var addAllSuggestionsElm;
 
 function onDropdownShow(e){
-    var dropdownContentElm = e.detail.proforma_select_customer_tagify.DOM.dropdown.content;
+    var dropdownContentElm = e.detail.receipt_select_proforma_tagify.DOM.dropdown.content;
 }
 
 function onReceiptProformaSelectSuggestion(e){
@@ -56,8 +56,9 @@ function onReceiptProformaRemove(e){
 }
 
 function onReceiptProformaInput(e) {
+    tagify = e.detail.tagify;
     var value = e.detail.value
-    proforma_select_customer_tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
@@ -66,13 +67,13 @@ function onReceiptProformaInput(e) {
     if(receipt_customer_id != undefined)
     {
         // show loading animation and hide the suggestions dropdown
-        proforma_select_customer_tagify.loading(true).dropdown.hide()
+        tagify.loading(true).dropdown.hide()
     
         fetch(`/ajax/customer/receipt/proforma/search/${receipt_customer_id}/${value}`, {signal:controller.signal})
             .then(RES => RES.json())
             .then(function(newWhitelist){
-                proforma_select_customer_tagify.whitelist = newWhitelist // update whitelist Array in-place
-                proforma_select_customer_tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+                tagify.whitelist = newWhitelist // update whitelist Array in-place
+                tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
             })
     }
 
