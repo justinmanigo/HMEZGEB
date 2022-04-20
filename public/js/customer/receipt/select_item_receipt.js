@@ -111,7 +111,7 @@ function createReceiptItemEntry(item = undefined)
             closeOnSelect: true,
             enabled: 0,
             classname: 'item-list',
-            searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
+            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
             tag: ItemTagTemplate,
