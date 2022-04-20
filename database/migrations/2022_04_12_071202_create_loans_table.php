@@ -19,7 +19,7 @@ class CreateLoansTable extends Migration
             $table->date('date');
             $table->double('loan');
             $table->string('paid_in');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

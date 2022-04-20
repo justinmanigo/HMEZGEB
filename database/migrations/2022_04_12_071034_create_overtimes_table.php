@@ -19,7 +19,7 @@ class CreateOvertimesTable extends Migration
             $table->date('date');  
             $table->time('from');
             $table->time('to');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ class CreateDeductionsTable extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->date('date');
             $table->double('price');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
