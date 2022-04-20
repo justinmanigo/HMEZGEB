@@ -41,7 +41,7 @@ class EmployeeController extends Controller
                 ? null
                 : $request->date_ended_working,
             'emergency_contact_person' => $request->emergency_contact_person,
-            'contact_number' => $request->contact_number,
+            'emergency_contact_number' => $request->contact_number,
         ]);
         return back()->with('success', 'Successfully created an employee record.');
     }
@@ -63,7 +63,7 @@ class EmployeeController extends Controller
             'date_started_working' => $request->date_started_working,
             'date_ended_working' => $request->date_ended_working,
             'emergency_contact_person' => $request->emergency_contact_person,
-            'contact_number' => $request->contact_number,
+            'emergency_contact_number' => $request->contact_number,
         ]);
         return back()->with('success', 'Successfully updated an employee record.');
     }
