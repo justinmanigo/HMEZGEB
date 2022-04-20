@@ -1,4 +1,5 @@
 var receipt_select_customer_elm = document.querySelector('#r_customer');
+var receipt_customer_id = undefined; // used to enable proforma field
 
 // initialize Tagify on the above input node reference
 var receipt_select_customer_tagify = new Tagify(receipt_select_customer_elm, {
@@ -47,6 +48,7 @@ function onDropdownShow(e){
 function onReceiptCustomerSelectSuggestion(e){
     // checks for data of selected customer
     console.log(e.detail.data);
+    receipt_customer_id = e.detail.data.value;
 
     $("#r_customer_id").html(e.detail.data.value)
     $("#r_tin_number").html(e.detail.data.tin_number)
@@ -59,6 +61,12 @@ function onReceiptCustomerRemove(e){
     $("#r_tin_number").html("")
     $("#r_contact_person").html("")
     $("#r_mobile_number").html("")
+  
+    $("#r-proforma-remove").click();
+    if(proforma_select_customer_tagify !== undefined)
+    {
+        proforma_select_customer_tagify.whitelist = null; // reset the whitelist
+    }
 }
 
 function onReceiptCustomerInput(e) {
