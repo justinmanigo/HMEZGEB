@@ -480,6 +480,7 @@ class ReceiptController extends Controller
             ->leftJoin('proformas', 'proformas.receipt_reference_id', '=', 'receipt_references.id')
             ->where('customer_id', $customer->id)
             ->where('type', 'proforma')
+            ->where('status', 'unpaid')
             ->get();
 
         return $proformas;
