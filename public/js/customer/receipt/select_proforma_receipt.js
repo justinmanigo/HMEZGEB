@@ -41,6 +41,31 @@ function onDropdownShow(e){
 function onReceiptProformaSelectSuggestion(e){
     // checks for data of selected customer
     console.log(e.detail.data);
+    let proforma_id = e.detail.data.value;
+
+    request = $.get(`/ajax/customer/receipt/proforma/get/${proforma_id}`);
+    
+    request.done(function(response, textStatus, jqXHR){
+        console.log(response);
+        // Clear item list
+        $("#r_items").html("");
+
+        // Create receipt item entries bearing values from proforma.
+        response.receipt_items.forEach(function(item){
+            // console.log(item);
+
+            createReceiptItemEntry(item);
+        });
+
+        // Compute subtotal & grandtotal
+        calculateReceiptSubTotal();
+        calculateReceiptGrandTotal();
+    });
+    
+    request.fail(function(jqXHR, textStatus, errorThrown){
+        console.log(jqXHR);
+        console.log(errorThrown);
+    });
 
     // $("#r_customer_id").html(e.detail.data.value)
     // $("#r_tin_number").html(e.detail.data.tin_number)

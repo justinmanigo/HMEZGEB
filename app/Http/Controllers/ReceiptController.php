@@ -471,4 +471,16 @@ class ReceiptController extends Controller
 
         return $proformas;
     }
+
+    public function ajaxGetProforma(ReceiptReferences $proforma)
+    {
+        // Load relationships.
+        $proforma->proforma;
+        $proforma->receiptItems;
+        for($i = 0; $i < count($proforma->receiptItems); $i++)
+            $proforma->receiptItems[$i]->inventory;
+
+        // Return response
+        return $proforma;
+    }
 }

@@ -35,7 +35,7 @@ $(document).on('change', '.r_item_quantity', function(event) {
 });
 
 // Creates a Receipt Item Entry on the Table.
-function createReceiptItemEntry() 
+function createReceiptItemEntry(item = undefined) 
 {
     // Increment receipt_count to avoid element conflicts.
     receipt_count++;
@@ -81,6 +81,25 @@ function createReceiptItemEntry()
     // Append template to the table.
     $("#r_items").append(inner)
 
+    var whitelist = [];
+
+    // Set values if item exists.
+    if(item != undefined) {
+        $(`#r_item_${receipt_count}`).val(item.id);
+        $(`#r_item_quantity_${receipt_count}`).val(item.quantity).removeAttr('disabled');
+        $(`#r_item_price_${receipt_count}`).val(parseFloat(item.price).toFixed(2))
+        $(`#r_item_total_${receipt_count}`).val(parseFloat(item.price * item.quantity).toFixed(2))
+
+        whitelist = [
+            {
+                "value": item.id,
+                "name": item.name,
+                "sale_price": item.price,
+                "quantity": item.quantity,
+            },
+        ];
+    }
+
     // Create new tagify instance of item selector of newly created row.
     let elm = document.querySelector(`#r_item_${receipt_count}`);
     let elm_tagify = new Tagify(elm, {
@@ -98,8 +117,8 @@ function createReceiptItemEntry()
             tag: ItemTagTemplate,
             dropdownItem: ItemSuggestionItemTemplate
         },
-        whitelist: [],
-    })
+        whitelist: whitelist,
+    });
 
     // Set events of tagify instance.
     elm_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
