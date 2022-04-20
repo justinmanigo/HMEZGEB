@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Vendors;
 use Illuminate\Http\Request;
+use App\Models\PaymentReferences;
+
 
 class VendorsController extends Controller
 {
@@ -73,6 +75,7 @@ class VendorsController extends Controller
      */
     public function show(Vendors $vendors)
     {
+        $vendors = Customers::all();
         return view('vendors.vendors.vendors',compact('vendors'));
     }
 
@@ -138,4 +141,21 @@ class VendorsController extends Controller
         return redirect('/vendors')->withSuccess('Successfully Deleted');;
     
     }
+
+    public function queryVendors($query)
+    {   
+        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one')
+            ->where('name', 'LIKE', '%' . $query . '%')->get();
+        return $vendors;
+    }
+
+    public function ajaxGetPaymentsToPay(Vendors $vendor)
+    {
+        return PaymentReferences::select('*')
+            ->leftJoin('payments', 'payments.payment_reference_id', '=', 'payment_references.id')
+            ->where('payment_references.type', '=', 'payment')
+            ->where('payment_references.customer_id', '=', $customer->id)
+            ->where('payment_references.status', '!=', 'paid')->get();
+    }
 }
+

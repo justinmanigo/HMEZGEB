@@ -1,4 +1,5 @@
 var receipt_select_customer_elm = document.querySelector('#r_customer');
+var receipt_customer_id = undefined; // used to enable proforma field
 
 // initialize Tagify on the above input node reference
 var receipt_select_customer_tagify = new Tagify(receipt_select_customer_elm, {
@@ -47,18 +48,25 @@ function onDropdownShow(e){
 function onReceiptCustomerSelectSuggestion(e){
     // checks for data of selected customer
     console.log(e.detail.data);
+    receipt_customer_id = e.detail.data.value;
 
-    $("#r_customer_id").val(e.detail.data.value)
-    $("#r_tin_number").val(e.detail.data.tin_number)
-    $("#r_contact_person").val(e.detail.data.contact_person)
-    $("#r_mobile_number").val(e.detail.data.mobile_number)
+    $("#r_customer_id").html(e.detail.data.value)
+    $("#r_tin_number").html(e.detail.data.tin_number)
+    $("#r_contact_person").html(e.detail.data.contact_person)
+    $("#r_mobile_number").html(e.detail.data.mobile_number)
 }
 
 function onReceiptCustomerRemove(e){
-    $("#r_customer_id").val("")
-    $("#r_tin_number").val("")
-    $("#r_contact_person").val("")
-    $("#r_mobile_number").val("")
+    $("#r_customer_id").html("")
+    $("#r_tin_number").html("")
+    $("#r_contact_person").html("")
+    $("#r_mobile_number").html("")
+  
+    $("#r-proforma-remove").click();
+    if(proforma_select_customer_tagify !== undefined)
+    {
+        proforma_select_customer_tagify.whitelist = null; // reset the whitelist
+    }
 }
 
 function onReceiptCustomerInput(e) {

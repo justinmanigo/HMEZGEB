@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLoanTable extends Migration
+class CreateOvertimesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateLoanTable extends Migration
      */
     public function up()
     {
-        Schema::create('loan', function (Blueprint $table) {
+        Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payroll_id');
-            $table->date('date');
-            $table->float('price');
-            $table->float('paid_in');
-            $table->string('description');
-            $table->foreign('payroll_id')->references('id')->on('payrolls');
-
+            $table->unsignedBigInteger('employee_id');
+            $table->date('date');  
+            $table->time('from');
+            $table->time('to');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ class CreateLoanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('loan');
+        Schema::dropIfExists('overtimes');
     }
 }

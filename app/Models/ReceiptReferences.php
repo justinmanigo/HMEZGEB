@@ -52,6 +52,6 @@ class ReceiptReferences extends Model
     }
     public function receiptItems()
     {
-        return $this->hasMany(ReceiptItem::class);
+        return $this->hasMany(ReceiptItem::class, 'receipt_reference_id', 'id');
     }
 }

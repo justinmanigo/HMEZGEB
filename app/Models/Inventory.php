@@ -25,4 +25,10 @@ class Inventory extends Model
         'inventoryValue',
         'totalInventory',
     ];
+  
+    public function receiptItems()
+    {
+        return $this->hasMany(ReceiptItems::class);
+    }
+
 }

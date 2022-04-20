@@ -120,6 +120,19 @@ class ReceiptController extends Controller
             $items[$i] = $item[0];
         }
 
+        // Decode Proforma field
+        $p = json_decode($request->proforma);
+        $proforma = isset($p) ? $p[0] : null;
+
+        // If this transaction is linked to Proforma
+        if(isset($proforma))
+        {
+            ReceiptReferences::where('id', $proforma->value)
+                ->update([
+                    'status' => 'paid'
+                ]);
+        }
+
         // Determine receipt status.
         if($request->grand_total == $request->total_amount_received)
             $status = 'paid';
@@ -163,7 +176,7 @@ class ReceiptController extends Controller
             'withholding' => '0.00', // Temporary Withholding
             'tax' => '0.00', // Temporary Tax value
             'receipt_number' => $request->proforma_number, // Temporary reference number
-            'proforma_id' => null, // Temporary proforma id
+            'proforma_id' => isset($proforma) ? $proforma->value : null, // Test
             'payment_method' => $payment_method,
             'total_amount_received' => $request->total_amount_received
         ]);
@@ -451,5 +464,37 @@ class ReceiptController extends Controller
         $receipt->delete();
   
         return redirect('receipt/')->with('danger', "Successfully deleted customer");
+    }
+
+    /*********** AJAX *************/
+
+    public function ajaxSearchCustomerProforma(Customers $customer, $value)
+    {
+        $proformas = ReceiptReferences::select(
+                'receipt_references.id as value',
+                'receipt_references.reference_number',
+                'receipt_references.date',
+                'proformas.amount',
+                'proformas.due_date',
+            )
+            ->leftJoin('proformas', 'proformas.receipt_reference_id', '=', 'receipt_references.id')
+            ->where('customer_id', $customer->id)
+            ->where('type', 'proforma')
+            ->where('status', 'unpaid')
+            ->get();
+
+        return $proformas;
+    }
+
+    public function ajaxGetProforma(ReceiptReferences $proforma)
+    {
+        // Load relationships.
+        $proforma->proforma;
+        $proforma->receiptItems;
+        for($i = 0; $i < count($proforma->receiptItems); $i++)
+            $proforma->receiptItems[$i]->inventory;
+
+        // Return response
+        return $proforma;
     }
 }

@@ -1,151 +1,177 @@
 <div class="modal-body h6">	
     <div class="row form-group">	
-        {{-- <label for="cars" class="col-form-label col-lg-2">Bill Status:</label>
+        <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+            <h5>Vendor Details:</h5>
+            <div class="form-group row">
+                <label for="b_vendor" class="col-4 col-form-label text-left">Vendor<span class="text-danger ml-1">*</span> :</label>
+                <input class="col-8 col-lg-7" id="b_vendor" name='vendor'>
+                <input type="hidden" id="b_vendor_id" name="vendor_id" value="">
+            </div>
+            {{-- Contact Details --}}
+            <div class="form-group row mb-0">
+                <label for="b_address" class="col-4 col-form-label text-lg-right">Address</label>
+                <input type="text" id="b_address" class="form-control-plaintext col-8 pl-3" placeholder="" name="address" disabled readonly>
+            </div>
+            <div class="form-group row mb-0">
+                <label for="b_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
+                <input type="text" id="b_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
+            </div>
+            <div class="form-group row mb-0">
+                <label for="b_telephone_number" class="col-4 col-form-label text-lg-right">Telephone # :</label>
+                <input type="text" id="b_telephone_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="telephone_number" disabled readonly>
+            </div>
+        </div>
+        
+        <div class="col-12 col-lg-6">
+            <div class="form-group row">
+                <label for="b_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
+                <div class="col-8">
+                    <input type="date" class="form-control" id="b_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="b_due_date" class="col-4 col-form-label text-lg-right">Due Date :</label>
+                <div class="col-8">
+                    <input type="date" class="form-control" id="b_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="b_order_number" class="col-4 col-form-label text-lg-right">Order #<span class="text-danger ml-1">*</span> :</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="b_order_number" name="order_number" placeholder="" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="b_bill_number" class="col-4 col-form-label text-lg-right">Bill # :</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="b_bill_number" name="bill_number" placeholder="">
+                </div>
+            </div>
 
-        <select id="cars" class="form-control col-lg-4">
-        <option value="#" selected disabled hidden>Choose</option>
-        <option value="#">Paid Bill</option>
-        <option value="#">Partially Paid Bill</option>
-        <option value="#">Unpaid Bill</option>
-        </select> --}}
-        <label for="name" class="col-form-label col-lg-2">Vendor name:</label>
-        <input type="text" name="name" required class="form-control col-lg-4">
-        <label for="email" class="col-form-label col-lg-2">Date:</label>
-        <input type="date" name="address" class="form-control col-lg-4">
-    </div>	
-    <div class="row form-group">
-        <label for="email" class="col-form-label col-lg-2">Address:</label>
-        <input type="text" name="city" class="form-control col-lg-4">
-        <label for="email" class="col-form-label col-lg-2">Due date:</label>
-        <input type="date" name="city" class="form-control col-lg-4">
-    </div>
-    <div class="row form-group">
-        <label for="email" class="col-form-label col-lg-2">Contact Person:</label>
-        <input type="text" name="fax" class="form-control col-lg-4">
-        <label for="email" class="col-form-label col-lg-2">Order number:</label>
-        <input type="number" name="tinNum" class="form-control col-lg-4">
-    </div>
-    <div class="form-group row">
-        <label for="email" class="col-form-label col-lg-2">Telephone:</label>
-        <input type="number" name="fax" class="form-control col-lg-4">
-        <label for="email" class="col-form-label col-lg-2">Bill number:</label>
-        <input type="number" name="country" class="form-control col-lg-4">
-    </div>
-{{-- Table --}}
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <th class="thead-actions">Actions</th>
-            <th>Name<span class="text-danger ml-1">*</span></th>
-            <th>Quantity<span class="text-danger ml-1">*</span></th>
-            <th>Price</th>
-            <th>Tax<span class="text-danger ml-1">*</span></th>
-            <th>Total</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                    </button>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-select-item">Select</button>
+        </div>
+    </div> <div class="table-responsive">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <th>Name<span class="text-danger ml-1">*</span></th>
+                <th>Quantity<span class="text-danger ml-1">*</span></th>
+                <th>Price</th>
+                <th>Tax<span class="text-danger ml-1">*</span></th>
+                <th>Total</th>
+                <th class="thead-actions">Actions</th>
+            </thead>
+            <tbody id="b_items">
+                {{-- <tr>
+                    <td>
+                        <div class="input-group">
+                            <input id="b_item" class="b_item" name='item[]'>
+                            <input type="hidden" name="item_id[]" value="">
                         </div>
-                        <input type="text" class="form-control" name="item_name[]" placeholder="Item Name" disabled>
-                        <input type="hidden" name="item_id[]" value="">
-                    </div>
-                </td>
-                <td>
-                    <input type="number" class="form-control" name="quantity[]" placeholder="Enter Quantity" required>
-                </td>
-                <td>
-                    <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
-                </td>
-                <td>
-                    <div class="form-group">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="quantity[]" placeholder="Enter Quantity" required>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+                    </td>
+                    <td>
                         <select class="form-control" name="tax[]">
-                          <option>Sales Tax (15%)</option>
+                            <option>Sales Tax (15%)</option>
                         </select>
-                    </div>
-                </td>
-                <td>
-                    <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="6">
-                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-plus"></i>
-                        </span>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="text-right table-item-content" colspan="5">
-                    <strong>Sub Total: </strong>
-                </td>
-                <td>
-                    <input type="text" class="form-control text-right" name="subtotal" placeholder="0.00" disabled>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-right" colspan="4">Toggle here</td>
-                <td class="text-right table-item-content" ><strong>Add Discount: </strong></td>
-                <td>
-                    <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
-                </td>
-            </tr>
-            <tr>
-                <td class="text-right table-item-content" colspan="5"><strong>Tax: </strong></td>
-                <td>
-                    <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-right table-item-content" colspan="5"><strong>Total: </strong></td>
-                <td>
-                    <input type="text" class="form-control text-right" name="total" placeholder="0.00" disabled>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-right" colspan="4">Toggle here</td>
-                <td class="text-right table-item-content"><strong>Withholding: </strong></td>
-                <td>
-                    <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </button>
+                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-plus"></i>
+                            </span>
+                        </button>
+                    </td>
+                </tr> --}}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-right table-item-content" colspan="4">
+                        <strong>Sub Total: </strong>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control text-right" name="sub_total" id="b_sub_total" placeholder="0.00" value="0.00" readonly>
+                    </td>
+                    <td></td>
+                </tr>
+                {{-- <tr>
+                    <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
+                    <td class="text-right table-item-content"><strong>Discount: </strong></td>
+                    <td>
+                        <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
+                    </td>
+                    <td></td>
+                </tr> --}}
+                {{-- <tr>
+                    <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
+                    <td class="text-right table-item-content"><strong>Withholding: </strong></td>
+                    <td>
+                        <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
+                    </td>
+                    <td></td>
+                </tr> --}}
+                {{-- <tr>
+                    <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
+                    <td>
+                        <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
+                    </td>
+                    <td></td>
+                </tr> --}}
+                {{-- <tr>
+                    <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
+                    <td>
+                        <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
+                    </td>
+                    <td></td>
+                </tr> --}}
+                <tr>
+                    <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
+                    <td>
+                        <input type="text" class="form-control text-right" name="grand_total" id="b_grand_total" placeholder="0.00" value="0.00" readonly>
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
 <div class="row form-group">
     <label for="cars" class="col-form-label col-2">Cash from:</label>
 
-    <select id="cars" class="form-control col-lg-4">
-    <option value="#">Cash on hand</option>
-    <option value="#">sample1</option>
-    <option value="#">Sample2</option>
+    <select id="cars" class="form-control col-lg-4" name="cash_from">
+    <option value="Cash" selected>Cash on hand</option>
+    <option value="sample1">sample1</option>
+    <option value="sample2">Sample2</option>
     </select>
-    <label for="cars" class="col-form-label col-2">Bill type:</label>
+
+    <label for="payment" class="col-form-label col-2">Payment<span class="text-danger ml-1">*</span></label>
+    <input type="text" class="form-control text-right  col-lg-4" id="total_amount_received" name="total_amount_received" placeholder="0.00" required>
 </div>
 
 <div class="form-group row">
-    <label for="r_note" class="col-lg-2 col-form-label">Note:</label>
-    <textarea class="form-control col-lg-4" id="r_note" name="note"></textarea>
+
     <label for="email" class="col-form-label col-lg-2">Attachment:</label>
     <div class="input-group col-md-2 col-lg-4">
         <div class="custom-file">
         <input type="file" class="custom-file-input" id="inputGroupFile03">
-        <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+        <label class="custom-file-label" for="inputGroupFile03" name="attachment">Choose file</label>
         </div>
     </div>
+
+    <label for="b_note" class="col-lg-2 col-form-label">Note:</label>
+    <textarea class="form-control col-lg-4" id="b_note" name="note"></textarea>
+    
 </div>
 
 <hr>

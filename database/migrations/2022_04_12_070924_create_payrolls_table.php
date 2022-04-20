@@ -15,16 +15,6 @@ class CreatePayrollsTable extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_id');
-            $table->date('month');
-            $table->string('note');
-            $table->float('amount');
-            $table->string('pay_status');
-            $table->string('pay_back');
-            $table->string('pay_remarks');
-            $table->string('attachment');
-            $table->foreign('employee_id')->references('id')->on('employees');
-
             $table->timestamps();
         });
     }

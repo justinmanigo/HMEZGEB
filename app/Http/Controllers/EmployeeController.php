@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     /**
-     * Show the employees page of human resource menu.
-     * 
-     * @return \Illuminate\Contracts\Support\Renderable
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -41,7 +41,7 @@ class EmployeeController extends Controller
                 ? null
                 : $request->date_ended_working,
             'emergency_contact_person' => $request->emergency_contact_person,
-            'contact_number' => $request->contact_number,
+            'emergency_contact_number' => $request->contact_number,
         ]);
         return back()->with('success', 'Successfully created an employee record.');
     }
@@ -63,7 +63,7 @@ class EmployeeController extends Controller
             'date_started_working' => $request->date_started_working,
             'date_ended_working' => $request->date_ended_working,
             'emergency_contact_person' => $request->emergency_contact_person,
-            'contact_number' => $request->contact_number,
+            'emergency_contact_number' => $request->contact_number,
         ]);
         return back()->with('success', 'Successfully updated an employee record.');
     }
@@ -80,6 +80,14 @@ class EmployeeController extends Controller
 
     public function ajaxGetEmployee(Employee $employee)
     {
+        return $employee;
+    }
+
+    
+    public function queryEmployees($query)
+    {   
+        $employee = Employee::select('id as value', 'first_name','tin_number')
+            ->where('first_name', 'LIKE', '%' . $query . '%')->get();
         return $employee;
     }
 }

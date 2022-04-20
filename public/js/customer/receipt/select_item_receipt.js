@@ -35,7 +35,7 @@ $(document).on('change', '.r_item_quantity', function(event) {
 });
 
 // Creates a Receipt Item Entry on the Table.
-function createReceiptItemEntry() 
+function createReceiptItemEntry(item = undefined) 
 {
     // Increment receipt_count to avoid element conflicts.
     receipt_count++;
@@ -81,6 +81,27 @@ function createReceiptItemEntry()
     // Append template to the table.
     $("#r_items").append(inner)
 
+    var whitelist = [];
+
+    // Set values if item exists.
+    if(item != undefined) {
+        whitelist = [
+            {
+                "value": item.inventory.id,
+                "name": item.inventory.item_name,
+                "sale_price": item.inventory.sale_price,
+                "quantity": item.quantity,
+            },
+        ];
+        
+        
+        $(`#r_item_${receipt_count}`).val(item.inventory.item_name);
+        $(`#r_item_quantity_${receipt_count}`).val(item.quantity).removeAttr('disabled');
+        $(`#r_item_price_${receipt_count}`).val(parseFloat(item.inventory.sale_price).toFixed(2))
+        $(`#r_item_total_${receipt_count}`).val(parseFloat(item.inventory.sale_price * item.quantity).toFixed(2))
+        
+    }
+
     // Create new tagify instance of item selector of newly created row.
     let elm = document.querySelector(`#r_item_${receipt_count}`);
     let elm_tagify = new Tagify(elm, {
@@ -92,14 +113,14 @@ function createReceiptItemEntry()
             closeOnSelect: true,
             enabled: 0,
             classname: 'item-list',
-            searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
+            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
             tag: ItemTagTemplate,
             dropdownItem: ItemSuggestionItemTemplate
         },
-        whitelist: [],
-    })
+        whitelist: whitelist,
+    });
 
     // Set events of tagify instance.
     elm_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
