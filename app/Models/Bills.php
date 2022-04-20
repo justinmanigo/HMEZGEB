@@ -10,22 +10,32 @@ class Bills extends Model
     use HasFactory;
         
     protected $fillable = [
-        'date',
-        'due_date',
-        'vendor_id',
+        'payment_reference_id',
+        'withholding_payment_id',
         'bill_number',
         'order_number',
+        'due_date',
+        'chart_of_account_id',
         'sub_total',
+        'discount',
         'tax',
         'grand_total',
-        'cash_from',
-        'attachment',
-        'note',
-        'total_amount_received'
+        'withholding',
+        'payment_method',
+        'amount_received',
     ];
-
-        public function vendor()
+        public function paymentReference()
         {
-            return $this->belongsTo(Vendors::class, 'vendor_id');
+            return $this->belongsTo(PaymentReferences::class, 'payment_reference_id');
+        }
+        
+        public function withholdingPayment()
+        {
+            return $this->belongsTo(WithholdingPayments::class, 'withholding_payment_id');
+        }
+
+        public function chartOfAccount()
+        {
+            return $this->belongsTo(ChartOfAccounts::class, 'chart_of_account_id');
         }
 }
