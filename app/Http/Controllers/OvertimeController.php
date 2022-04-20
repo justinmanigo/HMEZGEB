@@ -48,11 +48,9 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
-
         for($i = 0; $i < count($request->employee); $i++)
         {
-        $employee = json_decode($request->employee[$i]);
+            $employee = json_decode($request->employee[$i]);
             $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
             
             // Store
@@ -65,11 +63,6 @@ class OvertimeController extends Controller
             $overtime->save();
         }
         return redirect()->back()->with('success', 'Overtime has been added.');
-        
-        // check polished employee[].
-        // return $e;
-        // return $request->from[0];
-        // return $request->description;
     }
 
     /**
