@@ -221,9 +221,9 @@
                 <form id="form-coa" method="post" action="/settings/coa">
                     @csrf
                     <div class="form-group row">
-                        <label for="coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
+                        <label for="coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="coa_number" name="coa_number">
+                            <input type="text" class="form-control" id="coa_number" name="coa_number" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -246,13 +246,13 @@
                     <div class="form-group row">
                         <label for="coa_bank_account_number" class="col-sm-3 col-lg-2 col-form-label">Bank Account Number<span class="text-danger coa_bank ml-1" style="display:none">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="coa_bank_account_number" name="bank_account_number" disabled>
+                            <input type="text" class="form-control" id="coa_bank_account_number" name="bank_account_number" required disabled>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="coa_bank_branch" class="col-sm-3 col-lg-2 col-form-label">Bank Branch<span class="text-danger coa_bank ml-1" style="display:none">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="coa_bank_branch" name="bank_branch" disabled>
+                            <input type="text" class="form-control" id="coa_bank_branch" name="bank_branch" required disabled>
                         </div>
                     </div>
                     <div class="form-group row">
