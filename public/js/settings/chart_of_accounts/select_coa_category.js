@@ -86,7 +86,7 @@ function onCOASelectCategoryInput(e) {
         // show loading animation and hide the suggestions dropdown
         coa_select_category_tagify.loading(true).dropdown.hide()
     
-        fetch('/select/search/coa_categories/' + value, {signal:controller.signal})
+        fetch(`/ajax/settings/coa_categories/search/${value}`, {signal:controller.signal})
             .then(RES => RES.json())
             .then(function(newWhitelist){
                 coa_select_category_tagify.whitelist = newWhitelist // update whitelist Array in-place
