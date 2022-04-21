@@ -325,6 +325,8 @@ Route::group([
         Route::get('/setting_payrollrules', [SettingPayrollRulesController::class, 'index']);
         Route::post('/payrollrules-income-tax', [SettingPayrollRulesController::class, 'storeIncomeTaxRules'])->name('store_income_tax');
         Route::post('/payrollrules-overtime', [SettingPayrollRulesController::class, 'storeOvertimeRules'])->name('store_overtime');
+        Route::delete('/payrollrules-income-tax/{id}', [SettingPayrollRulesController::class, 'destroy']);
+
 
 
     });
