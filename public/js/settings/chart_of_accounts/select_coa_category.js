@@ -95,11 +95,13 @@ function onCOASelectCategoryInput(e) {
 
 $("#coa_is_bank").change(function() {
     if(this.checked) {
+        $(".coa_bank").show();
         $("#coa_bank_account_number").attr("disabled", false);
         $("#coa_bank_branch").attr("disabled", false);
         $("#coa_bank_account_type").attr("disabled", false);
     }
     else {
+        $(".coa_bank").hide();
         $("#coa_bank_account_number").attr("disabled", true);
         $("#coa_bank_branch").attr("disabled", true);
         $("#coa_bank_account_type").attr("disabled", true);
