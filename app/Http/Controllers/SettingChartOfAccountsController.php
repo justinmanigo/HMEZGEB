@@ -49,6 +49,8 @@ class SettingChartOfAccountsController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
+
         $coa_category = json_decode($request->coa_category, true);
         
         // To get the category_id of coa, use
@@ -61,12 +63,21 @@ class SettingChartOfAccountsController extends Controller
         // TODO: Check if specific COA number already exists.
 
         // Create Chart of Account Entry
-        $coa = ChartOfAccounts::create([
-            'chart_of_account_category_id' => $coa_category[0]['value'],
-            'chart_of_account_no' => $request->coa_number,
-            'name' => $request->coa_name,
-            'current_balance' => $request->coa_beginning_balance,
-        ]);
+        $coa = new ChartOfAccounts();
+        $coa->chart_of_account_category_id = $coa_category[0]['value'];
+        $coa->chart_of_account_no = $request->coa_number;
+        $coa->name = $request->coa_name;
+        $coa->current_balance = $request->coa_beginning_balance;
+
+        // If COA is Cash (id:1) and checkbox is checked.
+        if(isset($request->coa_is_bank) && $coa_category[0]['value'] == 1)
+        {
+            $coa->bank_account_number = $request->bank_account_number;
+            $coa->bank_branch = $request->bank_branch;
+            $coa->bank_account_type = $request->bank_account_type;
+        }
+
+        $coa->save();
 
         // Create Period of Account Entry for $coa
         // TODO: Integrate with Accounting Period later. At the moment, 
