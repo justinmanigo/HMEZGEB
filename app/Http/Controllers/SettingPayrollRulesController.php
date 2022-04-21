@@ -17,7 +17,9 @@ class SettingPayrollRulesController extends Controller
     public function index()
     {
         //
-        return view('settings.payroll_rules.index');
+        // $overtime_payroll_rules = OvertimePayrollRules::all();
+        $income_tax_payroll_rules = IncomeTaxPayrollRules::all();
+        return view('settings.payroll_rules.index' ,compact('income_tax_payroll_rules'));
     }
 
     /**

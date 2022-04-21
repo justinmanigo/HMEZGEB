@@ -46,11 +46,24 @@
                                     </tr>
                                 </thead>
                                 <tbody id="pr_entries">
-                                    {{--  <tr>
-                                            <td scope="row">IF Taxable Income > 10900</td>
+                                    @foreach($income_tax_payroll_rules as $income_tax_payroll_rule)
+                                        <tr>
+                                            <td scope="row">IF Taxable Income ></td>
+                                            <td scope="row"> 
+                                                <div class="d-flex justify-content-between">
+                                                    <input type="text" data-id="${payroll_count}" id="pr_rule_income_${payroll_count}" class="form-control" name="income[]" value="{{$income_tax_payroll_rule->income}}" required>
+                                                </div>
+                                            </td>
                                             <td scope="row">Taxable Income </td>
-                                            <td scope="row">35% </td>
-                                            <td scope="row">1500</td>
+                                            <td scope="row">
+                                                <div class="d-flex justify-content-between">
+                                                    <input type="text" data-id="${payroll_count}" id="pr_rule_rate_${payroll_count}" class="form-control" name="rate[]" style="width:90%" value="{{$income_tax_payroll_rule->rate}}" required>
+                                            -
+                                            </div>
+                                            </td>
+                                            <td scope="row">
+                                                <input type="text" data-id="${payroll_count}" id="pr_rule_deduction_${payroll_count}" class="form-control" name="deduction[]" value="{{$income_tax_payroll_rule->deduction}}" required>
+                                            </td>
                                             <th scope="row">
                                                 <button type="button" class="btn btn-icon btn-danger"
                                                     data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -59,7 +72,10 @@
                                                     </span>
                                                 </button>
                                             </th>
-                                        </tr>--}}
+                                        </tr>
+                                    @endforeach
+
+
 
                                 </tbody>
                             </table>
