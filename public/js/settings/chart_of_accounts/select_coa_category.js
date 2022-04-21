@@ -1,6 +1,7 @@
 var controller;
 var coa_select_category_elm = document.querySelector("#coa_category");
 var coa_select_category_default_items = [];
+var coa_select_category_tagify;
 
 request = $.get(`ajax/settings/coa_categories/search/`);
 request.done(function(response, textStatus, jqXHR){
@@ -11,7 +12,7 @@ request.done(function(response, textStatus, jqXHR){
     console.log(coa_select_category_default_items);
 
     // initialize tagify
-    var coa_select_category_tagify = new Tagify(coa_select_category_elm, {
+    coa_select_category_tagify = new Tagify(coa_select_category_elm, {
         tagTextProp: 'category', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode : "select",
@@ -46,10 +47,23 @@ function onCOASelectCategorySelectSuggestion(e){
     // checks for data of selected customer
     coa_select_category_tagify.whitelist = coa_select_category_default_items;
     console.log(e.detail.data);
+
+    // If Cash, enable checkbox "Is this a Bank Account?"
+    if(e.detail.data.value == 1) 
+        $("#coa_is_bank").removeAttr("disabled");
+    else {
+        if($('#coa_is_bank').is(":checked"))
+            $("#coa_is_bank").click();
+        $("#coa_is_bank").attr("disabled", true);
+    }
 }
 
 function onCOASelectCategoryRemove(e){
     coa_select_category_tagify.whitelist = coa_select_category_default_items;
+    
+    if($('#coa_is_bank').is(":checked"))
+        $("#coa_is_bank").click();
+    $("#coa_is_bank").attr("disabled", true);
 }
 
 function onCOASelectCategoryInput(e) {
@@ -78,3 +92,16 @@ function onCOASelectCategoryInput(e) {
     }
 
 }
+
+$("#coa_is_bank").change(function() {
+    if(this.checked) {
+        $("#coa_bank_account_number").attr("disabled", false);
+        $("#coa_bank_branch").attr("disabled", false);
+        $("#coa_bank_account_type").attr("disabled", false);
+    }
+    else {
+        $("#coa_bank_account_number").attr("disabled", true);
+        $("#coa_bank_branch").attr("disabled", true);
+        $("#coa_bank_account_type").attr("disabled", true);
+    }
+});

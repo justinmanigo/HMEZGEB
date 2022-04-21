@@ -233,7 +233,7 @@
                             <input id="coa_category" name='coa_category'>
                             <div class="form-check mr-3 mt-1">
                                 <input class="form-check-input" id="coa_is_bank" type="checkbox" value="yes" name="coa_is_bank" disabled>
-                                <label class="form-check-label" for="coa_is_bank">Is this a bank account?</label>
+                                <label class="form-check-label" for="coa_is_bank">Is this a Bank account?</label>
                             </div>
                         </div>
                     </div>   
