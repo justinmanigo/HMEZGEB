@@ -339,5 +339,6 @@ Route::group([
         Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
     });
 
+    Route::get('/ajax/settings/coa_categories/search', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
     Route::get('/ajax/settings/coa_categories/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
     Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);

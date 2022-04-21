@@ -143,14 +143,17 @@ class SettingChartOfAccountsController extends Controller
             ->get();
     }
 
-    public function ajaxSearchCategories($query)
+    public function ajaxSearchCategories($query = null)
     {
         $categories = ChartOfAccountCategory::select(
             'id as value', 
             'category',
             'type',
-            'normal_balance')
-            ->where('category', 'LIKE', '%' . $query . '%')->get();
-        return $categories;
+            'normal_balance');
+            
+        if(isset($query))
+            $categories->where('category', 'LIKE', '%' . $query . '%');
+    
+        return $categories->get();
     }
 }
