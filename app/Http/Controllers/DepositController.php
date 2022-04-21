@@ -28,11 +28,13 @@ class DepositController extends Controller
                 'chart_of_accounts.name',
                 'chart_of_accounts.bank_branch',
                 'chart_of_accounts.bank_account_number',
+                'chart_of_accounts.bank_account_type',
                 'chart_of_account_categories.category',
                 'chart_of_account_categories.normal_balance',
             )
             ->leftJoin('chart_of_account_categories', 'chart_of_accounts.chart_of_account_category_id', '=', 'chart_of_account_categories.id')
-            ->where('chart_of_account_categories.category' , '=', 'Cash on Bank')
+            ->where('chart_of_account_categories.category' , '=', 'Cash')
+            ->where('chart_of_accounts.bank_account_number' , '!=', NULL)
             ->where(function($sql) use ($query) {
                 $sql->where('chart_of_accounts.name', 'LIKE', "%{$query}%")
                     ->orWhere('chart_of_accounts.chart_of_account_no', 'LIKE', "%{$query}%")

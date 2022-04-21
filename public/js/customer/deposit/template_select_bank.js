@@ -20,9 +20,12 @@ function bankSuggestionItemTemplate(tagData){
             class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
             tabindex="0"
             role="option">
-            <strong>${tagData.name}</strong><br>
-            <small>COA: <b>${tagData.chart_of_account_no}</b></small><br>
-            <small>Acct No.: <b>${tagData.bank_account_number}</b></small>
+            <strong>${tagData.chart_of_account_no} - ${tagData.name}</strong><br>
+            <p style="font-size:14px;line-height:normal">
+                Branch: <b>${tagData.bank_branch}</b><br>
+                Type: <b>${tagData.bank_account_type == 'savings' ? 'Savings Account' : 'Checking Account'}</b><br>
+                Acct No.: <b>${tagData.bank_account_number}</b><br>
+            </p>
         </div>
     `
 }
