@@ -40,6 +40,7 @@ use App\Http\Controllers\LoanController;
 // Settings
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\SettingChartOfAccountsController;
+use App\Http\Controllers\SettingPayrollRulesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -354,6 +355,12 @@ Route::group([
         Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('tax.update');
         Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('tax.destroy');
         Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
+        // Payroll 
+        Route::get('/setting_payrollrules', [SettingPayrollRulesController::class, 'index']);
+        Route::post('/payrollrules-income-tax', [SettingPayrollRulesController::class, 'storeIncomeTaxRules'])->name('store_income_tax');
+        Route::post('/payrollrules-overtime', [SettingPayrollRulesController::class, 'storeOvertimeRules'])->name('store_overtime');
+        Route::delete('/payrollrules-income-tax/{id}', [SettingPayrollRulesController::class, 'destroy']);
+
     });
 
     Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);

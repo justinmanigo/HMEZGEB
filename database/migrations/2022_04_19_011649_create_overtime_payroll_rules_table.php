@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaxesTable extends Migration
+class CreateOvertimePayrollRulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('overtime_payroll_rules', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->float('percentage');
+            $table->string('working_days');
+            $table->string('working_hours');
+            $table->string('day_rate');
+            $table->string('night_rate');
+            $table->string('holiday_weekend_rate');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateTaxesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('overtime_payroll_rules');
     }
 }
