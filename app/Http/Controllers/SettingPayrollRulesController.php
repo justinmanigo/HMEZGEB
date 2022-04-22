@@ -52,6 +52,8 @@ class SettingPayrollRulesController extends Controller
         //
         // return $request;
 
+        // Delete all records first
+        OvertimePayrollRules::truncate();
         // Store new records
         $overtime_rules = new OvertimePayRollRules();
         $overtime_rules->working_days = $request->working_days;

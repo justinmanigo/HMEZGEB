@@ -148,7 +148,6 @@
                             @csrf
                             <table class="table">
                                 <tbody>
-
                                     @foreach($overtime_payroll_rules as $overtime_payroll_rule)
                                         <tr>
                                             <th scope="row">Hour Rate Circulation from the Basic Salary</th>
@@ -183,9 +182,10 @@
                                                     name="holiday_weekend_rate" readonly="" placeholder="0.00" value="{{$overtime_payroll_rule->holiday_weekend_rate}}">
                                             </td>
                                         </tr>
-                                    @endforeach
+                                        @endforeach
+                                        
                                     <tr>
-                                        <th scope="row">Hour Rate Circulation from the Basic Salary</th>
+                                        <th scope="row">Edit Hour Rate Circulation from the Basic Salary</th>
                                         <td>
                                             <div class="d-flex justify-content-between">
                                                 <p class="w-25 mt-1">[Basic Salary] </p>/
@@ -197,20 +197,21 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Day Rate before 6pm (18:00)</th>
+                                        <th scope="row">Edit Day Rate before 6pm (18:00)</th>
                                         <td> <input type="text" id="day_rate" class="form-control" name="day_rate"
                                                 required placeholder="0.00">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Night Rate after 6pm (18:00)</th>
+                                        <th scope="row">Edit Night Rate after 6pm (18:00)</th>
                                         <td>
                                             <input type="text" id="night_rate" class="form-control" name="night_rate"
                                                 required placeholder="0.00">
+
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Holiday/Weekend Rate</th>
+                                        <th scope="row">Edit Holiday/Weekend Rate</th>
                                         <td>
                                             <input type="text" id="holiday_weekend_rate" class="form-control"
                                                 name="holiday_weekend_rate" required="" placeholder="0.00">
