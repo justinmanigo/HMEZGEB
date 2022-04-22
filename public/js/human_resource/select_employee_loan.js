@@ -35,7 +35,7 @@ function createEmployeeEntry() {
             </div>
         </td>
         <td>
-            <input type="time" data-id="${loan_count}" id="l_price_${loan_count}" class="form-control" name="price[]" required>
+            <input type="text" data-id="${loan_count}" id="l_loan_${loan_count}" class="form-control" name="loan[]" required>
         </td>
         <td>
             <select data-id="${loan_count}" id="l_paid_in_${loan_count}" class="form-control" name="paid_in[]" required>

@@ -14,95 +14,73 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
-        $employees = Employee::all();
-
-        return view('hr.employee.index' , compact('employees'));
+        $employees = Employee::get();
+        return view('hr.employee.index', compact('employees'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
-        $employee = new Employee();
-        $employee->first_name = $request->first_name;
-        $employee->father_name = $request->father_name;
-        $employee->grandfather_name = $request->grandfather_name;
-        $employee->date_of_birth = $request->date_of_birth;
-        $employee->mobile_number = $request->mobile_number;
-        $employee->telephone = $request->telephone;
-        $employee->email = $request->email;
-        $employee->tin_number = $request->tin_number;
-        $employee->type = $request->type;
-        $employee->basic_salary = $request->basic_salary;
-        $employee->date_started_working = $request->date_started_working;
-        $employee->date_ended_working = $request->date_ended_working;
-        $employee->emergency_contact_person = $request->emergency_contact_person;
-        $employee->emergency_contact_number = $request->emergency_contact_number;
-        $employee->save();
-        return redirect('employee/')->with('success', "Successfully added new employee.");
 
+        // return $request;
+        // TODO: Restrictions if any
+
+        // Create Employee
+        Employee::create([
+            'first_name' => $request->first_name,
+            'father_name' => $request->father_name,
+            'given_father_name' => $request->given_father_name,
+            'date_of_birth' => $request->date_of_birth,
+            'mobile_number' => $request->mobile_number,
+            'telephone' => $request->telephone,
+            'email' => $request->email,
+            'tin_number' => $request->tin_number,
+            'type' => $request->type,
+            'basic_salary' => $request->basic_salary,
+            'date_started_working' => $request->date_started_working,
+            'date_ended_working' => $request->is_still_working == 'on'
+                ? null
+                : $request->date_ended_working,
+            'emergency_contact_person' => $request->emergency_contact_person,
+            'emergency_contact_number' => $request->contact_number,
+        ]);
+        return back()->with('success', 'Successfully created an employee record.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Employee $employee)
+    public function update(Employee $employee, Request $request)
     {
-        //
-      
+        // TODO: Restrictions if any
+
+        $employee->update([
+            'first_name' => $request->first_name,
+            'father_name' => $request->father_name,
+            'given_father_name' => $request->given_father_name,
+            'date_of_birth' => $request->date_of_birth,
+            'mobile_number' => $request->mobile_number,
+            'telephone' => $request->telephone,
+            'email' => $request->email,
+            'tin_number' => $request->tin_number,
+            'type' => $request->type,
+            'date_started_working' => $request->date_started_working,
+            'date_ended_working' => $request->date_ended_working,
+            'emergency_contact_person' => $request->emergency_contact_person,
+            'emergency_contact_number' => $request->contact_number,
+        ]);
+        return back()->with('success', 'Successfully updated an employee record.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Employee $employee)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Employee $employee)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Employee  $employee
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Employee $employee)
     {
-        //
+        // TODO: Restrictions if any
+
+        $employee->delete();
+        return back()->with('success', 'Successfully deleted an employee record.');
+    }
+
+    /*======================== */
+
+    public function ajaxGetEmployee(Employee $employee)
+    {
+        return $employee;
     }
 
     

@@ -9,6 +9,11 @@ class JournalVouchers extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'journal_entry_id',
+        'reference_number'
+    ];
+
     public function journalEntry()
     {
         return $this->belongsTo(JournalEntries::class, 'journal_entry_id');

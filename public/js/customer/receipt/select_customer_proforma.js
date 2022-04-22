@@ -62,20 +62,21 @@ function onProformaCustomerRemove(e){
 }
 
 function onProformaCustomerInput(e) {
+    tagify = e.detail.tagify;
     var value = e.detail.value
-    proforma_select_customer_tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    proforma_select_customer_tagify.loading(true).dropdown.hide()
+    tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/customer/' + value, {signal:controller.signal})
         .then(RES => RES.json())
         .then(function(newWhitelist){
-            proforma_select_customer_tagify.whitelist = newWhitelist // update whitelist Array in-place
-            proforma_select_customer_tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
 }

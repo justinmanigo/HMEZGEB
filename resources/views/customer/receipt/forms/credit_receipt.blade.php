@@ -141,32 +141,6 @@
                 <th class="thead-actions">Pay</th>
             </thead>
             <tbody id="cr_receipts_to_pay">
-            
-                <tr>
-                    {{-- <td class="table-item-content">
-                        <label for="cr_invoices_1023">Fs#1023</label>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="date_due[]" value="04/02/2022" disabled>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control inputPrice text-right" name="amount_due[]" value="2,383.94" disabled>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" name="description[] name="reason[]"" placeholder="">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="discount[]" placeholder="0.00">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="amount_paid[]" placeholder="0.00" required>
-                    </td>
-                    <td class="table-item-content">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="cr_invoices_1023" name="invoices[]">
-                        </div>
-                    </td> --}}
-                </tr>
             </tbody>
             <tfoot>
                 <tr>

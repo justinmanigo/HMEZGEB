@@ -175,6 +175,22 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel"
                     aria-labelledby="transactions-tab">
+                    @if(session()->has('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session()->get('success') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+                    @if(session()->has('warning'))
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            {{ session()->get('warning') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
@@ -190,18 +206,19 @@
                                 @foreach($transactions as $transaction)
                       
                                 <tr>
-                                    <td> <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
+                                    <td> 
+                                        {{-- <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
                                         </button>
                                         <button type="button" class="btn btn-danger "
                                         onClick="showModel({!! $transaction->id !!})">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                        </button>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button> --}}
                                     </td>
                                     <td class="table-item-content">{{$transaction->date}}</td>
                                     <td class="table-item-content">{{$transaction->reference_number}}</td>
@@ -233,7 +250,7 @@
                                 @foreach($proformas as $proforma)
                                 <tr>
                                     <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary"
+                                        {{-- <button type="button" class="btn btn-small btn-icon btn-primary"
                                             data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
@@ -241,11 +258,10 @@
                                         </button>
                                         <button type="button" class="btn btn-danger "
                                         onClick="showModel({!! $proforma->id !!})">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                        </button>
-                                        </button>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button> --}}
                                     </td>
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->reference_number}}</td>
@@ -496,63 +512,11 @@ POTENTIAL SOLUTIONS:
     </div>
 </div>
 
-{{-- STACK 2 > Receipt Select Customer --}}
-{{-- To be planned carefully on how can this be implemented across 4 receipt types/modals. --}}
-{{-- <form action="{{route('receipts.receipt.selectCustomer') }}" id="form-select-customer" method="post"
-    enctype="multipart/form-data"> --}}
-    {{-- @csrf --}}
-    {{-- <div class="modal fade" id="modal-select-customer" tabindex="-1" role="dialog"
-        aria-labelledby="modal-receipt-label" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-receipt-label">Select Customer</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @include('customer.receipt.forms.select_customer')
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="sc_btn_select_customers">Select Customer</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- </form> -->
-
-    {{-- STACK 2 > Select Item (Inventory) --}}
-    {{-- To be planned carefully on how can this be implemented across 3 receipt types/modals. --}}
-
-    {{-- <div class="modal fade" id="modal-select-item" tabindex="-1" role="dialog"
-        aria-labelledby="modal-receipt-label" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-receipt-label">Select Item</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @include('customer.receipt.forms.select_item')
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="si_btn_select_item">Select Item</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    <script>
-        $(document).ready(function () {
+<script>
+    $(document).ready(function () {
         $('#dataTables').DataTable();
         $('#dataTables2').DataTable();
         $('.dataTables_filter').addClass('pull-right');
-         
     });
     // https://www.mockaroo.com/
     
@@ -585,5 +549,6 @@ POTENTIAL SOLUTIONS:
     <script src="/js/customer/receipt/select_item_proforma.js"></script>
     <script src="/js/customer/receipt/select_receipt_creditreceipt.js"></script>
 
-
+    <script src="/js/customer/receipt/template_select_proforma.js"></script>
+    <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
     @endsection

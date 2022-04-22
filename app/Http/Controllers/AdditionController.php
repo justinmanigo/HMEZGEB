@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Addition;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class AdditionController extends Controller
@@ -15,7 +16,18 @@ class AdditionController extends Controller
     public function index()
     {
         //
-        return view('hr.addition.index');
+        $additions = Employee::join(
+            'additions',
+            'additions.employee_id',
+            '=',
+            'employees.id'
+        )->select(
+            'additions.id',
+            'additions.date',
+            'employees.first_name',
+            'employees.type',
+        )->get();
+        return view('hr.addition.index' ,compact('additions'));
     }
 
     /**
@@ -37,6 +49,21 @@ class AdditionController extends Controller
     public function store(Request $request)
     {
         //
+
+         for($i = 0; $i < count($request->employee); $i++)
+         {
+         $employee = json_decode($request->employee[$i]);
+             $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
+             
+             // Store
+                $addition = new Addition;
+                $addition->employee_id = $e[$i]->value;
+                $addition->date = $request->date;
+                $addition->price = $request->price[$i];
+                $addition->description = $request->description;
+                $addition->save();
+         }
+         return redirect()->back()->with('success', 'Addition has been added.');
     }
 
     /**
@@ -79,8 +106,12 @@ class AdditionController extends Controller
      * @param  \App\Models\Addition  $addition
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Addition $addition)
+    public function destroy($id)
     {
         //
+        $addition = Addition::find($id);
+        $addition->delete();
+        
+        return redirect('addition/')->with('danger', "Successfully deleted addition");
     }
 }

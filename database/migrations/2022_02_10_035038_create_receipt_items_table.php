@@ -16,7 +16,7 @@ class CreateReceiptItemsTable extends Migration
         Schema::create('receipt_items', function (Blueprint $table) {
             $table->id();
             $table->string('inventory_id');
-            $table->string('receipt_id'); 
+            $table->string('receipt_reference_id'); 
             $table->integer('quantity'); 
             $table->float('price')->nullable();
             $table->float('total_price')->nullable();

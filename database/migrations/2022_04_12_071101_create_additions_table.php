@@ -15,6 +15,10 @@ class CreateAdditionsTable extends Migration
     {
         Schema::create('additions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('employee_id');
+            $table->date('date');  
+            $table->double('price');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

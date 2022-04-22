@@ -33,9 +33,4 @@ class Receipts extends Model
     {
         return $this->belongsTo(Proformas::class, 'proforma_id');
     }
-
-    public function receiptItems()
-    {
-        return $this->hasMany(ReceiptItem::class);
-    }
 }

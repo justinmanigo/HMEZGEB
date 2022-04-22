@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\JournalVouchers;
+use App\Models\JournalEntries;
+use App\Models\JournalPostings;
+use App\Models\ChartOfAccounts;
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
+use App\Actions\CreateJournalVoucher;
 use Illuminate\Http\Request;
 
 class JournalVouchersController extends Controller
@@ -14,7 +20,21 @@ class JournalVouchersController extends Controller
      */
     public function index()
     {
-        return view('journals.index');
+        $journalVouchers = JournalVouchers::get();
+        
+        for($i = 0; $i < count($journalVouchers); $i++)
+        {
+            $journalVouchers[$i]->journalEntry->journalPostings;
+            $totalAmount[$i] = $journalVouchers[$i]->journalEntry->journalPostings->where('type', '=', 'debit')->sum('amount');
+        }
+        // return $journalVouchers;
+
+
+
+        return view('journals.index', [
+            'journalVouchers' => $journalVouchers,
+            'totalAmount' => isset($totalAmount) ? $totalAmount : [],
+        ]);
     }
 
     /**
@@ -35,18 +55,46 @@ class JournalVouchersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $journal_entry = CreateJournalEntry::run($request->date, $request->notes);
+        $journal_voucher = CreateJournalVoucher::run($journal_entry->id, $request->reference_number);
+
+        CreateJournalPostings::run($journal_entry, $request->debit_accounts, $request->debit_amount, $request->credit_accounts, $request->credit_amount);
+
+        return redirect()->route('journals.index')->with('success', 'Successfully created a journal voucher.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\JournalVouchers  $journalVouchers
+     * @param  \App\Models\JournalVouchers  $journalVoucher
      * @return \Illuminate\Http\Response
      */
-    public function show(JournalVouchers $journalVouchers)
+    public function show(JournalVouchers $journalVoucher)
     {
-        //
+        // Call relationships.
+        $journalVoucher->journalEntry->journalPostings;
+
+        // Initialize total values.
+        $totalDebit = 0;
+        $totalCredit = 0;
+
+        for($i = 0; $i < count($journalVoucher->journalEntry->journalPostings); $i++)
+        {
+            // Call inner relationships each.
+            $journalVoucher->journalEntry->journalPostings[$i]->chartOfAccount;
+
+            // Accumulate total
+            if($journalVoucher->journalEntry->journalPostings[$i]->type == 'debit')
+                $totalDebit += $journalVoucher->journalEntry->journalPostings[$i]->amount;
+            else if($journalVoucher->journalEntry->journalPostings[$i]->type == 'credit')
+                $totalCredit += $journalVoucher->journalEntry->journalPostings[$i]->amount;
+        }
+        
+        return view('journals.show', [
+            'journalVoucher' => $journalVoucher,
+            'totalDebit' => $totalDebit,
+            'totalCredit' => $totalCredit,
+        ]);
     }
 
     /**

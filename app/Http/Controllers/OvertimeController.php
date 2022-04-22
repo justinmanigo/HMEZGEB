@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Overtime;
 use Illuminate\Http\Request;
+
 
 class OvertimeController extends Controller
 {
@@ -14,8 +16,18 @@ class OvertimeController extends Controller
      */
     public function index()
     {
-                //
-        return view('hr.overtime.index');
+        $overtimes = Employee::join(
+            'overtimes',
+            'overtimes.employee_id',
+            '=',
+            'employees.id'
+        )->select(
+            'overtimes.id',
+            'overtimes.date',
+            'employees.first_name',
+            'employees.type',
+        )->get();
+        return view('hr.overtime.index', compact('overtimes'));
     }
 
     /**
@@ -36,7 +48,21 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        for($i = 0; $i < count($request->employee); $i++)
+        {
+            $employee = json_decode($request->employee[$i]);
+            $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
+            
+            // Store
+            $overtime = new Overtime;
+            $overtime->employee_id = $e[$i]->value;
+            $overtime->date = $request->date;
+            $overtime->from = $request->from[$i];
+            $overtime->to = $request->to[$i];
+            $overtime->description = $request->description;
+            $overtime->save();
+        }
+        return redirect()->back()->with('success', 'Overtime has been added.');
     }
 
     /**
@@ -79,8 +105,12 @@ class OvertimeController extends Controller
      * @param  \App\Models\Overtime  $overtime
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Overtime $overtime)
+    public function destroy($id)
     {
-        //
+        // Delete
+        $overtime = Overtime::find($id);
+        $overtime->delete();
+        
+        return redirect('overtime/')->with('danger', "Successfully deleted overtime");
     }
 }

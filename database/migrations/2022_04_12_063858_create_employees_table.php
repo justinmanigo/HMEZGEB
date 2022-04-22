@@ -28,7 +28,7 @@ class CreateEmployeesTable extends Migration
             $table->date('date_started_working');
             // is this column type is it date or string
             // $table->date('date_ended_working')->default('still_working');
-            $table->string('date_ended_working');
+            $table->date('date_ended_working')->nullable();
             $table->string('emergency_contact_person');
             $table->string('emergency_contact_number');
             $table->timestamps();

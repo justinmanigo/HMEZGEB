@@ -15,6 +15,11 @@ class CreateOvertimesTable extends Migration
     {
         Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('employee_id');
+            $table->date('date');  
+            $table->time('from');
+            $table->time('to');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

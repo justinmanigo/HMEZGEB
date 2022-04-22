@@ -38,6 +38,7 @@ use App\Http\Controllers\DeductionController;
 use App\Http\Controllers\LoanController;
 
 // Settings
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\SettingChartOfAccountsController;
 use App\Http\Controllers\SettingPayrollRulesController;
 /*
@@ -113,7 +114,9 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
         Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
 
-        
+        /** AJAX Calls */
+        Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
+        Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);
     });
 
     Route::group([
@@ -219,7 +222,9 @@ Route::post('/userlogin', function (Request $request){
       'as'=>'journals.'
   ], function(){ 
 
-      Route::get('/journals', [JournalVouchersController::class, 'index']);
+      Route::get('/journals', [JournalVouchersController::class, 'index'])->name('index');
+      Route::get('/journals/{journalVoucher}', [JournalVouchersController::class, 'show'])->name('show');
+      Route::post('/journals', [JournalVouchersController::class, 'store'])->name('store');
   });
 
  
@@ -253,9 +258,12 @@ Route::group([
     Route::group([
         'as' => 'employees.'
     ], function(){
-        Route::get('/employee', [EmployeeController::class, 'index']);
-        Route::post('/employee', [EmployeeController::class, 'store']); 
-
+        Route::get('/employee', [EmployeeController::class, 'index'])->name('index');
+        Route::post('/employee', [EmployeeController::class, 'store'])->name('store');
+        Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
+        Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
+        Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
+        Route::get('/employee/{id}', [EmployeeController::class, 'edit']);
         Route::get('/select/search/employee/{query}', [EmployeeController::class, 'queryEmployees']);
 
     });
@@ -264,6 +272,8 @@ Route::group([
         'as' => 'overtime.'
     ], function(){
         Route::get('/overtime', [OvertimeController::class, 'index']);
+        Route::post('/overtime', [OvertimeController::class, 'store'])->name('store');
+        Route::delete('/overtime/{id}', [OvertimeController::class, 'destroy']);
 
     });
 
@@ -271,13 +281,18 @@ Route::group([
         'as' => 'additions.'
     ], function(){
         Route::get('/addition', [AdditionController::class, 'index']);
-
+        Route::post('/addition', [AdditionController::class, 'store'])->name('store');
+        Route::delete('/addition/{id}', [AdditionController::class, 'destroy']);
+        
     });
 
     Route::group([
         'as' => 'deductions.'
     ], function(){
         Route::get('/deduction', [DeductionController::class, 'index']);
+        Route::post('/deduction', [DeductionController::class, 'store'])->name('store');
+        Route::delete('/deduction/{id}', [DeductionController::class, 'destroy']);
+
 
     });
 
@@ -285,6 +300,9 @@ Route::group([
         'as' => 'loans.'
     ], function(){
         Route::get('/loan', [LoanController::class, 'index']);
+        Route::post('/loan', [LoanController::class, 'store'])->name('store');
+        Route::delete('/loan/{id}', [LoanController::class, 'destroy']);
+
 
     });
 
@@ -310,23 +328,39 @@ Route::group([
     // })->name('theme');
     Route::view('/company-info', 'settings.company_info.index')->name('company-info');
     Route::view('/users', 'settings.users.index')->name('users');
-    Route::view('/taxes', 'settings.taxes.index')->name('taxes');
+    // Route::view('/taxes', 'settings.taxes.index')->name('taxes');
+
+    
+
     Route::view('/withholding', 'settings.withholding.index')->name('withholding');
     Route::view('/themes', 'settings.themes.index')->name('themes');
 
     Route::view('/setting_inventory', 'settings.inventory.index')->name('setting_inventory');
     Route::view('/setting_defaults', 'settings.defaults.index')->name('setting_defaults');    
-   
+    // Settings
     Route::group([
         'as' => 'settings.'
-    ], function(){
-        Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
+    ], function() {
 
         Route::get('/setting_payrollrules', [SettingPayrollRulesController::class, 'index']);
         Route::post('/payrollrules-income-tax', [SettingPayrollRulesController::class, 'storeIncomeTaxRules'])->name('store_income_tax');
         Route::post('/payrollrules-overtime', [SettingPayrollRulesController::class, 'storeOvertimeRules'])->name('store_overtime');
         Route::delete('/payrollrules-income-tax/{id}', [SettingPayrollRulesController::class, 'destroy']);
+        // Chart of Accounts
+        Route::get('/setting_chartofaccounts', [SettingChartofAccountsController::class, 'index']);
+        
+        Route::get('/ajax/settings/coa/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCOA']);
 
+        // Taxes
+        Route::get('/settings/taxes', [TaxController::class, 'index'])->name('tax.index');
+        Route::post('/settings/taxes', [TaxController::class, 'store'])->name('tax.store');
+        Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('tax.update');
+        Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('tax.destroy');
+        Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
+        Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+        Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);
+    
 
 
     });
+

@@ -10,14 +10,19 @@ class ReceiptItem extends Model
     use HasFactory;
     protected $fillable = [
         'inventory_id',
-        'receipt_id',
+        'receipt_reference_id',
         'quantity',
         'price',
         'total_price'
     ];
 
-    public function receipt()
+    public function receiptReference()
     {
-        return $this->belongsTo(Receipts::class);
+        return $this->belongsTo(ReceiptReferences::class);
+    }
+
+    public function inventory()
+    {
+        return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
     }
 }

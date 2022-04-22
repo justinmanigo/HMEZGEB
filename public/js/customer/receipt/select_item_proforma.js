@@ -31,8 +31,6 @@ $(document).on('change', '.p_item_quantity', function(event) {
     $(`#p_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
 
     // Update overall total
-    item_idx = getproformaItemIndex(id);
-    proforma_items[item_idx].total_price = sale_price * quantity;
     calculateproformaSubTotal();
     calculateproformaGrandTotal();
 });
@@ -64,7 +62,7 @@ function createproformaItemEntry()
             </select>
         </td>
         <td>
-            <input type="text" id="p_item_total_${proforma_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
+            <input type="text" id="p_item_total_${proforma_count}" class="form-control text-right p_item_total" name="total[]" placeholder="0.00" disabled>
         </td>
         <td>
             <button type="button" data-id="${proforma_count}" id="p_item_delete_${proforma_count}" class="btn btn-icon btn-danger p_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -114,8 +112,6 @@ function createproformaItemEntry()
     let item_entry = {
         "entry_id": proforma_count,
         "tagify": elm_tagify,
-        "sale_price": 0,
-        "total_price": 0,
         "value": null,
     }
 
@@ -174,8 +170,14 @@ function getproformaItemIndex(entry_id)
 function calculateproformaSubTotal()
 {
     subtotal = 0;
-    for(i = 0; i < proforma_items.length; i++)
-        subtotal += proforma_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".p_item_total");
+    console.log("Calculate Proforma Subtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        subtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#p_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
@@ -183,8 +185,14 @@ function calculateproformaSubTotal()
 function calculateproformaGrandTotal()
 {
     grandtotal = 0;
-    for(i = 0; i < proforma_items.length; i++)
-    grandtotal += proforma_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".p_item_total");
+    console.log("Calculate Proforma Grandtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        grandtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#p_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
@@ -208,10 +216,9 @@ function onproformaItemSelectSuggestion(e) {
     console.log($(`#p_sub_total`).val())
     console.log()
     
-    // Add all item total to subtotal
-    $(`#p_sub_total`).val(parseFloat(parseFloat($(`#p_sub_total`).val()) + parseFloat($(`#p_item_total_${id}`).val())).toFixed(2))
-    $(`#p_grand_total`).val(parseFloat(parseFloat($(`#p_grand_total`).val()) + parseFloat($(`#p_item_total_${id}`).val())).toFixed(2))
-
+    // Recalculate total
+    calculateproformaSubTotal();
+    calculateproformaGrandTotal();
 }
 
 function onproformaItemRemove(e) {
@@ -229,34 +236,24 @@ function onproformaItemRemove(e) {
 }
 
 function onproformaItemInput(e) {
-    console.log(e.detail);
-    console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
-    var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
     var value = e.detail.value;
-    var tagify;
-
-    console.log(proforma_items);
-    entry_obj = getproformaItemEntry(entry_id);
-
-    console.log("Obtained value from array");
-    console.log(tagify);
+    var tagify = e.detail.tagify;
     
-    entry_obj.tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    entry_obj.tagify.loading(true).dropdown.hide()
+    tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/inventory/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
         .then(function (newWhitelist) {
-            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
-            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
 }

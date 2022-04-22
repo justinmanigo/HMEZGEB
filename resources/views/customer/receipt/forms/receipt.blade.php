@@ -8,17 +8,17 @@
                 <input type="hidden" id="r_customer_id" name="customer_id" value="">
             </div>
             {{-- Contact Details --}}
-            <div class="form-group row mb-0">
-                <label for="r_tin_number" class="col-4 col-form-label text-lg-right">Tin # :</label>
-                <input type="text" id="r_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="tin_number" disabled readonly>
+            <div class="form-group row m-0">
+                <p class="col-4 text-lg-right p-0 m-0">Tin # :</p>
+                <p class="col-8 pl-3 p-0 m-0" id="r_tin_number"></p>
             </div>
-            <div class="form-group row mb-0">
-                <label for="r_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
-                <input type="text" id="r_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
+            <div class="form-group row m-0">
+                <p class="col-4 text-lg-right p-0 m-0">Contact Person :</p>
+                <p class="col-8 pl-3 p-0 m-0" id="r_contact_person"></p>
             </div>
-            <div class="form-group row mb-0">
-                <label for="r_mobile_number" class="col-4 col-form-label text-lg-right">Contact # :</label>
-                <input type="text" id="r_mobile_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="mobile_number" disabled readonly>
+            <div class="form-group row m-0">
+                <p class="col-4 text-lg-right p-0 m-0">Contact # :</p>
+                <p class="col-8 pl-3 p-0 m-0" id="r_mobile_number"></p>
             </div>
         </div>
 
@@ -36,9 +36,9 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="r_proforma_number" class="col-4 col-form-label text-lg-right">Proforma # :</label>
+                <label for="r_proforma" class="col-4 col-form-label text-lg-right">Proforma # :</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" id="r_proforma_number" name="proforma_number" placeholder="">
+                    <input type="text" id="r_proforma" name="proforma">
                 </div>
             </div>
             <div class="form-group row">
@@ -67,40 +67,6 @@
                 <th class="thead-actions">Actions</th>
             </thead>
             <tbody id="r_items">
-                {{-- <tr>
-                    <td>
-                        <div class="input-group">
-                            <input id="r_item" class="r_item" name='item[]'>
-                            <input type="hidden" name="item_id[]" value="">
-                        </div>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="quantity[]" placeholder="Enter Quantity" required>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
-                    </td>
-                    <td>
-                        <select class="form-control" name="tax[]">
-                            <option>Sales Tax (15%)</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </button>
-                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                        </button>
-                    </td>
-                </tr> --}}
             </tbody>
             <tfoot>
                 <tr>

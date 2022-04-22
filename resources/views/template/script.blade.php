@@ -26,6 +26,11 @@
         });
     </script>
 
+    {{-- The following script will allow abortController to work. --}}
+    <script>
+        var controller;
+    </script>
+
        <!-- Dump all dynamic scripts into template -->
         @stack('scripts')
  

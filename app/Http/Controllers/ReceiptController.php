@@ -120,6 +120,19 @@ class ReceiptController extends Controller
             $items[$i] = $item[0];
         }
 
+        // Decode Proforma field
+        $p = json_decode($request->proforma);
+        $proforma = isset($p) ? $p[0] : null;
+
+        // If this transaction is linked to Proforma
+        if(isset($proforma))
+        {
+            ReceiptReferences::where('id', $proforma->value)
+                ->update([
+                    'status' => 'paid'
+                ]);
+        }
+
         // Determine receipt status.
         if($request->grand_total == $request->total_amount_received)
             $status = 'paid';
@@ -145,7 +158,7 @@ class ReceiptController extends Controller
         }
         
         // Create child database entry
-        if($request->grand_total==$request->total_amount_received)
+        if($request->grand_total == $request->total_amount_received)
             $payment_method = 'cash';
         else
             $payment_method = 'credit';
@@ -163,7 +176,7 @@ class ReceiptController extends Controller
             'withholding' => '0.00', // Temporary Withholding
             'tax' => '0.00', // Temporary Tax value
             'receipt_number' => $request->proforma_number, // Temporary reference number
-            'proforma_id' => null, // Temporary proforma id
+            'proforma_id' => isset($proforma) ? $proforma->value : null, // Test
             'payment_method' => $payment_method,
             'total_amount_received' => $request->total_amount_received
         ]);
@@ -173,7 +186,7 @@ class ReceiptController extends Controller
         {
             ReceiptItem::create([
                 'inventory_id' => $items[$i]->value,
-                'receipt_id' => $receipt->id,
+                'receipt_reference_id' => $reference->id,
                 'quantity' => $request->quantity[$i],
                 'price' => $items[$i]->sale_price,
                 'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
@@ -230,34 +243,42 @@ class ReceiptController extends Controller
 
         // Update Receipts to Pay
         $c = 0;
-        for($i = 0; $i < count($request->receipt_reference_id); $i++)
+        if(isset($request->is_paid))
         {
-            if(!$request->is_paid[$i]) continue;
-
-            // Get receipt
-            $receipt = Receipts::leftJoin('receipt_references', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
-                ->where('receipts.receipt_reference_id', '=', $request->receipt_reference_id[$i])->first();
-
-            // return $receipt;
-
-            $receipt->total_amount_received += $request->amount_paid[$i];
-            if($receipt->total_amount_received >= $receipt->grand_total)
+            for($i = 0; $i < count($request->receipt_reference_id); $i++)
             {
-                ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                    ->update(['status' => 'paid']);
-            }
-            else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0)
-            {
-                ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                    ->update(['status' => 'partially_paid']);
-            }
-            else if($receipt->status == 'paid')
-            {
-                continue;
-            }
+                // If to pay wasn't checked for certain id, skip.
+                if(!in_array($request->receipt_reference_id[$i], $request->is_paid))
+                    continue;
+    
+                // Get receipt
+                $receipt = Receipts::leftJoin('receipt_references', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+                    ->where('receipts.receipt_reference_id', '=', $request->receipt_reference_id[$i])->first();
+    
+                // return $receipt;
 
-            $receipt->save();
-            $c++;
+                // If amount paid wasn't even set, skip.
+                if($request->amount_paid[$i] <= 0) continue;
+    
+                $receipt->total_amount_received += $request->amount_paid[$i];
+                if($receipt->total_amount_received >= $receipt->grand_total)
+                {
+                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
+                        ->update(['status' => 'paid']);
+                }
+                else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0)
+                {
+                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
+                        ->update(['status' => 'partially_paid']);
+                }
+                else if($receipt->status == 'paid')
+                {
+                    continue;
+                }
+    
+                $receipt->save();
+                $c++;
+            }
         }
 
         if($c > 0) {
@@ -286,64 +307,78 @@ class ReceiptController extends Controller
                 'attachment' => isset($fileAttachment) ? $fileAttachment : null,
             ]);
             
+            $messageType = 'success';
             $messageContent = 'Credit Receipt has been added successfully.';
         }
         else {
+            $messageType = 'warning';
             $messageContent = 'There are no receipts to pay.';
         }
         
-        return redirect()->route('receipts.receipt.index')->with('success', $messageContent);
+        return redirect()->route('receipts.receipt.index')->with($messageType, $messageContent);
 
     }
 
     public function storeProforma(Request $request)
     {
-        // if($request->grand_total==$request->total_amount_received)
-        // {
-        //     $status = 'paid';
-        // }
-        // if($request->grand_total>$request->total_amount_received)
-        // {
-        //     $status = 'partially_paid';
-        // }
-        // else
-        // {
-            // Temporary status
-            $status = 'unpaid';
-        // }
+        // Decode json of item tagify fields.
+        for($i = 0; $i < count($request->item); $i++)
+        {
+            $item = json_decode($request->item[$i]);
 
-            // Receipt References
-            $reference = ReceiptReferences::create([
-                'customer_id' => $request->customer_id,
-                // Temporary Proforma
-                'reference_number' => $request->proforma_number,
-                'date' => $request->date,
-                'type' => 'proforma',
-                'is_void' => 'no',
-                'status' => $status
-            ]);
+            // Resulting json_decode will turn into an array of
+            // object, thus it has to be merged.
+            $items[$i] = $item[0];
+        }
+        
+        // Temporary status
+        $status = 'unpaid';
 
-            // Create child database entry
-            if($reference)        
-            {
-                if($request->attachment) {
-                    $fileAttachment = time().'.'.$request->attachment->extension();  
-                    $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
-                }
+        // Receipt References
+        $reference = ReceiptReferences::create([
+            'customer_id' => $request->customer_id,
+            // Temporary Proforma
+            'reference_number' => $request->proforma_number,
+            'date' => $request->date,
+            'type' => 'proforma',
+            'is_void' => 'no',
+            'status' => $status
+        ]);
 
-                $reference->id;
-                $proformas = Proformas::create([
-                    'receipt_reference_id' => $reference->id,
-                    'proforma_number' => $request->proforma_number,
-                    'due_date' => $request->due_date,
-                    'amount' => $request->grand_total,
-                    'terms_and_conditions' => $request->terms_and_conditions,
-                    // image upload
-                    'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-                ]);
-                return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+        // Create child database entry
+        if($reference)        
+        {
+            if($request->attachment) {
+                $fileAttachment = time().'.'.$request->attachment->extension();  
+                $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
             }
-     
+
+            $reference->id;
+            $proformas = Proformas::create([
+                'receipt_reference_id' => $reference->id,
+                'proforma_number' => $request->proforma_number,
+                'due_date' => $request->due_date,
+                'amount' => $request->grand_total,
+                'terms_and_conditions' => $request->terms_and_conditions,
+                // image upload
+                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+            ]);
+        }
+
+        // TODO: Merge with ReceiptItems (use ReceiptReference instead of ReceiptId for Receipts)
+        // Create Receipt Item Records
+        for($i = 0; $i < count($items); $i++)
+        {
+            ReceiptItem::create([
+                'inventory_id' => $items[$i]->value,
+                'receipt_reference_id' => $reference->id,
+                'quantity' => $request->quantity[$i],
+                'price' => $items[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+            ]);
+        }
+        
+        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
 
     }
 
@@ -429,5 +464,37 @@ class ReceiptController extends Controller
         $receipt->delete();
   
         return redirect('receipt/')->with('danger', "Successfully deleted customer");
+    }
+
+    /*********** AJAX *************/
+
+    public function ajaxSearchCustomerProforma(Customers $customer, $value)
+    {
+        $proformas = ReceiptReferences::select(
+                'receipt_references.id as value',
+                'receipt_references.reference_number',
+                'receipt_references.date',
+                'proformas.amount',
+                'proformas.due_date',
+            )
+            ->leftJoin('proformas', 'proformas.receipt_reference_id', '=', 'receipt_references.id')
+            ->where('customer_id', $customer->id)
+            ->where('type', 'proforma')
+            ->where('status', 'unpaid')
+            ->get();
+
+        return $proformas;
+    }
+
+    public function ajaxGetProforma(ReceiptReferences $proforma)
+    {
+        // Load relationships.
+        $proforma->proforma;
+        $proforma->receiptItems;
+        for($i = 0; $i < count($proforma->receiptItems); $i++)
+            $proforma->receiptItems[$i]->inventory;
+
+        // Return response
+        return $proforma;
     }
 }

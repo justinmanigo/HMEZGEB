@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf14086919a839fe740e00554e4baff6",
+    "content-hash": "8ddc643f48222c3546ca4587be5c4e82",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -959,16 +959,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.7",
+            "version": "v8.83.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "0706abf5c99d3b14149fcf79c95074dadd40b203"
+                "reference": "cf430301ad17656b3d918995bcdd0454c3c119b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/0706abf5c99d3b14149fcf79c95074dadd40b203",
-                "reference": "0706abf5c99d3b14149fcf79c95074dadd40b203",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/cf430301ad17656b3d918995bcdd0454c3c119b9",
+                "reference": "cf430301ad17656b3d918995bcdd0454c3c119b9",
                 "shasum": ""
             },
             "require": {
@@ -1128,20 +1128,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-04-05T15:08:10+00:00"
+            "time": "2022-04-12T13:49:56+00:00"
         },
         {
             "name": "laravel/sanctum",
-            "version": "v2.15.0",
+            "version": "v2.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sanctum.git",
-                "reference": "5be160413b6f37dcf8758663edeab12d0e806f56"
+                "reference": "31fbe6f85aee080c4dc2f9b03dc6dd5d0ee72473"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sanctum/zipball/5be160413b6f37dcf8758663edeab12d0e806f56",
-                "reference": "5be160413b6f37dcf8758663edeab12d0e806f56",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/31fbe6f85aee080c4dc2f9b03dc6dd5d0ee72473",
+                "reference": "31fbe6f85aee080c4dc2f9b03dc6dd5d0ee72473",
                 "shasum": ""
             },
             "require": {
@@ -1193,7 +1193,7 @@
                 "issues": "https://github.com/laravel/sanctum/issues",
                 "source": "https://github.com/laravel/sanctum"
             },
-            "time": "2022-03-28T13:53:05+00:00"
+            "time": "2022-04-08T13:39:49+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -1667,16 +1667,16 @@
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.10.0",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "3e4a35d756eedc67096f30240a68a3149120dae7"
+                "reference": "ff6248ea87a9f116e78edd6002e39e5128a0d4dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/3e4a35d756eedc67096f30240a68a3149120dae7",
-                "reference": "3e4a35d756eedc67096f30240a68a3149120dae7",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ff6248ea87a9f116e78edd6002e39e5128a0d4dd",
+                "reference": "ff6248ea87a9f116e78edd6002e39e5128a0d4dd",
                 "shasum": ""
             },
             "require": {
@@ -1707,7 +1707,7 @@
             "description": "Mime-type detection for Flysystem",
             "support": {
                 "issues": "https://github.com/thephpleague/mime-type-detection/issues",
-                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.10.0"
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.11.0"
             },
             "funding": [
                 {
@@ -1719,7 +1719,154 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-11T12:49:04+00:00"
+            "time": "2022-04-17T13:12:02+00:00"
+        },
+        {
+            "name": "lorisleiva/laravel-actions",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lorisleiva/laravel-actions.git",
+                "reference": "4e60c9fbdfcea7d9977d882f3104c8996b43c169"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lorisleiva/laravel-actions/zipball/4e60c9fbdfcea7d9977d882f3104c8996b43c169",
+                "reference": "4e60c9fbdfcea7d9977d882f3104c8996b43c169",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.15|^9.0",
+                "lorisleiva/lody": "^0.3.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.2",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lorisleiva\\Actions\\ActionServiceProvider"
+                    ],
+                    "aliases": {
+                        "Action": "Lorisleiva\\Actions\\Facades\\Actions"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lorisleiva\\Actions\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Loris Leiva",
+                    "email": "loris.leiva@gmail.com",
+                    "homepage": "https://lorisleiva.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel components that take care of one specific task",
+            "homepage": "https://github.com/lorisleiva/laravel-actions",
+            "keywords": [
+                "action",
+                "command",
+                "component",
+                "controller",
+                "job",
+                "laravel",
+                "object"
+            ],
+            "support": {
+                "issues": "https://github.com/lorisleiva/laravel-actions/issues",
+                "source": "https://github.com/lorisleiva/laravel-actions/tree/v2.4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/lorisleiva",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-02-27T15:30:59+00:00"
+        },
+        {
+            "name": "lorisleiva/lody",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lorisleiva/lody.git",
+                "reference": "a69b2e5e4e63a07171ace00cfc262bd1c5a311ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lorisleiva/lody/zipball/a69b2e5e4e63a07171ace00cfc262bd1c5a311ee",
+                "reference": "a69b2e5e4e63a07171ace00cfc262bd1c5a311ee",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.0|^9.0",
+                "php": "^8.0|^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0",
+                "pestphp/pest": "^1.20.0",
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lorisleiva\\Lody\\LodyServiceProvider"
+                    ],
+                    "aliases": {
+                        "Lody": "Lorisleiva\\Lody\\Lody"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lorisleiva\\Lody\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Loris Leiva",
+                    "email": "loris.leiva@gmail.com",
+                    "homepage": "https://lorisleiva.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Load files and classes as lazy collections in Laravel.",
+            "homepage": "https://github.com/lorisleiva/lody",
+            "keywords": [
+                "classes",
+                "collection",
+                "files",
+                "laravel",
+                "load"
+            ],
+            "support": {
+                "issues": "https://github.com/lorisleiva/lody/issues",
+                "source": "https://github.com/lorisleiva/lody/tree/v0.3.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/lorisleiva",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-25T15:50:27+00:00"
         },
         {
             "name": "monolog/monolog",

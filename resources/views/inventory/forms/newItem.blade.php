@@ -29,11 +29,15 @@
         </div>
         <label for="" class="col-sm-2">Tax:</label>
         <div class="col">
-            <select  class="form-control" id="" name="tax">
-                <option selected disabled hidden>Choose</option>
-                <option name="tax" value="0%">0%</option>
+            <select class="form-control" id="" name="tax_id">
+                <option value="" selected disabled hidden>Choose</option>
+                <option value="">No Tax</option>
+                @foreach($taxes as $tax)
+                <option value="{{ $tax->id }}">{{ $tax->name }}</option>
+                @endforeach
+                {{-- <option name="tax" value="0%">0%</option>
                 <option name="tax" value="2%">2%</option>
-                <option name="tax" value="15%">15%</option>
+                <option name="tax" value="15%">15%</option> --}}
             </select>
         </div>
          {{-- <label for="#" class="col-lg-2 col-form-label">Purchase Quantity:</label>
