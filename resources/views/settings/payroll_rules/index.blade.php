@@ -148,30 +148,29 @@
                             @csrf
                             <table class="table">
                                 <tbody>
-                                    @foreach($overtime_payroll_rules as $overtime_payroll_rule)
                                         <tr>
                                             <th scope="row">Hour Rate Circulation from the Basic Salary</th>
                                             <td>
                                                 <div class="d-flex justify-content-between">
                                                     <p class="w-25 mt-1">[Basic Salary] </p>/
                                                     <input type="text" id="working_days" class="form-control w-25"
-                                                        name="working_days" placeholder="Working days" value="{{$overtime_payroll_rule->working_days}}" readonly> /
+                                                        name="working_days" placeholder="Working days" value="{{ $overtime_payroll_rules->working_days}}" required> /
                                                     <input type="text" id="working_hours" class="form-control w-25"
-                                                        name="working_hours" placeholder="Working hours" value="{{$overtime_payroll_rule->working_hours}}" readonly>
+                                                        name="working_hours" placeholder="Working hours" value="{{$overtime_payroll_rules->working_hours}}" required>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Day Rate before 6pm (18:00)</th>
                                             <td> <input type="text" id="day_rate" class="form-control" name="day_rate"
-                                                    readonly placeholder="0.00" value="{{$overtime_payroll_rule->day_rate}}" >
+                                                    required placeholder="0.00" value="{{$overtime_payroll_rules->day_rate}}" >
                                             </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Night Rate after 6pm (18:00)</th>
                                             <td>
                                                 <input type="text" id="night_rate" class="form-control" name="night_rate"
-                                                    readonly placeholder="0.00" value="{{$overtime_payroll_rule->night_rate}}">
+                                                    required placeholder="0.00" value="{{$overtime_payroll_rules->night_rate}}">
 
                                             </td>
                                         </tr>
@@ -179,12 +178,12 @@
                                             <th scope="row">Holiday/Weekend Rate</th>
                                             <td>
                                                 <input type="text" id="holiday_weekend_rate" class="form-control"
-                                                    name="holiday_weekend_rate" readonly="" placeholder="0.00" value="{{$overtime_payroll_rule->holiday_weekend_rate}}">
+                                                    name="holiday_weekend_rate" required placeholder="0.00" value="{{$overtime_payroll_rules->holiday_weekend_rate}}">
                                             </td>
                                         </tr>
-                                        @endforeach
+                         
                                         
-                                    <tr>
+                                    {{-- <tr>
                                         <th scope="row">Edit Hour Rate Circulation from the Basic Salary</th>
                                         <td>
                                             <div class="d-flex justify-content-between">
@@ -217,7 +216,7 @@
                                                 name="holiday_weekend_rate" required="" placeholder="0.00">
                                         </td>
                                     </tr>
-                                    
+                                     --}}
                                 </tbody>
                             </table>
 
