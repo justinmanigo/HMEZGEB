@@ -17,9 +17,9 @@ class SettingPayrollRulesController extends Controller
     public function index()
     {
         //
-        // $overtime_payroll_rules = OvertimePayrollRules::all();
+        $overtime_payroll_rules = OvertimePayrollRules::all();
         $income_tax_payroll_rules = IncomeTaxPayrollRules::all();
-        return view('settings.payroll_rules.index' ,compact('income_tax_payroll_rules'));
+        return view('settings.payroll_rules.index' ,compact('overtime_payroll_rules','income_tax_payroll_rules'));
     }
 
     /**
@@ -52,8 +52,6 @@ class SettingPayrollRulesController extends Controller
         //
         // return $request;
 
-        // Delete all records first
-        OvertimePayrollRules::truncate();
         // Store new records
         $overtime_rules = new OvertimePayRollRules();
         $overtime_rules->working_days = $request->working_days;

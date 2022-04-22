@@ -119,7 +119,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modal-customer-label">Delete Customer</h5>
+                                <h5 class="modal-title" id="modal-customer-label">Delete Income Tax Rule</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -136,18 +136,54 @@
                         </div>
                     </div>
                 </div>
+                
 
                 <div class="d-flex justify-content-between mb-3">
                     <h4>Overtime Rules</h4>
                     <button type="button" class="btn btn-primary" id="ot_default">Government Rule</button>
                 </div>
                 <div class="row">
-
                     <div class="form-group col-md-12">
                         <form action="{{route('settings.store_overtime') }}" method="POST">
                             @csrf
                             <table class="table">
                                 <tbody>
+
+                                    @foreach($overtime_payroll_rules as $overtime_payroll_rule)
+                                        <tr>
+                                            <th scope="row">Hour Rate Circulation from the Basic Salary</th>
+                                            <td>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="w-25 mt-1">[Basic Salary] </p>/
+                                                    <input type="text" id="working_days" class="form-control w-25"
+                                                        name="working_days" placeholder="Working days" value="{{$overtime_payroll_rule->working_days}}" readonly> /
+                                                    <input type="text" id="working_hours" class="form-control w-25"
+                                                        name="working_hours" placeholder="Working hours" value="{{$overtime_payroll_rule->working_hours}}" readonly>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Day Rate before 6pm (18:00)</th>
+                                            <td> <input type="text" id="day_rate" class="form-control" name="day_rate"
+                                                    readonly placeholder="0.00" value="{{$overtime_payroll_rule->day_rate}}" >
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Night Rate after 6pm (18:00)</th>
+                                            <td>
+                                                <input type="text" id="night_rate" class="form-control" name="night_rate"
+                                                    readonly placeholder="0.00" value="{{$overtime_payroll_rule->night_rate}}">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Holiday/Weekend Rate</th>
+                                            <td>
+                                                <input type="text" id="holiday_weekend_rate" class="form-control"
+                                                    name="holiday_weekend_rate" readonly="" placeholder="0.00" value="{{$overtime_payroll_rule->holiday_weekend_rate}}">
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     <tr>
                                         <th scope="row">Hour Rate Circulation from the Basic Salary</th>
                                         <td>
@@ -158,10 +194,7 @@
                                                 <input type="text" id="working_hours" class="form-control w-25"
                                                     name="working_hours" placeholder="Working hours" required>
                                             </div>
-
-
                                         </td>
-
                                     </tr>
                                     <tr>
                                         <th scope="row">Day Rate before 6pm (18:00)</th>
@@ -174,7 +207,6 @@
                                         <td>
                                             <input type="text" id="night_rate" class="form-control" name="night_rate"
                                                 required placeholder="0.00">
-
                                         </td>
                                     </tr>
                                     <tr>
@@ -184,6 +216,7 @@
                                                 name="holiday_weekend_rate" required="" placeholder="0.00">
                                         </td>
                                     </tr>
+                                    
                                 </tbody>
                             </table>
 
