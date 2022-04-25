@@ -113,12 +113,6 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="cr_credit_receipt_number" class="col-4 col-form-label text-lg-right">Credit Receipt #<span class="text-danger ml-1">*</span> :</label>
-                <div class="col-8">
-                    <input type="text" class="form-control" id="cr_credit_receipt_number" name="credit_receipt_number" placeholder="" required>
-                </div>
-            </div>
-            <div class="form-group row">
                 <label for="cr_account" class="col-4 col-form-label text-lg-right">Account :</label>
                 <div class="col-8">
                     <input type="text" class="form-control" id="cr_account" name="account" placeholder="Change later to use either Tagify/Select2" required>
