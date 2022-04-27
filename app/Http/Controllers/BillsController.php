@@ -109,8 +109,7 @@ class BillsController extends Controller
         $receipt = Bills::create([
             'payment_reference_id' => $reference->id,
             // 'withholding_payment_id' => '0', // temporary
-            'bill_number' => $request->bill_number,
-            'purchase_order_number' => $request->purchase_order_number,
+            'purchase_order_id' => $request->purchase_order_id,
             'due_date' => $request->due_date,
             'chart_of_account_id' => $request->chart_of_account_id,
             'sub_total' => $request->sub_total,

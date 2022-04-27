@@ -16,6 +16,7 @@ class CreateBillsTable extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
+            $table->unsignedBigInteger('purchase_order_id')->nullable();
             $table->unsignedBigInteger('withholding_payment_id')->nullable();
             $table->date('due_date');
             $table->unsignedBigInteger('chart_of_account_id')->nullable();

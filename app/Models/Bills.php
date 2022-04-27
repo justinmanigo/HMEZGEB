@@ -13,7 +13,7 @@ class Bills extends Model
         'payment_reference_id',
         'withholding_payment_id',
         'bill_number',
-        'purchase_order_number',
+        'purchase_order_id',
         'due_date',
         'chart_of_account_id',
         'sub_total',

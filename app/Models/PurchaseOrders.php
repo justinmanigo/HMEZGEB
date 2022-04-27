@@ -11,7 +11,7 @@ class PurchaseOrders extends Model
 
     protected $fillable = [
         'payment_reference_id',
-        'purchase_order_number',
+        'purchase_order_id',
         'due_date',
         'sub_total',
         'tax',
