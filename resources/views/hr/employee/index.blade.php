@@ -78,7 +78,7 @@
                                     <span class="icon text-white-50">
                                         <i class="fas fa-trash"></i>
                             </td>
-                            <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->given_father_name }}</td>
+                            <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->grandfather_name }}</td>
                             <td class="table-item-content">{{ $employee->tin_number }}</td>
                             <td class="table-item-content">{{ $employee->mobile_number }}</td>
                             <td class="table-item-content">
@@ -128,9 +128,9 @@
                             <input type="text" class="form-control" id="e_father_name" name="father_name" placeholder="" required>
                         </div>
 
-                        <label for="e_given_father_name" class="col-sm-3 col-lg-2 col-form-label">Given Father Name<span class="text-danger ml-1">*</span></label>
+                        <label for="e_grandfather_name" class="col-sm-3 col-lg-2 col-form-label">Grandfather Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-xl-4">
-                            <input type="text" class="form-control" id="e_given_father_name" name="given_father_name" placeholder="" required>
+                            <input type="text" class="form-control" id="e_grandfather_name" name="grandfather_name" placeholder="" required>
                         </div>
                     </div>
 
@@ -303,7 +303,7 @@
             // Fields
             $("#e_first_name").val(res.first_name);
             $("#e_father_name").val(res.father_name);
-            $("#e_given_father_name").val(res.given_father_name);
+            $("#e_grandfather_name").val(res.grandfather_name);
             $("#e_date_of_birth").val(res.date_of_birth);
             $("#e_mobile_number").val(res.mobile_number);
             $("#e_telephone").val(res.telephone);
@@ -340,7 +340,7 @@
         // Fields
         $("#e_first_name").val('');
         $("#e_father_name").val('');
-        $("#e_given_father_name").val('');
+        $("#e_grandfather_name").val('');
         $("#e_date_of_birth").val('');
         $("#e_mobile_number").val('');
         $("#e_telephone").val('');
@@ -394,5 +394,21 @@
         confirmationModal.classList.remove('show');
         confirmationModal.classList.add('fade');
     }
+
+    // Disable basic salary field if type is not 'Employee'
+    $('#e_type').on('change', function(){
+        var _val = $(this).val();
+        if(_val == 'employee')
+        {
+            $("#e_basic_salary").removeAttr('disabled');
+            $("#e_basic_salary").attr('required', 'required');
+        }
+        else
+        {
+            $("#e_basic_salary").attr('disabled', 'disabled');
+            $("#e_basic_salary").removeAttr('required');
+        }
+    });
+
 </script>
 @endsection
