@@ -15,13 +15,15 @@ class CreatePaymentReferencesTable extends Migration
     {
         Schema::create('payment_references', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('vendor_id');
+            $table->unsignedBigInteger('vendor_id')->nullable();
+            // $table->unsignedBigInteger('employee_id')->nullable();
             $table->string('type');
             $table->longText('remark')->nullable();
             $table->longText('date')->nullable();         
             $table->string('attachment')->nullable();
             $table->timestamps();
-            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
+            $table->foreign('vendor_id')->nullable()->references('id')->on('vendors')->onDelete('cascade');
+            // $table->foreign('employee_id')->nullable()->references('id')->on('employees')->onDelete('cascade');
         });
     }
 

@@ -22,6 +22,11 @@ class PaymentReferences extends Model
         return $this->belongsTo(Vendors::class, 'vendor_id','id');
     }
 
+    // public function employee()
+    // {
+    //     return $this->belongsTo(Employees::class, 'employee_id','id');
+    // }
+
     public function purchaseOrders()
     {
         return $this->hasOne(PurchaseOrders::class, 'payment_reference_id','id');

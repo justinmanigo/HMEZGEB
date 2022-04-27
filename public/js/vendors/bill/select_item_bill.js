@@ -24,21 +24,18 @@ $(document).on('click', '.b_item_delete', function (event) {
 $(document).on('change', '.b_item_quantity', function(event) {
     id = $(this)[0].dataset.id;
     quantity = $(this)[0].value;
-    sale_price = $(`#b_item_price_${id}`).val()
-    console.log(sale_price)
+    sale_price = $(`#b_item_price_${id}`).val();
+    console.log(sale_price);
     
     // Update item total
     $(`#b_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
-
     // Update overall total
-    item_idx = getBillItemIndex(id);
-    bill_items[item_idx].total_price = sale_price * quantity;
     calculateBillSubTotal();
     calculateBillGrandTotal();
 });
 
 // Creates a Bill Item Entry on the Table.
-function createBillItemEntry() 
+function createBillItemEntry(item = undefined) 
 {
     // Increment bill_count to avoid element conflicts.
     bill_count++;
@@ -64,7 +61,7 @@ function createBillItemEntry()
             </select>
         </td>
         <td>
-            <input type="text" id="b_item_total_${bill_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
+            <input type="text" id="b_item_total_${bill_count}" class="form-control text-right b_item_total" name="total[]" placeholder="0.00" disabled>
         </td>
         <td>
             <button type="button" data-id="${bill_count}" id="b_item_delete_${bill_count}" class="btn btn-icon btn-danger b_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -79,10 +76,31 @@ function createBillItemEntry()
             </button>
         </td>
     </tr>
-    `
+    `;
 
     // Append template to the table.
-    $("#b_items").append(inner)
+    $("#b_items").append(inner);
+
+    var whitelist = [];
+    // Set values if item exists.
+    if(item != undefined) {
+        whitelist = [
+            {
+                "value": item.inventory.id,
+                "name": item.inventory.item_name,
+                "sale_price": item.inventory.sale_price,
+                "quantity": item.quantity,
+            },
+        ];
+        
+        
+        $(`#b_item_${bill_count}`).val(item.inventory.item_name);
+        $(`#b_item_quantity_${bill_count}`).val(item.quantity).removeAttr('disabled');
+        $(`#b_item_price_${bill_count}`).val(parseFloat(item.inventory.sale_price).toFixed(2))
+        $(`#b_item_total_${bill_count}`).val(parseFloat(item.inventory.sale_price * item.quantity).toFixed(2))
+        
+    }
+
 
     // Create new tagify instance of item selector of newly created row.
     let elm = document.querySelector(`#b_item_${bill_count}`);
@@ -95,13 +113,13 @@ function createBillItemEntry()
             closeOnSelect: true,
             enabled: 0,
             classname: 'item-list',
-            searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
+            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
             tag: ItemTagTemplate,
             dropdownItem: ItemSuggestionItemTemplate
         },
-        whitelist: [],
+        whitelist: whitelist,
     })
 
     // Set events of tagify instance.
@@ -114,8 +132,6 @@ function createBillItemEntry()
     let item_entry = {
         "entry_id": bill_count,
         "tagify": elm_tagify,
-        "sale_price": 0,
-        "total_price": 0,
         "value": null,
     }
 
@@ -174,8 +190,14 @@ function getBillItemIndex(entry_id)
 function calculateBillSubTotal()
 {
     subtotal = 0;
-    for(i = 0; i < bill_items.length; i++)
-        subtotal += bill_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".b_item_total");
+    console.log("Calculate Bill Subtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        subtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#b_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
@@ -183,8 +205,14 @@ function calculateBillSubTotal()
 function calculateBillGrandTotal()
 {
     grandtotal = 0;
-    for(i = 0; i < bill_items.length; i++)
-    grandtotal += bill_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".b_item_total");
+    console.log("Calculate Bill Grandtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        grandtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#b_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
@@ -192,8 +220,8 @@ function calculateBillGrandTotal()
 /** === Tagify Related Functions === */
 
 function onBillItemDropdownShow(e) {
-    console.log("onBillItemDropdownShow")
-    var dropdownContentElm = e.detail.bill_select_item_tagify.DOM.dropdown.content;
+    // console.log("onBillItemDropdownShow")
+    // var dropdownContentElm = e.detail.bill_select_item_tagify.DOM.dropdown.content;
 }
 
 function onBillItemSelectSuggestion(e) {
@@ -204,14 +232,8 @@ function onBillItemSelectSuggestion(e) {
     $(`#b_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
-    console.log(parseFloat(item_total).toFixed(2));
-    console.log($(`#b_sub_total`).val())
-    console.log()
-    
-    // Add all item total to subtotal
-    $(`#b_sub_total`).val(parseFloat(parseFloat($(`#b_sub_total`).val()) + parseFloat($(`#b_item_total_${id}`).val())).toFixed(2))
-    $(`#b_grand_total`).val(parseFloat(parseFloat($(`#b_grand_total`).val()) + parseFloat($(`#b_item_total_${id}`).val())).toFixed(2))
-
+    calculateBillSubTotal();
+    calculateBillGrandTotal();
 }
 
 function onBillItemRemove(e) {
@@ -229,34 +251,25 @@ function onBillItemRemove(e) {
 }
 
 function onBillItemInput(e) {
-    console.log(e.detail);
-    console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
-    var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
+   
     var value = e.detail.value;
-    var tagify;
+    var tagify = e.detail.tagify;
 
-    console.log(bill_items);
-    entry_obj = getBillItemEntry(entry_id);
-
-    console.log("Obtained value from array");
-    console.log(tagify);
-    
-    entry_obj.tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null; // reset whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    entry_obj.tagify.loading(true).dropdown.hide()
+    tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/inventory/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
         .then(function (newWhitelist) {
-            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
-            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+          tagify.whitelist = newWhitelist // update whitelist Array in-place
+          tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
 }
