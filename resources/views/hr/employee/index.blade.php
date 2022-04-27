@@ -407,6 +407,7 @@
         {
             $("#e_basic_salary").attr('disabled', 'disabled');
             $("#e_basic_salary").removeAttr('required');
+            $("#e_basic_salary").val('');
         }
     });
 

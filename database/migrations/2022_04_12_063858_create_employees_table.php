@@ -24,7 +24,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email');   
             $table->string('tin_number');
             $table->enum('type',['employee','commission_agent']);
-            $table->string('basic_salary');
+            $table->string('basic_salary')->nullable();
             $table->date('date_started_working');
             // is this column type is it date or string
             // $table->date('date_ended_working')->default('still_working');
