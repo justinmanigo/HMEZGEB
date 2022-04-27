@@ -17,7 +17,6 @@ class CreateReceiptsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
             $table->unsignedBigInteger('proforma_id')->nullable();
-            $table->string('receipt_number')->nullable();
             $table->date('due_date');
             $table->float('sub_total');
             $table->float('discount')->nullable();

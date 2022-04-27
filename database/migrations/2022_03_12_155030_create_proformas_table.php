@@ -16,7 +16,6 @@ class CreateProformasTable extends Migration
         Schema::create('proformas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
-            $table->string('proforma_number')->nullable();
             $table->date('due_date');
             $table->float('amount');
             $table->longText('terms_and_conditions')->nullable();
