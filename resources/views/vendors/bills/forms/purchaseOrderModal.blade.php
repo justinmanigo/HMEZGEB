@@ -36,9 +36,9 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="po_order_number" class="col-4 col-form-label text-lg-right">Order #<span class="text-danger ml-1">*</span> :</label>
+                <label for="po_purchase_order_number" class="col-4 col-form-label text-lg-right">Order #<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
-                    <input type="text" class="form-control" id="po_order_number" name="order_number" placeholder="" required>
+                    <input type="text" class="form-control" id="po_purchase_order_number" name="purchase_order_number" placeholder="" required>
                 </div>
             </div>
 
