@@ -92,11 +92,6 @@
                     <div class="form-group row">
                         {{-- Temporarily blank first column --}}
                         <div class="col-lg-6 d-none d-lg-flex"></div>
-
-                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Deposit ID<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
-                        </div>
                     </div>
                     <hr>
                     <h2>Undeposited Sales</h2>
