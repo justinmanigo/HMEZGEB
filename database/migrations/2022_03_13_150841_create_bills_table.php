@@ -17,8 +17,6 @@ class CreateBillsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
             $table->unsignedBigInteger('withholding_payment_id')->nullable();
-            $table->unsignedBigInteger('bill_number')->nullable();
-            $table->unsignedBigInteger('order_number')->nullable();
             $table->date('due_date');
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
             $table->float('sub_total');

@@ -16,7 +16,6 @@ class CreateVatPaymentsTable extends Migration
         Schema::create('vat_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
-            $table->unsignedBigInteger('payment_reference_number');
             $table->unsignedBigInteger('accounting_period_id')->nullable();
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
             $table->string('type');

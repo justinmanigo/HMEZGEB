@@ -16,7 +16,6 @@ class CreatePurchaseOrdersTable extends Migration
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
-            $table->unsignedBigInteger('order_number')->nullable();
             $table->date('due_date');
             $table->float('sub_total');
             $table->float('tax')->nullable();

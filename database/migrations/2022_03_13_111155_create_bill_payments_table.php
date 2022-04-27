@@ -16,9 +16,7 @@ class CreateBillPaymentsTable extends Migration
         Schema::create('bill_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
-            $table->unsignedBigInteger('payment_reference_number');
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
-            $table->unsignedBigInteger('cheque_number')->nullable();
             $table->float('amount_paid');
             $table->float('discount_account_number')->nullable();
             $table->timestamps();
