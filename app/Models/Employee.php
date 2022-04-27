@@ -13,7 +13,7 @@ class Employee extends Model
         'id',
         'first_name',
         'father_name',
-        'given_father_name',
+        'grandfather_name',
         'date_of_birth',
         'mobile_number',
         'telephone',

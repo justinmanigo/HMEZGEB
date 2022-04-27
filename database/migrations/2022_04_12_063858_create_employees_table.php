@@ -17,7 +17,7 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('father_name');
-            $table->string('given_father_name');
+            $table->string('grandfather_name');
             $table->date('date_of_birth');
             $table->string('mobile_number');
             $table->string('telephone');  
