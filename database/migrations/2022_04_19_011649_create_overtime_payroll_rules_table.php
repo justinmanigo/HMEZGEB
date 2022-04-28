@@ -16,11 +16,11 @@ class CreateOvertimePayrollRulesTable extends Migration
         Schema::create('overtime_payroll_rules', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable(); //? This is a temporary solution, may subject to change later.
-            $table->string('working_days');
-            $table->string('working_hours');
-            $table->string('day_rate');
-            $table->string('night_rate');
-            $table->string('holiday_weekend_rate');
+            $table->integer('working_days');
+            $table->integer('working_hours');
+            $table->float('day_rate');
+            $table->float('night_rate');
+            $table->float('holiday_weekend_rate');
             $table->timestamps();
         });
     }
