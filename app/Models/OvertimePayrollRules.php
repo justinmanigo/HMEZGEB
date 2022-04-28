@@ -10,6 +10,7 @@ class OvertimePayrollRules extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'working_days',
         'working_hours',
         'day_rate',
