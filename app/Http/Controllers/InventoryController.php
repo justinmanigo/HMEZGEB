@@ -15,8 +15,23 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        return $this->show();
-        // return view('inventory.inventory');
+       //get all inventories from database then display on inventory
+       $inventories = Inventory::all();
+
+       // Compute for each inventory value and total value.
+       $inventoryValue=0.00;
+       foreach($inventories as $inventory)
+       {
+           $inventory->inventoryValue = $inventory->sale_price*$inventory->quantity;
+           $inventoryValue+=$inventory->inventoryValue;
+           
+       }
+       if(!empty($inventoryValue)) 
+           $inventory->totalInventory = $inventoryValue; 
+
+       $taxes = Tax::get();            
+
+       return view('inventory.inventory', compact('inventories'), compact('taxes'));
     }
 
     /**
@@ -67,25 +82,11 @@ class InventoryController extends Controller
      * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        //get all inventories from database then display on inventory
-        $inventories = Inventory::all();
-
-        // Compute for each inventory value and total value.
-        $inventoryValue=0.00;
-        foreach($inventories as $inventory)
-        {
-            $inventory->inventoryValue = $inventory->sale_price*$inventory->quantity;
-            $inventoryValue+=$inventory->inventoryValue;
-            
-        }
-        if(!empty($inventoryValue)) 
-            $inventory->totalInventory = $inventoryValue; 
-
-        $taxes = Tax::get();            
-
-        return view('inventory.inventory', compact('inventories'), compact('taxes'));
+        $inventory = Inventory::find($id);
+        $taxes = Tax::get();
+        return view('inventory.forms.edit', compact('inventory'), compact('taxes'));
     }
 
     public function fifo()

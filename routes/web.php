@@ -237,6 +237,7 @@ Route::group([
     'as'=>'inventory.'
 ], function(){ 
     Route::get('/inventory', [InventoryController::class, 'index']);
+    Route::get('/inventory/{id}', [InventoryController::class, 'show']);
     Route::post('/inventory', [InventoryController::class, 'store']);
 
     Route::get('/select/search/inventory/{query}', [InventoryController::class, 'ajaxSearchInventory']);
