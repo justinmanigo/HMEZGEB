@@ -355,10 +355,11 @@ Route::group([
         Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('tax.update');
         Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('tax.destroy');
         Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
+
         // Payroll 
-        Route::get('/setting_payrollrules', [SettingPayrollRulesController::class, 'index']);
-        Route::post('/payrollrules-income-tax', [SettingPayrollRulesController::class, 'storeIncomeTaxRules'])->name('store_income_tax');
-        Route::post('/payrollrules-overtime', [SettingPayrollRulesController::class, 'storeOvertimeRules'])->name('store_overtime');
+        Route::get('/settings/payroll', [SettingPayrollRulesController::class, 'index']);
+        Route::post('/settings/payroll/incometax', [SettingPayrollRulesController::class, 'storeIncomeTaxRules'])->name('store_income_tax');
+        Route::post('/settings/payroll/overtime', [SettingPayrollRulesController::class, 'storeOvertimeRules'])->name('store_overtime');
 
     });
 
