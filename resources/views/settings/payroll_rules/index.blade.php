@@ -61,43 +61,47 @@
                                     </tr>
                                 </thead>
                                 <tbody id="pr_entries">
-                                    @foreach($income_tax_payroll_rules as $income_tax_payroll_rule)
-                                    <tr>
+                                    @for($i = 0; $i < count($income_tax_payroll_rules); $i++)
+                                    <tr data-id={{ ($i+1) }} id="pr_rule_entry_{{ ($i+1) }}">
                                         <td scope="row">IF Taxable Income ></td>
                                         <td scope="row">
                                             <div class="d-flex justify-content-between">
-                                                <input type="text" data-id="${payroll_count}"
-                                                    id="pr_rule_income_${payroll_count}" class="form-control"
-                                                    name="income[]" value="{{$income_tax_payroll_rule->income}}"
+                                                <input type="text" data-id="{{ $i+1 }}"
+                                                    id="pr_rule_income_{{ $i+1 }}" class="form-control"
+                                                    name="income[]" value="{{$income_tax_payroll_rules[$i]->income}}"
                                                     required>
                                             </div>
                                         </td>
                                         <td scope="row">Taxable Income </td>
                                         <td scope="row">
                                             <div class="d-flex justify-content-between">
-                                                <input type="text" data-id="${payroll_count}"
-                                                    id="pr_rule_rate_${payroll_count}" class="form-control"
+                                                <input type="text" data-id="{{ $i+1 }}"
+                                                    id="pr_rule_rate_{{ $i+1 }}" class="form-control"
                                                     name="rate[]" style="width:90%"
-                                                    value="{{$income_tax_payroll_rule->rate}}" required>
+                                                    value="{{$income_tax_payroll_rules[$i]->rate}}" required>
                                                 -
                                             </div>
                                         </td>
                                         <td scope="row">
-                                            <input type="text" data-id="${payroll_count}"
-                                                id="pr_rule_deduction_${payroll_count}" class="form-control"
-                                                name="deduction[]" value="{{$income_tax_payroll_rule->deduction}}"
+                                            <input type="text" data-id="{{ $i+1 }}"
+                                                id="pr_rule_deduction_{{ $i+1 }}" class="form-control"
+                                                name="deduction[]" value="{{$income_tax_payroll_rules[$i]->deduction}}"
                                                 required>
                                         </td>
                                         <th scope="row">
-                                            <button type="button" class="btn btn-danger "
-                                            onClick='showModel({!! $income_tax_payroll_rule->id !!})'>
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
+                                            <button type="button" data-id="{{ $i+1 }}" id="pr_rule_delete_{{ $i+1 }}" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-trash"></i>
+                                                </span>
+                                            </button>
+                                            <button type="button" class="btn btn-small btn-icon btn-primary pr_add_rule_entry" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
                                             </button>
                                         </th>
                                     </tr>
-                                    @endforeach
+                                    @endfor
 
 
 

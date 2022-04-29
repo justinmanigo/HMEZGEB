@@ -1,23 +1,24 @@
-// This array lists down the rule within the payroll.
-var payroll_rule = [];
-
 // This variable counts how many instances of payroll rule are made.
 // This ensures that there will be no conflict ids on payroll rule elements.
 var payroll_count = 0;
 
 // Create a payroll rule entry when document is fully loaded or when add entry button is clicked.
-$(document).ready(createRuleEntry());
+$(document).ready(function(){
+    // Update payroll count
+    currentEntries = document.querySelectorAll('#pr_entries tr');
+    payroll_count = currentEntries.length;
+});
+
 $(document).on("click", ".pr_add_rule_entry", function () {
     createRuleEntry();
 });
 
 // Delete the payroll rule entry when the row's delete button is clicked.
 $(document).on("click", ".pr_rule_delete", function (event) {
-    removeRuleEntry($(this)[0].dataset.id);
     $(this).parents("tr").remove();
 
     // If there are no longer rule entries in table, generate a new one.
-    if (payroll_rule.length < 1) createRuleEntry();
+    if (document.querySelectorAll('#pr_entries tr').length < 1) createRuleEntry();
 });
 
 // Delete the payroll rule entry when the row's delete button is clicked.
@@ -30,250 +31,46 @@ $(document).on("click", "#it_default", function (event) {
 });
 
 // Returns government rules for income tax values
-function defaultIncomeTaxRules() {
+function defaultIncomeTaxRules() 
+{
+    let payroll_rules = [
+        {
+            'income': 10900,
+            'rate': 35,
+            'deduction': 1500,
+        },
+        {
+            'income': 7800,
+            'rate': 30,
+            'deduction': 955,
+        },
+        {
+            'income': 5250,
+            'rate': 25,
+            'deduction': 565,
+        },
+        {
+            'income': 3200,
+            'rate': 20,
+            'deduction': 302.5,
+        },
+        {
+            'income': 1650,
+            'rate': 15,
+            'deduction': 142.5,
+        },
+        {
+            'income': 600,
+            'rate': 10,
+            'deduction': 60,
+        },
+    ];
 
-    // Reset variables;
-    payroll_count = 6;
-    entry_id=0;
-    payroll_rule = [];
-    
-    // Values for the government rules
-    let inner = `
-         <tr data-id="1" id="pr_rule_entry_1">
-         <td>
-         <div class="d-flex justify-content-between">
-         <p>IF Taxable Income</p> >
-     </div>
-         </td>
-         <td>
-             <input type="text" data-id="1" id="pr_rule_income_1" class="form-control" name="income[]" required value="10900">
-         </td>
-            <td>
-                <div class="d-flex justify-content-between">
-                <p>Taxable Income</p> * 
-            </div>
-        </td>
-             <td>
-             <div class="d-flex justify-content-between">
-             <input type="text" data-id="1" id="pr_rule_rate_1" class="form-control" name="rate[]" style="width:90%"  required value="35">
-                -
-                </div>       
-             </td>
-         <td>
-         <input type="text" data-id="1" id="pr_rule_deduction_1" class="form-control" name="deduction[]" required value="1500">
-     </td>
-         <td>
-             <button type="button" data-id="1" id="pr_rule_delete_1" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-trash"></i>
-                 </span>
-             </button>
-             <button type="button" class="btn btn-small btn-icon btn-primary pr_add_rule_entry" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-plus"></i>
-                 </span>
-             </button>
-         </td>
-     </tr>
-     
-     <tr data-id="2" id="pr_rule_entry_2">
-         <td>
-         <div class="d-flex justify-content-between">
-         <p>IF Taxable Income</p> >
-     </div>
-         </td>
-         <td>
-             <input type="text" data-id="2" id="pr_rule_income_2" class="form-control" name="income[]" required value="7800">
-         </td>
-         <td>
-            <div class="d-flex justify-content-between">
-            <p>Taxable Income</p> * 
-        </div>
-         </td>
-             <td>
-             <div class="d-flex justify-content-between">
-             <input type="text" data-id="2" id="pr_rule_rate_2" class="form-control" name="rate[]" style="width:90%"  required value="30">
-                -
-                </div>       
-             </td>
-         <td>
-         <input type="text" data-id="2" id="pr_rule_deduction_2" class="form-control" name="deduction[]" required value="955">
-     </td>
-         <td>
-             <button type="button" data-id="2" id="pr_rule_delete_2" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-trash"></i>
-                 </span>
-             </button>
-             <button type="button" class="btn btn-small btn-icon btn-primary pr_add_rule_entry" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-plus"></i>
-                 </span>
-             </button>
-         </td>
-     </tr>
-     
-     <tr data-id="3" id="pr_rule_entry_3">
-         <td>
-         <div class="d-flex justify-content-between">
-         <p>IF Taxable Income</p> >
-     </div>
-         </td>
-         <td>
-             <input type="text" data-id="3" id="pr_rule_income_3" class="form-control" name="income[]" required value="5250">
-         </td>
-         <td>
-                <div class="d-flex justify-content-between">
-                <p>Taxable Income</p> * 
-            </div>
-         </td>
-             <td>
-             <div class="d-flex justify-content-between">
-             <input type="text" data-id="3" id="pr_rule_rate_3" class="form-control" name="rate[]" style="width:90%"  required value="25">
-                -
-                </div>       
-             </td>
-         <td>
-         <input type="text" data-id="3" id="pr_rule_deduction_3" class="form-control" name="deduction[]" required value="565">
-     </td>
-         <td>
-             <button type="button" data-id="3" id="pr_rule_delete_3" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-trash"></i>
-                 </span>
-             </button>
-             <button type="button" class="btn btn-small btn-icon btn-primary pr_add_rule_entry" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-plus"></i>
-                 </span>
-             </button>
-         </td>
-     </tr>
+    $("#pr_entries").empty();
 
-     <tr data-id="4" id="pr_rule_entry_4">
-         <td>
-         <div class="d-flex justify-content-between">
-         <p>IF Taxable Income</p> >
-     </div>
-         </td>
-         <td>
-             <input type="text" data-id="4" id="pr_rule_income_4" class="form-control" name="income[]" required value="3200">
-         </td>
-         <td>
-                <div class="d-flex justify-content-between">
-                <p>Taxable Income</p> * 
-            </div>
-         </td>
-             <td>
-             <div class="d-flex justify-content-between">
-             <input type="text" data-id="4" id="pr_rule_rate_4" class="form-control" name="rate[]" style="width:90%"  required value="20">
-                -
-                </div>       
-             </td>
-         <td>
-         <input type="text" data-id="4" id="pr_rule_deduction_4" class="form-control" name="deduction[]" required value="302.5">
-     </td>
-         <td>
-             <button type="button" data-id="4" id="pr_rule_delete_4" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-trash"></i>
-                 </span>
-             </button>
-             <button type="button" class="btn btn-small btn-icon btn-primary pr_add_rule_entry" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-plus"></i>
-                 </span>
-             </button>
-         </td>
-     </tr>
-
-     <tr data-id="5" id="pr_rule_entry_5">
-         <td>
-         <div class="d-flex justify-content-between">
-                <p>IF Taxable Income</p> >
-            </div>
-         </td>
-         <td>
-             <input type="text" data-id="5" id="pr_rule_income_5" class="form-control" name="income[]" required value="1650">
-         </td>
-         <td>
-            
-                    <div class="d-flex justify-content-between">
-                    <p>Taxable Income</p> * 
-                </div>
-              </td>
-             <td>
-             <div class="d-flex justify-content-between">
-             <input type="text" data-id="5" id="pr_rule_rate_5" class="form-control" name="rate[]" style="width:90%"  required value="15">
-                -
-                </div>       
-             </td>
-         <td>
-         <input type="text" data-id="5" id="pr_rule_deduction_5" class="form-control" name="deduction[]" required value="142.5">
-     </td>
-         <td>
-             <button type="button" data-id="5" id="pr_rule_delete_5" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-trash"></i>
-                 </span>
-             </button>
-             <button type="button" class="btn btn-small btn-icon btn-primary pr_add_rule_entry" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-plus"></i>
-                 </span>
-             </button>
-         </td>
-     </tr>
-
-     <tr data-id="6" id="pr_rule_entry_6">
-         <td>
-                <div class="d-flex justify-content-between">
-                <p>IF Taxable Income</p> >
-            </div>
-         </td>
-         <td>
-             <input type="text" data-id="6" id="pr_rule_income_6" class="form-control" name="income[]" required value="600">
-         </td>
-         <td>
-            <div class="d-flex justify-content-between">
-            <p>Taxable Income</p> * 
-        </div>
-         </td>
-             <td>
-             <div class="d-flex justify-content-between">
-             <input type="text" data-id="6" id="pr_rule_rate_6" class="form-control" name="rate[]" style="width:90%"  required value="10">
-                -
-                </div>       
-             </td>
-         <td>
-         <input type="text" data-id="6" id="pr_rule_deduction_6" class="form-control" name="deduction[]" required value="60">
-     </td>
-         <td>
-             <button type="button" data-id="6" id="pr_rule_delete_6" class="btn btn-icon btn-danger pr_rule_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-trash"></i>
-                 </span>
-             </button>
-             <button type="button" class="btn btn-small btn-icon btn-primary pr_add_rule_entry" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                 <span class="icon text-white-50">
-                     <i class="fas fa-plus"></i>
-                 </span>
-             </button>
-         </td>
-     </tr>
-     `;
-
-    // Loop through the default values
-    for(var j = 1; j < 7; j++){
-        let rule_entry = {
-            entry_id: j,
-            value: null,
-        };
-        payroll_rule.push(rule_entry);
-        console.log(rule_entry);
-    }
-    // Append template to the table.
-    $("#pr_entries").empty().append(inner);
+    payroll_rules.forEach(function(item){
+        createRuleEntry(item);
+    });
 }
 
 //Returns government rules for overtime
@@ -286,7 +83,7 @@ function defaultOverTimeRules() {
 }
 
 // Creates a payroll  Entry on the Table.
-function createRuleEntry() {
+function createRuleEntry(item = null) {
     // Increment payroll_count to avoid element conflicts.
     payroll_count++;
 
@@ -332,38 +129,13 @@ function createRuleEntry() {
     </tr>
     `;
 
-    let rule_entry = {
-        entry_id: payroll_count,
-        value: null,
-    };
-
-    payroll_rule.push(rule_entry);
-    console.log(rule_entry);
-    // Append template to the table.
     $("#pr_entries").append(inner);
-}
 
-// Removes a payroll  Entry from the Table.
-function removeRuleEntry(entry_id) {
-    for (let i = 0; i < payroll_rule.length; i++) {
-        if (payroll_rule[i].entry_id == entry_id) {
-            console.log("Removing entry " + entry_id);
-            payroll_rule.splice(i, 1);
-            return true;
-        }
+    if(item !== undefined) {
+        $(`#pr_rule_income_${payroll_count}`).val(item.income);
+        $(`#pr_rule_rate_${payroll_count}`).val(item.rate);
+        $(`#pr_rule_deduction_${payroll_count}`).val(item.deduction);
     }
-    return false;
-}
-
-// Gets the payroll rule entry from the table.
-function getOvertimeEntry(entry_id) {
-    for (let i = 0; i < payroll_rule.length; i++) {
-        if (payroll_rule[i].entry_id == entry_id) {
-            console.log("Found entry.");
-            return payroll_rule[i];
-        }
-    }
-    return undefined;
 }
 
 // Gets the payroll rule index from the table.
