@@ -66,14 +66,4 @@ class SettingPayrollRulesController extends Controller
         return redirect()->back()->with('success', 'Overtime Rule has been updated.');
 
     }
-    public function destroy( $id)
-    {
-        
-        $income_tax_payroll_rules = IncomeTaxPayrollRules::find($id);
-        $income_tax_payroll_rules->delete();
-        
-        return redirect()->back()->with('danger', "Successfully deleted income tax payroll rules");
-
-    }
-
 }
