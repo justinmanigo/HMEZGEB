@@ -133,7 +133,7 @@
                         <a class="collapse-item" href="/themes">Theme</a>
                         <a class="collapse-item" href="/settings/taxes">Taxes</a>
                         <a class="collapse-item" href="/withholding">Withholding</a>
-                        <a class="collapse-item" href="/setting_payrollrules">Payroll Rules</a>
+                        <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
                         <a class="collapse-item" href="/setting_chartofaccounts">Chart of Account</a>
                         <a class="collapse-item" href="/setting_inventory">Inventory</a>
                         <a class="collapse-item" href="/setting_defaults">Defaults</a>
