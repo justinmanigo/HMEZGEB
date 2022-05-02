@@ -19,7 +19,7 @@
                         <p class="account-h2 m-0">Username</p>
                     </div>
                     <div class="card-content-value">
-                        <p id="content_current_username" class="mt-1 mb-0">xyberpastoril</p>
+                        <p id="content_current_username" class="mt-1 mb-0">{{ Auth::user()->username }}</p>
                     </div>
                     <div class="card-content-btn">
                         <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#modal-username">Edit Username</button>
@@ -35,7 +35,7 @@
                         <p class="account-h2 m-0">Email</p>
                     </div>
                     <div class="card-content-value">
-                        <p id="content_current_email" class="mt-1 mb-0">xyber.pastoril@proton.me</p>
+                        <p id="content_current_email" class="mt-1 mb-0">{{ Auth::user()->email }}</p>
                     </div>
                     <div class="card-content-btn">
                         <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#modal-email">Edit Email</button>
