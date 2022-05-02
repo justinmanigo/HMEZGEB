@@ -7,17 +7,18 @@ $("#alert-success button").click(function(){
 $("#form-username").submit(function(e){
     e.preventDefault();
 
-    // Initialize variables of error elements & submit btn.
-    var u_username = $("#u_username_error");
-    var u_username_confirm = $("#u_username_confirm_error");
-    var u_username_password = $("#u_username_password_error");
-    var u_username_submit_btn = $("#u_username_submit_btn");
+    // Link error elements & submit btn to a variable.
+    var error_text_elements = [
+        $("#u_username_error"), 
+        $("#u_username_confirm_error"), 
+        $("#u_username_password_error")
+    ];
+    var btn_submit = $("#u_username_submit_btn");
+    var btn_close = $("#u_username_close_btn");
 
     // Hide error elements and disable submit btn.
-    u_username.hide();
-    u_username_confirm.hide();
-    u_username_password.hide();
-    u_username_submit_btn.attr("disabled", true);
+    hideErrors(error_text_elements);
+    disableButton(btn_submit);
 
     // Create request
     var request = $.ajax({
@@ -29,31 +30,64 @@ $("#form-username").submit(function(e){
     // If request has successfully processed.
     request.done(function(res, status, jqXHR) {
         if(res == '1') {
-            $("#u_username_close_btn").click();
-            $("#alert-success").show();
-            $("#alert-success-content").html("Username successfully updated.");
+            btn_close.click();
+            showSuccessAlert("Username successfully updated.");
         }
     });
 
     // If request has errors (including validation errors).
     request.fail(function(jqXHR, status, error){
-        console.log("Request to update username failed.");
-        console.log(jqXHR.responseJSON.errors);
-
-        if(jqXHR.responseJSON.errors.username != undefined) {
-            u_username.show().html(jqXHR.responseJSON.errors.username[0]);
-        }
-        if(jqXHR.responseJSON.errors.confirm_username != undefined) {
-            u_username_confirm.show().html(jqXHR.responseJSON.errors.confirm_username[0]);
-        }
-        if(jqXHR.responseJSON.errors.confirm_password != undefined) {
-            u_username_password.show().html(jqXHR.responseJSON.errors.confirm_password[0]);
-        }
-        console.log(status);
+        showErrors(error_text_elements, jqXHR.responseJSON.errors);
     });
 
     // The following always executes regardless of status.
     request.always(function(){
-        u_username_submit_btn.removeAttr('disabled');
+        enableButton(btn_submit);
     });
 });
+
+function hideErrors(errors_dom)
+{
+    errors_dom.forEach(function(e){
+        e.hide();
+    });
+}
+
+function showErrors(errors_dom, errors)
+{
+    error_list = Object.keys(errors);
+
+    errors_dom.forEach(function(e){
+        err = e[0].dataset.error;
+                if(errorInArray(error_list, err)) {
+            e.show().html(errors[err][0]);
+        }
+    });   
+}
+
+function errorInArray(error_list, err)
+{
+    console.log("Check if error is in array.");
+    var res = false;
+    error_list.forEach(function(e){
+        // console.log(`${e} == ${err}? = ${e == err}`);
+        if(e == err) {
+            res = true;
+        }
+    });
+    // console.log("Result: " + res);
+    return res;
+}
+
+function enableButton(btn) {
+    btn.removeAttr('disabled');
+}
+
+function disableButton(btn) {
+    btn.attr('disabled', true);
+}
+
+function showSuccessAlert(msg) {
+    $("#alert-success").show();
+    $("#alert-success-content").html(msg);
+}
