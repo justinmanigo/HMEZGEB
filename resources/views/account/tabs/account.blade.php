@@ -3,7 +3,7 @@
         <img id="account-picture-128" src="{{ asset('img/blank.jpg') }}">
     </div>
     <div>
-        <p id="account-name-header">Xyber Pastoril</p>
+        <p id="account-name-header">{{ ucwords( Auth::user()->firstName . ' ' . Auth::user()->lastName ) }}</p>
         <button id="account-edit-photo-btn" type="button" class="btn btn-sm btn-primary">Edit Photo</button>
     </div>
 </div>
