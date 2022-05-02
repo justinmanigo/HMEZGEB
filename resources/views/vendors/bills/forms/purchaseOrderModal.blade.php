@@ -88,7 +88,7 @@
                         <strong>Sub Total: </strong>
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right" name="supo_total" id="po_supo_total" placeholder="0.00" value="0.00" readonly>
+                        <input type="text" class="form-control text-right" name="sub_total" id="po_sub_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>

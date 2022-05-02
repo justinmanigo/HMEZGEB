@@ -6,6 +6,7 @@ use App\Models\Bills;
 use App\Models\Vendors;
 use App\Models\PaymentReferences;
 use App\Models\BillItem;
+use App\Models\PurchaseOrders;
 use Illuminate\Http\Request;
 
 class BillsController extends Controller
@@ -76,7 +77,7 @@ class BillsController extends Controller
         //         ]);
         // }
 
-        // Determine receipt status.
+        // Determine bill status.
         if($request->grand_total == $request->total_amount_received)
             $status = 'paid';
         else if($request->total_amount_received == 0)
@@ -88,7 +89,7 @@ class BillsController extends Controller
         $reference = PaymentReferences::create([
             'vendor_id' => $request->vendor_id,
             'date' => $request->date,
-            'type' => 'receipt',
+            'type' => 'bill',
             'attachment' => $request->attachment,
             'remark' => $request->remark,
         ]);
@@ -96,7 +97,7 @@ class BillsController extends Controller
         // If request has attachment, store it to file storage.
         // if($request->attachment) {
         //     $fileAttachment = time().'.'.$request->attachment->extension();  
-        //     $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
+        //     $request->attachment->storeAs('public/bill-attachment'/'bill', $fileAttachment);
         // }
         
         // Create child database entry
@@ -138,8 +139,8 @@ class BillsController extends Controller
         //     $file = $request->file('attachment');
         //     $filename = $file->getClientOriginalName();
         //     $file->move(public_path('images'), $filename);
-        //     $receipt->attachment = $filename;
-        //     $receipt->save();
+        //     $bill->attachment = $filename;
+        //     $bill->save();
         // }
 
         return redirect()->back()->with('success', 'Bill has been created successfully.');
@@ -148,7 +149,60 @@ class BillsController extends Controller
 
     public function storePurchaseOrder(Request $request)
     {
-        return $request->all();
+         // Decode json of item tagify fields.
+         for($i = 0; $i < count($request->item); $i++)
+         {
+             $item = json_decode($request->item[$i]);
+ 
+             // Resulting json_decode will turn into an array of
+             // object, thus it has to be merged.
+             $items[$i] = $item[0];
+         }
+         
+         // Temporary status
+         $status = 'unpaid';
+ 
+         // payment References
+         $reference = PaymentReferences::create([
+            'vendor_id' => $request->vendor_id,
+            'date' => $request->date,
+            'type' => 'bill',
+            'attachment' => $request->attachment,
+            'remark' => $request->remark,
+        ]);
+ 
+         // Create child database entry
+         if($reference)        
+         {
+            //  if($request->attachment) {
+            //      $fileAttachment = time().'.'.$request->attachment->extension();  
+            //      $request->attachment->storeAs('public/bill-attachment', $fileAttachment);
+            //  }
+             $purchase_orders = PurchaseOrders::create([
+                 'payment_reference_id' => $reference->id,
+                 'due_date' => $request->due_date,
+                 'sub_total' => $request->sub_total,
+                 'grand_total' => $request->grand_total,
+                 // image upload
+                 'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+             ]);
+         }
+ 
+         // TODO: Merge with billItems (use billReference instead of billId for bills)
+         // Create bill Item Records
+         for($i = 0; $i < count($items); $i++)
+         {
+            BillItem::create([
+                'inventory_id' => $items[$i]->value,
+                'bill_id' => $purchase_orders->id,
+                'quantity' => $request->quantity[$i],
+                'price' => $items[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+            ]);
+         }
+         
+         return redirect()->back()->with('success', 'Proforma has been added successfully');
+ 
     }
     /**
      * Display the specified resource.
