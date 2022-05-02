@@ -97,31 +97,34 @@
                 <div id="modal-username-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-username" method="post" action="">
+                <form id="form-username" method="post">
                     @csrf
                     @method('put')
                     <div class="form-group row">
                         <label for="u_username" class="col-12 col-lg-6 col-form-label">New Username<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="u_username" name="new_username" required>
+                            <input type="text" class="form-control" id="u_username" name="username" required>
                         </div>
+                        <p id="u_username_error" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_username_confirm" class="col-12 col-lg-6 col-form-label">Confirm Username<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <input type="text" class="form-control" id="u_username_confirm" name="confirm_username" required>
                         </div>
+                        <p id="u_username_confirm_error" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_username_password" class="col-12 col-lg-6 col-form-label">Confirm Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password"class="form-control" id="u_username_password" name="confirm_password">
+                            <input type="password"class="form-control" id="u_username_password" name="confirm_password" required>
                         </div>
+                        <p id="u_username_password_error" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" id="u_username_close_btn" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-primary" id="u_username_submit_btn" form="form-username">Update Username</button>
             </div>
         </div>

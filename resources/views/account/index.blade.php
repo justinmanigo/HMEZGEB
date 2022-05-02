@@ -104,23 +104,13 @@
 
 @section('content')
 
-@if(session()->has('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session()->get('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+{{-- Alert Success --}}
+<div id="alert-success" class="alert alert-success" style="display:none">
+    <span id="alert-success-content" class="m-0"></span>
+    <button type="button" class="close" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-@endif
-@if(session()->has('danger'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session()->get('danger') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-@endif
 
 {{-- Tab Navigation --}}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -150,5 +140,7 @@
         </div> --}}
     </div>
 </div>
+
+<script src="js/account/update_info.js"></script>
 
 @endsection
