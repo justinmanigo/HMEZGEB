@@ -145,7 +145,7 @@
                 <div id="modal-email-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-email" method="post" action="">
+                <form id="form-email" method="post">">
                     @csrf
                     @method('put')
                     <div class="form-group row">
@@ -190,7 +190,7 @@
                 <div id="modal-password-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-password" method="post" action="">
+                <form id="form-password" method="post">
                     @csrf
                     @method('put')
                     <div class="form-group row">
