@@ -163,7 +163,7 @@
                     <div class="form-group row">
                         <label for="u_email_password" class="col-12 col-lg-6 col-form-label">Confirm Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password" class="form-control" id="u_email_password" name="confirm_password">
+                            <input type="password" class="form-control" id="u_email_password" name="confirm_password" required>
                         </div>
                     </div>
                 </form>
@@ -196,7 +196,7 @@
                     <div class="form-group row">
                         <label for="u_password_old" class="col-12 col-lg-6 col-form-label">Old Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password" class="form-control" id="u_password_old" name="old_password">
+                            <input type="password" class="form-control" id="u_password_old" name="old_password" required>
                         </div>
                     </div>
                     <div class="form-group row">
