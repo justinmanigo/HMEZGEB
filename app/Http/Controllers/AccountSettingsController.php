@@ -45,6 +45,7 @@ class AccountSettingsController extends Controller
 
         return User::find(Auth::user()->id)->update([
             'password' => Hash::make($validated['new_password']),
+            'password_updated_at' => now(),
         ]);
     }
 }

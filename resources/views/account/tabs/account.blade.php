@@ -51,7 +51,7 @@
                         <p class="account-h2 m-0">Password</p>
                     </div>
                     <div class="card-content-value">
-                        <p id="content_current_password" class="mt-1 mb-0">Last updated: May 1, 2022</p>
+                        <p id="content_current_password" class="mt-1 mb-0">Last updated: {{ (Auth::user()->password_updated_at ? \Carbon\Carbon::create(Auth::user()->password_updated_at)->diffForHumans() : 'Never') }}</p>
                     </div>
                     <div class="card-content-btn">
                         <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#modal-password">Edit Password</button>
