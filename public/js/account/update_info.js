@@ -34,6 +34,7 @@ $(".account-update").submit(function(e){
     hideErrors(elm_errors);
     disableButton(btn_submit);
 
+    console.log("Creating request.");
     // Create request
     var request = $.ajax({
         url: `ajax/account/update/${e.target.dataset.update}`,
@@ -43,14 +44,17 @@ $(".account-update").submit(function(e){
 
     // If request has successfully processed.
     request.done(function(res, status, jqXHR) {
+        console.log("Request successful.");
+        console.log(res);
         if(res == '1') {
             btn_close.click();
-            showSuccessAlert("Username successfully updated.");
+            showSuccessAlert(`${capitalizeFirstLetter(e.target.dataset.update)} successfully updated.`);
         }
     });
 
     // If request has errors (including validation errors).
     request.fail(function(jqXHR, status, error){
+        console.log("Request failed.");
         console.log(jqXHR);
         showErrors(elm_errors, jqXHR.responseJSON.errors);
     });
@@ -101,4 +105,8 @@ function disableButton(btn) {
 function showSuccessAlert(msg) {
     $("#alert-success").show();
     $("#alert-success-content").html(msg);
+}
+
+function capitalizeFirstLetter(string) {
+    return string[0].toUpperCase() + string.slice(1);
 }
