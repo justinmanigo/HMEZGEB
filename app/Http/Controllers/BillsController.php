@@ -106,7 +106,7 @@ class BillsController extends Controller
             $payment_method = 'credit';
         
         // Create Bill Record
-        $receipt = Bills::create([
+        $bills = Bills::create([
             'payment_reference_id' => $reference->id,
             // 'withholding_payment_id' => '0', // temporary
             'purchase_order_id' => $request->purchase_order_id,
@@ -125,7 +125,7 @@ class BillsController extends Controller
         {
             BillItem::create([
                 'inventory_id' => $items[$i]->value,
-                'bill_id' => $reference->id,
+                'bill_id' => $bills->id,
                 'quantity' => $request->quantity[$i],
                 'price' => $items[$i]->sale_price,
                 'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
@@ -146,6 +146,10 @@ class BillsController extends Controller
         
     }
 
+    public function storePurchaseOrder(Request $request)
+    {
+        return $request->all();
+    }
     /**
      * Display the specified resource.
      *
