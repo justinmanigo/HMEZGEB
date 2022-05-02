@@ -371,3 +371,12 @@ Route::group([
 
     Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
     Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);
+
+/**
+ * Account Settings
+ */
+Route::group([
+    'as' => 'account.'
+], function() {
+    Route::get('/account', [AccountSettingsController::class, 'index'])->name('index');
+});
