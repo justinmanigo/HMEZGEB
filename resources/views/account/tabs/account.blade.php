@@ -105,21 +105,21 @@
                         <div class="col-12 col-lg-6">
                             <input type="text" class="form-control" id="u_username" name="username" required>
                         </div>
-                        <p id="u_username_error" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                        <p id="u_username_error" data-error="username" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_username_confirm" class="col-12 col-lg-6 col-form-label">Confirm Username<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <input type="text" class="form-control" id="u_username_confirm" name="confirm_username" required>
                         </div>
-                        <p id="u_username_confirm_error" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                        <p id="u_username_confirm_error" data-error="confirm_username"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_username_password" class="col-12 col-lg-6 col-form-label">Confirm Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password"class="form-control" id="u_username_password" name="confirm_password" required>
+                            <input type="password" class="form-control" id="u_username_password" name="confirm_password" required>
                         </div>
-                        <p id="u_username_password_error" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                        <p id="u_username_password_error" data-error="confirm_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                 </form>
             </div>
