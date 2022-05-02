@@ -41,6 +41,11 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\SettingChartOfAccountsController;
 use App\Http\Controllers\SettingPayrollRulesController;
+
+// Account Settings
+use App\Http\Controllers\AccountSettingsController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
