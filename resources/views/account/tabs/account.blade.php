@@ -67,11 +67,10 @@
             <div class="card-body">
                 <div class="card-content-grid-header-2">
                     <div>
-                        <p class="account-h2">Two Factor Authentication</p>
-                        <p></p>
+                        <p class="account-h2">Two Factor Authentication<span class="text-danger ml-3"><i>(Coming Soon)</i></span></p>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-sm btn-primary btn-block">Setup 2FA</button>
+                        <button type="button" class="btn btn-sm btn-primary btn-block" disabled>Setup 2FA</button>
                     </div>
                 </div>
                 <p>
