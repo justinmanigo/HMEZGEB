@@ -16,7 +16,7 @@
             <div class="card-body">
                 <div class="card-content-grid-header-3">
                     <div class="card-content-header">
-                        <p class="account-h2">Username</p>
+                        <p class="account-h2 m-0">Username</p>
                     </div>
                     <div class="card-content-value">
                         <p class="mt-1 mb-0">xyberpastoril</p>
@@ -32,7 +32,7 @@
             <div class="card-body">
                 <div class="card-content-grid-header-3">
                     <div class="card-content-header">
-                        <p class="account-h2">Email</p>
+                        <p class="account-h2 m-0">Email</p>
                     </div>
                     <div class="card-content-value">
                         <p class="mt-1 mb-0">xyber.pastoril@proton.me</p>
@@ -48,7 +48,7 @@
             <div class="card-body">
                 <div class="card-content-grid-header-3">
                     <div class="card-content-header">
-                        <p class="account-h2">Password</p>
+                        <p class="account-h2 m-0">Password</p>
                     </div>
                     <div class="card-content-value">
                         <p class="mt-1 mb-0">Last updated: May 1, 2022</p>
