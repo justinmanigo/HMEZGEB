@@ -19,7 +19,7 @@
                         <p class="account-h2 m-0">Username</p>
                     </div>
                     <div class="card-content-value">
-                        <p class="mt-1 mb-0">xyberpastoril</p>
+                        <p id="content_current_username" class="mt-1 mb-0">xyberpastoril</p>
                     </div>
                     <div class="card-content-btn">
                         <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#modal-username">Edit Username</button>
@@ -35,7 +35,7 @@
                         <p class="account-h2 m-0">Email</p>
                     </div>
                     <div class="card-content-value">
-                        <p class="mt-1 mb-0">xyber.pastoril@proton.me</p>
+                        <p id="content_current_email" class="mt-1 mb-0">xyber.pastoril@proton.me</p>
                     </div>
                     <div class="card-content-btn">
                         <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#modal-email">Edit Email</button>
@@ -51,7 +51,7 @@
                         <p class="account-h2 m-0">Password</p>
                     </div>
                     <div class="card-content-value">
-                        <p class="mt-1 mb-0">Last updated: May 1, 2022</p>
+                        <p id="content_current_password" class="mt-1 mb-0">Last updated: May 1, 2022</p>
                     </div>
                     <div class="card-content-btn">
                         <button type="button" class="btn btn-sm btn-primary btn-block" data-toggle="modal" data-target="#modal-password">Edit Password</button>
@@ -193,7 +193,7 @@
                 <div id="modal-password-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form_password" data-update="password" class="account-update" method="post">
+                <form id="form_password" data-update="password" data-issensitive="1" class="account-update" method="post">
                     @csrf
                     @method('put')
                     <div class="form-group row">

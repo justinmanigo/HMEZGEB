@@ -5,6 +5,7 @@ $("#alert-success button").click(function(){
 
 // When the update username form is submitted.
 $(".account-update").submit(function(e){
+    console.log(e);
     e.preventDefault();
     
     // Initialize and get input elements, submit button, and close button.
@@ -49,6 +50,13 @@ $(".account-update").submit(function(e){
         if(res == '1') {
             btn_close.click();
             showSuccessAlert(`${capitalizeFirstLetter(e.target.dataset.update)} successfully updated.`);
+        }
+
+        if(e.target.dataset.issensitive != undefined) {
+            $(`#content_current_${e.target.dataset.update}`).html("Last updated: Just now");
+        }
+        else {
+            $(`#content_current_${e.target.dataset.update}`).html(e.target[2].value);
         }
     });
 
