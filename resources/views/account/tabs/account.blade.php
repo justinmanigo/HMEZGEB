@@ -97,35 +97,35 @@
                 <div id="modal-username-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-username" method="post">
+                <form id="form_username" data-update="username" class="account-update" method="post">
                     @csrf
                     @method('put')
                     <div class="form-group row">
                         <label for="u_username" class="col-12 col-lg-6 col-form-label">New Username<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="u_username" name="username" required>
+                            <input type="text" class="form-control" id="u_username" name="username" data-field="username" required>
                         </div>
-                        <p id="u_username_error" data-error="username" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                        <p id="err_form_username_username" data-field="username" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_username_confirm" class="col-12 col-lg-6 col-form-label">Confirm Username<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="u_username_confirm" name="confirm_username" required>
+                            <input type="text" class="form-control" id="u_username_confirm" name="confirm_username" data-field="confirm_username" required>
                         </div>
-                        <p id="u_username_confirm_error" data-error="confirm_username"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                        <p id="err_form_username_confirm_username" data-field="confirm_username"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_username_password" class="col-12 col-lg-6 col-form-label">Confirm Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password" class="form-control" id="u_username_password" name="confirm_password" required>
+                            <input type="password" class="form-control" id="u_username_password" name="confirm_password" data-field="confirm_password" required>
                         </div>
-                        <p id="u_username_password_error" data-error="confirm_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                        <p id="err_form_username_confirm_password" data-field="confirm_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="u_username_close_btn" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" id="u_username_submit_btn" form="form-username">Update Username</button>
+                <button type="button" class="btn btn-secondary" id="btn_close_form_username" form="form_username" data-close="1" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="btn_submit_form_username" form="form_username" data-submit="1">Update Username</button>
             </div>
         </div>
     </div>
