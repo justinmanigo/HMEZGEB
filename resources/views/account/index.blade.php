@@ -33,7 +33,6 @@
     .account-h2 {
         font-size:20px;
         font-weight: 700;
-        margin:0;
     }
 
     .card-content-grid-header-2 {
