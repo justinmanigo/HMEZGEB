@@ -145,32 +145,35 @@
                 <div id="modal-email-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-email" method="post">">
+                <form id="form_email" data-update="email" class="account-update" method="post">
                     @csrf
                     @method('put')
                     <div class="form-group row">
                         <label for="u_email" class="col-12 col-lg-6 col-form-label">New Email<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="u_email" name="new_email" required>
+                            <input type="email" class="form-control" id="u_email" name="email" data-field="email" required>
                         </div>
+                        <p id="err_form_email_email" data-field="email"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_email_confirm" class="col-12 col-lg-6 col-form-label">Confirm Email<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="u_email_confirm" name="confirm_email" required>
+                            <input type="email" class="form-control" id="u_email_confirm" name="confirm_email" data-field="confirm_email" required>
                         </div>
+                        <p id="err_form_email_confirm_email" data-field="confirm_email"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_email_password" class="col-12 col-lg-6 col-form-label">Confirm Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password" class="form-control" id="u_email_password" name="confirm_password" required>
+                            <input type="password" class="form-control" id="u_email_password" name="confirm_password" data-field="confirm_password" required>
                         </div>
+                        <p id="err_form_email_confirm_password" data-field="confirm_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" id="u_email_submit_btn" form="form-email">Update Email</button>
+                <button type="button" class="btn btn-secondary" id="btn_close_form_email" form="form_email" data-close="1" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="btn_submit_form_email" form="form_email" data-submit="1">Update Email</button>
             </div>
         </div>
     </div>
@@ -190,33 +193,36 @@
                 <div id="modal-password-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-password" method="post">
+                <form id="form_password" data-update="password" class="account-update" method="post">
                     @csrf
                     @method('put')
                     <div class="form-group row">
                         <label for="u_password_old" class="col-12 col-lg-6 col-form-label">Old Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password" class="form-control" id="u_password_old" name="old_password" required>
+                            <input type="password" class="form-control" id="u_password_old" name="old_password" data-field="old_password" required>
                         </div>
+                        <p id="err_form_password_old_password" data-field="old_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_password_new" class="col-12 col-lg-6 col-form-label">New Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password" class="form-control" id="u_password_new" name="new_password" required>
+                            <input type="password" class="form-control" id="u_password_new" name="new_password" data-field="new_password" required>
                         </div>
+                        <p id="err_form_password_new_password" data-field="new_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="u_password_confirm" class="col-12 col-lg-6 col-form-label">Confirm New Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="password" class="form-control" id="u_password_confirm" name="confirm_new_password" required>
+                            <input type="password" class="form-control" id="u_password_confirm" name="confirm_new_password" data-field="confirm_new_password" required>
                         </div>
+                        <p id="err_form_password_confirm_new_password" data-field="confirm_new_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" id="u_password_submit_btn" form="form-password">Update Password</button>
+                <button type="button" class="btn btn-secondary" id="btn_close_form_password" data-dismiss="modal" data-close="1" form="form_password">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="btn_submit_form_password" form="form_password" data-submit="1">Update Password</button>
             </div>
         </div>
     </div>
