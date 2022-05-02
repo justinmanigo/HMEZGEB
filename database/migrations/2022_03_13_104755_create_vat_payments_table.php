@@ -15,16 +15,17 @@ class CreateVatPaymentsTable extends Migration
     {
         Schema::create('vat_payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('vendor_id');
             $table->unsignedBigInteger('payment_reference_id');
-            $table->unsignedBigInteger('accounting_period_id');
-            $table->date('date');
-            $table->float('previous_vat_receivable');
-            $table->float('current_vat_receivable');
-            $table->float('current_vat_payment');
-            $table->foreign('vendor_id')->references('id')->on('vendors'); 
+            $table->unsignedBigInteger('accounting_period_id')->nullable();
+            $table->unsignedBigInteger('chart_of_account_id')->nullable();
+            $table->string('type');
+            $table->float('previous_period_vat_receivable')->nullable();
+            $table->float('current_period_vat_receivable')->nullable();
+            $table->float('current_period_vat_payment')->nullable();
+            $table->float('current_receivable')->nullable();
             $table->foreign('payment_reference_id')->references('id')->on('payment_references'); 
-            $table->foreign('accounting_period_id')->references('id')->on('accounting_periods'); 
+            $table->foreign('accounting_period_id')->nullable()->references('id')->on('accounting_periods'); 
+            $table->foreign('chart_of_account_id')->nullable()->references('id')->on('chart_of_accounts'); 
             $table->timestamps();
         });
     }

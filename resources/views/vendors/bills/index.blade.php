@@ -174,7 +174,7 @@
                             <p class="h3 pl-4 m-auto">New Bill</p>
                             <a class="close" data-dismiss="modal">×</a>
                         </div>
-                        <form action="{{route('bills.bill.store') }}"  method="post" id="contactForm" name="contact" role="form">
+                        <form action="{{route('bills.purchaseOrder.store') }}"  method="post" id="contactForm" name="contact" role="form">
                             @csrf    
                             @include('vendors.bills.forms.addBillModal')
                         </form>
@@ -190,7 +190,7 @@
                             <p class="h3 pl-4 m-auto">Purchase Order</p>
                             <a class="close" data-dismiss="modal">×</a>
                         </div>
-                        <form id="contactForm" name="contact" role="form">
+                        <form action="{{route('bills.bill.store') }}" id="contactForm" name="contact" role="form">
                                 @include('vendors.bills.forms.purchaseOrderModal')
                         </form>
                     </div>

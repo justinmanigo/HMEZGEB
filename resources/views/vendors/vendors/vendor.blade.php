@@ -83,7 +83,7 @@
                             <th>City</th>
                             <th>Contact Person</th>
                             <th>Mobile#</th>
-                            <th>Lable</th>
+                            <th>Label</th>
                             <th>Balance</th>
                         </tr>
                     </thead>

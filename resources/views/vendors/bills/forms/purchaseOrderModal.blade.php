@@ -35,19 +35,6 @@
                     <input type="date" class="form-control" id="po_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="po_order_number" class="col-4 col-form-label text-lg-right">Order #<span class="text-danger ml-1">*</span> :</label>
-                <div class="col-8">
-                    <input type="text" class="form-control" id="po_order_number" name="order_number" placeholder="" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="po_bill_number" class="col-4 col-form-label text-lg-right">Bill # :</label>
-                <div class="col-8">
-                    <input type="text" class="form-control" id="po_bill_number" name="bill_number" placeholder="">
-                </div>
-            </div>
-
         </div>
     </div> <div class="table-responsive">
         <table class="table table-sm table-bordered">
