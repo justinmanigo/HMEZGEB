@@ -147,6 +147,7 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/bill', [BillsController::class, 'index'])->name('bill.index');
         Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
         Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
+        Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
     });
 
     Route::group([
