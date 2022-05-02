@@ -9,8 +9,8 @@ $(".account-update").submit(function(e){
     
     // Initialize and get input elements, submit button, and close button.
     // error ids must match ff format: err_{form_name}_{input_field}
-    // for submit btns: btn_submit_{form_name}
-    // for close btns: btn_close_{form_name}
+    // for submit btns: btn_submit_{form_name}, include data-submit='1' attr
+    // for close btns: btn_close_{form_name}, include data-close='1' attr
     // both input and error elements must have data-field bearing the input name.
     var elm_errors = [], btn_submit, btn_close;
 
