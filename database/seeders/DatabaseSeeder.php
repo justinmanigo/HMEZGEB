@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ChartOfAccountCategoriesTableSeeder::class);
         $this->call(IncomeTaxPayrollRulesSeeder::class);
         $this->call(OvertimePayrollRulesSeeder::class);
+        $this->call(ModulesTableSeeder::class);
     }
 }
