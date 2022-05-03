@@ -382,4 +382,6 @@ Route::group([
     Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername'])->name('update.username');
     Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail'])->name('update.email');
     Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword'])->name('update.password');
+
+    Route::get('/account/users', [AccountSettingsController::class, 'manageUsers'])->name('manageUsers');
 });
