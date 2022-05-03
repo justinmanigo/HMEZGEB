@@ -41,6 +41,11 @@ use App\Http\Controllers\LoanController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\SettingChartOfAccountsController;
 use App\Http\Controllers\SettingPayrollRulesController;
+
+// Account Settings
+use App\Http\Controllers\AccountSettingsController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -365,3 +370,15 @@ Route::group([
 
     Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
     Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);
+
+/**
+ * Account Settings
+ */
+Route::group([
+    'as' => 'account.'
+], function() {
+    Route::get('/account', [AccountSettingsController::class, 'index'])->name('index');
+    Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername'])->name('update.username');
+    Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail'])->name('update.email');
+    Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword'])->name('update.password');
+});
