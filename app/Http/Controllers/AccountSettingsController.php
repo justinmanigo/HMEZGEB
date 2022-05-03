@@ -12,7 +12,7 @@ use App\Models\User;
 
 class AccountSettingsController extends Controller
 {
-    public function index()
+    public function yourAccount()
     {
         return view('account.index');
     }
