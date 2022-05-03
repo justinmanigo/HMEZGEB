@@ -115,7 +115,7 @@
 {{-- Tab Navigation --}}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="account-tab" data-toggle="tab" href="#account" role="tab"
+        <a class="nav-link active" id="account-tab" href="/account/" role="tab"
             aria-controls="account" aria-selected="true">Your Account</a>
     </li>
     {{-- <li class="nav-item" role="presentation">
@@ -124,20 +124,12 @@
     </li> --}}
 </ul>
 
-{{-- Tab Contents --}}
+{{-- Content --}}
 <div class="card" class="content-card">
-    <div class="card-body tab-content" id="myTabContent">
-        {{-- Tab 1 - Account --}}
-        <div class="tab-pane fade show active p-3" id="account" role="tabpanel"
-            aria-labelledby="account-tab">
-            
-            @include('account.tabs.account')
-
-        </div>
-        {{-- Tab 2 --}}
-        {{-- <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
-            
-        </div> --}}
+    <div class="card-body">
+        @if(Route::currentRouteName() == 'account.yourAccount')
+            @include('account.content.yourAccount')
+        @endif
     </div>
 </div>
 
