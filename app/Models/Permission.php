@@ -15,4 +15,9 @@ class Permission extends Model
     {
         $this->belongsTo(SubModule::class);
     }
+
+    public function user()
+    {
+        $this->belongsTo(User::class);
+    }
 }
