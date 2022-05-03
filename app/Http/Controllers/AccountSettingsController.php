@@ -51,4 +51,12 @@ class AccountSettingsController extends Controller
             'password_updated_at' => now(),
         ]);
     }
+
+    /**
+     * Manage Users
+     */
+    public function manageUsers()
+    {
+        return view('account.manageUsers');
+    }
 }
