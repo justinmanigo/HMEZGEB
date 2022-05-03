@@ -12,9 +12,12 @@ use App\Models\User;
 
 class AccountSettingsController extends Controller
 {
+    /**
+     * Your Account Page
+     */
     public function yourAccount()
     {
-        return view('account.index');
+        return view('account.yourAccount');
     }
 
     /**

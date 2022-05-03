@@ -127,12 +127,10 @@
 {{-- Content --}}
 <div class="card" class="content-card">
     <div class="card-body">
-        @if(Route::currentRouteName() == 'account.yourAccount')
-            @include('account.content.yourAccount')
-        @endif
+        @yield('accounts_content')
     </div>
 </div>
 
-<script src="js/account/update_info.js"></script>
+@yield('accounts_script')
 
 @endsection

@@ -1,3 +1,7 @@
+@extends('template.account')
+
+@section('accounts_content')
+
 <div id="account-header-grid">
     <div>
         <img id="account-picture-128" src="{{ asset('img/blank.jpg') }}">
@@ -227,3 +231,9 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('accounts_script')
+<script src="js/account/update_info.js"></script>
+@endsection
