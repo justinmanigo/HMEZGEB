@@ -115,32 +115,22 @@
 {{-- Tab Navigation --}}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="account-tab" data-toggle="tab" href="#account" role="tab"
+        <a class="nav-link @if(Route::currentRouteName() == 'account.yourAccount') {{ 'active' }} @endif" id="account-tab" href="/account/me/"
             aria-controls="account" aria-selected="true">Your Account</a>
     </li>
-    {{-- <li class="nav-item" role="presentation">
-        <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proforma" role="tab"
-            aria-controls="proforma" aria-selected="false">Proforma</a>
-    </li> --}}
+    <li class="nav-item" role="presentation">
+        <a class="nav-link @if(Route::currentRouteName() == 'account.manageUsers') {{ 'active' }} @endif" id="users-tab" href="/account/users/"
+            aria-controls="users" aria-selected="true">Manage Users</a>
+    </li>
 </ul>
 
-{{-- Tab Contents --}}
+{{-- Content --}}
 <div class="card" class="content-card">
-    <div class="card-body tab-content" id="myTabContent">
-        {{-- Tab 1 - Account --}}
-        <div class="tab-pane fade show active p-3" id="account" role="tabpanel"
-            aria-labelledby="account-tab">
-            
-            @include('account.tabs.account')
-
-        </div>
-        {{-- Tab 2 --}}
-        {{-- <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
-            
-        </div> --}}
+    <div class="card-body">
+        @yield('accounts_content')
     </div>
 </div>
 
-<script src="js/account/update_info.js"></script>
+@yield('accounts_script')
 
 @endsection

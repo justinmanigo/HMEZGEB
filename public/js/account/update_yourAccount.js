@@ -38,7 +38,7 @@ $(".account-update").submit(function(e){
     console.log("Creating request.");
     // Create request
     var request = $.ajax({
-        url: `ajax/account/update/${e.target.dataset.update}`,
+        url: `/ajax/account/me/update/${e.target.dataset.update}`,
         method: "POST",
         data: $(`#form_${e.target.dataset.update}`).serialize()
     });

@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AccountSettings;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUsernameRequest;
 use App\Http\Requests\UpdateEmailRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 
-class AccountSettingsController extends Controller
+class YourAccountController extends Controller
 {
+    /**
+     * Your Account Page
+     */
     public function index()
     {
-        return view('account.index');
+        return view('account.yourAccount.index');
     }
 
     /**
