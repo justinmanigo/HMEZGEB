@@ -116,7 +116,7 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="account-tab" data-toggle="tab" href="#account" role="tab"
-            aria-controls="account" aria-selected="true">Account</a>
+            aria-controls="account" aria-selected="true">Your Account</a>
     </li>
     {{-- <li class="nav-item" role="presentation">
         <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proforma" role="tab"
