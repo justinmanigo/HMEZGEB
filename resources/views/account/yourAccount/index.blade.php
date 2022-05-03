@@ -235,5 +235,5 @@
 @endsection
 
 @section('accounts_script')
-<script src="js/account/update_info.js"></script>
+<script src="/js/account/update_yourAccount.js"></script>
 @endsection

@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AccountSettings;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUsernameRequest;
 use App\Http\Requests\UpdateEmailRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 
-class AccountSettingsController extends Controller
+class YourAccountController extends Controller
 {
     /**
      * Your Account Page
      */
-    public function yourAccount()
+    public function index()
     {
-        return view('account.yourAccount');
+        return view('account.yourAccount.index');
     }
 
     /**
@@ -50,13 +51,5 @@ class AccountSettingsController extends Controller
             'password' => Hash::make($validated['new_password']),
             'password_updated_at' => now(),
         ]);
-    }
-
-    /**
-     * Manage Users
-     */
-    public function manageUsers()
-    {
-        return view('account.manageUsers');
     }
 }

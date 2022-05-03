@@ -43,7 +43,8 @@ use App\Http\Controllers\SettingChartOfAccountsController;
 use App\Http\Controllers\SettingPayrollRulesController;
 
 // Account Settings
-use App\Http\Controllers\AccountSettingsController;
+use App\Http\Controllers\AccountSettings\YourAccountController;
+use App\Http\Controllers\AccountSettings\ManageUsersController;
 
 
 /*
@@ -378,10 +379,10 @@ Route::group([
 Route::group([
     'as' => 'account.'
 ], function() {
-    Route::get('/account', [AccountSettingsController::class, 'yourAccount'])->name('yourAccount');
-    Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername'])->name('update.username');
-    Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail'])->name('update.email');
-    Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword'])->name('update.password');
+    Route::get('/account/me/', [YourAccountController::class, 'index'])->name('yourAccount');
+    Route::put('/ajax/account/me/update/username', [YourAccountController::class, 'updateUsername'])->name('yourAccount.updateUsername');
+    Route::put('/ajax/account/me/update/email', [YourAccountController::class, 'updateEmail'])->name('yourAccount.updateEmail');
+    Route::put('/ajax/account/me/update/password', [YourAccountController::class, 'updatePassword'])->name('yourAccount.updatePassword');
 
-    Route::get('/account/users', [AccountSettingsController::class, 'manageUsers'])->name('manageUsers');
+    Route::get('/account/users', [ManageUsersController::class, 'index'])->name('manageUsers');
 });
