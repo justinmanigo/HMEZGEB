@@ -38,4 +38,9 @@ class Bills extends Model
         {
             return $this->belongsTo(ChartOfAccounts::class, 'chart_of_account_id');
         }
+
+        public function purchaseOrder()
+        {
+            return $this->belongsTo(PurchaseOrders::class, 'purchase_order_id');
+        }
 }

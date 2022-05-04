@@ -17,10 +17,17 @@ class PurchaseOrders extends Model
         'grand_total',
     ];
 
+    
+    public function bills()
+    {
+        return $this->hasOne(Bills::class, 'purchase_order_id','id');
+    }
+    
     public function paymentReference()
     {
         return $this->belongsTo(PaymentReferences::class, 'payment_reference_id');
     }
+
 
     
 }
