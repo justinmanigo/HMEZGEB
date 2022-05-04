@@ -18,19 +18,18 @@ class BillsController extends Controller
      */
     public function index()
     {
-        
-        // join vendors table with bills table and select all the fields from vendors table and bills table. 
-        $bills = Vendors::join(
-            'bills',
-            'vendors.id',
-            '=',
-            'bills.vendor_id'
-        )->select(
-            // get vendors name
-            'vendors.name as vendor_name',
-        );
-        
-        return view('vendors.bills.index',compact('bills'));
+        // get vendors table join
+          $bill = Vendors::join('payment_references', 'payment_references.vendor_id', '=', 'vendors.id')
+            ->join('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->select('payment_references.*', 'vendors.name', 'bills.grand_total');
+
+        $bill_and_purchase_order = Vendors::join('payment_references', 'payment_references.vendor_id', '=', 'vendors.id')
+            ->join('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+            ->select('payment_references.*', 'vendors.name', 'purchase_orders.grand_total')
+            ->union($bill)
+            ->get();        
+       
+        return view('vendors.bills.index',compact('bill_and_purchase_order'));
     }
 
     /**
@@ -79,11 +78,11 @@ class BillsController extends Controller
 
         // Determine bill status.
         if($request->grand_total == $request->total_amount_received)
-            $status = 'paid';
+            $remark = 'paid';
         else if($request->total_amount_received == 0)
-            $status = 'unpaid';
+            $remark = 'unpaid';
         else
-            $status = 'partially_paid';
+            $remark = 'partially_paid';
 
         // Create BillReference Record
         $reference = PaymentReferences::create([
@@ -91,7 +90,7 @@ class BillsController extends Controller
             'date' => $request->date,
             'type' => 'bill',
             'attachment' => $request->attachment,
-            'remark' => $request->remark,
+            'remark' => $remark,
         ]);
 
         // If request has attachment, store it to file storage.
@@ -142,7 +141,7 @@ class BillsController extends Controller
         //     $bill->attachment = $filename;
         //     $bill->save();
         // }
-
+            
         return redirect()->back()->with('success', 'Bill has been created successfully.');
         
     }
@@ -158,17 +157,16 @@ class BillsController extends Controller
              // object, thus it has to be merged.
              $items[$i] = $item[0];
          }
-         
-         // Temporary status
-         $status = 'unpaid';
+
+         $remark = 'unpaid';
  
          // payment References
          $reference = PaymentReferences::create([
             'vendor_id' => $request->vendor_id,
             'date' => $request->date,
-            'type' => 'bill',
+            'type' => 'purchase_order',
             'attachment' => $request->attachment,
-            'remark' => $request->remark,
+            'remark' => $remark,
         ]);
  
          // Create child database entry
@@ -201,7 +199,7 @@ class BillsController extends Controller
             ]);
          }
          
-         return redirect()->back()->with('success', 'Proforma has been added successfully');
+         return redirect()->back()->with('success', 'Purchase Order has been added successfully');
  
     }
     /**

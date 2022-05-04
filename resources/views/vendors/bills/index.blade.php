@@ -128,8 +128,9 @@
         <div class="card-header pt-3">
             <div class="row d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary col-md-2">Bills</h6>
+
                 <!----buttons----->
-                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
                     <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -166,7 +167,24 @@
                 </div>
                 <!---- end buttons----->
             </div>
+            @if(session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session()->get('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+            @if(session()->has('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session()->get('warning') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
         </div>
+
         {{-- Modal Contents --}}
         <!--------For add vendor--->
         <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -198,7 +216,8 @@
                         <p class="h3 pl-4 m-auto">Purchase Order</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form action="{{route('bills.purchaseOrder.store') }}" method="post" id="contactForm" name="contact" role="form">
+                    <form action="{{route('bills.purchaseOrder.store') }}" method="post" id="contactForm" name="contact"
+                        role="form">
                         @csrf
                         @include('vendors.bills.forms.purchaseOrderModal')
                     </form>
@@ -215,21 +234,37 @@
                             <th>Reference#</th>
                             <th>Type</th>
                             <th>Vendor Name</th>
-                            <th>Status</th>
+                            <th>Remark</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
 
                     <tbody>
-
+                        <!-- foreach bills -->
+                        @foreach($bill_and_purchase_order as $bill)
                         <tr onclick="window.location='/'">
-                            <td>asdasdasd</td>
-                            <td>sadasdasd</td>
-                            <td class="h6"><span class="badge badge-primary">Bill</span></td>
-                            <td>asdasdasd</td>
-                            <td class="h6"><span class="badge badge-success">Paid</span></td>
-                            <td>dasdsd</td>
+                            <td>{{$bill->date}}</td>
+                            <td>{{$bill->id}}</td>
+                            <!-- Select type -->
+                            <td class="h6">
+                                @if($bill->type == 'bill')<span class="badge badge-primary">Bill</span>
+                                @elseif($bill->type == 'purchase_order')<span class="badge badge-primary">Purchase
+                                    Order</span>
+                            </td>
+                            @endif
+                            <td>{{$bill->name}}</td>
+                            <!-- Select status -->
+                            <td class="h6">
+                                @if($bill->remark == 'paid')<span class="badge badge-success">Paid</span>
+                                @elseif($bill->remark == 'unpaid')<span class="badge badge-danger">Unpaid</span>
+                                @elseif($bill->remark == 'partially_paid')<span class="badge badge-warning">Partially
+                                    Paid</span>
+                                @endif
+                            </td>
+
+                            <td>{{$bill->grand_total}}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
