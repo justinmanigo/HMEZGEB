@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use App\Models\Tax;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Tax;
 
 class TaxController extends Controller
 {

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\ChartOfAccounts;
 use App\Models\ChartOfAccountCategory;
 use App\Models\PeriodOfAccounts;
-use Illuminate\Http\Request;
 
-class SettingChartOfAccountsController extends Controller
+class ChartOfAccountsController extends Controller
 {
     /**
      * Display a listing of the resource.
