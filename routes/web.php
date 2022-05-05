@@ -387,7 +387,7 @@ Route::group([
         'as' => 'payroll.'
     ], function(){
         // HTTP
-        Route::get('/settings/payroll', [PayrollRulesController::class, 'index']);
+        Route::get('/settings/payroll', [PayrollRulesController::class, 'index'])->name('index');
         Route::post('/settings/payroll/update/incometax', [PayrollRulesController::class, 'updateIncomeTaxRules'])->name('updateIncomeTaxRules');
         Route::post('/settings/payroll/update/overtime', [PayrollRulesController::class, 'updateOvertimeRules'])->name('updateOvertimeRules');
     });
