@@ -142,6 +142,7 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'deposits.'
     ], function(){ 
         Route::get('/deposit', [DepositController::class, 'index']);
+        Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositController::class, 'ajaxSearchBank']);
     });
 
  
@@ -369,7 +370,8 @@ Route::group([
 
     });
 
-    Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+    Route::get('/ajax/settings/coa_categories/search', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+    Route::get('/ajax/settings/coa_categories/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
     Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);
 
 /**
