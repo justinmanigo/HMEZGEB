@@ -11,6 +11,12 @@ class Permission extends Model
 
     public $timestamps = false;
 
+    protected $fillable = [
+        'user_id',
+        'sub_module_id',
+        'access_level',
+    ];
+
     public function subModule()
     {
         $this->belongsTo(SubModule::class);
