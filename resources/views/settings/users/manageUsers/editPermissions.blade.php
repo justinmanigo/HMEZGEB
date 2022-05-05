@@ -13,7 +13,7 @@
     </div>
 @endif
 
-<form id="form_permissions" method="post" action="/account/users/{{ $user_id }}/permissions">
+<form id="form_permissions" method="post" action="/settings/users/{{ $user_id }}/permissions">
     @csrf
     @method('PUT')
     <div class="table-responsive">

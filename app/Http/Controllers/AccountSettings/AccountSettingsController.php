@@ -11,14 +11,14 @@ use App\Http\Requests\UpdateEmailRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
 
-class YourAccountController extends Controller
+class AccountSettingsController extends Controller
 {
     /**
      * Your Account Page
      */
     public function index()
     {
-        return view('account.yourAccount.index');
+        return view('account_settings.index');
     }
 
     /**
