@@ -384,4 +384,6 @@ Route::group([
     Route::put('/ajax/account/me/update/password', [YourAccountController::class, 'updatePassword'])->name('yourAccount.updatePassword');
 
     Route::get('/account/users', [ManageUsersController::class, 'index'])->name('manageUsers');
+    Route::get('/account/users/{user}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
+    Route::put('/account/users/{user}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
 });
