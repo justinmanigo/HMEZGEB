@@ -3,16 +3,11 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateUsernameRequest;
-use App\Http\Requests\UpdateEmailRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\User;
-use App\Models\Module;
-use App\Models\Permission;
+use App\Models\Settings\Users\Module;
+use App\Models\Settings\Users\SubModule;
+use App\Models\Settings\Users\Permission;
 
 class ManageUsersController extends Controller
 {
@@ -44,8 +39,7 @@ class ManageUsersController extends Controller
     public function editPermissions(User $user)
     {
         // Initialize subquery
-        $subQuery = DB::table('sub_modules')
-            ->select('permissions.access_level', 'sub_modules.id')
+        $subQuery = SubModule::select('permissions.access_level', 'sub_modules.id')
             ->leftJoin('permissions', 'permissions.sub_module_id', '=', 'sub_modules.id')
             ->where('permissions.user_id', $user->id);
 
