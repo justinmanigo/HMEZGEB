@@ -9,7 +9,7 @@ class Module extends Model
 {
     use HasFactory;
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
     public function subModules()
     {
