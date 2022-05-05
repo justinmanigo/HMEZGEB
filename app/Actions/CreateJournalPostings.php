@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use Lorisleiva\Actions\Concerns\AsAction;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
+use App\Models\Settings\ChartOfAccounts\JournalPostings;
 
 class CreateJournalPostings
 {

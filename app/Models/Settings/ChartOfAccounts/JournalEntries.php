@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Settings\ChartOfAccounts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\JournalVouchers;
+use App\Models\BankReconciliatation;
+use App\Models\ReceiptReferences;
+use App\Models\PaymentReferences;
 
 class JournalEntries extends Model
 {
@@ -24,7 +28,7 @@ class JournalEntries extends Model
     }
     public function bankReconciliation()
     {
-        return $this->belongsTo(BankReconciliations::class, 'model_reference_id','id');
+        return $this->belongsTo(BankReconciliatation::class, 'model_reference_id','id');
     }
     public function receiptReferences()
     {
