@@ -15,6 +15,7 @@ class PaymentReferences extends Model
         'date',
         'attachment',
         'remark',
+        'status',
     ];
 
     public function vendor()

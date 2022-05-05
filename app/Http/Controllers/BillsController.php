@@ -78,11 +78,11 @@ class BillsController extends Controller
 
         // Determine bill status.
         if($request->grand_total == $request->total_amount_received)
-            $remark = 'paid';
+            $status = 'paid';
         else if($request->total_amount_received == 0)
-            $remark = 'unpaid';
+            $status = 'unpaid';
         else
-            $remark = 'partially_paid';
+            $status = 'partially_paid';
 
         // Create BillReference Record
         $reference = PaymentReferences::create([
@@ -90,7 +90,8 @@ class BillsController extends Controller
             'date' => $request->date,
             'type' => 'bill',
             'attachment' => $request->attachment,
-            'remark' => $remark,
+            'remark' => $request->remark,
+            'status' => $status
         ]);
 
         // If request has attachment, store it to file storage.
@@ -158,7 +159,7 @@ class BillsController extends Controller
              $items[$i] = $item[0];
          }
 
-         $remark = 'unpaid';
+         $status = 'unpaid';
  
          // payment References
          $reference = PaymentReferences::create([
@@ -166,7 +167,8 @@ class BillsController extends Controller
             'date' => $request->date,
             'type' => 'purchase_order',
             'attachment' => $request->attachment,
-            'remark' => $remark,
+            'remark' => $request->remark,
+            'status' => $status,
         ]);
  
          // Create child database entry

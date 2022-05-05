@@ -134,9 +134,9 @@
     </div>
     
 <div class="row form-group">
-    <label for="email" class="col-form-label col-lg-2">Terms & Conditions:</label>
-    <textarea name="#" class="form-control col-lg-4"></textarea>
-    <label for="email" class="col-form-label col-lg-2">Attachment:</label>
+    <label for="remark" class="col-form-label col-lg-2">Terms & Conditions:</label>
+    <textarea name="remark" class="form-control col-lg-4"></textarea>
+    <label for="attachment" class="col-form-label col-lg-2">Attachment:</label>
     <div class="input-group col-md-2 col-lg-4">
         <div class="custom-file">
         <input type="file" class="custom-file-input" id="inputGroupFile03">

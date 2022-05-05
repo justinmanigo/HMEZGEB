@@ -255,9 +255,9 @@
                             <td>{{$bill->name}}</td>
                             <!-- Select status -->
                             <td class="h6">
-                                @if($bill->remark == 'paid')<span class="badge badge-success">Paid</span>
-                                @elseif($bill->remark == 'unpaid')<span class="badge badge-danger">Unpaid</span>
-                                @elseif($bill->remark == 'partially_paid')<span class="badge badge-warning">Partially
+                                @if($bill->status == 'paid')<span class="badge badge-success">Paid</span>
+                                @elseif($bill->status == 'unpaid')<span class="badge badge-danger">Unpaid</span>
+                                @elseif($bill->status == 'partially_paid')<span class="badge badge-warning">Partially
                                     Paid</span>
                                 @endif
                             </td>

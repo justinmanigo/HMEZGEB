@@ -157,8 +157,8 @@
 
 
 
-    <label for="b_note" class="col-lg-2 col-form-label">Note:</label>
-    <textarea class="form-control col-lg-4" id="b_note" name="note"></textarea>
+    <label for="b_remark" class="col-lg-2 col-form-label">Remark:</label>
+    <textarea class="form-control col-lg-4" id="b_remark" name="remark"></textarea>
     
 </div>
 
