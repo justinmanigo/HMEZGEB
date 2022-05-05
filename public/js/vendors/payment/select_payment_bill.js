@@ -10,8 +10,8 @@ function createPaymentToPayEntry(data)
     console.log(data)
     // Increment payments_to_pay_count to avoid element conflicts.
     // payments_to_pay_count++;
-
-    amount_due = data.grand_total - data.total_amount_received;
+    
+    amount_due = data.grand_total - data.amount_received;
 
     // <tr> template
     let inner = `
