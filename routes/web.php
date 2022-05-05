@@ -385,4 +385,5 @@ Route::group([
 
     Route::get('/account/users', [ManageUsersController::class, 'index'])->name('manageUsers');
     Route::get('/account/users/{user}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
+    Route::put('/account/users/{user}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
 });
