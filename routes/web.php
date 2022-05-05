@@ -314,28 +314,6 @@ Route::group([
 
     });
 
-    /**
- * Settings Menu
- */ 
-
-
-    // Route::get('/company-info', function () {
-    //     return view('settings.company_info.index');
-    // })->name('company-info');
-    // Route::get('/users', function () {
-    //     return view('settings.users.index');
-    // })->name('users');
-    // Route::get('/taxes', function () {
-    //     return view('settings.taxes.index');
-    // })->name('taxes');
-    // Route::get('/withholding', function () {
-    //     return view('settings.withholding.index');
-    // })->name('withholding');
-    // Route::get('/theme', function () {
-    //     return view('settings.theme.index');
-    // })->name('theme');
-    // Route::view('/taxes', 'settings.taxes.index')->name('taxes');
-
 /**
  * Settings Module
  */
