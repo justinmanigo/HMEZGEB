@@ -177,6 +177,8 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'payments.'
     ], function(){ 
         Route::get('/payment',[PaymentsController::class,'index']);
+        Route::post('/payment/bill',[PaymentsController::class,'storeBillPayment'])->name('billPayment.store');
+        Route::get('/ajax/vendor/payments/topay/{vendor}', [VendorsController::class, 'ajaxGetPaymentsToPay']);
     });
  
  

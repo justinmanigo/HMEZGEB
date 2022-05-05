@@ -145,7 +145,8 @@
                         <p class="h3 pl-4 m-auto">New Bill</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
+                    <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
+                        @csrf
                        @include('vendors.payments.forms.billPaymentModal')
                         <div class="modal-footer">					
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
