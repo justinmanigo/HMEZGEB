@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\ChartOfAccounts;
-use App\Models\ChartOfAccountCategory;
+use App\Models\ChartOfAccounts\ChartOfAccounts;
+use App\Models\ChartOfAccounts\ChartOfAccountCategory;
 use App\Models\PeriodOfAccounts;
 
 class ChartOfAccountsController extends Controller

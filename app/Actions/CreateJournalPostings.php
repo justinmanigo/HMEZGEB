@@ -3,7 +3,7 @@
 namespace App\Actions;
 
 use Lorisleiva\Actions\Concerns\AsAction;
-use App\Models\ChartOfAccounts;
+use App\Models\ChartOfAccounts\ChartOfAccounts;
 use App\Models\JournalPostings;
 
 class CreateJournalPostings
