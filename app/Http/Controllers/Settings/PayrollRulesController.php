@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\OvertimePayrollRules;
-use App\Models\IncomeTaxPayrollRules;
+use App\Models\Settings\PayrollRules\OvertimePayrollRules;
+use App\Models\Settings\PayrollRules\IncomeTaxPayrollRules;
 
 class PayrollRulesController extends Controller
 {
