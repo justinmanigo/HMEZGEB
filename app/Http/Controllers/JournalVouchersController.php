@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JournalVouchers;
 use App\Models\JournalEntries;
 use App\Models\JournalPostings;
-use App\Models\ChartOfAccounts;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\CreateJournalVoucher;
