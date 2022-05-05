@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Tax;
+use App\Models\Settings\Taxes\Tax;
 
 class TaxController extends Controller
 {
