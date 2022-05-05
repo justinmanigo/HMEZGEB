@@ -39,12 +39,13 @@ use App\Http\Controllers\LoanController;
 
 // Settings
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\Settings\ManageUsersController;
 use App\Http\Controllers\SettingChartOfAccountsController;
 use App\Http\Controllers\SettingPayrollRulesController;
 
 // Account Settings
-use App\Http\Controllers\AccountSettings\YourAccountController;
-use App\Http\Controllers\AccountSettings\ManageUsersController;
+use App\Http\Controllers\AccountSettings\AccountSettingsController;
+
 
 
 /*
@@ -356,6 +357,15 @@ Route::group([
         
         Route::get('/ajax/settings/coa/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCOA']);
 
+        // Users
+        Route::group([
+            'as' => 'users.'
+        ], function() {
+            Route::get('/settings/users', [ManageUsersController::class, 'index'])->name('manageUsers');
+            Route::get('/settings/users/{user}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
+            Route::put('/settings/users/{user}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
+        });
+
         // Taxes
         Route::get('/settings/taxes', [TaxController::class, 'index'])->name('tax.index');
         Route::post('/settings/taxes', [TaxController::class, 'store'])->name('tax.store');
@@ -380,12 +390,8 @@ Route::group([
 Route::group([
     'as' => 'account.'
 ], function() {
-    Route::get('/account/me/', [YourAccountController::class, 'index'])->name('yourAccount');
-    Route::put('/ajax/account/me/update/username', [YourAccountController::class, 'updateUsername'])->name('yourAccount.updateUsername');
-    Route::put('/ajax/account/me/update/email', [YourAccountController::class, 'updateEmail'])->name('yourAccount.updateEmail');
-    Route::put('/ajax/account/me/update/password', [YourAccountController::class, 'updatePassword'])->name('yourAccount.updatePassword');
-
-    Route::get('/account/users', [ManageUsersController::class, 'index'])->name('manageUsers');
-    Route::get('/account/users/{user}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
-    Route::put('/account/users/{user}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
+    Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
+    Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername'])->name('updateUsername');
+    Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail'])->name('updateEmail');
+    Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword'])->name('updatePassword');
 });

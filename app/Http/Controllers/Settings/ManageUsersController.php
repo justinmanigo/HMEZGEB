@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\AccountSettings;
+namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +21,7 @@ class ManageUsersController extends Controller
      */
     public function index()
     {
-        return view('account.manageUsers.index');
+        return view('settings.users.manageUsers.index');
     }
 
     /**  
@@ -63,7 +63,7 @@ class ManageUsersController extends Controller
                 ->orderBy('sub_modules.id', 'ASC')
                 ->get();
 
-        return view('account.manageUsers.editPermissions', [
+        return view('settings.users.manageUsers.editPermissions', [
             'user_id' => $user->id,
             'modules' => $modules,
             'permissions' => $permissions

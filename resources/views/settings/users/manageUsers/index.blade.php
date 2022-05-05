@@ -22,7 +22,7 @@
                 <td>{{ 'To be added later' }}</td>
                 <td>{{ 'To be added later' }}</td>
                 <td>
-                    <a type="button" class="btn btn-primary" href="{{ url('account/users/' . Auth::user()->id) }}/permissions">
+                    <a type="button" class="btn btn-primary" href="{{ url('settings/users/' . Auth::user()->id) }}/permissions">
                         <span class="icon text-white-50">
                             <i class="fas fa-pen"></i>
                         </span>

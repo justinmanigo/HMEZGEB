@@ -129,7 +129,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
                         <a class="collapse-item" href="/company-info">Company Info</a>
-                        <a class="collapse-item" href="/users">Users</a>
+                        <a class="collapse-item" href="/settings/users">Users</a>
                         <a class="collapse-item" href="/themes">Theme</a>
                         <a class="collapse-item" href="/settings/taxes">Taxes</a>
                         <a class="collapse-item" href="/withholding">Withholding</a>
@@ -345,7 +345,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/account/me">
+                                <a class="dropdown-item" href="/account/">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Account Settings
                                 </a>
