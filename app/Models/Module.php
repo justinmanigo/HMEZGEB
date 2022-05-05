@@ -13,6 +13,6 @@ class Module extends Model
 
     public function subModules()
     {
-        $this->hasMany(SubModule::class);
+        return $this->hasMany(SubModule::class);
     }
 }
