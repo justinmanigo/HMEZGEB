@@ -121,7 +121,21 @@ class InventoryController extends Controller
      */
     public function update(Request $request, Inventory $inventory)
     {
-        //
+        $inventory->update([
+            'item_code' => $request->item_code,
+            'item_name' => $request->item_name,
+            'sale_price' => $request->sale_price,
+            'purchase_price' => $request->purchase_price,
+            'quantity' => $request->quantity,
+            'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
+            // 'default_income_account' => $request->default_income_account,
+            // 'default_expense_account' => $request->default_expense_account,
+            'inventory_type' => $request->inventory_type,
+            'picture' => isset($imageName) ? $imageName : null,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/inventory')->with('success', 'Successfully updated item.');
     }
 
     /**
