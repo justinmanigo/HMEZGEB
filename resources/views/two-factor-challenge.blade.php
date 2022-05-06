@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>HMEZGEB - Login</title>
+    <title>HMEZGEB - Confirm Password</title>
 
     <!-- Custom fonts for this template-->
      <!-- Custom fonts for this template-->
@@ -59,52 +59,34 @@
                                
                                 
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Two Factor Challenge</h1>
+                                        <p id="code-label">{{ __('Please enter your authentication code to login.') }}</p>
                                     </div>
                                       @if (\Session::has('error'))
                                     <div class="alert alert-danger">
                                         {!! \Session::get('error') !!}
                                     </div>
                                     @endif
-                                    <form method="POST" action="{{ route('login') }}" class="user">
+                                    <form method="POST" action="{{ route('two-factor.login') }}" class="user">
                                         @csrf
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" name="email" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
-                                            @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" name="password" placeholder="Password">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="code" name="code">
 
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
+                                                  @error('code')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
-                                        </div>
-                                        <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
-                                            
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Submit
+                                        </button>
                                        
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="{{-- route('register') --}}">Create an Account!</a>
+                                        <a id="toggle-code-methods" class="small" href="javascript:void(0)">{{ __('Don\'t have access to authentication app?') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -127,6 +109,31 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script> 
+
+    <script>
+        var isRecovery = 0;
+        var codeLabelElement = document.getElementById('code-label');
+        var codeInputElement = document.getElementById('code');
+        var codeInputToggle = document.getElementById('toggle-code-methods');
+        codeInputToggle.addEventListener('click', toggleCodeMethod)
+    
+        function toggleCodeMethod()
+        {
+            console.log(codeInputElement.name);
+            if(isRecovery) {
+                codeInputToggle.innerText = "Enter a recovery code instead?";
+                codeInputElement.name = "code";
+                codeLabelElement.innerText = "Please enter your authentication code to login.";
+                isRecovery--;
+            }
+            else {
+                codeInputToggle.innerText = "Have access to authentication app?";
+                codeInputElement.name = "recovery_code";
+                codeLabelElement.innerText = "Please enter your recovery code to login.";
+                isRecovery++;
+            }
+        }
+    </script>
 
 </body>
 

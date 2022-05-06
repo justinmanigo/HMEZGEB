@@ -22,6 +22,29 @@ class AccountSettingsController extends Controller
     }
 
     /**
+     * Confirms and Enables 2FA to currently authenticated user.
+     */
+    public function confirm2FA(Request $request)
+    {
+        $confirmed = $request->user()->confirmTwoFactorAuth($request->code);
+
+        if (!$confirmed) {
+            return back()->withErrors('Invalid Two Factor Authentication code');
+        }
+
+        return back();
+    }
+
+    /**
+     * Displays recovery codes of currently authenticated user.
+     */
+    public function showRecoveryCodes()
+    {
+        foreach(Auth::user()->recoveryCodes() as $code)
+            echo $code . '<br>';
+    }
+
+    /**
      * Updating Info from Account Settings
      */
 

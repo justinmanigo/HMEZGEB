@@ -59,13 +59,16 @@ use App\Http\Controllers\AccountSettings\AccountSettingsController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('logins');
+Route::group([
+    'middleware' => 'auth',
+], function(){
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Auth::routes();
+
 
  
 Route::post('/userlogin', function (Request $request){
@@ -440,8 +443,10 @@ Route::group([
 ], function() {
     // HTTP
     Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
+    Route::post('/account/2fa/confirm', [AccountSettingsController::class, 'confirm2FA'])->name('confirm2FA');
 
     // AJAX
+    Route::post('/ajax/account/show/recoverycodes', [AccountSettingsController::class, 'showRecoveryCodes']);
     Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername']);
     Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail']);
     Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
