@@ -2,7 +2,7 @@ var receipt_select_proforma_elm = document.querySelector('#r_proforma');
 
 // initialize Tagify on the above input node reference
 var receipt_select_proforma_tagify = new Tagify(receipt_select_proforma_elm, {
-    tagTextProp: 'reference_number', // very important since a custom template is used with this property as text
+    tagTextProp: 'value', // very important since a custom template is used with this property as text
     enforceWhitelist: true,
     mode : "select",
     skipInvalid: false, // do not remporarily add invalid tags
@@ -10,7 +10,7 @@ var receipt_select_proforma_tagify = new Tagify(receipt_select_proforma_elm, {
         closeOnSelect: true,
         enabled: 0,
         classname: 'receipts-proforma-list',
-        searchKeys: ['value', 'reference_number']  // very important to set by which keys to search for suggesttions when typing
+        searchKeys: ['value', 'due_date']  // very important to set by which keys to search for suggesttions when typing
     },
     templates: {
         tag: proformaTagTemplate,
