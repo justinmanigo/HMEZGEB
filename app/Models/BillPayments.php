@@ -11,7 +11,6 @@ class BillPayments extends Model
 
     protected $fillable = [
         'payment_reference_id',
-        'payment_reference_number',
         'chart_of_account_id',
         'cheque_number',
         'amount_paid',

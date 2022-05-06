@@ -17,6 +17,7 @@ class CreateBillPaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
+            $table->string('cheque_number')->nullable();
             $table->float('amount_paid');
             $table->float('discount_account_number')->nullable();
             $table->timestamps();

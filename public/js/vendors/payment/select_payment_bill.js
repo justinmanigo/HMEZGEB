@@ -36,7 +36,7 @@ function createPaymentToPayEntry(data)
         </td>
         <td class="table-item-content">
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="b_is_paid_${data.payment_reference_id}" name="is_paid[]">
+                <input type="checkbox" data-id="${data.payment_reference_id}" class="form-check-input" id="b_is_paid_${data.payment_reference_id}" name="is_paid[]" value="${data.payment_reference_id}">
             </div>
         </td>
     </tr>

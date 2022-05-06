@@ -11,6 +11,8 @@ use App\Models\AccountingPeriods;
 use App\Models\ChartOfAccounts;
 use App\Models\IncomeTaxPayments;
 use App\Models\PensionPayments;
+use App\Models\BillPayments;
+use App\Models\Bills;
 
 
 
@@ -59,7 +61,7 @@ class PaymentsController extends Controller
             
             for($i = 0; $i < count($request->payment_reference_id); $i++)
             {
-              
+                
                 // If to pay wasn't checked for certain id, skip.
                 if(!in_array($request->payment_reference_id[$i], $request->is_paid))
                     continue;
@@ -69,17 +71,17 @@ class PaymentsController extends Controller
                     ->where('bills.payment_reference_id', '=', $request->payment_reference_id[$i])->first();
     
                 // return $bill;
-           
+                
                 // If amount paid wasn't even set, skip.
                 if($request->amount_paid[$i] <= 0) continue;
-    
+                
                 $bill->amount_received += $request->amount_paid[$i];
                 if($bill->amount_received >= $bill->grand_total)
                 {
                     PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
                         ->update(['status' => 'paid']);
                 }
-                else if($bill->status == 'unpaid' && $bill->total_amount_received > 0)
+                else if($bill->status == 'unpaid' && $bill->amount_received > 0)
                 {
                     PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
                         ->update(['status' => 'partially_paid']);
@@ -112,12 +114,10 @@ class PaymentsController extends Controller
     
             $billPayment = BillPayments::create([
                 'payment_reference_id' => $reference->id,
-                'bill_payment_number' => $request->bill_payment_number,
-                'total_amount_received' => floatval($request->total_received),
-                'description' => $request->description,
-                'remark' => $request->remark,
-                // image upload
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+                'chart_of_account_id' => $request->chart_of_account_id,
+                'cheque_number' => $request->cheque_number,
+                'amount_paid' => floatval($request->amount_paid),
+                'discount_account_number' => $request->discount_account_number,        
             ]);
             
             $messageType = 'success';
@@ -128,7 +128,7 @@ class PaymentsController extends Controller
             $messageContent = 'There are no bills to pay.';
         }
   
-        // return redirect()->back()->with($messageType, $messageContent);
+        return redirect()->back()->with($messageType, $messageContent);
 
     }
     public function storeIncomeTaxPayment(Request $request)

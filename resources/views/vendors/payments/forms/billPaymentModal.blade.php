@@ -32,7 +32,7 @@
                 <div class="form-group row">
                     <label for="b_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="b_cheque_number" name="cheque_number" placeholder="" required>
+                        <input type="text" class="form-control" id="b_cheque_number" name="cheque_number" placeholder="">
                     </div>
                 </div>
                 <div class="form-group row">
