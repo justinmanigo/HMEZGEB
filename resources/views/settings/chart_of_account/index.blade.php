@@ -221,15 +221,9 @@
                 <form id="form-coa" method="post" action="/settings/coa">
                     @csrf
                     <div class="form-group row">
-                        <label for="coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
+                        <label for="coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="coa_number" name="coa_number">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="coa_name" class="col-sm-3 col-lg-2 col-form-label">Account Name<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="coa_name" name="coa_name">
+                            <input type="text" class="form-control" id="coa_number" name="coa_number" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -237,8 +231,40 @@
                         <div class="col-sm-9 col-lg-6">
                             {{-- <input type="text" class="form-control" id="coa_category" name="coa_category"> --}}
                             <input id="coa_category" name='coa_category'>
+                            <div class="form-check mr-3 mt-1">
+                                <input class="form-check-input" id="coa_is_bank" type="checkbox" value="yes" name="coa_is_bank" disabled>
+                                <label class="form-check-label" for="coa_is_bank">Is this a Bank account?</label>
+                            </div>
                         </div>
                     </div>   
+                    <div class="form-group row">
+                        <label for="coa_name" class="col-sm-3 col-lg-2 col-form-label">Account Name<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <input type="text" class="form-control" id="coa_name" name="coa_name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="coa_bank_account_number" class="col-sm-3 col-lg-2 col-form-label">Bank Account Number<span class="text-danger coa_bank ml-1" style="display:none">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <input type="text" class="form-control" id="coa_bank_account_number" name="bank_account_number" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="coa_bank_branch" class="col-sm-3 col-lg-2 col-form-label">Bank Branch<span class="text-danger coa_bank ml-1" style="display:none">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <input type="text" class="form-control" id="coa_bank_branch" name="bank_branch" required disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="coa_bank_account_type" class="col-sm-3 col-lg-2 col-form-label">Bank Account Type<span class="text-danger coa_bank ml-1" style="display:none">*</span></label>
+                        <div class="col-sm-9 col-lg-6">
+                            <select class="form-control" id="coa_bank_account_type" name="bank_account_type" required disabled>
+                                <option value='' selected disabled hidden>Choose Bank Account Type</option>
+                                <option value="savings">Savings Account</option>
+                                <option value="checking">Checking Account</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="coa_beginning_balance" class="col-sm-3 col-lg-2 col-form-label">Beginning Balance<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">

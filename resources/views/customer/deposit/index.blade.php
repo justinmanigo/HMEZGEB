@@ -15,7 +15,86 @@
     input[type="checkbox"], label {
         cursor: pointer;
     }
+    
+    /*
+            TEMPORARY
+        */
+    /* Suggestions items */
+    .tagify__dropdown.customers-list .tagify__dropdown__item {
+        padding: .5em .7em;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0 1em;
+        grid-template-areas: "avatar name"
+            "avatar email";
+    }
+
+    .tagify__dropdown.customers-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
+        transform: scale(1.2);
+    }
+
+    .tagify__dropdown.customers-list .tagify__dropdown__item__avatar-wrap {
+        grid-area: avatar;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #EEE;
+        transition: .1s ease-out;
+    }
+
+    .tagify__dropdown.customers-list img {
+        width: 100%;
+        vertical-align: top;
+    }
+
+    .tagify__dropdown.customers-list strong {
+        grid-area: name;
+        width: 100%;
+        align-self: center;
+    }
+
+    .tagify__dropdown.customers-list span {
+        grid-area: email;
+        width: 100%;
+        font-size: .9em;
+        opacity: .6;
+    }
+
+    .tagify__dropdown.customers-list .addAll {
+        border-bottom: 1px solid #DDD;
+        gap: 0;
+    }
+
+
+    /* Tags items */
+    .tagify__tag {
+        white-space: nowrap;
+    }
+
+    .tagify__tag:hover .tagify__tag__avatar-wrap {
+        transform: scale(1.6) translateX(-10%);
+    }
+
+    .tagify__tag .tagify__tag__avatar-wrap {
+        width: 16px;
+        height: 16px;
+        white-space: normal;
+        border-radius: 50%;
+        background: silver;
+        margin-right: 5px;
+        transition: .12s ease-out;
+    }
+
+    .tagify__tag img {
+        width: 100%;
+        vertical-align: top;
+        pointer-events: none;
+    }
 </style>
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -79,14 +158,12 @@
                     <div class="form-group row">
                         <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <select class="form-control" id="d_bank_account" name="bank_account">
-                                <option>Bank A</option>
-                            </select>
+                            <input class="col-8 col-lg-7" id="d_bank_account" name='bank_account'>
                         </div>
 
-                        <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Date<span class="text-danger ml-1">*</span></label>
+                        <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="d_deposit_date" name="deposit_date">
+                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -185,4 +262,6 @@
             $('.dataTables_filter').addClass('pull-right');
         });
 </script>
+<script src="{{ asset('js/customer/deposit/template_select_bank.js') }}"></script>
+<script src="{{ asset('js/customer/deposit/customer_deposit.js') }}"></script>
 @endsection

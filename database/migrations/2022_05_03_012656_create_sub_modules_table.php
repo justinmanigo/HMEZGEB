@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaxesTable extends Migration
+class CreateSubModulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('sub_modules', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('module_id')->constrained();
             $table->string('name');
-            $table->float('percentage');
-            $table->timestamps();
+            $table->integer('duplicate_sub_module_id')->nullable();
+            $table->string('url');
         });
     }
 
@@ -28,6 +29,6 @@ class CreateTaxesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('sub_modules');
     }
 }

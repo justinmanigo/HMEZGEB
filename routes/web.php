@@ -39,7 +39,15 @@ use App\Http\Controllers\LoanController;
 
 // Settings
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\Settings\ManageUsersController;
 use App\Http\Controllers\SettingChartOfAccountsController;
+use App\Http\Controllers\SettingPayrollRulesController;
+
+// Account Settings
+use App\Http\Controllers\AccountSettings\AccountSettingsController;
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -135,6 +143,7 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'deposits.'
     ], function(){ 
         Route::get('/deposit', [DepositController::class, 'index']);
+        Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositController::class, 'ajaxSearchBank']);
     });
 
  
@@ -350,13 +359,41 @@ Route::group([
         
         Route::get('/ajax/settings/coa/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCOA']);
 
+        // Users
+        Route::group([
+            'as' => 'users.'
+        ], function() {
+            Route::get('/settings/users', [ManageUsersController::class, 'index'])->name('manageUsers');
+            Route::get('/settings/users/{user}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
+            Route::put('/settings/users/{user}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
+        });
+
         // Taxes
         Route::get('/settings/taxes', [TaxController::class, 'index'])->name('tax.index');
         Route::post('/settings/taxes', [TaxController::class, 'store'])->name('tax.store');
         Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('tax.update');
         Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('tax.destroy');
         Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
+
+        // Payroll 
+        Route::get('/settings/payroll', [SettingPayrollRulesController::class, 'index']);
+        Route::post('/settings/payroll/incometax', [SettingPayrollRulesController::class, 'storeIncomeTaxRules'])->name('store_income_tax');
+        Route::post('/settings/payroll/overtime', [SettingPayrollRulesController::class, 'storeOvertimeRules'])->name('store_overtime');
+
     });
 
-    Route::get('/select/search/coa_categories/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+    Route::get('/ajax/settings/coa_categories/search', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
+    Route::get('/ajax/settings/coa_categories/search/{query}', [SettingChartOfAccountsController::class, 'ajaxSearchCategories']);
     Route::post('/settings/coa', [SettingChartOfAccountsController::class, 'store']);
+
+/**
+ * Account Settings
+ */
+Route::group([
+    'as' => 'account.'
+], function() {
+    Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
+    Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername'])->name('updateUsername');
+    Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail'])->name('updateEmail');
+    Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword'])->name('updatePassword');
+});
