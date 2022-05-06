@@ -34,7 +34,7 @@
     <div class="form-group row">
         <label for="" class="col-lg-2 col-form-label">Quantity:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control" name="quantity" value="0" required value="{{$inventory->id}}">
+            <input type="number" class="form-control" name="quantity" required value="{{$inventory->id}}">
         </div>
         <label for="" class="col-sm-2">Tax:</label>
         <div class="col">

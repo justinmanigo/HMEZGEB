@@ -25,7 +25,7 @@
     <div class="row mb-3">
         <label for=""class="col-lg-2 col-form-label">Quantity:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control"  name="quantity" value="0" required>
+            <input type="number" class="form-control"  name="quantity" required>
         </div>
         <label for="" class="col-sm-2">Tax:</label>
         <div class="col">
