@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use App\Models\ChartOfAccounts;
-use App\Models\ChartOfAccountCategory;
-use App\Models\PeriodOfAccounts;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccountCategory;
+use App\Models\Settings\ChartOfAccounts\PeriodOfAccounts;
 
-class SettingChartOfAccountsController extends Controller
+class ChartOfAccountsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -49,8 +50,6 @@ class SettingChartOfAccountsController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
-
         $coa_category = json_decode($request->coa_category, true);
         
         // To get the category_id of coa, use

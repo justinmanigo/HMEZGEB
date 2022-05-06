@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use App\Models\OvertimePayrollRules;
-use App\Models\IncomeTaxPayrollRules;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Settings\PayrollRules\OvertimePayrollRules;
+use App\Models\Settings\PayrollRules\IncomeTaxPayrollRules;
 
-
-class SettingPayrollRulesController extends Controller
+class PayrollRulesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,22 +16,19 @@ class SettingPayrollRulesController extends Controller
      */
     public function index()
     {
-        //
         $overtime_payroll_rules = OvertimePayrollRules::all()->first();
         $income_tax_payroll_rules = IncomeTaxPayrollRules::all();
         return view('settings.payroll_rules.index' ,compact('overtime_payroll_rules','income_tax_payroll_rules'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Updates the income tax rules of a company.
      *
      * @param  \App\Http\Requests\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeIncomeTaxRules(Request $request)
+    public function updateIncomeTaxRules(Request $request)
     {
-        // return $request;
-
         // Delete all records first
         IncomeTaxPayrollRules::truncate();
 
@@ -44,14 +41,18 @@ class SettingPayrollRulesController extends Controller
             $income_tax_payroll_rules->deduction = $request->deduction[$i];
             $income_tax_payroll_rules->save();
         }
+        
         return redirect()->back()->with('success', 'Income Tax Rule has been updated.');
     }
 
-    public function storeOvertimeRules(Request $request)
+    /**
+     * Updates the overtime tax rules of a company.
+     * 
+     * @param \App\Http\Requests\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateOvertimeRules(Request $request)
     {
-        //
-        // return $request;
-
         // Delete all records first
         OvertimePayrollRules::truncate();
         // Store new records
@@ -64,6 +65,5 @@ class SettingPayrollRulesController extends Controller
         $overtime_rules->save();
 
         return redirect()->back()->with('success', 'Overtime Rule has been updated.');
-
     }
 }

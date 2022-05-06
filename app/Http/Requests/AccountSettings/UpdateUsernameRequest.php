@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\AccountSettings;
 
 use App\Http\Requests\Api\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class UpdateEmailRequest extends FormRequest
+class UpdateUsernameRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,8 @@ class UpdateEmailRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', Rule::unique('users')->ignore(Auth::user()->id), 'max:255', 'email'],
-            'confirm_email' => ['required', 'same:email'],
+            'username' => ['required', Rule::unique('users')->ignore(Auth::user()->id), 'max:255'],
+            'confirm_username' => ['required', 'same:username'],
             'confirm_password' => ['required', 'password'],
         ];
     }

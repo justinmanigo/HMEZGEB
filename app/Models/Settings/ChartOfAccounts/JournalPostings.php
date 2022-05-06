@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Settings\ChartOfAccounts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ReceiptReferences;
+use App\Models\PaymentReferences;
 
 class JournalPostings extends Model
 {

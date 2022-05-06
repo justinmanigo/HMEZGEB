@@ -46,7 +46,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <form action="{{route('settings.store_income_tax') }}" method="POST">
+                        <form action="{{ url('/settings/payroll/update/incometax') }}" method="POST">
                             @csrf
 
                             <table class="table">
@@ -148,7 +148,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <form action="{{route('settings.store_overtime') }}" method="POST">
+                        <form action="{{ url('/settings/payroll/update/overtime') }}" method="POST">
                             @csrf
                             <table class="table">
                                 <tbody>
