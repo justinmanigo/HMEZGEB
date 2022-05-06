@@ -17,7 +17,6 @@ class CreateReceiptsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
             $table->unsignedBigInteger('proforma_id')->nullable();
-            $table->string('receipt_number')->nullable();
             $table->date('due_date');
             $table->float('sub_total');
             $table->float('discount')->nullable();
@@ -30,7 +29,6 @@ class CreateReceiptsTable extends Migration
             $table->enum('payment_method',['credit','cash']);
             $table->timestamps();
             $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
-            $table->foreign('proforma_id')->references('id')->on('proformas');   
         });
     }
 

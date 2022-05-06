@@ -63,12 +63,7 @@
                     <input type="date" class="form-control" id="p_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="p_proforma_number" class="col-4 col-form-label text-lg-right">Proforma Number #<span class="text-danger ml-1">*</span> :</label>
-                <div class="col-8">
-                    <input type="text" class="form-control" id="p_proforma_number" name="proforma_number" placeholder="" required>
-                </div>
-            </div>
+
             <div class="form-group row">
                 <label for="p_due_date" class="col-4 col-form-label text-lg-right">Due Date :</label>
                 <div class="col-8">

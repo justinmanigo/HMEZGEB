@@ -2,15 +2,17 @@
 
 @push('styles')
 <style>
-   .w-15 { 
-       width:15%;
-    }
+.w-15 {
+    width: 15%;
+}
 
-    .inputPrice::-webkit-inner-spin-button, .inputTax::-webkit-inner-spin-button,
-    .inputPrice::-webkit-outer-spin-button, .inputTax::-webkit-outer-spin-button {
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
+.inputPrice::-webkit-inner-spin-button,
+.inputTax::-webkit-inner-spin-button,
+.inputPrice::-webkit-outer-spin-button,
+.inputTax::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 </style>
 @endpush
 
@@ -21,8 +23,10 @@
         <!---buttons--->
         <div class="d-flex">
             <!--add item btn--->
-            <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target="#modal-new-item">New Item</button>
-            <div class="modal fade" id="modal-new-item" tabindex="-1" role="dialog" aria-labelledby="modal-newItem-label" aria-hidden="true">
+            <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target="#modal-new-item">New
+                Item</button>
+            <div class="modal fade" id="modal-new-item" tabindex="-1" role="dialog"
+                aria-labelledby="modal-newItem-label" aria-hidden="true">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -36,9 +40,12 @@
                 </div>
             </div>
 
-            <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target=".bd-example-modal-lg">Import</button>
-            <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target=".bd-example-modal-lg">Export</button>
-            <button type="button" class="btn btn-info mx-1" data-toggle="modal" data-target=".bd-example-modal-lg">Download Excel File</button>
+            <button type="button" class="btn btn-info mx-1" data-toggle="modal"
+                data-target=".bd-example-modal-lg">Import</button>
+            <button type="button" class="btn btn-info mx-1" data-toggle="modal"
+                data-target=".bd-example-modal-lg">Export</button>
+            <button type="button" class="btn btn-info mx-1" data-toggle="modal"
+                data-target=".bd-example-modal-lg">Download Excel File</button>
         </div>
         <!-- Earnings (Annual) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
@@ -65,7 +72,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
-                        <th class="w-15"></th>
+                        <th class="w-15">Action</th>
                         <th class="w-15">Item Code</th>
                         <th>Item Name</th>
                         <th>Purchase Price</th>
@@ -76,25 +83,37 @@
                     </thead>
                     <tbody>
                         @foreach($inventories as $inventory)
-           
+
                         <tr>
-                            <td class=" d-flex justify-content-center">
-                                <img src="
+                            {{-- <td class=" d-flex justify-content-center">
+                               <img src="
                                     @if($inventory->picture)
                                         {{ asset("/storage/inventories/{$inventory->picture}") }}
-                                    @else
-                                        {{ asset("/img/blank.jpg") }}
-                                    @endif
-                                " class="w-100 img-responsive" style="min-width:100px">
+                            @else
+                            {{ asset("/img/blank.jpg") }}
+                            @endif
+                            " class="w-100 img-responsive" style="min-width:100px">
+                            </td>--}}
+                            <td> <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id) }}">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </a>
+                                <button type="button" class="btn btn-danger "
+                                    onClick=''>
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                </button>
                             </td>
-                            <td>{{ $inventory->item_code }}</td>
+                            <td class="table-item-content">{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
                             <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
-                            {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td>         --}}
+                            {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td> --}}
                             <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
                             <td class="table-item-content">{{ $inventory->quantity }}</td>
                             <td class="table-item-content">{{ $inventory->inventoryValue }}</td>
-                        
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -107,9 +126,9 @@
 </main>
 
 <script>
-    $(document).ready(function () {
-        $('#dataTables').DataTable();
-        $('.dataTables_filter').addClass('pull-right');
-    });
+$(document).ready(function() {
+    $('#dataTables').DataTable();
+    $('.dataTables_filter').addClass('pull-right');
+});
 </script>
 @endsection

@@ -48,6 +48,7 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
+
         for($i = 0; $i < count($request->employee); $i++)
         {
             $employee = json_decode($request->employee[$i]);
@@ -57,6 +58,14 @@ class OvertimeController extends Controller
             $overtime = new Overtime;
             $overtime->employee_id = $e[$i]->value;
             $overtime->date = $request->date;
+            if($request->is_weekend_holiday != null)
+            {
+                $overtime->is_weekend_holiday = 'yes';
+            }
+            else
+            {
+                $overtime->is_weekend_holiday = 'no';
+            }
             $overtime->from = $request->from[$i];
             $overtime->to = $request->to[$i];
             $overtime->description = $request->description;

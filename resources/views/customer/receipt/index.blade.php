@@ -196,7 +196,6 @@
                             <thead>
                                 <th id="thead-actions">Actions</th>
                                 <th>Date</th>
-                                <th>Reference #</th>
                                 <th>Type</th>
                                 <th>Customer Name</th>
                                 <th>Status</th>
@@ -221,7 +220,6 @@
                                         </button> --}}
                                     </td>
                                     <td class="table-item-content">{{$transaction->date}}</td>
-                                    <td class="table-item-content">{{$transaction->reference_number}}</td>
                                     <td class="table-item-content"><span
                                             class="badge badge-success">{{$transaction->type}}</span></td>
                                     <td class="table-item-content">{{$transaction->name}}</td>
@@ -242,7 +240,6 @@
                             <thead>
                                 <th id="thead-actions">Actions</th>
                                 <th>Date</th>
-                                <th>Reference #</th>
                                 <th>Customer Name</th>
                                 <th>Amount</th>
                             </thead>
@@ -264,7 +261,6 @@
                                         </button> --}}
                                     </td>
                                     <td class="table-item-content">{{$proforma->date}}</td>
-                                    <td class="table-item-content">{{$proforma->reference_number}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
                                     <td class="table-item-content">{{$proforma->amount}}</td>
                                 </tr>

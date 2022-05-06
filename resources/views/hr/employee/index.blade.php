@@ -11,6 +11,14 @@
         /** Fixed width, increase if adding addt. buttons **/
         width:120px;
     }
+
+    .inputPrice::-webkit-inner-spin-button,
+    .inputTax::-webkit-inner-spin-button,
+    .inputPrice::-webkit-outer-spin-button,
+    .inputTax::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 </style>
 @endpush
 
@@ -78,7 +86,7 @@
                                     <span class="icon text-white-50">
                                         <i class="fas fa-trash"></i>
                             </td>
-                            <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->given_father_name }}</td>
+                            <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " . $employee->grandfather_name }}</td>
                             <td class="table-item-content">{{ $employee->tin_number }}</td>
                             <td class="table-item-content">{{ $employee->mobile_number }}</td>
                             <td class="table-item-content">
@@ -128,9 +136,9 @@
                             <input type="text" class="form-control" id="e_father_name" name="father_name" placeholder="" required>
                         </div>
 
-                        <label for="e_given_father_name" class="col-sm-3 col-lg-2 col-form-label">Given Father Name<span class="text-danger ml-1">*</span></label>
+                        <label for="e_grandfather_name" class="col-sm-3 col-lg-2 col-form-label">Grandfather Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-xl-4">
-                            <input type="text" class="form-control" id="e_given_father_name" name="given_father_name" placeholder="" required>
+                            <input type="text" class="form-control" id="e_grandfather_name" name="grandfather_name" placeholder="" required>
                         </div>
                     </div>
 
@@ -176,7 +184,7 @@
 
                         <label for="e_basic_salary" class="col-sm-3 col-lg-2 col-form-label">Basic Salary</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="" required>
+                            <input type="number" step="0.01" class="inputPrice form-control" id="e_basic_salary" name="basic_salary" placeholder="" required>
                         </div>
                     </div>
 
@@ -188,7 +196,7 @@
 
                         <label for="e_date_ended_working" class="col-sm-3 col-lg-2  col-form-label">Date Ended Working</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="">
+                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="" required>
                             <div class="form-check">
                                 <input class="form-check-input" id="e_is_still_working" type="checkbox" name="is_still_working">
                                 <label class="form-check-label" for="e_is_still_working">Still Working</label>
@@ -303,7 +311,7 @@
             // Fields
             $("#e_first_name").val(res.first_name);
             $("#e_father_name").val(res.father_name);
-            $("#e_given_father_name").val(res.given_father_name);
+            $("#e_grandfather_name").val(res.grandfather_name);
             $("#e_date_of_birth").val(res.date_of_birth);
             $("#e_mobile_number").val(res.mobile_number);
             $("#e_telephone").val(res.telephone);
@@ -315,7 +323,7 @@
             $("#e_date_ended_working").val(res.date_ended_working == undefined ? '' : res.date_ended_working);
 
             $("#e_emergency_contact_person").val(res.emergency_contact_person);
-            $("#e_contact_number").val(res.contact_number);
+            $("#e_contact_number").val(res.emergency_contact_number);
             
             // If Date Ended Working is null
             if(res.date_ended_working == undefined)
@@ -340,7 +348,7 @@
         // Fields
         $("#e_first_name").val('');
         $("#e_father_name").val('');
-        $("#e_given_father_name").val('');
+        $("#e_grandfather_name").val('');
         $("#e_date_of_birth").val('');
         $("#e_mobile_number").val('');
         $("#e_telephone").val('');
@@ -394,5 +402,22 @@
         confirmationModal.classList.remove('show');
         confirmationModal.classList.add('fade');
     }
+
+    // Disable basic salary field if type is not 'Employee'
+    $('#e_type').on('change', function(){
+        var _val = $(this).val();
+        if(_val == 'employee')
+        {
+            $("#e_basic_salary").removeAttr('disabled');
+            $("#e_basic_salary").attr('required', 'required');
+        }
+        else
+        {
+            $("#e_basic_salary").attr('disabled', 'disabled');
+            $("#e_basic_salary").removeAttr('required');
+            $("#e_basic_salary").val('');
+        }
+    });
+
 </script>
 @endsection
