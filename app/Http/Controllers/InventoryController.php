@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
-use App\Models\Tax;
+use App\Models\Settings\Taxes\Tax;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
