@@ -29,7 +29,6 @@ class CreateReceiptsTable extends Migration
             $table->enum('payment_method',['credit','cash']);
             $table->timestamps();
             $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
-            $table->foreign('proforma_id')->references('id')->on('proformas');   
         });
     }
 
