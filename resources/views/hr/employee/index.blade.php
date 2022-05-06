@@ -11,6 +11,14 @@
         /** Fixed width, increase if adding addt. buttons **/
         width:120px;
     }
+
+    .inputPrice::-webkit-inner-spin-button,
+    .inputTax::-webkit-inner-spin-button,
+    .inputPrice::-webkit-outer-spin-button,
+    .inputTax::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 </style>
 @endpush
 
@@ -176,7 +184,7 @@
 
                         <label for="e_basic_salary" class="col-sm-3 col-lg-2 col-form-label">Basic Salary</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_basic_salary" name="basic_salary" placeholder="" required>
+                            <input type="number" step="0.01" class="inputPrice form-control" id="e_basic_salary" name="basic_salary" placeholder="" required>
                         </div>
                     </div>
 
