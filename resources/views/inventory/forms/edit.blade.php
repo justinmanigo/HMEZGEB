@@ -14,7 +14,7 @@
     <div class="form-group row">
         <label for="#" class="col-lg-2 col-form-label">Item Code:</label>
         <div class="col-lg-4">
-            <input type="text" class="form-control" name="item_code" required value="{{$inventory->id}}">
+            <input type="text" class="form-control" name="item_code" required value="{{$inventory->item_code}}">
         </div>
         <label for="#" class="col-lg-2 col-form-label">Item Name:</label>
         <div class="col-lg-4">
@@ -34,7 +34,7 @@
     <div class="form-group row">
         <label for="" class="col-lg-2 col-form-label">Quantity:</label>
         <div class="col-lg-4">
-            <input type="number" class="form-control" name="quantity" required value="{{$inventory->id}}">
+            <input type="number" class="form-control" name="quantity" required value="{{$inventory->quantity}}">
         </div>
         <label for="" class="col-sm-2">Tax:</label>
         <div class="col">
@@ -75,14 +75,14 @@
         <label for="#" class="col-sm-2 col-form-label">Inventory Type:</label>
         <div class="form-check mx-2 mt-2">
             <input class="form-check-input" type="radio" name="inventory_type" id="ar_paymentType_credit"
-                value="inventory_item" checked="checked">
+                value="inventory_item" @if($inventory->inventory_type == 'inventory_item') checked="checked" @endif>
             <label class="form-check-label" for="ar_paymentType_credit">
                 Inventory item
             </label>
         </div>
         <div class="form-check col-md-2 ml-3 mr-4 mt-2">
             <input class="form-check-input" type="radio" name="inventory_type" id="ar_paymentType_cash"
-                value="non_inventory_item" >
+                value="non_inventory_item" @if($inventory->inventory_type == 'non_inventory_item') checked="checked" @endif>
             <label class="form-check-label" for="ar_paymentType_cash">
                 Non-inventory item
             </label>
