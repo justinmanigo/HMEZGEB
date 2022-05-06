@@ -50,8 +50,6 @@ class ChartOfAccountsController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
-
         $coa_category = json_decode($request->coa_category, true);
         
         // To get the category_id of coa, use

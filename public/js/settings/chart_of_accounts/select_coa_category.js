@@ -3,7 +3,11 @@ var coa_select_category_elm = document.querySelector("#coa_category");
 var coa_select_category_default_items = [];
 var coa_select_category_tagify;
 
-request = $.get(`ajax/settings/coa_categories/search/`);
+var request = $.ajax({
+    url: `/ajax/settings/coa_categories/search/`,
+    method: "GET",
+});
+
 request.done(function(response, textStatus, jqXHR){
     console.log("Initial load of categories.")
     
