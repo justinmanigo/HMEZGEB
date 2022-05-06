@@ -216,17 +216,17 @@
                         </div>
                     </div>
 
-                    <h5>Contact Person</h5>
                     <div class="form-group row">
-                        <label for="c_contact_person" class="col-sm-3 col-lg-2 col-form-label">Name :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder=" " required>
+                        <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="file" id="c_picture" name="image">
                         </div>
-                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile # :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="" required>
+
+                        <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
+                        <div class="col-sm-9 col-lg-4">
+                            <input type="text" class="form-control" id="c_label" name="label" placeholder="Label" required>
                         </div>
-                    </div>
+                    </div> 
 
                     <div class="form-group row">
                         <label for="c_email" class="col-sm-3 col-lg-2 col-form-label">E-mail :</label>
@@ -239,17 +239,17 @@
                         </div>
                     </div>
 
+                    <h5>Contact Person</h5>
                     <div class="form-group row">
-                        <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="file" id="c_picture" name="image">
+                        <label for="c_contact_person" class="col-sm-3 col-lg-2 col-form-label">Name :</label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder=" " required>
                         </div>
-
-                        <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_label" name="label" placeholder="Label" required>
+                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile # :</label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="" required>
                         </div>
-                    </div> 
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="form-check mr-3">
