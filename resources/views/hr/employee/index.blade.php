@@ -323,7 +323,7 @@
             $("#e_date_ended_working").val(res.date_ended_working == undefined ? '' : res.date_ended_working);
 
             $("#e_emergency_contact_person").val(res.emergency_contact_person);
-            $("#e_contact_number").val(res.contact_number);
+            $("#e_contact_number").val(res.emergency_contact_number);
             
             // If Date Ended Working is null
             if(res.date_ended_working == undefined)
