@@ -84,9 +84,7 @@ class InventoryController extends Controller
      */
     public function show($id)
     {
-        $inventory = Inventory::find($id);
-        $taxes = Tax::get();
-        return view('inventory.forms.edit', compact('inventory'), compact('taxes'));
+        
     }
 
     public function fifo()
@@ -110,7 +108,8 @@ class InventoryController extends Controller
      */
     public function edit(Inventory $inventory)
     {
-        //
+        $taxes = Tax::get();
+        return view('inventory.forms.edit', compact('inventory'), compact('taxes'));
     }
 
     /**
