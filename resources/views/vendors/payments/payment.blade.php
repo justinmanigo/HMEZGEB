@@ -252,8 +252,9 @@
                         <p class="h3 pl-4 m-auto">Pension</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
-                       @include('vendors.payments.forms.pensionPaymentModal')
+                    <form action="{{route('payments.pension.store')}}" method="post" id="contactForm" name="contact" role="form">
+                    @csrf  
+                    @include('vendors.payments.forms.pensionPaymentModal')
                         <div class="modal-footer">					
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <input type="submit" class="btn btn-success" id="submit">

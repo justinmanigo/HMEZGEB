@@ -16,15 +16,15 @@ class CreatePensionPaymentsTable extends Migration
         Schema::create('pension_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
-            $table->unsignedBigInteger('payment_reference_number');
             $table->unsignedBigInteger('accounting_period_id')->nullable();
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
-            $table->unsignedBigInteger('cheque_number');
+            $table->unsignedBigInteger('cheque_number')->nullable();
             $table->float('amount_received');
+            $table->string('amount_words')->nullable();
             $table->timestamps();
             $table->foreign('payment_reference_id')->references('id')->on('payment_references');
-            $table->foreign('accounting_period_id')->nullable()->references('id')->on('accounting_periods');
-            $table->foreign('chart_of_account_id')->nullable()->references('id')->on('chart_of_accounts');
+            $table->foreign('accounting_period_id')->references('id')->on('accounting_periods');
+            $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
         });
     }
 

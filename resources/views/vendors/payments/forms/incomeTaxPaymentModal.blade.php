@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="it_bill_number" class="col-4 col-form-label text-lg-right">Accounting Period Id:</label>
+                    <label for="it_bill_number" class="col-4 col-form-label text-lg-right">Accounting Period:</label>
                     <div class="col-8">
                         <input type="text" class="form-control" id="it_bill_number" name="accounting_period_id" placeholder="">
                     </div>

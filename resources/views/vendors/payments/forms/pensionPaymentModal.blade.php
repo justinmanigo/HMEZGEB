@@ -32,19 +32,19 @@
                 <div class="form-group row">
                     <label for="p_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="p_cheque_number" name="cheque_number" placeholder="" required>
+                        <input type="text" class="form-control" id="p_cheque_number" name="cheque_number" placeholder="">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="p_bill_number" class="col-4 col-form-label text-lg-right">Account:</label>
+                    <label for="p_chart_of_account_id" class="col-4 col-form-label text-lg-right">Chart of Account Id:</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="p_bill_number" name="account" placeholder="">
+                        <input type="text" class="form-control" id="p_chart_of_account_id" name="chart_of_account_id" placeholder="">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="p_bill_number" class="col-4 col-form-label text-lg-right">Accounting Period:</label>
+                    <label for="p_accounting_period_id" class="col-4 col-form-label text-lg-right">Accounting Period:</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="p_bill_number" name="period" placeholder="">
+                        <input type="text" class="form-control" id="p_accounting_period_id" name="accounting_period_id" placeholder="">
                     </div>
                 </div>
             </div>
@@ -54,13 +54,13 @@
     <div class="form-group row">
         <label for="amount" class="col-lg-2 col-md-4 col-form-label ">Amount<span class="text-danger ml-1">*</span> :</label>
         <div class="col-lg-10 col-md-8 ">
-            <input type="text" class="form-control" id="p_amount" name="amount" placeholder="">
+            <input type="text" class="form-control" id="p_amount" name="amount_received" placeholder="">
         </div>
     </div>
     <div class="form-group row">
         <label for="amount_word" class="col-lg-2 col-md-4 col-form-label ">Amount in Word<span class="text-danger ml-1">*</span> :</label>
         <div class="col-lg-10 col-md-8 ">
-            <input type="text" class="form-control" id="p_amount_word" name="amount_word" placeholder="">
+            <input type="text" class="form-control" id="p_amount_word" name="amount_words" placeholder="">
         </div>
     </div>
  
