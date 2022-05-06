@@ -196,7 +196,7 @@
 
                         <label for="e_date_ended_working" class="col-sm-3 col-lg-2  col-form-label">Date Ended Working</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="">
+                            <input type="date" class="form-control mb-2" id="e_date_ended_working" name="date_ended_working" placeholder="" required>
                             <div class="form-check">
                                 <input class="form-check-input" id="e_is_still_working" type="checkbox" name="is_still_working">
                                 <label class="form-check-label" for="e_is_still_working">Still Working</label>
