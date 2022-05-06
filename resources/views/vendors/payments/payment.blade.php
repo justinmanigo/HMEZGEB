@@ -230,7 +230,8 @@
                         <p class="h3 pl-4 m-auto">Income Tax</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
+                    <form action="{{route('payments.incomeTax.store')}}" id="contactForm" method="post" name="contact" role="form">
+                        @csrf
                        @include('vendors.payments.forms.incomeTaxPaymentModal')
                         <div class="modal-footer">					
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -287,6 +288,22 @@
         {{-- Tab Contents --}}
     <div class="card">
         <div class="card-body tab-content">
+        @if(session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session()->get('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+            @if(session()->has('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session()->get('warning') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
             <!--Bill Payment content--->
             <div class="table-responsive tab-pane fade show active bill_payment">
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">

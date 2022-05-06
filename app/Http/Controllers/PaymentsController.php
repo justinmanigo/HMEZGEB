@@ -4,6 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Payments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+use App\Models\PaymentReferences;
+use App\Models\AccountingPeriods;
+use App\Models\ChartOfAccounts;
+use App\Models\IncomeTaxPayments;
+
+
 
 class PaymentsController extends Controller
 {
@@ -46,23 +54,25 @@ class PaymentsController extends Controller
         $b = 0;
         if(isset($request->is_paid))
         {
+            
             for($i = 0; $i < count($request->payment_reference_id); $i++)
             {
+              
                 // If to pay wasn't checked for certain id, skip.
                 if(!in_array($request->payment_reference_id[$i], $request->is_paid))
                     continue;
-    
+
                 // Get bill
                 $bill = Bills::leftJoin('payment_references', 'payment_references.id', '=', 'bills.payment_reference_id')
                     ->where('bills.payment_reference_id', '=', $request->payment_reference_id[$i])->first();
     
                 // return $bill;
-
+           
                 // If amount paid wasn't even set, skip.
                 if($request->amount_paid[$i] <= 0) continue;
     
-                $bill->total_amount_received += $request->amount_paid[$i];
-                if($bill->total_amount_received >= $bill->grand_total)
+                $bill->amount_received += $request->amount_paid[$i];
+                if($bill->amount_received >= $bill->grand_total)
                 {
                     PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
                         ->update(['status' => 'paid']);
@@ -89,7 +99,7 @@ class PaymentsController extends Controller
                 'date' => $request->date,
                 'type' => 'bill_payment',
                 'is_void' => 'no',
-                'status' => 'paid', // Credit Receipt's status is always paid.
+                'status' => 'paid', // Bill Payment status is always paid.
             ]);
     
             // Create child database entry
@@ -109,15 +119,42 @@ class PaymentsController extends Controller
             ]);
             
             $messageType = 'success';
-            $messageContent = 'Credit Receipt has been added successfully.';
+            $messageContent = 'Bill Payment has been added successfully.';
         }
         else {
             $messageType = 'warning';
             $messageContent = 'There are no bills to pay.';
         }
-        
-        return redirect()->route('bills.bill.index')->with($messageType, $messageContent);
+  
+        // return redirect()->back()->with($messageType, $messageContent);
 
+    }
+    public function storeIncomeTaxPayment(Request $request)
+    {
+        // return $request;
+        $fileAttachment;
+        $status = 'paid';
+        // Store payment reference
+        $reference = PaymentReferences::create([
+            'vendor_id' => $request->vendor_id,
+            'date' => $request->date,
+            'type' => 'income_tax_payment',
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+            'remark' => $request->remark,
+            'status' => $status
+        ]);
+        
+        // store income tax payment
+        $incomeTaxPayment = IncomeTaxPayments::create([
+            'payment_reference_id' => $reference->id,
+            'accounting_period_id' => $request->accounting_period_id,
+            'chart_of_account_id' => $request->chart_of_account_id,
+            'cheque_number' => $request->cheque_number,
+            'amount_received' => $request->amount_received,
+            'amount_words' => $request->amount_words,
+        ]);
+        
+        return redirect()->back()->with('success', 'Income Tax Payment has been added successfully.');
     }
     /**
      * Display the specified resource.
