@@ -129,11 +129,11 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu:</h6>
                         <a class="collapse-item" href="/company-info">Company Info</a>
-                        <a class="collapse-item" href="/users">Users</a>
+                        <a class="collapse-item" href="/settings/users">Users</a>
                         <a class="collapse-item" href="/themes">Theme</a>
                         <a class="collapse-item" href="/settings/taxes">Taxes</a>
                         <a class="collapse-item" href="/withholding">Withholding</a>
-                        <a class="collapse-item" href="/setting_payrollrules">Payroll Rules</a>
+                        <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
                         <a class="collapse-item" href="/setting_chartofaccounts">Chart of Account</a>
                         <a class="collapse-item" href="/setting_inventory">Inventory</a>
                         <a class="collapse-item" href="/setting_defaults">Defaults</a>
@@ -345,8 +345,11 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                              
-                                {{-- <div class="dropdown-divider"></div> --}}
+                                <a class="dropdown-item" href="/account/">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Account Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout

@@ -18,12 +18,7 @@ class ChartOfAccountCategoriesTableSeeder extends Seeder
     {
         DB::table('chart_of_account_categories')->insert([
             [
-                'category' => 'Cash on Hand',
-                'type' => 'Asset',
-                'normal_balance' => 'Debit'
-            ],
-            [
-                'category' => 'Cash on Bank',
+                'category' => 'Cash',
                 'type' => 'Asset',
                 'normal_balance' => 'Debit'
             ],
