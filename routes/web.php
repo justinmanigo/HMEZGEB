@@ -208,7 +208,7 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'deposits.'
     ], function(){ 
-        Route::get('/banking/deposits', [DepositsController::class, 'index'])->name('bank.deposits');
+        Route::get('/banking/deposits', [DepositController::class, 'index'])->name('bank.deposits');
         
     });
 
