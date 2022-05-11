@@ -55,6 +55,16 @@ class User extends Authenticatable
         return $this->hasMany(Permission::class);
     }
 
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
+    public function referredSubscriptions()
+    {
+        return $this->hasMany(Subscriptions::class, 'referral_user_id', 'user_id');
+    }
+
     public function confirmTwoFactorAuth($code)
     {
         $codeIsValid = app(TwoFactorAuthenticationProvider::class)
