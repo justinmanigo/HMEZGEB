@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
+use App\Actions\GetUserPermissions;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Settings\Users\Module;
@@ -20,42 +21,14 @@ class ManageUsersController extends Controller
     }
 
     /**  
-     * SQL Query for getting current users' permissions:
-     * 
-     * select `sub_modules`.`id`, `sub_modules`.`name`, `t`.`access_level` 
-     * from `sub_modules`
-     * left join ( 
-     *  select `permissions`.`user_id`, `sub_modules`.`id`
-     *  from `sub_modules` 
-     *  left join `permissions` on `permissions`.`sub_module_id` = `sub_modules`.`id` 
-     *  where `permissions`.`user_id` = 2 
-     * ) as t on t.id = sub_modules.id
-     * where `sub_modules`.`module_id` = 3
-     * and `sub_modules`.`duplicate_sub_module_id` is null
-     * 
      * @param \App\Models\User $user
      * @return \Illuminate\Contracts\View\View
      */   
     public function editPermissions(User $user)
     {
-        // Initialize subquery
-        $subQuery = SubModule::select('permissions.access_level', 'sub_modules.id')
-            ->leftJoin('permissions', 'permissions.sub_module_id', '=', 'sub_modules.id')
-            ->where('permissions.user_id', $user->id);
-
         // Get modules
         $modules = Module::get();
-
-        // Iterate each module for submodules while getting the user's
-        // current permission values
-        for($i = 0; $i < count($modules); $i++)
-            $permissions[$i] = $modules[$i]->subModules()
-                ->select('sub_modules.id', 'sub_modules.name', 't.access_level')
-                ->leftJoinSub($subQuery, 't', function($join){
-                    $join->on('t.id', '=', 'sub_modules.id');
-                })->where('sub_modules.duplicate_sub_module_id', '=', null)
-                ->orderBy('sub_modules.id', 'ASC')
-                ->get();
+        $permissions = GetUserPermissions::run($modules, $user);
 
         return view('settings.users.manageUsers.editPermissions', [
             'user_id' => $user->id,

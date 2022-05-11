@@ -55,5 +55,27 @@ class ModulesTableSeeder extends Seeder
             // Inventory
             ['module_id' => 6, 'name' => 'inventory', 'url' => '/inventory/', 'duplicate_sub_module_id' => null],
         ]);
+
+        DB::table('permissions')->insert([
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 1],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 2],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 3],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 4],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 5],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 6],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 7],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 8],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 9],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 10],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 11],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 12],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 13],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 14],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 15],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 16],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 17],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 18],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 19],
+        ]);
     }
 }

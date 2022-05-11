@@ -112,7 +112,7 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'receipts.'
     ], function(){
-        Route::get('/receipt', [ReceiptController::class, 'index'])->name('receipt.index');
+        Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
         
         // Store
         Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
@@ -132,7 +132,7 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'customers.'
     ], function(){ 
-        Route::get('/customer', [CustomerController::class, 'index']);
+        Route::get('/customers/customers/', [CustomerController::class, 'index']);
         Route::post('/customer', [CustomerController::class, 'store']); 
         Route::get('/customer/{id}', [CustomerController::class, 'edit']);
         Route::put('/customer/{id}', [CustomerController::class, 'update']);
@@ -145,7 +145,7 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'deposits.'
     ], function(){ 
-        Route::get('/deposit', [DepositController::class, 'index']);
+        Route::get('/customers/deposits/', [DepositController::class, 'index']);
         Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositController::class, 'ajaxSearchBank']);
     });
 
@@ -159,15 +159,21 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'bills.'
     ], function(){ 
-        Route::get('/bill', [BillsController::class, 'index'])->name('bill.index');
+        Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
         Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
         Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
     });
 
     Route::group([
+        'as'=>'payments.'
+    ], function(){ 
+        Route::get('/vendors/payments',[PaymentsController::class,'index']);
+    });
+
+    Route::group([
         'as'=>'vendors.'
     ], function(){ 
-        Route::get('/vendors',[VendorsController::class,'index']);
+        Route::get('/vendors/vendors/',[VendorsController::class,'index']);
         Route::get('/vendors/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
         Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
         Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
@@ -175,12 +181,6 @@ Route::post('/userlogin', function (Request $request){
 
         Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
 
-    });
-
-    Route::group([
-        'as'=>'payments.'
-    ], function(){ 
-        Route::get('/payment',[PaymentsController::class,'index']);
     });
  
  
@@ -195,14 +195,14 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'accounts.'
     ], function(){ 
 
-        Route::get('/accounts', [AccountsController::class, 'index'])->name('bank.accounts');
+        Route::get('/banking/accounts', [AccountsController::class, 'index'])->name('bank.accounts');
 
     });
 
     Route::group([
         'as'=>'transfers.'
     ], function(){ 
-        Route::get('/transfers', [TransfersController::class, 'index'])->name('bank.transfers');
+        Route::get('/banking/transfer', [TransfersController::class, 'index'])->name('bank.transfers');
         
     });
 
@@ -211,7 +211,7 @@ Route::post('/userlogin', function (Request $request){
     Route::group([
         'as'=>'deposits.'
     ], function(){ 
-        Route::get('/deposits', [DepositsController::class, 'index'])->name('bank.deposits');
+        Route::get('/banking/deposits', [DepositController::class, 'index'])->name('bank.deposits');
         
     });
 
@@ -219,7 +219,7 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'transactions.'
     ], function(){ 
 
-        Route::get('/transactions', [TransactionsController::class, 'index']);
+        Route::get('/banking/transactions', [TransactionsController::class, 'index']);
     });
      
  
@@ -233,7 +233,7 @@ Route::post('/userlogin', function (Request $request){
       'as'=>'journals.'
   ], function(){ 
 
-      Route::get('/journals', [JournalVouchersController::class, 'index'])->name('index');
+      Route::get('/jv/', [JournalVouchersController::class, 'index'])->name('index');
       Route::get('/journals/{journalVoucher}', [JournalVouchersController::class, 'show'])->name('show');
       Route::post('/journals', [JournalVouchersController::class, 'store'])->name('store');
   });
@@ -248,7 +248,7 @@ Route::post('/userlogin', function (Request $request){
 Route::group([
     'as'=>'inventory.'
 ], function(){ 
-    Route::get('/inventory', [InventoryController::class, 'index']);
+    Route::get('/inventory/', [InventoryController::class, 'index']);
     Route::post('/inventory', [InventoryController::class, 'store']);
     Route::get('/inventory/{inventory}', [InventoryController::class, 'edit']);
     Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
@@ -264,14 +264,14 @@ Route::group([
     Route::group([
         'as' => 'payrolls.'
     ], function(){
-        Route::get('/payroll', [PayrollController::class, 'index']);
+        Route::get('/hr/payrolls', [PayrollController::class, 'index']);
 
     });
 
     Route::group([
         'as' => 'employees.'
     ], function(){
-        Route::get('/employee', [EmployeeController::class, 'index'])->name('index');
+        Route::get('/hr/employees', [EmployeeController::class, 'index'])->name('index');
         Route::post('/employee', [EmployeeController::class, 'store'])->name('store');
         Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
         Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
@@ -284,7 +284,7 @@ Route::group([
     Route::group([
         'as' => 'overtime.'
     ], function(){
-        Route::get('/overtime', [OvertimeController::class, 'index']);
+        Route::get('/hr/overtime', [OvertimeController::class, 'index']);
         Route::post('/overtime', [OvertimeController::class, 'store'])->name('store');
         Route::delete('/overtime/{id}', [OvertimeController::class, 'destroy']);
 
@@ -293,7 +293,7 @@ Route::group([
     Route::group([
         'as' => 'additions.'
     ], function(){
-        Route::get('/addition', [AdditionController::class, 'index']);
+        Route::get('/hr/addition', [AdditionController::class, 'index']);
         Route::post('/addition', [AdditionController::class, 'store'])->name('store');
         Route::delete('/addition/{id}', [AdditionController::class, 'destroy']);
         
@@ -302,7 +302,7 @@ Route::group([
     Route::group([
         'as' => 'deductions.'
     ], function(){
-        Route::get('/deduction', [DeductionController::class, 'index']);
+        Route::get('/hr/deduction', [DeductionController::class, 'index']);
         Route::post('/deduction', [DeductionController::class, 'store'])->name('store');
         Route::delete('/deduction/{id}', [DeductionController::class, 'destroy']);
 
@@ -312,7 +312,7 @@ Route::group([
     Route::group([
         'as' => 'loans.'
     ], function(){
-        Route::get('/loan', [LoanController::class, 'index']);
+        Route::get('/hr/loan', [LoanController::class, 'index']);
         Route::post('/loan', [LoanController::class, 'store'])->name('store');
         Route::delete('/loan/{id}', [LoanController::class, 'destroy']);
 

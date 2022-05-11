@@ -238,51 +238,6 @@
     </div>
 </div>
 
-
-{{-- STACK 2 > Select Customer --}}
-{{-- To be planned carefully on how can this be implemented across 4 receipt types/modals. --}}
-<div class="modal fade" id="modal-select-customer" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-receipt-label">Select Customer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.select_customer')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="sc_btn_select_customer">Select Customer</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- STACK 2 > Select Item (Inventory) --}}
-{{-- To be planned carefully on how can this be implemented across 3 receipt types/modals. --}}
-<div class="modal fade" id="modal-select-item" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-receipt-label">Select Item</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.select_item')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="si_btn_select_item">Select Item</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     $(document).ready(function () {
     $('#dataTables').DataTable();

@@ -1,3 +1,8 @@
+@php
+    $modules = \App\Models\Settings\Users\Module::get();
+    $permissions = \App\Actions\GetUserPermissions::run($modules, Auth::user(), true);
+@endphp
+ 
  <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -27,95 +32,54 @@
                 Interface
             </div> --}}
 
-            <!-- Nav Item - Customer Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-money-bill-alt"></i>
-                    <span>Customer</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="/receipt">Receipt</a>
-                        <a class="collapse-item" href="/customer">Customer</a>
-                        <a class="collapse-item" href="/deposit">Deposit</a>
-                    </div>
-                </div>
-            </li>
+            @for($i = 0; $i < count($modules); $i++)
+                {{-- If there are more than 1 submodules --}}
+                @if(count($permissions[$i]) > 1)
+                    {{-- The count refers to the number of module's submodules permitted for use by the authenticated user. --}}
+                    @php $count = 0; @endphp
+                    {{-- Iterate on permissions to determine whether to show submodule or not. --}}
+                    @foreach($permissions[$i] as $permission)
+                        @if($permission->access_level != null || \App\Actions\CheckDuplicateSubModulePermission::run($permission->duplicate_sub_module_id) != null)
+                            {{-- This checks whether the menu has already been shown. This will be checked once. --}}
+                            @if($count == 0)
+                                <li class="nav-item">
+                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse-{{ $i }}"
+                                        aria-expanded="true" aria-controls="collapse-{{ $i }}">
+                                        <i class="fas fa-fw fa-money-bill-alt"></i>
+                                        <span>{{ ucwords($modules[$i]->name) }}</span>
+                                    </a>
+                                    <div id="collapse-{{ $i }}" class="collapse" aria-labelledby="heading-{{ $i }} }}" data-parent="#accordionSidebar">
+                                        <div class="bg-white py-2 collapse-inner rounded">
+                                            <h6 class="collapse-header">Menu:</h6>
+                            @endif
+                            {{-- The submodule item. --}}
+                            <a class="collapse-item" href="{{ url($permission->url) }}">{{ ucwords($permission->name) }}</a>
+                            {{-- Increment permitted module's submodules count. --}}
+                            @php $count++; @endphp
+                        @endif
+                    @endforeach
+                    @if($count > 0)
+                                </div>
+                            </div>
+                        </li>
+                    @endif
 
-            <!-- Nav Item - Vendors Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-shopping-cart"></i>
-                    <span>Vendors</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="/bill">Bill</a>
-                        <a class="collapse-item" href="/payment">Payment</a>
-                        <a class="collapse-item" href="/vendors">Vendor</a>
-                    </div>
-                </div>
-            </li>
+                    {{-- <a class="collapse-item" href="/receipt">Receipt</a>
+                    <a class="collapse-item" href="/customer">Customer</a>
+                    <a class="collapse-item" href="/deposit">Deposit</a> --}}
+              
 
-             <!-- Nav Item - Banking Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#banking"
-                    aria-expanded="true" aria-controls="banking">
-                    <i class="fas fa-fw fa-bank"></i>
-                    <span>Banking</span>
-                </a>
-                <div id="banking" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="/accounts">Accounts</a>
-                        <a class="collapse-item" href="/transfers">Transfer</a>
-                        <a class="collapse-item" href="/deposits">Deposit</a>
-                        <a class="collapse-item" href="/transactions">Transactions</a>
-                        <a class="collapse-item" href="#">Bank Reconciliation</a>
-                    </div>
-                </div>
-            </li>
-
-               <!-- Nav Item - Journal Voucher -->
-            <li class="nav-item">
-                <a class="nav-link" href="/journals">
-                    <i class="fas fa-fw fa-pencil-alt"></i>
-                    <span>Journal Voucher</span></a>
-            </li>
-
-            <!-- Nav Item - Banking Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#humanResource"
-                    aria-expanded="true" aria-controls="humanResource">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Human Resource</span>
-                </a>
-                <div id="humanResource" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="/payroll">Payroll</a>
-                        <a class="collapse-item" href="/employee">Employees</a>
-                        <a class="collapse-item" href="/overtime">Overtime</a>
-                        <a class="collapse-item" href="/addition">Addition</a>
-                        <a class="collapse-item" href="/deduction">Deduction</a>
-                        <a class="collapse-item" href="/loan">Loan</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Inventory Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="/inventory">
-                    <i class="fas fa-fw fa-clipboard-list"></i>
-                    <span>Inventory</span></a>
-            </li>
+                {{-- If there is only one submodule --}}
+                @else
+                    @if($permissions[$i][0]->access_level != null)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url($permissions[$i][0]->url) }}">
+                                <i class="fas fa-fw fa-clipboard-list"></i>
+                                <span>{{ ucwords($permissions[$i][0]->name) }}</span></a>
+                        </li>
+                    @endif
+                @endif
+            @endfor
 
             <!-- Nav Item - Settings Collapse Menu -->
             <li class="nav-item">
