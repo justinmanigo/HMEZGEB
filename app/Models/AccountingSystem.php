@@ -33,4 +33,9 @@ class AccountingSystem extends Model
     {
         return $this->belongsTo(Subscription::class);
     }
+
+    public function accountingSystemUsers()
+    {
+        return $this->hasMany(AccountingSystemUser::class);
+    }
 }

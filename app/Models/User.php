@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(Subscriptions::class, 'referral_user_id', 'user_id');
     }
 
+    public function accountingSystemUsers()
+    {
+        return $this->hasMany(AccountingSystemUser::class);
+    }
+
     public function confirmTwoFactorAuth($code)
     {
         $codeIsValid = app(TwoFactorAuthenticationProvider::class)
