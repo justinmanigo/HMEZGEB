@@ -30,4 +30,9 @@ class Subscription extends Model
     {
         return $this->belongsTo(User::class, 'referral_user_id', 'user_id');
     }
+
+    public function accountingSystems()
+    {
+        return $this->hasMany(AccountingSystem::class);
+    }
 }
