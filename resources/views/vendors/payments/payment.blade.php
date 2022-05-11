@@ -167,7 +167,7 @@
                         <p class="h3 pl-4 m-auto">VAT Payment/Receivable</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
+                    <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
                        @include('vendors.payments.forms.VATPaymentModal')
                         <div class="modal-footer">					
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -188,8 +188,9 @@
                         <p class="h3 pl-4 m-auto">Withholding</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
-                       @include('vendors.payments.forms.withholdingPaymentModal')
+                    <form id="contactForm" action="{{route('payments.withholdingPayment.store')}}" method="post" role="form">
+                    @csrf   
+                    @include('vendors.payments.forms.withholdingPaymentModal')
                         <div class="modal-footer">					
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <input type="submit" class="btn btn-success" id="submit">
@@ -410,8 +411,9 @@
 <script src="/js/vendors/payment/select_vendor_withholding.js"></script>
 <script src="/js/vendors/payment/select_vendor_pension.js"></script>
 <script src="/js/vendors/payment/select_vendor_income_tax.js"></script>
-<!-- Select newbill -->
+<!-- Select bill -->
 <script src="/js/vendors/payment/select_payment_bill.js"></script>
+<script src="/js/vendors/payment/select_payment_withholding.js"></script>
 
 
 <!-- Items -->

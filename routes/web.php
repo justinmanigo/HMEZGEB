@@ -185,6 +185,18 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
 
     });
+
+    Route::group([
+        'as'=>'payments.'
+    ], function(){ 
+        Route::get('/payment',[PaymentsController::class,'index']);
+        Route::post('/payment/bill',[PaymentsController::class,'storeBillPayment'])->name('billPayment.store');
+        Route::post('/payment/income_tax',[PaymentsController::class,'storeIncomeTaxPayment'])->name('incomeTax.store');  
+        Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
+        Route::post('/payment/withholding',[PaymentsController::class,'storeWithholdingPayment'])->name('withholdingPayment.store');
+        Route::get('/ajax/vendor/payments/topay/{vendor}', [VendorsController::class, 'ajaxGetPaymentsToPay']);
+        Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
+    });
  
  
  

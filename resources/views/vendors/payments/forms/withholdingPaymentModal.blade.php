@@ -32,7 +32,7 @@
                 <div class="form-group row">
                     <label for="w_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="w_cheque_number" name="cheque_number" placeholder="" required>
+                        <input type="text" class="form-control" id="w_cheque_number" name="cheque_number" placeholder="">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -49,12 +49,13 @@
             <tr>
                 <th>Bill#</th>
                 <th>Date</th>
-                <th>Bill Amount</th>
-                <th colspan="2">Withholding Amount</th>
-                <th>Actions</th>
+                <th>Withholding Amount</th>
+                <th>Pay</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="w_withholdings_to_pay">
+
+            {{--
             <tr>
                 <td>Bi1032</td>
                 <td>Dec 14, 2019</td>
@@ -126,10 +127,9 @@
                         </span>
                     </button>
                 </td>
-            </tr>
+            </tr>--}}
         </tbody>
         <tfoot>
-            <td></td>
             <td></td>
             <td></td>
             <th>Total Paid</th>

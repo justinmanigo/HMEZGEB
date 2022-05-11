@@ -13,6 +13,7 @@ use App\Models\IncomeTaxPayments;
 use App\Models\PensionPayments;
 use App\Models\BillPayments;
 use App\Models\Bills;
+use App\Models\WithholdingPayments;
 
 
 
@@ -112,7 +113,7 @@ class PaymentsController extends Controller
                 $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
             }
     
-            $billPayment = BillPayments::create([
+            $withholdingPayment = WithholdingPayments::create([
                 'payment_reference_id' => $reference->id,
                 'chart_of_account_id' => $request->chart_of_account_id,
                 'cheque_number' => $request->cheque_number,
@@ -121,11 +122,11 @@ class PaymentsController extends Controller
             ]);
             
             $messageType = 'success';
-            $messageContent = 'Bill Payment has been added successfully.';
+            $messageContent = 'Withholding Payment has been added successfully.';
         }
         else {
             $messageType = 'warning';
-            $messageContent = 'There are no bills to pay.';
+            $messageContent = 'There are no withholdings to pay.';
         }
   
         return redirect()->back()->with($messageType, $messageContent);
@@ -188,6 +189,93 @@ class PaymentsController extends Controller
         return redirect()->back()->with('success', 'Pension Payment has been added successfully.');
 
     }
+    // Store withholding
+    public function storeWithholdingPayment(Request $request)
+    {
+        // return $request;
+
+        // Update Withholding to Pay
+        $w = 0;
+        if(isset($request->is_paid))
+        {
+            
+            for($i = 0; $i < count($request->payment_reference_id); $i++)
+            {
+                
+                // If to pay wasn't checked for certain id, skip.
+                if(!in_array($request->payment_reference_id[$i], $request->is_paid))
+                    continue;
+
+                // Get bill
+                $bill = Bills::leftJoin('payment_references', 'payment_references.id', '=', 'bills.payment_reference_id')
+                    ->where('bills.payment_reference_id', '=', $request->payment_reference_id[$i])->first();
+    
+                // return $bill;
+                
+                // If amount paid wasn't even set, skip.
+                if($request->amount_paid[$i] <= 0) continue;
+                
+                $bill->withholding -= $request->amount_paid[$i];
+                if($bill->withholding < 0)
+                {
+                    $bill->withholding = 0;
+                }
+                
+                if($bill->withholding <= 0)
+                {
+                    PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
+                        ->update(['status' => 'paid']);
+                }
+                else if($bill->status == 'unpaid' && $bill->amount_received > 0)
+                {
+                    PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
+                        ->update(['status' => 'partially_paid']);
+                }
+                else if($bill->status == 'paid')
+                {
+                    continue;
+                }
+    
+                $bill->save();
+                $w++;
+            }
+        }
+
+        if($w > 0) {
+            // Create PaymentReference Record
+            $reference = PaymentReferences::create([
+                'vendor_id' => $request->vendor_id,
+                'date' => $request->date,
+                'type' => 'withholding_payment',
+                'is_void' => 'no',
+                'status' => 'paid', // Withholding Payment status is always paid.
+            ]);
+    
+            // Create child database entry
+            if($request->attachment) {
+                $fileAttachment = time().'.'.$request->attachment->extension();  
+                $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
+            }
+    
+            $withholdingPayment = WithholdingPayments::create([
+                'payment_reference_id' => $reference->id,
+                'accounting_period_id' => $request->accounting_period_id,
+                'chart_of_account_id' => $request->chart_of_account_id,
+                'amount_paid' => floatval($request->amount_paid),       
+            ]);
+            
+            $messageType = 'success';
+            $messageContent = 'Withholding Payment has been added successfully.';
+        }
+        else {
+            $messageType = 'warning';
+            $messageContent = 'There are no withholdings to pay.';
+        }
+  
+        return redirect()->back()->with($messageType, $messageContent);
+
+    }
+
     /**
      * Display the specified resource.
      *

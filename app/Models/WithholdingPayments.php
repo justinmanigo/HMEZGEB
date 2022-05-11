@@ -13,7 +13,7 @@ class WithholdingPayments extends Model
         'payment_reference_id',
         'accounting_period_id',
         'chart_of_account_id',
-        'total_paid',
+        'amount_paid',
     ];
     
     public function paymentReference()
