@@ -91,7 +91,7 @@ class PaymentsController extends Controller
                 {
                     continue;
                 }
-    
+
                 $bill->save();
                 $b++;
             }
@@ -108,19 +108,28 @@ class PaymentsController extends Controller
             ]);
     
             // Create child database entry
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
-            }
-    
-            $withholdingPayment = WithholdingPayments::create([
-                'payment_reference_id' => $reference->id,
-                'chart_of_account_id' => $request->chart_of_account_id,
-                'cheque_number' => $request->cheque_number,
-                'amount_paid' => floatval($request->amount_paid),
-                'discount_account_number' => $request->discount_account_number,        
-            ]);
+            // if($request->attachment) {
+            //     $fileAttachment = time().'.'.$request->attachment->extension();  
+            //     $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
+            // }
             
+            // Go through all the list of bills with checked is_paid
+            for($i = 0; $i < count($request->payment_reference_id); $i++)
+            {
+                
+                // If to pay wasn't checked for certain id, skip.
+                if(!in_array($request->payment_reference_id[$i], $request->is_paid))
+                    continue;
+
+                $billPayment = BillPayments::create([
+                    'payment_reference_id' => $reference->id,
+                    'chart_of_account_id' => $request->chart_of_account_id,
+                    'cheque_number' => $request->cheque_number,
+                    'amount_paid' => floatval($request->amount_paid[$i]),
+                    'discount_account_number' => $request->discount_account_number,        
+                ]);
+            }
+
             $messageType = 'success';
             $messageContent = 'Withholding Payment has been added successfully.';
         }
@@ -256,14 +265,23 @@ class PaymentsController extends Controller
                 $fileAttachment = time().'.'.$request->attachment->extension();  
                 $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
             }
-    
-            $withholdingPayment = WithholdingPayments::create([
-                'payment_reference_id' => $reference->id,
-                'accounting_period_id' => $request->accounting_period_id,
-                'chart_of_account_id' => $request->chart_of_account_id,
-                'amount_paid' => floatval($request->amount_paid),       
-            ]);
             
+            // Go through all the list of withholding with checked is_paid
+            for($i = 0; $i < count($request->payment_reference_id); $i++)
+            {
+
+                // If to pay wasn't checked for certain id, skip.
+                if(!in_array($request->payment_reference_id[$i], $request->is_paid))
+                    continue;
+                    
+                $withholdingPayment = WithholdingPayments::create([
+                    'payment_reference_id' => $reference->id,
+                    'accounting_period_id' => $request->accounting_period_id,
+                    'chart_of_account_id' => $request->chart_of_account_id,
+                    'amount_paid' => floatval($request->amount_paid[$i]),       
+                ]);
+            }
+
             $messageType = 'success';
             $messageContent = 'Withholding Payment has been added successfully.';
         }
