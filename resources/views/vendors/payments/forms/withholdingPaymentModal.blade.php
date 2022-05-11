@@ -131,9 +131,12 @@
         </tbody>
         <tfoot>
             <td></td>
+            <th>Total Amount</th>
+            <td>
+                <input type="text" id="w_total_amount_received" class="form-control-plaintext text-right pr-2" name="total_received" placeholder="0.00" readonly>
+            </td>
             <td></td>
-            <th>Total Paid</th>
-            <td>817.39</td>
+           
         </tfoot>
     </table>
     {{-- end of the table  --}}
