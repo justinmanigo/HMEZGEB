@@ -17,6 +17,7 @@ class CreateOvertimesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('employee_id');
             $table->date('date');  
+            $table->enum('is_weekend_holiday', ['yes', 'no'])->nullable();
             $table->time('from');
             $table->time('to');
             $table->string('description')->nullable();

@@ -115,11 +115,7 @@
 {{-- Tab Navigation --}}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <a class="nav-link @if(Route::currentRouteName() == 'account.yourAccount') {{ 'active' }} @endif" id="account-tab" href="/account/me/"
-            aria-controls="account" aria-selected="true">Your Account</a>
-    </li>
-    <li class="nav-item" role="presentation">
-        <a class="nav-link @if(Route::currentRouteName() == 'account.manageUsers') {{ 'active' }} @endif" id="users-tab" href="/account/users/"
+        <a class="nav-link @if(Route::currentRouteName() == 'settings.users.manageUsers') {{ 'active' }} @endif" id="users-tab" href="/settings/users/"
             aria-controls="users" aria-selected="true">Manage Users</a>
     </li>
 </ul>

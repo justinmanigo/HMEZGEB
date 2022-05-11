@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Settings\ChartOfAccounts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +32,6 @@ class ChartOfAccounts extends Model
 
     public function category()
     {
-        return $this->hasOne(ChartOfAccountCategory::class);
+        return $this->hasOne(ChartOfAccountCategory::class, 'id','chart_of_account_category_id');
     }
 }

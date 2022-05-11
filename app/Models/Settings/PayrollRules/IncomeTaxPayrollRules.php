@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Settings\PayrollRules;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tax extends Model
+class IncomeTaxPayrollRules extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id', 'name', 'percentage'
+        'income',
+        'rate',
+        'deduction',
     ];
-
-    // TODO: Integrate TAX relationships to tables of other modules.
 }

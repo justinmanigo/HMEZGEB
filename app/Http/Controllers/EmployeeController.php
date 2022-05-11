@@ -28,7 +28,7 @@ class EmployeeController extends Controller
         Employee::create([
             'first_name' => $request->first_name,
             'father_name' => $request->father_name,
-            'given_father_name' => $request->given_father_name,
+            'grandfather_name' => $request->grandfather_name,
             'date_of_birth' => $request->date_of_birth,
             'mobile_number' => $request->mobile_number,
             'telephone' => $request->telephone,
@@ -53,7 +53,7 @@ class EmployeeController extends Controller
         $employee->update([
             'first_name' => $request->first_name,
             'father_name' => $request->father_name,
-            'given_father_name' => $request->given_father_name,
+            'grandfather_name' => $request->grandfather_name,
             'date_of_birth' => $request->date_of_birth,
             'mobile_number' => $request->mobile_number,
             'telephone' => $request->telephone,

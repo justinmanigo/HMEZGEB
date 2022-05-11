@@ -171,6 +171,7 @@
                 <form id="form-customer" action="/customer" method="post" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
+                    <h5>Customer</h5>
                     <div class="form-group row">
                         <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name<span class="text-danger ml-1">*</span> :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
@@ -184,61 +185,37 @@
                     </div>
                     <div class="form-group row">
                         <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address :</label>
-                        <div class="col-sm-9 col-lg-10">
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_address" name="address" placeholder="" required>
                         </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="c_city" class="col-sm-3 col-lg-2 col-form-label">City :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_city" name="city" placeholder="" required>
                         </div>
-
+                    </div>
+                    <div class="form-group row">
                         <label for="c_country" class="col-sm-3 col-lg-2 col-form-label">Country :</label>
-                        <div class="col-sm-9 col-lg-4">
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_country" name="country" placeholder="" required>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone 1 :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_phone_1" name="telephone_one" placeholder="" required>
-                        </div>
-
-                        <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone 2 :</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_phone_2" name="telephone_two" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="c_fax" class="col-sm-3 col-lg-2 col-form-label">Fax :</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_fax" name="fax" placeholder="">
                         </div>
 
-                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number :</label>
+                    </div>
+                    <div class="form-group row">
+                        <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone # 1 :</label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="c_phone_1" name="telephone_one" placeholder="" required>
+                        </div>
+
+                        <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone # 2 :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="" required>
+                            <input type="text" class="form-control" id="c_phone_2" name="telephone_two" placeholder="">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="c_contact_person" class="col-sm-2 col-form-label">Contact Person :</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder=" " required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_email" class="col-sm-2 col-form-label">E-mail :</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_email" name="email" placeholder="" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_website" class="col-sm-2 col-form-label">Website :</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_website" name="website" placeholder="">
-                        </div>
-                    </div>
+
                     <div class="form-group row">
                         <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
                         <div class="col-sm-9 col-lg-4">
@@ -250,6 +227,29 @@
                             <input type="text" class="form-control" id="c_label" name="label" placeholder="Label" required>
                         </div>
                     </div> 
+
+                    <div class="form-group row">
+                        <label for="c_email" class="col-sm-3 col-lg-2 col-form-label">E-mail :</label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="c_email" name="email" placeholder="" required>
+                        </div>
+                        <label for="c_website" class="col-sm-3 col-lg-2 col-form-label">Website :</label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="c_website" name="website" placeholder="">
+                        </div>
+                    </div>
+
+                    <h5>Contact Person</h5>
+                    <div class="form-group row">
+                        <label for="c_contact_person" class="col-sm-3 col-lg-2 col-form-label">Name :</label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder=" " required>
+                        </div>
+                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile # :</label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="" required>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="form-check mr-3">

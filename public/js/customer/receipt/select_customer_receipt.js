@@ -50,14 +50,14 @@ function onReceiptCustomerSelectSuggestion(e){
     console.log(e.detail.data);
     receipt_customer_id = e.detail.data.value;
 
-    $("#r_customer_id").html(e.detail.data.value)
+    $("#r_customer_id").val(e.detail.data.value)
     $("#r_tin_number").html(e.detail.data.tin_number)
     $("#r_contact_person").html(e.detail.data.contact_person)
     $("#r_mobile_number").html(e.detail.data.mobile_number)
 }
 
 function onReceiptCustomerRemove(e){
-    $("#r_customer_id").html("")
+    $("#r_customer_id").val("")
     $("#r_tin_number").html("")
     $("#r_contact_person").html("")
     $("#r_mobile_number").html("")

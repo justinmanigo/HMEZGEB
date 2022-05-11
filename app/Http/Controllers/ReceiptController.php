@@ -33,7 +33,6 @@ class ReceiptController extends Controller
         )->select(
             'customers.name',
             'receipt_references.id',
-            'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',
             'receipt_references.status',
@@ -53,7 +52,6 @@ class ReceiptController extends Controller
         )->select(
             'customers.name',
             'receipt_references.id',
-            'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',
             'receipt_references.status',
@@ -73,7 +71,6 @@ class ReceiptController extends Controller
         )->select(
             'customers.name',
             'receipt_references.id',
-            'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',
             'receipt_references.status',
@@ -94,7 +91,6 @@ class ReceiptController extends Controller
         )->select(
             'customers.name',
             'receipt_references.id',
-            'receipt_references.reference_number',
             'receipt_references.date',
             'receipt_references.type',
             'proformas.amount'
@@ -144,7 +140,6 @@ class ReceiptController extends Controller
         // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
             'customer_id' => $request->customer_id,
-            'reference_number' => $request->reference_number,
             'date' => $request->date,
             'type' => 'receipt',
             'is_void' => 'no',
@@ -175,7 +170,6 @@ class ReceiptController extends Controller
             'discount' => '0.00', // Temporary discount
             'withholding' => '0.00', // Temporary Withholding
             'tax' => '0.00', // Temporary Tax value
-            'receipt_number' => $request->proforma_number, // Temporary reference number
             'proforma_id' => isset($proforma) ? $proforma->value : null, // Test
             'payment_method' => $payment_method,
             'total_amount_received' => $request->total_amount_received
@@ -211,7 +205,6 @@ class ReceiptController extends Controller
         // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
             'customer_id' => $request->customer_id,
-            'reference_number' => $request->reference_number,
             'date' => $request->date,
             'type' => 'advance_receipt',
             'status' => 'paid' // Advance Revenue's status is always paid.
@@ -226,7 +219,6 @@ class ReceiptController extends Controller
         $reference->id;
         $advanceRevenue = AdvanceRevenues::create([
             'receipt_reference_id' => $reference->id,
-            'advance_revenue_number' => $request->reference_number,
             'total_amount_received' => $request->amount_received,
             'reason' => $request->reason,
             'remark' => $request->remark,
@@ -299,7 +291,6 @@ class ReceiptController extends Controller
     
             $creditReceipts = CreditReceipts::create([
                 'receipt_reference_id' => $reference->id,
-                'credit_receipt_number' => $request->credit_receipt_number,
                 'total_amount_received' => floatval($request->total_received),
                 'description' => $request->description,
                 'remark' => $request->remark,
@@ -337,8 +328,6 @@ class ReceiptController extends Controller
         // Receipt References
         $reference = ReceiptReferences::create([
             'customer_id' => $request->customer_id,
-            // Temporary Proforma
-            'reference_number' => $request->proforma_number,
             'date' => $request->date,
             'type' => 'proforma',
             'is_void' => 'no',
@@ -356,7 +345,6 @@ class ReceiptController extends Controller
             $reference->id;
             $proformas = Proformas::create([
                 'receipt_reference_id' => $reference->id,
-                'proforma_number' => $request->proforma_number,
                 'due_date' => $request->due_date,
                 'amount' => $request->grand_total,
                 'terms_and_conditions' => $request->terms_and_conditions,
@@ -403,7 +391,6 @@ class ReceiptController extends Controller
         $receipts->discount = $request->input('discount');
         $receipts->withholding = $request->input('withholding');
         $receipts->tax = $request->input('tax');
-        $receipts->receipt_number = $request->input('receipt_number');
         $receipts->proforma_id = $request->input('proforma_id');
         $receipts->payment_method = $request->input('payment_method');
         $receipts->total_amount_received = $request->input('total_amount_received');
@@ -472,7 +459,6 @@ class ReceiptController extends Controller
     {
         $proformas = ReceiptReferences::select(
                 'receipt_references.id as value',
-                'receipt_references.reference_number',
                 'receipt_references.date',
                 'proformas.amount',
                 'proformas.due_date',

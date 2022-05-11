@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
-use App\Models\ChartOfAccounts;
-use App\Models\ChartOfAccountCategory;
-use App\Models\PeriodOfAccounts;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccountCategory;
+use App\Models\Settings\ChartOfAccounts\PeriodOfAccounts;
 
-class SettingChartOfAccountsController extends Controller
+class ChartOfAccountsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -61,12 +62,21 @@ class SettingChartOfAccountsController extends Controller
         // TODO: Check if specific COA number already exists.
 
         // Create Chart of Account Entry
-        $coa = ChartOfAccounts::create([
-            'chart_of_account_category_id' => $coa_category[0]['value'],
-            'chart_of_account_no' => $request->coa_number,
-            'name' => $request->coa_name,
-            'current_balance' => $request->coa_beginning_balance,
-        ]);
+        $coa = new ChartOfAccounts();
+        $coa->chart_of_account_category_id = $coa_category[0]['value'];
+        $coa->chart_of_account_no = $request->coa_number;
+        $coa->name = $request->coa_name;
+        $coa->current_balance = $request->coa_beginning_balance;
+
+        // If COA is Cash (id:1) and checkbox is checked.
+        if(isset($request->coa_is_bank) && $coa_category[0]['value'] == 1)
+        {
+            $coa->bank_account_number = $request->bank_account_number;
+            $coa->bank_branch = $request->bank_branch;
+            $coa->bank_account_type = $request->bank_account_type;
+        }
+
+        $coa->save();
 
         // Create Period of Account Entry for $coa
         // TODO: Integrate with Accounting Period later. At the moment, 
@@ -143,14 +153,17 @@ class SettingChartOfAccountsController extends Controller
             ->get();
     }
 
-    public function ajaxSearchCategories($query)
+    public function ajaxSearchCategories($query = null)
     {
         $categories = ChartOfAccountCategory::select(
             'id as value', 
             'category',
             'type',
-            'normal_balance')
-            ->where('category', 'LIKE', '%' . $query . '%')->get();
-        return $categories;
+            'normal_balance');
+            
+        if(isset($query))
+            $categories->where('category', 'LIKE', '%' . $query . '%');
+    
+        return $categories->get();
     }
 }

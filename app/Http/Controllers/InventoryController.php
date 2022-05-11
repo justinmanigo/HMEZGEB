@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
-use App\Models\Tax;
+use App\Models\Settings\Taxes\Tax;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
@@ -15,8 +15,23 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        return $this->show();
-        // return view('inventory.inventory');
+       //get all inventories from database then display on inventory
+       $inventories = Inventory::all();
+
+       // Compute for each inventory value and total value.
+       $inventoryValue=0.00;
+       foreach($inventories as $inventory)
+       {
+           $inventory->inventoryValue = $inventory->sale_price*$inventory->quantity;
+           $inventoryValue+=$inventory->inventoryValue;
+           
+       }
+       if(!empty($inventoryValue)) 
+           $inventory->totalInventory = $inventoryValue; 
+
+       $taxes = Tax::get();            
+
+       return view('inventory.inventory', compact('inventories'), compact('taxes'));
     }
 
     /**
@@ -67,25 +82,9 @@ class InventoryController extends Controller
      * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        //get all inventories from database then display on inventory
-        $inventories = Inventory::all();
-
-        // Compute for each inventory value and total value.
-        $inventoryValue=0.00;
-        foreach($inventories as $inventory)
-        {
-            $inventory->inventoryValue = $inventory->sale_price*$inventory->quantity;
-            $inventoryValue+=$inventory->inventoryValue;
-            
-        }
-        if(!empty($inventoryValue)) 
-            $inventory->totalInventory = $inventoryValue; 
-
-        $taxes = Tax::get();            
-
-        return view('inventory.inventory', compact('inventories'), compact('taxes'));
+        
     }
 
     public function fifo()
@@ -109,7 +108,8 @@ class InventoryController extends Controller
      */
     public function edit(Inventory $inventory)
     {
-        //
+        $taxes = Tax::get();
+        return view('inventory.forms.edit', compact('inventory'), compact('taxes'));
     }
 
     /**
@@ -121,7 +121,21 @@ class InventoryController extends Controller
      */
     public function update(Request $request, Inventory $inventory)
     {
-        //
+        $inventory->update([
+            'item_code' => $request->item_code,
+            'item_name' => $request->item_name,
+            'sale_price' => $request->sale_price,
+            'purchase_price' => $request->purchase_price,
+            'quantity' => $request->quantity,
+            'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
+            // 'default_income_account' => $request->default_income_account,
+            // 'default_expense_account' => $request->default_expense_account,
+            'inventory_type' => $request->inventory_type,
+            'picture' => isset($imageName) ? $imageName : null,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/inventory')->with('success', 'Successfully updated item.');
     }
 
     /**

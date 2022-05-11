@@ -177,10 +177,16 @@
                 <form action="{{route('overtime.store')}}" id="form-overtime" method="POST">
                     @csrf
                     <div class="form-group row">
-                        <label for="o_date" class="col-sm-3 col-lg-2 col-form-label">Date<span
-                                class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="o_date" name="date" placeholder="" required>
+                        <div class="col-md-8 d-flex">
+                            <label for="o_date col-6" >Date<span
+                                    class="text-danger ml-1">*</span></label>
+                                <input type="date" class="form-control col-8 ml-3" id="o_date" name="date" placeholder="" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input class="form-check-input" type="checkbox" name="is_weekend_holiday" id="weekend_holiday" value="yes">
+                            <label class="form-check-label" for="weekend_holiday">
+                                Weekend/Holiday
+                            </label>
                         </div>
                     </div>
 

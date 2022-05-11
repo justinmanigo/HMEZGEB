@@ -8,7 +8,7 @@ function proformaTagTemplate(tagData){
                 ${this.getAttributes(tagData)}>
             <x title='' id="r-proforma-remove" class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
             <div>
-                <span class='tagify__tag-text'>Fs#${tagData.reference_number}</span>
+                <span class='tagify__tag-text'>Fs#${tagData.value}</span>
             </div>
         </tag>
     `
@@ -20,7 +20,7 @@ function proformaSuggestionItemTemplate(tagData){
             class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
             tabindex="0"
             role="option">
-            <strong>Fs#${tagData.reference_number}</strong><br>
+            <strong>Fs#${tagData.value}</strong><br>
             <small>Date: ${tagData.date}</small><br>
             <small>Amount: ${tagData.amount}</small>
         </div>
