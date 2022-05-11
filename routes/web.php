@@ -293,7 +293,7 @@ Route::group([
         Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
         Route::get('/employee/{id}', [EmployeeController::class, 'edit']);
         Route::get('/select/search/employee/{query}', [EmployeeController::class, 'queryEmployees']);
-
+        Route::get('/ajax/employee/commission/topay/{employee}', [EmployeeController::class, 'ajaxSearchCommission']);
     });
 
     Route::group([

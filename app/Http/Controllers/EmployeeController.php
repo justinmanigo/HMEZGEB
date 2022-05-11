@@ -90,4 +90,13 @@ class EmployeeController extends Controller
             ->where('first_name', 'LIKE', '%' . $query . '%')->get();
         return $employee;
     }
+
+    // ajaxSearchCommission
+    public function ajaxSearchCommission(Employee $employee)
+    {
+        $employees = Employee::select('id as value', 'name','tin_number')
+        ->where('type', '=', 'Commission Agent')->get();
+        return $employees;
+    }
+
 }

@@ -35,11 +35,11 @@ function createWithholdingToPayEntry(data)
     
     // Append template to the table.
     $("#w_withholdings_to_pay").append(inner)
-    computeTotalAmountReceived();
+    computeTotalAmountReceivedWithholding();
 }
 
 // compute all w_amount_paid and print in w_total_amount_received
-function computeTotalAmountReceived()
+function computeTotalAmountReceivedWithholding()
 {
     let total = 0;
     $(".w_amount_paid").each(function() {

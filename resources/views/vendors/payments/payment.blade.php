@@ -411,6 +411,9 @@
 <script src="/js/vendors/payment/select_vendor_withholding.js"></script>
 <script src="/js/vendors/payment/select_vendor_pension.js"></script>
 <script src="/js/vendors/payment/select_vendor_income_tax.js"></script>
+<!-- Employee -->
+<script src="/js/human_resource/template_select_employee.js"></script>
+<script src="/js/vendors/payment/select_employee_commission.js"></script>
 <!-- Select bill -->
 <script src="/js/vendors/payment/select_payment_bill.js"></script>
 <script src="/js/vendors/payment/select_payment_withholding.js"></script>
