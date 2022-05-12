@@ -118,6 +118,7 @@ class BillsController extends Controller
             'tax' => '0', // temporary
             'grand_total' => $request->grand_total,
             'withholding' => '0', // temporary
+            'withholding_status' => 'paid', // temporary
             'payment_method' => $payment_method,
             'amount_received' => $request->total_amount_received,
         ]);

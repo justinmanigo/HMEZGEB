@@ -21,6 +21,7 @@ class Bills extends Model
         'tax',
         'grand_total',
         'withholding',
+        'withholding_status',
         'payment_method',
         'amount_received',
     ];

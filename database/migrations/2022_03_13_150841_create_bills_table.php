@@ -24,7 +24,12 @@ class CreateBillsTable extends Migration
             $table->float('discount')->nullable();;
             $table->float('tax')->nullable();;
             $table->float('grand_total');
-            $table->float('withholding')->nullable();;
+            $table->float('withholding')->nullable();
+            $table->enum('withholding_status', [
+                'paid',
+                'unpaid',
+                'partially_paid',
+            ]);
             $table->string('payment_method');            
             $table->float('amount_received');        
             $table->timestamps();    

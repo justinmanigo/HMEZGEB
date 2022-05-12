@@ -218,13 +218,11 @@ class PaymentsController extends Controller
                 
                 if($bill->withholding <= 0)
                 {
-                    PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
-                        ->update(['status' => 'paid']);
+                    $withholding_status = 'paid';
                 }
                 else if($bill->status == 'unpaid' && $bill->amount_received > 0)
                 {
-                    PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
-                        ->update(['status' => 'partially_paid']);
+                    $withholding_status = 'partially_paid';
                 }
                 else if($bill->status == 'paid')
                 {
@@ -233,7 +231,8 @@ class PaymentsController extends Controller
     
                 Bills::where('payment_reference_id', $request->payment_reference_id[$i])
                     ->update([
-                        'withholding' => $bill->withholding
+                        'withholding' => $bill->withholding,
+                        'withholding_status' => $withholding_status,
                     ]);
                 $w++;
             }
