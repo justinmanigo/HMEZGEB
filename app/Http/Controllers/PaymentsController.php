@@ -134,7 +134,7 @@ class PaymentsController extends Controller
     public function storeIncomeTaxPayment(Request $request)
     {
         $status = 'paid';
-        
+
         // Store payment reference
         $reference = PaymentReferences::create([
             'vendor_id' => $request->vendor_id,
@@ -231,7 +231,10 @@ class PaymentsController extends Controller
                     continue;
                 }
     
-                $bill->save();
+                Bills::where('payment_reference_id', $request->payment_reference_id[$i])
+                    ->update([
+                        'withholding' => $bill->withholding
+                    ]);
                 $w++;
             }
         }
