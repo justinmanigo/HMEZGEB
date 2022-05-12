@@ -30,19 +30,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="w_payment_reference" class="col-4 col-form-label text-lg-right">Payment Reference:</label>
-                    <div class="col-8">
-                        <input type="date" class="form-control" id="w_payment_reference" name="payment_reference" placeholder="" value="" required>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="w_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="w_cheque_number" name="cheque_number" placeholder="" required>
+                        <input type="text" class="form-control" id="w_cheque_number" name="cheque_number" placeholder="">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="w_bill_number" class="col-4 col-form-label text-lg-right">Account #:</label>
+                    <label for="w_bill_number" class="col-4 col-form-label text-lg-right">Account:</label>
                     <div class="col-8">
                         <input type="text" class="form-control" id="w_bill_number" name="account_number" placeholder="">
                     </div>
@@ -55,12 +49,13 @@
             <tr>
                 <th>Bill#</th>
                 <th>Date</th>
-                <th>Bill Amount</th>
-                <th colspan="2">Withholding Amount</th>
-                <th>Actions</th>
+                <th>Withholding Amount</th>
+                <th>Pay</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="w_withholdings_to_pay">
+
+            {{--
             <tr>
                 <td>Bi1032</td>
                 <td>Dec 14, 2019</td>
@@ -132,14 +127,16 @@
                         </span>
                     </button>
                 </td>
-            </tr>
+            </tr>--}}
         </tbody>
         <tfoot>
             <td></td>
+            <th>Total Amount</th>
+            <td>
+                <input type="text" id="w_total_amount_received" class="form-control-plaintext text-right pr-2" name="total_received" placeholder="0.00" readonly>
+            </td>
             <td></td>
-            <td></td>
-            <th>Total Paid</th>
-            <td>817.39</td>
+           
         </tfoot>
     </table>
     {{-- end of the table  --}}

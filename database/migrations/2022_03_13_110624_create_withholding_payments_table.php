@@ -16,16 +16,13 @@ class CreateWithholdingPaymentsTable extends Migration
         Schema::create('withholding_payments', function (Blueprint $table) {
             $table->id();
             
-            $table->unsignedBigInteger('vendor_id');
             $table->unsignedBigInteger('payment_reference_id');
-            $table->unsignedBigInteger('accounting_period_id');
-            $table->date('date');
-            $table->float('total_paid');
+            $table->unsignedBigInteger('accounting_period_id')->nullable();
+            $table->unsignedBigInteger('chart_of_account_id')->nullable();
+            $table->float('amount_paid');
             $table->timestamps();
-
-            $table->foreign('vendor_id')->references('id')->on('vendors');
-            $table->foreign('payment_reference_id')->references('id')->on('payment_references');
-            $table->foreign('accounting_period_id')->references('id')->on('accounting_periods');
+            $table->foreign('payment_reference_id')->nullable()->references('id')->on('payment_references');
+            $table->foreign('accounting_period_id')->nullable()->references('id')->on('accounting_periods');
         });
     }
 

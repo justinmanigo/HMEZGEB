@@ -23,7 +23,6 @@ class CreateBillItemsTable extends Migration
             
             $table->timestamps();
             $table->foreign('inventory_id')->references('id')->on('inventories');
-            $table->foreign('bill_id')->references('id')->on('bills');
         });
     }
 

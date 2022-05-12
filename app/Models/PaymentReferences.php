@@ -11,33 +11,70 @@ class PaymentReferences extends Model
     use HasFactory;
 
     protected $fillable = [
-        'reference_number',
-        'cheque_number',
-        'remark',
+        'vendor_id',
+        'type',
+        'date',
         'attachment',
-        // 'customer_id',
+        'remark',
+        'status',
     ];
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendors::class, 'vendor_id','id');
+    }
+
+    // public function employee()
+    // {
+    //     return $this->belongsTo(Employees::class, 'employee_id','id');
+    // }
+
+    public function purchaseOrders()
+    {
+        return $this->hasOne(PurchaseOrders::class, 'payment_reference_id','id');
+    }
+
+    public function bills()
+    {
+        return $this->hasOne(Bills::class, 'payment_reference_id','id');
+    }
 
     public function billPayment()
     {
         return $this->hasOne(BillPayments::class, 'payment_reference_id','id');
     }
+
     public function vatPayment()
     {
-        return $this->hasOne(VatPayment::class, 'payment_reference_id','id');
+        return $this->hasOne(VATPayments::class, 'payment_reference_id','id');
     }
+
     public function withholdingPayment()
     {
         return $this->hasOne(WithholdingPayments::class, 'payment_reference_id','id');
     }
+
+    public function incomeTaxPayment()
+    {
+        return $this->hasOne(IncomeTaxPayments::class, 'payment_reference_id','id');
+    }
+
+    public function pensionPayment()
+    {
+        return $this->hasOne(PensionPayments::class, 'payment_reference_id','id');
+    }
+
     public function payrollPayment()
     {
         return $this->hasOne(PayrollPayments::class, 'payment_reference_id','id');
     }
+
     public function journalEntry()
     {
         return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
     }
+
+
 
     
 }

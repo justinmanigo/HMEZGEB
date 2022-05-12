@@ -52,6 +52,32 @@ function onWithholdingVendorSelectSuggestion(e){
     $("#w_address").val(e.detail.data.address)
     $("#w_contact_person").val(e.detail.data.contact_person)
     $("#w_telephone_number").val(e.detail.data.telephone_one)
+
+    // Get data from server.
+    var request = $.ajax({
+        url: "/ajax/vendor/withholding/topay/" + e.detail.data.value,
+        method: "GET",
+    });
+        
+    request.done(function(res, status, jqXHR ) {
+        console.log(res);
+        for(i = 0; i < res.length; i++)
+        {   
+            createWithholdingToPayEntry(res[i]);
+        }
+        // $("#form-tax").show();
+        // $("#modal-tax-spinner").hide();
+        // $("#t_submit_btn").removeAttr("disabled");
+        // console.log("Request successful.");
+        // console.log(res);
+        // $("#t_name").val(res.name);
+        // $("#t_percentage").val(res.percentage);
+    });
+    
+    request.fail(function(jqXHR, status, error) {
+        console.log(error);
+        // console.log("Request failed.");
+    });
 }
 
 function onWithholdingVendorRemove(e){

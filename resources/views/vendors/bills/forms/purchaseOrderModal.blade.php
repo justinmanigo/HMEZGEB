@@ -35,19 +35,6 @@
                     <input type="date" class="form-control" id="po_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="po_order_number" class="col-4 col-form-label text-lg-right">Order #<span class="text-danger ml-1">*</span> :</label>
-                <div class="col-8">
-                    <input type="text" class="form-control" id="po_order_number" name="order_number" placeholder="" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="po_bill_number" class="col-4 col-form-label text-lg-right">Bill # :</label>
-                <div class="col-8">
-                    <input type="text" class="form-control" id="po_bill_number" name="bill_number" placeholder="">
-                </div>
-            </div>
-
         </div>
     </div> <div class="table-responsive">
         <table class="table table-sm table-bordered">
@@ -101,7 +88,7 @@
                         <strong>Sub Total: </strong>
                     </td>
                     <td>
-                        <input type="text" class="form-control text-right" name="supo_total" id="po_supo_total" placeholder="0.00" value="0.00" readonly>
+                        <input type="text" class="form-control text-right" name="sub_total" id="po_sub_total" placeholder="0.00" value="0.00" readonly>
                     </td>
                     <td></td>
                 </tr>
@@ -147,9 +134,9 @@
     </div>
     
 <div class="row form-group">
-    <label for="email" class="col-form-label col-lg-2">Terms & Conditions:</label>
-    <textarea name="#" class="form-control col-lg-4"></textarea>
-    <label for="email" class="col-form-label col-lg-2">Attachment:</label>
+    <label for="remark" class="col-form-label col-lg-2">Terms & Conditions:</label>
+    <textarea name="remark" class="form-control col-lg-4"></textarea>
+    <label for="attachment" class="col-form-label col-lg-2">Attachment:</label>
     <div class="input-group col-md-2 col-lg-4">
         <div class="custom-file">
         <input type="file" class="custom-file-input" id="inputGroupFile03">

@@ -15,28 +15,27 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->unsignedBigInteger('payment_reference_id');
+            $table->unsignedBigInteger('purchase_order_id')->nullable();
+            $table->unsignedBigInteger('withholding_payment_id')->nullable();
             $table->date('due_date');
-            $table->unsignedBigInteger('vendor_id');
-            $table->string('bill_number');
-            $table->string('order_number');
+            $table->unsignedBigInteger('chart_of_account_id')->nullable();
             $table->float('sub_total');
-            $table->float('discount')->nullable();
-            $table->float('tax');
+            $table->float('discount')->nullable();;
+            $table->float('tax')->nullable();;
             $table->float('grand_total');
-            $table->float('withholding')->default('0.00');
-            $table->string('cash_from');
-            $table->string('attachment')->nullable();
-            $table->string('note');
-            $table->float('total_amount_received');
-            $table->timestamps();
-
-          
-         
-
-             $table->foreign('vendor_id')->references('id')->on('vendors');
-            
-            
+            $table->float('withholding')->nullable();
+            $table->enum('withholding_status', [
+                'paid',
+                'unpaid',
+                'partially_paid',
+            ]);
+            $table->string('payment_method');            
+            $table->float('amount_received');        
+            $table->timestamps();    
+            $table->foreign('payment_reference_id')->references('id')->on('payment_references');         
+            $table->foreign('chart_of_account_id')->nullable()->references('id')->on('chart_of_accounts');
+            $table->foreign('withholding_payment_id')->nullable()->references('id')->on('withholding_payments');
         });
     }
 

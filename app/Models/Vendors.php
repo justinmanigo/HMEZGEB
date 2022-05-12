@@ -25,24 +25,8 @@ class Vendors extends Model
         'is_active',
     ];
 
-    public function bills()
+    public function PaymentReferences()
     {
-        return $this->hasMany(Bills::class, 'vendor_id','id');
-    }
-    public function billPayments()
-    {
-        return $this->hasMany(BillPayments::class, 'vendor_id','id');
-    }
-    public function vatPayments()
-    {
-        return $this->hasMany(VATPayments::class, 'vendor_id','id');
-    }
-    public function withholdingPayments()
-    {
-        return $this->hasMany(WithholdingPayments::class, 'vendor_id','id');
-    }
-    public function purchaseOrders()
-    {
-        return $this->hasMany(PurchaseOrders::class, 'vendor_id','id');
+        return $this->hasOne(PaymentReferences::class, 'vendor_id','id');
     }
 }

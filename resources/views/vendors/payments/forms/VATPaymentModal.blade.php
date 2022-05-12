@@ -30,19 +30,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="v_payment_reference" class="col-4 col-form-label text-lg-right">Payment Reference:</label>
-                    <div class="col-8">
-                        <input type="date" class="form-control" id="v_payment_reference" name="payment_reference" placeholder="" value="" required>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="v_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
                     <div class="col-8">
                         <input type="text" class="form-control" id="v_cheque_number" name="cheque_number" placeholder="" required>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="v_account_number" class="col-4 col-form-label text-lg-right">Account #:</label>
+                    <label for="v_account_number" class="col-4 col-form-label text-lg-right">Account:</label>
                     <div class="col-8">
                         <input type="text" class="form-control" id="v_account_number" name="account_number" placeholder="">
                     </div>

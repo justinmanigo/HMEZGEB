@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vendors;
 use Illuminate\Http\Request;
 use App\Models\PaymentReferences;
+use Illuminate\Support\Facades\Log;
 
 
 class VendorsController extends Controller
@@ -152,10 +153,21 @@ class VendorsController extends Controller
     public function ajaxGetPaymentsToPay(Vendors $vendor)
     {
         return PaymentReferences::select('*')
-            ->leftJoin('payments', 'payments.payment_reference_id', '=', 'payment_references.id')
-            ->where('payment_references.type', '=', 'payment')
-            ->where('payment_references.customer_id', '=', $customer->id)
+            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->where('payment_references.type', '=', 'bill')
+            ->where('payment_references.vendor_id', '=', $vendor->id)
             ->where('payment_references.status', '!=', 'paid')->get();
+    }
+
+    public function ajaxGetWithholdingToPay(Vendors $vendor)
+    {
+
+        return PaymentReferences::select('*')
+            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->where('payment_references.type', '=', 'bill')
+            ->where('payment_references.vendor_id', '=', $vendor->id)
+            ->where('bills.withholding', '>', '0')->get();
+
     }
 }
 

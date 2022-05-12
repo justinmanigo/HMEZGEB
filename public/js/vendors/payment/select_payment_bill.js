@@ -10,8 +10,8 @@ function createPaymentToPayEntry(data)
     console.log(data)
     // Increment payments_to_pay_count to avoid element conflicts.
     // payments_to_pay_count++;
-
-    amount_due = data.grand_total - data.total_amount_received;
+    
+    amount_due = data.grand_total - data.amount_received;
 
     // <tr> template
     let inner = `
@@ -36,7 +36,7 @@ function createPaymentToPayEntry(data)
         </td>
         <td class="table-item-content">
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="b_is_paid_${data.payment_reference_id}" name="is_paid[]">
+                <input type="checkbox" data-id="${data.payment_reference_id}" class="form-check-input" id="b_is_paid_${data.payment_reference_id}" name="is_paid[]" value="${data.payment_reference_id}">
             </div>
         </td>
     </tr>
@@ -50,8 +50,8 @@ $(document).on('change', '.b_amount_paid', function(){
     console.log($(this));
     // Check if the amount paid exceeds the supposed amount due?
     var id = $(this)[0].dataset.id;
-    var amount_paid = $(this)[0].value;
-    var amount_due = $(`#b_amount_due_${id}`).val()
+    var amount_paid = parseFloat($(this)[0].value);
+    var amount_due = parseFloat($(`#b_amount_due_${id}`).val());
     if(amount_paid > amount_due)
         $(`#b_amount_paid_${id}`).val(amount_due);
 

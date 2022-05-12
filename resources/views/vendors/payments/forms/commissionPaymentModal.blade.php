@@ -1,18 +1,20 @@
-<div class="modal-body h6">				
+<div class="modal-body h6">
     <div class="form-group row">
-        <label for="name" class="col-md-4 col-lg-2 col-form-label">Commission Agent:<span class="text-danger ml-1">*</span></label>
-        <input type="text" name="name" class="form-control col-lg-4">
+        <label for="name" class="col-md-4 col-lg-2 col-form-label">Commission Agent:<span
+                class="text-danger ml-1">*</span></label>
+        <input class="form-control col-lg-4" id="c_employee" name='employee'>
+        <input type="hidden" id="c_employee_id" name="employee_id" value="">
+
         <label for="email" class="col-md-4 col-lg-2 col-form-label">Date:</label>
-        <input type="date" name="address" class="form-control col-lg-4">
+        <input type="date" name="date" class="form-control col-lg-4">
     </div>
-    <div class="row form-group">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">TIN #:</label>
-        <input type="text" name="city" class="form-control col-lg-4">
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Payment Ref:</label>
-        <input type="text" name="country" class="form-control col-lg-4">
-    </div>
+
     <div class="form-group row">
-        <div class="col-lg-6"></div>
+        <div class="col-lg-6 d-flex">
+            <label for="c_tin_number" class="text-lg-right col-3 pt-3">Tin number:</label>
+            <input type="text" id="c_tin_number" class="form-control-plaintext ml-5" placeholder=""
+                name="tin_number" disabled readonly>
+        </div>
         <label for="email" class="col-md-4 col-lg-2 col-form-label">Cheque Number:</label>
         <input type="number" name="email" class="form-control col-lg-4">
     </div>
@@ -22,112 +24,211 @@
         <input type="text" name="phone1" class="form-control col-lg-4">
     </div>
 
-    <input type="text" name="daterange" class="col-lg-4 form-control"/>
-    <table class="table table-bordered" width="100%" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Bill#</th>
-                <th>Date</th>
-                <th>Bill Amount</th>
-                <th colspan="2">Withholding Amount</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Bi1032</td>
-                <td>Dec 14, 2019</td>
-                <td>12,500.00</td>
-                <td colspan="2">217.39</td>
-                <td>
-                    <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                    </button>
-                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-plus"></i>
-                        </span>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>Bi1032</td>
-                <td>Dec 14, 2019</td>
-                <td>12,500.00</td>
-                <td colspan="2">217.39</td>
-                <td>
-                    <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                    </button>
-                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-plus"></i>
-                        </span>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>Bi1130</td>
-                <td>Dec 17, 2019</td>
-                <td>11,500.00</td>
-                <td colspan="2">200.00</td>
-                <td>
-                    <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                    </button>
-                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-plus"></i>
-                        </span>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>Bi1213</td>
-                <td>Dec 25, 2019</td>
-                <td>23,000.00</td>
-                <td colspan="2">400.00</td>
-                <td>
-                    <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                    </button>
-                    <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-plus"></i>
-                        </span>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th>Total Paid</th>
-            <td>817.39</td>
-        </tfoot>
-    </table>
-    {{-- end of table  --}}
+    <div class="col-12 d-lg-flex justify-content-between row">
+        <div class="col-lg-10">
+            <input type="text" name="daterange" class="col-lg-4 form-control" />
+            <table class="table table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Receipt#</th>
+                        <th>Date</th>
+                        <th>Amount before TAX</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bi1032</td>
+                        <td>Dec 14, 2019</td>
+                        <td>12,500.00</td>
+                    </tr>
+                    <tr>
+                        <td>Bi1032</td>
+                        <td>Dec 14, 2019</td>
+                        <td>12,500.00</td>
+                    </tr>
+                    <tr>
+                        <td>Bi1032</td>
+                        <td>Dec 14, 2019</td>
+                        <td>12,500.00</td>
+                    </tr>
 
-    <div class="form-group row">
-        <label for="name" class="col-md-4 col-lg-2 col-form-label">Remark:</label>
-        <textarea name="remark" class="form-control col-lg-4"></textarea>
-        <label for="email" class="col-form-label col-lg-2">Attachment:</label>
-        <div class="input-group col-md-2 col-lg-4">
-            <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inputGroupFile03">
-            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+
+                </tbody>
+            </table>
+            {{-- end of table  --}}
+        </div>
+        <div class="col-lg-2 col">
+
+            <div class="card border-left-primary  shadow pt-2">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
+                        Number of Sales
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row no-gutters d-flex align-items-center justify-content-around">
+                        <div class="h6 mb-0">
+                            <span class="font-weight-bold text-gray-800">$40,000</span><br>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="card border-left-primary shadow pt-2 my-4">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
+                        Total Sales
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row no-gutters d-flex align-items-center justify-content-around">
+                        <div class="h6 mb-0">
+                            <span class="font-weight-bold text-gray-800">$40,000</span><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <div class="col-12 row mb-4">
+        <div class="col-lg-9 d-flex">
+            <div class="col-md-3 mx-4">
+                <!-- radio button -->
+                <div class="custom-control custom-radio row">
+                    <input type="radio" id="customRadio1" name="type" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio1">By # of Sales</label>
+                </div>
+                <!-- Card -->
+                <div class="card border-left-primary shadow pt-2 my-4 row">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
+                            Rate
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row no-gutters d-flex align-items-center justify-content-around">
+                            <div class="h6 mb-0">
+                                <span class="font-weight-bold text-gray-800">40,000</span><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 mx-4">
+                <!-- radio button -->
+                <div class="custom-control custom-radio row">
+                    <input type="radio" id="customRadio2" name="type" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio2">By Sales %</label>
+                </div>
+                <!-- Card -->
+                <div class="card border-left-primary shadow pt-2 my-4 row">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
+                            Rate
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row no-gutters d-flex align-items-center justify-content-around">
+                            <div class="h6 mb-0">
+                                <span class="font-weight-bold text-gray-800">%4</span><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mx-4">
+                <!-- radio button -->
+                <div class="custom-control custom-radio row">
+                    <input type="radio" id="customRadio3" name="type" class="custom-control-input">
+                    <label class="custom-control-label" for="customRadio3">By Flat Rate</label>
+                </div>
+                <!-- Card -->
+                <div class="card border-left-primary shadow pt-2 my-4 row">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
+                            Rate
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row no-gutters d-flex align-items-center justify-content-around">
+                            <div class="h6 mb-0">
+                                <span class="font-weight-bold text-gray-800">4000</span><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+
+            <div class="card border-left-primary shadow pt-2 ">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
+                        Commission Tax Rate
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row no-gutters d-flex align-items-center justify-content-around">
+                        <div class="h6 mb-0">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio2" name="commission_tax_rate"
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio2">0%</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio3" name="commission_tax_rate"
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio3">2</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio4" name="commission_tax_rate"
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio4">35%</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-12 d-md-flex justify-content-around">
+        <div class="col-md-6">
+            <label for="name" class="col-form-label">Remark:</label>
+            <textarea name="remark" rows="4" class="form-control"></textarea>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <!-- input field -->
+                <div class="col-md-12">
+                    <label for="name" class="col-form-label">Total Commission Payment:</label>
+                    <input type="text" name="total_commission_payment" class="form-control" placeholder="0.00">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="email" class="col-form-label ">Attachment:</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="col-3 custom-file-input" id="inputGroupFile03">
+                            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
     <hr>
     {{-- Chart of accounts  --}}
     <h5>Journal Entry Review</h5>
@@ -165,10 +266,9 @@
 
 
 <script>
-    $( document ).ready(function() {
-       console.log( "ready!" );
-       
+$(document).ready(function() {
+    console.log("ready!");
+
     $('input[name="daterange"]').daterangepicker();
-    });
-     
+});
 </script>

@@ -127,7 +127,7 @@ function createPurchaseOrderItemEntry()
 function removePurchaseOrderItemEntry(entry_id)
 {
     
-    $(`#po_supo_total`).val(parseFloat($(`#po_supo_total`).val() - $(`#po_item_total_${entry_id}`).val()).toFixed(2))
+    $(`#po_sub_total`).val(parseFloat($(`#po_sub_total`).val() - $(`#po_item_total_${entry_id}`).val()).toFixed(2))
     $(`#po_grand_total`).val(parseFloat($(`#po_grand_total`).val() - $(`#po_item_total_${entry_id}`).val()).toFixed(2))
 
     for(let i = 0; i < purchaseorder_items.length; i++)
@@ -177,7 +177,7 @@ function calculatePurchaseOrderSubTotal()
     for(i = 0; i < purchaseorder_items.length; i++)
         subtotal += purchaseorder_items[i].total_price;
 
-    $(`#po_supo_total`).val(parseFloat(subtotal).toFixed(2))
+    $(`#po_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
 
 function calculatePurchaseOrderGrandTotal()
@@ -205,11 +205,11 @@ function onPurchaseOrderItemSelectSuggestion(e) {
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     console.log(parseFloat(item_total).toFixed(2));
-    console.log($(`#po_supo_total`).val())
+    console.log($(`#po_sub_total`).val())
     console.log()
     
     // Add all item total to subtotal
-    $(`#po_supo_total`).val(parseFloat(parseFloat($(`#po_supo_total`).val()) + parseFloat($(`#po_item_total_${id}`).val())).toFixed(2))
+    $(`#po_sub_total`).val(parseFloat(parseFloat($(`#po_sub_total`).val()) + parseFloat($(`#po_item_total_${id}`).val())).toFixed(2))
     $(`#po_grand_total`).val(parseFloat(parseFloat($(`#po_grand_total`).val()) + parseFloat($(`#po_item_total_${id}`).val())).toFixed(2))
 
 }
@@ -218,7 +218,7 @@ function onPurchaseOrderItemRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     
     //Subtract total when x is clicked in tagify
-    $(`#po_supo_total`).val(parseFloat($(`#po_supo_total`).val() - $(`#po_item_total_${id}`).val()).toFixed(2))
+    $(`#po_sub_total`).val(parseFloat($(`#po_sub_total`).val() - $(`#po_item_total_${id}`).val()).toFixed(2))
     $(`#po_grand_total`).val(parseFloat($(`#po_grand_total`).val() - $(`#po_item_total_${id}`).val()).toFixed(2))
     $(`#po_item_quantity_${id}`).attr('disabled', 'disabled')
 

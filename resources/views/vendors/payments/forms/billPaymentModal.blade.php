@@ -5,7 +5,7 @@
                 <div class="form-group row">
                     <label for="b_vendor" class="col-4 col-form-label text-left">Vendor<span class="text-danger ml-1">*</span> :</label>
                     <input class="col-8 col-lg-7" id="b_vendor" name='vendor'>
-                    <input type="hidden" id="b_vendob_id" name="vendob_id" value="">
+                    <input type="hidden" id="b_vendor_id" name="vendor_id" value="">
                 </div>
                 {{-- Contact Details --}}
                 <div class="form-group row mb-0">
@@ -30,15 +30,9 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="b_payment_reference" class="col-4 col-form-label text-lg-right">Payment Reference:</label>
-                    <div class="col-8">
-                        <input type="date" class="form-control" id="b_payment_reference" name="payment_reference" placeholder="" value="" required>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label for="b_cheque_number" class="col-4 col-form-label text-lg-right">Cheque #:<span class="text-danger ml-1">*</span> :</label>
                     <div class="col-8">
-                        <input type="text" class="form-control" id="b_cheque_number" name="cheque_number" placeholder="" required>
+                        <input type="text" class="form-control" id="b_cheque_number" name="cheque_number" placeholder="">
                     </div>
                 </div>
                 <div class="form-group row">

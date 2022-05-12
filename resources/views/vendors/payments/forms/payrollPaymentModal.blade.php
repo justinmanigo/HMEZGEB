@@ -4,11 +4,6 @@
         <label for="email" class="col-md-4 col-lg-2 col-form-label">Date:</label>
         <input type="date" name="address" class="form-control col-lg-4">
     </div>
-    <div class="row form-group">
-        <div class="col-lg-6"></div>
-        <label for="email" class="col-md-4 col-lg-2 col-form-label">Payment Ref:</label>
-        <input type="text" name="country" class="form-control col-lg-4">
-    </div>
     <div class="form-group row">
         <div class="col-lg-6"></div>
         <label for="email" class="col-md-4 col-lg-2 col-form-label">Cheque Number:</label>

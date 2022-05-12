@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Bills;
 use App\Models\Vendors;
+use App\Models\PaymentReferences;
+use App\Models\BillItem;
+use App\Models\PurchaseOrders;
 use Illuminate\Http\Request;
 
 class BillsController extends Controller
@@ -15,19 +18,18 @@ class BillsController extends Controller
      */
     public function index()
     {
-        
-        // join vendors table with bills table and select all the fields from vendors table and bills table. 
-        $bills = Vendors::join(
-            'bills',
-            'vendors.id',
-            '=',
-            'bills.vendor_id'
-        )->select(
-            // get vendors name
-            'vendors.name as vendor_name',
-        );
-        
-        return view('vendors.bills.index',compact('bills'));
+        // get vendors table join
+          $bill = Vendors::join('payment_references', 'payment_references.vendor_id', '=', 'vendors.id')
+            ->join('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->select('payment_references.*', 'vendors.name', 'bills.grand_total');
+
+        $bill_and_purchase_order = Vendors::join('payment_references', 'payment_references.vendor_id', '=', 'vendors.id')
+            ->join('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+            ->select('payment_references.*', 'vendors.name', 'purchase_orders.grand_total')
+            ->union($bill)
+            ->get();        
+       
+        return view('vendors.bills.index',compact('bill_and_purchase_order'));
     }
 
     /**
@@ -46,82 +48,163 @@ class BillsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+ 
+    /** === STORE BILLS === */
+
     public function storeBill(Request $request)
     {
-        // // Decode json of item tagify fields.
-        // for($i = 0; $i < count($request->item); $i++)
-        // {
-        //     $item = json_decode($request->item[$i]);
+        // Decode json of item tagify fields.
+        for($i = 0; $i < count($request->item); $i++)
+        {
+            $item = json_decode($request->item[$i]);
 
-        //     // Resulting json_decode will turn into an array of
-        //     // object, thus it has to be merged.
-        //     $items[$i] = $item[0];
+            // Resulting json_decode will turn into an array of
+            // object, thus it has to be merged.
+            $items[$i] = $item[0];
+        }
+
+        // // Decode Proforma field
+        // $p = json_decode($request->proforma);
+        // $proforma = isset($p) ? $p[0] : null;
+
+        // // If this transaction is linked to Proforma
+        // if(isset($proforma))
+        // {
+        //     BillReferences::where('id', $proforma->value)
+        //         ->update([
+        //             'status' => 'paid'
+        //         ]);
         // }
 
-        // // Determine receipt status.
-        // if($request->grand_total == $request->total_amount_received)
-        //     $status = 'paid';
-        // else if($request->total_amount_received == 0)
-        //     $status = 'unpaid';
-        // else
-        //     $status = 'partially_paid';
-
-        // // Create ReceiptReference Record
-        // $reference = Bills::create([
-        //     'customer_id' => $request->customer_id,
-        //     'reference_number' => $request->reference_number,
-        //     'date' => $request->date,
-        //     'type' => 'receipt',
-        //     'is_void' => 'no',
-        //     'status' => $status
-        // ]);
-
-        // // If request has attachment, store it to file storage.
-        if($request->attachment) {
-            $fileAttachment = time().'.'.$request->attachment->extension();  
-            $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
-        }
-        
-        // // Create child database entry
-        if($request->grand_total==$request->total_amount_received)
-            $cash_from = 'cash';
+        // Determine bill status.
+        if($request->grand_total == $request->total_amount_received)
+            $status = 'paid';
+        else if($request->total_amount_received == 0)
+            $status = 'unpaid';
         else
-            $cash_from = 'credit';
-        // // return $request;
-        // // Create Receipt Record
-        $receipt = Bills::create([
+            $status = 'partially_paid';
+
+        // Create BillReference Record
+        $reference = PaymentReferences::create([
             'vendor_id' => $request->vendor_id,
             'date' => $request->date,
-            'due_date' => $request->due_date,
-            'sub_total' => $request->sub_total,
-            'bill_number' => $request->bill_number,
-            'order_number' => $request->order_number,
-            'grand_total' => $request->grand_total,
-            'note' => $request->note,           
-            'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
-            'discount' => '0.00', // Temporary discount
-            'withholding' => '0.00', // Temporary Withholding
-            'tax' => '0.00', // Temporary Tax value
-            'cash_from' => $cash_from,
-            'total_amount_received' => $request->total_amount_received
+            'type' => 'bill',
+            'attachment' => $request->attachment,
+            'remark' => $request->remark,
+            'status' => $status
         ]);
 
-        // // // Create Receipt Item Records
-        // for($i = 0; $i < count($items); $i++)
-        // {
-        //     Bills::create([
-        //         'inventory_id' => $items[$i]->value,
-        //         'bill_id' => $receipt->id,
-        //         'quantity' => $request->quantity[$i],
-        //         'price' => $items[$i]->sale_price,
-        //         'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
-        //     ]);
+        // If request has attachment, store it to file storage.
+        // if($request->attachment) {
+        //     $fileAttachment = time().'.'.$request->attachment->extension();  
+        //     $request->attachment->storeAs('public/bill-attachment'/'bill', $fileAttachment);
         // }
+        
+        // Create child database entry
+        if($request->grand_total == $request->total_amount_received)
+            $payment_method = 'cash';
+        else
+            $payment_method = 'credit';
+        
+        // Create Bill Record
+        $bills = Bills::create([
+            'payment_reference_id' => $reference->id,
+            // 'withholding_payment_id' => '0', // temporary
+            'purchase_order_id' => $request->purchase_order_id,
+            'due_date' => $request->due_date,
+            'chart_of_account_id' => $request->chart_of_account_id,
+            'sub_total' => $request->sub_total,
+            'discount' => '0', // temporary
+            'tax' => '0', // temporary
+            'grand_total' => $request->grand_total,
+            'withholding' => '0', // temporary
+            'withholding_status' => 'paid', // temporary
+            'payment_method' => $payment_method,
+            'amount_received' => $request->total_amount_received,
+        ]);
+        // Create Bill Item Records
+        for($i = 0; $i < count($items); $i++)
+        {
+            BillItem::create([
+                'inventory_id' => $items[$i]->value,
+                'bill_id' => $bills->id,
+                'quantity' => $request->quantity[$i],
+                'price' => $items[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+            ]);
+        }
 
-        return redirect()->route('bills.bill.index')->with('success', 'Receipt has been added successfully');
+        //  image upload and save to database 
+        // if($request->hasFile('attachment'))
+        // {
+        //     $file = $request->file('attachment');
+        //     $filename = $file->getClientOriginalName();
+        //     $file->move(public_path('images'), $filename);
+        //     $bill->attachment = $filename;
+        //     $bill->save();
+        // }
+            
+        return redirect()->back()->with('success', 'Bill has been created successfully.');
+        
     }
 
+    public function storePurchaseOrder(Request $request)
+    {
+         // Decode json of item tagify fields.
+         for($i = 0; $i < count($request->item); $i++)
+         {
+             $item = json_decode($request->item[$i]);
+ 
+             // Resulting json_decode will turn into an array of
+             // object, thus it has to be merged.
+             $items[$i] = $item[0];
+         }
 
+         $status = 'unpaid';
+ 
+         // payment References
+         $reference = PaymentReferences::create([
+            'vendor_id' => $request->vendor_id,
+            'date' => $request->date,
+            'type' => 'purchase_order',
+            'attachment' => $request->attachment,
+            'remark' => $request->remark,
+            'status' => $status,
+        ]);
+ 
+         // Create child database entry
+         if($reference)        
+         {
+            //  if($request->attachment) {
+            //      $fileAttachment = time().'.'.$request->attachment->extension();  
+            //      $request->attachment->storeAs('public/bill-attachment', $fileAttachment);
+            //  }
+             $purchase_orders = PurchaseOrders::create([
+                 'payment_reference_id' => $reference->id,
+                 'due_date' => $request->due_date,
+                 'sub_total' => $request->sub_total,
+                 'grand_total' => $request->grand_total,
+                 // image upload
+                 'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+             ]);
+         }
+ 
+         // TODO: Merge with billItems (use billReference instead of billId for bills)
+         // Create bill Item Records
+         for($i = 0; $i < count($items); $i++)
+         {
+            BillItem::create([
+                'inventory_id' => $items[$i]->value,
+                'bill_id' => $purchase_orders->id,
+                'quantity' => $request->quantity[$i],
+                'price' => $items[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+            ]);
+         }
+         
+         return redirect()->back()->with('success', 'Purchase Order has been added successfully');
+ 
+    }
     /**
      * Display the specified resource.
      *

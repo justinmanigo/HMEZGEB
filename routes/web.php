@@ -46,8 +46,6 @@ use App\Http\Controllers\Settings\PayrollRulesController;
 // Account Settings
 use App\Http\Controllers\AccountSettings\AccountSettingsController;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -162,12 +160,17 @@ Route::post('/userlogin', function (Request $request){
         Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
         Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
         Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
+        Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
     });
 
     Route::group([
         'as'=>'payments.'
     ], function(){ 
         Route::get('/vendors/payments',[PaymentsController::class,'index']);
+        Route::post('/payment/bill',[PaymentsController::class,'storeBillPayment'])->name('billPayment.store');
+        Route::post('/payment/income_tax',[PaymentsController::class,'storeIncomeTaxPayment'])->name('incomeTax.store');  
+        Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
+        Route::get('/ajax/vendor/payments/topay/{vendor}', [VendorsController::class, 'ajaxGetPaymentsToPay']);
     });
 
     Route::group([
@@ -181,6 +184,18 @@ Route::post('/userlogin', function (Request $request){
 
         Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
 
+    });
+
+    Route::group([
+        'as'=>'payments.'
+    ], function(){ 
+        Route::get('/payment',[PaymentsController::class,'index']);
+        Route::post('/payment/bill',[PaymentsController::class,'storeBillPayment'])->name('billPayment.store');
+        Route::post('/payment/income_tax',[PaymentsController::class,'storeIncomeTaxPayment'])->name('incomeTax.store');  
+        Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
+        Route::post('/payment/withholding',[PaymentsController::class,'storeWithholdingPayment'])->name('withholdingPayment.store');
+        Route::get('/ajax/vendor/payments/topay/{vendor}', [VendorsController::class, 'ajaxGetPaymentsToPay']);
+        Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
     });
  
  
@@ -278,7 +293,7 @@ Route::group([
         Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
         Route::get('/employee/{id}', [EmployeeController::class, 'edit']);
         Route::get('/select/search/employee/{query}', [EmployeeController::class, 'queryEmployees']);
-
+        Route::get('/ajax/employee/commission/topay/{employee}', [EmployeeController::class, 'ajaxSearchCommission']);
     });
 
     Route::group([
@@ -432,7 +447,6 @@ Route::group([
         // HTTP
         Route::view('/settings/defaults', 'settings.defaults.index')->name('index');
     });
-
 });
 
 /**
