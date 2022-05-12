@@ -57,12 +57,6 @@
             <input type="text" class="form-control" id="p_amount" name="amount_received" placeholder="">
         </div>
     </div>
-    <div class="form-group row">
-        <label for="amount_word" class="col-lg-2 col-md-4 col-form-label ">Amount in Word<span class="text-danger ml-1">*</span> :</label>
-        <div class="col-lg-10 col-md-8 ">
-            <input type="text" class="form-control" id="p_amount_word" name="amount_words" placeholder="">
-        </div>
-    </div>
  
     {{-- --end of table --}}
 
