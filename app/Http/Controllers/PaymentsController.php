@@ -53,8 +53,6 @@ class PaymentsController extends Controller
 
     public function storeBillPayment(Request $request)
     {
-        // return $request;
-
         // Update Bills to Pay
         $b = 0;
         if(isset($request->is_paid))
@@ -62,7 +60,6 @@ class PaymentsController extends Controller
             
             for($i = 0; $i < count($request->payment_reference_id); $i++)
             {
-                
                 // If to pay wasn't checked for certain id, skip.
                 if(!in_array($request->payment_reference_id[$i], $request->is_paid))
                     continue;
@@ -70,8 +67,6 @@ class PaymentsController extends Controller
                 // Get bill
                 $bill = Bills::leftJoin('payment_references', 'payment_references.id', '=', 'bills.payment_reference_id')
                     ->where('bills.payment_reference_id', '=', $request->payment_reference_id[$i])->first();
-    
-                // return $bill;
                 
                 // If amount paid wasn't even set, skip.
                 if($request->amount_paid[$i] <= 0) continue;
@@ -92,7 +87,11 @@ class PaymentsController extends Controller
                     continue;
                 }
 
-                $bill->save();
+                Bills::where('payment_reference_id', $request->payment_reference_id[$i])
+                    ->update([
+                        'amount_received' => $bill->amount_received
+                    ]);
+
                 $b++;
             }
         }
@@ -112,23 +111,14 @@ class PaymentsController extends Controller
             //     $fileAttachment = time().'.'.$request->attachment->extension();  
             //     $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
             // }
-            
-            // Go through all the list of bills with checked is_paid
-            for($i = 0; $i < count($request->payment_reference_id); $i++)
-            {
-                
-                // If to pay wasn't checked for certain id, skip.
-                if(!in_array($request->payment_reference_id[$i], $request->is_paid))
-                    continue;
 
-                $billPayment = BillPayments::create([
-                    'payment_reference_id' => $reference->id,
-                    'chart_of_account_id' => $request->chart_of_account_id,
-                    'cheque_number' => $request->cheque_number,
-                    'amount_paid' => floatval($request->amount_paid[$i]),
-                    'discount_account_number' => $request->discount_account_number,        
-                ]);
-            }
+            $billPayment = BillPayments::create([
+                'payment_reference_id' => $reference->id,
+                'chart_of_account_id' => $request->chart_of_account_id,
+                'cheque_number' => $request->cheque_number,
+                'amount_paid' => floatval($request->total_received),
+                'discount_account_number' => $request->discount_account_number,        
+            ]);
 
             $messageType = 'success';
             $messageContent = 'Withholding Payment has been added successfully.';
