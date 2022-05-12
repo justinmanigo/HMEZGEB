@@ -133,9 +133,8 @@ class PaymentsController extends Controller
     }
     public function storeIncomeTaxPayment(Request $request)
     {
-        // return $request;
-        $fileAttachment;
         $status = 'paid';
+        
         // Store payment reference
         $reference = PaymentReferences::create([
             'vendor_id' => $request->vendor_id,
@@ -161,9 +160,8 @@ class PaymentsController extends Controller
     // Store pension
     public function storePensionPayment(Request $request)
     {
-        // return $request;
-        $fileAttachment;
         $status = 'paid';
+
         // Store payment reference
         $reference = PaymentReferences::create([
             'vendor_id' => $request->vendor_id,
