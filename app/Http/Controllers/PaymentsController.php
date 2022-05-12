@@ -181,7 +181,6 @@ class PaymentsController extends Controller
             'chart_of_account_id' => $request->chart_of_account_id,
             'cheque_number' => $request->cheque_number,
             'amount_received' => $request->amount_received,
-            'amount_words' => $request->amount_words,
         ]);
 
         return redirect()->back()->with('success', 'Pension Payment has been added successfully.');

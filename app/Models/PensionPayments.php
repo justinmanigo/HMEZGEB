@@ -15,7 +15,6 @@ class PensionPayments extends Model
         'chart_of_account_id',
         'cheque_number',
         'amount_received',
-        'amount_words',
     ];
 
     public function payment_reference()
