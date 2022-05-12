@@ -46,6 +46,9 @@ use App\Http\Controllers\Settings\PayrollRulesController;
 // Account Settings
 use App\Http\Controllers\AccountSettings\AccountSettingsController;
 
+// Reports
+use App\Http\Controllers\ReportsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -464,4 +467,12 @@ Route::group([
     Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername']);
     Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail']);
     Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
+});
+
+// Reports Module
+Route::group([
+    'as' => 'reports.'
+], function() {
+    // HTTP
+    Route::get('/reports/', [ReportsController::class, 'index'])->name('index');
 });

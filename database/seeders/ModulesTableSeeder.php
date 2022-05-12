@@ -21,6 +21,7 @@ class ModulesTableSeeder extends Seeder
             ['name' => 'journal voucher'],  // id = 4
             ['name' => 'human resource'],   // id = 5
             ['name' => 'inventory'],        // id = 6
+            ['name' => 'reports'],         // id = 7
         ]);
 
         DB::table('sub_modules')->insert([
@@ -28,7 +29,7 @@ class ModulesTableSeeder extends Seeder
             ['module_id' => 1, 'name' => 'customers', 'url' => '/customers/customers/', 'duplicate_sub_module_id' => null],
             ['module_id' => 1, 'name' => 'receipts', 'url' => '/customers/receipts/', 'duplicate_sub_module_id' => null],
             ['module_id' => 1, 'name' => 'deposits', 'url' => '/customers/deposits/', 'duplicate_sub_module_id' => null],
-
+            
             // Vendors
             ['module_id' => 2, 'name' => 'vendors', 'url' => '/vendors/vendors/', 'duplicate_sub_module_id' => null],
             ['module_id' => 2, 'name' => 'bills', 'url' => '/vendors/bills/', 'duplicate_sub_module_id' => null],
@@ -54,6 +55,9 @@ class ModulesTableSeeder extends Seeder
 
             // Inventory
             ['module_id' => 6, 'name' => 'inventory', 'url' => '/inventory/', 'duplicate_sub_module_id' => null],
+
+            // Reports
+            ['module_id' => 7, 'name' => 'reports', 'url' => '/reports/', 'duplicate_sub_module_id' => null],
         ]);
 
         DB::table('permissions')->insert([
@@ -76,6 +80,7 @@ class ModulesTableSeeder extends Seeder
             ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 17],
             ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 18],
             ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 19],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 20],
         ]);
     }
 }
