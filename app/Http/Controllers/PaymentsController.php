@@ -254,21 +254,12 @@ class PaymentsController extends Controller
                 $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
             }
             
-            // Go through all the list of withholding with checked is_paid
-            for($i = 0; $i < count($request->payment_reference_id); $i++)
-            {
-
-                // If to pay wasn't checked for certain id, skip.
-                if(!in_array($request->payment_reference_id[$i], $request->is_paid))
-                    continue;
-                    
-                $withholdingPayment = WithholdingPayments::create([
-                    'payment_reference_id' => $reference->id,
-                    'accounting_period_id' => $request->accounting_period_id,
-                    'chart_of_account_id' => $request->chart_of_account_id,
-                    'amount_paid' => floatval($request->amount_paid[$i]),       
-                ]);
-            }
+            $withholdingPayment = WithholdingPayments::create([
+                'payment_reference_id' => $reference->id,
+                'accounting_period_id' => $request->accounting_period_id,
+                'chart_of_account_id' => $request->chart_of_account_id,
+                'amount_paid' => floatval($request->total_amount_received),       
+            ]);
 
             $messageType = 'success';
             $messageContent = 'Withholding Payment has been added successfully.';
