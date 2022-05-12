@@ -7,7 +7,7 @@
             </div>
             <br/>
             
-            <form id="form-customer" action="{{ url('customer/'.$customers->id) }}" method="post" enctype="multipart/form-data">
+            <form id="form-customer" action="{{ url('/customers/customers/'.$customers->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
