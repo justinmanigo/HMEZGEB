@@ -9,6 +9,8 @@ class GetUserPermissions
 {
     use AsAction;
 
+    // TODO: Integrate with Accounting Systems later.
+
     /**
      * * * SQL Query for getting current users' permissions: * * *
      * 

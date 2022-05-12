@@ -15,7 +15,7 @@ class CreateAccountingSystemsTable extends Migration
     {
         Schema::create('accounting_systems', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subscription_id')->constrained();
+            $table->foreignId('subscription_id')->nullable()->constrained();
             $table->string('name');
             $table->mediumText('address');
             $table->string('po_box')->nullable();

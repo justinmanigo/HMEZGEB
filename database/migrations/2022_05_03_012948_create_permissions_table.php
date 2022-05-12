@@ -16,6 +16,7 @@ class CreatePermissionsTable extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->foreignId('sub_module_id')->constrained();
             $table->enum('access_level', [
                 'r', // read only
