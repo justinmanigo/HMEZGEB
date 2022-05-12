@@ -88,7 +88,7 @@
                             <tr>
                                 <td>
                                     
-                                    <a type="button" class="btn btn-primary" href="{{ url('customer/'.$customer->id) }}">
+                                    <a type="button" class="btn btn-primary" href="{{ url('/customers/customers/'.$customer->id) }}">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-pen"></i>
                                         </span>
@@ -168,7 +168,7 @@
                 </button>
             </div>
             
-                <form id="form-customer" action="/customer" method="post" enctype="multipart/form-data">
+                <form id="form-customer" action="/customers/customers/" method="post" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
                     <h5>Customer</h5>
@@ -355,7 +355,7 @@
  <script>
     function showModel(id) {
         var frmDelete = document.getElementById("delete-frm");
-        frmDelete.action = 'customer/'+id;
+        frmDelete.action = '/customers/customers/'+id;
         var confirmationModal = document.getElementById("deleteConfirmationModel");
         confirmationModal.style.display = 'block';
         confirmationModal.classList.remove('fade');

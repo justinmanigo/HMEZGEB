@@ -133,10 +133,10 @@ Route::post('/userlogin', function (Request $request){
         'as'=>'customers.'
     ], function(){ 
         Route::get('/customers/customers/', [CustomerController::class, 'index']);
-        Route::post('/customer', [CustomerController::class, 'store']); 
-        Route::get('/customer/{id}', [CustomerController::class, 'edit']);
-        Route::put('/customer/{id}', [CustomerController::class, 'update']);
-        Route::delete('/customer/{id}', [CustomerController::class, 'destroy']);
+        Route::post('/customers/customers/', [CustomerController::class, 'store']); 
+        Route::get('/customers/customers/{id}', [CustomerController::class, 'edit']);
+        Route::put('/customers/customers/{id}', [CustomerController::class, 'update']);
+        Route::delete('/customers/customers/{id}', [CustomerController::class, 'destroy']);
         
         Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
         Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);

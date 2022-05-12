@@ -58,7 +58,7 @@ class CustomerController extends Controller
         $customers->image =  isset($imageName) ? $imageName : null;
         $customers->is_active ='Yes';
         $customers->save();
-        return redirect('customer/')->with('success', "Successfully added new customer.");
+        return redirect('/customers/customers')->with('success', "Successfully added new customer.");
 
     }
 
@@ -99,7 +99,7 @@ class CustomerController extends Controller
         $customers->is_active ='Yes';
         $customers->update();
 
-        return redirect('customer/')->with('success', "Successfully edited customer.");
+        return redirect('/customers/customers')->with('success', "Successfully edited customer.");
 
     }
 
@@ -115,7 +115,7 @@ class CustomerController extends Controller
         $customers = Customers::find($id);
         $customers->delete();
         
-        return redirect('customer/')->with('danger', "Successfully deleted customer");
+        return redirect('/customers/customers')->with('danger', "Successfully deleted customer");
 
     }
 
