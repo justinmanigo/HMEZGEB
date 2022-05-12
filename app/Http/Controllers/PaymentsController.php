@@ -121,11 +121,11 @@ class PaymentsController extends Controller
             ]);
 
             $messageType = 'success';
-            $messageContent = 'Withholding Payment has been added successfully.';
+            $messageContent = 'Bill Payment has been added successfully.';
         }
         else {
             $messageType = 'warning';
-            $messageContent = 'There are no withholdings to pay.';
+            $messageContent = 'There are no bills to pay.';
         }
   
         return redirect()->back()->with($messageType, $messageContent);
