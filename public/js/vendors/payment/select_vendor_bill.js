@@ -47,6 +47,7 @@ function onDropdownShow(e){
 function onBillVendorSelectSuggestion(e){
     // checks for data of selected vendor
     console.log(e.detail.data);
+    $("#b_payments_to_pay").html("");
 
     $("#b_vendor_id").val(e.detail.data.value)
     $("#b_address").val(e.detail.data.address)
@@ -61,6 +62,8 @@ function onBillVendorSelectSuggestion(e){
         
     request.done(function(res, status, jqXHR ) {
         console.log(res);
+        
+
         for(i = 0; i < res.length; i++)
         {   
             createPaymentToPayEntry(res[i]);
@@ -81,6 +84,7 @@ function onBillVendorSelectSuggestion(e){
 }
 
 function onBillVendorRemove(e){
+    $("#b_payments_to_pay").html("");
     $("#b_vendor_id").val("")
     $("#b_address").val("")
     $("#b_contact_person").val("")
