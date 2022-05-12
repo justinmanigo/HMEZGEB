@@ -24,6 +24,7 @@ class User extends Authenticatable
         'username',
         'firstName',
         'lastName',
+        'control_panel_role',
         'activated',
         'code',
         'email',

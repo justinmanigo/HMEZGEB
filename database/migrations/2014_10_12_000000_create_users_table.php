@@ -21,6 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('firstName')->nullable();
             $table->string('lastName')->nullable();
+            $table->enum('control_panel_role', [
+                'staff',
+                'admin',
+            ])->nullable();
             $table->string('code');
             $table->enum('activated',['Yes','No'])->default('Yes');
             $table->rememberToken();

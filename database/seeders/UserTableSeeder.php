@@ -23,6 +23,7 @@ class UserTableSeeder extends Seeder
                 'username' => 'admin',
                 'firstName' => 'super',
                 'lastName' => 'admin',
+                'control_panel_role' => 'admin',
                 'code' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
