@@ -50,8 +50,8 @@ $(document).on('change', '.b_amount_paid', function(){
     console.log($(this));
     // Check if the amount paid exceeds the supposed amount due?
     var id = $(this)[0].dataset.id;
-    var amount_paid = $(this)[0].value;
-    var amount_due = $(`#b_amount_due_${id}`).val()
+    var amount_paid = parseFloat($(this)[0].value);
+    var amount_due = parseFloat($(`#b_amount_due_${id}`).val());
     if(amount_paid > amount_due)
         $(`#b_amount_paid_${id}`).val(amount_due);
 
