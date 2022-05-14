@@ -40,4 +40,4 @@ Password: **test**
 
 ### For HMEZGEB Staff
 Email: **staff@email.com**<br>
-Password: **staff**
+Password: **test**
