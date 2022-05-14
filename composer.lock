@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7f230ae050f01ed9caf2211d4516340",
+    "content-hash": "c55271969b06b6682fbcfcc24c2c661c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1057,6 +1057,49 @@
                 }
             ],
             "time": "2022-03-20T21:55:58+00:00"
+        },
+        {
+            "name": "kaiopiola/keygen",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kaiopiola/keygen-package.git",
+                "reference": "b8265af36d1368d1d7287f52d7da5fa8e69897fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kaiopiola/keygen-package/zipball/b8265af36d1368d1d7287f52d7da5fa8e69897fa",
+                "reference": "b8265af36d1368d1d7287f52d7da5fa8e69897fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Kaiopiola\\Keygen\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kaio Piola",
+                    "email": "kaio.piola@hotmail.com"
+                }
+            ],
+            "description": "Pattern-based key generator",
+            "support": {
+                "issues": "https://github.com/kaiopiola/keygen-package/issues",
+                "source": "https://github.com/kaiopiola/keygen-package/tree/1.2.0"
+            },
+            "time": "2022-01-18T00:31:33+00:00"
         },
         {
             "name": "laravel/fortify",

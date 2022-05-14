@@ -17,20 +17,13 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->tinyInteger('account_limit');
-            $table->integer('referral_user_id');
-            $table->string('referral_code');
-            $table->enum('referral_type', [
-                'normal',   // for all user types. it works like gcash, like inviting someone
-                            // to try out the HMEZGEB system.
-                'advanced', // intended for hmezgeb staff where they can customize the referral
-                            // based to the client needs.
-            ]);
             $table->date('trial_from')->nullable();
             $table->date('trial_to')->nullable();
-            // $table->enum('status', [ // this part is yet to be discussed later on.
-            //     'unpaid',
-            //     'paid',
-            // ])->nullable();
+            $table->enum('payment_status', [ 
+                'pending',
+                'paid',
+            ])->nullable();
+            $table->timestamp('active_since_at')->nullable();
             $table->timestamps();
         });
     }
