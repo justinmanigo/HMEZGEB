@@ -20,7 +20,7 @@ class CreateReferralsTable extends Migration
             $table->enum('type', [
                 'normal',
                 'advanced',
-            ]);
+            ])->default('normal');
             $table->string('name');
             $table->string('email');
             $table->float('commission')->nullable();
