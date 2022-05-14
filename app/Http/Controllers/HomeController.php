@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -35,7 +34,6 @@ class HomeController extends Controller
 
     public function switchAccountingSystem()
     {
-        // TODO: Check if accounting system exists
         $this->request->session()->put('accounting_system_id', $this->request->accounting_system_id);
         return redirect('/');
     }
