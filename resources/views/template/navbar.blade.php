@@ -2,6 +2,7 @@
     $modules = \App\Models\Settings\Users\Module::get();
     $permissions = \App\Actions\GetUserPermissions::run($modules, Auth::user(), true);
     $accounting_system = \App\Models\AccountingSystem::find(session('accounting_system_id'));
+    $accounting_system_count = \App\Models\AccountingSystemUser::where('user_id', Auth::user()->id)->count();
 @endphp
  
  <!-- Sidebar -->
@@ -303,6 +304,12 @@
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Account Settings
                                 </a>
+                                @if($accounting_system_count > 1)
+                                    <a class="dropdown-item" href="{{ url('/switch') }}">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Switch Accounting Systems
+                                    </a>
+                                @endif
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
