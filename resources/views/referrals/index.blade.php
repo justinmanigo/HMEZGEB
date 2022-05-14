@@ -27,7 +27,7 @@
             <span class="icon text-white-50">
                 <i class="fas fa-file-import"></i>
             </span>
-            <span class="text">New</span>
+            <span class="text">New Normal Referral</span>
         </button>
     </div>  
 </div>

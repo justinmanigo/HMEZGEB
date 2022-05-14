@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Referral;
+use App\Http\Requests\StoreReferralRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ReferralsController extends Controller
 {
@@ -14,5 +16,17 @@ class ReferralsController extends Controller
             'referrals' => $referrals,
         ]);
     }
+
+    public function storeNormalReferral(StoreReferralRequest $request)
+    {
+        $validated = $request->validated();
+
+        Referral::create([
+            'user_id' => Auth::user()->id,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        return redirect('/referrals')->with('success', 'Successfully created a referral.');
     }
 }

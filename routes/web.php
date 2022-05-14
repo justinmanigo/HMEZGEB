@@ -73,6 +73,7 @@ Route::group([
             'as' => 'referrals.'
         ], function(){
             Route::get('/referrals', [App\Http\Controllers\ReferralsController::class, 'index'])->name('index');
+            Route::post('/referrals', [App\Http\Controllers\ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
         });
     });
 });
