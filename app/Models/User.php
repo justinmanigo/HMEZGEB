@@ -24,6 +24,7 @@ class User extends Authenticatable
         'username',
         'firstName',
         'lastName',
+        'control_panel_role',
         'activated',
         'code',
         'email',
@@ -53,6 +54,21 @@ class User extends Authenticatable
     public function permissions()
     {
         return $this->hasMany(Permission::class);
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
+    public function referredSubscriptions()
+    {
+        return $this->hasMany(Subscriptions::class, 'referral_user_id', 'user_id');
+    }
+
+    public function accountingSystemUsers()
+    {
+        return $this->hasMany(AccountingSystemUser::class);
     }
 
     public function confirmTwoFactorAuth($code)

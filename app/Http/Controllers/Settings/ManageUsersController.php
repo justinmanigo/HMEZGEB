@@ -52,6 +52,7 @@ class ManageUsersController extends Controller
                 'user_id' => $user->id,
                 'sub_module_id' => $request->submodule_id[$i],
                 'access_level' => $request->access_level[$i],
+                'accounting_system_id' => 1, // TODO: Change this later.
             ]);
         }
 

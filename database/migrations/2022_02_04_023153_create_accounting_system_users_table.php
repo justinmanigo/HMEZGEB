@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePermissionsTable extends Migration
+class CreateAccountingSystemUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreatePermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('accounting_system_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
             $table->foreignId('accounting_system_id')->constrained();
-            $table->foreignId('sub_module_id')->constrained();
-            $table->enum('access_level', [
-                'r', // read only
-                'rw', // read and write (crud)
+            $table->foreignId('user_id')->constrained();
+            $table->enum('role', [
+                'admin',        // admin
+                'moderator',    // manage users
+                'member',       // profile
             ]);
+            $table->timestamps();
         });
     }
 
@@ -32,6 +33,6 @@ class CreatePermissionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('accounting_system_users');
     }
 }

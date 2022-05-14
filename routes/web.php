@@ -60,8 +60,15 @@ use App\Http\Controllers\AccountSettings\AccountSettingsController;
 Route::group([
     'middleware' => 'auth',
 ], function(){
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/switch', [App\Http\Controllers\HomeController::class, 'viewAccountingSystems']);
+    Route::put('/switch', [App\Http\Controllers\HomeController::class, 'switchAccountingSystem']);
+    
+    Route::group([
+        'middleware' => 'auth.accountingsystem',
+    ], function(){
+        Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    });
 });
 
 
