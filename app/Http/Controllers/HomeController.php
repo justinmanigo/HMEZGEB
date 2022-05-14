@@ -16,6 +16,18 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public function viewAccountingSystems()
+    {
+        return view('view-accounting-systems');
+    }
+
+    public function switchAccountingSystem()
+    {
+        // TODO: Check if accounting system exists
+        $this->request->session()->put('accounting_system_id', $this->request->accounting_system_id);
+        return redirect('/');
+    }
+
 
    
 
