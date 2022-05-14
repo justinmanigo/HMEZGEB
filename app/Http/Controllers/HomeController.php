@@ -23,7 +23,7 @@ class HomeController extends Controller
         $user->accountingSystemUsers;
 
         // If the number of accounting systems' is only one, skip ahead to dashboard.
-        if(count($user->accountingSystemUsers)) {
+        if(count($user->accountingSystemUsers) == 1) {
             $this->request->session()->put('accounting_system_id', $user->accountingSystemUsers[0]->accounting_system_id);
             return redirect('/');
         }
