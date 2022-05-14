@@ -66,10 +66,16 @@
                                         {!! \Session::get('error') !!}
                                     </div>
                                     @endif
-                                    <form method="POST" action="{{ url('/switch') }}" class="user">
+                                    <form id="form_accouting_system" method="POST" action="{{ url('/switch') }}" class="user">
                                         @csrf
                                         @method('PUT')
-                                        <input type="submit" name="accounting_system_id" value="1">Test</button>
+                                        <input type="hidden" id="accounting_system_id" name="accounting_system_id">
+                                        @foreach($accountingSystems as $account)
+                                            <a class="accounting_system_item btn btn-lg btn-primary mb-3 w-100" href="javascript:void(0)" data-id="{{ $account->accounting_system_id }}" role="button">
+                                                {{ $account->name }}
+                                            </a>
+                                        @endforeach
+                                        {{-- <input type="submit" name="accounting_system_id" value="1"> --}}
                                     </form>
                                     <hr>
                                     <div class="text-center">
@@ -99,6 +105,19 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script> 
+    
+    <script>
+        var accountingSystemItemElements = document.querySelectorAll('.accounting_system_item');
+        var accountingSystemIdElement = document.querySelector('#accounting_system_id');
+        var accountingSystemForm = document.querySelector('#form_accouting_system');
+        console.log(accountingSystemItemElements);
+        for(i = 0; i < accountingSystemItemElements.length; i++) {
+            accountingSystemItemElements[i].addEventListener('click', function(event){
+                accountingSystemIdElement.value = event.target.dataset.id;
+                accountingSystemForm.submit();
+            });
+        }
+    </script>
 
 </body>
 
