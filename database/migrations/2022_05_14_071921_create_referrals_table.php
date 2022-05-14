@@ -16,7 +16,7 @@ class CreateReferralsTable extends Migration
         Schema::create('referrals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('code');
+            $table->string('code')->unique();
             $table->enum('type', [
                 'normal',
                 'advanced',
