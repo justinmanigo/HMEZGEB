@@ -21,7 +21,6 @@ class CreateReferralsTable extends Migration
                 'normal',
                 'advanced',
             ]);
-            $table->tinyInteger('account_limit');
             $table->string('name');
             $table->string('email');
             $table->float('commission')->nullable();
