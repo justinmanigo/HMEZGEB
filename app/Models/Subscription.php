@@ -12,13 +12,10 @@ class Subscription extends Model
     protected $fillable = [
         'user_id',
         'account_limit',
-        'referral_user_id',
-        'referral_code',
-        'referral_type',
         'trial_from',
         'trial_to',
-        'status',   // temporarily added just in case its needed. 
-                    // was disabled in migrations
+        'active_since_at',
+        'payment_status',
     ];
 
     public function user()
