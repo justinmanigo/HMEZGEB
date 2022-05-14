@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Referral;
 
 class ReferralsController extends Controller
 {
     public function index()
     {
-        return view('referrals.index');
+        $referrals = Referral::where('user_id', Auth::id())->get();
+
+        return view('referrals.index', [
+            'referrals' => $referrals,
+        ]);
+    }
     }
 }
