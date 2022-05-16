@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Actions\GetUserPermissions;
 use App\Http\Controllers\Controller;
+use App\Models\AccountingSystemUser;
 use App\Models\User;
 use App\Models\Settings\Users\Module;
 use App\Models\Settings\Users\SubModule;
@@ -17,7 +18,22 @@ class ManageUsersController extends Controller
      */
     public function index()
     {
-        return view('settings.users.manageUsers.index');
+        $accountingSystemUsers = AccountingSystemUser::select(
+                'accounting_system_users.id as accounting_system_user_id',
+                'users.firstName',
+                'users.lastName',
+                'users.email',
+                'accounting_system_users.role',
+                // TODO: Add Status and Last Logged In
+            )
+            ->leftJoin('users', 
+            'users.id', '=', 'accounting_system_users.user_id')
+            ->where('accounting_system_id', $this->request->session()->get('accounting_system_id'))
+            ->get();
+
+        return view('settings.users.manageUsers.index', [
+            'accountingSystemUsers' => $accountingSystemUsers,
+        ]);
     }
 
     /**  
