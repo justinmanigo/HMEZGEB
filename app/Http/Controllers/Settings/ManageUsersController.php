@@ -44,7 +44,7 @@ class ManageUsersController extends Controller
     {
         // Get modules
         $modules = Module::get();
-        $permissions = GetAccountingSystemUserPermissions::run($modules, $accountingSystemUser);
+        $permissions = GetAccountingSystemUserPermissions::run($modules, $accountingSystemUser->id);
 
         return view('settings.users.manageUsers.editPermissions', [
             'user_id' => $accountingSystemUser->id,

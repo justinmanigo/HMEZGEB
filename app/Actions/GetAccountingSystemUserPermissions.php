@@ -25,11 +25,11 @@ class GetAccountingSystemUserPermissions
      * where `sub_modules`.`module_id` = 3
      * and `sub_modules`.`duplicate_sub_module_id` is null
      */
-    public function handle($modules, $accounting_system_user, $showDuplicates = 0)
+    public function handle($modules, $accounting_system_user_id, $showDuplicates = 0)
     {
         $subQuery = SubModule::select('permissions.access_level', 'sub_modules.id')
             ->leftJoin('permissions', 'permissions.sub_module_id', '=', 'sub_modules.id')
-            ->where('permissions.accounting_system_user_id', $accounting_system_user->id);
+            ->where('permissions.accounting_system_user_id', $accounting_system_user_id);
 
         for($i = 0; $i < count($modules); $i++)
         {
