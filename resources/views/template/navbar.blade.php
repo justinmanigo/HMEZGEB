@@ -1,6 +1,10 @@
 @php
-    $modules = \App\Models\Settings\Users\Module::get();
-    $permissions = \App\Actions\GetUserPermissions::run($modules, Auth::user(), true);
+    // $modules = \App\Models\Settings\Users\Module::get();
+    // $permissions = \App\Actions\GetUserPermissions::run($modules, Auth::user(), true);
+
+    $modules = [];
+    $permissions = [];
+    
     $accounting_system = \App\Models\AccountingSystem::find(session('accounting_system_id'));
     $accounting_system_count = \App\Models\AccountingSystemUser::where('user_id', Auth::user()->id)->count();
 @endphp
