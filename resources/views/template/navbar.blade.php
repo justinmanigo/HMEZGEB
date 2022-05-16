@@ -1,6 +1,7 @@
 @php
     $modules = \App\Models\Settings\Users\Module::get();
-    $permissions = \App\Actions\GetUserPermissions::run($modules, Auth::user(), true);
+    $permissions = \App\Actions\GetAccountingSystemUserPermissions::run($modules, session('accounting_system_user_id'), true);
+
     $accounting_system = \App\Models\AccountingSystem::find(session('accounting_system_id'));
     $accounting_system_count = \App\Models\AccountingSystemUser::where('user_id', Auth::user()->id)->count();
 @endphp
@@ -41,7 +42,7 @@
                     @php $count = 0; @endphp
                     {{-- Iterate on permissions to determine whether to show submodule or not. --}}
                     @foreach($permissions[$i] as $permission)
-                        @if($permission->access_level != null || \App\Actions\CheckDuplicateSubModulePermission::run($permission->duplicate_sub_module_id) != null)
+                        @if($permission->access_level != null || \App\Actions\CheckDuplicateSubModulePermission::run(session('accounting_system_user_id'), $permission->duplicate_sub_module_id) != null)
                             {{-- This checks whether the menu has already been shown. This will be checked once. --}}
                             @if($count == 0)
                                 <li class="nav-item">

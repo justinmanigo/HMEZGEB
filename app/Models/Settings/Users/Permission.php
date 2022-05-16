@@ -4,7 +4,6 @@ namespace App\Models\Settings\Users;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
 
 class Permission extends Model
 {
@@ -13,7 +12,7 @@ class Permission extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id',
+        'accounting_system_user_id',
         'sub_module_id',
         'access_level',
     ];
@@ -23,8 +22,8 @@ class Permission extends Model
         $this->belongsTo(SubModule::class);
     }
 
-    public function user()
+    public function accountingSystemUser()
     {
-        $this->belongsTo(User::class);
+        $this->belongsTo(AccountingSystemUser::class);
     }
 }
