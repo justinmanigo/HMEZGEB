@@ -373,8 +373,8 @@ Route::group([
     ], function() {
         // HTTP
         Route::get('/settings/users', [ManageUsersController::class, 'index'])->name('manageUsers');
-        Route::get('/settings/users/{user}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
-        Route::put('/settings/users/{user}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
+        Route::get('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
+        Route::put('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
     });
 
     /**

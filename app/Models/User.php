@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Settings\Users\Permission;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticationProvider;
 
@@ -54,11 +53,6 @@ class User extends Authenticatable
     public function referrals()
     {
         return $this->hasMany(Referral::class);
-    }
-
-    public function permissions()
-    {
-        return $this->hasMany(Permission::class);
     }
 
     public function subscription()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Settings\Users\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,5 +24,10 @@ class AccountingSystemUser extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function permissions()
+    {
+        return $this->hasMany(Permission::class);
     }
 }
