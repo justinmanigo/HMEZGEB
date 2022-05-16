@@ -74,6 +74,7 @@ Route::group([
         ], function(){
             Route::get('/referrals', [App\Http\Controllers\ReferralsController::class, 'index'])->name('index');
             Route::post('/referrals', [App\Http\Controllers\ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
+            Route::put('/referrals', [App\Http\Controllers\ReferralsController::class, 'storeAdvancedReferral'])->name('store.advanced');
         });
     });
 });
