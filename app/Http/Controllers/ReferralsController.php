@@ -22,7 +22,7 @@ class ReferralsController extends Controller
     {
         $validated = $request->validated();
 
-        CreateReferral::run($validated);
+        CreateReferral::run($validated, 'normal');
 
         return redirect('/referrals')->with('success', 'Successfully created a referral.');
     }

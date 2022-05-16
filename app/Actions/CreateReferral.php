@@ -10,12 +10,13 @@ class CreateReferral
 {
     use AsAction;
 
-    public function handle($validated)
+    public function handle($validated, $type)
     {
         return Referral::create([
             'user_id' => Auth::id(),
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'type' => $type,
         ]);
     }
 }
