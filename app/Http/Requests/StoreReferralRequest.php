@@ -24,7 +24,6 @@ class StoreReferralRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['sometimes'],
             'name' => ['required'],
             'email' => ['required', 'email'],
         ];
