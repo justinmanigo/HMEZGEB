@@ -57,7 +57,11 @@ class ModulesTableSeeder extends Seeder
             ['module_id' => 6, 'name' => 'inventory', 'url' => '/inventory/', 'duplicate_sub_module_id' => null],
 
             // Reports
-            ['module_id' => 7, 'name' => 'reports', 'url' => '/reports/', 'duplicate_sub_module_id' => null],
+            ['module_id' => 7, 'name' => 'customers', 'url' => '/reports/customers', 'duplicate_sub_module_id' => null],       
+            ['module_id' => 7, 'name' => 'vendors', 'url' => '/reports/vendors', 'duplicate_sub_module_id' => null],       
+            ['module_id' => 7, 'name' => 'sales', 'url' => '/reports/sales', 'duplicate_sub_module_id' => null],       
+            ['module_id' => 7, 'name' => 'entries', 'url' => '/reports/entries', 'duplicate_sub_module_id' => null],       
+            ['module_id' => 7, 'name' => 'financial statement', 'url' => '/reports/financial_statement', 'duplicate_sub_module_id' => null],       
         ]);
 
         DB::table('permissions')->insert([
@@ -81,6 +85,10 @@ class ModulesTableSeeder extends Seeder
             ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 18],
             ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 19],
             ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 20],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 21],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 22],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 23],
+            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 24],
         ]);
     }
 }

@@ -7,6 +7,36 @@ use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
+    // function for customers view
+    public function customers()
+    {       
+        return view('reports.customers.index');
+    }
+
+    // function for vendors view
+    public function vendors()
+    {
+        return view('reports.vendors.index');
+    }
+
+    // function for sales
+    public function sales()
+    {
+        return view('reports.sales.index');
+    }
+
+    // function for entries
+    public function entries()
+    {
+        return view('reports.entries.index');
+    }
+
+    // function for financial statement
+    public function financial_statement()
+    {
+        return view('reports.financial_statement.index');
+    }
+
     /**
      * Display a listing of the resource.
      *

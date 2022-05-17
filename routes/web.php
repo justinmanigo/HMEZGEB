@@ -471,8 +471,16 @@ Route::group([
 
 // Reports Module
 Route::group([
-    'as' => 'reports.'
+    'as' => 'reports.','prefix' => 'reports'
 ], function() {
     // HTTP
-    Route::get('/reports/', [ReportsController::class, 'index'])->name('index');
+    // Views
+    Route::get('/customers', [ReportsController::class, 'customers'])->name('reports.customers');
+    Route::get('/vendors', [ReportsController::class, 'vendors'])->name('reports.vendors');
+    Route::get('/sales', [ReportsController::class, 'sales'])->name('reports.sales');
+    Route::get('/entries', [ReportsController::class, 'entries'])->name('reports.entries');
+    Route::get('/financial_statement', [ReportsController::class, 'financial_statement'])->name('reports.financial_statement');
+
+    // Custom methods
+
 });
