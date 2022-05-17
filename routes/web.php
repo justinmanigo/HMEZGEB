@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
- 
+
 use App\Models\User;
 // Customer module
 use App\Http\Controllers\ReceiptController;
@@ -475,12 +475,18 @@ Route::group([
 ], function() {
     // HTTP
     // Views
-    Route::get('/customers', [ReportsController::class, 'customers'])->name('reports.customers');
-    Route::get('/vendors', [ReportsController::class, 'vendors'])->name('reports.vendors');
-    Route::get('/sales', [ReportsController::class, 'sales'])->name('reports.sales');
-    Route::get('/entries', [ReportsController::class, 'entries'])->name('reports.entries');
-    Route::get('/financial_statement', [ReportsController::class, 'financial_statement'])->name('reports.financial_statement');
+    Route::get('/customers', [ReportsController::class, 'customers'])->name('customers');
+    Route::get('/vendors', [ReportsController::class, 'vendors'])->name('vendors');
+    Route::get('/sales', [ReportsController::class, 'sales'])->name('sales');
+    Route::get('/entries', [ReportsController::class, 'entries'])->name('entries');
+    Route::get('/financial_statement', [ReportsController::class, 'financial_statement'])->name('financial_statement');
 
     // Custom methods
+    
+    // pdf
+    // customers
+    Route::post('/customers/aged_receivable/pdf', [ReportsController::class, 'agedReceivablePDF'])->name('aged_receivable.pdf');
+    Route::post('/customers/cash_receipt_journal/pdf', [ReportsController::class, 'cashReceiptJournalPDF'])->name('cash_receipt_journal.pdf');
+    Route::post('/customers/ledger/pdf', [ReportsController::class, 'customerLedgerPDF'])->name('customer_ledger.pdf');
 
 });

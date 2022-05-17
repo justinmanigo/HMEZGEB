@@ -35,7 +35,7 @@
                 <form action="" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_from">Date From</label>
                                 <input type="date" class="form-control" id="date_from" name="date_from"
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_to">Date To</label>
                                 <input type="date" class="form-control" id="date_to" name="date_to"
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mt-3">
+                        <div class="col-xl-6 mt-3">
                             <button class="btn btn-primary" id="generate_report">Generate Report</button>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                 <form action="" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_from">Date From</label>
                                 <input type="date" class="form-control" id="date_from" name="date_from"
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_to">Date To</label>
                                 <input type="date" class="form-control" id="date_to" name="date_to"
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mt-3">
+                        <div class="col-xl-6 mt-3">
                             <button class="btn btn-primary" id="generate_report">Generate Report</button>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                 <form action="" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_from">Date From</label>
                                 <input type="date" class="form-control" id="date_from" name="date_from"
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_to">Date To</label>
                                 <input type="date" class="form-control" id="date_to" name="date_to"
@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mt-3">
+                        <div class="col-xl-6 mt-3">
                             <button class="btn btn-primary" id="generate_report">Generate Report</button>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                 <form action="" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_from">Date From</label>
                                 <input type="date" class="form-control" id="date_from" name="date_from"
@@ -134,7 +134,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xl-6">
                             <div class="form-group">
                                 <label for="date_to">Date To</label>
                                 <input type="date" class="form-control" id="date_to" name="date_to"
@@ -144,7 +144,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mt-3">
+                        <div class="col-xl-6 mt-3">
                             <button class="btn btn-primary" id="generate_report">Generate Report</button>
                         </div>
                     </div>

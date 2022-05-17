@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reports;
 use Illuminate\Http\Request;
+use PDF;
 
 class ReportsController extends Controller
 {
@@ -36,6 +37,15 @@ class ReportsController extends Controller
     {
         return view('reports.financial_statement.index');
     }
+
+    // PDF
+    public function agedReceivablePDF(Request $request)
+    {
+        $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable', compact('request'));
+        return $pdf->download('aged_receivable.pdf');
+    }
+    
+
 
     /**
      * Display a listing of the resource.
