@@ -4,8 +4,64 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c55271969b06b6682fbcfcc24c2c661c",
+    "content-hash": "1bca0e4a6307fd52df025320e151cc39",
     "packages": [
+        {
+            "name": "andegna/calender",
+            "version": "v2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andegna/calender.git",
+                "reference": "83c49e6c8b32f46256d5c912847f05b9c1b54e0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andegna/calender/zipball/83c49e6c8b32f46256d5c912847f05b9c1b54e0d",
+                "reference": "83c49e6c8b32f46256d5c912847f05b9c1b54e0d",
+                "shasum": ""
+            },
+            "require": {
+                "geezify/geezify-php": "^1.2",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "develop": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Andegna\\": "src/",
+                    "Andegna\\PHPUnit\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam As End",
+                    "email": "4sam21@gmail.com"
+                }
+            ],
+            "description": "If you ever want to convert Ethiopian Calender to any other calender system (like the Gregorian Calender) this is the right package for you. And by the way it also support Amharic date formatting and much much more.",
+            "keywords": [
+                "JDN",
+                "calender",
+                "date",
+                "ethiopian"
+            ],
+            "support": {
+                "issues": "https://github.com/andegna/calender/issues",
+                "source": "https://github.com/andegna/calender"
+            },
+            "time": "2021-08-16T01:42:52+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.1.1",
@@ -672,6 +728,65 @@
                 }
             ],
             "time": "2022-02-23T14:25:13+00:00"
+        },
+        {
+            "name": "geezify/geezify-php",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geezify/geezify-php.git",
+                "reference": "2901449a22f9e88b58daad0b13770f322495a76d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geezify/geezify-php/zipball/2901449a22f9e88b58daad0b13770f322495a76d",
+                "reference": "2901449a22f9e88b58daad0b13770f322495a76d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6|7.*"
+            },
+            "provide": {
+                "andegna/geezify": "self.version"
+            },
+            "replace": {
+                "andegna/geezify": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Geezify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sam As End",
+                    "email": "4sam21@gmail.com"
+                }
+            ],
+            "description": "A library to convert ascii number like '3456' to geez number '፴፬፻፶፮' and vise versa.",
+            "keywords": [
+                "ethiopian",
+                "geez",
+                "geezify"
+            ],
+            "support": {
+                "issues": "https://github.com/geezify/geezify-php/issues",
+                "source": "https://github.com/geezify/geezify-php/tree/develop"
+            },
+            "time": "2017-02-24T13:52:50+00:00"
         },
         {
             "name": "graham-campbell/result-type",
