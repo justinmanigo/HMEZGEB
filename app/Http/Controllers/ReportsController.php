@@ -35,6 +35,7 @@ class ReportsController extends Controller
     }
 
     // PDF
+    // TODO: Add date today on file name
     // Customers
     public function agedReceivablePDF(Request $request)
     {
@@ -42,41 +43,41 @@ class ReportsController extends Controller
         return $pdf->download('aged_receivable.pdf');
     }
     
-    public function cashReceiptsPDF(Request $request)
+    public function cashReceiptsJournalPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.vendors.pdf.cash_receipts', compact('request'));
-        return $pdf->download('cash_receipts.pdf');
+        $pdf = \PDF::loadView('reports.customers.pdf.cash_receipts_journal', compact('request'));
+        return $pdf->download('cash_receipts_journal.pdf');
     }
 
-    public function customersLedgers(Request $request)
+    public function customerLedgersPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.sales.pdf.customers_ledgers', compact('request'));
-        return $pdf->download('customers_ledgers.pdf');
+        $pdf = \PDF::loadView('reports.customers.pdf.customers_ledgers', compact('request'));
+        return $pdf->download('customer_ledgers.pdf');
     }
     
     // Vendors
-    public function agedPayablePDF(Request $request)
+    public function agedPayablesPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.vendors.pdf.aged_payable', compact('request'));
-        return $pdf->download('aged_payable.pdf');
+        $pdf = \PDF::loadView('reports.vendors.pdf.aged_payables', compact('request'));
+        return $pdf->download('aged_payables.pdf');
     }
 
-    public function cashDisbursementsPDF(Request $request)
+    public function cashDisbursementsJournalPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.vendors.pdf.cash_disbursements', compact('request'));
-        return $pdf->download('cash_disbursements.pdf');
+        $pdf = \PDF::loadView('reports.vendors.pdf.cash_disbursements_journal', compact('request'));
+        return $pdf->download('cash_disbursements_journal.pdf');
     }
 
     public function cashRequirementsPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.sales.pdf.cash_requirements', compact('request'));
+        $pdf = \PDF::loadView('reports.vendors.pdf.cash_requirements', compact('request'));
         return $pdf->download('cash_requirements.pdf');
     }
 
-    public function vendorsLedgersPDF(Request $request)
+    public function vendorLedgersPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.sales.pdf.vendors_ledgers', compact('request'));
-        return $pdf->download('vendors_ledgers.pdf');
+        $pdf = \PDF::loadView('reports.vendors.pdf.vendor_ledgers', compact('request'));
+        return $pdf->download('vendor_ledgers.pdf');
     }
 
     // Sales

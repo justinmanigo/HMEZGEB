@@ -40,7 +40,7 @@
         <div class="card-body tab-content">
 
             <div class="tab-pane fade show active general_ledger">
-                <form action="" method="POST">
+                <form action="{{route('reports.general_ledger.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -70,7 +70,7 @@
             </div>
 
             <div class="tab-pane fade general_journal">
-                <form action="" method="POST">
+                <form action="{{route('reports.general_journal.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -100,7 +100,7 @@
             </div>
 
             <div class="tab-pane fade receipt">
-                <form action="" method="POST">
+                <form action="{{route('reports.receipt.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -130,7 +130,7 @@
             </div>
             
             <div class="tab-pane fade bill">
-                <form action="" method="POST">
+                <form action="{{route('reports.bill.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -160,7 +160,7 @@
             </div>
             
             <div class="tab-pane fade payment">
-                <form action="" method="POST">
+                <form action="{{route('reports.payment.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -190,7 +190,7 @@
             </div>
 
             <div class="tab-pane fade journal_voucher">
-                <form action="" method="POST">
+                <form action="{{route('reports.journal_voucher.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">

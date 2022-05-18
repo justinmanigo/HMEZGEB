@@ -23,7 +23,7 @@
         <div class="card-body tab-content">
 
             <div class="tab-pane fade show active balance_sheet">
-                <form action="" method="POST">
+                <form action="{{route('reports.balance_sheet.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -65,7 +65,7 @@
             </div>
 
             <div class="tab-pane fade show income_statement">
-                <form action="" method="POST">
+                <form action="{{route('reports.income_statement.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">

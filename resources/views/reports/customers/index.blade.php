@@ -12,9 +12,9 @@
                     aria-controls="aged_receivable" aria-selected="true">Aged Receivable</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="cash_receipt_journal-tab" data-toggle="tab" href=".cash_receipt_journal"
-                    role="tab" aria-controls="cash_receipt_journal
-                cash_receipt_journal" aria-selected="false">Cash Receipt Journal</a>
+                <a class="nav-link" id="cash_receipts_journal-tab" data-toggle="tab" href=".cash_receipts_journal"
+                    role="tab" aria-controls="cash_receipts_journal
+                cash_receipts_journal" aria-selected="false">Cash Receipt Journal</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="customer_ledgers-tab" data-toggle="tab" href=".customer_ledgers" role="tab"
@@ -61,9 +61,9 @@
             </div>
 
             <!--Other Payment content--->
-            <div class="tab-pane fade cash_receipt_journal">
+            <div class="tab-pane fade cash_receipts_journal">
                 
-                <form action="" method="POST">
+                <form action="{{route('reports.cash_receipts_journal.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -94,7 +94,7 @@
             </div>
             <div class="tab-pane fade customer_ledgers">
                 
-                <form action="" method="POST">
+                <form action="{{route('reports.customer_ledgers.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">

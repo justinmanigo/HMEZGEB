@@ -13,7 +13,7 @@
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="cash_disbursements_journal-tab" data-toggle="tab"
-                    href=".cash_disbursements_journal" role="tab" aria-controls="cash_disbursements_journal" aria-selected="false">Cash Dispursements Journal</a>
+                    href=".cash_disbursements_journal" role="tab" aria-controls="cash_disbursements_journal" aria-selected="false">Cash Disbursements Journal</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="vendor_ledgers-tab" data-toggle="tab" href=".vendor_ledgers" role="tab"
@@ -32,7 +32,7 @@
         <div class="card-body tab-content">
 
             <div class="tab-pane fade show active aged_payables">
-                <form action="" method="POST">
+                <form action="{{route('reports.aged_payables.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -62,7 +62,7 @@
             </div>
 
             <div class="tab-pane fade cash_disbursements_journal">
-                <form action="" method="POST">
+                <form action="{{route('reports.cash_disbursements_journal.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -92,7 +92,7 @@
             </div>
 
             <div class="tab-pane fade vendor_ledgers">
-                <form action="" method="POST">
+                <form action="{{route('reports.vendor_ledgers.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -122,7 +122,7 @@
             </div>
             
             <div class="tab-pane fade cash_requirements">
-                <form action="" method="POST">
+                <form action="{{route('reports.cash_requirements.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">

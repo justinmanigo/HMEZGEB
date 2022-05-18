@@ -64,7 +64,7 @@ Route::group([
     'middleware' => 'auth',
 ], function(){
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 });
 
 
@@ -469,6 +469,7 @@ Route::group([
     Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
 });
 
+
 // Reports Module
 Route::group([
     'as' => 'reports.','prefix' => 'reports'
@@ -480,13 +481,32 @@ Route::group([
     Route::get('/sales', [ReportsController::class, 'sales'])->name('sales');
     Route::get('/entries', [ReportsController::class, 'entries'])->name('entries');
     Route::get('/financial_statement', [ReportsController::class, 'financial_statement'])->name('financial_statement');
-
-    // Custom methods
     
     // pdf
     // customers
     Route::post('/customers/aged_receivable/pdf', [ReportsController::class, 'agedReceivablePDF'])->name('aged_receivable.pdf');
-    Route::post('/customers/cash_receipt_journal/pdf', [ReportsController::class, 'cashReceiptJournalPDF'])->name('cash_receipt_journal.pdf');
-    Route::post('/customers/ledger/pdf', [ReportsController::class, 'customerLedgerPDF'])->name('customer_ledger.pdf');
+    Route::post('/customers/cash_receipts_journal/pdf', [ReportsController::class, 'cashReceiptsJournalPDF'])->name('cash_receipts_journal.pdf');
+    Route::post('/customers/ledgers/pdf', [ReportsController::class, 'customerLedgersPDF'])->name('customer_ledgers.pdf');
 
+    // vendors
+    Route::post('/vendors/aged_payables/pdf', [ReportsController::class, 'agedPayablesPDF'])->name('aged_payables.pdf');
+    Route::post('/vendors/cash_disbursements_journal/pdf', [ReportsController::class, 'cashDisbursementsJournalPDF'])->name('cash_disbursements_journal.pdf');
+    Route::post('/vendors/cash_requirements/pdf', [ReportsController::class, 'cashRequirementsPDF'])->name('cash_requirements.pdf');
+    Route::post('/vendors/ledgers/pdf', [ReportsController::class, 'vendorLedgersPDF'])->name('vendor_ledgers.pdf');
+    
+    // sales
+    Route::post('/sales/pdf', [ReportsController::class, 'salesPDF'])->name('sales.pdf');
+    
+    // entries
+    Route::post('/entries/bill/pdf', [ReportsController::class, 'billPDF'])->name('bill.pdf');
+    Route::post('/entries/general_journal/pdf', [ReportsController::class, 'generalJournalPDF'])->name('general_journal.pdf');
+    Route::post('/entries/general_ledger/pdf', [ReportsController::class, 'generalLedgerPDF'])->name('general_ledger.pdf');
+    Route::post('/entries/payment/pdf', [ReportsController::class, 'paymentPDF'])->name('payment.pdf');
+    Route::post('/entries/receipt/pdf', [ReportsController::class, 'receiptPDF'])->name('receipt.pdf');
+    Route::post('/entries/journal_voucher/pdf', [ReportsController::class, 'journalVoucherPDF'])->name('journal_voucher.pdf');
+
+    
+    // financial statement
+    Route::post('/financial_statement/balance_sheet/pdf', [ReportsController::class, 'balanceSheetPDF'])->name('balance_sheet.pdf');
+    Route::post('/financial_statement/income_statement/pdf', [ReportsController::class, 'incomeStatementPDF'])->name('income_statement.pdf');
 });
