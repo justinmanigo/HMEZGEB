@@ -131,10 +131,16 @@ class ReportsController extends Controller
         return $pdf->download('balance_sheet.pdf');
     }
     
-    public function incomeStatementPDF(Request $request)
+    public function incomeStatementSinglePDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.financial_statement.pdf.income_statement', compact('request'));
-        return $pdf->download('income_statement.pdf');
+        $pdf = \PDF::loadView('reports.financial_statement.pdf.income_statement_single', compact('request'));
+        return $pdf->download('income_statement_single.pdf');
+    }
+
+    public function incomeStatementMultiplePDF(Request $request)
+    {
+        $pdf = \PDF::loadView('reports.financial_statement.pdf.income_statement_multiple', compact('request'));
+        return $pdf->download('income_statement_multiple.pdf');
     }
 
   

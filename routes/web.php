@@ -70,7 +70,7 @@ Route::group([
         'middleware' => 'auth.accountingsystem',
     ], function(){
         Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
         
         Route::group([
             'as' => 'referrals.'
@@ -521,6 +521,7 @@ Route::group([
 
     
     // financial statement
-    Route::post('/financial_statement/balance_sheet/pdf', [ReportsController::class, 'balanceSheetPDF'])->name('balance_sheet.pdf');
-    Route::post('/financial_statement/income_statement/pdf', [ReportsController::class, 'incomeStatementPDF'])->name('income_statement.pdf');
+    Route::post('/financial_statement/balance/pdf', [ReportsController::class, 'balanceSheetPDF'])->name('balance_sheet.pdf');
+    Route::post('/financial_statement/income_statement_single/pdf', [ReportsController::class, 'incomeStatementSinglePDF'])->name('income_statement_single.pdf');
+    Route::post('/financial_statement/income_statement_multiple/pdf', [ReportsController::class, 'incomeStatementMultiplePDF'])->name('income_statement_multiple.pdf');
 });
