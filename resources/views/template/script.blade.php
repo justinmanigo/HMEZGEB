@@ -1,3 +1,5 @@
+    <div id="toast-container" class="toast-container position-fixed bottom-0 start-0 p-3"></div>
+    
     <!-- Bootstrap core JavaScript-->
     <script src="{{URL::asset('vendor/jquery/jquery.min.js')}}"></script> 
     <script src="{{URL::asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script> 
@@ -30,6 +32,9 @@
     <script>
         var controller;
     </script>
+
+    <script src="{{ url('/js/toast.js') }}"></script>
+    <script src="{{ url('/js/form-submit-ajax.js') }}"></script>
 
        <!-- Dump all dynamic scripts into template -->
         @stack('scripts')

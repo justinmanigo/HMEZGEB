@@ -26,7 +26,7 @@ class ReferralsController extends Controller
 
         CreateReferral::run($validated, 'normal');
 
-        return redirect('/referrals')->with('success', 'Successfully created a referral.');
+        return 'Successfully created a referral.';
     }
 
     public function storeAdvancedReferral(StoreAdvancedReferralRequest $request)
@@ -49,6 +49,6 @@ class ReferralsController extends Controller
             'trial_to' => $validated['trial_date_end'],
         ]);
 
-        return redirect('/referrals')->with('success', 'Successfuly created an advanced referral.');
+        return 'Successfuly created an advanced referral.';
     }
 }
