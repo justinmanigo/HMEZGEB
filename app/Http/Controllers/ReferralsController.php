@@ -41,7 +41,10 @@ class ReferralsController extends Controller
 
         Subscription::create([
             'referral_id' => $referral->id,
-            'account_limit' => $validated['number_of_accounts'],
+            'account_type' => $validated['account_type'],
+            'account_limit' => $validated['account_type'] == 'admin' 
+                ? $validated['number_of_accounts'] 
+                : 1,
             'trial_from' => $validated['trial_date_start'],
             'trial_to' => $validated['trial_date_end'],
         ]);
