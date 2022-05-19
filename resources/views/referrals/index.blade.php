@@ -60,7 +60,12 @@
 
                     @foreach($referrals as $referral)
                         <tr>
-                            <td>{{ $referral->code }}</td>
+                            <td>
+                                {{ $referral->code }}
+                                @if($referral->type == 'advanced')
+                                    <span class="badge badge-primary">Advanced</span>
+                                @endif
+                            </td>
                             <td>{{ \Carbon\Carbon::parse($referral->created_at)->format('Y-m-d') }}</td>
                             <td>{{ $referral->name }}</td>
                             <td>{{ $referral->email }}</td>
