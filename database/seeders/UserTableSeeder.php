@@ -101,67 +101,20 @@ class UserTableSeeder extends Seeder
             ]
         ]);
 
-        DB::table('permissions')->insert([
-            // User Account 1
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 1],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 2],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 3],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 4],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 5],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 6],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 7],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 8],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 9],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 10],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 11],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 12],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 13],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 14],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 15],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 16],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 17],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 18],
-            ['accounting_system_user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 19],
-            // User Account 2 System 1
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 1],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 2],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 3],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 4],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 5],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 6],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 7],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 8],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 9],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 10],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 11],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 12],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 13],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 14],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 15],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 16],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 17],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 18],
-            ['accounting_system_user_id' => 2, 'access_level' => 'rw', 'sub_module_id' => 19],
-            // User Account 2 System 2
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 1],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 2],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 3],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 4],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 5],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 6],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 7],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 8],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 9],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 10],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 11],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 12],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 13],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 14],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 15],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 16],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 17],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 18],
-            ['accounting_system_user_id' => 3, 'access_level' => 'rw', 'sub_module_id' => 19],
-        ]);
+        // Loop users
+        for($i = 1; $i <= 3; $i++)
+        {
+            // Loop permissions
+            for($j = 1; $j <= 24; $j++)
+            {
+                $permissions[] = [
+                    'accounting_system_user_id' => $i,
+                    'access_level' => 'rw',
+                    'sub_module_id' => $j,
+                ];
+            }
+        }
+
+        DB::table('permissions')->insert($permissions);
     }
 }
