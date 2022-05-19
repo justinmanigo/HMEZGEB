@@ -166,7 +166,9 @@ return [
          * Package Service Providers...
          */
         Riskihajar\Terbilang\TerbilangServiceProvider::class,
-
+        // PDF converter
+	    Barryvdh\DomPDF\ServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */
@@ -234,6 +236,8 @@ return [
         
         // Package Aliases 
         'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
+        // PDF converter
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];
