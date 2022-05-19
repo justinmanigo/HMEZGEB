@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Api\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class StoreReferralRequest extends FormRequest
+class StoreAdvancedReferralRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class StoreReferralRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::user()->control_panel_role != null;
     }
 
     /**
@@ -26,6 +27,10 @@ class StoreReferralRequest extends FormRequest
         return [
             'name' => ['required'],
             'email' => ['required', 'email'],
+            'account_type' => ['required'],
+            'number_of_accounts' => ['required', 'numeric', 'min:1', 'max:10'],
+            'trial_date_start' => ['required','after_or_equal:today'],
+            'trial_date_end' => ['required', 'after:trial_date_start'],
         ];
     }
 }

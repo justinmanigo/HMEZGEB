@@ -23,13 +23,24 @@
 <div class="d-sm-flex align-items-start justify-content-between mb-2">
     <h1>Referrals</h1>
     <div class="btn-group" role="group">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-referral">
-            <span class="icon text-white-50">
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-referral">
+            <span class="icon text-primary-50">
                 <i class="fas fa-file-import"></i>
             </span>
             <span class="text">New Normal Referral</span>
         </button>
+        @if(Auth::user()->control_panel_role == 'admin')
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-advanced-referral">
+            <span class="icon text-white-50">
+                <i class="fas fa-file-import"></i>
+            </span>
+            <span class="text">New Advanced Referral</span>
+        </button>
+        @endif
     </div>  
+</div>
+<div id="alert-container">
+
 </div>
 
 <div class="card">
@@ -52,7 +63,12 @@
 
                     @foreach($referrals as $referral)
                         <tr>
-                            <td>{{ $referral->code }}</td>
+                            <td>
+                                {{ $referral->code }}
+                                @if($referral->type == 'advanced')
+                                    <span class="badge badge-primary">Advanced</span>
+                                @endif
+                            </td>
                             <td>{{ \Carbon\Carbon::parse($referral->created_at)->format('Y-m-d') }}</td>
                             <td>{{ $referral->name }}</td>
                             <td>{{ $referral->email }}</td>
@@ -73,7 +89,7 @@
 </div>
 
 {{-- Modals --}}
-{{-- New Referral --}}
+{{-- New Normal Referral --}}
 <div class="modal fade" id="modal-referral" tabindex="-1" role="dialog" aria-labelledby="modal-referral-label" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -87,26 +103,113 @@
                 <div id="modal-referral-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-referral" method="post" action="{{ url('/referrals') }}">
+                <form id="form-referral" method="post" action="{{ url('/referrals') }}" class="ajax-submit" data-reload="1">
                     @csrf
                     <div class="form-group row">
                         <label for="r_name" class="col-12 col-lg-6 col-form-label">Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <input type="text" class="form-control" id="r_name" name="name" required>
                         </div>
+                        {{-- Error (Name) --}}
+                        <p id="error-form-referral-name" data-field="name" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
                         <label for="r_email" class="col-12 col-lg-6 col-form-label">Email<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <input type="email" class="form-control" id="r_email" name="email" required>
                         </div>
+                        {{-- Error (email) --}}
+                        <p id="error-form-referral-email" data-field="email" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <p>The referral code is auto-generated on submission.</p>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="r_submit_btn" form="form-referral">Create and Send Invitation</button>
+                <button id="close-form-referral" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="submit-form-referral" type="submit" class="btn btn-primary" form="form-referral">Create and Send Invitation</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- New Advanced Referral --}}
+<div class="modal fade" id="modal-advanced-referral" tabindex="-1" role="dialog" aria-labelledby="modal-advanced-referral-label" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-advanced-referral-label">New Advanced Referral</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-advanced-referral-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-advanced-referral" method="post" action="{{ url('/referrals') }}" class="ajax-submit" data-reload="1">
+                    @csrf
+                    @method('put')
+                    <h5>Basic Information</h5>
+                    <div class="form-group row">
+                        <label for="a_name" class="col-12 col-lg-6 col-form-label">Name<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <input type="text" class="form-control" id="a_name" name="name" required>
+                        </div>
+                        {{-- Error (Name) --}}
+                        <p id="error-form-advanced-referral-name" data-field="name" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                    </div>
+                    <div class="form-group row">
+                        <label for="a_email" class="col-12 col-lg-6 col-form-label">Email<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <input type="email" class="form-control" id="a_email" name="email" required>
+                        </div>
+                        {{-- Error (Email) --}}
+                        <p id="error-form-advanced-referral-email" data-field="email" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                    </div>
+                    <div class="form-group row">
+                        <label for="a_account_type" class="col-12 col-lg-6 col-form-label">Account Type<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <select class="form-control" id="a_account_type" name="account_type" required>
+                                <option value='' hidden>Select Account Type</option>
+                                <option value='admin'>Admin</option>
+                                <option value='moderator'>Moderator</option>
+                                <option value='member'>Member</option>
+                            </select>
+                        </div>
+                        {{-- Error (Account Type) --}}
+                        <p id="error-form-advanced-referral-account_type" data-field="account_type" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                    </div>
+                    <div class="form-group row">
+                        <label for="a_number_of_accounts" class="col-12 col-lg-6 col-form-label">Number of Accounts<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <input type="number" min="1" max="10" class="form-control" id="a_number_of_accounts" name="number_of_accounts" value="1" required>
+                        </div>
+                        {{-- Error (Number of Accounts) --}}
+                        <p id="error-form-advanced-referral-number_of_accounts" data-field="number_of_accounts" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                    </div>
+                    <h5>Trial Period</h5>
+                    <div class="form-group row">
+                        <label for="a_trial_date_start" class="col-12 col-lg-6 col-form-label">Start Date<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <input type="date" class="form-control" id="a_trial_date_start" name="trial_date_start" value="{{ now()->format('Y-m-d') }}" required>
+                        </div>
+                        {{-- Error (trial_date_start) --}}
+                        <p id="error-form-advanced-referral-trial_date_start" data-field="trial_date_start" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                    </div>
+                    <div class="form-group row">
+                        <label for="a_trial_date_end" class="col-12 col-lg-6 col-form-label">End Date<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <input type="date" class="form-control" id="a_trial_date_end" name="trial_date_end" value="{{ now()->addWeek()->format('Y-m-d') }}" required>
+                        </div>
+                        {{-- Error (trial_date_start) --}}
+                        <p id="error-form-advanced-referral-trial_date_end" data-field="trial_date_end" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                    </div>
+                    <p>The referral code is auto-generated on submission.</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="close-form-advanced-referral" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="submit-form-advanced-referral" type="submit" class="btn btn-primary" id="a_submit_btn" form="form-advanced-referral">Create and Send Invitation</button>
             </div>
         </div>
     </div>
