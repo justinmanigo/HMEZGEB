@@ -15,21 +15,33 @@
             <th>Actions</th>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ ucwords(Auth::user()->firstName . ' ' . Auth::user()->lastName) }}</td>
-                <td>{{ Auth::user()->email }}</td>
-                <td>{{ 'To be added later' }}</td>
-                <td>{{ 'To be added later' }}</td>
-                <td>{{ 'To be added later' }}</td>
-                <td>
-                    <a type="button" class="btn btn-primary" href="{{ url('settings/users/' . Auth::user()->id) }}/permissions">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-pen"></i>
-                        </span>
-                    </a>
-                    </button>
-                </td>
-            </tr>
+            @foreach($accountingSystemUsers as $user)
+                <tr>
+                    <td>{{ ucwords($user->firstName . ' ' . $user->lastName) }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>
+                        @if($user->role == 'admin')
+                            <span class="badge badge-success">{{ ucwords($user->role) }}</span>
+                        @elseif($user->role == 'moderator')
+                            <span class="badge badge-info">{{ ucwords($user->role) }}</span>
+                        @elseif($user->role == 'member')
+                            <span class="badge badge-warning">{{ ucwords($user->role) }}</span>
+                        @else
+                            <span class="badge badge-secondary">{{ 'Unknown' }}</span>
+                        @endif
+                    </td>
+                    <td><span class="text-muted">{{ 'To be added later' }}</span></td>
+                    <td><span class="text-muted">{{ 'To be added later' }}</span></td>
+                    <td>
+                        <a type="button" class="btn btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-pen"></i>
+                            </span>
+                        </a>
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </div>

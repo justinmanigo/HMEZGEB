@@ -63,32 +63,5 @@ class ModulesTableSeeder extends Seeder
             ['module_id' => 7, 'name' => 'entries', 'url' => '/reports/entries', 'duplicate_sub_module_id' => null],       
             ['module_id' => 7, 'name' => 'financial statement', 'url' => '/reports/financial_statement', 'duplicate_sub_module_id' => null],       
         ]);
-
-        DB::table('permissions')->insert([
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 1],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 2],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 3],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 4],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 5],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 6],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 7],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 8],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 9],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 10],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 11],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 12],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 13],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 14],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 15],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 16],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 17],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 18],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 19],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 20],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 21],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 22],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 23],
-            ['user_id' => 1, 'access_level' => 'rw', 'sub_module_id' => 24],
-        ]);
     }
 }

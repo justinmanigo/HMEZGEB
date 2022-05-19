@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use App\Actions\GetUserPermissions;
+use App\Actions\GetAccountingSystemUserPermissions;
 use App\Http\Controllers\Controller;
+use App\Models\AccountingSystemUser;
 use App\Models\User;
 use App\Models\Settings\Users\Module;
 use App\Models\Settings\Users\SubModule;
@@ -17,30 +18,45 @@ class ManageUsersController extends Controller
      */
     public function index()
     {
-        return view('settings.users.manageUsers.index');
+        $accountingSystemUsers = AccountingSystemUser::select(
+                'accounting_system_users.id as accounting_system_user_id',
+                'users.firstName',
+                'users.lastName',
+                'users.email',
+                'accounting_system_users.role',
+                // TODO: Add Status and Last Logged In
+            )
+            ->leftJoin('users', 
+            'users.id', '=', 'accounting_system_users.user_id')
+            ->where('accounting_system_id', $this->request->session()->get('accounting_system_id'))
+            ->get();
+
+        return view('settings.users.manageUsers.index', [
+            'accountingSystemUsers' => $accountingSystemUsers,
+        ]);
     }
 
     /**  
-     * @param \App\Models\User $user
+     * @param \App\Models\AccountingSystemUser $accountingSystemUser
      * @return \Illuminate\Contracts\View\View
      */   
-    public function editPermissions(User $user)
+    public function editPermissions(AccountingSystemUser $accountingSystemUser)
     {
         // Get modules
         $modules = Module::get();
-        $permissions = GetUserPermissions::run($modules, $user);
+        $permissions = GetAccountingSystemUserPermissions::run($modules, $accountingSystemUser->id);
 
         return view('settings.users.manageUsers.editPermissions', [
-            'user_id' => $user->id,
+            'user_id' => $accountingSystemUser->id,
             'modules' => $modules,
             'permissions' => $permissions
         ]);
     }
 
-    public function updatePermissions(Request $request, User $user)
+    public function updatePermissions(Request $request, AccountingSystemUser $accountingSystemUser)
     {
         // Delete existing permissions of user.
-        $user->permissions()->delete();
+        $accountingSystemUser->permissions()->delete();
 
         // Insert updated permissions of user.
         for($i = 0; $i < count($request->access_level); $i++)
@@ -49,7 +65,7 @@ class ManageUsersController extends Controller
             if($request->access_level[$i] == 'none') continue;
 
             Permission::create([
-                'user_id' => $user->id,
+                'accounting_system_user_id' => $accountingSystemUser->id,
                 'sub_module_id' => $request->submodule_id[$i],
                 'access_level' => $request->access_level[$i],
             ]);

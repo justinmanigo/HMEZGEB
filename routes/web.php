@@ -63,8 +63,22 @@ use App\Http\Controllers\ReportsController;
 Route::group([
     'middleware' => 'auth',
 ], function(){
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
+    Route::get('/switch', [App\Http\Controllers\HomeController::class, 'viewAccountingSystems']);
+    Route::put('/switch', [App\Http\Controllers\HomeController::class, 'switchAccountingSystem']);
+    
+    Route::group([
+        'middleware' => 'auth.accountingsystem',
+    ], function(){
+        Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        
+        Route::group([
+            'as' => 'referrals.'
+        ], function(){
+            Route::get('/referrals', [App\Http\Controllers\ReferralsController::class, 'index'])->name('index');
+            Route::post('/referrals', [App\Http\Controllers\ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
+        });
+    });
 });
 
 
@@ -362,8 +376,8 @@ Route::group([
     ], function() {
         // HTTP
         Route::get('/settings/users', [ManageUsersController::class, 'index'])->name('manageUsers');
-        Route::get('/settings/users/{user}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
-        Route::put('/settings/users/{user}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
+        Route::get('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
+        Route::put('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
     });
 
     /**

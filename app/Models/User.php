@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Settings\Users\Permission;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticationProvider;
 
@@ -24,6 +23,7 @@ class User extends Authenticatable
         'username',
         'firstName',
         'lastName',
+        'control_panel_role',
         'activated',
         'code',
         'email',
@@ -50,9 +50,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function permissions()
+    public function referrals()
     {
-        return $this->hasMany(Permission::class);
+        return $this->hasMany(Referral::class);
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
+    public function referredSubscriptions()
+    {
+        return $this->hasMany(Subscriptions::class, 'referral_user_id', 'user_id');
+    }
+
+    public function accountingSystemUsers()
+    {
+        return $this->hasMany(AccountingSystemUser::class);
     }
 
     public function confirmTwoFactorAuth($code)

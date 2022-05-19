@@ -5,9 +5,11 @@ namespace App\Actions;
 use Lorisleiva\Actions\Concerns\AsAction;
 use App\Models\Settings\Users\SubModule;
 
-class GetUserPermissions
+class GetAccountingSystemUserPermissions
 {
     use AsAction;
+
+    // TODO: Integrate with Accounting Systems later.
 
     /**
      * * * SQL Query for getting current users' permissions: * * *
@@ -23,11 +25,11 @@ class GetUserPermissions
      * where `sub_modules`.`module_id` = 3
      * and `sub_modules`.`duplicate_sub_module_id` is null
      */
-    public function handle($modules, $user, $showDuplicates = 0)
+    public function handle($modules, $accounting_system_user_id, $showDuplicates = 0)
     {
         $subQuery = SubModule::select('permissions.access_level', 'sub_modules.id')
             ->leftJoin('permissions', 'permissions.sub_module_id', '=', 'sub_modules.id')
-            ->where('permissions.user_id', $user->id);
+            ->where('permissions.accounting_system_user_id', $accounting_system_user_id);
 
         for($i = 0; $i < count($modules); $i++)
         {
