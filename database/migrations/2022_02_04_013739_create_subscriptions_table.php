@@ -19,6 +19,11 @@ class CreateSubscriptionsTable extends Migration
             $table->tinyInteger('account_limit');
             $table->date('trial_from')->nullable();
             $table->date('trial_to')->nullable();
+            $table->enum('account_type', [      // this part is something to be clarified
+                'admin',                        // later on in the progress meeting with
+                'moderator',                    // the client.
+                'member',
+            ])->default('admin');
             $table->enum('payment_status', [ 
                 'pending',
                 'paid',
