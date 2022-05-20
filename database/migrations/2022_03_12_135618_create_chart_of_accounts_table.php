@@ -21,7 +21,7 @@ class CreateChartOfAccountsTable extends Migration
             $table->string('bank_account_number')->nullable();
             $table->string('bank_branch')->nullable(); 
             $table->string('bank_account_type')->nullable(); 
-            $table->float('current_balance')->default(0); 
+            $table->float('current_balance')->nullable(); 
             $table->enum('status',['Active','Closed'])->default('Active');
             $table->timestamps();
         });
