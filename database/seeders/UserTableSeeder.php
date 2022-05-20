@@ -110,6 +110,17 @@ class UserTableSeeder extends Seeder
         // Loop accounting systems
         for($i = 1; $i <= 3; $i++)
         {
+            // Setup accounting period for each accounting system
+            $accounting_period[] = [
+                'accounting_system_id' => $i,
+                'date_from' => '2022-05-01',
+                'date_to' => '2022-05-31',
+                'date_from_ethiopian' => '2014-08-23',
+                'date_to_ethiopian' => '2014-09-23',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+
             // Loop months
             for($j = 1; $j <= 12; $j++)
             {
@@ -156,6 +167,8 @@ class UserTableSeeder extends Seeder
 
 
         DB::table('period_settings')->insert($period_settings);
+
+        DB::table('accounting_periods')->insert($accounting_period);
 
         // Loop users
         for($i = 1; $i <= 3; $i++)
