@@ -4,58 +4,71 @@
 
 <table>
     <thead>
-        <th class="center">ASSETS</th>
+        <th class="center" width="50%">ASSETS</th>
         <th class="align-right">DEBIT</th>
         <th class="align-right">CREDIT</th>
     </thead>
-    <thead>
-        <th width="50%">Current Assets</th>
-        <th></th>
-        <th></th>
-    </thead>
     <tbody>
         <tr>
-            <th>Cash on Hand</th>
+            <td>Current Assets</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Cash on Hand</td>
             <td>1000</td>
             <td>100</td>
         </tr>
         <tr>
-            <th>Accounts Receivable</th>
+            <td>Accounts Receivable</td>
             <td class="border-bottom">1000</td>
             <td>100</td>
         </tr>
-        <br>
         <tr>
-            <th>Total Current Assets</th>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Current Assets</td>
             <td>1000</td>
             <td>100</td>
         </tr>
-        <br>
         <tr>
-            <th>Property and Equipment</th>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Property and Equipment</td>
             <td>1000</td>
             <td>100</td>
         </tr>
-        <br>
         <tr>
-            <th>Property and Equipment</th>
-            <td>1000</td>
-            <td>100</td>
-        </tr><br>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
         <tr>
-            <th>Other Assets</th>
+            <td>Property and Equipment</td>
             <td>1000</td>
             <td>100</td>
         </tr>
-        <br>
         <tr>
-            <th>Total Other Assets</th>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Other Assets</td>
             <td>1000</td>
             <td>100</td>
         </tr>
-        <br>
         <tr>
-            <th>Total Assets</th>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Other Assets</td>
+            <td>1000</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Assets</td>
             <td>1000</td>
             <td>100</td>
         </tr>
@@ -65,69 +78,88 @@
 
 <table>
     <thead>
-        <th class="center">LIABILITIES AND CAPITAL</th>
+        <th class="center" width="50%">LIABILITIES AND CAPITAL</th>
+        <th class="align-right">DEBIT</th>
+        <th class="align-right">CREDIT</th>
     </thead>
-    <thead>
-        <th width="50%">Current Liabilities</th>
-        <th></th>
-        <th></th>
-    </thead>
+
     <tbody>
         <tr>
-            <th>VAT Payables</th>
-            <td>1000</td>
-            <td>100</td>
-        <tr>
-        <br>
-        <tr>
-            <th>Total Current Liabilities</th>
-            <td>1000</td>
-            <td>100</td>
+            <td>Current Liabilities</td>
+            <td></td>
+            <td></td>
         </tr>
-        <br>
         <tr>
-            <th>Long-Term Liabilities</th>
-            <td>1000</td>
-            <td>100</td>
-        </tr>
-        <br>
-        <tr>
-            <th>Total Long-Term Liabilities</th>
-            <td>1000</td>
-            <td>100</td>
-        </tr>
-        <br>
-        <tr>
-            <th>Total Liabilities</th>
-            <td>1000</td>
-            <td>100</td>
-        </tr>
-        <br>
-        <tr>
-            <th>Capital</th>
-            <td>1000</td>
-            <td>100</td>
-        </tr>
-        <br>
-        <tr>
-            <th>Capital</th>
+            <td>VAT Payables</td>
             <td>1000</td>
             <td>100</td>
         </tr>
         <tr>
-            <th>Net Income</th>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Current Liabilities</td>
             <td>1000</td>
             <td>100</td>
         </tr>
-        <br>
         <tr>
-            <th>Total Capital</th>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Long-Term Liabilities</td>
             <td>1000</td>
             <td>100</td>
         </tr>
-        <br>
         <tr>
-            <th>Total Liabilities & Capital</th>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Long-Term Liabilities</td>
+            <td>1000</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Liabilities</td>
+            <td>1000</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Capital</td>
+            <td>1000</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Capital</td>
+            <td>1000</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td>Net Income</td>
+            <td>1000</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Capital</td>
+            <td>1000</td>
+            <td>100</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="blank_row"></td>
+        </tr>
+        <tr>
+            <td>Total Liabilities & Capital</td>
             <td>1000</td>
             <td>100</td>
         </tr>

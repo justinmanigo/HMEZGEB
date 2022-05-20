@@ -6,6 +6,8 @@
 <table>
     <thead>
         <th class="center" width="50%">REVENUES</th>
+        <th>DEBIT</th>
+        <th>CREDIT</th>
     </thead>
     <tbody>
         <tr>
@@ -32,6 +34,8 @@
 <table>
     <thead>
         <th class="center" width="50%">EXPENSES</th>
+        <th>DEBIT</th>
+        <th>CREDIT</th>
     </thead>
     <tbody>
         <tr>
@@ -75,7 +79,7 @@
             <th>NET INCOME/LOSE</th>
             <td>1000</td>
             <td>100</td>
-        <tr>
+        </tr>
     </tfoot>
 </table>
 @endsection

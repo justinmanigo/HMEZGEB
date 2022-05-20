@@ -11,16 +11,23 @@
         }
         table{
             width: 100%;
-            margin-top: 25px
+            margin-top: 25px;
+            border:1px solid black;
+            border-collapse: collapse;
         }
         th,td{
             text-align:left;
-        }
-        .align-center{
-            text-align: center;
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 2px;
         }
         .border-bottom{
             border-bottom: 1px solid black;
+        }
+        .blank_row
+        {
+            height: 15px ;
+
         }
 
     </style>

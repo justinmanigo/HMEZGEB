@@ -5,8 +5,9 @@
 
 <table>
     <thead>
-        <th class="center" width="50%"></th>
-    </thead>
+        <th width="50%"></th>
+        <th class="align-right">DEBIT</th>
+        <th class="align-right">CREDIT</th>    </thead>
     <tbody>
         <tr>
             <td>Sales</td>
@@ -32,6 +33,8 @@
 <table>
     <thead>
         <th class="center" width="50%">OPERATING EXPENSES</th>
+        <th>DEBIT</th>
+        <th>CREDIT</th>
     </thead>
     <tbody>
         <tr>
@@ -65,7 +68,7 @@
             <th>OPERATING INCOME</th>
             <td>1000</td>
             <td>100</td>
-        <tr>
+        </tr>
     </tfoot>
 </table>
 
@@ -73,6 +76,8 @@
 <table>
     <thead>
         <th class="center" width="50%">NON-OPERATING OR OTHER</th>
+        <th>DEBIT</th>
+        <th>CREDIT</th>
     </thead>
     <tbody>
         <tr>
@@ -96,7 +101,7 @@
             <th>NET INCOME/LOSE</th>
             <td>1000</td>
             <td>100</td>
-        <tr>
+        </tr>
     </tfoot>
 </table>
 @endsection
