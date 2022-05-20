@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use App\Models\AccountingSystemUser;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\GetLatestAccountingPeriod;
 use App\Actions\GetLoggedAccountingSystemUserId;
 
 class HomeController extends Controller
@@ -27,6 +29,8 @@ class HomeController extends Controller
         // If the number of accounting systems' is only one, skip ahead to dashboard.
         if(count($user->accountingSystemUsers) == 1) {
             $accounting_system_user = GetLoggedAccountingSystemUserId::run($user->accountingSystemUsers[0]->accounting_system_id, Auth::id());
+
+            $latest_accounting_period = GetLatestAccountingPeriod::run($user->accountingSystemUsers[0]->accounting_system_id);
             
             $this->request->session()->put('accounting_system_id', $user->accountingSystemUsers[0]->accounting_system_id);
             $this->request->session()->put('accounting_system_user_id', $accounting_system_user->id);
@@ -51,10 +55,13 @@ class HomeController extends Controller
         // If the result is null, redirect him back to the accounting system selection page.
         if(!$accounting_system_user) return redirect('/switch')->with('danger', "You are not a member of this accounting system.");
 
-        // Otherwise, add accounting_system_id and accounting_system_user_id to
+        $latest_accounting_period = GetLatestAccountingPeriod::run($this->request->accounting_system_id);
+
+        // Otherwise, add accounting_system_id, accounting_system_user_id, and accounting_period_id to
         // current session
         $this->request->session()->put('accounting_system_id', $this->request->accounting_system_id);
         $this->request->session()->put('accounting_system_user_id', $accounting_system_user->id);
+        $this->request->session()->put('accounting_period_id', $latest_accounting_period->id);
         
         return redirect('/');
     }
