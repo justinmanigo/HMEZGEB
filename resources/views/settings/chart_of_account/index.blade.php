@@ -112,7 +112,7 @@
             </button> 
         </div>
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-coa">
+            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-beginning-balance">
                 <span class="icon text-white-50">
                     <i class="fas fa-pen"></i>
                 </span>
@@ -277,6 +277,57 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary" form="form-coa">Save Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Beginning Balance --}}
+<div class="modal fade" id="modal-beginning-balance" tabindex="-1" role="dialog" aria-labelledby="modal-beginning-balance-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-beginning-balance-label">Configure Beginning Balance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>You are currently configuring the beginning balance for <strong>{{ 'Accounting Period 1' }}</strong> <i>{{ '(2014-09-01 - 2014-09-30)' }}</i>
+                <form id="form-beginning-balance" method="post" action="{{ url('/ajax/settings/coa/beginning-balance') }}">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <th>Account #</th>
+                                <th>Account Name</th>
+                                <th>Category</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </thead>
+                            <thead>
+                                <th colspan="5">Debits</th>
+                            </thead>
+                            <tbody id="coa_debit"></tbody>
+                            <thead>
+                                <th colspan="5">Credits</th>
+                            </thead>
+                            <tbody id="coa_credit"></tbody>
+                            <tfoot>
+                                <th colspan="3" class="pt-2">Total</th>
+                                <th>
+                                    <p id="coa_debit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                                <th>
+                                    <p id="coa_credit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="form-beginning-balance" disabled='true'>Save Beginning Balance</button>
             </div>
         </div>
     </div>
