@@ -34,6 +34,7 @@ class HomeController extends Controller
             
             $this->request->session()->put('accounting_system_id', $user->accountingSystemUsers[0]->accounting_system_id);
             $this->request->session()->put('accounting_system_user_id', $accounting_system_user->id);
+            $this->request->session()->put('accounting_period_id', $latest_accounting_period->id);
 
             return redirect('/');
         }
