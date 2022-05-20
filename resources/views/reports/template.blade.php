@@ -29,6 +29,10 @@
 <body>
     <main>
     <h1 class="center">Hmezgeb</h1>
+    {{-- section page title --}}
+    <h3 class="center">@yield('page_title')</h3>
+    {{-- section content --}}
+    <p class="center">{{$request->date_from}} - {{$request->date_to}}</p>
         @yield('content')
     </main>
 

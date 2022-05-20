@@ -1,7 +1,8 @@
+
 @extends('reports.template')
+@section('page_title', 'Income Statement')
 @section('content')
-<h4 class="center">Income Statement</h4>
-<p class="center">{{$request->date_from}} - {{$request->date_to}}</p>
+
 <table>
     <thead>
         <th class="center" width="50%"></th>

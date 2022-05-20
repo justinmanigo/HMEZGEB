@@ -1,7 +1,7 @@
 @extends('reports.template')
+@section('page_title', 'Journal Voucher')
 @section('content')
-<h4 class="center">Journal Voucher</h4>
-<p class="center">{{$request->date_from}} - {{$request->date_to}}</p>
+
 <table>
     <thead>
         <th>REFERENCE</th>

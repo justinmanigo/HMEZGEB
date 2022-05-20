@@ -1,7 +1,7 @@
 @extends('reports.template')
+@section('page_title', 'Balance Sheet')
 @section('content')
-<h4 class="center">Balance Sheet</h4>
-<p class="center">{{$request->date_from}} - {{$request->date_to}}</p>
+
 <table>
     <thead>
         <th class="center">ASSETS</th>
