@@ -44,6 +44,8 @@ class UserTableSeeder extends Seeder
         DB::table('accounting_systems')->insert([
             [
                 'name' => 'Test Accounting System',
+                'calendar_type' => 'gregorian',
+                'calendar_type_view' => 'gregorian',
                 'address' => 'Cebu',
                 'city' => 'Cebu City',
                 'mobile_number' => '09123456789',
@@ -57,6 +59,8 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Test Accounting System 2',
+                'calendar_type' => 'gregorian',
+                'calendar_type_view' => 'gregorian',
                 'address' => 'Cebu',
                 'city' => 'Cebu City',
                 'mobile_number' => '09123456789',
@@ -70,6 +74,8 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Test Accounting System 3',
+                'calendar_type' => 'gregorian',
+                'calendar_type_view' => 'gregorian',
                 'address' => 'Cebu',
                 'city' => 'Cebu City',
                 'mobile_number' => '09123456789',
@@ -100,6 +106,56 @@ class UserTableSeeder extends Seeder
                 'role' => 'admin',
             ]
         ]);
+
+        // Loop accounting systems
+        for($i = 1; $i <= 3; $i++)
+        {
+            // Loop months
+            for($j = 1; $j <= 12; $j++)
+            {
+                // Gregorian Months
+                switch($j)
+                {
+                    case 1:     $day = 31; $day_leap = 31; break;
+                    case 2:     $day = 28; $day_leap = 29; break;
+                    case 3:     $day = 31; $day_leap = 31; break;
+                    case 4:     $day = 30; $day_leap = 30; break;
+                    case 5:     $day = 31; $day_leap = 31; break;
+                    case 6:     $day = 30; $day_leap = 30; break;
+                    case 7:     $day = 31; $day_leap = 31; break;
+                    case 8:     $day = 31; $day_leap = 31; break;
+                    case 9:     $day = 30; $day_leap = 30; break;
+                    case 10:    $day = 31; $day_leap = 31; break;
+                    case 11:    $day = 30; $day_leap = 30; break;
+                    case 12:    $day = 31; $day_leap = 31; break;
+                }
+
+                // Create period settings row
+                $period_settings[] = [
+                    'accounting_system_id' => $i,
+                    // Date From
+                    'month_from' => $j,
+                    'day_from' => 1,
+                    // Date To
+                    'month_to' => $j,
+                    'day_to' => $day,
+                    // Date From Leap
+                    'month_from_leap' => $j,
+                    'day_from_leap' => 1,
+                    // Date To Leap
+                    'month_to_leap' => $j,
+                    'day_to_leap' => $day_leap,
+                    // TODO: Ethiopian Date Support Later
+                    // User ID
+                    'accounting_system_user_id' => $i,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+
+        DB::table('period_settings')->insert($period_settings);
 
         // Loop users
         for($i = 1; $i <= 3; $i++)
