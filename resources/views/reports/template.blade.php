@@ -10,13 +10,19 @@
             text-align: center;
         }
         table{
-            border-collapse: collapse;
             width: 100%;
             margin-top: 25px
         }
         th,td{
             text-align:left;
         }
+        .align-center{
+            text-align: center;
+        }
+        .border-bottom{
+            border-bottom: 1px solid black;
+        }
+
     </style>
 </head>
 

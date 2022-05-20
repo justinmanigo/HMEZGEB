@@ -5,6 +5,8 @@
 <table>
     <thead>
         <th class="center">ASSETS</th>
+        <th class="align-right">DEBIT</th>
+        <th class="align-right">CREDIT</th>
     </thead>
     <thead>
         <th width="50%">Current Assets</th>
@@ -19,7 +21,7 @@
         </tr>
         <tr>
             <th>Accounts Receivable</th>
-            <td>1000</td>
+            <td class="border-bottom">1000</td>
             <td>100</td>
         </tr>
         <br>
