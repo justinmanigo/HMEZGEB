@@ -113,6 +113,7 @@ class UserTableSeeder extends Seeder
             // Setup accounting period for each accounting system
             $accounting_period[] = [
                 'accounting_system_id' => $i,
+                'period_number' => 1,
                 'date_from' => '2022-05-01',
                 'date_to' => '2022-05-31',
                 'date_from_ethiopian' => '2014-08-23',
