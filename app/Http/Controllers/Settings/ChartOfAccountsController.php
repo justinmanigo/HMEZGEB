@@ -83,6 +83,7 @@ class ChartOfAccountsController extends Controller
         // temporary value will be null.
         $poa = PeriodOfAccounts::create([
             'chart_of_account_id' => $coa->id,
+            'accounting_period_id' => $request->session()->get('accounting_period_id'),
             'beginning_balance' => $request->coa_beginning_balance,
         ]);
 
