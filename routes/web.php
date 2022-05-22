@@ -80,7 +80,7 @@ Route::group([
         /**
          * Home
          */
-        Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('/', [HomeController::class, 'index']);
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         
         /**===================== ACCOUNT MODULES =====================**/
