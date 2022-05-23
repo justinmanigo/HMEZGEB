@@ -22,7 +22,7 @@
                {{--! NO DESCRIPTION YET --}}
                N/A
             </td>
-            <td>
+            <td class="text-end">
                {{$jv->journalEntry->journalPostings[0]->amount}}
             </td>
             <td></td>
@@ -37,7 +37,7 @@
                  N/A
             </td>
             <td></td>
-            <td>{{$jv->journalEntry->journalPostings[1]->amount}}</td>
+            <td class="text-end">{{$jv->journalEntry->journalPostings[1]->amount}}</td>
         </tr>
         @endforeach
     </tbody>
@@ -47,10 +47,10 @@
             <td></td>
             <td></td>
             <td>TOTAL</td>
-            <td>
+            <td class="text-end">
                 {{$totalDebit}}
             </td>
-            <td>
+            <td class="text-end">
                 {{$totalCredit}}
             </td>
         </tr>

@@ -30,6 +30,11 @@
 
         }
 
+        .text-end
+        {
+            text-align:right;
+        }
+
     </style>
 </head>
 
