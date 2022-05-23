@@ -12,6 +12,7 @@ class Subscription extends Model
     protected $fillable = [
         'user_id',
         'account_limit',
+        'account_type',
         'trial_from',
         'trial_to',
         'active_since_at',

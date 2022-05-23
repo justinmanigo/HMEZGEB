@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Referral;
+use App\Actions\CreateReferral;
 use App\Http\Requests\StoreReferralRequest;
+use App\Http\Requests\StoreAdvancedReferralRequest;
+use App\Models\Referral;
+use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
 
 class ReferralsController extends Controller
@@ -21,12 +24,31 @@ class ReferralsController extends Controller
     {
         $validated = $request->validated();
 
-        Referral::create([
-            'user_id' => Auth::user()->id,
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+        CreateReferral::run($validated, 'normal');
+
+        return 'Successfully created a referral.';
+    }
+
+    public function storeAdvancedReferral(StoreAdvancedReferralRequest $request)
+    {
+        $validated = $request->validated();
+
+        // return $validated;
+
+        // TODO: Review where to add account type.
+
+        $referral = CreateReferral::run($validated, 'advanced');
+
+        Subscription::create([
+            'referral_id' => $referral->id,
+            'account_type' => $validated['account_type'],
+            'account_limit' => $validated['account_type'] == 'admin' 
+                ? $validated['number_of_accounts'] 
+                : 1,
+            'trial_from' => $validated['trial_date_start'],
+            'trial_to' => $validated['trial_date_end'],
         ]);
 
-        return redirect('/referrals')->with('success', 'Successfully created a referral.');
+        return 'Successfuly created an advanced referral.';
     }
 }
