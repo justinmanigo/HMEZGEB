@@ -4,28 +4,28 @@
 @section('content')
 
 <table>
-    <thead>
-        <th class="center" width="50%">REVENUES</th>
-        <th>DEBIT</th>
-        <th>CREDIT</th>
+    <thead >
+        <th class="text-start" width="50%">REVENUES</th>
+        <th></th>
+        <th></th>
     </thead>
     <tbody>
         <tr>
-            <td>Sales</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Sales</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
         <tr>
-            <td>Gains</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Gains</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
-            <th>Total Revenue</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">Total Revenue</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
     </tfoot>
 
@@ -33,52 +33,52 @@
 
 <table>
     <thead>
-        <th class="center" width="50%">EXPENSES</th>
-        <th>DEBIT</th>
-        <th>CREDIT</th>
+        <th class="text-start" width="50%">EXPENSES</th>
+        <th></th>
+        <th></th>
     </thead>
     <tbody>
         <tr>
-            <td>Cost of Goods Sold</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Cost of Goods Sold</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
-            <td>Salaries</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Salaries</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
-            <td>Rent</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Rent</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
-            <td>Utilities</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Utilities</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
-            <td>Interest Expense</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Interest Expense</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>    
         <tr>
-            <td>Depreciation</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-start">Depreciation</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
     </tbody>
     <tfoot>
         <tr>
-            <th>Total Expenses</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">Total Expenses</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
         <tr>
-            <th>NET INCOME/LOSE</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">NET INCOME/LOSE</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
     </tfoot>
 </table>

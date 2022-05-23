@@ -6,25 +6,26 @@
 <table>
     <thead>
         <th width="50%"></th>
-        <th class="align-right">DEBIT</th>
-        <th class="align-right">CREDIT</th>    </thead>
+        <th></th>
+        <th></th>    
+    </thead>
     <tbody>
         <tr>
             <td>Sales</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
         <tr>
             <td>Cost of Goods Sold</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
-            <th>Gross Profit</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">Gross Profit</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
     </tfoot>
 
@@ -32,42 +33,42 @@
 
 <table>
     <thead>
-        <th class="center" width="50%">OPERATING EXPENSES</th>
-        <th>DEBIT</th>
-        <th>CREDIT</th>
+        <th class="text-start" width="50%">OPERATING EXPENSES</th>
+        <th></th>
+        <th></th>
     </thead>
     <tbody>
         <tr>
             <td>Salaries</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
             <td>Rent</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
             <td>Utilities</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
             <td>Depreciation</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
     </tbody>
     <tfoot>
         <tr>
-            <th>Total Operating Expenses</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">Total Operating Expenses</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
         <tr>
-            <th>OPERATING INCOME</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">OPERATING INCOME</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
     </tfoot>
 </table>
@@ -75,32 +76,32 @@
 
 <table>
     <thead>
-        <th class="center" width="50%">NON-OPERATING OR OTHER</th>
-        <th>DEBIT</th>
-        <th>CREDIT</th>
+        <th class="text-start" width="50%">NON-OPERATING OR OTHER</th>
+        <th></th>
+        <th></th>
     </thead>
     <tbody>
         <tr>
             <td>Gains</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
         <tr>
             <td>Interest Expense</td>
-            <td>1000</td>
-            <td>100</td>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         <tr>
     </tbody>
     <tfoot>
         <tr>
-            <th>Total Non-Operating or Other</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">Total Non-Operating or Other</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
         <tr>
-            <th>NET INCOME/LOSE</th>
-            <td>1000</td>
-            <td>100</td>
+            <th class="text-start">NET INCOME/LOSE</th>
+            <td class="text-end">1000</td>
+            <td class="text-end">100</td>
         </tr>
     </tfoot>
 </table>
