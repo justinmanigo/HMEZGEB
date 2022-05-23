@@ -59,11 +59,11 @@
 
 <body>
     <main>
-    <h1 class="center">Hmezgeb</h1>
+    <h1 class="text-center">Hmezgeb</h1>
     {{-- section page title --}}
-    <h3 class="center">@yield('page_title')</h3>
+    <h3 class="text-center">@yield('page_title')</h3>
     {{-- section content --}}
-    <p class="center">{{$request->date_from}} - {{$request->date_to}}</p>
+    <p class="text-center">{{$request->date_from}} - {{$request->date_to}}</p>
         @yield('content')
     </main>
 
