@@ -137,6 +137,12 @@ class ReportsController extends Controller
         $pdf = \PDF::loadView('reports.financial_statement.pdf.balance_sheet', compact('request'));
         return $pdf->download('balance_sheet.pdf');
     }
+
+    public function balanceSheetZeroAccountPDF(Request $request)
+    {
+        $pdf = \PDF::loadView('reports.financial_statement.pdf.balance_sheet_zero_account', compact('request'));
+        return $pdf->download('balance_sheet_zero_account.pdf');
+    }
     
     public function incomeStatementSinglePDF(Request $request)
     {
