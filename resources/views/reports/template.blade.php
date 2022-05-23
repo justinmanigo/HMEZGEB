@@ -6,28 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PDF</title>
     <style>
-        .center{
-            text-align: center;
-        }
         table{
             width: 100%;
             margin-top: 25px;
-            border:1px solid black;
             border-collapse: collapse;
         }
-        th,td{
+
+        .table-total {
+            color:darkgreen;
+        }
+
+        .table-bordered th, .table-bordered td{
             text-align:left;
             border: 1px solid black;
             border-collapse: collapse;
             padding: 2px;
         }
+
+        /* th,td{
+            
+        } */
         .border-bottom{
             border-bottom: 1px solid black;
         }
         .blank_row
         {
             height: 15px ;
+        }
 
+        tfoot, .border-top-3
+        {
+            border-top:3px solid black;
+        }
+
+        .text-start
+        {
+            text-align:left;
+        }
+
+        .text-center{
+            text-align: center;
         }
 
         .text-end
@@ -36,6 +54,7 @@
         }
 
     </style>
+    @stack('style')
 </head>
 
 <body>
