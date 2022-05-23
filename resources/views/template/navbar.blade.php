@@ -144,7 +144,7 @@
                     <!-- Topbar Accounting System Name & Year -->
                     <div>
                         <strong>{{ date('Y') }} - {{ $accounting_system->name }}</strong><br>
-                        <small>{{ $accounting_period_year->format('M Y') }}</small>
+                        <small><strong>{{ "Accounting Period # {$accounting_period->period_number}" }}</strong> | {{ $accounting_period_year->format('M Y') }}</small>
                     </div>
 
                     <!-- Topbar Navbar -->
