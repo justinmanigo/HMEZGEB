@@ -530,12 +530,13 @@ Route::group([
                 // HTTP
                 Route::get('/settings/coa', [ChartOfAccountsController::class, 'index'])->name('index');
                 Route::post('/settings/coa', [ChartOfAccountsController::class, 'store'])->name('store');
-
+                
                 // AJAX
                 Route::get('/ajax/settings/coa/search/{query}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
                 Route::get('/ajax/settings/coa_categories/search', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa_categories/search/{query}', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa/beginning-balance', [ChartOfAccountsController::class, 'ajaxGetCOAForBeginningBalance']);
+                Route::post('/ajax/settings/coa/beginning-balance', [ChartOfAccountsController::class, 'storeBeginningBalance']);
             });
 
             /**

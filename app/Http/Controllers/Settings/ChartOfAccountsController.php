@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Actions\GetLatestAccountingPeriod;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBeginningBalanceRequest;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccountCategory;
 use App\Models\Settings\ChartOfAccounts\PeriodOfAccounts;
@@ -89,6 +90,14 @@ class ChartOfAccountsController extends Controller
         ]);
 
         return back()->with('success', 'Successfully stored new Chart of Account.');
+    }
+
+    /**
+     * 
+     */
+    public function storeBeginningBalance(StoreBeginningBalanceRequest $request)
+    {
+        return $request;
     }
 
     /**

@@ -297,6 +297,7 @@
                     <span class="sr-only">Loading...</span>
                 </div>
                 <form id="form-beginning-balance" method="post" action="{{ url('/ajax/settings/coa/beginning-balance') }}" style="display:none">
+                    @csrf
                     <p>You are currently configuring the beginning balance for <strong id="bb_accounting_period_number"></strong> (<span id="bb_accounting_period_date_from"></span> - <span id="bb_accounting_period_date_to"></span>)</i>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
@@ -399,13 +400,13 @@
                 <td>${coa.category}</td>
                 <td>
                     ${type == 'debit'
-                        ? `<input name="debit_amount[]" class="bb_debit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00">`
+                        ? `<input name="debit_amount[]" class="bb_debit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" required>`
                         : ''
                     }
                 </td>
                 <td>
                     ${type == 'credit'
-                        ? `<input name="credit_amount[]" class="bb_credit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00">`
+                        ? `<input name="credit_amount[]" class="bb_credit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" required>`
                         : ''
                     }
                 </td>
