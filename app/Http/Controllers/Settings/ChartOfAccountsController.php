@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Actions\GetLatestAccountingPeriod;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
@@ -170,7 +171,10 @@ class ChartOfAccountsController extends Controller
 
         $credits = clone $debits;
 
+        $accountingPeriod = GetLatestAccountingPeriod::run($this->request->session()->get('accounting_system_id'));
+
         return [
+            'accounting_period' => $accountingPeriod,
             'debits' => $debits->where('chart_of_account_categories.normal_balance', 'Debit')->get(),
             'credits' => $credits->where('chart_of_account_categories.normal_balance', 'Credit')->get(),
         ];
