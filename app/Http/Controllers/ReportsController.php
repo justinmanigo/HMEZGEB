@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Reports;
 use Illuminate\Http\Request;
+use App\Models\JournalVouchers;
+use App\Models\Settings\ChartOfAccounts\JournalPostings;
 use PDF;
 
 class ReportsController extends Controller
@@ -120,7 +122,12 @@ class ReportsController extends Controller
 
     public function journalVoucherPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.entries.pdf.journal_voucher', compact('request'));
+        $journalVouchers = JournalVouchers::all();
+        // sum debit credit amount
+        $totalDebit = JournalPostings::where('type', '=', 'debit')->sum('amount');
+        $totalCredit = JournalPostings::where('type', '=', 'credit')->sum('amount'); 
+
+        $pdf = \PDF::loadView('reports.entries.pdf.journal_voucher', compact('request','journalVouchers','totalDebit','totalCredit'));
         return $pdf->download('journal_voucher.pdf');
     }
     
@@ -130,11 +137,23 @@ class ReportsController extends Controller
         $pdf = \PDF::loadView('reports.financial_statement.pdf.balance_sheet', compact('request'));
         return $pdf->download('balance_sheet.pdf');
     }
-    
-    public function incomeStatementPDF(Request $request)
+
+    public function balanceSheetZeroAccountPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.financial_statement.pdf.income_statement', compact('request'));
-        return $pdf->download('income_statement.pdf');
+        $pdf = \PDF::loadView('reports.financial_statement.pdf.balance_sheet_zero_account', compact('request'));
+        return $pdf->download('balance_sheet_zero_account.pdf');
+    }
+    
+    public function incomeStatementSinglePDF(Request $request)
+    {
+        $pdf = \PDF::loadView('reports.financial_statement.pdf.income_statement_single', compact('request'));
+        return $pdf->download('income_statement_single.pdf');
+    }
+
+    public function incomeStatementMultiplePDF(Request $request)
+    {
+        $pdf = \PDF::loadView('reports.financial_statement.pdf.income_statement_multiple', compact('request'));
+        return $pdf->download('income_statement_multiple.pdf');
     }
 
   
