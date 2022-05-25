@@ -45,17 +45,25 @@ class StoreBeginningBalanceRequest extends FormRequest
             $sum_debits = 0; 
             $sum_credits = 0;
 
-            foreach($this->get('debit_amount') as $amount) {
-                $sum_debits += intval($amount);
+            if(is_array($this->get('debit_amount')) && is_array($this->get('credit_amount')))
+            {
+                foreach($this->get('debit_amount') as $amount) {
+                    $sum_debits += intval($amount);
+                }
+    
+                foreach($this->get('credit_amount') as $amount) {
+                    $sum_credits += intval($amount);
+                }
+    
+                if($sum_debits != $sum_credits) {
+                    $validator->errors()->add("sum", 'The sum of debits and credits must match.');
+                }
+            }
+            else
+            {
+                $validator->errors()->add("sum", "There should be at least 1 Chart of Account for both normal balances (Debit and Credit)");
             }
 
-            foreach($this->get('credit_amount') as $amount) {
-                $sum_credits += intval($amount);
-            }
-
-            if($sum_debits != $sum_credits) {
-                $validator->errors()->add("sum", 'The sum of debits and credits must match.');
-            }
         });
     }
 }
