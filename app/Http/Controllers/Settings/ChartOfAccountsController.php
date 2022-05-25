@@ -11,6 +11,7 @@ use App\Models\Settings\ChartOfAccounts\ChartOfAccountCategory;
 use App\Models\Settings\ChartOfAccounts\PeriodOfAccounts;
 use App\Models\Settings\ChartOfAccounts\JournalEntries;
 use App\Models\Settings\ChartOfAccounts\JournalPostings;
+use Illuminate\Support\Facades\DB;
 
 class ChartOfAccountsController extends Controller
 {
@@ -101,11 +102,55 @@ class ChartOfAccountsController extends Controller
     }
 
     /**
+     * A method to store beginning balances using AJAX.
      * 
+     * @param \App\Http\Requests\StoreBeginningBalanceRequest $request
+     * @return string
      */
     public function storeBeginningBalance(StoreBeginningBalanceRequest $request)
     {
-        return $request;
+        $validated = $request->validated();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
+        // Delete past beginning balances.
+        JournalPostings::where('accounting_system_id', $accounting_system_id)->delete();
+
+        // Get Beginning Balance Journal Entry.
+        $je = JournalEntries::where('accounting_system_id', $accounting_system_id)
+            ->first();
+
+        // Create insert rows for Debit.
+        for($i = 0; $i < count($validated['debit_coa_id']); $i++)
+        {
+            $jp[] = [
+                'journal_entry_id' => $je->id,
+                'accounting_system_id' => $accounting_system_id,
+                'chart_of_account_id' => $validated['debit_coa_id'][$i],
+                'type' => 'debit',
+                'amount' => $validated['debit_amount'][$i],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        // Create insert rows for Credit.
+        for($i = 0; $i < count($validated['credit_coa_id']); $i++)
+        {
+            $jp[] = [
+                'journal_entry_id' => $je->id,
+                'accounting_system_id' => $accounting_system_id,
+                'chart_of_account_id' => $validated['credit_coa_id'][$i],
+                'type' => 'credit',
+                'amount' => $validated['credit_amount'][$i],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        // Insert rows to the database.
+        DB::table('journal_postings')->insert($jp);
+
+        return "Successfully saved accounting system's beginning balance.";
     }
 
     /**
