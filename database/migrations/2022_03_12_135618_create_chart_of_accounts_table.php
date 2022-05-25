@@ -15,6 +15,7 @@ class CreateChartOfAccountsTable extends Migration
     {
         Schema::create('chart_of_accounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->string('chart_of_account_category_id');
             $table->string('chart_of_account_no');
             $table->string('name');

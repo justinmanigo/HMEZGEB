@@ -15,16 +15,15 @@ class CreateJournalPostingsTable extends Migration
     {
         Schema::create('journal_postings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('journal_entry_id');     
             $table->unsignedBigInteger('chart_of_account_id');     
-            $table->unsignedBigInteger('accounting_period_id');     
             $table->enum('type',['credit','debit']);
             $table->float('amount');
             $table->timestamps();
 
             $table->foreign('journal_entry_id')->references('id')->on('journal_entries');
             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
-            // $table->foreign('accounting_period_id')->references('id')->on('chart_of_accounts');
         });
     }
 

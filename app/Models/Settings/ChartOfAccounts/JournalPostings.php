@@ -13,8 +13,8 @@ class JournalPostings extends Model
 
     protected $fillable = [
         'journal_entry_id',
+        'accounting_system_id',
         'chart_of_account_id',
-        'accounting_period_id',
         'type',
         'amount',
     ];
@@ -23,10 +23,10 @@ class JournalPostings extends Model
     {
         return $this->belongsTo(ChartOfAccounts::class, 'chart_of_account_id');
     }
-    public function accountingPeriod()
-    {
-        return $this->belongsTo(AccountingPeriods::class, 'accounting_period_id');
-    }
+    // public function accountingPeriod()
+    // {
+    //     return $this->belongsTo(AccountingPeriods::class, 'accounting_period_id');
+    // }
     public function journalEntry()
     {
         return $this->belongsTo(JournalEntries::class, 'journal_entry_id');
