@@ -17,7 +17,6 @@ class JournalPostings extends Model
         'accounting_period_id',
         'type',
         'amount',
-        'updated_balance',
     ];
 
     public function chartOfAccount()

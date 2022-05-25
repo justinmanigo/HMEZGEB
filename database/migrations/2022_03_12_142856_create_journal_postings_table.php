@@ -20,7 +20,6 @@ class CreateJournalPostingsTable extends Migration
             $table->unsignedBigInteger('accounting_period_id');     
             $table->enum('type',['credit','debit']);
             $table->float('amount');
-            $table->float('updated_balance');
             $table->timestamps();
 
             $table->foreign('journal_entry_id')->references('id')->on('journal_entries');
