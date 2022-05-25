@@ -83,11 +83,11 @@ class ChartOfAccountsController extends Controller
         // Create Period of Account Entry for $coa
         // TODO: Integrate with Accounting Period later. At the moment, 
         // temporary value will be null.
-        $poa = PeriodOfAccounts::create([
-            'chart_of_account_id' => $coa->id,
-            'accounting_period_id' => $request->session()->get('accounting_period_id'),
-            'beginning_balance' => $request->coa_beginning_balance,
-        ]);
+        // $poa = PeriodOfAccounts::create([
+        //     'chart_of_account_id' => $coa->id,
+        //     'accounting_period_id' => $request->session()->get('accounting_period_id'),
+        //     'beginning_balance' => $request->coa_beginning_balance,
+        // ]);
 
         return back()->with('success', 'Successfully stored new Chart of Account.');
     }
