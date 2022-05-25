@@ -107,6 +107,24 @@ class UserTableSeeder extends Seeder
             ]
         ]);
 
+        DB::table('journal_entries')->insert([
+            [
+                'date' => '2022-01-01',
+                'notes' => 'Beginning Balance',
+                'accounting_system_id' => 1,
+            ],
+            [
+                'date' => '2022-01-01',
+                'notes' => 'Beginning Balance',
+                'accounting_system_id' => 2,
+            ],
+            [
+                'date' => '2022-01-01',
+                'notes' => 'Beginning Balance',
+                'accounting_system_id' => 3,
+            ],
+        ]);
+
         // Loop accounting systems
         for($i = 1; $i <= 3; $i++)
         {
