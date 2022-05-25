@@ -9,6 +9,8 @@ use App\Http\Requests\StoreBeginningBalanceRequest;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccountCategory;
 use App\Models\Settings\ChartOfAccounts\PeriodOfAccounts;
+use App\Models\Settings\ChartOfAccounts\JournalEntries;
+use App\Models\Settings\ChartOfAccounts\JournalPostings;
 
 class ChartOfAccountsController extends Controller
 {
@@ -52,6 +54,7 @@ class ChartOfAccountsController extends Controller
      */
     public function store(Request $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $coa_category = json_decode($request->coa_category, true);
         
         // To get the category_id of coa, use
@@ -65,10 +68,11 @@ class ChartOfAccountsController extends Controller
 
         // Create Chart of Account Entry
         $coa = new ChartOfAccounts();
+        $coa->accounting_system_id = $accounting_system_id;
         $coa->chart_of_account_category_id = $coa_category[0]['value'];
         $coa->chart_of_account_no = $request->coa_number;
         $coa->name = $request->coa_name;
-        $coa->current_balance = $request->coa_beginning_balance;
+        $coa->current_balance = 0.00;
 
         // If COA is Cash (id:1) and checkbox is checked.
         if(isset($request->coa_is_bank) && $coa_category[0]['value'] == 1)
@@ -80,14 +84,18 @@ class ChartOfAccountsController extends Controller
 
         $coa->save();
 
-        // Create Period of Account Entry for $coa
-        // TODO: Integrate with Accounting Period later. At the moment, 
-        // temporary value will be null.
-        // $poa = PeriodOfAccounts::create([
-        //     'chart_of_account_id' => $coa->id,
-        //     'accounting_period_id' => $request->session()->get('accounting_period_id'),
-        //     'beginning_balance' => $request->coa_beginning_balance,
-        // ]);
+        // Get Beginning Balance Journal Entry
+        $je = JournalEntries::where('accounting_system_id', $accounting_system_id)
+        ->first();
+        
+        // Create Journal Posting linked to the Beginning Balance
+        JournalPostings::create([
+            'accounting_system_id' => $accounting_system_id,
+            'journal_entry_id' => $je->id,
+            'chart_of_account_id' => $coa->id,
+            'type' => $coa_category[0]['normal_balance'] == 'Debit' ? 'debit' : 'credit',
+            'amount' => 0.00,
+        ]);
 
         return back()->with('success', 'Successfully stored new Chart of Account.');
     }
