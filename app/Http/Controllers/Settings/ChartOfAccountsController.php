@@ -177,6 +177,7 @@ class ChartOfAccountsController extends Controller
         // return $this->request->session()->get('accounting_period_id');
 
         $debits = ChartOfAccounts::select(
+            'chart_of_accounts.id',
             'chart_of_accounts.chart_of_account_no',
             'chart_of_accounts.name',
             'chart_of_account_categories.category',
