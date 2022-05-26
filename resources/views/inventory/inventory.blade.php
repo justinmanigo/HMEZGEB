@@ -130,5 +130,16 @@ $(document).ready(function() {
     $('#dataTables').DataTable();
     $('.dataTables_filter').addClass('pull-right');
 });
+
+// This function toggles when the inventory_item radio button is changed
+$(document).ready(function() {
+    $('input[type=radio][name=inventory_type]').change(function() {
+        if (this.value == 'inventory_item') {
+            $('input[name=critical_quantity]').removeAttr('disabled');
+        } else {
+            $('input[name=critical_quantity]').attr('disabled', true);
+        }
+    });
+});
 </script>
 @endsection
