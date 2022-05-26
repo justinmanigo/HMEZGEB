@@ -9,6 +9,15 @@ class AccountingPeriods extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'accounting_system_id',
+        'period_number',
+        'date_from',
+        'date_to',
+        'date_from_ethiopian',
+        'date_to_ethiopian',
+    ];
+
     public function periodOfAccounts()
     {
         return $this->hasMany(PeriodOfAccounts::class, 'accounting_period_id','id');

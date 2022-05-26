@@ -16,6 +16,14 @@ class CreateAccountingSystemsTable extends Migration
         Schema::create('accounting_systems', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subscription_id')->nullable()->constrained();
+            $table->enum('calendar_type', [
+                'gregorian',
+                'ethiopian',
+            ]);
+            $table->enum('calendar_type_view', [
+                'gregorian',
+                'ethiopian',
+            ]);
             $table->string('name');
             $table->mediumText('address');
             $table->string('po_box')->nullable();

@@ -15,6 +15,7 @@ class CreateJournalEntriesTable extends Migration
     {
         Schema::create('journal_entries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->date('date');
             $table->longtext('notes')->nullable(); 
             // $table->unsignedBigInteger('model_reference_id');     

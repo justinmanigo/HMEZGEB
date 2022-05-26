@@ -112,7 +112,7 @@
             </button> 
         </div>
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-coa">
+            <button id="btn-modal-beginning-balance" role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-beginning-balance">
                 <span class="icon text-white-50">
                     <i class="fas fa-pen"></i>
                 </span>
@@ -282,6 +282,61 @@
     </div>
 </div>
 
+{{-- Beginning Balance --}}
+<div class="modal fade" id="modal-beginning-balance" tabindex="-1" role="dialog" aria-labelledby="modal-beginning-balance-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-beginning-balance-label">Configure Beginning Balance</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-beginning-balance-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-beginning-balance" method="post" action="{{ url('/ajax/settings/coa/beginning-balance') }}" style="display:none">
+                    @csrf
+                    <p>You are currently configuring the beginning balance for <strong id="bb_accounting_period_number"></strong> (<span id="bb_accounting_period_date_from"></span> - <span id="bb_accounting_period_date_to"></span>)</i>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <th>Account #</th>
+                                <th>Account Name</th>
+                                <th>Category</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </thead>
+                            <thead>
+                                <th colspan="5">Debits</th>
+                            </thead>
+                            <tbody id="bb_debit"></tbody>
+                            <thead>
+                                <th colspan="5">Credits</th>
+                            </thead>
+                            <tbody id="bb_credit"></tbody>
+                            <tfoot>
+                                <th colspan="3" class="pt-2">Total</th>
+                                <th>
+                                    <p id="bb_debit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                                <th>
+                                    <p id="bb_credit_total" class="text-right pr-2 pt-2">0.00</p>
+                                </th>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="close-form-beginning-balance" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="submit-form-beginning-balance" type="submit" class="btn btn-primary" form="form-beginning-balance" disabled='true'>Save Beginning Balance</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         $('#dataTables').DataTable();
@@ -292,5 +347,96 @@
 </script>
 <script src="/js/settings/chart_of_accounts/template_select_coa_category.js"></script>
 <script src="/js/settings/chart_of_accounts/select_coa_category.js"></script>
+<script>
+    $("#btn-modal-beginning-balance").click(function(){
+        $("#modal-beginning-balance-spinner").show();
+        $("#form-beginning-balance").hide();
+        $("#bb_debit").html("");
+        $("#bb_credit").html("");
+        $("#bb_debit_total").html("0.00");
+        $("#bb_credit_total").html("0.00");
 
+        // Get data from server.
+        var request = $.ajax({
+            url: `/ajax/settings/coa/beginning-balance`,
+            method: "GET",
+        });
+            
+        request.done(function(res, status, jqXHR ) {
+            $("#form-beginning-balance").show();
+            $("#modal-beginning-balance-spinner").hide();
+            $("#submit-form-beginning-balance").removeAttr("disabled");
+
+            console.log("Request successful.");
+            console.log(res);
+
+            $("#bb_accounting_period_number").html(`Accounting Period # ${res.accounting_period.period_number}`);
+            $("#bb_accounting_period_date_from").html(res.accounting_period.date_from);
+            $("#bb_accounting_period_date_to").html(res.accounting_period.date_to);
+            
+            res.debits.forEach(function(d){
+                createBeginningBalanceRow(d, 'debit');
+            });
+
+            res.credits.forEach(function(c){
+                createBeginningBalanceRow(c, 'credit');
+            });
+        });
+        
+        request.fail(function(jqXHR, status, error) {
+            console.log("Request failed.");
+        });
+    });
+
+    function createBeginningBalanceRow(coa, type)
+    {
+        let inner = `
+            <tr>
+                <td>
+                    <input name="${ type=='debit' ? 'debit' : 'credit' }_coa_id[]" class="form-control-plaintext" type="text" value="${coa.id}" hidden readonly>   
+                    ${coa.chart_of_account_no}    
+                </td>
+                <td>${coa.name}</td>
+                <td>${coa.category}</td>
+                <td>
+                    ${type == 'debit'
+                        ? `<input name="debit_amount[]" class="bb_debit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" required>`
+                        : ''
+                    }
+                </td>
+                <td>
+                    ${type == 'credit'
+                        ? `<input name="credit_amount[]" class="bb_credit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" required>`
+                        : ''
+                    }
+                </td>
+            </tr>
+        `;
+
+        if(type == 'debit') {
+            $("#bb_debit").append(inner);
+        }
+        else if(type == 'credit') {
+            $("#bb_credit").append(inner);
+        }
+    }
+
+    $(document).on('change', '.bb_debit_amount', function(event){
+        calculateTotalBeginningBalance('bb_debit_total', 'bb_debit');
+    });
+    
+    $(document).on('change', '.bb_credit_amount', function(event){
+        calculateTotalBeginningBalance('bb_credit_total', 'bb_credit');
+    });
+
+    function calculateTotalBeginningBalance(id, table)
+    {
+        let total = 0;
+        $(`#${table}`).find(`.${table}_amount`).each(function(){
+            total += parseFloat($(this).val());
+        });
+
+        $(`#${id}`).html(total.toFixed(2));
+    }
+</script>
 @endsection
