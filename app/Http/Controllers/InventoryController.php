@@ -82,7 +82,7 @@ class InventoryController extends Controller
             'description' => $request->description,
         ]);
     
-        return back();
+        return back()->with('success', 'Inventory Item Created Successfully');
 
     }
 
