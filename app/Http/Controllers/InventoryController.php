@@ -15,23 +15,28 @@ class InventoryController extends Controller
      */
     public function index()
     {
-       //get all inventories from database then display on inventory
-       $inventories = Inventory::all();
+        //get all inventories from database then display on inventory
+        $inventories = Inventory::all();
+        $inventoryValue = 0;
 
-       // Compute for each inventory value and total value.
-       $inventoryValue=0.00;
-       foreach($inventories as $inventory)
-       {
-           $inventory->inventoryValue = $inventory->sale_price*$inventory->quantity;
-           $inventoryValue+=$inventory->inventoryValue;
-           
-       }
-       if(!empty($inventoryValue)) 
-           $inventory->totalInventory = $inventoryValue; 
+        // Compute for each inventory value and total value.
+        $inventoryValue=0.00;
+        foreach($inventories as $inventory)
+        {
+            if($inventory->inventory_type != 'non_inventory_item')
+            {
+                $inventory->inventoryValue = $inventory->quantity * $inventory->purchase_price;
+                $inventoryValue += $inventory->inventoryValue;
+            }           
+        }
 
-       $taxes = Tax::get();            
+        $taxes = Tax::get();            
 
-       return view('inventory.inventory', compact('inventories'), compact('taxes'));
+        return view('inventory.inventory', [
+            'inventories' => $inventories,
+            'taxes' => $taxes,
+            'inventoryValue' => $inventoryValue,
+        ]);
     }
 
     /**
