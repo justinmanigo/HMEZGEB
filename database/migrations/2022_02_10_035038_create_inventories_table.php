@@ -19,7 +19,8 @@ class CreateInventoriesTable extends Migration
             $table->string('item_name'); 
             $table->float('sale_price')->nullable();
             $table->float('purchase_price')->nullable();
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable();
+            $table->integer('critical_quantity')->nullable();
             // $table->float('sold_quantity')->nullable();
             // $table->float('purchase_quantity')->nullable();;
             $table->integer('tax_id')->nullable(); 
@@ -29,6 +30,7 @@ class CreateInventoriesTable extends Migration
             $table->string('picture')->nullable();      
             $table->longText('description');
             $table->enum('is_enabled',['Yes','No'])->default('Yes');
+            $table->enum('notify_critical_quantity',['Yes','No'])->default('Yes');
             $table->timestamps();
         });
     }

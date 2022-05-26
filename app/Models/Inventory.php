@@ -15,6 +15,7 @@ class Inventory extends Model
         'sale_price',
         'purchase_price',
         'quantity',
+        'critical_quantity',
         'tax_id',
         // 'default_income_account',
         // 'default_expense_account',
@@ -22,6 +23,7 @@ class Inventory extends Model
         'picture',
         'description',
         'is_enabled',
+        'notify_critical_quantity',
         'inventoryValue',
         'totalInventory',
     ];
