@@ -420,5 +420,23 @@
             $("#bb_credit").append(inner);
         }
     }
+
+    $(document).on('change', '.bb_debit_amount', function(event){
+        calculateTotalBeginningBalance('bb_debit_total', 'bb_debit');
+    });
+    
+    $(document).on('change', '.bb_credit_amount', function(event){
+        calculateTotalBeginningBalance('bb_credit_total', 'bb_credit');
+    });
+
+    function calculateTotalBeginningBalance(id, table)
+    {
+        let total = 0;
+        $(`#${table}`).find(`.${table}_amount`).each(function(){
+            total += parseFloat($(this).val());
+        });
+
+        $(`#${id}`).html(total.toFixed(2));
+    }
 </script>
 @endsection
