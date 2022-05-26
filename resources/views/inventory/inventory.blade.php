@@ -55,9 +55,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Inventory Value</div>
-                            @foreach($inventories as $inventory)
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inventory->totalInventory }}</div>
-                            @endforeach
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inventoryValue }}</div>
                         </div>
                         <div class="col-auto">
                         </div>
@@ -69,6 +67,14 @@
 
     <div class="card">
         <div class="card-body">
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
@@ -111,8 +117,16 @@
                             <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
                             {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td> --}}
                             <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
-                            <td class="table-item-content">{{ $inventory->quantity }}</td>
-                            <td class="table-item-content">{{ $inventory->inventoryValue }}</td>
+                            <td class="table-item-content">
+                                @if($inventory->inventory_type != 'non_inventory_item')
+                                    {{ $inventory->quantity }}
+                                @endif
+                            </td>
+                            <td class="table-item-content">
+                                @if($inventory->inventory_type != 'non_inventory_item')
+                                    {{ $inventory->inventoryValue }}
+                                @endif
+                            </td>
 
                         </tr>
                         @endforeach
@@ -129,6 +143,19 @@
 $(document).ready(function() {
     $('#dataTables').DataTable();
     $('.dataTables_filter').addClass('pull-right');
+});
+
+// This function toggles when the inventory_item radio button is changed
+$(document).ready(function() {
+    $('input[type=radio][name=inventory_type]').change(function() {
+        if (this.value == 'inventory_item') {
+            $('input[name=critical_quantity]').removeAttr('disabled');
+            $('input[name=notify_critical_quantity]').removeAttr('disabled');
+        } else {
+            $('input[name=critical_quantity]').attr('disabled', true);
+            $('input[name=notify_critical_quantity]').attr('disabled', true);
+        }
+    });
 });
 </script>
 @endsection

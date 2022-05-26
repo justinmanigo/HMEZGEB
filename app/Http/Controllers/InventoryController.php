@@ -15,23 +15,28 @@ class InventoryController extends Controller
      */
     public function index()
     {
-       //get all inventories from database then display on inventory
-       $inventories = Inventory::all();
+        //get all inventories from database then display on inventory
+        $inventories = Inventory::all();
+        $inventoryValue = 0;
 
-       // Compute for each inventory value and total value.
-       $inventoryValue=0.00;
-       foreach($inventories as $inventory)
-       {
-           $inventory->inventoryValue = $inventory->sale_price*$inventory->quantity;
-           $inventoryValue+=$inventory->inventoryValue;
-           
-       }
-       if(!empty($inventoryValue)) 
-           $inventory->totalInventory = $inventoryValue; 
+        // Compute for each inventory value and total value.
+        $inventoryValue=0.00;
+        foreach($inventories as $inventory)
+        {
+            if($inventory->inventory_type != 'non_inventory_item')
+            {
+                $inventory->inventoryValue = $inventory->quantity * $inventory->purchase_price;
+                $inventoryValue += $inventory->inventoryValue;
+            }           
+        }
 
-       $taxes = Tax::get();            
+        $taxes = Tax::get();            
 
-       return view('inventory.inventory', compact('inventories'), compact('taxes'));
+        return view('inventory.inventory', [
+            'inventories' => $inventories,
+            'taxes' => $taxes,
+            'inventoryValue' => $inventoryValue,
+        ]);
     }
 
     /**
@@ -63,16 +68,24 @@ class InventoryController extends Controller
             'item_name' => $request->item_name,
             'sale_price' => $request->sale_price,
             'purchase_price' => $request->purchase_price,
-            'quantity' => $request->quantity,
+            'quantity' => $request->inventory_type == 'inventory_item' 
+                ? 0 
+                : null,
+            'critical_quantity' => $request->inventory_type == 'inventory_item' 
+                ? 0 
+                : null,
             'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
             // 'default_income_account' => $request->default_income_account,
             // 'default_expense_account' => $request->default_expense_account,
             'inventory_type' => $request->inventory_type,
             'picture' => isset($imageName) ? $imageName : null,
             'description' => $request->description,
+            'notify_critical_quantity' => isset($request->notify_critical_quantity) 
+                ? $request->notify_critical_quantity 
+                : 'No',
         ]);
     
-        return back();
+        return back()->with('success', 'Inventory Item Created Successfully');
 
     }
 
