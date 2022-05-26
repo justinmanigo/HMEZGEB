@@ -80,6 +80,9 @@ class InventoryController extends Controller
             'inventory_type' => $request->inventory_type,
             'picture' => isset($imageName) ? $imageName : null,
             'description' => $request->description,
+            'notify_critical_quantity' => isset($request->notify_critical_quantity) 
+                ? $request->notify_critical_quantity 
+                : 'No',
         ]);
     
         return back()->with('success', 'Inventory Item Created Successfully');

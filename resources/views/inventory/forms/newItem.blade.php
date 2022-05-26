@@ -91,6 +91,10 @@
                 <label for="#" class="col-4 col-form-label">Critical Quantity</label>
                 <div class="col-8">
                     <input type="number" class="form-control inputPrice text-right"  name="critical_quantity" placeholder="0" required>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" id="c_notify_critical_quantity" type="checkbox" value="Yes" name="notify_critical_quantity">
+                        <label class="form-check-label" for="c_notify_critical_quantity">Notify me when stocks reach critical level</label>
+                    </div>
                 </div>
             </div>
 

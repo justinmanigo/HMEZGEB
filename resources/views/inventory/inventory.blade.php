@@ -150,8 +150,10 @@ $(document).ready(function() {
     $('input[type=radio][name=inventory_type]').change(function() {
         if (this.value == 'inventory_item') {
             $('input[name=critical_quantity]').removeAttr('disabled');
+            $('input[name=notify_critical_quantity]').removeAttr('disabled');
         } else {
             $('input[name=critical_quantity]').attr('disabled', true);
+            $('input[name=notify_critical_quantity]').attr('disabled', true);
         }
     });
 });
