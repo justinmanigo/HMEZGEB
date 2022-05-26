@@ -59,17 +59,18 @@
         <div class="col-12 col-lg-4">
 
             <h5>Item Price</h5>
-            <div class="form-group row">
-                <label for="#" class="col-4 col-form-label">Sale Price</label>
-                <div class="col-8">
-                    <input type="number" class="form-control inputPrice text-right"  name="sale_price" step=".01" placeholder="0.00" required>
-                </div>
-            </div>
 
             <div class="form-group row">
                 <label for="#" class="col-4 col-form-label">Purchase Price</label>
                 <div class="col-8">
                     <input type="number" class="form-control inputPrice text-right"  name="purchase_price" step=".01" placeholder="0.00" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="#" class="col-4 col-form-label">Sale Price</label>
+                <div class="col-8">
+                    <input type="number" class="form-control inputPrice text-right"  name="sale_price" step=".01" placeholder="0.00" required>
                 </div>
             </div>
 
