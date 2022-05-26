@@ -55,9 +55,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Inventory Value</div>
-                            @foreach($inventories as $inventory)
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inventory->totalInventory }}</div>
-                            @endforeach
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $inventoryValue }}</div>
                         </div>
                         <div class="col-auto">
                         </div>
@@ -111,8 +109,16 @@
                             <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
                             {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td> --}}
                             <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
-                            <td class="table-item-content">{{ $inventory->quantity }}</td>
-                            <td class="table-item-content">{{ $inventory->inventoryValue }}</td>
+                            <td class="table-item-content">
+                                @if($inventory->inventory_type != 'non_inventory_item')
+                                    {{ $inventory->quantity }}
+                                @endif
+                            </td>
+                            <td class="table-item-content">
+                                @if($inventory->inventory_type != 'non_inventory_item')
+                                    {{ $inventory->inventoryValue }}
+                                @endif
+                            </td>
 
                         </tr>
                         @endforeach
