@@ -19,7 +19,7 @@ class CreateInventoriesTable extends Migration
             $table->string('item_name'); 
             $table->float('sale_price')->nullable();
             $table->float('purchase_price')->nullable();
-            $table->float('quantity');
+            $table->integer('quantity');
             // $table->float('sold_quantity')->nullable();
             // $table->float('purchase_quantity')->nullable();;
             $table->integer('tax_id')->nullable(); 
