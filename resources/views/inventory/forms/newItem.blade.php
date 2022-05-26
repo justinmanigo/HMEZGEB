@@ -90,7 +90,7 @@
             <div class="form-group row">
                 <label for="#" class="col-4 col-form-label">Critical Quantity</label>
                 <div class="col-8">
-                    <input type="number" class="form-control inputPrice text-right"  name="critical_quantity" placeholder="0" required disabled>
+                    <input type="number" class="form-control inputPrice text-right"  name="critical_quantity" placeholder="0" required>
                 </div>
             </div>
 
