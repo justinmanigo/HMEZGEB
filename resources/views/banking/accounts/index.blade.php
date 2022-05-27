@@ -41,6 +41,17 @@
                 </span>
                 <span class="text">New</span>
             </button> 
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+                <span class="icon text-white-50">
+                    <i class="fas fa-file-import"></i>
+                </span>
+                <span class="text">Import</span>
+            </button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
+                <span class="icon text-white-50">
+                    <i class="fas fa-download"></i>
+                </span>
+                <span class="text">Export</span>
         </div>
 
         {{-- Tab Navigation --}}
@@ -63,16 +74,24 @@
                             <thead>
                                 
                                 <th>Chart of Acct#</th>
-                                <th>Bank Name</th>
+                                <th>Account Name</th>
                                 <th>Branch</th>
                                 <th>Type</th>
                                 <th>Account Number</th>
-                                <th>Balance</th>
-                                <th class="thead-actions">Actions</th>
-                                
+                            
                             </thead>
                             <tbody>
+                                @foreach($bank_accounts as $account)
                                 <tr>
+                                    <td>{{ $account->chart_of_account_id }}</td>
+                                    <td>{{ $account->chartOfAccount->account_name }}</td>
+                                    <td>{{ $account->bank_branch }}</td>
+                                    <td>{{ $account->bank_account_type }}</td>
+                                    <td>{{ $account->bank_account_number }}</td>
+                                    
+                                </tr>
+                                @endforeach
+                                {{-- <tr>
                                     
                                     <td class="table-item-content">1030</td>
                                     <td class="table-item-content">Commercail Bank of Ethiopia	</td> 
@@ -92,41 +111,7 @@
                                             </span>
                                         </button>
                                     </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                {{-- Proforma Contents --}}
-                <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <th class="thead-actions">Actions</th>
-                                <th>Invoice Number</th>
-                                <th>Customer Name</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                        </button>
-                                    </td>
-                                    <td class="table-item-content">1483681825</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">01/31/2022</td>
-                                    <td class="table-item-content">Birr 1,000</td>
-                                </tr>
+                                </tr> --}}
                             </tbody>
                         </table>
                     </div>
@@ -139,101 +124,7 @@
 
 </div>
 
-
-
 {{-- Modals --}}
-
-{{-- 
-    KNOWN POTENTIAL PROBLEMS:
-    > Modal Contents have similar IDs for its contents.
-    POTENTIAL SOLUTIONS:
-    > Update form on button click via JS.
---}}
-
-{{-- New Receipt --}}
-<div class="modal fade" id="modal-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-receipt-label">New Receipt</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.receipt')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-receipt">Save Receipt</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- New Advance Revenue --}}
-<div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog" aria-labelledby="modal-advance-revenue-label" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-advance-revenue-label">New Advance Revenue</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.advance_revenue')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-advance-revenue">Save Advance Revenue</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- New Credit Receipt --}}
-<div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-credit-receipt-label" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-credit-receipt-label">New Credit Receipt</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.credit_receipt')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-credit-receipt">Save Credit Receipt</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- New Proforma --}}
-<div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-proforma-label">New Proforma</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @include('customer.receipt.forms.proforma')
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-proforma">Save Proforma</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 {{-- Import --}}
 <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -294,7 +185,6 @@
     </div>
 </div>
 
-{{-- Modals --}}
 {{-- New Deposit --}}
 <div class="modal fade" id="modal-deposit" tabindex="-1" role="dialog" aria-labelledby="modal-deposit-label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -306,37 +196,36 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" method="post" enctype="multipart/form-data">
+                <form action="{{route('accounts.accounts.store')}}" id="form-deposit" method="post" enctype="multipart/form-data">
+                    @csrf
                     <div class="form-group row">
-                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
+                        <label for="b_coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id" value="1031" readonly>
+                            <input type="text" class="form-control" id="b_coa_number" name="coa_number" value="1031" readonly>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Bank Name<span class="text-danger ml-1">*</span></label>
+                        <label for="b_account_name" class="col-sm-3 col-lg-2 col-form-label">Bank Account Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
+                            <input type="text" class="form-control" id="b_account_name" name="account_name">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
+                        <label for="b_account_number" class="col-sm-3 col-lg-2 col-form-label">Bank Account Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <select class="form-control" id="d_bank_account" name="bank_account">
-                                <option>Bank A</option>
-                            </select>
+                            <input type="text" class="form-control" id="b_account_number" name="bank_account_number">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="d_deposit_id" class="col-sm-3 col-lg-2 col-form-label">Account Number<span class="text-danger ml-1">*</span></label>
+                        <label for="b_bank_branch" class="col-sm-3 col-lg-2 col-form-label">Bank Branch<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="d_deposit_id" name="deposit_id">
+                            <input type="text" class="form-control" id="b_bank_branch" name="bank_branch">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Account Type<span class="text-danger ml-1">*</span></label>
+                        <label for="b_type" class="col-sm-3 col-lg-2 col-form-label">Bank Account Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <select class="form-control" id="d_bank_account" name="bank_account">
+                            <select class="form-control" id="b_type" name="bank_account_type">
                                 <option>Savings </option>
                                 <option>Checking </option>
                             </select>
@@ -350,7 +239,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-deposit">Save Account</button>
+                <button type="submit" class="btn btn-primary" form="form-deposit">Save Account</button>
             </div>
         </div>
     </div>

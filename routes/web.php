@@ -13,7 +13,7 @@ use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
 // Banking module
-use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\TransfersController;
 use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\TransactionsController;  
@@ -242,7 +242,10 @@ Route::group([
                 'as'=>'accounts.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/accounts', [AccountsController::class, 'index'])->name('bank.accounts');
+                Route::get('/banking/accounts', [BankAccountsController::class, 'index'])->name('bank.accounts');
+            
+                // RESOURCE
+                Route::resource('/banking/accounts', BankAccountsController::class);
             });
         
             /**
