@@ -9,6 +9,7 @@ use App\Models\Receipts;
 use App\Models\ReceiptItem;
 use App\Models\Customers;
 use Illuminate\Http\Request;
+use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 
 class ReceiptController extends Controller
 {
@@ -104,7 +105,7 @@ class ReceiptController extends Controller
 
     /** === STORE RECEIPTS === */
 
-    public function storeReceipt(Request $request)
+    public function storeReceipt(StoreReceiptRequest $request)
     {
         // Decode json of item tagify fields.
         for($i = 0; $i < count($request->item); $i++)
@@ -198,6 +199,9 @@ class ReceiptController extends Controller
         // }
         
         return redirect()->route('receipts.receipt.index')->with('success', 'Receipt has been added successfully');
+        
+        // If success, redirect to the specified page, using AJAX.
+
     }
 
     public function storeAdvanceRevenue(Request $request)

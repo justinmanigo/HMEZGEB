@@ -47,21 +47,26 @@ function createReceiptItemEntry(item = undefined)
             <div class="input-group">
                 <input data-id="${receipt_count}" id="r_item_${receipt_count}" class="r_item" name='item[]'>
                 <input type="hidden" name="item_id[]" value="">
+                <p class="error-message error-message-item text-danger" style="display:none"></p>
             </div>
         </td>
         <td>
             <input type="number" data-id="${receipt_count}" id="r_item_quantity_${receipt_count}" class="form-control r_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="r_item_price_${receipt_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+            <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
             <select id="r_item_tax_${receipt_count}" class="form-control" name="tax[]">
                 <option>Sales Tax (15%)</option>
             </select>
+            <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="r_item_total_${receipt_count}" class="form-control text-right r_item_total" name="total[]" placeholder="0.00" disabled>
+            <p class="error-message error-message-total text-danger" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${receipt_count}" id="r_item_delete_${receipt_count}" class="btn btn-icon btn-danger r_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">

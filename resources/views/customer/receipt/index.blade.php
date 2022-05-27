@@ -175,17 +175,10 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel"
                     aria-labelledby="transactions-tab">
-                    @if(session()->has('success'))
+                    @if(isset($_GET['success']))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session()->get('success') }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
-                    @if(session()->has('warning'))
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            {{ session()->get('warning') }}
+                            {{ $_GET['success'] }}
+                            {{-- {{ session()->get('success') }} --}}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
@@ -349,7 +342,7 @@ POTENTIAL SOLUTIONS:
 --}}
 
 {{-- New Receipt --}}
-<form action="{{route('receipts.receipt.store') }}" id="form-receipt" method="post" enctype="multipart/form-data">
+<form class="ajax-submit-updated" action="{{route('receipts.receipt.store') }}" id="form-receipt" method="post" enctype="multipart/form-data" data-message="Successfully created receipt.">
     @csrf
     <div class="modal fade" id="modal-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label"
         aria-hidden="true">
@@ -547,4 +540,5 @@ POTENTIAL SOLUTIONS:
 
     <script src="/js/customer/receipt/template_select_proforma.js"></script>
     <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
+    <script src="/js/ajax-submit-updated.js"></script>
     @endsection
