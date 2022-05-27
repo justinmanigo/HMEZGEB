@@ -7,8 +7,9 @@ $(".ajax-submit-updated").submit(function(e){
     console.log(e);
     e.preventDefault();
 
-    closeButtonElement = $(`#${e.target.id}[type=button]`);
-    submitButtonElement = $(`#${e.target.id}[type=submit]`);
+    submitButtonElement = $(`button[form="${e.target.id}"]`);
+    console.log("Submit button element");
+    console.log(submitButtonElement);
 
     // Hide error elements and disable submit button.
     hideFormErrorsUpdated();
