@@ -1,11 +1,6 @@
-// 1. Add .ajax-submit-received-products class as one of the form's class names.
-// 2. Error elements must have an id with following format:
-//      #error-{form-name}-{input-field}
-// 3. Error elements should also have a data-field bearing the related input's name.
-// 4. Submit button must have an id with following format:
-//      #submit-{form-name}
-// 5. Close button must have an id with following format:
-//      #close-{form-name}
+// 1. Add .ajax-submit-updated class as one of the form's class names.
+// 2. Add data-message attribute to the said form for the success message.
+// 3. Error elements shall have classes text-danger, error-message, and error-message-{field-name}.
 
 $(".ajax-submit-updated").submit(function(e){
     console.log(`Submitting form ${e.target.id}`);
