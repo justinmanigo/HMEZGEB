@@ -29,20 +29,8 @@ $(".ajax-submit-updated").submit(function(e){
         console.log(`Request for ${e.target.id} has successfully been made.`);
         console.log(res);
 
-        closeButtonElement.click();
-        // Get current link
         let currentLink = window.location.href;
-        // Redirect using currentLink with new query string
         window.location.href = `${currentLink}?success=${e.target.dataset.message}`;
-        // generateToast(res, 'bg-success');
-
-        console.log("TEST");
-
-        if(e.target.dataset.model != undefined)
-        {
-            request = window[e.target.dataset.model + 'Table'].requestData();
-            processRequestReceivedProducts(request, window[e.target.dataset.model + 'Table']);
-        }
     });
 
     // If request has errors (e.g. validation errors).
