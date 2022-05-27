@@ -31,7 +31,10 @@ $(".ajax-submit-updated").submit(function(e){
         console.log(res);
 
         let currentLink = window.location.href;
-        window.location.href = `${currentLink}?success=${e.target.dataset.message}`;
+        // Remove query string on currentLink
+        currentLink = currentLink.split("?");
+        // Redirect using currentLink with new query string
+        window.location.href = `${currentLink[0]}?success=${e.target.dataset.message}`;
     });
 
     // If request has errors (e.g. validation errors).
