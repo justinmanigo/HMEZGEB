@@ -11,6 +11,7 @@ use App\Models\Customers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
+use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
 
 class ReceiptController extends Controller
 {
@@ -315,7 +316,7 @@ class ReceiptController extends Controller
 
     }
 
-    public function storeProforma(Request $request)
+    public function storeProforma(StoreProformaRequest $request)
     {
         // Decode json of item tagify fields.
         for($i = 0; $i < count($request->item); $i++)
