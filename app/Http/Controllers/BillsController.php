@@ -157,22 +157,19 @@ class BillsController extends Controller
         ]);
 
         // Create Purchase Order Record
-        if($reference)        
-        {
-            //  if($request->attachment) {
-            //      $fileAttachment = time().'.'.$request->attachment->extension();  
-            //      $request->attachment->storeAs('public/bill-attachment', $fileAttachment);
-            //  }
+        //  if($request->attachment) {
+        //      $fileAttachment = time().'.'.$request->attachment->extension();  
+        //      $request->attachment->storeAs('public/bill-attachment', $fileAttachment);
+        //  }
 
-            $purchase_orders = PurchaseOrders::create([
-                'payment_reference_id' => $reference->id,
-                'due_date' => $request->due_date,
-                'sub_total' => $request->sub_total,
-                'grand_total' => $request->grand_total,
-                // image upload
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            ]);
-        }
+        $purchase_orders = PurchaseOrders::create([
+            'payment_reference_id' => $reference->id,
+            'due_date' => $request->due_date,
+            'sub_total' => $request->sub_total,
+            'grand_total' => $request->grand_total,
+            // image upload
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+        ]);
 
         // TODO: Merge with billItems (use billReference instead of billId for bills)
         
@@ -188,9 +185,9 @@ class BillsController extends Controller
             ]);
         }
         
-        return redirect()->back()->with('success', 'Purchase Order has been added successfully');
- 
+        return $purchase_orders;
     }
+
     /**
      * Display the specified resource.
      *
