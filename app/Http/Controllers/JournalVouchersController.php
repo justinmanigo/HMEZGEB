@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreJournalVoucherRequest;
 use App\Models\JournalVouchers;
 use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
@@ -50,14 +51,17 @@ class JournalVouchersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreJournalVoucherRequest $request)
     {
-        $journal_entry = CreateJournalEntry::run($request->date, $request->notes);
-        $journal_voucher = CreateJournalVoucher::run($journal_entry->id, $request->reference_number);
+        // return $request;
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
+        $journal_entry = CreateJournalEntry::run($request->date, $request->notes, $accounting_system_id);
+        $journal_voucher = CreateJournalVoucher::run($journal_entry->id);
 
-        CreateJournalPostings::run($journal_entry, $request->debit_accounts, $request->debit_amount, $request->credit_accounts, $request->credit_amount);
+        CreateJournalPostings::run($journal_entry, $request->debit_accounts, $request->debit_amount, $request->credit_accounts, $request->credit_amount, $accounting_system_id);
 
-        return redirect()->route('journals.index')->with('success', 'Successfully created a journal voucher.');
+        return $journal_voucher;
     }
 
     /**

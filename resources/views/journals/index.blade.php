@@ -130,6 +130,15 @@
         {{-- Page Content --}}
         <div class="card">
             <div class="card-body">
+                @if(isset($_GET['success']))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ $_GET['success'] }}
+                        {{-- {{ session()->get('success') }} --}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
@@ -217,24 +226,25 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-jv" method="post" action="{{ route('journals.store') }}">
+                <form class="ajax-submit-updated" id="form-jv" method="post" action="{{ route('journals.store') }}" data-message="Successfully created a journal voucher.">
                     @csrf
                     <div class="form-group row">
-                        <label for="jv_reference_number" class="col-sm-3 col-lg-2 col-form-label">Reference #<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="jv_reference_number" name="reference_number" placeholder="" required>
-                        </div>
+                        {{-- Blank for now --}}
+                        <label for="jv_reference_number" class="col-sm-3 col-lg-2"></label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0"></div>
 
+                        {{-- Date --}}
                         <label for="jv_date" class="col-sm-3 col-lg-2 col-form-label">Date</label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="date" class="form-control" id="jv_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                            <p class="col-8 col-lg-5 text-danger error-message error-message-date" style="display:none"></p>
                         </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead>
                                 <th>Account<span class="text-danger ml-1">*</span></th>
-                                <th>Description</th>
+                                <th>Description<span class="text-danger ml-1">*</span></th>
                                 <th>Debit<span class="text-danger ml-1">*</span></th>
                                 <th>Credit<span class="text-danger ml-1">*</span></th>
                                 <th>Actions</th>
@@ -248,7 +258,10 @@
                             </thead>
                             <tbody id="jv_credits"></tbody>
                             <tfoot>
-                                <th colspan="2" class="pt-2">Total</th>
+                                <th colspan="2" class="pt-2">
+                                    Total
+                                    <p class="text-danger error-message error-message-total" style="display:none"></p>
+                                </th>
                                 <th>
                                     <p id="jv_debit_total" class="text-right pr-2 pt-2">0.00</p>
                                 </th>
@@ -262,79 +275,13 @@
                     <div>
                         <label for="jv_notes" class="col-form-label">Notes:</label>
                         <textarea class="form-control" id="jv_notes" name="notes"></textarea>
+                        <p class="text-danger error-message error-message-notes" style="display:none"></p>
                     </div>
-                    {{-- <div class="form-group row">
-                        <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address</label>
-                        <div class="col-sm-9 col-lg-10">
-                            <input type="text" class="form-control" id="c_address" name="address" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_city" class="col-sm-3 col-lg-2 col-form-label">City</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_city" name="city" placeholder="">
-                        </div>
-
-                        <label for="c_country" class="col-sm-3 col-lg-2 col-form-label">Country</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_country" name="country" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone 1</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_phone_1" name="phone_1" placeholder="">
-                        </div>
-
-                        <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone 2</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_phone_2" name="phone_2" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_fax" class="col-sm-3 col-lg-2 col-form-label">Fax</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_fax" name="fax" placeholder="">
-                        </div>
-
-                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_contact_person" class="col-sm-2 col-form-label">Contact Person</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_email" class="col-sm-2 col-form-label">E-mail</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_email" name="email" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_website" class="col-sm-2 col-form-label">Website</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="c_website" name="website" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_picture" class="col-sm-2 col-form-label">Picture</label>
-                        <div class="col-sm-10">
-                            <input type="file" id="c_picture" name="picture">
-                        </div>
-                    </div> --}}
                 </form>
             </div>
             <div class="modal-footer">
-                <div class="form-check mr-3">
-                    {{-- <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
-                    <label class="form-check-label" for="c_is_active">Mark Customer as Active</label> --}}
-                </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="form-jv-save-btn" form="form-jv" disabled>Save Journal Voucher</button>
+                <button type="submit" class="btn btn-primary" id="form-jv-save-btn" form="form-jv">Save Journal Voucher</button>
             </div>
         </div>
     </div>
