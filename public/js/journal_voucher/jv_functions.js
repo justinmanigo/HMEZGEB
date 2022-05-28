@@ -59,11 +59,11 @@ function createEntry(type)
     let inner = `
     <tr>
         <td>
-            <input id="jv_${type}_account_${count}" data-id="${count}" class="jv_${type}_account" name='${type}_accounts[]'>
+            <input id="jv_${type}_account_${count}" data-id="${count}" data-type="${type}" class="jv_${type}_account" name='${type}_accounts[]'>
             <p class="text-danger error-message error-message-${type}_accounts" style="display:none"></p>
         </td>
         <td>
-            <input id="jv_${type}_description_${count}" type="text" class="form-control" name="${type}_description[]" placeholder="">
+            <input id="jv_${type}_description_${count}" type="text" class="form-control" name="${type}_description[]" placeholder="" disabled>
             <p class="text-danger error-message error-message-${type}_description" style="display:none"></p>
         </td>
     `
@@ -72,7 +72,7 @@ function createEntry(type)
     {
         inner += `
         <td>
-            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" data-type="${type}" class="form-control inputPrice text-right jv_amount jv_debit" name="${type}_amount[]" placeholder="0.00" required>
+            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" data-type="${type}" class="form-control inputPrice text-right jv_amount jv_debit" name="${type}_amount[]" placeholder="0.00" required disabled>
             <p class="text-danger error-message error-message-${type}_amount" style="display:none"></p>
         </td>
         <td></td>
@@ -83,7 +83,7 @@ function createEntry(type)
         inner += `
         <td></td>
         <td>
-            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" data-type="${type}" class="form-control inputPrice text-right jv_amount jv_credit" name="${type}_amount[]" placeholder="0.00" required>
+            <input id="jv_${type}_amount_${count}" type="number" min="0.00" step="0.01" data-type="${type}" class="form-control inputPrice text-right jv_amount jv_credit" name="${type}_amount[]" placeholder="0.00" required disabled>
             <p class="text-danger error-message error-message-${type}_amount" style="display:none"></p>
         </td>
         `;
@@ -193,11 +193,21 @@ function onJournalVoucherAccountDropdownShow(e) {
 }
 
 function onJournalVoucherAccountSelectSuggestion(e) {
-    
+    console.log("select suggestion");
+    var inputId = e.detail.tagify.DOM.originalInput.dataset.id;
+    var inputType = e.detail.tagify.DOM.originalInput.dataset.type;
+
+    $(`#jv_${inputType}_description_${inputId}`).removeAttr('disabled');
+    $(`#jv_${inputType}_amount_${inputId}`).removeAttr('disabled');
 }
 
 function onJournalVoucherAccountRemove(e) {
-    
+    console.log("remove suggestion");
+    var inputId = e.detail.tagify.DOM.originalInput.dataset.id;
+    var inputType = e.detail.tagify.DOM.originalInput.dataset.type;
+
+    $(`#jv_${inputType}_description_${inputId}`).attr('disabled', true);
+    $(`#jv_${inputType}_amount_${inputId}`).attr('disabled', true);
 }
 
 function onJournalVoucherAccountInput(e) {  
