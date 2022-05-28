@@ -257,7 +257,7 @@
                 <p class="h3 pl-4 m-auto">Purchase Order</p>
                 <a class="close" data-dismiss="modal">×</a>
             </div>
-            <form action="{{route('bills.purchaseOrder.store') }}" method="post" id="contactForm" name="contact">
+            <form class="ajax-submit-updated" id="form-purchase-order" action="{{route('bills.purchaseOrder.store') }}" method="post" data-message="Successfully created a purchase order.">
                 @csrf
                 @include('vendors.bills.forms.purchaseOrderModal')
             </form>

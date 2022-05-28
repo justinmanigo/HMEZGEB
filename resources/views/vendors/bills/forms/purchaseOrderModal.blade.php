@@ -6,6 +6,7 @@
                 <label for="po_vendor" class="col-4 col-form-label text-left">Vendor<span class="text-danger ml-1">*</span> :</label>
                 <input class="col-8 col-lg-7" id="po_vendor" name='vendor'>
                 <input type="hidden" id="po_vendor_id" name="vendor_id" value="">
+                <p class="text-danger error-message error-message-vendor" style="display:none"></p>
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
@@ -27,12 +28,14 @@
                 <label for="po_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
                     <input type="date" class="form-control" id="po_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                    <p class="text-danger error-message error-message-date" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="po_due_date" class="col-4 col-form-label text-lg-right">Due Date :</label>
                 <div class="col-8">
                     <input type="date" class="form-control" id="po_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
+                    <p class="text-danger error-message error-message-due_date" style="display:none"></p>
                 </div>
             </div>
         </div>
@@ -89,6 +92,7 @@
                     </td>
                     <td>
                         <input type="text" class="form-control text-right" name="sub_total" id="po_sub_total" placeholder="0.00" value="0.00" readonly>
+                        <p class="text-danger error-message error-message-sub_total" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr>
@@ -97,6 +101,7 @@
                     <td class="text-right table-item-content"><strong>Discount: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
+                        <p class="text-danger error-message error-message-discount" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -105,6 +110,7 @@
                     <td class="text-right table-item-content"><strong>Withholding: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
+                        <p class="text-danger error-message error-message-withholding" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -112,6 +118,7 @@
                     <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
+                        <p class="text-danger error-message error-message-tax" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -119,6 +126,7 @@
                     <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
+                        <p class="text-danger error-message error-message-tax" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -126,6 +134,7 @@
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="grand_total" id="po_grand_total" placeholder="0.00" value="0.00" readonly>
+                        <p class="text-danger error-message error-message-grand_total" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr>
@@ -136,17 +145,19 @@
 <div class="row form-group">
     <label for="remark" class="col-form-label col-lg-2">Terms & Conditions:</label>
     <textarea name="remark" class="form-control col-lg-4"></textarea>
+    <p class="text-danger error-message error-message-remark" style="display:none"></p>
     <label for="attachment" class="col-form-label col-lg-2">Attachment:</label>
     <div class="input-group col-md-2 col-lg-4">
         <div class="custom-file">
-        <input type="file" class="custom-file-input" id="inputGroupFile03">
-        <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
+            <input type="file" name="attachment" class="form-control">
+            <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
         </div>
+        <p class="text-danger error-message error-message-attachment" style="display:none"></p>
     </div>
 </div>
 
 </div>
 <div class="modal-footer">					
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <input type="submit" class="btn btn-success" id="submit">
+    <button type="submit" class="btn btn-success" form="form-purchase-order">Submit</button>
 </div>

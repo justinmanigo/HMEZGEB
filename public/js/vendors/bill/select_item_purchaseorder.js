@@ -50,21 +50,26 @@ function createPurchaseOrderItemEntry()
             <div class="input-group">
                 <input data-id="${purchaseorder_count}" id="po_item_${purchaseorder_count}" class="po_item" name='item[]'>
                 <input type="hidden" name="item_id[]" value="">
+                <p class="text-danger error-message error-message-discount" style="display:none"></p>
             </div>
         </td>
         <td>
             <input type="number" data-id="${purchaseorder_count}" id="po_item_quantity_${purchaseorder_count}" class="form-control po_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <p class="text-danger error-message error-message-quantity" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="po_item_price_${purchaseorder_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+            <p class="text-danger error-message error-message-price" style="display:none"></p>
         </td>
         <td>
             <select id="po_item_tax_${purchaseorder_count}" class="form-control" name="tax[]">
                 <option>Sales Tax (15%)</option>
             </select>
+            <p class="text-danger error-message error-message-tax" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="po_item_total_${purchaseorder_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
+            <p class="text-danger error-message error-message-total" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${purchaseorder_count}" id="po_item_delete_${purchaseorder_count}" class="btn btn-icon btn-danger po_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">

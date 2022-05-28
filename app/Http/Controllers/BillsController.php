@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Vendor\Bill\StoreBillRequest;
+use App\Http\Requests\Vendor\Bill\StorePurchaseOrderRequest;
 use App\Models\Bills;
 use App\Models\Vendors;
 use App\Models\PaymentReferences;
@@ -138,61 +139,51 @@ class BillsController extends Controller
         
     }
 
-    public function storePurchaseOrder(Request $request)
+    public function storePurchaseOrder(StorePurchaseOrderRequest $request)
     {
-         // Decode json of item tagify fields.
-         for($i = 0; $i < count($request->item); $i++)
-         {
-             $item = json_decode($request->item[$i]);
- 
-             // Resulting json_decode will turn into an array of
-             // object, thus it has to be merged.
-             $items[$i] = $item[0];
-         }
-
-         $status = 'unpaid';
- 
-         // payment References
-         $reference = PaymentReferences::create([
-            'vendor_id' => $request->vendor_id,
+        // Create Payment Reference Record
+        $reference = PaymentReferences::create([
+            'vendor_id' => $request->vendor->value,
             'date' => $request->date,
             'type' => 'purchase_order',
             'attachment' => $request->attachment,
             'remark' => $request->remark,
-            'status' => $status,
+            'status' => 'unpaid',
         ]);
- 
-         // Create child database entry
-         if($reference)        
-         {
+
+        // Create Purchase Order Record
+        if($reference)        
+        {
             //  if($request->attachment) {
             //      $fileAttachment = time().'.'.$request->attachment->extension();  
             //      $request->attachment->storeAs('public/bill-attachment', $fileAttachment);
             //  }
-             $purchase_orders = PurchaseOrders::create([
-                 'payment_reference_id' => $reference->id,
-                 'due_date' => $request->due_date,
-                 'sub_total' => $request->sub_total,
-                 'grand_total' => $request->grand_total,
-                 // image upload
-                 'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-             ]);
-         }
- 
-         // TODO: Merge with billItems (use billReference instead of billId for bills)
-         // Create bill Item Records
-         for($i = 0; $i < count($items); $i++)
-         {
+
+            $purchase_orders = PurchaseOrders::create([
+                'payment_reference_id' => $reference->id,
+                'due_date' => $request->due_date,
+                'sub_total' => $request->sub_total,
+                'grand_total' => $request->grand_total,
+                // image upload
+                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+            ]);
+        }
+
+        // TODO: Merge with billItems (use billReference instead of billId for bills)
+        
+        // Create bill Item Records
+        for($i = 0; $i < count($request->item); $i++)
+        {
             BillItem::create([
-                'inventory_id' => $items[$i]->value,
+                'inventory_id' => $request->item[$i]->value,
                 'bill_id' => $purchase_orders->id,
                 'quantity' => $request->quantity[$i],
-                'price' => $items[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+                'price' => $request->item[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
             ]);
-         }
-         
-         return redirect()->back()->with('success', 'Purchase Order has been added successfully');
+        }
+        
+        return redirect()->back()->with('success', 'Purchase Order has been added successfully');
  
     }
     /**
