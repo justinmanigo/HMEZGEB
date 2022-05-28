@@ -166,9 +166,9 @@ class ReceiptController extends Controller
             'total_amount_received' => $request->total_amount_received
         ]);
 
-        // Create Receipt Item Records
         for($i = 0; $i < count($request->item); $i++)
         {
+            // Create Receipt Item Records
             ReceiptItem::create([
                 'inventory_id' => $request->item[$i]->value,
                 'receipt_reference_id' => $reference->id,
