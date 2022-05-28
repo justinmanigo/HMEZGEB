@@ -309,27 +309,13 @@ class ReceiptController extends Controller
     }
 
     public function storeProforma(StoreProformaRequest $request)
-    {
-        // Decode json of item tagify fields.
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            $item = json_decode($request->item[$i]);
-
-            // Resulting json_decode will turn into an array of
-            // object, thus it has to be merged.
-            $items[$i] = $item[0];
-        }
-        
-        // Temporary status
-        $status = 'unpaid';
-
+    {        
         // Receipt References
         $reference = ReceiptReferences::create([
             'customer_id' => $request->customer_id,
             'date' => $request->date,
             'type' => 'proforma',
-            'is_void' => 'no',
-            'status' => $status
+            'status' => 'unpaid',
         ]);
 
         // Create child database entry
@@ -346,21 +332,20 @@ class ReceiptController extends Controller
                 'due_date' => $request->due_date,
                 'amount' => $request->grand_total,
                 'terms_and_conditions' => $request->terms_and_conditions,
-                // image upload
                 'attachment' => isset($fileAttachment) ? $fileAttachment : null,
             ]);
         }
 
         // TODO: Merge with ReceiptItems (use ReceiptReference instead of ReceiptId for Receipts)
         // Create Receipt Item Records
-        for($i = 0; $i < count($items); $i++)
+        for($i = 0; $i < count($request->item); $i++)
         {
             ReceiptItem::create([
-                'inventory_id' => $items[$i]->value,
+                'inventory_id' => $request->item[$i]->value,
                 'receipt_reference_id' => $reference->id,
                 'quantity' => $request->quantity[$i],
-                'price' => $items[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+                'price' => $request->item[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
             ]);
         }
         

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Customer\Receipt;
 
+use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
 
 class StoreProformaRequest extends FormRequest
@@ -46,5 +47,19 @@ class StoreProformaRequest extends FormRequest
             'grand_total' => ['required', 'numeric', 'min:0'],
             // 'total_amount_received' => ['required', 'numeric', 'min:0'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {        
+        for($i = 0; $i < count($this->item); $i++) {
+            if($this->item[$i] != null) {
+                $item[] = DecodeTagifyField::run($this->item[$i]);
+            }
+        }
+
+        $this->merge([
+            'customer' => DecodeTagifyField::run($this->customer),
+            'item' => isset($item) ? $item : [],
+        ]);
     }
 }
