@@ -9,15 +9,16 @@ class StoreReceiptItems
 {
     use AsAction;
 
-    public function handle($raw_items, $receipt_reference_id)
+    public function handle($raw_items, $quantity, $receipt_reference_id)
     {
-        foreach($raw_items as $item) {
+        for($i = 0; $i < count($raw_items); $i++)
+        {
             $items[] = [
                 'receipt_reference_id' => $receipt_reference_id,
-                'inventory_id' => $item->value,
-                'quantity' => $item->quantity,
-                'price' => $item->sale_price,
-                'total_price' => $item->quantity * $item->sale_price,
+                'inventory_id' => $raw_items[$i]->value,
+                'quantity' => $quantity[$i],
+                'price' => $raw_items[$i]->sale_price,
+                'total_price' => $quantity[$i] * $raw_items[$i]->sale_price,
             ];
         }
 

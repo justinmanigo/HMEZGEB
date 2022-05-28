@@ -151,7 +151,7 @@ class ReceiptController extends Controller
         ]);
 
         // Store Receipt Items
-        StoreReceiptItems::run($request->item, $reference->id);
+        StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
         UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'decrease');
 
         //  image upload and save to database 
