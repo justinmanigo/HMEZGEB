@@ -9,12 +9,12 @@ class StoreBillItems
 {
     use AsAction;
 
-    public function handle($raw_items, $quantity, $bill_id)
+    public function handle($raw_items, $quantity, $payment_reference_id)
     {
         for($i = 0; $i < count($raw_items); $i++)
         {
             $items[] = [
-                'bill_id' => $bill_id,
+                'payment_reference_id' => $payment_reference_id,
                 'inventory_id' => $raw_items[$i]->value,
                 'quantity' => $quantity[$i],
                 'price' => $raw_items[$i]->sale_price,

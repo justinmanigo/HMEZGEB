@@ -16,7 +16,7 @@ class CreateBillItemsTable extends Migration
         Schema::create('bill_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('inventory_id');
-            $table->unsignedBigInteger('bill_id'); 
+            $table->unsignedBigInteger('payment_reference_id'); 
             $table->integer('quantity'); 
             $table->float('price')->nullable();
             $table->float('total_price')->nullable();

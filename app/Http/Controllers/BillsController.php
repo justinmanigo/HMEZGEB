@@ -92,8 +92,10 @@ class BillsController extends Controller
         else
             $payment_method = 'credit';
         
-        // Create Bill Record
-        $bills = Bills::create([
+        UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'increase');
+        StoreBillitems::run($request->item, $request->quantity, $reference->id);
+            
+        return Bills::create([
             'payment_reference_id' => $reference->id,
             // 'withholding_payment_id' => '0', // temporary
             'purchase_order_id' => $request->purchase_order_id,
@@ -108,11 +110,6 @@ class BillsController extends Controller
             'payment_method' => $payment_method,
             'amount_received' => $request->total_amount_received,
         ]);
-
-        UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'increase');
-        StoreBillitems::run($request->item, $request->quantity, $bills->id);
-            
-        return $bills;
         
     }
 
@@ -134,7 +131,9 @@ class BillsController extends Controller
         //      $request->attachment->storeAs('public/bill-attachment', $fileAttachment);
         //  }
 
-        $purchase_orders = PurchaseOrders::create([
+        StoreBillitems::run($request->item, $request->quantity, $reference->id);
+
+        return PurchaseOrders::create([
             'payment_reference_id' => $reference->id,
             'due_date' => $request->due_date,
             'sub_total' => $request->sub_total,
@@ -142,10 +141,6 @@ class BillsController extends Controller
             // image upload
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
-
-        StoreBillitems::run($request->item, $request->quantity, $purchase_orders->id);
-
-        return $purchase_orders;
     }
 
     /**

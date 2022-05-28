@@ -11,7 +11,7 @@ class BillItem extends Model
     
     protected $fillable = [
         'inventory_id',
-        'bill_id',
+        'payment_reference_id',
         'quantity',
         'price',
         'total_price',
