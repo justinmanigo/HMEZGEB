@@ -1,6 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Actions\UpdateInventoryItemQuantity;
+use App\Actions\Customer\Receipt\CreateReceiptReference;
+use App\Actions\Customer\Receipt\DetermineReceiptStatus;
+use App\Actions\Customer\Receipt\UpdateReceiptStatus;
+use App\Actions\Customer\Receipt\DeterminePaymentMethod;
+use App\Actions\Customer\Receipt\StoreReceiptItems;
 use App\Models\Proformas;
 use App\Models\CreditReceipts;
 use App\Models\AdvanceRevenues;
@@ -112,42 +119,19 @@ class ReceiptController extends Controller
     public function storeReceipt(StoreReceiptRequest $request)
     {
         // If this transaction is linked to Proforma
-        if(isset($request->proforma))
-        {
-            ReceiptReferences::where('id', $request->proforma->value)
-                ->update([
-                    'status' => 'paid'
-                ]);
-        }
+        if(isset($request->proforma)) UpdateReceiptStatus::run($request->proforma->value, 'paid');
 
-        // Determine receipt status.
-        if($request->grand_total == $request->total_amount_received)
-            $status = 'paid';
-        else if($request->total_amount_received == 0)
-            $status = 'unpaid';
-        else
-            $status = 'partially_paid';
+        // Determine Receipt Status
+        $status = DetermineReceiptStatus::run($request->grand_total, $request->total_amount_received);
 
-        // Create ReceiptReference Record
-        $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer->value,
-            'date' => $request->date,
-            'type' => 'receipt',
-            'is_void' => 'no',
-            'status' => $status
-        ]);
+        // Create Receipt Reference
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'receipt', $status);
 
         // If request has attachment, store it to file storage.
         if($request->attachment) {
             $fileAttachment = time().'.'.$request->attachment->extension();  
             $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
         }
-        
-        // Create child database entry
-        if($request->grand_total == $request->total_amount_received)
-            $payment_method = 'cash';
-        else
-            $payment_method = 'credit';
         
         // Create Receipt Record
         $receipt = Receipts::create([
@@ -162,27 +146,13 @@ class ReceiptController extends Controller
             'withholding' => '0.00', // Temporary Withholding
             'tax' => '0.00', // Temporary Tax value
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
-            'payment_method' => $payment_method,
+            'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received
         ]);
 
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            // Create Receipt Item Records
-            ReceiptItem::create([
-                'inventory_id' => $request->item[$i]->value,
-                'receipt_reference_id' => $reference->id,
-                'quantity' => $request->quantity[$i],
-                'price' => $request->item[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
-            ]);
-
-            // Decrease quantity if item is an inventory item.
-            if($request->item[$i]->inventory_type == 'inventory_item') {
-                Inventory::where('id', $request->item[$i]->value)
-                    ->decrement('quantity', $request->quantity[$i]);
-            }
-        }
+        // Store Receipt Items
+        StoreReceiptItems::run($request->item, $reference->id);
+        UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'decrease');
 
         //  image upload and save to database 
         // if($request->hasFile('attachment'))
@@ -193,11 +163,10 @@ class ReceiptController extends Controller
         //     $receipt->attachment = $filename;
         //     $receipt->save();
         // }
-        
-        return redirect()->route('receipts.receipt.index')->with('success', 'Receipt has been added successfully');
-        
-        // If success, redirect to the specified page, using AJAX.
 
+        // TODO: Refactor Attachment Upload
+        
+        return true;
     }
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
