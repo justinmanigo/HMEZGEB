@@ -226,7 +226,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="ajax-submit-updated" id="form-jv" method="post" action="{{ route('journals.store') }}">
+                <form class="ajax-submit-updated" id="form-jv" method="post" action="{{ route('journals.store') }}" data-message="Successfully created a journal voucher.">
                     @csrf
                     <div class="form-group row">
                         {{-- Blank for now --}}
