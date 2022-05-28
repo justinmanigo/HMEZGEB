@@ -334,7 +334,7 @@
                     <label class="form-check-label" for="c_is_active">Mark Customer as Active</label> --}}
                 </div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="form-jv-save-btn" form="form-jv" disabled>Save Journal Voucher</button>
+                <button type="submit" class="btn btn-primary" id="form-jv-save-btn" form="form-jv">Save Journal Voucher</button>
             </div>
         </div>
     </div>
