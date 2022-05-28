@@ -194,74 +194,31 @@ class ReceiptController extends Controller
 
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
-        // Update Receipts to Pay
-        $c = 0;
-        if(isset($request->is_paid))
+        for($i = 0; $i < count($request->is_paid); $i++)
         {
-            for($i = 0; $i < count($request->receipt_reference_id); $i++)
-            {
-                // If to pay wasn't checked for certain id, skip.
-                if(!in_array($request->receipt_reference_id[$i], $request->is_paid))
-                    continue;
-    
-                // Get receipt
-                $receipt = Receipts::leftJoin('receipt_references', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
-                    ->where('receipts.receipt_reference_id', '=', $request->receipt_reference_id[$i])->first();
-    
-                // return $receipt;
+            if(!in_array($request->receipt_reference_id[$i], $request->is_paid) || $request->amount_paid[$i] <= 0) continue;
 
-                // If amount paid wasn't even set, skip.
-                if($request->amount_paid[$i] <= 0) continue;
-    
-                $receipt->total_amount_received += $request->amount_paid[$i];
-                if($receipt->total_amount_received >= $receipt->grand_total)
-                {
-                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                        ->update(['status' => 'paid']);
-                }
-                else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0)
-                {
-                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                        ->update(['status' => 'partially_paid']);
-                }
-                else if($receipt->status == 'paid')
-                {
-                    continue;
-                }
-    
-                $receipt->save();
-                $c++;
+            $receipt = Receipts::where('receipt_reference_id', $request->receipt_reference_id[$i])->first();
+            $receipt->total_amount_received += $request->amount_paid[$i];
+            $receipt->save();
+
+            if($receipt->total_amount_received >= $receipt->grand_total) {
+                UpdateReceiptStatus::run($request->receipt_reference_id[$i], 'paid');
+            }
+            else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0) {
+                UpdateReceiptStatus::run($request->receipt_reference_id[$i], 'partially_paid');
             }
         }
 
-        if($c > 0) 
-        {
-            $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid');
-    
-            // Create child database entry
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment/credit-receipts', $fileAttachment);
-            }
-    
-            $creditReceipts = CreditReceipts::create([
-                'receipt_reference_id' => $reference->id,
-                'total_amount_received' => floatval($request->total_received),
-                'description' => $request->description,
-                'remark' => $request->remark,
-                // image upload
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            ]);
-            
-            $messageType = 'success';
-            $messageContent = 'Credit Receipt has been added successfully.';
-        }
-        else {
-            $messageType = 'warning';
-            $messageContent = 'There are no receipts to pay.';
-        }
-        
-        return redirect()->route('receipts.receipt.index')->with($messageType, $messageContent);
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid');
+
+        return CreditReceipts::create([
+            'receipt_reference_id' => $reference->id,
+            'total_amount_received' => floatval($request->total_received),
+            'description' => $request->description,
+            'remark' => $request->remark,
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+        ]);;
 
     }
 
