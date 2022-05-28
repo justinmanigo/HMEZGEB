@@ -258,7 +258,10 @@
                             </thead>
                             <tbody id="jv_credits"></tbody>
                             <tfoot>
-                                <th colspan="2" class="pt-2">Total</th>
+                                <th colspan="2" class="pt-2">
+                                    Total
+                                    <p class="text-danger error-message error-message-total" style="display:none"></p>
+                                </th>
                                 <th>
                                     <p id="jv_debit_total" class="text-right pr-2 pt-2">0.00</p>
                                 </th>
