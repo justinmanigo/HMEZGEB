@@ -63,7 +63,7 @@ function createEntry(type)
             <p class="text-danger error-message error-message-${type}_accounts" style="display:none"></p>
         </td>
         <td>
-            <input id="jv_${type}_description_${count}" type="text" class="form-control" name="${type}_description[]" placeholder="" disabled>
+            <input id="jv_${type}_description_${count}" type="text" class="form-control" name="${type}_description[]" placeholder="" disabled required>
             <p class="text-danger error-message error-message-${type}_description" style="display:none"></p>
         </td>
     `
