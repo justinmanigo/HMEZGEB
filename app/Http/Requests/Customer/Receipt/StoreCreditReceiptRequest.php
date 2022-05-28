@@ -69,23 +69,27 @@ class StoreCreditReceiptRequest extends FormRequest
             $is_paid = $this->get('is_paid');
             $receipt_reference_id = $this->get('receipt_reference_id');
             $amount_paid = $this->get('amount_paid');
-            for($i = 0; $i < count($receipt_reference_id); $i++)
-            {
-                // See if the iterated receipt's checkmark is checked.
-                if(!in_array($receipt_reference_id[$i], $is_paid)) continue;
 
-                // If it is checked, is the amount paid less than 0?
-                if(in_array($receipt_reference_id[$i], $is_paid) && $amount_paid[$i] <= 0) {
-                    $validator->errors()->add("amount_paid.{$i}", 'Amount paid must be greater than 0.');
-                    continue;
+            if(isset($receipt_reference_id))
+            {
+                for($i = 0; $i < count($receipt_reference_id); $i++)
+                {
+                    // See if the iterated receipt's checkmark is checked.
+                    if(isset($is_paid) && !in_array($receipt_reference_id[$i], $is_paid)) continue;
+    
+                    // If it is checked, is the amount paid less than 0?
+                    if(isset($is_paid) &&  in_array($receipt_reference_id[$i], $is_paid) && $amount_paid[$i] <= 0) {
+                        $validator->errors()->add("amount_paid.{$i}", 'Amount paid must be greater than 0.');
+                        continue;
+                    }
+    
+                    $c++;
                 }
-
-                $c++;
-            }
-
-            if($c == 0)
-            {
-                $validator->errors()->add('total_received', 'Please select at least one item and place an amount to be paid.');
+    
+                if($c == 0)
+                {
+                    $validator->errors()->add('total_received', 'Please select at least one item and place an amount to be paid.');
+                }
             }
         });
     }

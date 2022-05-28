@@ -1,6 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Actions\UpdateInventoryItemQuantity;
+use App\Actions\Customer\Receipt\CreateReceiptReference;
+use App\Actions\Customer\Receipt\DetermineReceiptStatus;
+use App\Actions\Customer\Receipt\UpdateReceiptStatus;
+use App\Actions\Customer\Receipt\DeterminePaymentMethod;
+use App\Actions\Customer\Receipt\StoreReceiptItems;
 use App\Models\Proformas;
 use App\Models\CreditReceipts;
 use App\Models\AdvanceRevenues;
@@ -112,45 +119,37 @@ class ReceiptController extends Controller
     public function storeReceipt(StoreReceiptRequest $request)
     {
         // If this transaction is linked to Proforma
-        if(isset($request->proforma))
-        {
-            ReceiptReferences::where('id', $request->proforma->value)
-                ->update([
-                    'status' => 'paid'
-                ]);
-        }
+        if(isset($request->proforma)) UpdateReceiptStatus::run($request->proforma->value, 'paid');
 
-        // Determine receipt status.
-        if($request->grand_total == $request->total_amount_received)
-            $status = 'paid';
-        else if($request->total_amount_received == 0)
-            $status = 'unpaid';
-        else
-            $status = 'partially_paid';
+        // Determine Receipt Status
+        $status = DetermineReceiptStatus::run($request->grand_total, $request->total_amount_received);
 
-        // Create ReceiptReference Record
-        $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer->value,
-            'date' => $request->date,
-            'type' => 'receipt',
-            'is_void' => 'no',
-            'status' => $status
-        ]);
+        // Create Receipt Reference
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'receipt', $status);
 
         // If request has attachment, store it to file storage.
         if($request->attachment) {
             $fileAttachment = time().'.'.$request->attachment->extension();  
             $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
         }
+
+        // Store Receipt Items
+        StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
+        UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'decrease');
+
+        //  image upload and save to database 
+        // if($request->hasFile('attachment'))
+        // {
+        //     $file = $request->file('attachment');
+        //     $filename = $file->getClientOriginalName();
+        //     $file->move(public_path('images'), $filename);
+        //     $receipt->attachment = $filename;
+        //     $receipt->save();
+        // }
+
+        // TODO: Refactor Attachment Upload
         
-        // Create child database entry
-        if($request->grand_total == $request->total_amount_received)
-            $payment_method = 'cash';
-        else
-            $payment_method = 'credit';
-        
-        // Create Receipt Record
-        $receipt = Receipts::create([
+        return Receipts::create([
             'receipt_reference_id' => $reference->id,
             'due_date' => $request->due_date,
             'sub_total' => $request->sub_total,
@@ -162,53 +161,14 @@ class ReceiptController extends Controller
             'withholding' => '0.00', // Temporary Withholding
             'tax' => '0.00', // Temporary Tax value
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
-            'payment_method' => $payment_method,
+            'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received
-        ]);
-
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            // Create Receipt Item Records
-            ReceiptItem::create([
-                'inventory_id' => $request->item[$i]->value,
-                'receipt_reference_id' => $reference->id,
-                'quantity' => $request->quantity[$i],
-                'price' => $request->item[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
-            ]);
-
-            // Decrease quantity if item is an inventory item.
-            if($request->item[$i]->inventory_type == 'inventory_item') {
-                Inventory::where('id', $request->item[$i]->value)
-                    ->decrement('quantity', $request->quantity[$i]);
-            }
-        }
-
-        //  image upload and save to database 
-        // if($request->hasFile('attachment'))
-        // {
-        //     $file = $request->file('attachment');
-        //     $filename = $file->getClientOriginalName();
-        //     $file->move(public_path('images'), $filename);
-        //     $receipt->attachment = $filename;
-        //     $receipt->save();
-        // }
-        
-        return redirect()->route('receipts.receipt.index')->with('success', 'Receipt has been added successfully');
-        
-        // If success, redirect to the specified page, using AJAX.
-
+        ]);;
     }
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
     {
-        // Create ReceiptReference Record
-        $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer_id,
-            'date' => $request->date,
-            'type' => 'advance_receipt',
-            'status' => 'paid' // Advance Revenue's status is always paid.
-        ]);
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'advance_receipt', 'paid');
 
         // Create child database entry
         if($request->attachment) {
@@ -216,140 +176,66 @@ class ReceiptController extends Controller
             $request->attachment->storeAs('public/receipt-attachment'/'advance-revenues', $fileAttachment);
         }
 
-        $reference->id;
-        $advanceRevenue = AdvanceRevenues::create([
+        return AdvanceRevenues::create([
             'receipt_reference_id' => $reference->id,
             'total_amount_received' => $request->amount_received,
             'reason' => $request->reason,
             'remark' => $request->remark,
-            // image upload
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
-        
-        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
     }
 
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
-        // Update Receipts to Pay
-        $c = 0;
-        if(isset($request->is_paid))
+        for($i = 0; $i < count($request->is_paid); $i++)
         {
-            for($i = 0; $i < count($request->receipt_reference_id); $i++)
-            {
-                // If to pay wasn't checked for certain id, skip.
-                if(!in_array($request->receipt_reference_id[$i], $request->is_paid))
-                    continue;
-    
-                // Get receipt
-                $receipt = Receipts::leftJoin('receipt_references', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
-                    ->where('receipts.receipt_reference_id', '=', $request->receipt_reference_id[$i])->first();
-    
-                // return $receipt;
+            if(!in_array($request->receipt_reference_id[$i], $request->is_paid) || $request->amount_paid[$i] <= 0) continue;
 
-                // If amount paid wasn't even set, skip.
-                if($request->amount_paid[$i] <= 0) continue;
-    
-                $receipt->total_amount_received += $request->amount_paid[$i];
-                if($receipt->total_amount_received >= $receipt->grand_total)
-                {
-                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                        ->update(['status' => 'paid']);
-                }
-                else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0)
-                {
-                    ReceiptReferences::where('id', '=', $request->receipt_reference_id[$i])
-                        ->update(['status' => 'partially_paid']);
-                }
-                else if($receipt->status == 'paid')
-                {
-                    continue;
-                }
-    
-                $receipt->save();
-                $c++;
+            $receipt = Receipts::where('receipt_reference_id', $request->receipt_reference_id[$i])->first();
+            $receipt->total_amount_received += $request->amount_paid[$i];
+            $receipt->save();
+
+            if($receipt->total_amount_received >= $receipt->grand_total) {
+                UpdateReceiptStatus::run($request->receipt_reference_id[$i], 'paid');
+            }
+            else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0) {
+                UpdateReceiptStatus::run($request->receipt_reference_id[$i], 'partially_paid');
             }
         }
 
-        if($c > 0) {
-            // Create ReceiptReference Record
-            $reference = ReceiptReferences::create([
-                'customer_id' => $request->customer_id,
-                'date' => $request->date,
-                'type' => 'credit_receipt',
-                'is_void' => 'no',
-                'status' => 'paid', // Credit Receipt's status is always paid.
-            ]);
-    
-            // Create child database entry
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment/credit-receipts', $fileAttachment);
-            }
-    
-            $creditReceipts = CreditReceipts::create([
-                'receipt_reference_id' => $reference->id,
-                'total_amount_received' => floatval($request->total_received),
-                'description' => $request->description,
-                'remark' => $request->remark,
-                // image upload
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            ]);
-            
-            $messageType = 'success';
-            $messageContent = 'Credit Receipt has been added successfully.';
-        }
-        else {
-            $messageType = 'warning';
-            $messageContent = 'There are no receipts to pay.';
-        }
-        
-        return redirect()->route('receipts.receipt.index')->with($messageType, $messageContent);
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid');
+
+        return CreditReceipts::create([
+            'receipt_reference_id' => $reference->id,
+            'total_amount_received' => floatval($request->total_received),
+            'description' => $request->description,
+            'remark' => $request->remark,
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+        ]);;
 
     }
 
     public function storeProforma(StoreProformaRequest $request)
     {        
-        // Receipt References
-        $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer_id,
-            'date' => $request->date,
-            'type' => 'proforma',
-            'status' => 'unpaid',
-        ]);
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid');
 
-        // Create child database entry
-        if($reference)        
-        {
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
-            }
+        // if($reference)        
+        // {
+        //     if($request->attachment) {
+        //         $fileAttachment = time().'.'.$request->attachment->extension();  
+        //         $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
+        //     }
+        // }
 
-            $reference->id;
-            $proformas = Proformas::create([
-                'receipt_reference_id' => $reference->id,
-                'due_date' => $request->due_date,
-                'amount' => $request->grand_total,
-                'terms_and_conditions' => $request->terms_and_conditions,
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            ]);
-        }
-
-        // TODO: Merge with ReceiptItems (use ReceiptReference instead of ReceiptId for Receipts)
-        // Create Receipt Item Records
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            ReceiptItem::create([
-                'inventory_id' => $request->item[$i]->value,
-                'receipt_reference_id' => $reference->id,
-                'quantity' => $request->quantity[$i],
-                'price' => $request->item[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
-            ]);
-        }
+        StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
         
-        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+        return Proformas::create([
+            'receipt_reference_id' => $reference->id,
+            'due_date' => $request->due_date,
+            'amount' => $request->grand_total,
+            'terms_and_conditions' => $request->terms_and_conditions,
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+        ]);
 
     }
 
