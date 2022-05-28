@@ -132,23 +132,6 @@ class ReceiptController extends Controller
             $fileAttachment = time().'.'.$request->attachment->extension();  
             $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
         }
-        
-        // Create Receipt Record
-        $receipt = Receipts::create([
-            'receipt_reference_id' => $reference->id,
-            'due_date' => $request->due_date,
-            'sub_total' => $request->sub_total,
-            'discount' => $request->discount,
-            'grand_total' => $request->grand_total,
-            'remark' => $request->remark,           
-            'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
-            'discount' => '0.00', // Temporary discount
-            'withholding' => '0.00', // Temporary Withholding
-            'tax' => '0.00', // Temporary Tax value
-            'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
-            'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
-            'total_amount_received' => $request->total_amount_received
-        ]);
 
         // Store Receipt Items
         StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
@@ -166,7 +149,21 @@ class ReceiptController extends Controller
 
         // TODO: Refactor Attachment Upload
         
-        return true;
+        return Receipts::create([
+            'receipt_reference_id' => $reference->id,
+            'due_date' => $request->due_date,
+            'sub_total' => $request->sub_total,
+            'discount' => $request->discount,
+            'grand_total' => $request->grand_total,
+            'remark' => $request->remark,           
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
+            'discount' => '0.00', // Temporary discount
+            'withholding' => '0.00', // Temporary Withholding
+            'tax' => '0.00', // Temporary Tax value
+            'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
+            'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
+            'total_amount_received' => $request->total_amount_received
+        ]);;
     }
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
