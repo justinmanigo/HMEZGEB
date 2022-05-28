@@ -130,6 +130,15 @@
         {{-- Page Content --}}
         <div class="card">
             <div class="card-body">
+                @if(isset($_GET['success']))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ $_GET['success'] }}
+                        {{-- {{ session()->get('success') }} --}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
