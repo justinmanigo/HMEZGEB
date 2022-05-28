@@ -39,6 +39,7 @@
                 <label for="ar_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
                 <input class="col-8 col-lg-7" id="ar_customer" name='customer' required>
                 <input type="hidden" id="ar_customer_id" name="customer_id" value="">
+                <p class="col-8 col-lg-5 text-danger error-message error-message-customer" style="display:none"></p>
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
@@ -60,6 +61,7 @@
                 <label for="ar_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
                     <input type="date" class="form-control" id="ar_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                    <p class="text-danger error-message error-message-date" style="display:none"></p>
                 </div>
             </div>
 
@@ -67,6 +69,7 @@
                 <label for="ar_account" class="col-4 col-form-label text-lg-right">Account :</label>
                 <div class="col-8">
                     <input type="text" class="form-control" id="ar_account" name="account" placeholder="Change later to use either Tagify/Select2" required>
+                    <p class="text-danger error-message error-message-account" style="display:none"></p>
                 </div>
             </div>
         </div>
@@ -172,12 +175,14 @@
                 <label for="ar_remark" class="col-sm-3 col-form-label">Remark</label>
                 <div class="col-sm-9">
                     <textarea class="form-control" id="ar_remark" name="remark"></textarea>
+                    <p class="text-danger error-message error-message-remark" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="ar_attachment" class="col-sm-3 col-form-label">Attachment</label>
                 <div class="col-sm-9">
                     <input type="file" id="ar_attachment" name="attachment">
+                    <p class="text-danger error-message error-message-attachment" style="display:none"></p>
                 </div>
             </div>
             {{-- <div class="form-group row">
@@ -221,12 +226,14 @@
                 <label for="ar_amount_received" class="col-sm-4 col-form-label">Amount Received<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control text-right" id="ar_amount_received" name="amount_received" placeholder="0.00">
+                    <p class="text-danger error-message error-message-amount_received" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="ar_reason" class="col-sm-4 col-form-label">Reason</label>
                 <div class="col-sm-8">
                     <textarea class="form-control" id="ar_reason" name="reason"></textarea>
+                    <p class="text-danger error-message error-message-reason" style="display:none"></p>
                 </div>
             </div>
         </div>

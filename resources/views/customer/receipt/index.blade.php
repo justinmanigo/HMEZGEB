@@ -175,17 +175,10 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel"
                     aria-labelledby="transactions-tab">
-                    @if(session()->has('success'))
+                    @if(isset($_GET['success']))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session()->get('success') }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
-                    @if(session()->has('warning'))
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            {{ session()->get('warning') }}
+                            {{ $_GET['success'] }}
+                            {{-- {{ session()->get('success') }} --}}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
@@ -349,7 +342,7 @@ POTENTIAL SOLUTIONS:
 --}}
 
 {{-- New Receipt --}}
-<form action="{{route('receipts.receipt.store') }}" id="form-receipt" method="post" enctype="multipart/form-data">
+<form class="ajax-submit-updated" action="{{route('receipts.receipt.store') }}" id="form-receipt" method="post" enctype="multipart/form-data" data-message="Successfully created receipt.">
     @csrf
     <div class="modal fade" id="modal-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label"
         aria-hidden="true">
@@ -373,7 +366,7 @@ POTENTIAL SOLUTIONS:
     </div>
 </form>
 {{-- New Advance Revenue --}}
-<form action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
+<form class="ajax-submit-updated" action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data" data-message="Successfully created advance revenue.">
     @csrf   
     <div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog"
         aria-labelledby="modal-advance-revenue-label" aria-hidden="true">
@@ -397,7 +390,7 @@ POTENTIAL SOLUTIONS:
     </div>
 </form>
 {{-- New Credit Receipt --}}
-<form  action="{{route('receipts.creditReceipt.store')}} "id="form-credit-receipt" method="post" enctype="multipart/form-data">
+<form class="ajax-submit-updated" action="{{route('receipts.creditReceipt.store')}} "id="form-credit-receipt" method="post" enctype="multipart/form-data" data-message="Successfully added credit receipt.">
     @csrf
     <div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog"
         aria-labelledby="modal-credit-receipt-label" aria-hidden="true">
@@ -421,7 +414,7 @@ POTENTIAL SOLUTIONS:
     </div>
 </form>
 {{-- New Proforma --}}
-<form action="{{route('receipts.proforma.store') }}" id="form-proforma" method="post" enctype="multipart/form-data">
+<form class="ajax-submit-updated" action="{{route('receipts.proforma.store') }}" id="form-proforma" method="post" enctype="multipart/form-data" data-message="Successfully created proforma.">
     @csrf   
     <div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -547,4 +540,5 @@ POTENTIAL SOLUTIONS:
 
     <script src="/js/customer/receipt/template_select_proforma.js"></script>
     <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
+    <script src="/js/ajax-submit-updated.js"></script>
     @endsection

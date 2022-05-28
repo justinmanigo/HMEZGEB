@@ -88,7 +88,7 @@
                 <label for="cr_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
                 <input class="col-8 col-lg-7" id="cr_customer" name='customer'>
                 <input type="hidden" id="cr_customer_id" name="customer_id" value="">
-
+                <p class="text-danger error-message error-message-customer" style="display:none"></p>
             </div>
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
@@ -110,12 +110,14 @@
                 <label for="cr_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
                     <input type="date" class="form-control" id="cr_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                    <p class="text-danger error-message error-message-date" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="cr_account" class="col-4 col-form-label text-lg-right">Account :</label>
                 <div class="col-8">
                     <input type="text" class="form-control" id="cr_account" name="account" placeholder="Change later to use either Tagify/Select2" required>
+                    <p class="text-danger error-message error-message-account" style="display:none"></p>
                 </div>
             </div>
         </div>
@@ -141,6 +143,7 @@
                     <td class="text-right table-item-content" colspan="5"><strong>Total Received: </strong></td>
                     <td>
                         <input type="text" id="cr_total_amount_received" class="form-control-plaintext text-right pr-2" name="total_received" placeholder="0.00" readonly>
+                        <p class="text-danger error-message error-message-total_received" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr>
@@ -154,12 +157,14 @@
                 <label for="cr_remark" class="col-sm-3 col-form-label">Remark</label>
                 <div class="col-sm-9">
                     <textarea class="form-control" id="cr_remark" name="remark"></textarea>
+                    <p class="text-danger error-message error-message-remark" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="cr_attachment" class="col-sm-3 col-form-label">Attachment</label>
                 <div class="col-sm-9">
                     <input type="file" id="cr_attachment" name="attachment">
+                    <p class="text-danger error-message error-message-attachment" style="display:none"></p>
                 </div>
             </div>
         </div>
@@ -173,6 +178,7 @@
                     </div>
                     <div class="input-group-append">
                         <input type="text" class="form-control" placeholder="Discount Account" id="cr_discount_account" name="discount_account" disabled>
+                        <p class="text-danger error-message error-message-discount_account" style="display:none"></p>
                     </div>
                     <input type="hidden" id="cr_discount_account_id" name="discount_account_id" value="">
                 </div>

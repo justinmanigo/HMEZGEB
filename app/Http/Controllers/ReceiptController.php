@@ -9,6 +9,10 @@ use App\Models\Receipts;
 use App\Models\ReceiptItem;
 use App\Models\Customers;
 use Illuminate\Http\Request;
+use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
+use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
+use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
+use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
 
 class ReceiptController extends Controller
 {
@@ -104,7 +108,7 @@ class ReceiptController extends Controller
 
     /** === STORE RECEIPTS === */
 
-    public function storeReceipt(Request $request)
+    public function storeReceipt(StoreReceiptRequest $request)
     {
         // Decode json of item tagify fields.
         for($i = 0; $i < count($request->item); $i++)
@@ -198,9 +202,12 @@ class ReceiptController extends Controller
         // }
         
         return redirect()->route('receipts.receipt.index')->with('success', 'Receipt has been added successfully');
+        
+        // If success, redirect to the specified page, using AJAX.
+
     }
 
-    public function storeAdvanceRevenue(Request $request)
+    public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
     {
         // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
@@ -229,10 +236,8 @@ class ReceiptController extends Controller
         return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
     }
 
-    public function storeCreditReceipt(Request $request)
+    public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
-        // return $request;
-
         // Update Receipts to Pay
         $c = 0;
         if(isset($request->is_paid))
@@ -310,7 +315,7 @@ class ReceiptController extends Controller
 
     }
 
-    public function storeProforma(Request $request)
+    public function storeProforma(StoreProformaRequest $request)
     {
         // Decode json of item tagify fields.
         for($i = 0; $i < count($request->item); $i++)

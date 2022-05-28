@@ -6,6 +6,7 @@
                 <label for="r_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
                 <input class="col-8 col-lg-7" id="r_customer" name='customer'>
                 <input type="hidden" id="r_customer_id" name="customer_id" value="">
+                <p class="col-8 col-lg-5 text-danger error-message error-message-customer" style="display:none"></p>
             </div>
             {{-- Contact Details --}}
             <div class="form-group row m-0">
@@ -27,6 +28,7 @@
                 <label for="r_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
                 <div class="col-8">
                     <input type="date" class="form-control" id="r_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                    <p class="text-danger error-message error-message-date" style="display:none"></p>
                 </div>
             </div>
 
@@ -34,18 +36,21 @@
                 <label for="r_proforma" class="col-4 col-form-label text-lg-right">Proforma # :</label>
                 <div class="col-8">
                     <input type="text" id="r_proforma" name="proforma">
+                    <p class="text-danger error-message error-message-proforma" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="r_due_date" class="col-4 col-form-label text-lg-right">Due Date :</label>
                 <div class="col-8">
                     <input type="date" class="form-control" id="r_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
+                    <p class="text-danger error-message error-message-due_date" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="r_account" class="col-4 col-form-label text-lg-right">Account :</label>
                 <div class="col-8">
                     <input class="col-md-4 col-lg-4" id="r_account" name='account'>
+                    <p class="text-danger error-message error-message-account" style="display:none"></p>
                 </div>
             </div>
         </div>
@@ -70,6 +75,7 @@
                     </td>
                     <td>
                         <input type="text" class="form-control text-right" name="sub_total" id="r_sub_total" placeholder="0.00" value="0.00" readonly>
+                        <p class="text-danger error-message error-message-sub_total" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr>
@@ -78,6 +84,7 @@
                     <td class="text-right table-item-content"><strong>Discount: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="discount" placeholder="0.00">
+                        <p class="text-danger error-message error-message-discount" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -86,6 +93,7 @@
                     <td class="text-right table-item-content"><strong>Withholding: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
+                        <p class="text-danger error-message error-message-withholding" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -93,6 +101,7 @@
                     <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
+                        <p class="text-danger error-message error-message-tax" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -100,6 +109,7 @@
                     <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
+                        <p class="text-danger error-message error-message-tax" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr> --}}
@@ -107,6 +117,7 @@
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
                         <input type="text" class="form-control text-right" name="grand_total" id="r_grand_total" placeholder="0.00" value="0.00" readonly>
+                        <p class="text-danger error-message error-message-grand_total" style="display:none"></p>
                     </td>
                     <td></td>
                 </tr>
@@ -120,12 +131,14 @@
                 <label for="r_remark" class="col-sm-3 col-form-label">Remark</label>
                 <div class="col-sm-9">
                     <textarea class="form-control" id="r_remark" name="remark"></textarea>
+                    <p class="text-danger error-message error-message-remark" style="display:none"></p>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="r_attachment" class="col-sm-3 col-form-label">Attachment</label>
                 <div class="col-sm-9">
                     <input type="file" id="r_attachment" name="attachment">
+                    <p class="text-danger error-message error-message-attachment" style="display:none"></p>
                 </div>
             </div>
             {{-- <div class="form-group row">
@@ -136,6 +149,7 @@
                     </div>
                     <input type="text" class="form-control" id="r_commission" name="commission" placeholder="Select Commission" disabled>
                     <input type="hidden" id="r_commission_employee_id" name="commission_employee_id" value="">
+                    <p class="text-danger error-message error-message-commission" style="display:none"></p>
                 </div>
             </div> --}}
         </div>
@@ -146,6 +160,7 @@
                     <select class="form-control" id="r_revenue_type" name="revenue_type">
                         <option>Sales</option>
                     </select>
+                    <p class="text-danger error-message error-message-revenue_type" style="display:none"></p>
                 </div>
             </div> --}}
             {{--<div class="form-group row">
@@ -163,12 +178,14 @@
                         Cash
                         </label>
                     </div>
+                    <p class="text-danger error-message error-message-paymentType" style="display:none"></p>
                 </div>
             </div>--}}
             <div class="form-group row">
                 <label for="r_payment" class="col-sm-4 col-form-label">Payment<span class="text-danger ml-1">*</span></label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control text-right" id="r_total_amount_received" name="total_amount_received" placeholder="0.00" required>
+                    <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
                 </div>
             </div>
         </div>

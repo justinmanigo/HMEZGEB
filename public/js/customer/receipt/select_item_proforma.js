@@ -48,21 +48,26 @@ function createproformaItemEntry()
             <div class="input-group">
                 <input data-id="${proforma_count}" id="p_item_${proforma_count}" class="p_item" name='item[]'>
                 <input type="hidden" name="item_id[]" value="">
+                <p class="text-danger error-message error-message-item" style="display:none"></p>
             </div>
         </td>
         <td>
             <input type="number" data-id="${proforma_count}" id="p_item_quantity_${proforma_count}" class="form-control p_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <p class="text-danger error-message error-message-quantity" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="p_item_price_${proforma_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+            <p class="text-danger error-message error-message-price" style="display:none"></p>
         </td>
         <td>
             <select id="p_item_tax_${proforma_count}" class="form-control" name="tax[]">
                 <option>Sales Tax (15%)</option>
             </select>
+            <p class="text-danger error-message error-message-tax" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="p_item_total_${proforma_count}" class="form-control text-right p_item_total" name="total[]" placeholder="0.00" disabled>
+            <p class="text-danger error-message error-message-total" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${proforma_count}" id="p_item_delete_${proforma_count}" class="btn btn-icon btn-danger p_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
