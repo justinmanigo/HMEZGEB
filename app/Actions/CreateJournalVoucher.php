@@ -9,11 +9,10 @@ class CreateJournalVoucher
 {
     use AsAction;
 
-    public function handle($id, $reference_number)
+    public function handle($id)
     {
         $journal_voucher = JournalVouchers::create([
             'journal_entry_id' => $id,
-            'reference_number' => $reference_number,
         ]);
 
         return $journal_voucher;
