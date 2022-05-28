@@ -217,17 +217,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-jv" method="post" action="{{ route('journals.store') }}">
+                <form class="ajax-submit-updated" id="form-jv" method="post" action="{{ route('journals.store') }}">
                     @csrf
                     <div class="form-group row">
-                        <label for="jv_reference_number" class="col-sm-3 col-lg-2 col-form-label">Reference #<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="jv_reference_number" name="reference_number" placeholder="" required>
-                        </div>
+                        {{-- Blank for now --}}
+                        <label for="jv_reference_number" class="col-sm-3 col-lg-2"></label>
+                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0"></div>
 
+                        {{-- Date --}}
                         <label for="jv_date" class="col-sm-3 col-lg-2 col-form-label">Date</label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="date" class="form-control" id="jv_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                            <p class="col-8 col-lg-5 text-danger error-message error-message-date" style="display:none"></p>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -262,6 +263,7 @@
                     <div>
                         <label for="jv_notes" class="col-form-label">Notes:</label>
                         <textarea class="form-control" id="jv_notes" name="notes"></textarea>
+                        <p class="text-danger error-message error-message-notes" style="display:none"></p>
                     </div>
                 </form>
             </div>
