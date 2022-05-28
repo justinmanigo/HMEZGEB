@@ -171,13 +171,7 @@ class ReceiptController extends Controller
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
     {
-        // Create ReceiptReference Record
-        $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer_id,
-            'date' => $request->date,
-            'type' => 'advance_receipt',
-            'status' => 'paid' // Advance Revenue's status is always paid.
-        ]);
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'advance_receipt', 'paid');
 
         // Create child database entry
         if($request->attachment) {
@@ -240,15 +234,9 @@ class ReceiptController extends Controller
             }
         }
 
-        if($c > 0) {
-            // Create ReceiptReference Record
-            $reference = ReceiptReferences::create([
-                'customer_id' => $request->customer_id,
-                'date' => $request->date,
-                'type' => 'credit_receipt',
-                'is_void' => 'no',
-                'status' => 'paid', // Credit Receipt's status is always paid.
-            ]);
+        if($c > 0) 
+        {
+            $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid');
     
             // Create child database entry
             if($request->attachment) {
@@ -279,13 +267,7 @@ class ReceiptController extends Controller
 
     public function storeProforma(StoreProformaRequest $request)
     {        
-        // Receipt References
-        $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer_id,
-            'date' => $request->date,
-            'type' => 'proforma',
-            'status' => 'unpaid',
-        ]);
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid');
 
         // Create child database entry
         if($reference)        
