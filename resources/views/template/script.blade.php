@@ -35,6 +35,7 @@
 
     <script src="{{ url('/js/toast.js') }}"></script>
     <script src="{{ url('/js/form-submit-ajax.js') }}"></script>
+    <script src="{{ url('/js/ajax-submit-updated.js') }}"></script>
 
        <!-- Dump all dynamic scripts into template -->
         @stack('scripts')
