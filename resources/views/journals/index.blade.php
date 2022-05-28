@@ -244,7 +244,7 @@
                         <table class="table table-sm table-bordered">
                             <thead>
                                 <th>Account<span class="text-danger ml-1">*</span></th>
-                                <th>Description</th>
+                                <th>Description<span class="text-danger ml-1">*</span></th>
                                 <th>Debit<span class="text-danger ml-1">*</span></th>
                                 <th>Credit<span class="text-danger ml-1">*</span></th>
                                 <th>Actions</th>
