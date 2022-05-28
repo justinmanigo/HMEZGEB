@@ -142,7 +142,7 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between align-items-center">
                         <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">New Bill</p>
+                        <p class="h3 pl-4 m-auto">New Bill Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
@@ -164,7 +164,7 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between align-items-center">
                         <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">VAT Payment/Receivable</p>
+                        <p class="h3 pl-4 m-auto">New VAT Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
@@ -185,7 +185,7 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between align-items-center">
                         <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">Withholding</p>
+                        <p class="h3 pl-4 m-auto">New Withholding Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" action="{{route('payments.withholdingPayment.store')}}" method="post" role="form">
@@ -207,7 +207,7 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between align-items-center">
                         <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">Payroll</p>
+                        <p class="h3 pl-4 m-auto">New Payroll Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" name="contact" role="form">
@@ -228,7 +228,7 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between align-items-center">
                         <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">Income Tax</p>
+                        <p class="h3 pl-4 m-auto">New Income Tax Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form action="{{route('payments.incomeTax.store')}}" id="contactForm" method="post" name="contact" role="form">
@@ -250,7 +250,7 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between align-items-center">
                         <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">Pension</p>
+                        <p class="h3 pl-4 m-auto">New Pension Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form action="{{route('payments.pension.store')}}" method="post" id="contactForm" name="contact" role="form">
@@ -272,7 +272,7 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between align-items-center">
                         <img class="mr-5" src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">Commission</p>
+                        <p class="h3 pl-4 m-auto">New Commission Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" name="contact" role="form">
