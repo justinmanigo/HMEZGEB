@@ -179,17 +179,13 @@ class ReceiptController extends Controller
             $request->attachment->storeAs('public/receipt-attachment'/'advance-revenues', $fileAttachment);
         }
 
-        $reference->id;
-        $advanceRevenue = AdvanceRevenues::create([
+        return AdvanceRevenues::create([
             'receipt_reference_id' => $reference->id,
             'total_amount_received' => $request->amount_received,
             'reason' => $request->reason,
             'remark' => $request->remark,
-            // image upload
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
-        
-        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
     }
 
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
