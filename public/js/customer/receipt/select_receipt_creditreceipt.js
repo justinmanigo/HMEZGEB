@@ -18,25 +18,32 @@ function createReceiptToPayEntry(data)
     <tr>
         <td>
             <input type="text" class="form-control-plaintext" id="cr_receipt_reference_id_${data.receipt_reference_id}" name="receipt_reference_id[]" value="${data.receipt_reference_id}" readonly>
+            <p class="text-danger error-message error-message-receipt_reference_id" style="display:none"></p>
         </td>
         <td>
             <input type="date" class="form-control" id="cr_date_due_${data.receipt_reference_id}" name="date_due[]" value="${data.due_date}" disabled>
+            <p class="text-danger error-message error-message-date_due" style="display:none"></p>
         </td>
         <td>
             <input type="text" class="form-control-plaintext inputPrice text-right" id="cr_amount_due_${data.receipt_reference_id}" name="amount_due[]" value="${amount_due}" readonly>
+            <p class="text-danger error-message error-message-amount_due" style="display:none"></p>
         </td>
         <td>
             <input type="text" class="form-control" id="cr_description_${data.receipt_reference_id}" name="description" placeholder="">
+            <p class="text-danger error-message error-message-description" style="display:none"></p>
         </td>
         <td>
             <input type="number" step="0.01" min="0" class="form-control text-right inputPrice" id="cr_discount_${data.receipt_reference_id}" name="discount[]" placeholder="0.00">
+            <p class="text-danger error-message error-message-discount" style="display:none"></p>
         </td>
         <td>
             <input type="number" step="0.01" min="0" class="form-control text-right inputPrice cr_amount_paid" data-id="${data.receipt_reference_id}" id="cr_amount_paid_${data.receipt_reference_id}" name="amount_paid[]" placeholder="0.00">
+            <p class="text-danger error-message error-message-amount_paid" style="display:none"></p>
         </td>
         <td class="table-item-content">
             <div class="form-check">
                 <input type="checkbox" data-id="${data.receipt_reference_id}" class="form-check-input" id="cr_is_paid_${data.receipt_reference_id}" name="is_paid[]" value="${data.receipt_reference_id}">
+                <p class="text-danger error-message error-message-is_paid" style="display:none"></p>
             </div>
         </td>
     </tr>

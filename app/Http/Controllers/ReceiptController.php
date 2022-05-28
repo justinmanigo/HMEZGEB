@@ -11,6 +11,7 @@ use App\Models\Customers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
+use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
 
 class ReceiptController extends Controller
@@ -235,10 +236,8 @@ class ReceiptController extends Controller
         return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
     }
 
-    public function storeCreditReceipt(Request $request)
+    public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
-        // return $request;
-
         // Update Receipts to Pay
         $c = 0;
         if(isset($request->is_paid))
