@@ -143,20 +143,8 @@ class BillsController extends Controller
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
 
-        // TODO: Merge with billItems (use billReference instead of billId for bills)
-        
-        // Create bill Item Records
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            BillItem::create([
-                'inventory_id' => $request->item[$i]->value,
-                'bill_id' => $purchase_orders->id,
-                'quantity' => $request->quantity[$i],
-                'price' => $request->item[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
-            ]);
-        }
-        
+        StoreBillitems::run($request->item, $request->quantity, $purchase_orders->id);
+
         return $purchase_orders;
     }
 
