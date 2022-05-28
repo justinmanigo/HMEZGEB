@@ -8,6 +8,7 @@ use App\Models\ReceiptReferences;
 use App\Models\Receipts;
 use App\Models\ReceiptItem;
 use App\Models\Customers;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
@@ -165,9 +166,9 @@ class ReceiptController extends Controller
             'total_amount_received' => $request->total_amount_received
         ]);
 
-        // Create Receipt Item Records
         for($i = 0; $i < count($request->item); $i++)
         {
+            // Create Receipt Item Records
             ReceiptItem::create([
                 'inventory_id' => $request->item[$i]->value,
                 'receipt_reference_id' => $reference->id,
@@ -175,6 +176,12 @@ class ReceiptController extends Controller
                 'price' => $request->item[$i]->sale_price,
                 'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
             ]);
+
+            // Decrease quantity if item is an inventory item.
+            if($request->item[$i]->inventory_type == 'inventory_item') {
+                Inventory::where('id', $request->item[$i]->value)
+                    ->decrement('quantity', $request->quantity[$i]);
+            }
         }
 
         //  image upload and save to database 

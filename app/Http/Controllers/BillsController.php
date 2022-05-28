@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Vendor\Bill\StoreBillRequest;
 use App\Models\Bills;
 use App\Models\Vendors;
 use App\Models\PaymentReferences;
 use App\Models\BillItem;
 use App\Models\PurchaseOrders;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 
 class BillsController extends Controller
@@ -51,30 +53,11 @@ class BillsController extends Controller
  
     /** === STORE BILLS === */
 
-    public function storeBill(Request $request)
+    public function storeBill(StoreBillRequest $request)
     {
-        // Decode json of item tagify fields.
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            $item = json_decode($request->item[$i]);
+        // return $request;
 
-            // Resulting json_decode will turn into an array of
-            // object, thus it has to be merged.
-            $items[$i] = $item[0];
-        }
-
-        // // Decode Proforma field
-        // $p = json_decode($request->proforma);
-        // $proforma = isset($p) ? $p[0] : null;
-
-        // // If this transaction is linked to Proforma
-        // if(isset($proforma))
-        // {
-        //     BillReferences::where('id', $proforma->value)
-        //         ->update([
-        //             'status' => 'paid'
-        //         ]);
-        // }
+        // TODO: Link with Purchase Order (if applicable)
 
         // Determine bill status.
         if($request->grand_total == $request->total_amount_received)
@@ -86,7 +69,7 @@ class BillsController extends Controller
 
         // Create BillReference Record
         $reference = PaymentReferences::create([
-            'vendor_id' => $request->vendor_id,
+            'vendor_id' => $request->vendor->value,
             'date' => $request->date,
             'type' => 'bill',
             'attachment' => $request->attachment,
@@ -122,16 +105,23 @@ class BillsController extends Controller
             'payment_method' => $payment_method,
             'amount_received' => $request->total_amount_received,
         ]);
-        // Create Bill Item Records
-        for($i = 0; $i < count($items); $i++)
+
+        for($i = 0; $i < count($request->item); $i++)
         {
+            // Create Bill Item Records
             BillItem::create([
-                'inventory_id' => $items[$i]->value,
+                'inventory_id' => $request->item[$i]->value,
                 'bill_id' => $bills->id,
                 'quantity' => $request->quantity[$i],
-                'price' => $items[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+                'price' => $request->item[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
             ]);
+
+            // Increment Inventory Quantity
+            if($request->item[$i]->inventory_type == 'inventory_item') {
+                Inventory::where('id', $request->item[$i]->value)
+                    ->increment('quantity', $request->quantity[$i]);
+            }
         }
 
         //  image upload and save to database 

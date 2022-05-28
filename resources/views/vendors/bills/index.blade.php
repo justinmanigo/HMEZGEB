@@ -167,65 +167,18 @@
                 </div>
                 <!---- end buttons----->
             </div>
-            @if(session()->has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session()->get('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-            @if(session()->has('warning'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {{ session()->get('warning') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-        </div>
-
-        {{-- Modal Contents --}}
-        <!--------For add vendor--->
-        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <img class="mr-5"
-                            src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">New Bill</p>
-                        <a class="close" data-dismiss="modal">×</a>
-                    </div>
-                    <form action="{{route('bills.bill.store') }}" method="post" id="contactForm" name="contact"
-                        role="form">
-                        @csrf
-                        @include('vendors.bills.forms.addBillModal')
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!--------For purchase order--->
-        <div class="modal fade bd-purchaseOrder-modal-xl" tabindex="-1" role="dialog"
-            aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <img class="mr-5"
-                            src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">Purchase Order</p>
-                        <a class="close" data-dismiss="modal">×</a>
-                    </div>
-                    <form action="{{route('bills.purchaseOrder.store') }}" method="post" id="contactForm" name="contact"
-                        role="form">
-                        @csrf
-                        @include('vendors.bills.forms.purchaseOrderModal')
-                    </form>
-                </div>
-            </div>
         </div>
         <!---------Table--------->
         <div class="card-body">
+            @if(isset($_GET['success']))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ $_GET['success'] }}
+                    {{-- {{ session()->get('success') }} --}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
@@ -274,6 +227,44 @@
 </div>
 <!-- /.container-fluid -->
 
+{{-- Modal Contents --}}
+<!--------For add bill--->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <img class="mr-5"
+                    src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                <p class="h3 pl-4 m-auto">New Bill</p>
+                <a class="close" data-dismiss="modal">×</a>
+            </div>
+            <form class="ajax-submit-updated" id="form-new-bill" action="{{route('bills.bill.store') }}" method="post" enctype="multipart/form-data" data-message="Successfully created bill.">
+                @csrf
+                @include('vendors.bills.forms.addBillModal')
+            </form>
+        </div>
+    </div>
+</div>
+<!--------For purchase order--->
+<div class="modal fade bd-purchaseOrder-modal-xl" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+                <img class="mr-5"
+                    src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
+                <p class="h3 pl-4 m-auto">Purchase Order</p>
+                <a class="close" data-dismiss="modal">×</a>
+            </div>
+            <form action="{{route('bills.purchaseOrder.store') }}" method="post" id="contactForm" name="contact">
+                @csrf
+                @include('vendors.bills.forms.purchaseOrderModal')
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
@@ -298,6 +289,6 @@ $(document).ready(function() {
 <script src="/js/vendors/bill/select_item_bill.js"></script>
 <script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
 
-
+<script src="/js/ajax-submit-updated.js"></script>
 
 @endsection

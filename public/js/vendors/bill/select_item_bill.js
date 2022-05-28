@@ -47,21 +47,26 @@ function createBillItemEntry(item = undefined)
             <div class="input-group">
                 <input data-id="${bill_count}" id="b_item_${bill_count}" class="b_item" name='item[]'>
                 <input type="hidden" name="item_id[]" value="">
+                <p class="error-message error-message-item text-danger" style="display:none"></p>
             </div>
         </td>
         <td>
             <input type="number" data-id="${bill_count}" id="b_item_quantity_${bill_count}" class="form-control b_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="b_item_price_${bill_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+            <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
             <select id="b_item_tax_${bill_count}" class="form-control" name="tax[]">
                 <option>Sales Tax (15%)</option>
             </select>
+            <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
         <td>
             <input type="text" id="b_item_total_${bill_count}" class="form-control text-right b_item_total" name="total[]" placeholder="0.00" disabled>
+            <p class="error-message error-message-total text-danger" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${bill_count}" id="b_item_delete_${bill_count}" class="btn btn-icon btn-danger b_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
