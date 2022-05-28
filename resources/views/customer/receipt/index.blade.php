@@ -366,7 +366,7 @@ POTENTIAL SOLUTIONS:
     </div>
 </form>
 {{-- New Advance Revenue --}}
-<form action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data">
+<form class="ajax-submit-updated" action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data" data-message="Successfully created advance revenue.">
     @csrf   
     <div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog"
         aria-labelledby="modal-advance-revenue-label" aria-hidden="true">

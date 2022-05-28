@@ -10,6 +10,7 @@ use App\Models\ReceiptItem;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
+use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
 
 class ReceiptController extends Controller
 {
@@ -204,7 +205,7 @@ class ReceiptController extends Controller
 
     }
 
-    public function storeAdvanceRevenue(Request $request)
+    public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
     {
         // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
