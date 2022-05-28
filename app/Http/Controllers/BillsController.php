@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\UpdateInventoryItemQuantity;
+use App\Actions\Vendor\Bill\StoreBillItems;
 use App\Http\Requests\Vendor\Bill\StoreBillRequest;
 use App\Http\Requests\Vendor\Bill\StorePurchaseOrderRequest;
 use App\Models\Bills;
@@ -107,23 +109,26 @@ class BillsController extends Controller
             'amount_received' => $request->total_amount_received,
         ]);
 
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            // Create Bill Item Records
-            BillItem::create([
-                'inventory_id' => $request->item[$i]->value,
-                'bill_id' => $bills->id,
-                'quantity' => $request->quantity[$i],
-                'price' => $request->item[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
-            ]);
+        UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'increase');
+        StoreBillitems::run($request->item, $request->quantity, $bills->id);
 
-            // Increment Inventory Quantity
-            if($request->item[$i]->inventory_type == 'inventory_item') {
-                Inventory::where('id', $request->item[$i]->value)
-                    ->increment('quantity', $request->quantity[$i]);
-            }
-        }
+        // for($i = 0; $i < count($request->item); $i++)
+        // {
+        //     // Create Bill Item Records
+        //     BillItem::create([
+        //         'inventory_id' => $request->item[$i]->value,
+        //         'bill_id' => $bills->id,
+        //         'quantity' => $request->quantity[$i],
+        //         'price' => $request->item[$i]->sale_price,
+        //         'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
+        //     ]);
+
+        //     // Increment Inventory Quantity
+        //     if($request->item[$i]->inventory_type == 'inventory_item') {
+        //         Inventory::where('id', $request->item[$i]->value)
+        //             ->increment('quantity', $request->quantity[$i]);
+        //     }
+        // }
 
         //  image upload and save to database 
         // if($request->hasFile('attachment'))
