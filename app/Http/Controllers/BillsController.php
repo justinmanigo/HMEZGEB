@@ -111,36 +111,8 @@ class BillsController extends Controller
 
         UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'increase');
         StoreBillitems::run($request->item, $request->quantity, $bills->id);
-
-        // for($i = 0; $i < count($request->item); $i++)
-        // {
-        //     // Create Bill Item Records
-        //     BillItem::create([
-        //         'inventory_id' => $request->item[$i]->value,
-        //         'bill_id' => $bills->id,
-        //         'quantity' => $request->quantity[$i],
-        //         'price' => $request->item[$i]->sale_price,
-        //         'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
-        //     ]);
-
-        //     // Increment Inventory Quantity
-        //     if($request->item[$i]->inventory_type == 'inventory_item') {
-        //         Inventory::where('id', $request->item[$i]->value)
-        //             ->increment('quantity', $request->quantity[$i]);
-        //     }
-        // }
-
-        //  image upload and save to database 
-        // if($request->hasFile('attachment'))
-        // {
-        //     $file = $request->file('attachment');
-        //     $filename = $file->getClientOriginalName();
-        //     $file->move(public_path('images'), $filename);
-        //     $bill->attachment = $filename;
-        //     $bill->save();
-        // }
             
-        return redirect()->back()->with('success', 'Bill has been created successfully.');
+        return $bills;
         
     }
 
