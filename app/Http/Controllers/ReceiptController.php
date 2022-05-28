@@ -269,38 +269,23 @@ class ReceiptController extends Controller
     {        
         $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid');
 
-        // Create child database entry
-        if($reference)        
-        {
-            if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
-                $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
-            }
+        // if($reference)        
+        // {
+        //     if($request->attachment) {
+        //         $fileAttachment = time().'.'.$request->attachment->extension();  
+        //         $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
+        //     }
+        // }
 
-            $reference->id;
-            $proformas = Proformas::create([
-                'receipt_reference_id' => $reference->id,
-                'due_date' => $request->due_date,
-                'amount' => $request->grand_total,
-                'terms_and_conditions' => $request->terms_and_conditions,
-                'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            ]);
-        }
-
-        // TODO: Merge with ReceiptItems (use ReceiptReference instead of ReceiptId for Receipts)
-        // Create Receipt Item Records
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            ReceiptItem::create([
-                'inventory_id' => $request->item[$i]->value,
-                'receipt_reference_id' => $reference->id,
-                'quantity' => $request->quantity[$i],
-                'price' => $request->item[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
-            ]);
-        }
+        StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
         
-        return redirect()->route('receipts.receipt.index')->with('success', 'Proforma has been added successfully');
+        return Proformas::create([
+            'receipt_reference_id' => $reference->id,
+            'due_date' => $request->due_date,
+            'amount' => $request->grand_total,
+            'terms_and_conditions' => $request->terms_and_conditions,
+            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
+        ]);
 
     }
 
