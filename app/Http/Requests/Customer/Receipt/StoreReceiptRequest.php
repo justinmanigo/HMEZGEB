@@ -32,7 +32,7 @@ class StoreReceiptRequest extends FormRequest
             'item' => ['required', 'array'],
             'item.*' => ['required'],
             'quantity' => ['required', 'array'],
-            'quantity.*' => ['required', 'numeric', 'min:0'],
+            'quantity.*' => ['required', 'numeric', 'min:1'],
             // 'tax' => ['required', 'array'],
             // 'tax.*' => ['required'],
             'sub_total' => ['required', 'numeric', 'min:0'],
