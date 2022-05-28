@@ -110,24 +110,10 @@ class ReceiptController extends Controller
 
     public function storeReceipt(StoreReceiptRequest $request)
     {
-        // Decode json of item tagify fields.
-        for($i = 0; $i < count($request->item); $i++)
-        {
-            $item = json_decode($request->item[$i]);
-
-            // Resulting json_decode will turn into an array of
-            // object, thus it has to be merged.
-            $items[$i] = $item[0];
-        }
-
-        // Decode Proforma field
-        $p = json_decode($request->proforma);
-        $proforma = isset($p) ? $p[0] : null;
-
         // If this transaction is linked to Proforma
-        if(isset($proforma))
+        if(isset($request->proforma))
         {
-            ReceiptReferences::where('id', $proforma->value)
+            ReceiptReferences::where('id', $request->proforma->value)
                 ->update([
                     'status' => 'paid'
                 ]);
@@ -143,7 +129,7 @@ class ReceiptController extends Controller
 
         // Create ReceiptReference Record
         $reference = ReceiptReferences::create([
-            'customer_id' => $request->customer_id,
+            'customer_id' => $request->customer->value,
             'date' => $request->date,
             'type' => 'receipt',
             'is_void' => 'no',
@@ -174,20 +160,20 @@ class ReceiptController extends Controller
             'discount' => '0.00', // Temporary discount
             'withholding' => '0.00', // Temporary Withholding
             'tax' => '0.00', // Temporary Tax value
-            'proforma_id' => isset($proforma) ? $proforma->value : null, // Test
+            'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => $payment_method,
             'total_amount_received' => $request->total_amount_received
         ]);
 
         // Create Receipt Item Records
-        for($i = 0; $i < count($items); $i++)
+        for($i = 0; $i < count($request->item); $i++)
         {
             ReceiptItem::create([
-                'inventory_id' => $items[$i]->value,
+                'inventory_id' => $request->item[$i]->value,
                 'receipt_reference_id' => $reference->id,
                 'quantity' => $request->quantity[$i],
-                'price' => $items[$i]->sale_price,
-                'total_price' => $request->quantity[$i] * $items[$i]->sale_price,
+                'price' => $request->item[$i]->sale_price,
+                'total_price' => $request->quantity[$i] * $request->item[$i]->sale_price,
             ]);
         }
 
