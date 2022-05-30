@@ -23,12 +23,19 @@
 <div class="d-sm-flex align-items-start justify-content-between mb-2">
     <h1>Referrals</h1>
     <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-generate-referral">
+            <span class="icon text-white-50">
+                <i class="fas fa-file-import"></i>
+            </span>
+            <span class="text">Generate Referrals</span>
+        </button>
         <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal-referral">
             <span class="icon text-primary-50">
                 <i class="fas fa-file-import"></i>
             </span>
             <span class="text">New Normal Referral</span>
         </button>
+        
         @if(Auth::user()->control_panel_role == 'admin')
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-advanced-referral">
             <span class="icon text-white-50">
@@ -213,6 +220,87 @@
     </div>
 </div>
 
+{{-- Generate Referrals --}}
+<div class="modal fade" id="modal-generate-referral" tabindex="-1" role="dialog" aria-labelledby="modal-generate-referral-label" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-generate-referral-label">Generate Referrals</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-generate-referral-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-generate-referral" method="post" action="{{ url('/referrals') }}"  data-message="Successfully generated referrals.">
+                    @csrf
+                    @method('patch')
+                    <div class="form-group row">
+                        <label for="g_number_of_codes" class="col-12 col-lg-6 col-form-label">Number of Codes<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <input type="number" min="1" class="form-control" id="g_number_of_codes" name="number_of_codes" value="1" required>
+                            <p class="text-danger error-message error-message-number_of_codes" style="display:none"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="g_referral_type" class="col-12 col-lg-6 col-form-label">Referral Type<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <select class="form-control" id="g_referral_type" name="referral_type" required>
+                                <option value='' hidden>Select Referral Type</option>
+                                <option value='normal'>Normal</option>
+                                <option value='advanced'>Advanced</option>
+                            </select>
+                            <p class="text-danger error-message error-message-referral_type" style="display:none"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label id="g_account_type_label" for="g_account_type" class="col-12 col-lg-6 col-form-label">Account Type<span class="text-danger ml-1" style="display:none">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <select class="form-control" id="g_account_type" name="account_type" required disabled>
+                                <option value='' hidden>Select Account Type</option>
+                                <option value='super admin'>Super Admin</option>
+                                <option value='admin'>Admin</option>
+                                <option value='moderator'>Moderator</option>
+                                <option value='member'>Member</option>
+                            </select>
+                            <p class="text-danger error-message error-message-account_type" style="display:none"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label id="g_number_of_accounts_label" for="g_number_of_accounts" class="col-12 col-lg-6 col-form-label">Number of Accounts<span class="text-danger ml-1" style="display:none">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <input type="number" min="1" max="10" class="form-control" id="g_number_of_accounts" name="number_of_accounts" value="1" required disabled>
+                            <p class="text-danger error-message error-message-number_of_accounts" style="display:none"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label id="g_trial_duration_label" for="g_trial_duration" class="col-12 col-lg-6 col-form-label">Trial Duration<span class="text-danger ml-1" style="display:none">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="g_trial_duration" name="trial_duration" value="1" min="1" required disabled>
+                                <select class="form-control" id="g_trial_duration_type" name="trial_duration_type" required disabled>
+                                    <option value='day'>Days</option>
+                                    <option value='week'>Weeks</option>
+                                    <option value='month'>Months</option>
+                                </select>
+                                <p class="text-danger error-message error-message-trial_duration error-message-trial_duration_type" style="display:none"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <p>The referral code is auto-generated on submission.</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="form-generate-referral">Generate Referrals</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 <script>
     // When the account_type is selected, check if it is set to admin or super admin.
@@ -225,6 +313,52 @@
         } else {
             $('#a_number_of_accounts').prop('disabled', true);
             $('#a_number_of_accounts_label span').hide();
+        }
+    });
+
+    $('#g_account_type').change(function() {
+        if ($(this).val() == 'admin' || $(this).val() == 'super admin') {
+            $('#g_number_of_accounts').prop('disabled', false);
+            $('#g_number_of_accounts_label span').show();
+        } else {
+            $('#g_number_of_accounts').prop('disabled', true);
+            $('#g_number_of_accounts_label span').hide();
+        }
+    });
+
+    // When the referral type is selected, check if it is set to normal or advanced.
+    // If it is set to advanced, enable the account_type, trial_duration, and trial_duration_type fields.
+    $('#g_referral_type').change(function() {
+        if ($(this).val() == 'advanced') {
+            $('#g_account_type').prop('disabled', false);
+            $('#g_trial_duration').prop('disabled', false);
+            $('#g_trial_duration_type').prop('disabled', false);
+
+            if($('#g_account_type').val() == 'admin' || $('#g_account_type').val() == 'super admin') {
+                $('#g_number_of_accounts').prop('disabled', false);
+            } else {
+                $('#g_number_of_accounts').prop('disabled', true);
+            }
+
+            $('#g_account_type_label span').show();
+            $('#g_trial_duration_label span').show();
+            $('#g_trial_duration_type_label span').show();
+            $('#g_number_of_accounts_label span').show();
+        } else {
+            $('#g_account_type').prop('disabled', true);
+            $('#g_trial_duration').prop('disabled', true);
+            $('#g_trial_duration_type').prop('disabled', true);
+            $('#g_number_of_accounts').prop('disabled', true);
+
+            $('#g_account_type_label span').hide();
+            $('#g_trial_duration_label span').hide();
+            $('#g_trial_duration_type_label span').hide();
+            $('#g_number_of_accounts_label span').hide();
+
+            $('#g_number_of_accounts').val(1);
+            $('#g_account_type').val('admin');
+            $('#g_trial_duration').val(1);
+            $('#g_trial_duration_type').val('week');
         }
     });
 </script>
