@@ -14,9 +14,11 @@ class CreateReferral
     {
         return Referral::create([
             'user_id' => Auth::id(),
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name' => isset($validated['name']) ? $validated['name'] : null,
+            'email' => isset($validated['email']) ? $validated['email'] : null,
             'type' => $type,
+            'trial_duration' => $type == 'normal' ? 1 : $validated['trial_duration'],
+            'trial_duration_type' => $type == 'normal' ? 'week' : $validated['trial_duration_type'],
         ]);
     }
 }

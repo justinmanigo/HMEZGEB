@@ -13,6 +13,8 @@ class Referral extends Model
     protected $fillable = [
         'user_id',
         'type',
+        'trial_duration',
+        'trial_duration_type',
         'name',
         'email',
         'commission',
