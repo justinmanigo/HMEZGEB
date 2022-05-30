@@ -147,7 +147,7 @@ class ReceiptController extends Controller
                 'reference_id' => $inventory->id,
                 'message' => 'Inventory item '.$inventory->name.' has zero stocks. Please reorder.',
                 'title' => 'Inventory Zero Stocks',
-                'type' => 'Inventory',
+                'type' => 'danger',
                 'link' => 'inventory/'.$inventory->id,
             ]);
         }
@@ -157,7 +157,7 @@ class ReceiptController extends Controller
                 'reference_id' => $inventory->id,
                 'message' => 'Inventory item '.$inventory->name.' is less than or equal to '.$inventory->critical_quantity.'. Please reorder.',
                 'title' => 'Inventory Critical Level',
-                'type' => 'Inventory',
+                'type' => 'warning',
                 'link' => 'inventory/'.$inventory->id,
             ]);
         }

@@ -18,7 +18,12 @@ class CreateNotificationsTable extends Migration
             $table->unsignedBigInteger('reference_id')->nullable();
             $table->boolean('read')->default(false);
             $table->string('link')->nullable();
-            $table->string('type')->nullable();
+            $table->enum('type', [
+                'info',
+                'success',
+                'warning',
+                'danger',
+            ]);
             $table->string('title')->nullable();
             $table->string('message')->nullable();
             $table->timestamps();
