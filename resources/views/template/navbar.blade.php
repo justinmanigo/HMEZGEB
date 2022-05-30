@@ -1,4 +1,6 @@
 @php
+    use App\Models\Notification;
+
     $modules = \App\Models\Settings\Users\Module::get();
     $permissions = \App\Actions\GetAccountingSystemUserPermissions::run($modules, session('accounting_system_user_id'), true);
 
@@ -6,6 +8,9 @@
     $accounting_system_count = \App\Models\AccountingSystemUser::where('user_id', Auth::user()->id)->count();
     $accounting_period = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::find(session('accounting_period_id'));
     $accounting_period_year = \Carbon\Carbon::parse($accounting_period->date_from);
+
+    $notifications = Notification::orderBy('created_at', 'desc')->get();
+    $unreadNotifications = Notification::where('read', 0)->count();
 @endphp
  
  <!-- Sidebar -->
@@ -180,7 +185,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter">{{$unreadNotifications}}</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -188,40 +193,47 @@
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                @if (count($notifications)==0)
+                                    <a class="dropdown-item d-flex align-items-center">
+                                        <div>
+                                            No Notification
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                    </a>
+                                @else
+                                    {{-- Display Notification --}}
+                                    @foreach ($notifications->take(3) as $notification)
+                                        @if($notification->read=='0')
+                                        {{-- Not yet read --}}
+                                            <a class="dropdown-item d-flex align-items-center bg-light" href="/{{$notification->link}}">
+                                                <div>
+                                                    <div class="small font-weight-bold">{{ $notification->created_at->diffForHumans() }}</div>
+                                                    @if ($notification->type=='warning')
+                                                    <span class="font-weight-bold text-warning">{{ $notification->title }}</span>
+                                                    @elseif ($notification->type=='danger')
+                                                    <span class="font-weight-bold text-danger">{{ $notification->title }}</span>
+                                                    @elseif($notification->type=='success')
+                                                    <span class="font-weight-bold text-success">{{ $notification->title }}</span>
+                                                    @else
+                                                    <span class="font-weight-bold">{{ $notification->title }}</span>
+                                                    @endif
+                                                    <br>
+                                                    {{ $notification->message }}
+                                                </div>
+                                            </a>
+                                            @else
+                                            <a class="dropdown-item d-flex align-items-center " href="/{{$notification->link}}">
+                                                <div>
+                                                    <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }}</div>
+                                                    <span class="small">{{ $notification->title }}<br>
+                                                    {{ $notification->message }}</span>
+                                                </div>
+                                            </a> 
+                                            
+                                        @endif
+                                    @endforeach
+                                    {{-- See all notifications --}}
+                                    <a class="dropdown-item text-center" href="/notifications">Show All Alerts</a>
+                                @endif
                             </div>
                         </li>
 
