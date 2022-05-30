@@ -16,19 +16,22 @@ class CreateSubscriptionsTable extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('referral_id')->nullable()->constrained();
             $table->tinyInteger('account_limit')->default(3);
-            $table->enum('account_type', [      // this part is something to be clarified
-                'admin',                        // later on in the progress meeting with
-                'moderator',                    // the client.
+            $table->enum('account_type', [
+                'super admin',
+                'admin',
+                'moderator',
                 'member',
             ])->default('admin');
-            $table->date('trial_from')->nullable()->default(now()->format('Y-m-d'));
-            $table->date('trial_to')->nullable()->default(now()->addWeek()->format('Y-m-d'));
-            $table->enum('payment_status', [ 
-                'pending',
-                'paid',
-            ])->nullable()->default('pending');
-            $table->timestamp('active_since_at')->nullable();
+            $table->date('date_from')->nullable();
+            $table->date('date_to')->nullable();
+            $table->enum('status', [ 
+                'unused',
+                'trial',
+                'active',
+                'expired',
+            ])->nullable()->default('unused');
             $table->timestamps();
         });
     }

@@ -289,6 +289,4 @@ $(document).ready(function() {
 <script src="/js/vendors/bill/select_item_bill.js"></script>
 <script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
 
-<script src="/js/ajax-submit-updated.js"></script>
-
 @endsection
