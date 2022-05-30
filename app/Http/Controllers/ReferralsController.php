@@ -33,20 +33,15 @@ class ReferralsController extends Controller
     {
         $validated = $request->validated();
 
-        // return $validated;
-
-        // TODO: Review where to add account type.
-
         $referral = CreateReferral::run($validated, 'advanced');
 
         Subscription::create([
             'referral_id' => $referral->id,
             'account_type' => $validated['account_type'],
             'account_limit' => $validated['account_type'] == 'admin' 
-                ? $validated['number_of_accounts'] 
-                : 1,
-            'trial_from' => $validated['trial_date_start'],
-            'trial_to' => $validated['trial_date_end'],
+                || $validated['account_type'] == 'super admin'
+                    ? $validated['number_of_accounts'] 
+                    : 1,
         ]);
 
         return 'Successfuly created an advanced referral.';

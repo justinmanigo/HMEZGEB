@@ -149,7 +149,6 @@
                 <form id="form-advanced-referral" method="post" action="{{ url('/referrals') }}" class="ajax-submit" data-reload="1">
                     @csrf
                     @method('put')
-                    <h5>Basic Information</h5>
                     <div class="form-group row">
                         <label for="a_name" class="col-12 col-lg-6 col-form-label">Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
@@ -171,6 +170,7 @@
                         <div class="col-12 col-lg-6">
                             <select class="form-control" id="a_account_type" name="account_type" required>
                                 <option value='' hidden>Select Account Type</option>
+                                <option value='super admin'>Super Admin</option>
                                 <option value='admin'>Admin</option>
                                 <option value='moderator'>Moderator</option>
                                 <option value='member'>Member</option>
@@ -180,29 +180,27 @@
                         <p id="error-form-advanced-referral-account_type" data-field="account_type" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <div class="form-group row">
-                        <label for="a_number_of_accounts" class="col-12 col-lg-6 col-form-label">Number of Accounts<span class="text-danger ml-1">*</span></label>
+                        <label id="a_number_of_accounts_label" for="a_number_of_accounts" class="col-12 col-lg-6 col-form-label">Number of Accounts<span class="text-danger ml-1" style="display:none">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="number" min="1" max="10" class="form-control" id="a_number_of_accounts" name="number_of_accounts" value="1" required>
+                            <input type="number" min="1" max="10" class="form-control" id="a_number_of_accounts" name="number_of_accounts" value="1" required disabled>
                         </div>
                         {{-- Error (Number of Accounts) --}}
                         <p id="error-form-advanced-referral-number_of_accounts" data-field="number_of_accounts" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
-                    <h5>Trial Period</h5>
                     <div class="form-group row">
-                        <label for="a_trial_date_start" class="col-12 col-lg-6 col-form-label">Start Date<span class="text-danger ml-1">*</span></label>
+                        <label for="a_trial_duration" class="col-12 col-lg-6 col-form-label">Trial Duration<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="date" class="form-control" id="a_trial_date_start" name="trial_date_start" value="{{ now()->format('Y-m-d') }}" required>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="a_trial_duration" name="trial_duration" value="1" required>
+                                <select class="form-control" id="a_trial_duration_type" name="trial_duration_type" required>
+                                    <option value='day'>Days</option>
+                                    <option value='week'>Weeks</option>
+                                    <option value='month'>Months</option>
+                                </select>
+                            </div>
                         </div>
-                        {{-- Error (trial_date_start) --}}
-                        <p id="error-form-advanced-referral-trial_date_start" data-field="trial_date_start" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
-                    </div>
-                    <div class="form-group row">
-                        <label for="a_trial_date_end" class="col-12 col-lg-6 col-form-label">End Date<span class="text-danger ml-1">*</span></label>
-                        <div class="col-12 col-lg-6">
-                            <input type="date" class="form-control" id="a_trial_date_end" name="trial_date_end" value="{{ now()->addWeek()->format('Y-m-d') }}" required>
-                        </div>
-                        {{-- Error (trial_date_start) --}}
-                        <p id="error-form-advanced-referral-trial_date_end" data-field="trial_date_end" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
+                        {{-- Error (Trial Duration) --}}
+                        <p id="error-form-advanced-referral-trial_duration" data-field="trial_duration" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                     </div>
                     <p>The referral code is auto-generated on submission.</p>
                 </form>
@@ -216,4 +214,18 @@
 </div>
 
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+<script>
+    // When the account_type is selected, check if it is set to admin or super admin.
+    // If it is set to admin or super admin, enable the number of accounts field.
+    // Otherwise, disable it.
+    $('#a_account_type').change(function() {
+        if ($(this).val() == 'admin' || $(this).val() == 'super admin') {
+            $('#a_number_of_accounts').prop('disabled', false);
+            $('#a_number_of_accounts_label span').show();
+        } else {
+            $('#a_number_of_accounts').prop('disabled', true);
+            $('#a_number_of_accounts_label span').hide();
+        }
+    });
+</script>
 @endsection

@@ -28,9 +28,9 @@ class StoreAdvancedReferralRequest extends FormRequest
             'name' => ['required'],
             'email' => ['required', 'email'],
             'account_type' => ['required'],
-            'number_of_accounts' => ['required', 'numeric', 'min:1', 'max:10'],
-            'trial_date_start' => ['required','after_or_equal:today'],
-            'trial_date_end' => ['required', 'after:trial_date_start'],
+            'number_of_accounts' => ['sometimes', 'numeric', 'min:1', 'max:10'],
+            'trial_duration' => ['required', 'numeric', 'min:1'],
+            'trial_duration_type' => ['required'],
         ];
     }
 }

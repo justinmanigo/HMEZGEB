@@ -21,6 +21,12 @@ class CreateReferralsTable extends Migration
                 'normal',
                 'advanced',
             ])->default('normal');
+            $table->integer('trial_duration')->default(1);
+            $table->enum('trial_duration_type', [
+                'day',
+                'week',
+                'month',
+            ])->default('week');
             $table->string('name');
             $table->string('email');
             $table->float('commission')->nullable();
