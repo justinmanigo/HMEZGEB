@@ -24,8 +24,8 @@ class CreateSubscriptionsTable extends Migration
                 'moderator',
                 'member',
             ])->default('admin');
-            $table->date('date_from')->nullable()->default(now()->format('Y-m-d'));
-            $table->date('date_to')->nullable()->default(now()->addWeek()->format('Y-m-d'));
+            $table->date('date_from')->nullable();
+            $table->date('date_to')->nullable();
             $table->enum('status', [ 
                 'unused',
                 'trial',
