@@ -94,6 +94,7 @@ Route::group([
             Route::get('/referrals', [ReferralsController::class, 'index'])->name('index');
             Route::post('/referrals', [ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
             Route::put('/referrals', [ReferralsController::class, 'storeAdvancedReferral'])->name('store.advanced');
+            Route::patch('/referrals', [ReferralsController::class, 'generateReferrals'])->name('generate');
         });
 
         /**

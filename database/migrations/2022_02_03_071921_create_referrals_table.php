@@ -27,8 +27,8 @@ class CreateReferralsTable extends Migration
                 'week',
                 'month',
             ])->default('week');
-            $table->string('name');
-            $table->string('email');
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
             $table->float('commission')->nullable();
             $table->timestamps();
         });

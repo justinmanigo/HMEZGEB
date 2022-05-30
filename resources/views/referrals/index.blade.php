@@ -47,8 +47,17 @@
     </div>  
 </div>
 <div id="alert-container">
-
+    
 </div>
+@if(isset($_GET['success']))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ $_GET['success'] }}
+        {{-- {{ session()->get('success') }} --}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
 
 <div class="card">
     <div class="card-body">
@@ -234,7 +243,7 @@
                 <div id="modal-generate-referral-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-generate-referral" method="post" action="{{ url('/referrals') }}"  data-message="Successfully generated referrals.">
+                <form class="ajax-submit-updated" id="form-generate-referral" method="post" action="{{ url('/referrals') }}"  data-message="Successfully generated referrals.">
                     @csrf
                     @method('patch')
                     <div class="form-group row">
