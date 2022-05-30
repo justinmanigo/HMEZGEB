@@ -83,7 +83,7 @@
                             <tbody>
                                 @foreach($bank_accounts as $account)
                                 <tr>
-                                    <td>{{ $account->chart_of_account_id }}</td>
+                                    <td>{{ $account->chartOfAccount->chart_of_account_no }}</td>
                                     <td>{{ $account->chartOfAccount->account_name }}</td>
                                     <td>{{ $account->bank_branch }}</td>
                                     <td>{{ $account->bank_account_type }}</td>
@@ -201,7 +201,7 @@
                     <div class="form-group row">
                         <label for="b_coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="b_coa_number" name="coa_number" value="1031" readonly>
+                            <input type="text" class="form-control" id="b_coa_number" name="coa_number" value="{{$coa_number}}" readonly>
                         </div>
                     </div>
                     <div class="form-group row">

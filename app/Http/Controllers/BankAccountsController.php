@@ -17,7 +17,14 @@ class BankAccountsController extends Controller
     {
         //
         $bank_accounts = BankAccounts::all();
-        return view('banking.accounts.index', compact('bank_accounts'));
+        $coa_number = 1030;
+        $coa_last_record = BankAccounts::orderBy('created_at', 'desc')->first();
+        if (empty($coa_last_record)) {
+            $coa_number = 1030;
+        } else {
+            $coa_number = $coa_last_record->chartOfAccount->chart_of_account_no + 1;
+        }
+        return view('banking.accounts.index', compact('bank_accounts','coa_number'));
     }
 
     /**
@@ -41,11 +48,10 @@ class BankAccountsController extends Controller
         //coa
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        $coa_number = 1031;
         $coa = new ChartOfAccounts();
         $coa->accounting_system_id = $accounting_system_id;
         $coa->chart_of_account_category_id = '1';
-        $coa->chart_of_account_no = $coa_number;
+        $coa->chart_of_account_no = $request->coa_number;
         $coa->account_name = $request->account_name;
         $coa->current_balance = 0.00;
         $coa->save();
