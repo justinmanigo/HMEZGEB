@@ -18,12 +18,12 @@ class BankAccountsController extends Controller
         //
         $bank_accounts = BankAccounts::all();
         $coa_number = 1030;
-        $coa_last_record = BankAccounts::orderBy('created_at', 'desc')->first();
-        if (empty($coa_last_record)) {
-            $coa_number = 1030;
-        } else {
-            $coa_number = $coa_last_record->chartOfAccount->chart_of_account_no + 1;
-        }
+        // $coa_last_record = BankAccounts::orderBy('created_at', 'desc')->first();
+        // if (empty($coa_last_record)) {
+        //     $coa_number = 1030;
+        // } else {
+        //     $coa_number = $coa_last_record->chartOfAccount->chart_of_account_no + 1;
+        // }
         return view('banking.accounts.index', compact('bank_accounts','coa_number'));
     }
 
