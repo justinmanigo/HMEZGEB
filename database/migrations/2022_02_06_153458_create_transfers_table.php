@@ -15,6 +15,10 @@ class CreateTransfersTable extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('from_account_id');
+            $table->unsignedBigInteger('to_account_id');
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }
