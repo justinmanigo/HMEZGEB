@@ -4,8 +4,7 @@
 
     $accounting_system = \App\Models\AccountingSystem::find(session('accounting_system_id'));
     $accounting_system_count = \App\Models\AccountingSystemUser::where('user_id', Auth::user()->id)->count();
-    $accounting_period = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::find(session('accounting_period_id'));
-    $accounting_period_year = \Carbon\Carbon::parse($accounting_period->date_from);
+    $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
 @endphp
  
  <!-- Sidebar -->
@@ -143,8 +142,17 @@
 
                     <!-- Topbar Accounting System Name & Year -->
                     <div>
-                        <strong>{{ date('Y') }} - {{ $accounting_system->name }}</strong><br>
-                        <small><strong>{{ "Accounting Period # {$accounting_period->period_number}" }}</strong> | {{ $accounting_period_year->format('M Y') }}</small>
+                        <strong>
+                            {{ $accounting_system->accounting_year}}
+                             - 
+                            {{ $accounting_system->name }}</strong><br>
+                        <small>
+                            
+                            {{ \Carbon\Carbon::parse($accounting_periods[0]->date_from)->format('Y-m-d') }}
+                             - 
+                             {{ \Carbon\Carbon::parse($accounting_periods[11]->date_to)->format('Y-m-d') }}
+                            
+                        </small>
                     </div>
 
                     <!-- Topbar Navbar -->
