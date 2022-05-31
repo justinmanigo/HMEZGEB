@@ -201,7 +201,7 @@
                     <div class="form-group row">
                         <label for="b_coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="b_coa_number" name="coa_number" value="{{$coa_number}}" readonly>
+                            <input type="text" class="form-control" id="b_coa_number" name="coa_number" placeholder="XXXX" required>
                         </div>
                     </div>
                     <div class="form-group row">
