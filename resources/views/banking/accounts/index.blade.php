@@ -226,8 +226,9 @@
                         <label for="b_type" class="col-sm-3 col-lg-2 col-form-label">Bank Account Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
                             <select class="form-control" id="b_type" name="bank_account_type">
-                                <option>Savings </option>
-                                <option>Checking </option>
+                                <option value='' selected disabled hidden>Choose Bank Account Type</option>
+                                <option value="savings">Savings Account</option>
+                                <option value="checking">Checking Account</option>
                             </select>
                         </div>
                     </div>
