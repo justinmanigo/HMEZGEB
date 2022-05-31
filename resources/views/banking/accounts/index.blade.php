@@ -199,7 +199,7 @@
                 <form action="{{route('accounts.accounts.store')}}" id="form-deposit" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label for="b_coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number</label>
+                        <label for="b_coa_number" class="col-sm-3 col-lg-2 col-form-label">Chart of Account Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
                             <input type="text" class="form-control" id="b_coa_number" name="coa_number" placeholder="XXXX" required>
                         </div>
