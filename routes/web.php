@@ -76,6 +76,11 @@ Route::group([
     Route::get('/switch', [HomeController::class, 'viewAccountingSystems']);
     Route::put('/switch', [HomeController::class, 'switchAccountingSystem']);
     
+    /**
+     * Notification
+     */
+    Route::resource('notifications', NotificationController::class);
+
     Route::group([
         'middleware' => 'auth.accountingsystem',
     ], function(){
@@ -597,7 +602,3 @@ Route::post('/userlogin', function (Request $request){
 
 })->name('userlogin');
 
-
-// Notification
-
-Route::resource('notifications', NotificationController::class);
