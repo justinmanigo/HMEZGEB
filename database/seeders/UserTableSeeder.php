@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str; 
+use App\Actions\GenerateAccountingPeriods;
+
 class UserTableSeeder extends Seeder
 {
     /**
@@ -16,7 +18,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        $users = [
             [
                 'email' => 'admin@email.com',
                 'password' => Hash::make('test'),
@@ -39,13 +41,13 @@ class UserTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        ];
 
-        DB::table('accounting_systems')->insert([
+        $accounting_systems = [
             [
                 'name' => 'Test Accounting System',
                 'calendar_type' => 'gregorian',
-                'calendar_type_view' => 'gregorian',
+                'accounting_year' => 2022,
                 'address' => 'Cebu',
                 'city' => 'Cebu City',
                 'mobile_number' => '09123456789',
@@ -59,8 +61,8 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Test Accounting System 2',
-                'calendar_type' => 'gregorian',
-                'calendar_type_view' => 'gregorian',
+                'calendar_type' => 'ethiopian',
+                'accounting_year' => 2014,
                 'address' => 'Cebu',
                 'city' => 'Cebu City',
                 'mobile_number' => '09123456789',
@@ -75,7 +77,7 @@ class UserTableSeeder extends Seeder
             [
                 'name' => 'Test Accounting System 3',
                 'calendar_type' => 'gregorian',
-                'calendar_type_view' => 'gregorian',
+                'accounting_year' => 2022,
                 'address' => 'Cebu',
                 'city' => 'Cebu City',
                 'mobile_number' => '09123456789',
@@ -87,9 +89,9 @@ class UserTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-        ]);
+        ];
 
-        DB::table('accounting_system_users')->insert([
+        $accounting_system_users = [
             [
                 'accounting_system_id' => 1,
                 'user_id' => 1,
@@ -105,9 +107,9 @@ class UserTableSeeder extends Seeder
                 'user_id' => 2,
                 'role' => 'admin',
             ]
-        ]);
+        ];
 
-        DB::table('journal_entries')->insert([
+        $journal_entries = [
             [
                 'date' => '2022-01-01',
                 'notes' => 'Beginning Balance',
@@ -123,71 +125,21 @@ class UserTableSeeder extends Seeder
                 'notes' => 'Beginning Balance',
                 'accounting_system_id' => 3,
             ],
-        ]);
+        ];
+
+        DB::table('users')->insert($users);
+        DB::table('accounting_systems')->insert($accounting_systems);
+        DB::table('accounting_system_users')->insert($accounting_system_users);
+        DB::table('journal_entries')->insert($journal_entries);
 
         // Loop accounting systems
-        for($i = 1; $i <= 3; $i++)
+        for($i = 0; $i < count($accounting_systems); $i++)
         {
-            // Setup accounting period for each accounting system
-            $accounting_period[] = [
-                'accounting_system_id' => $i,
-                'period_number' => 1,
-                'date_from' => '2022-05-01',
-                'date_to' => '2022-05-31',
-                'date_from_ethiopian' => '2014-08-23',
-                'date_to_ethiopian' => '2014-09-23',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-
-            // Loop months
-            for($j = 1; $j <= 12; $j++)
-            {
-                // Gregorian Months
-                switch($j)
-                {
-                    case 1:     $day = 31; $day_leap = 31; break;
-                    case 2:     $day = 28; $day_leap = 29; break;
-                    case 3:     $day = 31; $day_leap = 31; break;
-                    case 4:     $day = 30; $day_leap = 30; break;
-                    case 5:     $day = 31; $day_leap = 31; break;
-                    case 6:     $day = 30; $day_leap = 30; break;
-                    case 7:     $day = 31; $day_leap = 31; break;
-                    case 8:     $day = 31; $day_leap = 31; break;
-                    case 9:     $day = 30; $day_leap = 30; break;
-                    case 10:    $day = 31; $day_leap = 31; break;
-                    case 11:    $day = 30; $day_leap = 30; break;
-                    case 12:    $day = 31; $day_leap = 31; break;
-                }
-
-                // Create period settings row
-                $period_settings[] = [
-                    'accounting_system_id' => $i,
-                    // Date From
-                    'month_from' => $j,
-                    'day_from' => 1,
-                    // Date To
-                    'month_to' => $j,
-                    'day_to' => $day,
-                    // Date From Leap
-                    'month_from_leap' => $j,
-                    'day_from_leap' => 1,
-                    // Date To Leap
-                    'month_to_leap' => $j,
-                    'day_to_leap' => $day_leap,
-                    // TODO: Ethiopian Date Support Later
-                    // User ID
-                    'accounting_system_user_id' => $i,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }
+            GenerateAccountingPeriods::run($i+1, 
+                $accounting_systems[$i]['calendar_type'],
+                $accounting_systems[$i]['accounting_year'],
+                $i+1);
         }
-
-
-        DB::table('period_settings')->insert($period_settings);
-
-        DB::table('accounting_periods')->insert($accounting_period);
 
         // Loop users
         for($i = 1; $i <= 3; $i++)
