@@ -184,7 +184,7 @@ function getEntryIndex(type, id)
 function createTagifyInstance(elm)
 {
     let elm_tagify = new Tagify(elm, {
-        tagTextProp: 'category', // very important since a custom template is used with this property as text
+        tagTextProp: 'account_name', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode: "select",
         skipInvalid: false, // do not remporarily add invalid tags

@@ -209,6 +209,7 @@ class ChartOfAccountsController extends Controller
         return ChartOfAccounts::select(
                 'chart_of_accounts.id as value',
                 'chart_of_accounts.chart_of_account_no',
+                'chart_of_accounts.account_name',
                 // 'chart_of_account_categories.id',
                 'chart_of_account_categories.category',
                 'chart_of_account_categories.type',
