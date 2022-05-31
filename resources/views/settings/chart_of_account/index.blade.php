@@ -171,7 +171,7 @@
                                 @foreach($chart_of_accounts as $coa)
                                 <tr>
                                     <td class="table-item-content">{{ $coa->chart_of_account_no }}</td>
-                                    <td class="table-item-content">{{ $coa->name }}</td> 
+                                    <td class="table-item-content">{{ $coa->account_name }}</td> 
                                     <td class="table-item-content">{{ $coa->type }}</td>
                                     <td class="table-item-content">{{ $coa->category }}</td>
                                     <td class="table-item-content">{{ $coa->current_balance }}</td>
@@ -240,7 +240,7 @@
                     <div class="form-group row">
                         <label for="coa_name" class="col-sm-3 col-lg-2 col-form-label">Account Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="coa_name" name="coa_name">
+                            <input type="text" class="form-control" id="coa_name" name="account_name">
                         </div>
                     </div>
                     <div class="form-group row">

@@ -11,7 +11,7 @@ function chartOfAccountTagTemplate(tagData){
                 <div class='tagify__tag__avatar-wrap'>
                     <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
                 </div>
-                <span class='tagify__tag-text'>${tagData.category}</span>
+                <span class='tagify__tag-text'>${tagData.account_name}</span>
             </div>
         </tag>
     `
@@ -28,8 +28,8 @@ function chartOfAccountSuggestionItemTemplate(tagData){
                 <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
             </div>` : ''
             }
-            <strong>${tagData.category}</strong><br>
-            <span>${tagData.chart_of_account_no}</span>
+            <strong>${tagData.account_name}</strong><br>
+            <small><strong>${tagData.category}</strong> | ${tagData.chart_of_account_no}</small>
         </div>
     `
 }
