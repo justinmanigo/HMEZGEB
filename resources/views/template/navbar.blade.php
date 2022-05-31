@@ -185,7 +185,9 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">{{$unreadNotifications}}</span>
+                                @if ($unreadNotifications > 0)
+                                <span class="badge badge-danger badge-counter">{{$unreadNotifications}}</span>  
+                                @endif
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
