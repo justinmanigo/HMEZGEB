@@ -21,4 +21,14 @@ class BankAccounts extends Model
     {
         return $this->belongsTo(ChartOfAccounts::class, 'chart_of_account_id','id');
     }
+
+    public function transfersFrom()
+    {
+        return $this->hasOne(Transfers::class, 'from_account_id');
+    }
+
+    public function transfersTo()
+    {
+        return $this->hasOne(Transfers::class, 'to_account_id');
+    }
 }
