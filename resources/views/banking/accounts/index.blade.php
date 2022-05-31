@@ -207,25 +207,25 @@
                     <div class="form-group row">
                         <label for="b_account_name" class="col-sm-3 col-lg-2 col-form-label">Bank Account Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="b_account_name" name="account_name">
+                            <input type="text" class="form-control" id="b_account_name" name="account_name" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="b_account_number" class="col-sm-3 col-lg-2 col-form-label">Bank Account Number<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="b_account_number" name="bank_account_number">
+                            <input type="text" class="form-control" id="b_account_number" name="bank_account_number" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="b_bank_branch" class="col-sm-3 col-lg-2 col-form-label">Bank Branch<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="b_bank_branch" name="bank_branch">
+                            <input type="text" class="form-control" id="b_bank_branch" name="bank_branch" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="b_type" class="col-sm-3 col-lg-2 col-form-label">Bank Account Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <select class="form-control" id="b_type" name="bank_account_type">
+                            <select class="form-control" id="b_type" name="bank_account_type" required>
                                 <option value='' selected disabled hidden>Choose Bank Account Type</option>
                                 <option value="savings">Savings Account</option>
                                 <option value="checking">Checking Account</option>
