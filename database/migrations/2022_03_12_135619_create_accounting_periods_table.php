@@ -16,11 +16,12 @@ class CreateAccountingPeriodsTable extends Migration
         Schema::create('accounting_periods', function (Blueprint $table) {
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
+            $table->foreignId('accounting_system_user_id')->constrained();
             $table->integer('period_number');
             $table->date('date_from');
             $table->date('date_to');
-            $table->string('date_from_ethiopian');
-            $table->string('date_to_ethiopian');
+            $table->string('date_from_ethiopian')->nullable();
+            $table->string('date_to_ethiopian')->nullable();
             $table->timestamps();
         });
     }

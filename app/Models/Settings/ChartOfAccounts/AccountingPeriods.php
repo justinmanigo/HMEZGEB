@@ -11,6 +11,7 @@ class AccountingPeriods extends Model
 
     protected $fillable = [
         'accounting_system_id',
+        'accounting_system_user_id',
         'period_number',
         'date_from',
         'date_to',
