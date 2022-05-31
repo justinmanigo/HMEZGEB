@@ -20,10 +20,7 @@ class CreateAccountingSystemsTable extends Migration
                 'gregorian',
                 'ethiopian',
             ]);
-            $table->enum('calendar_type_view', [
-                'gregorian',
-                'ethiopian',
-            ]);
+            $table->integer('accounting_year');
             $table->string('name');
             $table->mediumText('address');
             $table->string('po_box')->nullable();

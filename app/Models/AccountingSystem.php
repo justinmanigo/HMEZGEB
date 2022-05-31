@@ -11,6 +11,8 @@ class AccountingSystem extends Model
 
     protected $fillable = [
         'subscription_id',
+        'calendar_type',
+        'accounting_year',
         'name',
         'address',
         'po_box',
