@@ -389,7 +389,7 @@
                     <input name="${ type=='debit' ? 'debit' : 'credit' }_coa_id[]" class="form-control-plaintext" type="text" value="${coa.id}" hidden readonly>   
                     ${coa.chart_of_account_no}    
                 </td>
-                <td>${coa.name}</td>
+                <td>${coa.account_name}</td>
                 <td>${coa.category}</td>
                 <td>
                     ${type == 'debit'
