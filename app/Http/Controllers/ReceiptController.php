@@ -21,6 +21,7 @@ use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
 use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
+use Illuminate\Support\Facades\Log;
 
 class ReceiptController extends Controller
 {
@@ -351,5 +352,22 @@ class ReceiptController extends Controller
 
         // Return response
         return $proforma;
+    }
+
+    public function ajaxGetPaidReceipt()
+    {
+        $receipts = ReceiptReferences::select(
+                'receipt_references.id as value',
+                'receipt_references.date',
+                'receipts.total_amount_received',
+                'receipts.payment_method',
+                'customers.name as customer_name',
+            )
+            ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
+            ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+            ->where('receipt_references.status', 'paid')
+            ->get();
+        Log::info($receipts);
+        return $receipts;
     }
 }
