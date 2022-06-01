@@ -40,9 +40,6 @@ class TransfersController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        Transfers::create($request->all());
-
         // deduct and add in coa balances 
         $fromAccount = BankAccounts::find($request->from_account_id);
         $toAccount = BankAccounts::find($request->to_account_id);
@@ -55,6 +52,8 @@ class TransfersController extends Controller
         if($request->amount > $fromAccount->chartOfAccount->current_balance){
             return redirect()->back()->with('error', 'Cannot transfer more than the balance');
         }
+
+        Transfers::create($request->all());
         
         $fromAccount->chartOfAccount->current_balance -= $request->amount;
         $toAccount->chartOfAccount->current_balance += $request->amount;
