@@ -19,7 +19,7 @@ class BankAccounts extends Model
     
     public function chartOfAccount()
     {
-        return $this->belongsTo(ChartOfAccounts::class, 'chart_of_account_id','id');
+        return $this->belongsTo(ChartOfAccounts::class);
     }
 
     public function transfersFrom()

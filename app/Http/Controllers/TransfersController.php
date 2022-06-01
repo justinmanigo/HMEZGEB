@@ -6,6 +6,9 @@ use App\Models\Transfers;
 use Illuminate\Http\Request;
 use App\Models\BankAccounts;
 use App\Models\ChartOfAccounts;
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
+use App\Actions\DecodeTagifyField;
 use Illuminate\Support\Facades\Log;
 
 class TransfersController extends Controller
@@ -53,13 +56,23 @@ class TransfersController extends Controller
             return redirect()->back()->with('error', 'Cannot transfer more than the balance');
         }
 
-        Transfers::create($request->all());
-        
         $fromAccount->chartOfAccount->current_balance -= $request->amount;
         $toAccount->chartOfAccount->current_balance += $request->amount;
-
         $fromAccount->chartOfAccount->save();
         $toAccount->chartOfAccount->save();
+
+        $debit_accounts[] = DecodeTagifyField::run(json_encode([['value' => $toAccount->chartOfAccount->id]]));
+        $credit_accounts[] = DecodeTagifyField::run(json_encode([['value' => $fromAccount->chartOfAccount->id]]));
+        
+        $je = CreateJournalEntry::run(now()->format('Y-m-d'), $request->reason, $this->request->session()->get('accounting_system_id'));
+
+        CreateJournalPostings::run($je, 
+            $debit_accounts, [$request->amount], 
+            $credit_accounts, [$request->amount], 
+            $this->request->session()->get('accounting_system_id')
+        );
+
+        Transfers::create($request->all());
 
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }
