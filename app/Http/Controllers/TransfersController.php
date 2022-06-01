@@ -112,7 +112,18 @@ class TransfersController extends Controller
 
     public function queryBank($query)
     {   
-        $bankAccounts = BankAccounts::select('id as value','bank_branch','bank_account_number')->where('bank_branch', 'LIKE', '%'.$query.'%')->orWhere('bank_account_number', 'LIKE', '%'.$query.'%')->get();
+        $bankAccounts = BankAccounts::select(
+                'bank_accounts.id as value',
+                'bank_accounts.bank_branch',
+                'bank_accounts.bank_account_number',
+                'chart_of_accounts.chart_of_account_no',
+                'chart_of_accounts.account_name',
+            )
+            ->leftJoin('chart_of_accounts', 'bank_accounts.chart_of_account_id', '=', 'chart_of_accounts.id')
+            ->where('bank_branch', 'LIKE', '%'.$query.'%')
+            ->orWhere('bank_account_number', 'LIKE', '%'.$query.'%')
+            ->get();
+            
         return $bankAccounts;
     }
 }
