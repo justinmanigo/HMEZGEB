@@ -229,7 +229,7 @@ class ChartOfAccountsController extends Controller
         $debits = ChartOfAccounts::select(
             'chart_of_accounts.id',
             'chart_of_accounts.chart_of_account_no',
-            'chart_of_accounts.name',
+            'chart_of_accounts.account_name',
             'chart_of_account_categories.category',
         )
         ->leftJoin('chart_of_account_categories', 'chart_of_accounts.chart_of_account_category_id', 'chart_of_account_categories.id');

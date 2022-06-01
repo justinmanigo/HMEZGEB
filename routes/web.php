@@ -257,6 +257,10 @@ Route::group([
             ], function(){ 
                 // HTML
                 Route::get('/banking/transfer', [TransfersController::class, 'index'])->name('bank.transfers');
+                Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
+
+                // RESOURCE
+                Route::resource('/banking/transfer', TransfersController::class);
             });
         
             /**

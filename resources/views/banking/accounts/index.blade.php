@@ -232,10 +232,6 @@
                             </select>
                         </div>
                     </div>
-
- 
-                
-                    
                 </form>
             </div>
             <div class="modal-footer">

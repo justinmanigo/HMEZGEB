@@ -1,30 +1,115 @@
 @extends('template.index')
 
+
 @push('styles')
-    <style>
-        .table-item-content { 
+<style>
+    .table-item-content {
         /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-        }
+        padding-top: 1rem !important;
+    }
 
-        .thead-actions {
-            /** Fixed width, increase if adding addt. buttons **/
-            width:120px;
-        }
-        .content-card {
-            border-radius:0px 0px 5px 5px;
-        }
+    .thead-actions {
+        /** Fixed width, increase if adding addt. buttons **/
+        width: 120px;
+    }
 
-        .inputPrice::-webkit-inner-spin-button, .inputTax::-webkit-inner-spin-button,
-        .inputPrice::-webkit-outer-spin-button, .inputTax::-webkit-outer-spin-button {
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
+    .content-card {
+        border-radius: 0px 0px 5px 5px;
+    }
 
-        input[type="checkbox"], label {
-            cursor: pointer;
-        }
-    </style>
+    .inputPrice::-webkit-inner-spin-button,
+    .inputTax::-webkit-inner-spin-button,
+    .inputPrice::-webkit-outer-spin-button,
+    .inputTax::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type="checkbox"],
+    label {
+        cursor: pointer;
+    }
+
+    /*
+            TEMPORARY
+        */
+    /* Suggestions items */
+    .tagify__dropdown.banks-list .tagify__dropdown__item {
+        padding: .5em .7em;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0 1em;
+        grid-template-areas: "avatar name"
+            "avatar email";
+    }
+
+    .tagify__dropdown.banks-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
+        transform: scale(1.2);
+    }
+
+    .tagify__dropdown.banks-list .tagify__dropdown__item__avatar-wrap {
+        grid-area: avatar;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #EEE;
+        transition: .1s ease-out;
+    }
+
+    .tagify__dropdown.banks-list img {
+        width: 100%;
+        vertical-align: top;
+    }
+
+    .tagify__dropdown.banks-list strong {
+        grid-area: name;
+        width: 100%;
+        align-self: center;
+    }
+
+    .tagify__dropdown.banks-list span {
+        grid-area: email;
+        width: 100%;
+        font-size: .9em;
+        opacity: .6;
+    }
+
+    .tagify__dropdown.banks-list .addAll {
+        border-bottom: 1px solid #DDD;
+        gap: 0;
+    }
+
+
+    /* Tags items */
+    .tagify__tag {
+        white-space: nowrap;
+    }
+
+    .tagify__tag:hover .tagify__tag__avatar-wrap {
+        transform: scale(1.6) translateX(-10%);
+    }
+
+    .tagify__tag .tagify__tag__avatar-wrap {
+        width: 16px;
+        height: 16px;
+        white-space: normal;
+        border-radius: 50%;
+        background: silver;
+        margin-right: 5px;
+        transition: .12s ease-out;
+    }
+
+    .tagify__tag img {
+        width: 100%;
+        vertical-align: top;
+        pointer-events: none;
+    }
+</style>
+
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -84,22 +169,27 @@
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="true">Transfer History</a>
             </li>
-            {{-- <li class="nav-item" role="presentation">
-                <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proforma" role="tab" aria-controls="proforma" aria-selected="false">Proforma</a>
-            </li> --}}
         </ul>
-
+        
         {{-- Tab Contents --}}
         <div class="card" class="content-card">
             <div class="card-body tab-content" id="myTabContent">
-                {{-- Transaction Contents --}}
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @elseif(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">                        
                             <thead>
                                 
                                 <th>Date</th>
-                                <th>Rerence</th>
+                                <th>Reference</th>
                                 <th>From Bank</th>
                                 <th>To Bank</th>
                                 <th>Amount</th>
@@ -108,14 +198,14 @@
                                  
                             </thead>
                             <tbody>
+                                @foreach($transfers as $transfer)
                                 <tr>
-                                   
-                                    <td class="table-item-content">February 2, 2021</td>
-                                    <td class="table-item-content">B2B-003</td>
-                                    <td class="table-item-content">Awash Bank</td>
-                                    <td class="table-item-content">CBE</td>
-                                    <td class="table-item-content">65,000.00</td>
-                                    <td class="table-item-content">Salary Payment</td>
+                                    <td class="table-item-content">{{ $transfer->created_at->format('d-m-Y') }}</td>
+                                    <td class="table-item-content">{{$transfer->id}}</td>
+                                    <td class="table-item-content">{{$transfer->fromAccount->bank_branch}}</td>
+                                    <td class="table-item-content">{{$transfer->toAccount->bank_branch}}</td>
+                                    <td class="table-item-content">{{$transfer->amount}}</td>
+                                    <td class="table-item-content">{{$transfer->reason}}</td>
                                     <td>
                                         <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
@@ -130,62 +220,12 @@
                                     </td> 	 	  
                                   
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
-                {{-- Proforma Contents --}}
-                <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <th class="thead-actions">Actions</th>
-                                <th>Invoice Number</th>
-                                <th>Customer Name</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                        </button>
-                                    </td>
-                                    <td class="table-item-content">1483681825</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">01/31/2022</td>
-                                    <td class="table-item-content">Birr 1,000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-   
-
 </div>
-
-
-
-{{-- Modals --}}
-
-{{-- 
-    KNOWN POTENTIAL PROBLEMS:
-    > Modal Contents have similar IDs for its contents.
-    POTENTIAL SOLUTIONS:
-    > Update form on button click via JS.
---}}
 
 
 {{-- Transfer Modal --}}
@@ -199,40 +239,39 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-customer" method="post" enctype="multipart/form-data">
+                <form action="{{route('transfers.transfer.store')}}" id="form-transfer" method="post" enctype="multipart/form-data">
+                    @csrf
                     <div class="form-group row">
-                        <label for="c_name" class="col-sm-3 col-lg-4 col-form-label">Send From<span class="text-danger ml-1"></span></label>
+                        <label for="t_bank_from" class="col-sm-3 col-lg-4 col-form-label">Send From<span class="text-danger ml-1"></span></label>
                         <div class="col-sm-9 col-lg-12 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
-                        </div>
-
-                        {{-- <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Destination</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="">
-                        </div> --}}
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_address" class="col-sm-3 col-lg-4 col-form-label">Amount</label>
-                        <div class="col-sm-9 col-lg-12 mb-3 mb-lg-0">
-                            <input type="number" class="form-control" id="c_address" name="address" placeholder="">
+                            <input type="text" class="form-control" id="t_bank_from"  placeholder="" required>
+                            <input type="hidden" id="t_bank_id_from"  name="from_account_id" value="">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="c_city" class="col-sm-3 col-lg-6 col-form-label">Destination Account</label>
+                        <label for="t_amount" class="col-sm-3 col-lg-4 col-form-label">Amount</label>
                         <div class="col-sm-9 col-lg-12 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_city" name="city" placeholder="">
+                            <input type="number" class="form-control" id="t_amount" name="amount" placeholder="" required>
                         </div>
-
-                       
+                    </div>
+                    <div class="form-group row">
+                        <label for="t_bank_to" class="col-sm-3 col-lg-6 col-form-label">Destination Account</label>
+                        <div class="col-sm-9 col-lg-12 mb-3 mb-lg-0">
+                            <input type="text" class="form-control" id="t_bank_to" name="bank_to" placeholder="" required>
+                            <input type="hidden" id="t_bank_id_to" name="to_account_id" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="t_reason" class="col-sm-3 col-lg-4 col-form-label">Reason</label>
+                        <div class="col-sm-9 col-lg-12 mb-3 mb-lg-0">
+                            <textarea class="form-control" id="t_reason" name="reason" rows="3"></textarea>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                {{-- <div class="form-check mr-3">
-                    <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
-                    <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
-                </div> --}}
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="modal-customer">Submit</button>
+                <button type="submit" class="btn btn-primary" form="form-transfer">Transfer Amount</button>
             </div>
         </div>
     </div>
@@ -244,5 +283,7 @@
     $('.dataTables_filter').addClass('pull-right');
     });
 </script>
+<script src="/js/banking/template_select_bank.js"></script>
+<script src="/js/banking/transfer/select_bank.js"></script>
 
 @endsection
