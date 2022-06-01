@@ -52,9 +52,9 @@ class TransfersController extends Controller
             return redirect()->back()->with('error', 'Cannot transfer to the same account');
         }
         // check if the amount is greater than the balance
-        if($request->amount > $fromAccount->chartOfAccount->current_balance){
-            return redirect()->back()->with('error', 'Cannot transfer more than the balance');
-        }
+        // if($request->amount > $fromAccount->chartOfAccount->current_balance){
+        //     return redirect()->back()->with('error', 'Cannot transfer more than the balance');
+        // }
 
         $fromAccount->chartOfAccount->current_balance -= $request->amount;
         $toAccount->chartOfAccount->current_balance += $request->amount;
