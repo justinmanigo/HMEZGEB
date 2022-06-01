@@ -2,7 +2,7 @@ var elm_d_bank_account = document.querySelector('#d_bank_account');
 
 // initialize Tagify on the above input node reference
 var tagify_d_bank_account = new Tagify(elm_d_bank_account, {
-    tagTextProp: 'name', // very important since a custom template is used with this property as text
+    tagTextProp: 'account_name', // very important since a custom template is used with this property as text
     enforceWhitelist: true,
     mode : "select",
     skipInvalid: false, // do not remporarily add invalid tags
@@ -10,7 +10,7 @@ var tagify_d_bank_account = new Tagify(elm_d_bank_account, {
         closeOnSelect: true,
         enabled: 0,
         classname: 'bank-list',
-        searchKeys: ['name', 'bank_account_number', 'bank_branch', 'chart_of_account_no']  // very important to set by which keys to search for suggesttions when typing
+        searchKeys: ['account_name', 'bank_account_number', 'bank_branch', 'chart_of_account_no']  // very important to set by which keys to search for suggesttions when typing
     },
     templates: {
         tag: bankTagTemplate,
