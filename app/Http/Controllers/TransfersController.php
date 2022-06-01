@@ -61,8 +61,8 @@ class TransfersController extends Controller
         $fromAccount->chartOfAccount->save();
         $toAccount->chartOfAccount->save();
 
-        $debit_accounts[] = DecodeTagifyField::run(json_encode([['value' => $toAccount->chartOfAccount->id]]));
-        $credit_accounts[] = DecodeTagifyField::run(json_encode([['value' => $fromAccount->chartOfAccount->id]]));
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($toAccount->chartOfAccount->id);
+        $credit_accounts[] = CreateJournalPostings::encodeAccount($fromAccount->chartOfAccount->id);
         
         $je = CreateJournalEntry::run(now()->format('Y-m-d'), $request->reason, $this->request->session()->get('accounting_system_id'));
 

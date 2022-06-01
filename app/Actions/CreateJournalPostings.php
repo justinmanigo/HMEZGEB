@@ -35,6 +35,21 @@ class CreateJournalPostings
         }
     }
 
+    public static function encodeAccount($id)
+    {
+        return DecodeTagifyField::run(json_encode([['value' => $id]]));
+    }
+
+    /** TODO: This is something to be finalized later :D */
+    public static function encodeAccounts(array $ids)
+    {
+        $accounts = [];
+        foreach($ids as $id)
+            $accounts[] = self::encodeAccount($id);
+
+        return $accounts;
+    }
+
     /**
      * TODO: Rework later when needed.
      */
