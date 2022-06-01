@@ -1,5 +1,5 @@
 var elm_d_bank_account = document.querySelector('#d_bank_account');
-
+counter=0;
 // initialize Tagify on the above input node reference
 var tagify_d_bank_account = new Tagify(elm_d_bank_account, {
     tagTextProp: 'account_name', // very important since a custom template is used with this property as text
@@ -27,35 +27,63 @@ var tagify_d_bank_account = new Tagify(elm_d_bank_account, {
     // ]
 })
 
-tagify_d_bank_account.on('dropdown:show dropdown:updated', onDropdownShow)
-// tagify_d_bank_account.on('dropdown:select', onReceiptCustomerSelectSuggestion)
-tagify_d_bank_account.on('input', onReceiptCustomerInput)
-// tagify_d_bank_account.on('remove', onReceiptCustomerRemove)
+tagify_d_bank_account.on('dropdown:select', onBankSelectSuggestion)
+tagify_d_bank_account.on('input', onBankInput)
+tagify_d_bank_account.on('remove', onBankRemove)
 
-var addAllSuggestionsElm;
 
-function onDropdownShow(e){
-    // var dropdownContentElm = e.detail.tagify_d_bank_account.DOM.dropdown.content;
+function createRecordsToDeposit(f)
+{
+    console.log(f);
+    // counter for ids
+
+    counter++;
+    
+    // tr template
+     let inner = `
+     <tr data-id="${counter}" id="b_item_entry_${counter}">
+        <td class="table-item-content">${f.date}</td>
+        <td class="table-item-content">${f.customer_name}</td>
+        <td class="table-item-content">${f.payment_method}</td>
+        <td class="table-item-content">${f.value}</td>
+        <td class="table-item-content">${f.total_amount_received}</td>
+        <td class="table-item-content">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="${f.value}" name="is_deposit[]">
+            </div>
+        </td>
+    </tr>
+     `
+    // append to table
+     $("#deposit-list").append(inner)
 }
 
-function onReceiptCustomerSelectSuggestion(e){
-    // checks for data of selected customer
-    // console.log(e.detail.data);
-
-    // $("#r_customer_id").val(e.detail.data.value)
-    // $("#r_tin_number").val(e.detail.data.tin_number)
-    // $("#r_contact_person").val(e.detail.data.contact_person)
-    // $("#r_mobile_number").val(e.detail.data.mobile_number)
+function onBankSelectSuggestion(e){
+     $("#deposit-list").empty();
+     // Get data from server.
+     var request = $.ajax({
+         url: "/ajax/get/receipts",
+         method: "GET",
+     });
+         
+     request.done(function(res, status, jqXHR ) {
+         console.log(res);
+         for(i = 0; i < res.length; i++)
+         {   
+             createRecordsToDeposit(res[i]);
+         }
+     });
+     
+     request.fail(function(jqXHR, status, error) {
+         console.log(error);
+     });
 }
 
-function onReceiptCustomerRemove(e){
-    // $("#r_customer_id").val("")
-    // $("#r_tin_number").val("")
-    // $("#r_contact_person").val("")
-    // $("#r_mobile_number").val("")
+function onBankRemove(e){
+    $("#deposit-list").empty();
 }
 
-function onReceiptCustomerInput(e) {
+function onBankInput(e) {
     var value = e.detail.value
     tagify_d_bank_account.whitelist = null // reset the whitelist
 

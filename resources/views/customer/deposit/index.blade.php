@@ -121,21 +121,21 @@
                     <th>Label</th>
                     <th>Amount</th>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody >
+                    {{-- <tr>
                         <td>
-                            {{-- <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                            <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-trash"></i>
                                 </span>
-                            </button> --}}
+                            </button> 
                         </td>
                         <td>03-Mar-2022</td>
                         <td>DS003</td>
                         <td>Commercial Bank</td>
                         <td><span class="badge badge-primary">Self</span></td>
                         <td>21,000.00</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>
@@ -154,11 +154,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" method="post" enctype="multipart/form-data">
+                <form id="form-deposit" method="post" enctype="multipart/form-data" action="{{route('deposits.deposits.store')}}">
+                    @csrf
                     <div class="form-group row">
                         <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input class="col-8 col-lg-7" id="d_bank_account" name='bank_account'>
+                            <input id="d_bank_account" name='bank_account'>
                         </div>
 
                         <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
@@ -166,14 +167,10 @@
                             <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        {{-- Temporarily blank first column --}}
-                        <div class="col-lg-6 d-none d-lg-flex"></div>
-                    </div>
                     <hr>
                     <h2>Undeposited Sales</h2>
                     <div class="table-responsive mb-3">
-                        <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
+                        <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead>
                                 <th>Date</th>
                                 <th>Customer Name</th>
@@ -182,31 +179,8 @@
                                 <th>Amount</th>
                                 <th id="thead-actions">Deposit?</th>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="table-item-content">01/31/2022</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">Cash</td>
-                                    <td class="table-item-content"><label for="d_invoices_1483681825">1483681825</label></td>
-                                    <td class="table-item-content">Birr 1,000</td>
-                                    <td class="table-item-content">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="d_invoices_1483681825" name="invoices[]" value="">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="table-item-content">02/01/2022</td>
-                                    <td class="table-item-content">Fullstack HQ</td>
-                                    <td class="table-item-content">Cheque</td>
-                                    <td class="table-item-content"><label for="d_invoices_1483681826">1483681826</label></td>
-                                    <td class="table-item-content">Birr 2,000</td>
-                                    <td class="table-item-content">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="d_invoices_1483681826" name="invoices[]" value="">
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody id="deposit-list">
+                                {{-- Record --}}
                             </tbody>
                         </table>
                     </div>
@@ -249,7 +223,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-deposit">Save Deposit</button>
+                <button type="submit" class="btn btn-primary" form="form-deposit">Save Deposit</button>
             </div>
         </div>
     </div>
