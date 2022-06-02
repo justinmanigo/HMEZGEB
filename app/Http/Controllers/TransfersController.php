@@ -20,8 +20,9 @@ class TransfersController extends Controller
      */
     public function index()
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         // TODO: Change to use the accounting system id
-        $transfers = Transfers::all();
+        $transfers = Transfers::where('accounting_system_id', $accounting_system_id)->get();
         return view('banking.transfers.index', compact('transfers'));
     }
 
