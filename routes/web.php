@@ -47,6 +47,7 @@ use App\Http\Controllers\Settings\TaxController;
 use App\Http\Controllers\Settings\ManageUsersController;
 use App\Http\Controllers\Settings\ChartOfAccountsController;
 use App\Http\Controllers\Settings\PayrollRulesController;
+use App\Http\Controllers\Settings\InventoryController as InventorySettingsController;
 
 // Account Settings
 use App\Http\Controllers\AccountSettings\AccountSettingsController;
@@ -554,7 +555,7 @@ Route::group([
                 'as' => 'inventory.'
             ], function(){
                 // HTTP
-                Route::view('/settings/inventory', 'settings.inventory.index')->name('index');
+                Route::get('/settings/inventory', [InventorySettingsController::class, 'index'])->name('index');
             });
 
             /**
