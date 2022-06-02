@@ -64,7 +64,7 @@ function onBankInputFrom(e) {
 
 //BANK TO 
 var bank_select_bank_tagify_to = new Tagify(bank_select_to, {
-    tagTextProp: 'bank_branch', // very important since a custom template is used with this property as text
+    tagTextProp: 'account_name', // very important since a custom template is used with this property as text
     enforceWhitelist: true,
     mode : "select",
     skipInvalid: false, // do not remporarily add invalid tags
@@ -72,7 +72,7 @@ var bank_select_bank_tagify_to = new Tagify(bank_select_to, {
         closeOnSelect: true,
         enabled: 0,
         classname: 'customers-list',
-        searchKeys: ['bank_branch', 'bank_account_number']  // very important to set by which keys to search for suggesttions when typing
+        searchKeys: ['account_name', 'chart_of_account_no', 'bank_branch', 'bank_account_number']  // very important to set by which keys to search for suggestions when typing
     },
     templates: {
         tag: bankTagTemplate,
