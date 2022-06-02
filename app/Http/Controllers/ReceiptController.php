@@ -366,8 +366,9 @@ class ReceiptController extends Controller
             ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
             ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
             ->where('receipt_references.status', 'paid')
+            ->where('receipt_references.type', 'receipt')
+            ->where('receipt_references.is_deposited', 'no')
             ->get();
-        Log::info($receipts);
         return $receipts;
     }
 }
