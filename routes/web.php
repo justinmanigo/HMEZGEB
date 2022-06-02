@@ -48,6 +48,7 @@ use App\Http\Controllers\Settings\ManageUsersController;
 use App\Http\Controllers\Settings\ChartOfAccountsController;
 use App\Http\Controllers\Settings\PayrollRulesController;
 use App\Http\Controllers\Settings\InventoryController as InventorySettingsController;
+use App\Http\Controllers\Settings\WithholdingController;
 
 // Account Settings
 use App\Http\Controllers\AccountSettings\AccountSettingsController;
@@ -514,7 +515,13 @@ Route::group([
                 'as' => 'withholding.'
             ], function(){
                 // HTTP
-                Route::view('/settings/withholding', 'settings.withholding.index')->name('index');
+                Route::get('/settings/withholding', [WithholdingController::class, 'index'])->name('index');
+                Route::post('/settings/withholding', [WithholdingController::class, 'store'])->name('store');
+                Route::put('/settings/withholding/{withholding}', [WithholdingController::class, 'update'])->name('update');
+                Route::delete('/settings/withholding/{withholding}', [WithholdingController::class, 'destroy'])->name('destroy');
+
+                // AJAX
+                Route::get('/ajax/settings/withholding/get/{withholding}', [WithholdingController::class, 'ajaxGetWithholding']);
             });
 
 
