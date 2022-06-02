@@ -556,6 +556,7 @@ Route::group([
             ], function(){
                 // HTTP
                 Route::get('/settings/inventory', [InventorySettingsController::class, 'index'])->name('index');
+                Route::put('/settings/inventory', [InventorySettingsController::class, 'store'])->name('store');            
             });
 
             /**
