@@ -111,6 +111,19 @@
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
+        {{-- successs message --}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
@@ -139,10 +152,8 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
-                        </tr>
-                        
+                        </tr>            
                     @endforeach
-                        
                 </tbody>
             </table>
         </div>
@@ -196,19 +207,19 @@
                             <tfoot>
                                 <th class="text-center">
                                     Total Cash<br>
-                                    <b>7,000.00</b>
+                                        <input type="text" class="form-control-plaintext text-center" id="d_total_cash" value="0.00" disabled>             
                                 </th>
                                 <th class="text-center">
                                     Total Cheque<br>
-                                    <b>2,500.00</b>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_cheque" value="0.00" disabled>
                                 </th>
                                 <th class="text-center">
                                     Total Other<br>
-                                    <b>0.00</b>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_other" value="0.00" disabled>
                                 </th>
                                 <th class="text-center">
                                     Total Deposit<br>
-                                    <b>9,500.00</b>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_deposit" name="total_amount" value="0.00" readonly>
                                 </th>
                             </tfoot>
                         </table>

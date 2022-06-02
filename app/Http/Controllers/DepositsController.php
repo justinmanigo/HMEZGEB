@@ -66,7 +66,8 @@ class DepositsController extends Controller
                 'deposit_id' => $deposits->id,
             ]); 
         }
-        return $coa;
+        
+        return back()->with('success', 'Successfully deposited.');
     }
 
     /**
