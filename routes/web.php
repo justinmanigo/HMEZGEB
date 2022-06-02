@@ -169,8 +169,8 @@ Route::group([
             Route::group([
                 'as'=>'deposits.'
             ], function(){ 
-                Route::get('/customers/deposits/', [DepositController::class, 'index']);
-                Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositController::class, 'ajaxSearchBank']);
+                Route::get('/customers/deposits/', [DepositsController::class, 'index']);
+                Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
                 // RESOURCE
                 Route::resource('/deposits', DepositsController::class);
                 
@@ -275,8 +275,7 @@ Route::group([
                 'as'=>'deposits.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/deposits', [DepositController::class, 'index'])->name('bank.deposits');
-                
+                Route::get('/banking/deposits', [DepositsController::class, 'index'])->name('bank.deposits');     
             });
         
             /**
