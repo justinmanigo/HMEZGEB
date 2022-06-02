@@ -15,10 +15,12 @@ class CreateTransfersTable extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('from_account_id');
             $table->unsignedBigInteger('to_account_id');
             $table->decimal('amount', 10, 2)->nullable();
             $table->string('reason')->nullable();
+            $table->foreignId('journal_entry_id')->nullable()->constrained();
             $table->timestamps();
         });
     }
