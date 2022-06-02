@@ -29,6 +29,7 @@ class AccountingSystem extends Model
         'contact_person_position',
         'contact_person_mobile_number',
         'business_type',
+        'settings_inventory_type',
     ];
 
     public function subscription()

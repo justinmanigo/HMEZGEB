@@ -42,6 +42,11 @@ class CreateAccountingSystemsTable extends Migration
                 'PLC',
                 'Share Company'
             ]);
+            $table->enum('settings_inventory_type', [
+                'average',
+                'lifo',
+                'fifo',
+            ])->default('average');
             $table->timestamps();
         });
     }
