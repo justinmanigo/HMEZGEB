@@ -23,6 +23,8 @@ class ChartOfAccountsController extends Controller
      */
     public function index()
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         $chart_of_accounts = ChartOfAccounts::select(
                 'chart_of_accounts.id',
                 'chart_of_accounts.chart_of_account_no',
@@ -33,6 +35,7 @@ class ChartOfAccountsController extends Controller
                 'chart_of_accounts.status',
             )
             ->leftJoin('chart_of_account_categories', 'chart_of_account_category_id', '=', 'chart_of_account_categories.id')
+            ->where('chart_of_accounts.accounting_system_id', $accounting_system_id)
             ->get();
 
         return view('settings.chart_of_account.index', compact('chart_of_accounts'));
