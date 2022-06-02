@@ -10,7 +10,10 @@ class Tax extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id', 'name', 'percentage'
+        'accounting_system_id', 
+        'id', 
+        'name', 
+        'percentage',
     ];
 
     // TODO: Integrate TAX relationships to tables of other modules.
