@@ -15,6 +15,7 @@ class CreateIncomeTaxPayrollRulesTable extends Migration
     {
         Schema::create('income_tax_payroll_rules', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->float('income');
             $table->float('rate');
             $table->float('deduction');
