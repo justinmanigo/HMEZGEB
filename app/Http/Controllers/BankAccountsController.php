@@ -16,7 +16,8 @@ class BankAccountsController extends Controller
     public function index()
     {
         //
-        $bank_accounts = BankAccounts::all();
+        $bank_accounts = BankAccounts::leftJoin('chart_of_accounts', 'bank_accounts.chart_of_account_id', '=', 'chart_of_accounts.id')
+            ->where('chart_of_accounts.accounting_system_id', $this->request->session()->get('accounting_system_id'))->get();
         $coa_number = 1030;
         // $coa_last_record = BankAccounts::orderBy('created_at', 'desc')->first();
         // if (empty($coa_last_record)) {
