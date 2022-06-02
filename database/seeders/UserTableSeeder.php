@@ -144,6 +144,15 @@ class UserTableSeeder extends Seeder
         // Loop users
         for($i = 1; $i <= 3; $i++)
         {
+            $overtime_payroll_rules[] = [
+                'accounting_system_id' => $i,
+                'working_days' => 26,
+                'working_hours' => 8,
+                'day_rate' => 1.25,
+                'night_rate' => 1.50,
+                'holiday_weekend_rate' => 2.00
+            ];
+
             // Loop permissions
             for($j = 1; $j <= 24; $j++)
             {
@@ -153,8 +162,48 @@ class UserTableSeeder extends Seeder
                     'sub_module_id' => $j,
                 ];
             }
+
+            DB::table('income_tax_payroll_rules')->insert([
+                [
+                    'accounting_system_id' => $i,
+                    'income' => 10900,
+                    'rate' => 35,
+                    'deduction' => 1500
+                ],
+                [
+                    'accounting_system_id' => $i,
+                    'income' => 7800,
+                    'rate' => 30,
+                    'deduction' => 955
+                ],
+                [
+                    'accounting_system_id' => $i,
+                    'income' => 5250,
+                    'rate' => 25,
+                    'deduction' => 565
+                ],
+                [
+                    'accounting_system_id' => $i,
+                    'income' => 3200,
+                    'rate' => 20,
+                    'deduction' => 302.5
+                ],
+                [
+                    'accounting_system_id' => $i,
+                    'income' => 1650,
+                    'rate' => 15,
+                    'deduction' => 142.5
+                ],
+                [
+                    'accounting_system_id' => $i,
+                    'income' => 600,
+                    'rate' => 10,
+                    'deduction' => 60
+                ],
+            ]);
         }
 
         DB::table('permissions')->insert($permissions);
+        DB::table('overtime_payroll_rules')->insert($overtime_payroll_rules);
     }
 }
