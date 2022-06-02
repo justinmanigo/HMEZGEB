@@ -73,7 +73,14 @@ class TransfersController extends Controller
             $this->request->session()->get('accounting_system_id')
         );
 
-        Transfers::create($request->all());
+        Transfers::create([
+            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
+            'from_account_id' => $request->from_account_id,
+            'to_account_id' => $request->to_account_id,
+            'amount' => $request->amount,
+            'reason' => $request->reason,
+            'journal_entry_id' => $je->id,
+        ]);
 
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }
