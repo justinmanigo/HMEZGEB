@@ -114,28 +114,35 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
                     <th>Deposit Date</th>
                     <th>Deposit ID</th>
                     <th>Account</th>
                     <th>Label</th>
                     <th>Amount</th>
+                    <th id="thead-actions">Actions</th>
+
                 </thead>
                 <tbody >
-                    {{-- <tr>
-                        <td>
-                            <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <span class="icon text-white-50">
+                    @foreach($deposits as $deposit)
+                        <tr>
+                            {{-- date format --}}
+                            <td>{{ date('Y-m-d', strtotime($deposit->deposit_date)) }}</td>
+                            <td>{{$deposit->id}}</td>
+                            <td>{{$deposit->chartOfAccount->account_name}}</td>
+                            <td><span class="badge badge-primary">Self</span></td>
+                            <td>{{$deposit->total_amount}}</td>
+                            <td>
+                                <a href="" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i>
-                                </span>
-                            </button> 
-                        </td>
-                        <td>03-Mar-2022</td>
-                        <td>DS003</td>
-                        <td>Commercial Bank</td>
-                        <td><span class="badge badge-primary">Self</span></td>
-                        <td>21,000.00</td>
-                    </tr> --}}
+                                </button>
+                            </td>
+                        </tr>
+                        
+                    @endforeach
+                        
                 </tbody>
             </table>
         </div>
@@ -164,7 +171,7 @@
 
                         <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date">
+                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date" value="{{date('Y-m-d')}}">
                         </div>
                     </div>
                     <hr>
@@ -180,7 +187,7 @@
                                 <th id="thead-actions">Deposit?</th>
                             </thead>
                             <tbody id="deposit-list">
-                                {{-- Record --}}
+                                {{-- customer_deposit --}}
                             </tbody>
                         </table>
                     </div>

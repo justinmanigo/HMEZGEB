@@ -15,12 +15,14 @@ class CreateDepositsTable extends Migration
     {
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('receipt_id');
-            $table->unsignedBigInteger('bank_account_id');
-
+            $table->unsignedBigInteger('chart_of_account_id');
+            $table->enum('status',['Deposited','Void'])->default('Deposited');
+            $table->date('deposit_ticket_date');
+            $table->double('total_amount',8,2)->nullable();
+            $table->string('remark')->nullable();
             $table->timestamps();
-             // $table->foreign('brandNavItem_id')->references('id')->on('brands_nav_items');
-             // $table->foreign('brandNavItem_id')->references('id')->on('brands_nav_items');
+
+            $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
         });
     }
 

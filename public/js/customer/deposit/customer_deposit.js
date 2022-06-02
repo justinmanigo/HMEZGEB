@@ -49,7 +49,7 @@ function createRecordsToDeposit(f)
         <td class="table-item-content">${f.total_amount_received}</td>
         <td class="table-item-content">
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="${f.value}" name="is_deposit[]">
+                <input type="checkbox" class="form-check-input" id="${f.value}" name="is_deposited[]" value="${f.value}">
             </div>
         </td>
     </tr>
@@ -58,7 +58,8 @@ function createRecordsToDeposit(f)
      $("#deposit-list").append(inner)
 }
 
-function onBankSelectSuggestion(e){
+function onBankSelectSuggestion(){
+
      $("#deposit-list").empty();
      // Get data from server.
      var request = $.ajax({
