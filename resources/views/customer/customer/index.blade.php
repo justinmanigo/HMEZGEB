@@ -44,12 +44,12 @@
                 </span>
                 <span class="text">Export</span>
             </button>
-            <button type="button" class="btn btn-secondary">
+            {{-- <button type="button" class="btn btn-secondary">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
                 </span>
                 <span class="text">Download Excel Format</span>
-            </button>    
+            </button>     --}}
         </div>
         @if(session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
