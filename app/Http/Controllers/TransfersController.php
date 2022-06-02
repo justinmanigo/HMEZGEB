@@ -20,7 +20,7 @@ class TransfersController extends Controller
      */
     public function index()
     {
-        //
+        // TODO: Change to use the accounting system id
         $transfers = Transfers::all();
         return view('banking.transfers.index', compact('transfers'));
     }
@@ -124,6 +124,8 @@ class TransfersController extends Controller
 
     public function queryBank($query)
     {   
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         $bankAccounts = BankAccounts::select(
                 'bank_accounts.id as value',
                 'bank_accounts.bank_branch',
@@ -132,8 +134,13 @@ class TransfersController extends Controller
                 'chart_of_accounts.account_name',
             )
             ->leftJoin('chart_of_accounts', 'bank_accounts.chart_of_account_id', '=', 'chart_of_accounts.id')
-            ->where('bank_branch', 'LIKE', '%'.$query.'%')
-            ->orWhere('bank_account_number', 'LIKE', '%'.$query.'%')
+            ->where(function($q) use ($query) {
+                $q->where('bank_accounts.bank_branch', 'LIKE', '%'.$query.'%')
+                    ->orWhere('bank_accounts.bank_account_number', 'LIKE', '%'.$query.'%')
+                    ->orWhere('chart_of_accounts.chart_of_account_no', 'LIKE', '%'.$query.'%')
+                    ->orWhere('chart_of_accounts.account_name', 'LIKE', '%'.$query.'%');
+            })
+            ->where('chart_of_accounts.accounting_system_id', $accounting_system_id)
             ->get();
             
         return $bankAccounts;
