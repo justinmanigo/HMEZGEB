@@ -291,7 +291,6 @@
                 </div>
                 <form id="form-beginning-balance" method="post" action="{{ url('/ajax/settings/coa/beginning-balance') }}" style="display:none">
                     @csrf
-                    <p>You are currently configuring the beginning balance for <strong id="bb_accounting_period_number"></strong> (<span id="bb_accounting_period_date_from"></span> - <span id="bb_accounting_period_date_to"></span>)</i>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead>
