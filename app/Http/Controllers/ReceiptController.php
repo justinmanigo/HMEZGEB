@@ -79,6 +79,8 @@ class ReceiptController extends Controller
 
     public function storeReceipt(StoreReceiptRequest $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         // If this transaction is linked to Proforma
         if(isset($request->proforma)) UpdateReceiptStatus::run($request->proforma->value, 'paid');
 
@@ -86,7 +88,7 @@ class ReceiptController extends Controller
         $status = DetermineReceiptStatus::run($request->grand_total, $request->total_amount_received);
 
         // Create Receipt Reference
-        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'receipt', $status);
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'receipt', $status, $accounting_system_id);
 
         // If request has attachment, store it to file storage.
         if($request->attachment) {
@@ -129,7 +131,8 @@ class ReceiptController extends Controller
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
     {
-        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'advance_receipt', 'paid');
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'advance_receipt', 'paid', $accounting_system_id);
 
         // Create child database entry
         if($request->attachment) {
@@ -148,6 +151,8 @@ class ReceiptController extends Controller
 
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
         for($i = 0; $i < count($request->is_paid); $i++)
         {
             if(!in_array($request->receipt_reference_id[$i], $request->is_paid) || $request->amount_paid[$i] <= 0) continue;
@@ -164,7 +169,7 @@ class ReceiptController extends Controller
             }
         }
 
-        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid');
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', $accounting_system_id);
 
         return CreditReceipts::create([
             'receipt_reference_id' => $reference->id,
@@ -178,7 +183,8 @@ class ReceiptController extends Controller
 
     public function storeProforma(StoreProformaRequest $request)
     {        
-        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid');
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid', $accounting_system_id);
 
         // if($reference)        
         // {
