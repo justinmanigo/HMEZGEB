@@ -126,7 +126,7 @@ class InventoryController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $taxes = Tax::where('accounting_system_id', $accounting_system_id)->get();
-        return view('inventory.forms.edit', compact('inventory'), compact('taxes'));
+        return view('inventory.edit', compact('inventory'), compact('taxes'));
     }
 
     /**
@@ -143,13 +143,21 @@ class InventoryController extends Controller
             'item_name' => $request->item_name,
             'sale_price' => $request->sale_price,
             'purchase_price' => $request->purchase_price,
-            'quantity' => $request->quantity,
+            'quantity' => $request->inventory_type == 'inventory_item' 
+                ? 0 
+                : null,
+            'critical_quantity' => $request->inventory_type == 'inventory_item' 
+                ? $request->critical_quantity 
+                : null,
             'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
             // 'default_income_account' => $request->default_income_account,
             // 'default_expense_account' => $request->default_expense_account,
             'inventory_type' => $request->inventory_type,
             'picture' => isset($imageName) ? $imageName : null,
             'description' => $request->description,
+            'notify_critical_quantity' => isset($request->notify_critical_quantity) 
+                ? $request->notify_critical_quantity 
+                : 'No',
         ]);
 
         return redirect('/inventory')->with('success', 'Successfully updated item.');
