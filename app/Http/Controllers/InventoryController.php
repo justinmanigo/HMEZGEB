@@ -98,9 +98,13 @@ class InventoryController extends Controller
      * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Inventory $inventory)
     {
-        
+        $inventory->tax;
+        return $inventory;
+        return view('inventory.show', [
+            'inventory' => $inventory,
+        ]);
     }
 
     public function fifo()
