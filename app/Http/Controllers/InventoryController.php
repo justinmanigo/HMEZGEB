@@ -15,8 +15,8 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //get all inventories from database then display on inventory
-        $inventories = Inventory::all();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $inventories = Inventory::where('accounting_system_id', $accounting_system_id)->get();
         $inventoryValue = 0;
 
         // Compute for each inventory value and total value.
@@ -30,7 +30,7 @@ class InventoryController extends Controller
             }           
         }
 
-        $taxes = Tax::get();            
+        $taxes = Tax::where('accounting_system_id', $accounting_system_id)->get();            
 
         return view('inventory.inventory', [
             'inventories' => $inventories,
@@ -58,12 +58,15 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         if($request->picture) {
             $imageName = time().'.'.$request->picture->extension();  
             $request->picture->storeAs('public/inventories', $imageName);
         }
 
         Inventory::create([
+            'accounting_system_id' => $accounting_system_id,
             'item_code' => $request->item_code,
             'item_name' => $request->item_name,
             'sale_price' => $request->sale_price,
@@ -121,7 +124,8 @@ class InventoryController extends Controller
      */
     public function edit(Inventory $inventory)
     {
-        $taxes = Tax::get();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $taxes = Tax::where('accounting_system_id', $accounting_system_id)->get();
         return view('inventory.forms.edit', compact('inventory'), compact('taxes'));
     }
 
@@ -166,7 +170,9 @@ class InventoryController extends Controller
 
     public function ajaxSearchInventory($query)
     {   
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $inventory = Inventory::select('id as value', 'item_name as name', 'sale_price',  'quantity', 'inventory_type')
+            ->where('accounting_system_id', $accounting_system_id)
             ->where('item_name', 'LIKE', '%' . $query . '%')->get();
         return $inventory;
     }
