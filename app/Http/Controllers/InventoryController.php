@@ -75,7 +75,7 @@ class InventoryController extends Controller
                 ? 0 
                 : null,
             'critical_quantity' => $request->inventory_type == 'inventory_item' 
-                ? 0 
+                ? $request->critical_quantity 
                 : null,
             'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
             // 'default_income_account' => $request->default_income_account,
