@@ -32,7 +32,7 @@ class InventoryController extends Controller
 
         $taxes = Tax::where('accounting_system_id', $accounting_system_id)->get();            
 
-        return view('inventory.inventory', [
+        return view('inventory.index', [
             'inventories' => $inventories,
             'taxes' => $taxes,
             'inventoryValue' => $inventoryValue,
