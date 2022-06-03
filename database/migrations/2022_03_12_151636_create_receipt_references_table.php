@@ -15,6 +15,7 @@ class CreateReceiptReferencesTable extends Migration
     {
         Schema::create('receipt_references', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('customer_id');
             $table->date('date');
             $table->enum('type',['receipt','credit_receipt','advance_receipt','proforma']);

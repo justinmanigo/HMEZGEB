@@ -11,6 +11,7 @@ class ReceiptReferences extends Model
     use HasFactory;
 
     protected $fillable = [
+        'accounting_system_id',
         'reference_number',
         'date',
         'type',
