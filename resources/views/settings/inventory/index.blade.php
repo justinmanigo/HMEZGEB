@@ -37,7 +37,7 @@
                     </label>
                 </div>
                 <div class="form-group mt-4">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" disabled>Save</button>
                     <button type="button" class="btn btn-danger">Cancel</button>
                 <div>
             </form>
