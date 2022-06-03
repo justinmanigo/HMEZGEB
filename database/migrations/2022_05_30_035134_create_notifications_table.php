@@ -16,7 +16,8 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('reference_id')->nullable();
-            $table->boolean('read')->default(false);
+            $table->boolean('resolved')->default(false);
+            $table->timestamp('time_resolved')->nullable();
             $table->string('link')->nullable();
             $table->enum('type', [
                 'info',
@@ -24,6 +25,7 @@ class CreateNotificationsTable extends Migration
                 'warning',
                 'danger',
             ]);
+            $table->string('source')->nullable();
             $table->string('title')->nullable();
             $table->string('message')->nullable();
             $table->timestamps();

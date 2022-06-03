@@ -11,7 +11,9 @@ class Notification extends Model
 
     protected $fillable = [
         'reference_id',
-        'read',
+        'source',
+        'resolved',
+        'time_resolved',
         'link',
         'type',
         'title',
