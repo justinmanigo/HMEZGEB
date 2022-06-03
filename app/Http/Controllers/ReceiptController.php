@@ -209,7 +209,12 @@ class ReceiptController extends Controller
 
     public function edit($id)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $receipts = Receipts::find($id);
+
+        if(!$receipts) abort(404);
+        if($receipts->accounting_system_id != $accounting_system_id)
+        return redirect('/customers/receipts')->with('danger', "You are not authorized to edit this receipt.");;
 
         return view('customer.receipt.edit',compact('receipts'));
     }
