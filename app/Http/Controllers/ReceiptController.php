@@ -31,87 +31,48 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        // Views Transactions 
-        $receipt = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'receipts',
-            'receipts.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'receipt_references.status',
-            'receipts.total_amount_received'
-        );
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        $advance = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'advance_revenues',
-            'advance_revenues.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'receipt_references.status',
-            'advance_revenues.total_amount_received'
-        )->union($receipt);
+        $transactions = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+            ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+            ->leftJoin('advance_revenues', 'receipt_references.id', '=', 'advance_revenues.receipt_reference_id')
+            ->leftJoin('credit_receipts', 'receipt_references.id', '=', 'credit_receipts.receipt_reference_id')
+            ->select(
+                'customers.name',
+                'receipt_references.id',
+                'receipt_references.customer_id',
+                'receipt_references.date',
+                'receipt_references.type',
+                'receipt_references.status',
+                'receipt_references.is_void',
+                'receipts.total_amount_received as receipt_amount',
+                'advance_revenues.total_amount_received as advance_revenue_amount',
+                'credit_receipts.total_amount_received as credit_receipt_amount',
+            )
+            ->where('receipt_references.accounting_system_id', $accounting_system_id)
+            ->where('receipt_references.type', '!=', 'proforma')
+            ->get();
 
-        $transactions = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'credit_receipts',
-            'credit_receipts.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'receipt_references.status',
-            'credit_receipts.total_amount_received'
-        )->union($advance)->get();
-        
-        // Views proforma
-        $proformas = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'proformas',
-            'proformas.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'proformas.amount'
-        )->get();
+        $proformas = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+            ->leftJoin('proformas', 'receipt_references.id', '=', 'proformas.receipt_reference_id')
+            ->select(
+                'customers.name',
+                'receipt_references.id',
+                'receipt_references.customer_id',
+                'receipt_references.date',
+                'receipt_references.type',
+                'receipt_references.status',
+                'receipt_references.is_void',
+                'proformas.amount as proforma_amount',
+            )
+            ->where('receipt_references.accounting_system_id', $accounting_system_id)
+            ->where('receipt_references.type', 'proforma')
+            ->get();
 
-     
-         
-
-        return view('customer.receipt.index',compact('transactions','proformas'));
+        return view('customer.receipt.index', [
+            'transactions' => $transactions,
+            'proformas' => $proformas
+        ]);
     }
 
     /** === STORE RECEIPTS === */
