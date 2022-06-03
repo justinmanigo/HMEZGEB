@@ -315,7 +315,8 @@ Route::group([
             // HTML
             Route::get('/inventory/', [InventoryController::class, 'index']);
             Route::post('/inventory', [InventoryController::class, 'store']);
-            Route::get('/inventory/{inventory}', [InventoryController::class, 'edit']);
+            Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
+            Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
             Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
         
             // AJAX

@@ -100,7 +100,7 @@
                             @endif
                             " class="w-100 img-responsive" style="min-width:100px">
                             </td>--}}
-                            <td> <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id) }}">
+                            <td> <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id.'/edit') }}">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-pen"></i>
                                     </span>
