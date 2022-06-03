@@ -81,7 +81,11 @@ class CustomerController extends Controller
     }
     public function edit($id)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::find($id);
+        if($customers->accounting_system_id != $accounting_system_id)
+            return redirect('/customers/customers')->with('danger', "You are not authorized to edit this customer.");
+
         return view('customer.customer.edit', compact('customers'));
     }
 
