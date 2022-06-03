@@ -9,7 +9,7 @@ class Customers extends Model
 {
     use HasFactory;
     protected $fillable = [
-        
+        'accounting_system_id',
         'name',
         'tin_number',
         'address',
