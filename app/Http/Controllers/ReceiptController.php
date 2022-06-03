@@ -238,14 +238,14 @@ class ReceiptController extends Controller
         $receipts->is_active ='Yes';
         $receipts->update();
 
-        return redirect('receipt/')->with('success', "Successfully edited customer.");
+        return redirect('receipt/')->with('success', "Successfully edited receipt.");
 
     }
     
     public function show(Receipts $receipt)
     {   
-        $receipt = Receipts::all();
-        return view('customer.receipt.index',compact('receipt'));
+        // $receipt = Receipts::all();
+        // return view('customer.receipt.index',compact('receipt'));
     }
 
     public function destroy($id)
