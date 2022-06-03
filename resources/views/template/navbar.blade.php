@@ -10,7 +10,7 @@
     $accounting_period_year = \Carbon\Carbon::parse($accounting_period->date_from);
 
     $notifications = Notification::orderBy('created_at', 'desc')->get();
-    $unreadNotifications = Notification::where('read', 0)->count();
+    $unreadNotifications = Notification::where('resolved', 0)->count();
 @endphp
  
  <!-- Sidebar -->
@@ -204,8 +204,8 @@
                                 @else
                                     {{-- Display Notification --}}
                                     @foreach ($notifications->take(3) as $notification)
-                                        @if($notification->read=='0')
-                                        {{-- Not yet read --}}
+                                        @if($notification->resolved=='0')
+                                        {{-- Not yet resolved --}}
                                             <a class="dropdown-item d-flex align-items-center bg-light" href="/{{$notification->link}}">
                                                 <div>
                                                     <div class="small font-weight-bold">{{ $notification->created_at->diffForHumans() }}</div>
@@ -223,13 +223,15 @@
                                                 </div>
                                             </a>
                                             @else
-                                            <a class="dropdown-item d-flex align-items-center " href="/{{$notification->link}}">
-                                                <div>
-                                                    <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }}</div>
-                                                    <span class="small">{{ $notification->title }}<br>
-                                                    {{ $notification->message }}</span>
+                                            <a class="dropdown-item" href="/{{$notification->link}}">
+                                                <div class="d-flex justify-content-between">   
+                                                    <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }} </div>
+                                                  <div class="small text-primary"> Resolved </div>
                                                 </div>
-                                            </a> 
+                                                    <span class="small">{{ $notification->title }}<br>
+                                                        {{ $notification->message }}</span>
+                                
+                                            </a>
                                             
                                         @endif
                                     @endforeach

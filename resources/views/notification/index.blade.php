@@ -6,19 +6,16 @@
     <div class="card-body">
         <div class="list-group">
             @if (count($notifications)==0)
-            <a class="dropdown-item d-flex align-items-center">
-                <div>
+            <a class="dropdown-item">
                     No Notification
-                </div>
             </a>
             @else
             {{-- Display Notification --}}
-            @foreach ($notifications->take(3) as $notification)
-            @if($notification->read=='0')
-            {{-- Not yet read --}}
-            <a class="dropdown-item d-flex align-items-center bg-light p-3" href="/{{$notification->link}}">
-                <div>
-                    <div class="small font-weight-bold">{{ $notification->created_at->diffForHumans() }}</div>
+            @foreach ($notifications as $notification)
+            @if($notification->resolved=='0')
+            {{-- Not yet resolved --}}
+            <a class="dropdown-item bg-light p-3" href="/{{$notification->link}}">
+                    <div class="small font-weight-bold">{{ $notification->created_at->diffForHumans() }} </div>
                     @if ($notification->type=='warning')
                     <span class="font-weight-bold text-warning">{{ $notification->title }}</span>
                     @elseif ($notification->type=='danger')
@@ -30,15 +27,16 @@
                     @endif
                     <br>
                     {{ $notification->message }}
-                </div>
             </a>
             @else
-            <a class="dropdown-item d-flex align-items-center " href="/{{$notification->link}}">
-                <div>
-                    <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }}</div>
+            <a class="dropdown-item " href="/{{$notification->link}}">
+                <div class="d-flex justify-content-between">   
+                    <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }} </div>
+                  <div class="small text-primary"> Resolved </div>
+                </div>
                     <span class="small">{{ $notification->title }}<br>
                         {{ $notification->message }}</span>
-                </div>
+
             </a>
 
             @endif
