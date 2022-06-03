@@ -31,93 +31,56 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        // Views Transactions 
-        $receipt = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'receipts',
-            'receipts.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'receipt_references.status',
-            'receipts.total_amount_received'
-        );
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        $advance = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'advance_revenues',
-            'advance_revenues.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'receipt_references.status',
-            'advance_revenues.total_amount_received'
-        )->union($receipt);
+        $transactions = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+            ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+            ->leftJoin('advance_revenues', 'receipt_references.id', '=', 'advance_revenues.receipt_reference_id')
+            ->leftJoin('credit_receipts', 'receipt_references.id', '=', 'credit_receipts.receipt_reference_id')
+            ->select(
+                'customers.name',
+                'receipt_references.id',
+                'receipt_references.customer_id',
+                'receipt_references.date',
+                'receipt_references.type',
+                'receipt_references.status',
+                'receipt_references.is_void',
+                'receipts.total_amount_received as receipt_amount',
+                'advance_revenues.total_amount_received as advance_revenue_amount',
+                'credit_receipts.total_amount_received as credit_receipt_amount',
+            )
+            ->where('receipt_references.accounting_system_id', $accounting_system_id)
+            ->where('receipt_references.type', '!=', 'proforma')
+            ->get();
 
-        $transactions = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'credit_receipts',
-            'credit_receipts.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'receipt_references.status',
-            'credit_receipts.total_amount_received'
-        )->union($advance)->get();
-        
-        // Views proforma
-        $proformas = Customers::join(
-            'receipt_references',
-            'receipt_references.customer_id',
-            '=',
-            'customers.id'
-        )->join(
-            'proformas',
-            'proformas.receipt_reference_id',
-            '=',
-            'receipt_references.id'
-        )->select(
-            'customers.name',
-            'receipt_references.id',
-            'receipt_references.date',
-            'receipt_references.type',
-            'proformas.amount'
-        )->get();
+        $proformas = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+            ->leftJoin('proformas', 'receipt_references.id', '=', 'proformas.receipt_reference_id')
+            ->select(
+                'customers.name',
+                'receipt_references.id',
+                'receipt_references.customer_id',
+                'receipt_references.date',
+                'receipt_references.type',
+                'receipt_references.status',
+                'receipt_references.is_void',
+                'proformas.amount as proforma_amount',
+            )
+            ->where('receipt_references.accounting_system_id', $accounting_system_id)
+            ->where('receipt_references.type', 'proforma')
+            ->get();
 
-     
-         
-
-        return view('customer.receipt.index',compact('transactions','proformas'));
+        return view('customer.receipt.index', [
+            'transactions' => $transactions,
+            'proformas' => $proformas
+        ]);
     }
 
     /** === STORE RECEIPTS === */
 
     public function storeReceipt(StoreReceiptRequest $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         // If this transaction is linked to Proforma
         if(isset($request->proforma)) UpdateReceiptStatus::run($request->proforma->value, 'paid');
 
@@ -125,7 +88,7 @@ class ReceiptController extends Controller
         $status = DetermineReceiptStatus::run($request->grand_total, $request->total_amount_received);
 
         // Create Receipt Reference
-        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'receipt', $status);
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'receipt', $status, $accounting_system_id);
 
         // If request has attachment, store it to file storage.
         if($request->attachment) {
@@ -168,7 +131,8 @@ class ReceiptController extends Controller
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
     {
-        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'advance_receipt', 'paid');
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'advance_receipt', 'paid', $accounting_system_id);
 
         // Create child database entry
         if($request->attachment) {
@@ -187,6 +151,8 @@ class ReceiptController extends Controller
 
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
         for($i = 0; $i < count($request->is_paid); $i++)
         {
             if(!in_array($request->receipt_reference_id[$i], $request->is_paid) || $request->amount_paid[$i] <= 0) continue;
@@ -203,7 +169,7 @@ class ReceiptController extends Controller
             }
         }
 
-        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid');
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', $accounting_system_id);
 
         return CreditReceipts::create([
             'receipt_reference_id' => $reference->id,
@@ -217,7 +183,8 @@ class ReceiptController extends Controller
 
     public function storeProforma(StoreProformaRequest $request)
     {        
-        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid');
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid', $accounting_system_id);
 
         // if($reference)        
         // {
@@ -242,7 +209,12 @@ class ReceiptController extends Controller
 
     public function edit($id)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $receipts = Receipts::find($id);
+
+        if(!$receipts) abort(404);
+        if($receipts->accounting_system_id != $accounting_system_id)
+        return redirect('/customers/receipts')->with('danger', "You are not authorized to edit this receipt.");;
 
         return view('customer.receipt.edit',compact('receipts'));
     }
@@ -266,14 +238,14 @@ class ReceiptController extends Controller
         $receipts->is_active ='Yes';
         $receipts->update();
 
-        return redirect('receipt/')->with('success', "Successfully edited customer.");
+        return redirect('receipt/')->with('success', "Successfully edited receipt.");
 
     }
     
     public function show(Receipts $receipt)
     {   
-        $receipt = Receipts::all();
-        return view('customer.receipt.index',compact('receipt'));
+        // $receipt = Receipts::all();
+        // return view('customer.receipt.index',compact('receipt'));
     }
 
     public function destroy($id)
