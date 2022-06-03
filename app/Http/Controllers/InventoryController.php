@@ -101,7 +101,7 @@ class InventoryController extends Controller
     public function show(Inventory $inventory)
     {
         $inventory->tax;
-        return $inventory;
+
         return view('inventory.show', [
             'inventory' => $inventory,
         ]);

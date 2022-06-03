@@ -80,7 +80,7 @@
                             <label for="email" class="col-form-label col-4">Photo</label>
                             <div class="input-group mb-3 col-8">
                                 <div class="custom-file">
-                                    <input type="file" accept="image/*" class="custom-file-input" id="inputGroupFile03" name="picture" value="{{ $inventory->image }}">
+                                    <input type="file" accept="image/*" class="custom-file-input" id="inputGroupFile03" name="picture" value="{{ $inventory->image }}" disabled>
                                     <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
                                 </div>
                             </div>
