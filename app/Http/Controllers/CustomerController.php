@@ -14,7 +14,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customers::all();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
 
         return view('customer.customer.index',compact('customers'));
     }
@@ -36,12 +37,15 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {   
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         if($request->image) {
             $imageName = time().'.'.$request->image->extension();  
             $request->image->storeAs('customers', $imageName);
         }
         
         $customers = new Customers();
+        $customers->accounting_system_id = $accounting_system_id;
         $customers->name =  $request->name;
         $customers->tin_number =  $request->tin_number;
         $customers->address =  $request->address;
@@ -70,7 +74,9 @@ class CustomerController extends Controller
      */
     public function show(Customers $customers)
     {
-        $customers = Customers::all();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
+
         return view('customer.customer.index',compact('customers'));
     }
     public function edit($id)
@@ -123,8 +129,11 @@ class CustomerController extends Controller
 
     public function queryCustomers($query)
     {   
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::select('id as value', 'name', 'tin_number', 'contact_person','mobile_number')
+            ->where('accounting_system_id', $accounting_system_id)
             ->where('name', 'LIKE', '%' . $query . '%')->get();
+            
         return $customers;
     }
 
