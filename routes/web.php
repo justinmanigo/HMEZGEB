@@ -55,6 +55,7 @@ use App\Http\Controllers\AccountSettings\AccountSettingsController;
 
 // Reports
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\Settings\CompanyInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -468,7 +469,10 @@ Route::group([
                 'as' => 'company.'
             ], function(){
                 // HTTP
-                Route::view('/settings/company', 'settings.company_info.index')->name('index');
+                Route::get('/settings/company', [CompanyInfoController::class, 'index'])->name('index');
+
+                // AJAX
+                Route::put('/settings/company', [CompanyInfoController::class, 'updateAjax'])->name('updateAjax');
             });
 
             /**

@@ -22,10 +22,11 @@ class CreateAccountingSystemsTable extends Migration
             ]);
             $table->integer('accounting_year');
             $table->string('name');
-            $table->mediumText('address');
+            $table->mediumText('address')->nullable();
             $table->string('po_box')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('city');
+            $table->string('country')->nullable();
             $table->string('mobile_number');
             $table->string('telephone_1')->nullable();
             $table->string('telephone_2')->nullable();
