@@ -22,7 +22,7 @@ class CreateAccountingSystemsTable extends Migration
             ]);
             $table->integer('accounting_year');
             $table->string('name');
-            $table->mediumText('address');
+            $table->mediumText('address')->nullable();
             $table->string('po_box')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('city');
