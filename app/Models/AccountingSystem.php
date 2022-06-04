@@ -18,6 +18,7 @@ class AccountingSystem extends Model
         'po_box',
         'postal_code',
         'city',
+        'country',
         'mobile_number',
         'telephone_1',
         'telephone_2',
