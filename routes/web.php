@@ -13,7 +13,7 @@ use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
 // Banking module
-use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\TransfersController;
 use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\TransactionsController;  
@@ -47,12 +47,15 @@ use App\Http\Controllers\Settings\TaxController;
 use App\Http\Controllers\Settings\ManageUsersController;
 use App\Http\Controllers\Settings\ChartOfAccountsController;
 use App\Http\Controllers\Settings\PayrollRulesController;
+use App\Http\Controllers\Settings\InventoryController as InventorySettingsController;
+use App\Http\Controllers\Settings\WithholdingController;
 
 // Account Settings
 use App\Http\Controllers\AccountSettings\AccountSettingsController;
 
 // Reports
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\Settings\CompanyInfoController;
 
 // Notifications
 use App\Http\Controllers\NotificationController;
@@ -250,7 +253,10 @@ Route::group([
                 'as'=>'accounts.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/accounts', [AccountsController::class, 'index'])->name('bank.accounts');
+                Route::get('/banking/accounts', [BankAccountsController::class, 'index'])->name('bank.accounts');
+            
+                // RESOURCE
+                Route::resource('/banking/accounts', BankAccountsController::class);
             });
         
             /**
@@ -261,6 +267,10 @@ Route::group([
             ], function(){ 
                 // HTML
                 Route::get('/banking/transfer', [TransfersController::class, 'index'])->name('bank.transfers');
+                Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
+
+                // RESOURCE
+                Route::resource('/banking/transfer', TransfersController::class);
             });
         
             /**
@@ -313,7 +323,8 @@ Route::group([
             // HTML
             Route::get('/inventory/', [InventoryController::class, 'index']);
             Route::post('/inventory', [InventoryController::class, 'store']);
-            Route::get('/inventory/{inventory}', [InventoryController::class, 'edit']);
+            Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
+            Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
             Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
         
             // AJAX
@@ -465,7 +476,10 @@ Route::group([
                 'as' => 'company.'
             ], function(){
                 // HTTP
-                Route::view('/settings/company', 'settings.company_info.index')->name('index');
+                Route::get('/settings/company', [CompanyInfoController::class, 'index'])->name('index');
+
+                // AJAX
+                Route::put('/settings/company', [CompanyInfoController::class, 'updateAjax'])->name('updateAjax');
             });
 
             /**
@@ -513,7 +527,13 @@ Route::group([
                 'as' => 'withholding.'
             ], function(){
                 // HTTP
-                Route::view('/settings/withholding', 'settings.withholding.index')->name('index');
+                Route::get('/settings/withholding', [WithholdingController::class, 'index'])->name('index');
+                Route::post('/settings/withholding', [WithholdingController::class, 'store'])->name('store');
+                Route::put('/settings/withholding/{withholding}', [WithholdingController::class, 'update'])->name('update');
+                Route::delete('/settings/withholding/{withholding}', [WithholdingController::class, 'destroy'])->name('destroy');
+
+                // AJAX
+                Route::get('/ajax/settings/withholding/get/{withholding}', [WithholdingController::class, 'ajaxGetWithholding']);
             });
 
 
@@ -554,7 +574,8 @@ Route::group([
                 'as' => 'inventory.'
             ], function(){
                 // HTTP
-                Route::view('/settings/inventory', 'settings.inventory.index')->name('index');
+                Route::get('/settings/inventory', [InventorySettingsController::class, 'index'])->name('index');
+                Route::put('/settings/inventory', [InventorySettingsController::class, 'store'])->name('store');            
             });
 
             /**

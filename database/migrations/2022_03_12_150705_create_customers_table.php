@@ -15,6 +15,7 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->string('name');
             $table->string('tin_number')->nullable();;
             $table->longText('address');

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Settings\Taxes\Tax;
+use App\Models\Settings\Withholding\Withholding;
 
-class TaxController extends Controller
+class WithholdingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class TaxController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        return view('settings.taxes.index', [
-            'taxes' => Tax::where('accounting_system_id', $accounting_system_id)->get()
+        return view('settings.withholding.index', [
+            'withholdings' => Withholding::where('accounting_system_id', $accounting_system_id)->get()
         ]);
     }
 
@@ -42,23 +42,23 @@ class TaxController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        // Create Tax
-        Tax::create([
+        // Create Withholding
+        Withholding::create([
             'accounting_system_id' => $accounting_system_id,
             'name' => $request->name,
             'percentage' => $request->percentage,
         ]);
 
-        return back()->with('success', 'Successfully created tax record.');
+        return back()->with('success', 'Successfully created withholding record.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\Withholding  $withholding
      * @return \Illuminate\Http\Response
      */
-    public function show(Tax $tax)
+    public function show(Withholding $withholding)
     {
         //
     }
@@ -66,10 +66,10 @@ class TaxController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\Withholding  $withholding
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tax $tax)
+    public function edit(Withholding $withholding)
     {
         //
     }
@@ -78,41 +78,41 @@ class TaxController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\Withholding  $withholding
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tax $tax)
+    public function update(Request $request, Withholding $withholding)
     {
         // TODO: Add restriction when already linked to another . . .
 
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
         // Update Tax
-        Tax::where('id', '=', $tax->id)
+        Withholding::where('id', '=', $withholding->id)
             ->where('accounting_system_id', '=', $accounting_system_id)
             ->update([
                 'name' => $request->name,
                 'percentage' => $request->percentage,
             ]);
 
-        return back()->with('success', 'Successfully updated tax record.');
+        return back()->with('success', 'Successfully updated withholding record.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tax  $tax
+     * @param  \App\Models\Withholding  $withholding
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tax $tax)
+    public function destroy(Withholding $withholding)
     {
         // TODO: Add restriction
 
         // Delete Tax
-        Tax::where('id', '=', $tax->id)
+        Withholding::where('id', '=', $withholding->id)
             ->delete();
 
-        return back()->with('success', 'Successfully deleted tax reccord.');
+        return back()->with('success', 'Successfully deleted withholding reccord.');
     }
 
     /*===========================*/
@@ -120,11 +120,11 @@ class TaxController extends Controller
     /**
      * Returns the specified resource queried from routes.
      * 
-     * @param \App\models\Tax $tax
-     * @return \App\models\Tax $tax
+     * @param \App\models\Withholding $withholding
+     * @return \App\models\Withholding $withholding
      */
-    public function ajaxGetTax(Tax $tax)
+    public function ajaxGetWithholding(Withholding $withholding)
     {
-        return $tax;
+        return $withholding;
     }
 }

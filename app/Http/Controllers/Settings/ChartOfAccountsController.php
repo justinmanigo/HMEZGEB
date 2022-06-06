@@ -11,6 +11,7 @@ use App\Models\Settings\ChartOfAccounts\ChartOfAccountCategory;
 use App\Models\Settings\ChartOfAccounts\PeriodOfAccounts;
 use App\Models\Settings\ChartOfAccounts\JournalEntries;
 use App\Models\Settings\ChartOfAccounts\JournalPostings;
+use App\Models\BankAccounts;
 use Illuminate\Support\Facades\DB;
 
 class ChartOfAccountsController extends Controller
@@ -22,16 +23,19 @@ class ChartOfAccountsController extends Controller
      */
     public function index()
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         $chart_of_accounts = ChartOfAccounts::select(
                 'chart_of_accounts.id',
                 'chart_of_accounts.chart_of_account_no',
-                'chart_of_accounts.name',
+                'chart_of_accounts.account_name',
                 'chart_of_account_categories.type',
                 'chart_of_account_categories.category',
                 'chart_of_accounts.current_balance',
                 'chart_of_accounts.status',
             )
             ->leftJoin('chart_of_account_categories', 'chart_of_account_category_id', '=', 'chart_of_account_categories.id')
+            ->where('chart_of_accounts.accounting_system_id', $accounting_system_id)
             ->get();
 
         return view('settings.chart_of_account.index', compact('chart_of_accounts'));
@@ -72,19 +76,22 @@ class ChartOfAccountsController extends Controller
         $coa->accounting_system_id = $accounting_system_id;
         $coa->chart_of_account_category_id = $coa_category[0]['value'];
         $coa->chart_of_account_no = $request->coa_number;
-        $coa->name = $request->coa_name;
+        $coa->account_name = $request->account_name;
         $coa->current_balance = 0.00;
-
+        $coa->save();
         // If COA is Cash (id:1) and checkbox is checked.
         if(isset($request->coa_is_bank) && $coa_category[0]['value'] == 1)
         {
-            $coa->bank_account_number = $request->bank_account_number;
-            $coa->bank_branch = $request->bank_branch;
-            $coa->bank_account_type = $request->bank_account_type;
+            $accounts = new BankAccounts();
+            $accounts->chart_of_account_id = $coa->id;
+            $accounts->bank_branch = $request->bank_branch;
+            $accounts->bank_account_number = $request->bank_account_number;
+            $accounts->bank_account_type = $request->bank_account_type;
+            $accounts->save();
         }
 
-        $coa->save();
-
+        
+       
         // Get Beginning Balance Journal Entry
         $je = JournalEntries::where('accounting_system_id', $accounting_system_id)
         ->first();
@@ -205,6 +212,7 @@ class ChartOfAccountsController extends Controller
         return ChartOfAccounts::select(
                 'chart_of_accounts.id as value',
                 'chart_of_accounts.chart_of_account_no',
+                'chart_of_accounts.account_name',
                 // 'chart_of_account_categories.id',
                 'chart_of_account_categories.category',
                 'chart_of_account_categories.type',
@@ -224,17 +232,14 @@ class ChartOfAccountsController extends Controller
         $debits = ChartOfAccounts::select(
             'chart_of_accounts.id',
             'chart_of_accounts.chart_of_account_no',
-            'chart_of_accounts.name',
+            'chart_of_accounts.account_name',
             'chart_of_account_categories.category',
         )
         ->leftJoin('chart_of_account_categories', 'chart_of_accounts.chart_of_account_category_id', 'chart_of_account_categories.id');
 
         $credits = clone $debits;
 
-        $accountingPeriod = GetLatestAccountingPeriod::run($this->request->session()->get('accounting_system_id'));
-
         return [
-            'accounting_period' => $accountingPeriod,
             'debits' => $debits->where('chart_of_account_categories.normal_balance', 'Debit')->get(),
             'credits' => $credits->where('chart_of_account_categories.normal_balance', 'Credit')->get(),
         ];

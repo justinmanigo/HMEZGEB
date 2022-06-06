@@ -11,6 +11,7 @@
 
     $notifications = Notification::orderBy('created_at', 'desc')->get();
     $unreadNotifications = Notification::where('resolved', 0)->count();
+    $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
 @endphp
  
  <!-- Sidebar -->
@@ -104,7 +105,7 @@
                         <h6 class="collapse-header">Menu:</h6>
                         <a class="collapse-item" href="/settings/company">Company Info</a>
                         <a class="collapse-item" href="/settings/users">Users</a>
-                        <a class="collapse-item" href="/settings/themes">Theme</a>
+                        {{-- <a class="collapse-item" href="/settings/themes">Theme</a> --}}
                         <a class="collapse-item" href="/settings/taxes">Taxes</a>
                         <a class="collapse-item" href="/settings/withholding">Withholding</a>
                         <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
@@ -148,8 +149,17 @@
 
                     <!-- Topbar Accounting System Name & Year -->
                     <div>
-                        <strong>{{ date('Y') }} - {{ $accounting_system->name }}</strong><br>
-                        <small><strong>{{ "Accounting Period # {$accounting_period->period_number}" }}</strong> | {{ $accounting_period_year->format('M Y') }}</small>
+                        <strong>
+                            {{ $accounting_system->accounting_year}}
+                             - 
+                            {{ $accounting_system->name }}</strong><br>
+                        <small>
+                            
+                            {{ \Carbon\Carbon::parse($accounting_periods[0]->date_from)->format('Y-m-d') }}
+                             - 
+                             {{ \Carbon\Carbon::parse($accounting_periods[11]->date_to)->format('Y-m-d') }}
+                            
+                        </small>
                     </div>
 
                     <!-- Topbar Navbar -->

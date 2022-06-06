@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Models\Settings\Taxes;
+namespace App\Models\Settings\Withholding;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Inventory;
 
-class Tax extends Model
+class Withholding extends Model
 {
     use HasFactory;
 
@@ -17,8 +16,5 @@ class Tax extends Model
         'percentage',
     ];
 
-    public function inventoryItems()
-    {
-        return $this->hasMany(Inventory::class);
-    }
+    // TODO: Integrate Withholding relationships to tables of other modules.
 }

@@ -20,15 +20,13 @@ class CreateAccountingSystemsTable extends Migration
                 'gregorian',
                 'ethiopian',
             ]);
-            $table->enum('calendar_type_view', [
-                'gregorian',
-                'ethiopian',
-            ]);
+            $table->integer('accounting_year');
             $table->string('name');
-            $table->mediumText('address');
+            $table->mediumText('address')->nullable();
             $table->string('po_box')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('city');
+            $table->string('country')->nullable();
             $table->string('mobile_number');
             $table->string('telephone_1')->nullable();
             $table->string('telephone_2')->nullable();
@@ -45,6 +43,11 @@ class CreateAccountingSystemsTable extends Migration
                 'PLC',
                 'Share Company'
             ]);
+            $table->enum('settings_inventory_type', [
+                'average',
+                'lifo',
+                'fifo',
+            ])->default('average');
             $table->timestamps();
         });
     }

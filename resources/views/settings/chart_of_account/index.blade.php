@@ -171,7 +171,7 @@
                                 @foreach($chart_of_accounts as $coa)
                                 <tr>
                                     <td class="table-item-content">{{ $coa->chart_of_account_no }}</td>
-                                    <td class="table-item-content">{{ $coa->name }}</td> 
+                                    <td class="table-item-content">{{ $coa->account_name }}</td> 
                                     <td class="table-item-content">{{ $coa->type }}</td>
                                     <td class="table-item-content">{{ $coa->category }}</td>
                                     <td class="table-item-content">{{ $coa->current_balance }}</td>
@@ -240,7 +240,7 @@
                     <div class="form-group row">
                         <label for="coa_name" class="col-sm-3 col-lg-2 col-form-label">Account Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
-                            <input type="text" class="form-control" id="coa_name" name="coa_name">
+                            <input type="text" class="form-control" id="coa_name" name="account_name">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -291,7 +291,6 @@
                 </div>
                 <form id="form-beginning-balance" method="post" action="{{ url('/ajax/settings/coa/beginning-balance') }}" style="display:none">
                     @csrf
-                    <p>You are currently configuring the beginning balance for <strong id="bb_accounting_period_number"></strong> (<span id="bb_accounting_period_date_from"></span> - <span id="bb_accounting_period_date_to"></span>)</i>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead>
@@ -389,7 +388,7 @@
                     <input name="${ type=='debit' ? 'debit' : 'credit' }_coa_id[]" class="form-control-plaintext" type="text" value="${coa.id}" hidden readonly>   
                     ${coa.chart_of_account_no}    
                 </td>
-                <td>${coa.name}</td>
+                <td>${coa.account_name}</td>
                 <td>${coa.category}</td>
                 <td>
                     ${type == 'debit'
