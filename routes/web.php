@@ -57,6 +57,8 @@ use App\Http\Controllers\AccountSettings\AccountSettingsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\Settings\CompanyInfoController;
 
+// Notifications
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -77,6 +79,11 @@ Route::group([
     Route::get('/switch', [HomeController::class, 'viewAccountingSystems']);
     Route::put('/switch', [HomeController::class, 'switchAccountingSystem']);
     
+    /**
+     * Notification
+     */
+    Route::resource('notifications', NotificationController::class);
+
     Route::group([
         'middleware' => 'auth.accountingsystem',
     ], function(){
@@ -454,7 +461,7 @@ Route::group([
             Route::post('/financial_statement/income_statement_single/pdf', [ReportsController::class, 'incomeStatementSinglePDF'])->name('income_statement_single.pdf');
             Route::post('/financial_statement/income_statement_multiple/pdf', [ReportsController::class, 'incomeStatementMultiplePDF'])->name('income_statement_multiple.pdf');
         });
-
+            
         /**
          * Settings Module
          */
@@ -615,3 +622,4 @@ Route::post('/userlogin', function (Request $request){
     // if failed login
 
 })->name('userlogin');
+

@@ -16,11 +16,13 @@ use App\Models\Receipts;
 use App\Models\ReceiptItem;
 use App\Models\Customers;
 use App\Models\Inventory;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
 use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
+use Illuminate\Support\Facades\Log;
 
 class ReceiptController extends Controller
 {
@@ -100,6 +102,33 @@ class ReceiptController extends Controller
         StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
         UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'decrease');
 
+        for ($i=0; $i < count($request->item); $i++) {
+        $inventory = Inventory::where('id', $request->item[$i]->value)->first();
+        // Create notification if inventory quantity has reached 0
+        if($inventory->quantity == 0 && $inventory->notify_critical_quantity == 'Yes'){
+            Notification::create([
+                'reference_id' => $inventory->id,
+                'source' => 'inventory',    
+                'message' => 'Inventory item '.$inventory->item_name.' has zero stocks. Please reorder.',
+                'title' => 'Inventory Zero Stocks',
+                'type' => 'danger',
+                'link' => 'vendors/bills',
+            ]);
+        }
+        // Create notification if inventory quantity is less than or equal to critical level
+        else if($inventory->quantity <= $inventory->critical_quantity && $inventory->notify_critical_quantity == 'Yes'){
+            Notification::create([
+                'reference_id' => $inventory->id,
+                'source' => 'inventory',
+                'message' => 'Inventory item '.$inventory->item_name.' is less than or equal to '.$inventory->critical_quantity.'. Please reorder.',
+                'title' => 'Inventory Critical Level',
+                'type' => 'warning',
+                'link' => 'vendors/bills',
+            ]);
+        }
+       }
+
+        
         //  image upload and save to database 
         // if($request->hasFile('attachment'))
         // {
@@ -110,7 +139,7 @@ class ReceiptController extends Controller
         //     $receipt->save();
         // }
 
-        // TODO: Refactor Attachment Upload
+        // // TODO: Refactor Attachment Upload
         
         return Receipts::create([
             'receipt_reference_id' => $reference->id,
@@ -126,7 +155,7 @@ class ReceiptController extends Controller
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received
-        ]);;
+        ]);
     }
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)

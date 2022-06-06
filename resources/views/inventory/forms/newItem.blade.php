@@ -23,7 +23,7 @@
             <div class="form-group row">
                 <label for="#" class="col-form-label col-4">Description</label>
                 <div class="col-8">
-                    <textarea  id="" class="form-control" rows="6"  name="description" required></textarea>
+                    <textarea  id="" class="form-control" rows="8"  name="description" required></textarea>
                 </div>
             </div>
 
@@ -61,6 +61,13 @@
             <h5>Item Price</h5>
 
             <div class="form-group row">
+                <label for="#" class="col-4 col-form-label">Quantity</label>
+                <div class="col-8">
+                    <input type="number" class="form-control inputPrice text-right"  name="quantity" placeholder="0" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label for="#" class="col-4 col-form-label">Purchase Price</label>
                 <div class="col-8">
                     <input type="number" class="form-control inputPrice text-right"  name="purchase_price" step=".01" placeholder="0.00" required>
@@ -86,7 +93,7 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="form-group row">
                 <label for="#" class="col-4 col-form-label">Critical Quantity</label>
                 <div class="col-8">
