@@ -45,11 +45,13 @@ class UpdateInventoryItemQuantity
                         ]);                        }
                     }
                     
-                    foreach($notif_check as $n)
-                    {
-                        $n->resolved = 1;
-                        $n->time_resolved = now();
-                        $n->save();
+                    if(isset($notif_check)) {
+                        foreach($notif_check as $n)
+                        {
+                            $n->resolved = 1;
+                            $n->time_resolved = now();
+                            $n->save();
+                        }
                     }
                 }
             else if($action == 'decrease')         
