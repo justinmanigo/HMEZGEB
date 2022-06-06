@@ -15,6 +15,7 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('reference_id')->nullable();
             $table->boolean('resolved')->default(false);
             $table->timestamp('time_resolved')->nullable();
