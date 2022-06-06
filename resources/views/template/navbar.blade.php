@@ -9,8 +9,10 @@
     $accounting_period = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::find(session('accounting_period_id'));
     $accounting_period_year = \Carbon\Carbon::parse($accounting_period->date_from);
 
-    $notifications = Notification::orderBy('created_at', 'desc')->get();
-    $unreadNotifications = Notification::where('resolved', 0)->count();
+    $notifications = Notification::where('accounting_system_id', session('accounting_system_id'))
+        ->orderBy('created_at', 'desc')->get();
+    $unreadNotifications = Notification::where('accounting_system_id', session('accounting_system_id'))
+        ->where('resolved', 0)->count();
     $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
 @endphp
  

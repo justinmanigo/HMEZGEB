@@ -107,6 +107,7 @@ class ReceiptController extends Controller
         // Create notification if inventory quantity has reached 0
         if($inventory->quantity == 0 && $inventory->notify_critical_quantity == 'Yes'){
             Notification::create([
+                'accounting_system_id' => $accounting_system_id,
                 'reference_id' => $inventory->id,
                 'source' => 'inventory',    
                 'message' => 'Inventory item '.$inventory->item_name.' has zero stocks. Please reorder.',
@@ -118,6 +119,7 @@ class ReceiptController extends Controller
         // Create notification if inventory quantity is less than or equal to critical level
         else if($inventory->quantity <= $inventory->critical_quantity && $inventory->notify_critical_quantity == 'Yes'){
             Notification::create([
+                'accounting_system_id' => $accounting_system_id,
                 'reference_id' => $inventory->id,
                 'source' => 'inventory',
                 'message' => 'Inventory item '.$inventory->item_name.' is less than or equal to '.$inventory->critical_quantity.'. Please reorder.',

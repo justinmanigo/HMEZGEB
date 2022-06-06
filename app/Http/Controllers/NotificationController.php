@@ -14,8 +14,10 @@ class NotificationController extends Controller
      */
     public function index()
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         //
-        $notifications = Notification::orderBy('created_at', 'desc')->get();
+        $notifications = Notification::where('accounting_system_id', $accounting_system_id)
+            ->orderBy('created_at', 'desc')->get();
         return view('notification.index', compact('notifications'));
     }
 
