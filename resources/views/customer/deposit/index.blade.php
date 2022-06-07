@@ -100,7 +100,7 @@
 @section('content')
 {{-- Button Group Navigation --}}
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-    <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit">
+    <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit" id="modal-deposit-button">
         <span class="icon text-white-50">
             <i class="fas fa-pen"></i>
         </span>
@@ -139,7 +139,7 @@
                     @foreach($deposits as $deposit)
                         <tr>
                             {{-- date format --}}
-                            <td>{{ date('Y-m-d', strtotime($deposit->deposit_date)) }}</td>
+                            <td>{{ date('Y-m-d', strtotime($deposit->deposit_ticket_date)) }}</td>
                             <td>{{$deposit->id}}</td>
                             <td>{{$deposit->chartOfAccount->account_name}}</td>
                             <td><span class="badge badge-primary">Self</span></td>
@@ -177,12 +177,12 @@
                     <div class="form-group row">
                         <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input id="d_bank_account" name='bank_account'>
+                            <input id="d_bank_account" name='bank_account' required>
                         </div>
 
                         <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date" value="{{date('Y-m-d')}}">
+                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date" value="{{date('Y-m-d')}}"  required>
                         </div>
                     </div>
                     <hr>
