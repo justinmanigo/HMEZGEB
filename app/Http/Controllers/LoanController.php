@@ -27,7 +27,8 @@ class LoanController extends Controller
             'loans.date',
             'employees.first_name',
             'employees.type',
-        )->get();
+        )->where('loans.accounting_system_id', session('accounting_system_id'))
+        ->get();
         return view('hr.loan.index' , compact('loans'));
     }
 
@@ -50,7 +51,7 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         //
-        
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         for($i = 0; $i < count($request->employee); $i++)
         {
         $employee = json_decode($request->employee[$i]);
@@ -58,6 +59,7 @@ class LoanController extends Controller
             
             // Store
                $loan = new Loan;
+               $loan->accounting_system_id = $accounting_system_id;
                $loan->employee_id = $e[$i]->value;
                $loan->date = $request->date;
                $loan->loan = $request->loan[$i];

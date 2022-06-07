@@ -15,6 +15,7 @@ class CreateOvertimesTable extends Migration
     {
         Schema::create('overtimes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('employee_id');
             $table->date('date');  
             $table->enum('is_weekend_holiday', ['yes', 'no'])->nullable();

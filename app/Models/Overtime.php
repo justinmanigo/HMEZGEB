@@ -10,6 +10,7 @@ class Overtime extends Model
     use HasFactory;
 
     protected $fillable = [
+        'accounting_system_id',
         'employee_id',
         'date',
         'from',
