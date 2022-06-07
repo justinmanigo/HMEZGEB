@@ -34,7 +34,6 @@ var tagify_d_bank_account = new Tagify(elm_d_bank_account, {
 
 tagify_d_bank_account.on("dropdown:select", onBankSelectSuggestion);
 tagify_d_bank_account.on("input", onBankInput);
-tagify_d_bank_account.on("remove", onBankRemove);
 
 function createRecordsToDeposit(f) {
     console.log(f);
@@ -79,10 +78,6 @@ function onBankSelectSuggestion() {
     request.fail(function (jqXHR, status, error) {
         console.log(error);
     });
-}
-
-function onBankRemove(e) {
-    $("#deposit-list").empty();
 }
 
 function onBankInput(e) {
@@ -139,3 +134,7 @@ function handleCheck(checkbox, paymentMethod, totalAmountReceived) {
         $("#d_total_deposit").val(totalAmount);
     }
 }
+
+$("#modal-deposit-button").click(function () {
+    onBankSelectSuggestion();
+})
