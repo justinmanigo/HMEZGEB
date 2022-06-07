@@ -30,12 +30,12 @@ function createEmployeeEntry() {
         <tr data-id="${loan_count}" id="l_employee_entry_${loan_count}">
         <td>
             <div class="input-group">
-                <input data-id="${loan_count}" id="l_employee_${loan_count}" class="l_employee" name='employee[]'>
+                <input data-id="${loan_count}" id="l_employee_${loan_count}" class="l_employee form-control" name='employee[]'>
                 <input type="hidden" name="employee_id[]" value="">
             </div>
         </td>
         <td>
-            <input type="text" data-id="${loan_count}" id="l_loan_${loan_count}" class="form-control" name="loan[]" required>
+            <input type="number" min="0" data-id="${loan_count}" id="l_loan_${loan_count}" class="form-control" name="loan[]" required>
         </td>
         <td>
             <select data-id="${loan_count}" id="l_paid_in_${loan_count}" class="form-control" name="paid_in[]" required>

@@ -130,10 +130,12 @@
                                 required>
                         </div>
 
-                        <label for="e_date_of_birth" class="col-sm-3 col-lg-2 col-form-label">Date of Birth</label>
+                        <label for="e_date_of_birth" class="col-sm-3 col-lg-2 col-form-label">Date of Birth<span
+                            class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                            {{-- date value now --}}
                             <input type="date" class="form-control" id="e_date_of_birth" name="date_of_birth"
-                                placeholder="" required>
+                             required>
                         </div>
                     </div>
 
@@ -141,24 +143,25 @@
                         <label for="e_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile Number<span
                                 class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_mobile_number" name="mobile_number"
+                            <input type="number" class="form-control" id="e_mobile_number" name="mobile_number"
                                 placeholder="" required>
                         </div>
 
                         <label for="e_telephone" class="col-sm-3 col-lg-2 col-form-label">Telephone</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="e_telephone" name="telephone" placeholder=""
-                                required>
+                            <input type="number" class="form-control" id="e_telephone" name="telephone" placeholder="">
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="e_email" class="col-sm-3 col-lg-2 col-form-label">Email</label>
+                        <label for="e_email" class="col-sm-3 col-lg-2 col-form-label">Email<span
+                            class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="e_email" name="email" placeholder="" required>
+                            <input type="email" class="form-control" id="e_email" name="email" placeholder="" required>
                         </div>
 
-                        <label for="e_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number</label>
+                        <label for="e_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number<span
+                            class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="text" class="form-control" id="e_tin_number" name="tin_number" placeholder=""
                                 required>
@@ -191,7 +194,7 @@
                             </select>
                         </div>
 
-                        <label for="e_basic_salary" class="col-sm-3 col-lg-2 col-form-label">Basic Salary</label>
+                        <label for="e_basic_salary" class="col-sm-3 col-lg-2 col-form-label">Basic Salary<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="number" step="0.01" class="inputPrice form-control" id="e_basic_salary"
                                 name="basic_salary" placeholder="" required>
@@ -220,14 +223,16 @@
                     </div>
                     <h5>Emergency Contact Person</h5>
                     <div class="form-group row">
-                        <label for="e_emergency_contact_person" class="col-sm-3 col-lg-2  col-form-label">Name</label>
+                        <label for="e_emergency_contact_person" class="col-sm-3 col-lg-2  col-form-label">Name<span
+                            class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="e_emergency_contact_person"
                                 name="emergency_contact_person" placeholder="" required>
                         </div>
 
                         <label for="e_contact_number" class="col-sm-3 col-lg-2  col-form-label">Contact
-                            Number</label>
+                            Number<span
+                            class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="text" class="form-control" id="e_contact_number" name="contact_number"
                                 placeholder="" required>

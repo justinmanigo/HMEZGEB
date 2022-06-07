@@ -17,21 +17,19 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
             $table->string('first_name');
-            $table->string('father_name');
-            $table->string('grandfather_name');
+            $table->string('father_name')->nullable();
+            $table->string('grandfather_name')->nullable();
             $table->date('date_of_birth');
             $table->string('mobile_number');
-            $table->string('telephone');  
-            $table->string('email');   
-            $table->string('tin_number');
+            $table->string('telephone')->nullable();  
+            $table->string('email')->nullable();   
+            $table->string('tin_number')->nullable();
             $table->enum('type',['employee','commission_agent']);
             $table->string('basic_salary')->nullable();
-            $table->date('date_started_working');
-            // is this column type is it date or string
-            // $table->date('date_ended_working')->default('still_working');
+            $table->date('date_started_working')->nullable();
             $table->date('date_ended_working')->nullable();
-            $table->string('emergency_contact_person');
-            $table->string('emergency_contact_number');
+            $table->string('emergency_contact_person')->nullable();
+            $table->string('emergency_contact_number')->nullable();
             $table->timestamps();
         });
     }
