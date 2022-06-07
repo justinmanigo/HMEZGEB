@@ -54,9 +54,9 @@ class DepositsController extends Controller
         {
             // find the receipt reference using is_deposited value (receipt_reference_id)
             $receipts = ReceiptReferences::find($request->is_deposited[$i]);
-            // add to coa balance
-            $coa->current_balance += $receipts->receipt->total_amount_received;
-            $coa->save();
+            // // add to coa balance
+            // $coa->current_balance += $receipts->receipt->total_amount_received;
+            // $coa->save();
             // update receipt reference is_deposited
             $receipts->is_deposited = "yes";
             $receipts->save();
