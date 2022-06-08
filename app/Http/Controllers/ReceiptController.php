@@ -103,32 +103,32 @@ class ReceiptController extends Controller
         UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'decrease');
 
         for ($i=0; $i < count($request->item); $i++) {
-        $inventory = Inventory::where('id', $request->item[$i]->value)->first();
-        // Create notification if inventory quantity has reached 0
-        if($inventory->quantity == 0 && $inventory->notify_critical_quantity == 'Yes'){
-            Notification::create([
-                'accounting_system_id' => $accounting_system_id,
-                'reference_id' => $inventory->id,
-                'source' => 'inventory',    
-                'message' => 'Inventory item '.$inventory->item_name.' has zero stocks. Please reorder.',
-                'title' => 'Inventory Zero Stocks',
-                'type' => 'danger',
-                'link' => 'vendors/bills',
-            ]);
+            $inventory = Inventory::where('id', $request->item[$i]->value)->first();
+            // Create notification if inventory quantity has reached 0
+            if($inventory->quantity == 0 && $inventory->notify_critical_quantity == 'Yes'){
+                Notification::create([
+                    'accounting_system_id' => $accounting_system_id,
+                    'reference_id' => $inventory->id,
+                    'source' => 'inventory',    
+                    'message' => 'Inventory item '.$inventory->item_name.' has zero stocks. Please reorder.',
+                    'title' => 'Inventory Zero Stocks',
+                    'type' => 'danger',
+                    'link' => 'vendors/bills',
+                ]);
+            }
+            // Create notification if inventory quantity is less than or equal to critical level
+            else if($inventory->quantity <= $inventory->critical_quantity && $inventory->notify_critical_quantity == 'Yes'){
+                Notification::create([
+                    'accounting_system_id' => $accounting_system_id,
+                    'reference_id' => $inventory->id,
+                    'source' => 'inventory',
+                    'message' => 'Inventory item '.$inventory->item_name.' is less than or equal to '.$inventory->critical_quantity.'. Please reorder.',
+                    'title' => 'Inventory Critical Level',
+                    'type' => 'warning',
+                    'link' => 'vendors/bills',
+                ]);
+            }
         }
-        // Create notification if inventory quantity is less than or equal to critical level
-        else if($inventory->quantity <= $inventory->critical_quantity && $inventory->notify_critical_quantity == 'Yes'){
-            Notification::create([
-                'accounting_system_id' => $accounting_system_id,
-                'reference_id' => $inventory->id,
-                'source' => 'inventory',
-                'message' => 'Inventory item '.$inventory->item_name.' is less than or equal to '.$inventory->critical_quantity.'. Please reorder.',
-                'title' => 'Inventory Critical Level',
-                'type' => 'warning',
-                'link' => 'vendors/bills',
-            ]);
-        }
-       }
 
         
         //  image upload and save to database 
