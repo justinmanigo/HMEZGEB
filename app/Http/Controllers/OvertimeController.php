@@ -26,7 +26,8 @@ class OvertimeController extends Controller
             'overtimes.date',
             'employees.first_name',
             'employees.type',
-        )->get();
+        )->where('overtimes.accounting_system_id', session('accounting_system_id'))
+        ->get();
         return view('hr.overtime.index', compact('overtimes'));
     }
 
@@ -48,6 +49,7 @@ class OvertimeController extends Controller
      */
     public function store(Request $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
         for($i = 0; $i < count($request->employee); $i++)
         {
@@ -56,6 +58,7 @@ class OvertimeController extends Controller
             
             // Store
             $overtime = new Overtime;
+            $overtime->accounting_system_id = $accounting_system_id;
             $overtime->employee_id = $e[$i]->value;
             $overtime->date = $request->date;
             if($request->is_weekend_holiday != null)

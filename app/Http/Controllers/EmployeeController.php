@@ -14,7 +14,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::get();
+        $employees = Employee::where('accounting_system_id', session('accounting_system_id'))->get();
         return view('hr.employee.index', compact('employees'));
     }
 
@@ -23,9 +23,11 @@ class EmployeeController extends Controller
 
         // return $request;
         // TODO: Restrictions if any
-
+             
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         // Create Employee
         Employee::create([
+            'accounting_system_id' => $accounting_system_id,
             'first_name' => $request->first_name,
             'father_name' => $request->father_name,
             'grandfather_name' => $request->grandfather_name,
@@ -49,8 +51,10 @@ class EmployeeController extends Controller
     public function update(Employee $employee, Request $request)
     {
         // TODO: Restrictions if any
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
         $employee->update([
+            'accounting_system_id' => $accounting_system_id,
             'first_name' => $request->first_name,
             'father_name' => $request->father_name,
             'grandfather_name' => $request->grandfather_name,
