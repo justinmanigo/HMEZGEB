@@ -518,6 +518,7 @@ Route::group([
 
                 // AJAX
                 Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
+                Route::get('/ajax/settings/taxes/search/{query}', [TaxController::class, 'ajaxSearchTax']);
             });
 
             /**

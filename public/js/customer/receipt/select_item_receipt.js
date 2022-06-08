@@ -59,9 +59,7 @@ function createReceiptItemEntry(item = undefined)
             <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
-            <select id="r_item_tax_${receipt_count}" class="form-control" name="tax[]">
-                <option>Sales Tax (15%)</option>
-            </select>
+            <input data-id="${receipt_count}" id="r_item_tax_${receipt_count}" class="r_tax" name='tax[]'>
             <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
         <td>
@@ -108,8 +106,8 @@ function createReceiptItemEntry(item = undefined)
     }
 
     // Create new tagify instance of item selector of newly created row.
-    let elm = document.querySelector(`#r_item_${receipt_count}`);
-    let elm_tagify = new Tagify(elm, {
+    let inventory_item_elm = document.querySelector(`#r_item_${receipt_count}`);
+    let inventory_item_tagify = new Tagify(inventory_item_elm, {
         tagTextProp: 'name', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode: "select",
@@ -128,15 +126,42 @@ function createReceiptItemEntry(item = undefined)
     });
 
     // Set events of tagify instance.
-    elm_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
-    elm_tagify.on('dropdown:select', onReceiptItemSelectSuggestion)
-    elm_tagify.on('input', onReceiptItemInput)
-    elm_tagify.on('remove', onReceiptItemRemove)
+    inventory_item_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
+    inventory_item_tagify.on('dropdown:select', onReceiptItemSelectSuggestion)
+    inventory_item_tagify.on('input', onReceiptItemInput)
+    inventory_item_tagify.on('remove', onReceiptItemRemove)
+
+    // Create new tagify instance of item selector of newly created row.
+    let tax_elm = document.querySelector(`#r_item_tax_${receipt_count}`);
+    let tax_tagify = new Tagify(tax_elm, {
+        tagTextProp: 'label', // very important since a custom template is used with this property as text
+        enforceWhitelist: true,
+        mode: "select",
+        skipInvalid: false, // do not remporarily add invalid tags
+        dropdown: {
+            closeOnSelect: true,
+            enabled: 0,
+            classname: 'tax-list',
+            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
+        },
+        templates: {
+            tag: TaxTagTemplate,
+            dropdownItem: TaxSuggestionItemTemplate
+        },
+        whitelist: whitelist,
+    });
+
+    // Set events of tagify instance.
+    tax_tagify.on('dropdown:show dropdown:updated', onTaxDropdownShow)
+    tax_tagify.on('dropdown:select', onTaxSelectSuggestion)
+    tax_tagify.on('input', onTaxInput)
+    tax_tagify.on('remove', onTaxRemove)
 
     // Push item to array receipt_items
     let item_entry = {
         "entry_id": receipt_count,
-        "tagify": elm_tagify,
+        "tagify": inventory_item_tagify,
+        "tax": tax_tagify,
         "value": null,
     }
 
@@ -222,7 +247,7 @@ function calculateReceiptGrandTotal()
     $(`#r_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
 
-/** === Tagify Related Functions === */
+/** === Tagify Related Functions for Receipt Items === */
 
 function onReceiptItemDropdownShow(e) {
     // var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
@@ -270,6 +295,43 @@ function onReceiptItemInput(e) {
     tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/inventory/' + value, {
+            signal: controller.signal
+        })
+        .then(RES => RES.json())
+        .then(function (newWhitelist) {
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+        })
+}
+
+/** === Tagify Related Functions for Tax Items */
+
+function onTaxDropdownShow(e) {
+    // var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
+}
+
+function onTaxSelectSuggestion(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+}
+
+function onTaxRemove(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+}
+
+function onTaxInput(e) {    
+    var value = e.detail.value;
+    var tagify = e.detail.tagify;
+
+    tagify.whitelist = null // reset the whitelist
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+    controller && controller.abort()
+    controller = new AbortController()
+
+    // show loading animation and hide the suggestions dropdown
+    tagify.loading(true).dropdown.hide()
+
+    fetch('/ajax/settings/taxes/search/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
