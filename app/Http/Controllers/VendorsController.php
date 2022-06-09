@@ -152,6 +152,30 @@ class VendorsController extends Controller
     
     }
 
+    public function toCSV()
+    {
+        
+        Log::info("Exporting Vendors");
+        // create a csv file
+        $vendors = Vendors::all();
+        // open file
+        $file = fopen('vendors.csv', 'w');
+        // add column name
+        fputcsv($file, array('ID','Account_ID', 'Name', 'TIN Number', 'Address', 'City', 'Country', 'Mobile Number', 'Telephone_one', 'Telephone_Two', 'Fax', 'Website', 'Email', 'Contact_person', 'Label', 'Image', 'is_active', 'Created_at', 'Updated_at'));
+
+        // loop through the array
+        foreach ($vendors as $vendor) {
+            // add the data to the file
+            $vendor = $vendor->toArray();
+            fputcsv($file, $vendor);
+        }
+        // close the file
+        fclose($file);
+        // redirect to the file
+        return response()->download('vendors.csv');
+ 
+    }
+
     public function queryVendors($query)
     {   
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
@@ -180,5 +204,7 @@ class VendorsController extends Controller
             ->where('bills.withholding', '>', '0')->get();
 
     }
+
+    
 }
 

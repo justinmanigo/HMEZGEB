@@ -236,6 +236,7 @@ Route::group([
                 
                 // AJAX
                 Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
+                Route::get('/vendors/export/csv', [VendorsController::class, 'toCSV'])->name('vendors.export.csv');
             });
         });
 
