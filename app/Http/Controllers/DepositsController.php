@@ -18,7 +18,8 @@ class DepositsController extends Controller
      */
     public function index()
     {
-        $deposits = Deposits::all();
+        // get deposits where accounting system id
+        $deposits = Deposits::where('accounting_system_id', session()->get('accounting_system_id'))->get();
         return view('customer.deposit.index',compact('deposits'));
     }
 
@@ -44,6 +45,7 @@ class DepositsController extends Controller
         $id = $data[0]->value;
         $coa = ChartOfAccounts::find($id);
         $deposits = Deposits::create([
+            'accounting_system_id' => session()->get('accounting_system_id'),
             'chart_of_account_id' => $coa->id,
             'status' => 'Deposited',
             'deposit_ticket_date' => $request->deposit_ticket_date,

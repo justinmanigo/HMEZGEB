@@ -11,6 +11,7 @@ class Deposits extends Model
     use HasFactory;
 
     protected $fillable = [
+        'accounting_system_id',
         'chart_of_account_id',
         'deposit_ticket_date',
         'total_amount',

@@ -15,6 +15,7 @@ class CreateDepositsTable extends Migration
     {
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('chart_of_account_id');
             $table->enum('status',['Deposited','Void'])->default('Deposited');
             $table->date('deposit_ticket_date');
