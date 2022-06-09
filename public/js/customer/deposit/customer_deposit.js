@@ -32,7 +32,7 @@ var tagify_d_bank_account = new Tagify(elm_d_bank_account, {
     // ]
 });
 
-tagify_d_bank_account.on("dropdown:select", onBankSelectSuggestion);
+// tagify_d_bank_account.on("dropdown:select", onBankSelectSuggestion);
 tagify_d_bank_account.on("input", onBankInput);
 
 function createRecordsToDeposit(f) {
@@ -60,7 +60,7 @@ function createRecordsToDeposit(f) {
     $("#deposit-list").append(inner);
 }
 
-function onBankSelectSuggestion() {
+function getReceipts() {
     $("#deposit-list").empty();
     // Get data from server.
     var request = $.ajax({
@@ -136,5 +136,5 @@ function handleCheck(checkbox, paymentMethod, totalAmountReceived) {
 }
 
 $("#modal-deposit-button").click(function () {
-    onBankSelectSuggestion();
+    getReceipts();
 })
