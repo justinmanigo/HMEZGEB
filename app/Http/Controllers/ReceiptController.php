@@ -153,7 +153,7 @@ class ReceiptController extends Controller
             'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
             'discount' => '0.00', // Temporary discount
             'withholding' => '0.00', // Temporary Withholding
-            'tax' => '0.00', // Temporary Tax value
+            'tax' => $request->tax_total,
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received
