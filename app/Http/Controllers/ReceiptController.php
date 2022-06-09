@@ -231,6 +231,7 @@ class ReceiptController extends Controller
             'receipt_reference_id' => $reference->id,
             'due_date' => $request->due_date,
             'amount' => $request->grand_total,
+            'tax' => $request->tax_total,
             'terms_and_conditions' => $request->terms_and_conditions,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
