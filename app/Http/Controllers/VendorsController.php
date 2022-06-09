@@ -160,6 +160,9 @@ class VendorsController extends Controller
         $vendors = Vendors::all();
         // open file
         $file = fopen('vendors.csv', 'w');
+        // add column name
+        fputcsv($file, array('ID','Account_ID', 'Name', 'TIN Number', 'Address', 'City', 'Country', 'Mobile Number', 'Telephone_one', 'Telephone_Two', 'Fax', 'Website', 'Email', 'Contact_person', 'Label', 'Image', 'is_active', 'Created_at', 'Updated_at'));
+
         // loop through the array
         foreach ($vendors as $vendor) {
             // add the data to the file
