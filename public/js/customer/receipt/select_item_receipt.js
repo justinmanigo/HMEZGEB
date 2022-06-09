@@ -264,6 +264,7 @@ function onReceiptItemSelectSuggestion(e) {
     // Remove the disabled attribute of nearby .tagify element
     $(`#r_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
     
+    if(e.detail.data.tax_id != null) setTaxWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     
@@ -347,4 +348,27 @@ function onTaxInput(e) {
             tagify.whitelist = newWhitelist // update whitelist Array in-place
             tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
+}
+
+function setTaxWhitelist(item, id)
+{
+    console.log(`Attempt to set tax whitelist.`);
+    console.log(item);
+
+    whitelist = [
+        {
+            'value': item.tax_id,
+            'label': `${item.tax_name} (${item.tax_percentage}%)`,
+            'name': item.tax_name,
+            'percentage': item.tax_percentage,
+        }
+    ]
+
+    tax = getReceiptItemEntry(id).tax
+    tax.whitelist = whitelist;
+    tax.addTags(whitelist[0].value);
+    
+    $(`#r_item_tax_${id}`).parents('td').find('span').html(whitelist[0].label);
+    
+    console.log(tax);
 }
