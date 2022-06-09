@@ -18,6 +18,9 @@ $(document).on('click', '.r_item_delete', function (event) {
 
     // If there are no longer item entries in table, generate a new one.
     if(receipt_items.length < 1) createReceiptItemEntry();
+
+    calculateReceiptSubTotal();
+    calculateReceiptGrandTotal();
 });
 
 // Set events of quantity field.
@@ -55,11 +58,12 @@ function createReceiptItemEntry(item = undefined)
             <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>
-            <input type="text" id="r_item_price_${receipt_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+            <input type="text" id="r_item_price_${receipt_count}" class="form-control inputPrice r_item_price text-right" name="price[]" value="0.00" disabled>
             <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
             <input data-id="${receipt_count}" id="r_item_tax_${receipt_count}" class="r_tax" name='tax[]'>
+            <input id="r_item_tax_percentage_${receipt_count}" class="r_item_tax_percentage" type="hidden" name="tax_percentage[]" value="0">
             <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
         <td>
@@ -174,10 +178,6 @@ function createReceiptItemEntry(item = undefined)
 // Removes a Receipt Item Entry from the Table.
 function removeReceiptItemEntry(entry_id)
 {
-    
-    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
-    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
-
     for(let i = 0; i < receipt_items.length; i++)
     {
         if(receipt_items[i].entry_id == entry_id)
@@ -234,8 +234,29 @@ function calculateReceiptSubTotal()
     $(`#r_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
 
+function calculateReceiptTaxTotal()
+{
+    tax_total = 0;
+    console.log(`Attempt to Calculate Tax Total`);
+    
+    tax_percentages = document.querySelectorAll(".r_item_tax_percentage");
+    item_prices = document.querySelectorAll(".r_item_price")
+
+    for(i = 0; i < item_prices.length; i++)
+    {
+        tax_total += parseFloat(item_prices[i].value) * parseFloat(tax_percentages[i].value) / 100;
+    }
+
+    console.log("Tax Total: " + tax_total);
+    $(`.r_tax_total`).val(parseFloat(tax_total).toFixed(2))
+
+    return tax_total;
+}
+
 function calculateReceiptGrandTotal()
 {
+    tax_total = calculateReceiptTaxTotal();
+
     grandtotal = 0;
     item_total_prices = document.querySelectorAll(".r_item_total");
     console.log("Calculate Receipt Grandtotal:");
@@ -245,6 +266,8 @@ function calculateReceiptGrandTotal()
         console.log(item_total_price.value);
         grandtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
     });
+
+    grandtotal += tax_total;
 
     $(`#r_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
@@ -321,10 +344,16 @@ function onTaxDropdownShow(e) {
 
 function onTaxSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
+    $(`#r_item_tax_percentage_${id}`).val(e.detail.data.percentage);
+
+    calculateReceiptGrandTotal();
 }
 
 function onTaxRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
+    $(`#r_item_tax_percentage_${id}`).val(0);
+
+    calculateReceiptGrandTotal();
 }
 
 function onTaxInput(e) {    
@@ -369,6 +398,8 @@ function setTaxWhitelist(item, id)
     tax.addTags(whitelist[0].value);
     
     $(`#r_item_tax_${id}`).parents('td').find('span').html(whitelist[0].label);
+    $(`#r_item_tax_${id}`).parents('td').find('tag').attr('percentage', whitelist[0].percentage);
+    $(`#r_item_tax_percentage_${id}`).val(whitelist[0].percentage);
     
     console.log(tax);
 }
