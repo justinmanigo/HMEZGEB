@@ -279,7 +279,9 @@ function onReceiptItemRemove(e) {
     $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_item_quantity_${id}`).attr('disabled', 'disabled')
-    $(`#r_item_tax_${id}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
+    $(`#r_item_tax_${id}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled');
+
+    getReceiptItemEntry(id).tax.removeTag(e.detail.tag.value);
 
     $(`#r_item_quantity_${id}`).val("0")
     $(`#r_item_price_${id}`).val("0.00")
