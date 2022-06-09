@@ -59,7 +59,7 @@ function createReceiptItemEntry(item = undefined)
             <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
-            <input data-id="${receipt_count}" id="r_item_tax_${receipt_count}" class="r_tax" name='tax[]' disabled>
+            <input data-id="${receipt_count}" id="r_item_tax_${receipt_count}" class="r_tax" name='tax[]'>
             <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
         <td>
@@ -150,6 +150,8 @@ function createReceiptItemEntry(item = undefined)
         },
         whitelist: whitelist,
     });
+
+    $(`#r_item_tax_${receipt_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
 
     // Set events of tagify instance.
     tax_tagify.on('dropdown:show dropdown:updated', onTaxDropdownShow)
@@ -260,7 +262,7 @@ function onReceiptItemSelectSuggestion(e) {
     $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
     $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
     // Remove the disabled attribute of nearby .tagify element
-    $(`#r_item_tax_${id}`).parents('td').find('.tagify').removeAttr('disabled');
+    $(`#r_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
     
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
@@ -277,7 +279,7 @@ function onReceiptItemRemove(e) {
     $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_item_quantity_${id}`).attr('disabled', 'disabled')
-    $(`#r_item_tax_${id}`).parents('td').find('.tagify').attr('disabled', 'disabled')
+    $(`#r_item_tax_${id}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
 
     $(`#r_item_quantity_${id}`).val("0")
     $(`#r_item_price_${id}`).val("0.00")
