@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Settings\Taxes\Tax;
+use Illuminate\Support\Facades\DB;
 
 class TaxController extends Controller
 {
@@ -15,8 +16,10 @@ class TaxController extends Controller
      */
     public function index()
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         return view('settings.taxes.index', [
-            'taxes' => Tax::get()
+            'taxes' => Tax::where('accounting_system_id', $accounting_system_id)->get()
         ]);
     }
 
@@ -38,8 +41,11 @@ class TaxController extends Controller
      */
     public function store(Request $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         // Create Tax
         Tax::create([
+            'accounting_system_id' => $accounting_system_id,
             'name' => $request->name,
             'percentage' => $request->percentage,
         ]);
@@ -80,8 +86,11 @@ class TaxController extends Controller
     {
         // TODO: Add restriction when already linked to another . . .
 
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         // Update Tax
         Tax::where('id', '=', $tax->id)
+            ->where('accounting_system_id', '=', $accounting_system_id)
             ->update([
                 'name' => $request->name,
                 'percentage' => $request->percentage,
@@ -118,5 +127,23 @@ class TaxController extends Controller
     public function ajaxGetTax(Tax $tax)
     {
         return $tax;
+    }
+
+    /**
+     * 
+     */
+    public function ajaxSearchTax($query)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
+        return Tax::select(
+                'id as value',
+                DB::raw('CONCAT(name, " (", percentage, "%)") as label'),
+                'name',
+                'percentage',
+            )
+            ->where('accounting_system_id', '=', $accounting_system_id)
+            ->where('name', 'like', '%' . $query . '%')
+            ->get();
     }
 }

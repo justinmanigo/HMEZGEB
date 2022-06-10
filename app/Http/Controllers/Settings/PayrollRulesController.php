@@ -16,9 +16,15 @@ class PayrollRulesController extends Controller
      */
     public function index()
     {
-        $overtime_payroll_rules = OvertimePayrollRules::all()->first();
-        $income_tax_payroll_rules = IncomeTaxPayrollRules::all();
-        return view('settings.payroll_rules.index' ,compact('overtime_payroll_rules','income_tax_payroll_rules'));
+        $this->accounting_system_id = $this->request->session()->get('accounting_system_id');
+
+        $overtime_payroll_rules = OvertimePayrollRules::where('accounting_system_id', $this->accounting_system_id)->first();
+        $income_tax_payroll_rules = IncomeTaxPayrollRules::where('accounting_system_id', $this->accounting_system_id)->get();
+
+        return view('settings.payroll_rules.index', [
+            'overtime_payroll_rules' => $overtime_payroll_rules,
+            'income_tax_payroll_rules' => $income_tax_payroll_rules,
+        ]);
     }
 
     /**
@@ -29,13 +35,16 @@ class PayrollRulesController extends Controller
      */
     public function updateIncomeTaxRules(Request $request)
     {
+        $this->accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
         // Delete all records first
-        IncomeTaxPayrollRules::truncate();
+        IncomeTaxPayrollRules::where('accounting_system_id', $this->accounting_system_id)->delete();
 
         for($i = 0; $i < count($request->income); $i++)
         {
             // Store new records
             $income_tax_payroll_rules = new IncomeTaxPayrollRules;
+            $income_tax_payroll_rules->accounting_system_id = $this->accounting_system_id;
             $income_tax_payroll_rules->income = $request->income[$i];
             $income_tax_payroll_rules->rate = $request->rate[$i];
             $income_tax_payroll_rules->deduction = $request->deduction[$i];
@@ -53,10 +62,14 @@ class PayrollRulesController extends Controller
      */
     public function updateOvertimeRules(Request $request)
     {
+        $this->accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
         // Delete all records first
-        OvertimePayrollRules::truncate();
+        OvertimePayrollRules::where('accounting_system_id', $this->accounting_system_id)->delete();
+
         // Store new records
         $overtime_rules = new OvertimePayRollRules();
+        $overtime_rules->accounting_system_id = $this->accounting_system_id;
         $overtime_rules->working_days = $request->working_days;
         $overtime_rules->working_hours = $request->working_hours;
         $overtime_rules->day_rate = $request->day_rate;

@@ -15,6 +15,7 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->string('item_code');
             $table->string('item_name'); 
             $table->float('sale_price')->nullable();
@@ -23,7 +24,7 @@ class CreateInventoriesTable extends Migration
             $table->integer('critical_quantity')->nullable();
             // $table->float('sold_quantity')->nullable();
             // $table->float('purchase_quantity')->nullable();;
-            $table->integer('tax_id')->nullable(); 
+            $table->foreignId('tax_id')->nullable()->constrained(); 
             $table->string('default_income_account')->nullable();
             $table->string('default_expense_account')->nullable();
             $table->enum('inventory_type',['inventory_item','non_inventory_item']);           

@@ -141,14 +141,14 @@
                     </td>
                     <td></td>
                 </tr> --}}
-                {{-- <tr>
+                <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="tax" placeholder="0.00" disabled>
+                        <input type="text" class="form-control text-right b_tax_total" name="tax_total" value="0.00" readonly>
                         <p class="text-danger error-message error-message-tax" style="display:none"></p>
                     </td>
                     <td></td>
-                </tr> --}}
+                </tr>
                 <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
                     <td>
@@ -162,30 +162,29 @@
         </table>
     </div>
 
-    <div class="row form-group">
-        <label for="payment" class="col-form-label col-2">Payment<span class="text-danger ml-1">*</span></label>
-        <input type="text" class="form-control text-right  col-lg-4" id="total_amount_received"
+    <div class="row">
+        <div class="form-group col-lg-7 row">
+            <label for="b_remark" class="col-form-label col-lg-2">Remark:</label>
+            <textarea class="form-control col-lg-10" id="b_remark" name="remark"></textarea>
+            <p class="text-danger error-message error-message-remark" style="display:none"></p>
+        </div>
+        <div class="form-group col-lg-5 row">
+            <label for="payment" class="col-form-label col-lg-3">Payment<span class="text-danger ml-1">*</span></label>
+            <input type="text" class="form-control text-right  col-lg-9" id="total_amount_received"
             name="total_amount_received" placeholder="0.00" required>
-        <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
+            <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
+        </div>
+    </div>
 
-        <label for="email" class="col-form-label col-lg-2">Attachment:</label>
-        <div class="input-group col-md-2 col-lg-4">
+    <div class="form-group row">
+        <label for="attachment" class="col-form-label col-lg-2">Attachment:</label>
+        <div class="input-group col-md-2 col-lg-5">
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="inputGroupFile03">
                 <label class="custom-file-label" for="inputGroupFile03" name="attachment">Choose file</label>
             </div>
             <p class="text-danger error-message error-message-attachment" style="display:none"></p>
-        </div>
-    </div>
-
-    <div class="form-group row">
-
-
-
-        <label for="b_remark" class="col-lg-2 col-form-label">Remark:</label>
-        <textarea class="form-control col-lg-4" id="b_remark" name="remark"></textarea>
-        <p class="text-danger error-message error-message-remark" style="display:none"></p>
-
+        </div>  
     </div>
 
     <hr>

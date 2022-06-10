@@ -4,14 +4,21 @@ namespace App\Models\Settings\Taxes;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Inventory;
 
 class Tax extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id', 'name', 'percentage'
+        'accounting_system_id', 
+        'id', 
+        'name', 
+        'percentage',
     ];
 
-    // TODO: Integrate TAX relationships to tables of other modules.
+    public function inventoryItems()
+    {
+        return $this->hasMany(Inventory::class);
+    }
 }

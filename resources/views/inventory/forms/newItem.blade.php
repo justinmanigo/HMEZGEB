@@ -23,7 +23,7 @@
             <div class="form-group row">
                 <label for="#" class="col-form-label col-4">Description</label>
                 <div class="col-8">
-                    <textarea  id="" class="form-control" rows="6"  name="description" required></textarea>
+                    <textarea  id="" class="form-control" rows="8"  name="description" required></textarea>
                 </div>
             </div>
 
@@ -49,7 +49,7 @@
                 <label for="email" class="col-form-label col-4">Photo</label>
                 <div class="input-group mb-3 col-8">
                     <div class="custom-file">
-                        <input type="file" accept="image/*" class="custom-file-input" id="inputGroupFile03" name="picture">
+                        <input type="file" accept="image/*" class="custom-file-input" id="inputGroupFile03" name="picture" disabled>
                         <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
                     </div>
                 </div>
@@ -59,6 +59,13 @@
         <div class="col-12 col-lg-4">
 
             <h5>Item Price</h5>
+
+            <div class="form-group row">
+                <label for="#" class="col-4 col-form-label">Quantity</label>
+                <div class="col-8">
+                    <input type="number" class="form-control inputPrice text-right"  name="quantity" placeholder="0" required>
+                </div>
+            </div>
 
             <div class="form-group row">
                 <label for="#" class="col-4 col-form-label">Purchase Price</label>
@@ -86,7 +93,7 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="form-group row">
                 <label for="#" class="col-4 col-form-label">Critical Quantity</label>
                 <div class="col-8">

@@ -44,8 +44,8 @@
                 data-target=".bd-example-modal-lg">Import</button>
             <button type="button" class="btn btn-info mx-1" data-toggle="modal"
                 data-target=".bd-example-modal-lg">Export</button>
-            <button type="button" class="btn btn-info mx-1" data-toggle="modal"
-                data-target=".bd-example-modal-lg">Download Excel File</button>
+            {{-- <button type="button" class="btn btn-info mx-1" data-toggle="modal"
+                data-target=".bd-example-modal-lg">Download Excel File</button> --}}
         </div>
         <!-- Earnings (Annual) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
@@ -100,7 +100,7 @@
                             @endif
                             " class="w-100 img-responsive" style="min-width:100px">
                             </td>--}}
-                            <td> <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id) }}">
+                            <td> <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id.'/edit') }}">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-pen"></i>
                                     </span>

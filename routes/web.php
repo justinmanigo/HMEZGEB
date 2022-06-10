@@ -47,13 +47,18 @@ use App\Http\Controllers\Settings\TaxController;
 use App\Http\Controllers\Settings\ManageUsersController;
 use App\Http\Controllers\Settings\ChartOfAccountsController;
 use App\Http\Controllers\Settings\PayrollRulesController;
+use App\Http\Controllers\Settings\InventoryController as InventorySettingsController;
+use App\Http\Controllers\Settings\WithholdingController;
 
 // Account Settings
 use App\Http\Controllers\AccountSettings\AccountSettingsController;
 
 // Reports
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\Settings\CompanyInfoController;
 
+// Notifications
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,6 +79,11 @@ Route::group([
     Route::get('/switch', [HomeController::class, 'viewAccountingSystems']);
     Route::put('/switch', [HomeController::class, 'switchAccountingSystem']);
     
+    /**
+     * Notification
+     */
+    Route::resource('notifications', NotificationController::class);
+
     Route::group([
         'middleware' => 'auth.accountingsystem',
     ], function(){
@@ -230,6 +240,7 @@ Route::group([
                 
                 // AJAX
                 Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
+                Route::get('/vendors/export/csv', [VendorsController::class, 'toCSV'])->name('vendors.export.csv');
             });
         });
 
@@ -317,7 +328,8 @@ Route::group([
             // HTML
             Route::get('/inventory/', [InventoryController::class, 'index']);
             Route::post('/inventory', [InventoryController::class, 'store']);
-            Route::get('/inventory/{inventory}', [InventoryController::class, 'edit']);
+            Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
+            Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
             Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
         
             // AJAX
@@ -454,7 +466,7 @@ Route::group([
             Route::post('/financial_statement/income_statement_single/pdf', [ReportsController::class, 'incomeStatementSinglePDF'])->name('income_statement_single.pdf');
             Route::post('/financial_statement/income_statement_multiple/pdf', [ReportsController::class, 'incomeStatementMultiplePDF'])->name('income_statement_multiple.pdf');
         });
-
+            
         /**
          * Settings Module
          */
@@ -469,7 +481,10 @@ Route::group([
                 'as' => 'company.'
             ], function(){
                 // HTTP
-                Route::view('/settings/company', 'settings.company_info.index')->name('index');
+                Route::get('/settings/company', [CompanyInfoController::class, 'index'])->name('index');
+
+                // AJAX
+                Route::put('/settings/company', [CompanyInfoController::class, 'updateAjax'])->name('updateAjax');
             });
 
             /**
@@ -508,6 +523,7 @@ Route::group([
 
                 // AJAX
                 Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
+                Route::get('/ajax/settings/taxes/search/{query}', [TaxController::class, 'ajaxSearchTax']);
             });
 
             /**
@@ -517,7 +533,13 @@ Route::group([
                 'as' => 'withholding.'
             ], function(){
                 // HTTP
-                Route::view('/settings/withholding', 'settings.withholding.index')->name('index');
+                Route::get('/settings/withholding', [WithholdingController::class, 'index'])->name('index');
+                Route::post('/settings/withholding', [WithholdingController::class, 'store'])->name('store');
+                Route::put('/settings/withholding/{withholding}', [WithholdingController::class, 'update'])->name('update');
+                Route::delete('/settings/withholding/{withholding}', [WithholdingController::class, 'destroy'])->name('destroy');
+
+                // AJAX
+                Route::get('/ajax/settings/withholding/get/{withholding}', [WithholdingController::class, 'ajaxGetWithholding']);
             });
 
 
@@ -558,7 +580,8 @@ Route::group([
                 'as' => 'inventory.'
             ], function(){
                 // HTTP
-                Route::view('/settings/inventory', 'settings.inventory.index')->name('index');
+                Route::get('/settings/inventory', [InventorySettingsController::class, 'index'])->name('index');
+                Route::put('/settings/inventory', [InventorySettingsController::class, 'store'])->name('store');            
             });
 
             /**
@@ -605,3 +628,4 @@ Route::post('/userlogin', function (Request $request){
     // if failed login
 
 })->name('userlogin');
+

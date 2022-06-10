@@ -103,7 +103,7 @@ class BillsController extends Controller
             'chart_of_account_id' => $request->chart_of_account_id,
             'sub_total' => $request->sub_total,
             'discount' => '0', // temporary
-            'tax' => '0', // temporary
+            'tax' => $request->tax_total,
             'grand_total' => $request->grand_total,
             'withholding' => '0', // temporary
             'withholding_status' => 'paid', // temporary
@@ -137,6 +137,7 @@ class BillsController extends Controller
             'payment_reference_id' => $reference->id,
             'due_date' => $request->due_date,
             'sub_total' => $request->sub_total,
+            'tax' => $request->tax_total,
             'grand_total' => $request->grand_total,
             // image upload
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,

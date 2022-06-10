@@ -149,12 +149,12 @@
                 </span>
                 <span class="text">Export</span>
             </button>
-            <button type="button" class="btn btn-secondary">
+            {{-- <button type="button" class="btn btn-secondary">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
                 </span>
                 <span class="text">Download Excel Format</span>
-            </button>
+            </button> --}}
         </div>
 
         {{-- Tab Navigation --}}
@@ -213,12 +213,34 @@
                                         </button> --}}
                                     </td>
                                     <td class="table-item-content">{{$transaction->date}}</td>
-                                    <td class="table-item-content"><span
-                                            class="badge badge-success">{{$transaction->type}}</span></td>
+                                    <td class="table-item-content">
+                                        @if($transaction->type == 'receipt')
+                                            <span class="badge badge-success">Receipt</span>
+                                        @elseif($transaction->type == 'advance_receipt')
+                                            <span class="badge badge-primary">Advance Revenue</span>
+                                        @elseif($transaction->type == 'credit_receipt')
+                                            <span class="badge badge-info">Credit Receipt</span>
+                                        @endif
+                                    </td>
                                     <td class="table-item-content">{{$transaction->name}}</td>
-                                    <td class="table-item-content"><span class="badge badge-success">
-                                            {{$transaction->status}} </span></td>
-                                    <td class="table-item-content">{{$transaction->total_amount_received}}</td>
+                                    <td class="table-item-content">
+                                        @if($transaction->status == 'unpaid')
+                                            <span class="badge badge-danger">Unpaid</span>
+                                        @elseif($transaction->status == 'partially_paid')
+                                            <span class="badge badge-warning">Partially Paid</span>
+                                        @elseif($transaction->status == 'paid')
+                                            <span class="badge badge-success">Paid</span>
+                                        @endif
+                                    </td>
+                                    <td class="table-item-content text-right">
+                                        @if($transaction->type == 'receipt')
+                                            {{ number_format($transaction->amount, 2) }}
+                                        @elseif($transaction->type == 'advance_receipt')
+                                            {{ number_format($transaction->advance_revenue_amount, 2) }}
+                                        @elseif($transaction->type == 'credit_receipt')
+                                            {{ number_format($transaction->credit_receipt_amount, 2) }}
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforeach
 
@@ -255,7 +277,7 @@
                                     </td>
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
-                                    <td class="table-item-content">{{$proforma->amount}}</td>
+                                    <td class="table-item-content text-right">{{ number_format($proforma->proforma_amount, 2) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -528,6 +550,7 @@ POTENTIAL SOLUTIONS:
 
     </script>
     <script src="/js/customer/receipt/template_select_customer.js"></script>
+    <script src="/js/customer/receipt/template_select_tax.js"></script>
     <script src="/js/customer/receipt/select_customer_receipt.js"></script>
     <script src="/js/customer/receipt/select_customer_proforma.js"></script>
     <script src="/js/customer/receipt/select_customer_advancerevenue.js"></script>

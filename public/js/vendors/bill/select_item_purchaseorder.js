@@ -18,6 +18,9 @@ $(document).on('click', '.po_item_delete', function (event) {
 
     // If there are no longer item entries in table, generate a new one.
     if(purchaseorder_items.length < 1) createPurchaseOrderItemEntry();
+
+    calculatePurchaseOrderSubTotal();
+    calculatePurchaseOrderGrandTotal();
 });
 
 // Set events of quantity field.
@@ -30,15 +33,12 @@ $(document).on('change', '.po_item_quantity', function(event) {
     // Update item total
     $(`#po_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
 
-    // Update overall total
-    item_idx = getPurchaseOrderItemIndex(id);
-    purchaseorder_items[item_idx].total_price = sale_price * quantity;
     calculatePurchaseOrderSubTotal();
     calculatePurchaseOrderGrandTotal();
 });
 
 // Creates a PurchaseOrder Item Entry on the Table.
-function createPurchaseOrderItemEntry() 
+function createPurchaseOrderItemEntry(item = undefined) 
 {
     // Increment purchaseorder_count to avoid element conflicts.
     purchaseorder_count++;
@@ -50,26 +50,25 @@ function createPurchaseOrderItemEntry()
             <div class="input-group">
                 <input data-id="${purchaseorder_count}" id="po_item_${purchaseorder_count}" class="po_item" name='item[]'>
                 <input type="hidden" name="item_id[]" value="">
-                <p class="text-danger error-message error-message-discount" style="display:none"></p>
+                <p class="error-message error-message-item text-danger" style="display:none"></p>
             </div>
         </td>
         <td>
-            <input type="number" data-id="${purchaseorder_count}" id="po_item_quantity_${purchaseorder_count}" class="form-control po_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
-            <p class="text-danger error-message error-message-quantity" style="display:none"></p>
+            <input type="number" data-id="${purchaseorder_count}" id="po_item_quantity_${purchaseorder_count}" class="form-control po_item_quantity" name="quantity[]" placeholder="0" min="1" disabled required>
+            <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>
-            <input type="text" id="po_item_price_${purchaseorder_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
-            <p class="text-danger error-message error-message-price" style="display:none"></p>
+            <input type="text" id="po_item_price_${purchaseorder_count}" class="form-control inputPrice po_item_price text-right" name="price[]" value="0.00" disabled>
+            <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
-            <select id="po_item_tax_${purchaseorder_count}" class="form-control" name="tax[]">
-                <option>Sales Tax (15%)</option>
-            </select>
-            <p class="text-danger error-message error-message-tax" style="display:none"></p>
+            <input data-id="${purchaseorder_count}" id="po_item_tax_${purchaseorder_count}" class="po_tax" name='tax[]'>
+            <input id="po_item_tax_percentage_${purchaseorder_count}" class="po_item_tax_percentage" type="hidden" name="tax_percentage[]" value="0">
+            <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
         <td>
-            <input type="text" id="po_item_total_${purchaseorder_count}" class="form-control text-right" name="total[]" placeholder="0.00" disabled>
-            <p class="text-danger error-message error-message-total" style="display:none"></p>
+            <input type="text" id="po_item_total_${purchaseorder_count}" class="form-control text-right po_item_total" name="total[]" placeholder="0.00" disabled>
+            <p class="error-message error-message-total text-danger" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${purchaseorder_count}" id="po_item_delete_${purchaseorder_count}" class="btn btn-icon btn-danger po_item_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">
@@ -89,9 +88,30 @@ function createPurchaseOrderItemEntry()
     // Append template to the table.
     $("#po_items").append(inner)
 
+    var whitelist = [];
+
+    // Set values if item exists.
+    if(item != undefined) {
+        whitelist = [
+            {
+                "value": item.inventory.id,
+                "name": item.inventory.item_name,
+                "sale_price": item.inventory.sale_price,
+                "quantity": item.quantity,
+            },
+        ];
+        
+        
+        $(`#po_item_${purchaseorder_count}`).val(item.inventory.item_name);
+        $(`#po_item_quantity_${purchaseorder_count}`).val(item.quantity).removeAttr('disabled');
+        $(`#po_item_price_${purchaseorder_count}`).val(parseFloat(item.inventory.sale_price).toFixed(2))
+        $(`#po_item_total_${purchaseorder_count}`).val(parseFloat(item.inventory.sale_price * item.quantity).toFixed(2))
+        
+    }
+
     // Create new tagify instance of item selector of newly created row.
-    let elm = document.querySelector(`#po_item_${purchaseorder_count}`);
-    let elm_tagify = new Tagify(elm, {
+    let inventory_item_elm = document.querySelector(`#po_item_${purchaseorder_count}`);
+    let inventory_item_tagify = new Tagify(inventory_item_elm, {
         tagTextProp: 'name', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode: "select",
@@ -100,27 +120,54 @@ function createPurchaseOrderItemEntry()
             closeOnSelect: true,
             enabled: 0,
             classname: 'item-list',
-            searchKeys: ['name', 'email'] // very important to set by which keys to search for suggesttions when typing
+            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
             tag: ItemTagTemplate,
             dropdownItem: ItemSuggestionItemTemplate
         },
-        whitelist: [],
-    })
+        whitelist: whitelist,
+    });
 
     // Set events of tagify instance.
-    elm_tagify.on('dropdown:show dropdown:updated', onPurchaseOrderItemDropdownShow)
-    elm_tagify.on('dropdown:select', onPurchaseOrderItemSelectSuggestion)
-    elm_tagify.on('input', onPurchaseOrderItemInput)
-    elm_tagify.on('remove', onPurchaseOrderItemRemove)
+    inventory_item_tagify.on('dropdown:show dropdown:updated', onPurchaseOrderItemDropdownShow)
+    inventory_item_tagify.on('dropdown:select', onPurchaseOrderItemSelectSuggestion)
+    inventory_item_tagify.on('input', onPurchaseOrderItemInput)
+    inventory_item_tagify.on('remove', onPurchaseOrderItemRemove)
+
+    // Create new tagify instance of item selector of newly created row.
+    let tax_elm = document.querySelector(`#po_item_tax_${purchaseorder_count}`);
+    let tax_tagify = new Tagify(tax_elm, {
+        tagTextProp: 'label', // very important since a custom template is used with this property as text
+        enforceWhitelist: true,
+        mode: "select",
+        skipInvalid: false, // do not remporarily add invalid tags
+        dropdown: {
+            closeOnSelect: true,
+            enabled: 0,
+            classname: 'tax-list',
+            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
+        },
+        templates: {
+            tag: TaxTagTemplate,
+            dropdownItem: TaxSuggestionItemTemplate
+        },
+        whitelist: whitelist,
+    });
+
+    $(`#po_item_tax_${purchaseorder_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
+
+    // Set events of tagify instance.
+    tax_tagify.on('dropdown:show dropdown:updated', onTaxPurchaseOrderDropdownShow)
+    tax_tagify.on('dropdown:select', onTaxPurchaseOrderSelectSuggestion)
+    tax_tagify.on('input', onTaxPurchaseOrderInput)
+    tax_tagify.on('remove', onTaxPurchaseOrderRemove)
 
     // Push item to array purchaseorder_items
     let item_entry = {
         "entry_id": purchaseorder_count,
-        "tagify": elm_tagify,
-        "sale_price": 0,
-        "total_price": 0,
+        "tagify": inventory_item_tagify,
+        "tax": tax_tagify,
         "value": null,
     }
 
@@ -131,10 +178,6 @@ function createPurchaseOrderItemEntry()
 // Removes a PurchaseOrder Item Entry from the Table.
 function removePurchaseOrderItemEntry(entry_id)
 {
-    
-    $(`#po_sub_total`).val(parseFloat($(`#po_sub_total`).val() - $(`#po_item_total_${entry_id}`).val()).toFixed(2))
-    $(`#po_grand_total`).val(parseFloat($(`#po_grand_total`).val() - $(`#po_item_total_${entry_id}`).val()).toFixed(2))
-
     for(let i = 0; i < purchaseorder_items.length; i++)
     {
         if(purchaseorder_items[i].entry_id == entry_id)
@@ -179,26 +222,61 @@ function getPurchaseOrderItemIndex(entry_id)
 function calculatePurchaseOrderSubTotal()
 {
     subtotal = 0;
-    for(i = 0; i < purchaseorder_items.length; i++)
-        subtotal += purchaseorder_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".po_item_total");
+    console.log("Calculate PurchaseOrder Subtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        subtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
 
     $(`#po_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
 
+function calculatePurchaseOrderTaxTotal()
+{
+    tax_total = 0;
+    console.log(`Attempt to Calculate Tax Total`);
+    
+    tax_percentages = document.querySelectorAll(".po_item_tax_percentage");
+    item_prices = document.querySelectorAll(".po_item_price")
+    item_quantities = document.querySelectorAll(".po_item_quantity")
+
+    for(i = 0; i < item_prices.length; i++)
+    {
+        tax_total += (parseFloat(item_prices[i].value) * parseFloat(tax_percentages[i].value) / 100) * parseInt(item_quantities[i].value);
+    }
+
+    console.log("Tax Total: " + tax_total);
+    $(`.po_tax_total`).val(parseFloat(tax_total).toFixed(2))
+
+    return tax_total;
+}
+
 function calculatePurchaseOrderGrandTotal()
 {
+    tax_total = calculatePurchaseOrderTaxTotal();
+
     grandtotal = 0;
-    for(i = 0; i < purchaseorder_items.length; i++)
-    grandtotal += purchaseorder_items[i].total_price;
+    item_total_prices = document.querySelectorAll(".po_item_total");
+    console.log("Calculate PurchaseOrder Grandtotal:");
+    console.log(item_total_prices);
+
+    item_total_prices.forEach(function(item_total_price){
+        console.log(item_total_price.value);
+        grandtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
+    });
+
+    grandtotal += tax_total;
 
     $(`#po_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
 
-/** === Tagify Related Functions === */
+/** === Tagify Related Functions for PurchaseOrder Items === */
 
 function onPurchaseOrderItemDropdownShow(e) {
-    console.log("onPurchaseOrderItemDropdownShow")
-    var dropdownContentElm = e.detail.purchaseorder_select_item_tagify.DOM.dropdown.content;
+    // var dropdownContentElm = e.detail.purchaseorder_select_item_tagify.DOM.dropdown.content;
 }
 
 function onPurchaseOrderItemSelectSuggestion(e) {
@@ -207,16 +285,16 @@ function onPurchaseOrderItemSelectSuggestion(e) {
     $(`#po_item_quantity_${id}`).val(1).removeAttr('disabled')
     $(`#po_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
     $(`#po_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
+    // Remove the disabled attribute of nearby .tagify element
+    $(`#po_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
+    
+    if(e.detail.data.tax_id != null) setTaxPurchaseOrderWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
-    console.log(parseFloat(item_total).toFixed(2));
-    console.log($(`#po_sub_total`).val())
-    console.log()
     
-    // Add all item total to subtotal
-    $(`#po_sub_total`).val(parseFloat(parseFloat($(`#po_sub_total`).val()) + parseFloat($(`#po_item_total_${id}`).val())).toFixed(2))
-    $(`#po_grand_total`).val(parseFloat(parseFloat($(`#po_grand_total`).val()) + parseFloat($(`#po_item_total_${id}`).val())).toFixed(2))
-
+    // Recalculate total
+    calculatePurchaseOrderSubTotal();
+    calculatePurchaseOrderGrandTotal();
 }
 
 function onPurchaseOrderItemRemove(e) {
@@ -226,6 +304,9 @@ function onPurchaseOrderItemRemove(e) {
     $(`#po_sub_total`).val(parseFloat($(`#po_sub_total`).val() - $(`#po_item_total_${id}`).val()).toFixed(2))
     $(`#po_grand_total`).val(parseFloat($(`#po_grand_total`).val() - $(`#po_item_total_${id}`).val()).toFixed(2))
     $(`#po_item_quantity_${id}`).attr('disabled', 'disabled')
+    $(`#po_item_tax_${id}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled');
+
+    getPurchaseOrderItemEntry(id).tax.removeTag(e.detail.tag.value);
 
     $(`#po_item_quantity_${id}`).val("0")
     $(`#po_item_price_${id}`).val("0.00")
@@ -233,35 +314,93 @@ function onPurchaseOrderItemRemove(e) {
 
 }
 
-function onPurchaseOrderItemInput(e) {
-    console.log(e.detail);
-    console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
-    var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
+function onPurchaseOrderItemInput(e) {    
     var value = e.detail.value;
-    var tagify;
+    var tagify = e.detail.tagify;
 
-    console.log(purchaseorder_items);
-    entry_obj = getPurchaseOrderItemEntry(entry_id);
-
-    console.log("Obtained value from array");
-    console.log(tagify);
-    
-    entry_obj.tagify.whitelist = null // reset the whitelist
+    tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
     controller && controller.abort()
     controller = new AbortController()
 
     // show loading animation and hide the suggestions dropdown
-    entry_obj.tagify.loading(true).dropdown.hide()
+    tagify.loading(true).dropdown.hide()
 
     fetch('/select/search/inventory/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
         .then(function (newWhitelist) {
-            entry_obj.tagify.whitelist = newWhitelist // update whitelist Array in-place
-            entry_obj.tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
+}
+
+/** === Tagify Related Functions for Tax Items */
+
+function onTaxPurchaseOrderDropdownShow(e) {
+    // var dropdownContentElm = e.detail.purchaseorder_select_item_tagify.DOM.dropdown.content;
+}
+
+function onTaxPurchaseOrderSelectSuggestion(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    $(`#po_item_tax_percentage_${id}`).val(e.detail.data.percentage);
+
+    calculatePurchaseOrderGrandTotal();
+}
+
+function onTaxPurchaseOrderRemove(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    $(`#po_item_tax_percentage_${id}`).val(0);
+
+    calculatePurchaseOrderGrandTotal();
+}
+
+function onTaxPurchaseOrderInput(e) {    
+    var value = e.detail.value;
+    var tagify = e.detail.tagify;
+
+    tagify.whitelist = null // reset the whitelist
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+    controller && controller.abort()
+    controller = new AbortController()
+
+    // show loading animation and hide the suggestions dropdown
+    tagify.loading(true).dropdown.hide()
+
+    fetch('/ajax/settings/taxes/search/' + value, {
+            signal: controller.signal
+        })
+        .then(RES => RES.json())
+        .then(function (newWhitelist) {
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+        })
+}
+
+function setTaxPurchaseOrderWhitelist(item, id)
+{
+    console.log(`Attempt to set tax whitelist.`);
+    console.log(item);
+
+    whitelist = [
+        {
+            'value': item.tax_id,
+            'label': `${item.tax_name} (${item.tax_percentage}%)`,
+            'name': item.tax_name,
+            'percentage': item.tax_percentage,
+        }
+    ]
+
+    tax = getPurchaseOrderItemEntry(id).tax
+    tax.whitelist = whitelist;
+    tax.addTags(whitelist[0].value);
+    
+    $(`#po_item_tax_${id}`).parents('td').find('span').html(whitelist[0].label);
+    $(`#po_item_tax_${id}`).parents('td').find('tag').attr('percentage', whitelist[0].percentage);
+    $(`#po_item_tax_percentage_${id}`).val(whitelist[0].percentage);
+    
+    console.log(tax);
 }

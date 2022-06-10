@@ -27,7 +27,8 @@ class DeductionController extends Controller
             'deductions.date',
             'employees.first_name',
             'employees.type',
-        )->get();
+        )->where('deductions.accounting_system_id', session('accounting_system_id'))
+        ->get();
         return view('hr.deduction.index' ,compact('deductions'));
     }
 
@@ -50,7 +51,7 @@ class DeductionController extends Controller
     public function store(Request $request)
     {
         //
-        
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         for($i = 0; $i < count($request->employee); $i++)
         {
         $employee = json_decode($request->employee[$i]);
@@ -58,6 +59,7 @@ class DeductionController extends Controller
             
             // Store
                $deduction = new Deduction;
+               $deduction->accounting_system_id = $accounting_system_id;
                $deduction->employee_id = $e[$i]->value;
                $deduction->date = $request->date;
                $deduction->price = $request->price[$i];

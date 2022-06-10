@@ -158,12 +158,12 @@
                         </span>
                         <span class="text">Export</span>
                     </button>
-                    <button type="button" class="btn btn-secondary">
+                    {{-- <button type="button" class="btn btn-secondary">
                         <span class="icon text-white-50">
                             <i class="fas fa-download"></i>
                         </span>
                         <span class="text">Download Excel Format</span>
-                    </button>
+                    </button> --}}
                 </div>
                 <!---- end buttons----->
             </div>
@@ -280,6 +280,7 @@ $(document).ready(function() {
 </script>
 
 <!-- Vendors -->
+<script src="/js/vendors/template_select_tax.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
 <script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>

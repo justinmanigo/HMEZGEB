@@ -17,7 +17,8 @@ class VendorsController extends Controller
      */
     public function index()
     {
-        $vendors = Vendors::all();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
         
         return view('vendors.vendors.vendor',compact('vendors'));
     }
@@ -40,7 +41,8 @@ class VendorsController extends Controller
      */
     public function store(Request $request)
     {
-           
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         $vendor = new Vendors();
 
         if($request->image)
@@ -48,6 +50,7 @@ class VendorsController extends Controller
             $imageName = time().'.'.$request->image->extension();  
             $request->image->storeAs('public/vendors/vendor', $imageName);
         }
+        $vendor->accounting_system_id = $accounting_system_id;
         $vendor->name =  $request->name;
         $vendor->tin_number =  $request->tin_number;
         $vendor->address =  $request->address;
@@ -76,8 +79,10 @@ class VendorsController extends Controller
      */
     public function show(Vendors $vendors)
     {
-        $vendors = Customers::all();
-        return view('vendors.vendors.vendors',compact('vendors'));
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
+        
+        return view('vendors.vendors.vendor',compact('vendors'));
     }
 
     /**
@@ -88,9 +93,13 @@ class VendorsController extends Controller
      */
     public function edit($id)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         //view edit customer info
         $vendor = Vendors::where('id',$id)->first();
         if(!$vendor) return abort(404);
+        if($vendor->accounting_system_id != $accounting_system_id) {
+            return redirect('/vendors/vendors')->with('danger', "You are not authorized to edit this vendor.");
+        }
         return view('vendors.vendors.individualVendor', compact('vendor'));
     }
 
@@ -143,9 +152,35 @@ class VendorsController extends Controller
     
     }
 
+    public function toCSV()
+    {
+        
+        Log::info("Exporting Vendors");
+        // create a csv file
+        $vendors = Vendors::all();
+        // open file
+        $file = fopen('vendors.csv', 'w');
+        // add column name
+        fputcsv($file, array('ID','Account_ID', 'Name', 'TIN Number', 'Address', 'City', 'Country', 'Mobile Number', 'Telephone_one', 'Telephone_Two', 'Fax', 'Website', 'Email', 'Contact_person', 'Label', 'Image', 'is_active', 'Created_at', 'Updated_at'));
+
+        // loop through the array
+        foreach ($vendors as $vendor) {
+            // add the data to the file
+            $vendor = $vendor->toArray();
+            fputcsv($file, $vendor);
+        }
+        // close the file
+        fclose($file);
+        // redirect to the file
+        return response()->download('vendors.csv');
+ 
+    }
+
     public function queryVendors($query)
     {   
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one')
+            ->where('accounting_system_id', $accounting_system_id)
             ->where('name', 'LIKE', '%' . $query . '%')->get();
         return $vendors;
     }
@@ -169,5 +204,7 @@ class VendorsController extends Controller
             ->where('bills.withholding', '>', '0')->get();
 
     }
+
+    
 }
 

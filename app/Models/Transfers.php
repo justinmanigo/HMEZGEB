@@ -16,10 +16,12 @@ class Transfers extends Model
      */
 
     protected $fillable = [
+        'accounting_system_id',
         'from_account_id',
         'to_account_id',
         'amount',
         'reason',
+        'journal_entry_id',
     ];
 
     public function fromAccount()

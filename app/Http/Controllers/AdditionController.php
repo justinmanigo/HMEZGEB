@@ -16,6 +16,7 @@ class AdditionController extends Controller
     public function index()
     {
         //
+
         $additions = Employee::join(
             'additions',
             'additions.employee_id',
@@ -26,7 +27,7 @@ class AdditionController extends Controller
             'additions.date',
             'employees.first_name',
             'employees.type',
-        )->get();
+        )->where('additions.accounting_system_id', session('accounting_system_id'))->get();
         return view('hr.addition.index' ,compact('additions'));
     }
 
@@ -49,7 +50,7 @@ class AdditionController extends Controller
     public function store(Request $request)
     {
         //
-
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
          for($i = 0; $i < count($request->employee); $i++)
          {
          $employee = json_decode($request->employee[$i]);
@@ -57,6 +58,7 @@ class AdditionController extends Controller
              
              // Store
                 $addition = new Addition;
+                $addition->accounting_system_id = $accounting_system_id;
                 $addition->employee_id = $e[$i]->value;
                 $addition->date = $request->date;
                 $addition->price = $request->price[$i];

@@ -31,7 +31,7 @@ function createEmployeeEntry()
         <tr data-id="${overtime_count}" id="ot_employee_entry_${overtime_count}">
         <td>
             <div class="input-group">
-                <input data-id="${overtime_count}" id="ot_employee_${overtime_count}" class="ot_employee" name='employee[]'>
+                <input data-id="${overtime_count}" id="ot_employee_${overtime_count}" class="ot_employee form-control" name='employee[]'>
                 <input type="hidden" name="employee_id[]" value="">
             </div>
         </td>

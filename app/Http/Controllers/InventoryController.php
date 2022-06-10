@@ -15,8 +15,8 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //get all inventories from database then display on inventory
-        $inventories = Inventory::all();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $inventories = Inventory::where('accounting_system_id', $accounting_system_id)->get();
         $inventoryValue = 0;
 
         // Compute for each inventory value and total value.
@@ -30,9 +30,9 @@ class InventoryController extends Controller
             }           
         }
 
-        $taxes = Tax::get();            
+        $taxes = Tax::where('accounting_system_id', $accounting_system_id)->get();            
 
-        return view('inventory.inventory', [
+        return view('inventory.index', [
             'inventories' => $inventories,
             'taxes' => $taxes,
             'inventoryValue' => $inventoryValue,
@@ -58,12 +58,15 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
         if($request->picture) {
             $imageName = time().'.'.$request->picture->extension();  
             $request->picture->storeAs('public/inventories', $imageName);
         }
 
         Inventory::create([
+            'accounting_system_id' => $accounting_system_id,
             'item_code' => $request->item_code,
             'item_name' => $request->item_name,
             'sale_price' => $request->sale_price,
@@ -72,7 +75,7 @@ class InventoryController extends Controller
                 ? 0 
                 : null,
             'critical_quantity' => $request->inventory_type == 'inventory_item' 
-                ? 0 
+                ? $request->critical_quantity 
                 : null,
             'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
             // 'default_income_account' => $request->default_income_account,
@@ -95,9 +98,13 @@ class InventoryController extends Controller
      * @param  \App\Models\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Inventory $inventory)
     {
-        
+        $inventory->tax;
+
+        return view('inventory.show', [
+            'inventory' => $inventory,
+        ]);
     }
 
     public function fifo()
@@ -121,8 +128,9 @@ class InventoryController extends Controller
      */
     public function edit(Inventory $inventory)
     {
-        $taxes = Tax::get();
-        return view('inventory.forms.edit', compact('inventory'), compact('taxes'));
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $taxes = Tax::where('accounting_system_id', $accounting_system_id)->get();
+        return view('inventory.edit', compact('inventory'), compact('taxes'));
     }
 
     /**
@@ -139,13 +147,21 @@ class InventoryController extends Controller
             'item_name' => $request->item_name,
             'sale_price' => $request->sale_price,
             'purchase_price' => $request->purchase_price,
-            'quantity' => $request->quantity,
+            'quantity' => $request->inventory_type == 'inventory_item' 
+                ? 0 
+                : null,
+            'critical_quantity' => $request->inventory_type == 'inventory_item' 
+                ? $request->critical_quantity 
+                : null,
             'tax_id' => isset($request->tax_id) ? $request->tax_id : null,
             // 'default_income_account' => $request->default_income_account,
             // 'default_expense_account' => $request->default_expense_account,
             'inventory_type' => $request->inventory_type,
             'picture' => isset($imageName) ? $imageName : null,
             'description' => $request->description,
+            'notify_critical_quantity' => isset($request->notify_critical_quantity) 
+                ? $request->notify_critical_quantity 
+                : 'No',
         ]);
 
         return redirect('/inventory')->with('success', 'Successfully updated item.');
@@ -166,8 +182,20 @@ class InventoryController extends Controller
 
     public function ajaxSearchInventory($query)
     {   
-        $inventory = Inventory::select('id as value', 'item_name as name', 'sale_price',  'quantity', 'inventory_type')
-            ->where('item_name', 'LIKE', '%' . $query . '%')->get();
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $inventory = Inventory::select(
+                'inventories.id as value', 
+                'inventories.item_name as name', 
+                'inventories.sale_price',  
+                'inventories.quantity', 
+                'inventories.inventory_type',
+                'inventories.tax_id',
+                'taxes.name as tax_name',
+                'taxes.percentage as tax_percentage',
+            )
+            ->leftJoin('taxes', 'inventories.tax_id', '=', 'taxes.id')
+            ->where('inventories.accounting_system_id', $accounting_system_id)
+            ->where('inventories.item_name', 'LIKE', '%' . $query . '%')->get();
         return $inventory;
     }
 }

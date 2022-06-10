@@ -15,6 +15,7 @@ class CreateVendorsTable extends Migration
     {
         Schema::create('vendors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('accounting_system_id')->constrained();
             $table->string('name');
             $table->string('tin_number')->unique()->nullable();
             $table->string('address')->nullable();

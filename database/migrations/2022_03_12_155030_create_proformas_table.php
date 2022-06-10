@@ -18,6 +18,7 @@ class CreateProformasTable extends Migration
             $table->unsignedBigInteger('receipt_reference_id');
             $table->date('due_date');
             $table->float('amount');
+            $table->float('tax');
             $table->longText('terms_and_conditions')->nullable();
             $table->string('attachment')->nullable();
             $table->timestamps();

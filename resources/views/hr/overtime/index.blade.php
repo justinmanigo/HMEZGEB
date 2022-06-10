@@ -180,7 +180,7 @@
                         <div class="col-md-8 d-flex">
                             <label for="o_date col-6" >Date<span
                                     class="text-danger ml-1">*</span></label>
-                                <input type="date" class="form-control col-8 ml-3" id="o_date" name="date" placeholder="" required>
+                                <input type="date" class="form-control col-8 ml-3" id="o_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                         </div>
                         <div class="col-md-4">
                             <input class="form-check-input" type="checkbox" name="is_weekend_holiday" id="weekend_holiday" value="yes">

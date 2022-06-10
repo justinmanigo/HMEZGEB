@@ -18,6 +18,9 @@ $(document).on('click', '.r_item_delete', function (event) {
 
     // If there are no longer item entries in table, generate a new one.
     if(receipt_items.length < 1) createReceiptItemEntry();
+
+    calculateReceiptSubTotal();
+    calculateReceiptGrandTotal();
 });
 
 // Set events of quantity field.
@@ -51,17 +54,16 @@ function createReceiptItemEntry(item = undefined)
             </div>
         </td>
         <td>
-            <input type="number" data-id="${receipt_count}" id="r_item_quantity_${receipt_count}" class="form-control r_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <input type="number" data-id="${receipt_count}" id="r_item_quantity_${receipt_count}" class="form-control r_item_quantity" name="quantity[]" placeholder="0" min="1" disabled required>
             <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>
-            <input type="text" id="r_item_price_${receipt_count}" class="form-control inputPrice text-right" name="price[]" placeholder="0.00" disabled>
+            <input type="text" id="r_item_price_${receipt_count}" class="form-control inputPrice r_item_price text-right" name="price[]" value="0.00" disabled>
             <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
-            <select id="r_item_tax_${receipt_count}" class="form-control" name="tax[]">
-                <option>Sales Tax (15%)</option>
-            </select>
+            <input data-id="${receipt_count}" id="r_item_tax_${receipt_count}" class="r_tax" name='tax[]'>
+            <input id="r_item_tax_percentage_${receipt_count}" class="r_item_tax_percentage" type="hidden" name="tax_percentage[]" value="0">
             <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
         <td>
@@ -108,8 +110,8 @@ function createReceiptItemEntry(item = undefined)
     }
 
     // Create new tagify instance of item selector of newly created row.
-    let elm = document.querySelector(`#r_item_${receipt_count}`);
-    let elm_tagify = new Tagify(elm, {
+    let inventory_item_elm = document.querySelector(`#r_item_${receipt_count}`);
+    let inventory_item_tagify = new Tagify(inventory_item_elm, {
         tagTextProp: 'name', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode: "select",
@@ -128,15 +130,62 @@ function createReceiptItemEntry(item = undefined)
     });
 
     // Set events of tagify instance.
-    elm_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
-    elm_tagify.on('dropdown:select', onReceiptItemSelectSuggestion)
-    elm_tagify.on('input', onReceiptItemInput)
-    elm_tagify.on('remove', onReceiptItemRemove)
+    inventory_item_tagify.on('dropdown:show dropdown:updated', onReceiptItemDropdownShow)
+    inventory_item_tagify.on('dropdown:select', onReceiptItemSelectSuggestion)
+    inventory_item_tagify.on('input', onReceiptItemInput)
+    inventory_item_tagify.on('remove', onReceiptItemRemove)
+
+    // Create new tagify instance of item selector of newly created row.
+    let tax_elm = document.querySelector(`#r_item_tax_${receipt_count}`);
+    let tax_tagify = new Tagify(tax_elm, {
+        tagTextProp: 'label', // very important since a custom template is used with this property as text
+        enforceWhitelist: true,
+        mode: "select",
+        skipInvalid: false, // do not remporarily add invalid tags
+        dropdown: {
+            closeOnSelect: true,
+            enabled: 0,
+            classname: 'tax-list',
+            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
+        },
+        templates: {
+            tag: TaxTagTemplate,
+            dropdownItem: TaxSuggestionItemTemplate
+        },
+        whitelist: [],
+    });
+
+    if(item == undefined) {
+        $(`#r_item_tax_${receipt_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
+    }
+    else if(item.inventory.tax != undefined) {
+        tax_whitelist = [
+            {
+                "value": item.inventory.tax.id,
+                "label": `${item.inventory.tax.name} (${item.inventory.tax.percentage}%)`,
+                "name": item.inventory.tax.name,
+                "percentage": item.inventory.tax.percentage,
+            }
+        ];
+
+        tax_tagify.whitelist = tax_whitelist;
+
+        $(`#r_item_tax_${receipt_count}`).parents('td').find('span').html(tax_whitelist[0].label);
+        $(`#r_item_tax_${receipt_count}`).parents('td').find('tag').attr('percentage', tax_whitelist[0].percentage);
+        $(`#r_item_tax_percentage_${receipt_count}`).val(tax_whitelist[0].percentage);
+    }
+
+    // Set events of tagify instance.
+    tax_tagify.on('dropdown:show dropdown:updated', onTaxReceiptDropdownShow)
+    tax_tagify.on('dropdown:select', onTaxReceiptSelectSuggestion)
+    tax_tagify.on('input', onTaxReceiptInput)
+    tax_tagify.on('remove', onTaxReceiptRemove)
 
     // Push item to array receipt_items
     let item_entry = {
         "entry_id": receipt_count,
-        "tagify": elm_tagify,
+        "tagify": inventory_item_tagify,
+        "tax": tax_tagify,
         "value": null,
     }
 
@@ -147,10 +196,6 @@ function createReceiptItemEntry(item = undefined)
 // Removes a Receipt Item Entry from the Table.
 function removeReceiptItemEntry(entry_id)
 {
-    
-    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
-    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${entry_id}`).val()).toFixed(2))
-
     for(let i = 0; i < receipt_items.length; i++)
     {
         if(receipt_items[i].entry_id == entry_id)
@@ -207,8 +252,30 @@ function calculateReceiptSubTotal()
     $(`#r_sub_total`).val(parseFloat(subtotal).toFixed(2))
 }
 
+function calculateReceiptTaxTotal()
+{
+    tax_total = 0;
+    console.log(`Attempt to Calculate Tax Total`);
+    
+    tax_percentages = document.querySelectorAll(".r_item_tax_percentage");
+    item_prices = document.querySelectorAll(".r_item_price")
+    item_quantities = document.querySelectorAll(".r_item_quantity")
+
+    for(i = 0; i < item_prices.length; i++)
+    {
+        tax_total += (parseFloat(item_prices[i].value) * parseFloat(tax_percentages[i].value) / 100) * parseInt(item_quantities[i].value);
+    }
+
+    console.log("Tax Total: " + tax_total);
+    $(`.r_tax_total`).val(parseFloat(tax_total).toFixed(2))
+
+    return tax_total;
+}
+
 function calculateReceiptGrandTotal()
 {
+    tax_total = calculateReceiptTaxTotal();
+
     grandtotal = 0;
     item_total_prices = document.querySelectorAll(".r_item_total");
     console.log("Calculate Receipt Grandtotal:");
@@ -219,10 +286,12 @@ function calculateReceiptGrandTotal()
         grandtotal += item_total_price.value != '' ? parseFloat(item_total_price.value) : 0;
     });
 
+    grandtotal += tax_total;
+
     $(`#r_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 }
 
-/** === Tagify Related Functions === */
+/** === Tagify Related Functions for Receipt Items === */
 
 function onReceiptItemDropdownShow(e) {
     // var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
@@ -234,6 +303,10 @@ function onReceiptItemSelectSuggestion(e) {
     $(`#r_item_quantity_${id}`).val(1).removeAttr('disabled')
     $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
     $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
+    // Remove the disabled attribute of nearby .tagify element
+    $(`#r_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
+    
+    if(e.detail.data.tax_id != null) setTaxReceiptWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     
@@ -249,6 +322,9 @@ function onReceiptItemRemove(e) {
     $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_item_quantity_${id}`).attr('disabled', 'disabled')
+    $(`#r_item_tax_${id}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled');
+
+    getReceiptItemEntry(id).tax.removeTag(e.detail.tag.value);
 
     $(`#r_item_quantity_${id}`).val("0")
     $(`#r_item_price_${id}`).val("0.00")
@@ -277,4 +353,72 @@ function onReceiptItemInput(e) {
             tagify.whitelist = newWhitelist // update whitelist Array in-place
             tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
+}
+
+/** === Tagify Related Functions for Tax Items */
+
+function onTaxReceiptDropdownShow(e) {
+    // var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
+}
+
+function onTaxReceiptSelectSuggestion(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    $(`#r_item_tax_percentage_${id}`).val(e.detail.data.percentage);
+
+    calculateReceiptGrandTotal();
+}
+
+function onTaxReceiptRemove(e) {
+    id = e.detail.tagify.DOM.originalInput.dataset.id;
+    $(`#r_item_tax_percentage_${id}`).val(0);
+
+    calculateReceiptGrandTotal();
+}
+
+function onTaxReceiptInput(e) {    
+    var value = e.detail.value;
+    var tagify = e.detail.tagify;
+
+    tagify.whitelist = null // reset the whitelist
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+    controller && controller.abort()
+    controller = new AbortController()
+
+    // show loading animation and hide the suggestions dropdown
+    tagify.loading(true).dropdown.hide()
+
+    fetch('/ajax/settings/taxes/search/' + value, {
+            signal: controller.signal
+        })
+        .then(RES => RES.json())
+        .then(function (newWhitelist) {
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+        })
+}
+
+function setTaxReceiptWhitelist(item, id)
+{
+    console.log(`Attempt to set tax whitelist.`);
+    console.log(item);
+
+    whitelist = [
+        {
+            'value': item.tax_id,
+            'label': `${item.tax_name} (${item.tax_percentage}%)`,
+            'name': item.tax_name,
+            'percentage': item.tax_percentage,
+        }
+    ]
+
+    tax = getReceiptItemEntry(id).tax
+    tax.whitelist = whitelist;
+    tax.addTags(whitelist[0].value);
+    
+    $(`#r_item_tax_${id}`).parents('td').find('span').html(whitelist[0].label);
+    $(`#r_item_tax_${id}`).parents('td').find('tag').attr('percentage', whitelist[0].percentage);
+    $(`#r_item_tax_percentage_${id}`).val(whitelist[0].percentage);
+    
+    console.log(tax);
 }

@@ -18,6 +18,7 @@ class AccountingSystem extends Model
         'po_box',
         'postal_code',
         'city',
+        'country',
         'mobile_number',
         'telephone_1',
         'telephone_2',
@@ -29,6 +30,7 @@ class AccountingSystem extends Model
         'contact_person_position',
         'contact_person_mobile_number',
         'business_type',
+        'settings_inventory_type',
     ];
 
     public function subscription()
