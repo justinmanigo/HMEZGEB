@@ -275,7 +275,7 @@ Route::group([
                 'as'=>'deposits.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/deposits', [DepositsController::class, 'index'])->name('bank.deposits');     
+                Route::redirect('/banking/deposits', '/customers/deposits');    
             });
         
             /**
