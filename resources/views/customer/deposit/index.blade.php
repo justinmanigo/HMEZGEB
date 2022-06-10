@@ -172,17 +172,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" method="post" enctype="multipart/form-data" action="{{route('deposits.deposits.store')}}">
+                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.deposits.store')}}" data-message="Successfully deposited receipts.">
                     @csrf
                     <div class="form-group row">
                         <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input id="d_bank_account" name='bank_account' required>
+                            <input id="d_bank_account" name='bank_account'>
+                            <p class="text-danger error-message error-message-bank_account" style="display:none"></p>
                         </div>
 
                         <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date" value="{{date('Y-m-d')}}"  required>
+                            <p class="text-danger error-message error-message-deposit_ticket_date" style="display:none"></p>
                         </div>
                     </div>
                     <hr>
@@ -233,6 +235,7 @@
                                 <label for="d_remark" class="col-sm-3 col-form-label">Remark</label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control" id="d_remark" name="remark"></textarea>
+                                    <p class="text-danger error-message error-message-remark error-message-is_deposited" style="display:none"></p>
                                 </div>
                             </div>
                         </div>

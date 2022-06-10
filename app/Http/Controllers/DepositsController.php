@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Customer\Deposit\StoreDepositRequest;
 use App\Models\Deposits;
 use App\Models\DepositItems;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
@@ -39,11 +40,9 @@ class DepositsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDepositRequest $request)
     {
-        $data = json_decode($request->bank_account);
-        $id = $data[0]->value;
-        $coa = ChartOfAccounts::find($id);
+        $coa = ChartOfAccounts::find($request->bank_account->value);
         $deposits = Deposits::create([
             'accounting_system_id' => session()->get('accounting_system_id'),
             'chart_of_account_id' => $coa->id,
@@ -69,7 +68,7 @@ class DepositsController extends Controller
             ]); 
         }
         
-        return back()->with('success', 'Successfully deposited.');
+        return true;
     }
 
     /**
