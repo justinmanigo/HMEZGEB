@@ -54,7 +54,7 @@ function createBillItemEntry(item = undefined)
             </div>
         </td>
         <td>
-            <input type="number" data-id="${bill_count}" id="b_item_quantity_${bill_count}" class="form-control b_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <input type="number" data-id="${bill_count}" id="b_item_quantity_${bill_count}" class="form-control b_item_quantity" name="quantity[]" placeholder="0" min="1" disabled required>
             <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>

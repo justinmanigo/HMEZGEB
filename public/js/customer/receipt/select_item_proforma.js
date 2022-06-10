@@ -54,7 +54,7 @@ function createProformaItemEntry(item = undefined)
             </div>
         </td>
         <td>
-            <input type="number" data-id="${proforma_count}" id="p_item_quantity_${proforma_count}" class="form-control p_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <input type="number" data-id="${proforma_count}" id="p_item_quantity_${proforma_count}" class="form-control p_item_quantity" name="quantity[]" placeholder="0" min="1" disabled required>
             <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>

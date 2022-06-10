@@ -54,7 +54,7 @@ function createReceiptItemEntry(item = undefined)
             </div>
         </td>
         <td>
-            <input type="number" data-id="${receipt_count}" id="r_item_quantity_${receipt_count}" class="form-control r_item_quantity" name="quantity[]" placeholder="0" min="1" disabled>
+            <input type="number" data-id="${receipt_count}" id="r_item_quantity_${receipt_count}" class="form-control r_item_quantity" name="quantity[]" placeholder="0" min="1" disabled required>
             <p class="error-message error-message-quantity text-danger" style="display:none"></p>
         </td>
         <td>
