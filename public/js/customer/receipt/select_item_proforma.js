@@ -158,10 +158,10 @@ function createProformaItemEntry(item = undefined)
     $(`#p_item_tax_${proforma_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
 
     // Set events of tagify instance.
-    tax_tagify.on('dropdown:show dropdown:updated', onTaxDropdownShow)
-    tax_tagify.on('dropdown:select', onTaxSelectSuggestion)
-    tax_tagify.on('input', onTaxInput)
-    tax_tagify.on('remove', onTaxRemove)
+    tax_tagify.on('dropdown:show dropdown:updated', onTaxProformaDropdownShow)
+    tax_tagify.on('dropdown:select', onTaxProformaSelectSuggestion)
+    tax_tagify.on('input', onTaxProformaInput)
+    tax_tagify.on('remove', onTaxProformaRemove)
 
     // Push item to array proforma_items
     let item_entry = {
@@ -287,7 +287,7 @@ function onProformaItemSelectSuggestion(e) {
     // Remove the disabled attribute of nearby .tagify element
     $(`#p_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
     
-    if(e.detail.data.tax_id != null) setTaxWhitelist(e.detail.data, id);
+    if(e.detail.data.tax_id != null) setTaxProformaWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     
@@ -338,25 +338,25 @@ function onProformaItemInput(e) {
 
 /** === Tagify Related Functions for Tax Items */
 
-function onTaxDropdownShow(e) {
+function onTaxProformaDropdownShow(e) {
     // var dropdownContentElm = e.detail.proforma_select_item_tagify.DOM.dropdown.content;
 }
 
-function onTaxSelectSuggestion(e) {
+function onTaxProformaSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#p_item_tax_percentage_${id}`).val(e.detail.data.percentage);
 
     calculateProformaGrandTotal();
 }
 
-function onTaxRemove(e) {
+function onTaxProformaRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#p_item_tax_percentage_${id}`).val(0);
 
     calculateProformaGrandTotal();
 }
 
-function onTaxInput(e) {    
+function onTaxProformaInput(e) {    
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -379,7 +379,7 @@ function onTaxInput(e) {
         })
 }
 
-function setTaxWhitelist(item, id)
+function setTaxProformaWhitelist(item, id)
 {
     console.log(`Attempt to set tax whitelist.`);
     console.log(item);

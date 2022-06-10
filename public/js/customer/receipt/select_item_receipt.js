@@ -158,10 +158,10 @@ function createReceiptItemEntry(item = undefined)
     $(`#r_item_tax_${receipt_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
 
     // Set events of tagify instance.
-    tax_tagify.on('dropdown:show dropdown:updated', onTaxDropdownShow)
-    tax_tagify.on('dropdown:select', onTaxSelectSuggestion)
-    tax_tagify.on('input', onTaxInput)
-    tax_tagify.on('remove', onTaxRemove)
+    tax_tagify.on('dropdown:show dropdown:updated', onTaxReceiptDropdownShow)
+    tax_tagify.on('dropdown:select', onTaxReceiptSelectSuggestion)
+    tax_tagify.on('input', onTaxReceiptInput)
+    tax_tagify.on('remove', onTaxReceiptRemove)
 
     // Push item to array receipt_items
     let item_entry = {
@@ -287,7 +287,7 @@ function onReceiptItemSelectSuggestion(e) {
     // Remove the disabled attribute of nearby .tagify element
     $(`#r_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
     
-    if(e.detail.data.tax_id != null) setTaxWhitelist(e.detail.data, id);
+    if(e.detail.data.tax_id != null) setTaxReceiptWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     
@@ -338,25 +338,25 @@ function onReceiptItemInput(e) {
 
 /** === Tagify Related Functions for Tax Items */
 
-function onTaxDropdownShow(e) {
+function onTaxReceiptDropdownShow(e) {
     // var dropdownContentElm = e.detail.receipt_select_item_tagify.DOM.dropdown.content;
 }
 
-function onTaxSelectSuggestion(e) {
+function onTaxReceiptSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#r_item_tax_percentage_${id}`).val(e.detail.data.percentage);
 
     calculateReceiptGrandTotal();
 }
 
-function onTaxRemove(e) {
+function onTaxReceiptRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#r_item_tax_percentage_${id}`).val(0);
 
     calculateReceiptGrandTotal();
 }
 
-function onTaxInput(e) {    
+function onTaxReceiptInput(e) {    
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -379,7 +379,7 @@ function onTaxInput(e) {
         })
 }
 
-function setTaxWhitelist(item, id)
+function setTaxReceiptWhitelist(item, id)
 {
     console.log(`Attempt to set tax whitelist.`);
     console.log(item);
