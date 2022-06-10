@@ -158,10 +158,10 @@ function createBillItemEntry(item = undefined)
     $(`#b_item_tax_${bill_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
 
     // Set events of tagify instance.
-    tax_tagify.on('dropdown:show dropdown:updated', onTaxDropdownShow)
-    tax_tagify.on('dropdown:select', onTaxSelectSuggestion)
-    tax_tagify.on('input', onTaxInput)
-    tax_tagify.on('remove', onTaxRemove)
+    tax_tagify.on('dropdown:show dropdown:updated', onTaxBillDropdownShow)
+    tax_tagify.on('dropdown:select', onTaxBillSelectSuggestion)
+    tax_tagify.on('input', onTaxBillInput)
+    tax_tagify.on('remove', onTaxBillRemove)
 
     // Push item to array bill_items
     let item_entry = {
@@ -338,25 +338,25 @@ function onBillItemInput(e) {
 
 /** === Tagify Related Functions for Tax Items */
 
-function onTaxDropdownShow(e) {
+function onTaxBillDropdownShow(e) {
     // var dropdownContentElm = e.detail.bill_select_item_tagify.DOM.dropdown.content;
 }
 
-function onTaxSelectSuggestion(e) {
+function onTaxBillSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#b_item_tax_percentage_${id}`).val(e.detail.data.percentage);
 
     calculateBillGrandTotal();
 }
 
-function onTaxRemove(e) {
+function onTaxBillRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#b_item_tax_percentage_${id}`).val(0);
 
     calculateBillGrandTotal();
 }
 
-function onTaxInput(e) {    
+function onTaxBillInput(e) {    
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -379,7 +379,7 @@ function onTaxInput(e) {
         })
 }
 
-function setTaxWhitelist(item, id)
+function setTaxBillWhitelist(item, id)
 {
     console.log(`Attempt to set tax whitelist.`);
     console.log(item);

@@ -158,10 +158,10 @@ function createPurchaseOrderItemEntry(item = undefined)
     $(`#po_item_tax_${purchaseorder_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
 
     // Set events of tagify instance.
-    tax_tagify.on('dropdown:show dropdown:updated', onTaxDropdownShow)
-    tax_tagify.on('dropdown:select', onTaxSelectSuggestion)
-    tax_tagify.on('input', onTaxInput)
-    tax_tagify.on('remove', onTaxRemove)
+    tax_tagify.on('dropdown:show dropdown:updated', onTaxPurchaseOrderDropdownShow)
+    tax_tagify.on('dropdown:select', onTaxPurchaseOrderSelectSuggestion)
+    tax_tagify.on('input', onTaxPurchaseOrderInput)
+    tax_tagify.on('remove', onTaxPurchaseOrderRemove)
 
     // Push item to array purchaseorder_items
     let item_entry = {
@@ -338,25 +338,25 @@ function onPurchaseOrderItemInput(e) {
 
 /** === Tagify Related Functions for Tax Items */
 
-function onTaxDropdownShow(e) {
+function onTaxPurchaseOrderDropdownShow(e) {
     // var dropdownContentElm = e.detail.purchaseorder_select_item_tagify.DOM.dropdown.content;
 }
 
-function onTaxSelectSuggestion(e) {
+function onTaxPurchaseOrderSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#po_item_tax_percentage_${id}`).val(e.detail.data.percentage);
 
     calculatePurchaseOrderGrandTotal();
 }
 
-function onTaxRemove(e) {
+function onTaxPurchaseOrderRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     $(`#po_item_tax_percentage_${id}`).val(0);
 
     calculatePurchaseOrderGrandTotal();
 }
 
-function onTaxInput(e) {    
+function onTaxPurchaseOrderInput(e) {    
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -379,7 +379,7 @@ function onTaxInput(e) {
         })
 }
 
-function setTaxWhitelist(item, id)
+function setTaxPurchaseOrderWhitelist(item, id)
 {
     console.log(`Attempt to set tax whitelist.`);
     console.log(item);
