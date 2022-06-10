@@ -154,6 +154,7 @@ Route::group([
                 /** AJAX Calls */
                 Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
                 Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);
+                Route::get('/ajax/get/receipts', [ReceiptController::class, 'ajaxGetPaidReceipt']);
             });
         
             /**
@@ -178,8 +179,11 @@ Route::group([
             Route::group([
                 'as'=>'deposits.'
             ], function(){ 
-                Route::get('/customers/deposits/', [DepositController::class, 'index']);
-                Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositController::class, 'ajaxSearchBank']);
+                Route::get('/customers/deposits/', [DepositsController::class, 'index']);
+                Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
+                // RESOURCE
+                Route::resource('/deposits', DepositsController::class);
+                
             });
         });
 
@@ -282,7 +286,7 @@ Route::group([
                 'as'=>'deposits.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/deposits', [DepositController::class, 'index'])->name('bank.deposits');
+                Route::redirect('/banking/deposits', '/customers/deposits');    
             });
         
             /**

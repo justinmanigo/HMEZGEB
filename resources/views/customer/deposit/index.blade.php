@@ -100,7 +100,7 @@
 @section('content')
 {{-- Button Group Navigation --}}
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-    <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit">
+    <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit" id="modal-deposit-button">
         <span class="icon text-white-50">
             <i class="fas fa-pen"></i>
         </span>
@@ -111,31 +111,49 @@
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
+        {{-- successs message --}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
                     <th>Deposit Date</th>
                     <th>Deposit ID</th>
                     <th>Account</th>
                     <th>Label</th>
                     <th>Amount</th>
+                    <th id="thead-actions">Actions</th>
+
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{-- <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                <span class="icon text-white-50">
+                <tbody >
+                    @foreach($deposits as $deposit)
+                        <tr>
+                            {{-- date format --}}
+                            <td>{{ date('Y-m-d', strtotime($deposit->deposit_ticket_date)) }}</td>
+                            <td>{{$deposit->id}}</td>
+                            <td>{{$deposit->chartOfAccount->account_name}}</td>
+                            <td><span class="badge badge-primary">Self</span></td>
+                            <td>{{$deposit->total_amount}}</td>
+                            <td>
+                                <a href="" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i>
-                                </span>
-                            </button> --}}
-                        </td>
-                        <td>03-Mar-2022</td>
-                        <td>DS003</td>
-                        <td>Commercial Bank</td>
-                        <td><span class="badge badge-primary">Self</span></td>
-                        <td>21,000.00</td>
-                    </tr>
+                                </button>
+                            </td>
+                        </tr>            
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -154,26 +172,25 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" method="post" enctype="multipart/form-data">
+                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.deposits.store')}}" data-message="Successfully deposited receipts.">
+                    @csrf
                     <div class="form-group row">
                         <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input class="col-8 col-lg-7" id="d_bank_account" name='bank_account'>
+                            <input id="d_bank_account" name='bank_account'>
+                            <p class="text-danger error-message error-message-bank_account" style="display:none"></p>
                         </div>
 
                         <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date">
+                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date" value="{{date('Y-m-d')}}"  required>
+                            <p class="text-danger error-message error-message-deposit_ticket_date" style="display:none"></p>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        {{-- Temporarily blank first column --}}
-                        <div class="col-lg-6 d-none d-lg-flex"></div>
                     </div>
                     <hr>
                     <h2>Undeposited Sales</h2>
                     <div class="table-responsive mb-3">
-                        <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
+                        <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead>
                                 <th>Date</th>
                                 <th>Customer Name</th>
@@ -182,31 +199,8 @@
                                 <th>Amount</th>
                                 <th id="thead-actions">Deposit?</th>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="table-item-content">01/31/2022</td>
-                                    <td class="table-item-content">PocketDevs</td>
-                                    <td class="table-item-content">Cash</td>
-                                    <td class="table-item-content"><label for="d_invoices_1483681825">1483681825</label></td>
-                                    <td class="table-item-content">Birr 1,000</td>
-                                    <td class="table-item-content">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="d_invoices_1483681825" name="invoices[]" value="">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="table-item-content">02/01/2022</td>
-                                    <td class="table-item-content">Fullstack HQ</td>
-                                    <td class="table-item-content">Cheque</td>
-                                    <td class="table-item-content"><label for="d_invoices_1483681826">1483681826</label></td>
-                                    <td class="table-item-content">Birr 2,000</td>
-                                    <td class="table-item-content">
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="d_invoices_1483681826" name="invoices[]" value="">
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody id="deposit-list">
+                                {{-- customer_deposit --}}
                             </tbody>
                         </table>
                     </div>
@@ -215,19 +209,19 @@
                             <tfoot>
                                 <th class="text-center">
                                     Total Cash<br>
-                                    <b>7,000.00</b>
+                                        <input type="text" class="form-control-plaintext text-center" id="d_total_cash" value="0.00" disabled>             
                                 </th>
                                 <th class="text-center">
                                     Total Cheque<br>
-                                    <b>2,500.00</b>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_cheque" value="0.00" disabled>
                                 </th>
                                 <th class="text-center">
                                     Total Other<br>
-                                    <b>0.00</b>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_other" value="0.00" disabled>
                                 </th>
                                 <th class="text-center">
                                     Total Deposit<br>
-                                    <b>9,500.00</b>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_deposit" name="total_amount" value="0.00" readonly>
                                 </th>
                             </tfoot>
                         </table>
@@ -241,6 +235,7 @@
                                 <label for="d_remark" class="col-sm-3 col-form-label">Remark</label>
                                 <div class="col-sm-9">
                                     <textarea class="form-control" id="d_remark" name="remark"></textarea>
+                                    <p class="text-danger error-message error-message-remark error-message-is_deposited" style="display:none"></p>
                                 </div>
                             </div>
                         </div>
@@ -249,7 +244,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" form="form-deposit">Save Deposit</button>
+                <button type="submit" class="btn btn-primary" form="form-deposit">Save Deposit</button>
             </div>
         </div>
     </div>

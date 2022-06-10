@@ -1,6 +1,6 @@
 function bankTagTemplate(tagData){
     return `
-        <tag title="${tagData.value}"
+        <tag title="${tagData.bank_account_number}"
                 contenteditable='false'
                 spellcheck='false'
                 tabIndex="-1"
@@ -8,7 +8,7 @@ function bankTagTemplate(tagData){
                 ${this.getAttributes(tagData)}>
             <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
             <div>
-                <span class='tagify__tag-text'>${tagData.name}</span>
+            <span class='tagify__tag-text'>${tagData.chart_of_account_no} - ${tagData.account_name}</span>
             </div>
         </tag>
     `

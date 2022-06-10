@@ -37,4 +37,9 @@ class ChartOfAccounts extends Model
         return $this->hasOne(ChartOfAccountCategory::class, 'id','chart_of_account_category_id');
     }
 
+    public function deposits()
+    {
+        return $this->hasMany(Deposits::class, 'chart_of_account_id','id');
+    }
+
 }

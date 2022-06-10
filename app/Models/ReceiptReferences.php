@@ -56,4 +56,9 @@ class ReceiptReferences extends Model
     {
         return $this->hasMany(ReceiptItem::class, 'receipt_reference_id', 'id');
     }
+
+    public function depositItems()
+    {
+        return $this->hasMany(DepositItems::class, 'receipt_reference_id','id');
+    }
 }
