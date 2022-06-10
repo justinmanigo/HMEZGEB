@@ -350,8 +350,10 @@ class ReceiptController extends Controller
         // Load relationships.
         $proforma->proforma;
         $proforma->receiptItems;
-        for($i = 0; $i < count($proforma->receiptItems); $i++)
+        for($i = 0; $i < count($proforma->receiptItems); $i++){
             $proforma->receiptItems[$i]->inventory;
+            $proforma->receiptItems[$i]->inventory->tax;
+        }
 
         // Return response
         return $proforma;
