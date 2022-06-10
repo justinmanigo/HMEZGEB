@@ -241,10 +241,11 @@ function calculateBillTaxTotal()
     
     tax_percentages = document.querySelectorAll(".b_item_tax_percentage");
     item_prices = document.querySelectorAll(".b_item_price")
+    item_quantities = document.querySelectorAll(".b_item_quantity")
 
     for(i = 0; i < item_prices.length; i++)
     {
-        tax_total += parseFloat(item_prices[i].value) * parseFloat(tax_percentages[i].value) / 100;
+        tax_total += (parseFloat(item_prices[i].value) * parseFloat(tax_percentages[i].value) / 100) * parseInt(item_quantities[i].value);
     }
 
     console.log("Tax Total: " + tax_total);
