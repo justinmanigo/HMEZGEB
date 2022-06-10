@@ -21,8 +21,8 @@ class CreateBillsTable extends Migration
             $table->date('due_date');
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
             $table->float('sub_total');
-            $table->float('discount')->nullable();;
-            $table->float('tax')->nullable();;
+            $table->float('discount')->nullable();
+            $table->float('tax')->nullable();
             $table->float('grand_total');
             $table->float('withholding')->nullable();
             $table->enum('withholding_status', [

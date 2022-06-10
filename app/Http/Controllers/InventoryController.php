@@ -183,9 +183,19 @@ class InventoryController extends Controller
     public function ajaxSearchInventory($query)
     {   
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $inventory = Inventory::select('id as value', 'item_name as name', 'sale_price',  'quantity', 'inventory_type')
-            ->where('accounting_system_id', $accounting_system_id)
-            ->where('item_name', 'LIKE', '%' . $query . '%')->get();
+        $inventory = Inventory::select(
+                'inventories.id as value', 
+                'inventories.item_name as name', 
+                'inventories.sale_price',  
+                'inventories.quantity', 
+                'inventories.inventory_type',
+                'inventories.tax_id',
+                'taxes.name as tax_name',
+                'taxes.percentage as tax_percentage',
+            )
+            ->leftJoin('taxes', 'inventories.tax_id', '=', 'taxes.id')
+            ->where('inventories.accounting_system_id', $accounting_system_id)
+            ->where('inventories.item_name', 'LIKE', '%' . $query . '%')->get();
         return $inventory;
     }
 }

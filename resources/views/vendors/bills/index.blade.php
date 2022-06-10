@@ -280,6 +280,7 @@ $(document).ready(function() {
 </script>
 
 <!-- Vendors -->
+<script src="/js/vendors/template_select_tax.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
 <script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>

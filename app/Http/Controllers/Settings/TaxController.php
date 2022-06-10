@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Settings\Taxes\Tax;
+use Illuminate\Support\Facades\DB;
 
 class TaxController extends Controller
 {
@@ -126,5 +127,23 @@ class TaxController extends Controller
     public function ajaxGetTax(Tax $tax)
     {
         return $tax;
+    }
+
+    /**
+     * 
+     */
+    public function ajaxSearchTax($query)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+
+        return Tax::select(
+                'id as value',
+                DB::raw('CONCAT(name, " (", percentage, "%)") as label'),
+                'name',
+                'percentage',
+            )
+            ->where('accounting_system_id', '=', $accounting_system_id)
+            ->where('name', 'like', '%' . $query . '%')
+            ->get();
     }
 }

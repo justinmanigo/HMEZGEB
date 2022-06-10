@@ -153,7 +153,7 @@ class ReceiptController extends Controller
             'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
             'discount' => '0.00', // Temporary discount
             'withholding' => '0.00', // Temporary Withholding
-            'tax' => '0.00', // Temporary Tax value
+            'tax' => $request->tax_total,
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received
@@ -231,6 +231,7 @@ class ReceiptController extends Controller
             'receipt_reference_id' => $reference->id,
             'due_date' => $request->due_date,
             'amount' => $request->grand_total,
+            'tax' => $request->tax_total,
             'terms_and_conditions' => $request->terms_and_conditions,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
@@ -349,8 +350,10 @@ class ReceiptController extends Controller
         // Load relationships.
         $proforma->proforma;
         $proforma->receiptItems;
-        for($i = 0; $i < count($proforma->receiptItems); $i++)
+        for($i = 0; $i < count($proforma->receiptItems); $i++){
             $proforma->receiptItems[$i]->inventory;
+            $proforma->receiptItems[$i]->inventory->tax;
+        }
 
         // Return response
         return $proforma;

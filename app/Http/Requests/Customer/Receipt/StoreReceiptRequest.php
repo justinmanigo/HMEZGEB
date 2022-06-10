@@ -58,6 +58,12 @@ class StoreReceiptRequest extends FormRequest
         for($i = 0; $i < count($this->item); $i++) {
             if($this->item[$i] != null) {
                 $item[] = DecodeTagifyField::run($this->item[$i]);
+                if($this->tax[$i] != null) {
+                    $tax[] = DecodeTagifyField::run($this->tax[$i]);
+                }
+                else {
+                    $tax[] = null;
+                }
             }
         }
 
@@ -65,6 +71,7 @@ class StoreReceiptRequest extends FormRequest
             'customer' => DecodeTagifyField::run($this->customer),
             'item' => $item,
             'proforma' => $this->proforma != null ? DecodeTagifyField::run($this->proforma) : null,
+            'tax' => $tax,
         ]);
     }
 
