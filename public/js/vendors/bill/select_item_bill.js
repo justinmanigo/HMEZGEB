@@ -287,7 +287,7 @@ function onBillItemSelectSuggestion(e) {
     // Remove the disabled attribute of nearby .tagify element
     $(`#b_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
     
-    if(e.detail.data.tax_id != null) setTaxWhitelist(e.detail.data, id);
+    if(e.detail.data.tax_id != null) setTaxBillWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
     
