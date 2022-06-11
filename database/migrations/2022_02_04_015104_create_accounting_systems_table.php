@@ -14,6 +14,7 @@ class CreateAccountingSystemsTable extends Migration
     public function up()
     {
         Schema::create('accounting_systems', function (Blueprint $table) {
+            // Main Fields
             $table->id();
             $table->foreignId('subscription_id')->nullable()->constrained();
             $table->enum('calendar_type', [
@@ -43,12 +44,14 @@ class CreateAccountingSystemsTable extends Migration
                 'PLC',
                 'Share Company'
             ]);
+            $table->timestamps();
+
+            // Settings Inventory Type
             $table->enum('settings_inventory_type', [
                 'average',
                 'lifo',
                 'fifo',
             ])->default('average');
-            $table->timestamps();
         });
     }
 
