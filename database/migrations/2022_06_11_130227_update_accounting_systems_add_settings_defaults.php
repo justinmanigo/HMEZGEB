@@ -36,6 +36,13 @@ class UpdateAccountingSystemsAddSettingsDefaults extends Migration
             $table->foreignId('bill_vat_receivable')->nullable()->references('id')->on('chart_of_accounts');
             $table->foreignId('bill_account_payable')->nullable()->references('id')->on('chart_of_accounts');
             $table->foreignId('bill_withholding')->nullable()->references('id')->on('chart_of_accounts');
+
+            $table->foreignId('payment_cash_on_hand')->nullable()->references('id')->on('chart_of_accounts');
+            $table->foreignId('payment_vat_receivable')->nullable()->references('id')->on('chart_of_accounts');
+            $table->foreignId('payment_account_payable')->nullable()->references('id')->on('chart_of_accounts');
+            $table->foreignId('payment_withholding')->nullable()->references('id')->on('chart_of_accounts');
+            $table->foreignId('payment_salary_payable')->nullable()->references('id')->on('chart_of_accounts');
+            $table->foreignId('payment_commission_payment')->nullable()->references('id')->on('chart_of_accounts');
         });
     }
 
