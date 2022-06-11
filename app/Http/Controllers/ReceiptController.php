@@ -22,6 +22,7 @@ use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreAdvanceRevenueRequest;
 use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
+use App\Models\ReceiptCashTransactions;
 use Illuminate\Support\Facades\Log;
 
 class ReceiptController extends Controller
@@ -130,6 +131,16 @@ class ReceiptController extends Controller
             }
         }
 
+        // Create Receipt Cash Transaction
+        if($request->total_amount_received > 0) {
+            ReceiptCashTransactions::create([
+                'accounting_system_id' => $accounting_system_id,
+                'receipt_reference_id' => $reference->id,
+                'for_receipt_reference_id' => $reference->id,
+                'amount_received' => $request->total_amount_received,
+            ]);
+        }
+
         
         //  image upload and save to database 
         // if($request->hasFile('attachment'))
@@ -156,7 +167,8 @@ class ReceiptController extends Controller
             'tax' => $request->tax_total,
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
-            'total_amount_received' => $request->total_amount_received
+            'total_amount_received' => $request->total_amount_received,
+            'chart_of_account_id' => null, // TODO: Add later
         ]);
     }
 
@@ -183,6 +195,7 @@ class ReceiptController extends Controller
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', $accounting_system_id);
         
         for($i = 0; $i < count($request->is_paid); $i++)
         {
@@ -192,6 +205,13 @@ class ReceiptController extends Controller
             $receipt->total_amount_received += $request->amount_paid[$i];
             $receipt->save();
 
+            ReceiptCashTransactions::create([
+                'accounting_system_id' => $accounting_system_id,
+                'receipt_reference_id' => $reference->id,
+                'for_receipt_reference_id' => $request->receipt_reference_id[$i],
+                'amount_received' => $request->amount_paid[$i],
+            ]);
+
             if($receipt->total_amount_received >= $receipt->grand_total) {
                 UpdateReceiptStatus::run($request->receipt_reference_id[$i], 'paid');
             }
@@ -200,7 +220,6 @@ class ReceiptController extends Controller
             }
         }
 
-        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', $accounting_system_id);
 
         return CreditReceipts::create([
             'receipt_reference_id' => $reference->id,
@@ -359,7 +378,9 @@ class ReceiptController extends Controller
         return $proforma;
     }
 
-
+    /**
+     * Deprecated function.
+     */
     public function ajaxGetPaidReceipt()
     {
         $receipts = ReceiptReferences::select(
@@ -376,5 +397,24 @@ class ReceiptController extends Controller
             ->where('receipt_references.is_deposited', 'no')
             ->get();
         return $receipts;
+    }
+
+    public function ajaxGetReceiptCashTransactions()
+    {
+        $cash_transactions = ReceiptCashTransactions::select(
+                'receipt_cash_transactions.id as value',
+                'receipt_references.date',
+                'receipt_cash_transactions.amount_received as total_amount_received',
+                'receipts.payment_method',
+                'customers.name as customer_name',
+            )
+            ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_cash_transactions.for_receipt_reference_id')
+            ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
+            ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+            ->where('receipt_cash_transactions.is_deposited', 'no')
+            ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+            ->get();
+
+        return $cash_transactions;
     }
 }
