@@ -33,7 +33,7 @@
             <!--Receipt content--->
             <div class="tab-pane fade show active receipt">                
                 <section>
-                    <form>
+                    {{-- <form>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Fs#-</span>
@@ -45,7 +45,7 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                 <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
-                    </form>   
+                    </form>    --}}
                     <form class="my-3">
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -119,7 +119,7 @@
             <!--Advance Receipt content--->
             <div class=" tab-pane fade advance_receipt">
                 <section>
-                    <form>
+                    {{-- <form>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">AdvRec#-</span>
@@ -131,7 +131,7 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                 <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
-                    </form>   
+                    </form>    --}}
                     <form class="my-3">
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -164,7 +164,7 @@
             <!--Credit Receipt content--->
             <div class=" tab-pane fade credit_receipt">
                 <section>
-                    <form>
+                    {{-- <form>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">CrR#-</span>
@@ -176,7 +176,7 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                 <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
-                    </form>   
+                    </form>    --}}
                     <form class="my-3">
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -209,7 +209,7 @@
             <!--bill content--->
             <div class=" tab-pane fade bill">
             <section>
-                    <form>
+                    {{-- <form>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Bill#-</span>
@@ -221,7 +221,7 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                 <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
-                    </form>   
+                    </form>    --}}
                     <form class="my-3">
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -294,7 +294,7 @@
              <!--payment content--->
             <div class=" tab-pane fade payment">
             <section>
-                    <form>
+                    {{-- <form>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">PV#-</span>
@@ -306,7 +306,7 @@
                                 <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                 <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
-                    </form>   
+                    </form>    --}}
                     <form class="my-3">
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
