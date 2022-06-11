@@ -59,6 +59,8 @@ use App\Http\Controllers\Settings\CompanyInfoController;
 
 // Notifications
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Settings\DefaultsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -591,7 +593,19 @@ Route::group([
                 'as' => 'defaults.'
             ], function(){
                 // HTTP
-                Route::view('/settings/defaults', 'settings.defaults.index')->name('index');
+                Route::get('/settings/defaults', [DefaultsController::class, 'index'])->name('index');
+
+                // AJAX
+                Route::group([
+                    'as' => 'ajax.',
+                    'prefix' => 'ajax/settings/defaults',
+                ], function(){
+                    Route::post('/receipts', [DefaultsController::class, 'updateReceipts'])->name('updateReceipts');
+                    Route::post('/advance-receipts', [DefaultsController::class, 'updateAdvanceReceipts'])->name('updateAdvanceReceipts');
+                    Route::post('/credit-receipts', [DefaultsController::class, 'updateCreditReceipts'])->name('updateCreditReceipts');
+                    Route::post('/bills', [DefaultsController::class, 'updateBills'])->name('updateBills');
+                    Route::post('/payments' ,[DefaultsController::class, 'updatePayments'])->name('updatePayments');
+                });
             });
         });
     });
