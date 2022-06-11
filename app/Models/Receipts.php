@@ -22,7 +22,8 @@ class Receipts extends Model
         'remark',
         'attachment',
         'payment_method',
-        'total_amount_received'
+        'total_amount_received',
+        'chart_of_account_id',
 
     ];
     public function receiptReference()

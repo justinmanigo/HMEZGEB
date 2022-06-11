@@ -15,13 +15,14 @@ class CreateReceiptCashTransactionsTable extends Migration
     {
         Schema::create('receipt_cash_transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('receipt_reference_id');
-            $table->unsignedBigInteger('for_receipt_reference_id');
+            $table->foreignId('accounting_system_id')->constrained();
+            $table->foreignId('receipt_reference_id')->constrained();
+            $table->unsignedBigInteger('for_receipt_reference_id')->nullable();
             $table->float('amount_received');
-            $table->enum('is_deposited',['yes','no']);
-            $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
-            $table->foreign('for_receipt_reference_id')->references('id')->on('receipt_references');
+            $table->enum('is_deposited',['yes','no'])->default('no');
             $table->timestamps();
+
+            $table->foreign('for_receipt_reference_id')->references('id')->on('receipt_references');
         });
     }
 
