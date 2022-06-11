@@ -36,25 +36,32 @@ class AccountingSystem extends Model
         'settings_inventory_type',
 
         // Settings Defaults
-        'receipt_default_cash_on_hand',
-        'receipt_default_vat_payable',
-        'receipt_default_sales',
-        'receipt_default_account_receivable',
-        'receipt_default_sales_discount',
-        'receipt_default_withholding',
+        'receipt_cash_on_hand',
+        'receipt_vat_payable',
+        'receipt_sales',
+        'receipt_account_receivable',
+        'receipt_sales_discount',
+        'receipt_withholding',
 
-        'advance_receipt_default_cash_on_hand',
-        'advance_receipt_default_advance_payment',
+        'advance_receipt_cash_on_hand',
+        'advance_receipt_advance_payment',
 
-        'credit_receipt_default_cash_on_hand',
-        'credit_receipt_default_account_receivable',
+        'credit_receipt_cash_on_hand',
+        'credit_receipt_account_receivable',
 
-        'bill_default_cash_on_hand',
-        'bill_default_items_for_sale',
-        'bill_default_freight_charge_expense',
-        'bill_default_vat_receivable',
-        'bill_default_account_payable',
-        'bill_default_withholding',
+        'bill_cash_on_hand',
+        'bill_items_for_sale',
+        'bill_freight_charge_expense',
+        'bill_vat_receivable',
+        'bill_account_payable',
+        'bill_withholding',
+
+        'payment_cash_on_hand',
+        'payment_vat_receivable',
+        'payment_account_payable',
+        'payment_withholding',
+        'payment_salary_payable',
+        'payment_commission_payment',
 
     ];
 
