@@ -16,11 +16,11 @@ class CreateDepositItemsTable extends Migration
         Schema::create('deposit_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('deposit_id');
-            $table->unsignedBigInteger('receipt_reference_id');
+            $table->unsignedBigInteger('receipt_cash_transaction_id');
             $table->timestamps();
 
             $table->foreign('deposit_id')->references('id')->on('deposits');
-            $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
+            $table->foreign('receipt_cash_transaction_id')->references('id')->on('receipt_cash_transactions');
         });
     }
 

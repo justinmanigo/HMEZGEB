@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Customer\Deposit\StoreDepositRequest;
 use App\Models\Deposits;
 use App\Models\DepositItems;
+use App\Models\ReceiptCashTransactions;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\ReceiptReferences;
 use Illuminate\Support\Facades\Log;
@@ -53,19 +54,14 @@ class DepositsController extends Controller
         ]);
         for($i = 0; $i < count($request->is_deposited); $i++)
         {
-            // find the receipt reference using is_deposited value (receipt_reference_id)
-            $receipts = ReceiptReferences::find($request->is_deposited[$i]);
-            // // add to coa balance
-            // $coa->current_balance += $receipts->receipt->total_amount_received;
-            // $coa->save();
-            // update receipt reference is_deposited
-            $receipts->is_deposited = "yes";
-            $receipts->save();
-            // add to deposit items
-            $depositItems = DepositItems::create([
-                'receipt_reference_id' => $request->is_deposited[$i],
+            $cash_transaction = ReceiptCashTransactions::find($request->is_deposited[$i]);
+            $cash_transaction->is_deposited = 'yes';
+            $cash_transaction->save();
+
+            $deposit_item = DepositItems::create([
                 'deposit_id' => $deposits->id,
-            ]); 
+                'receipt_cash_transaction_id' => $request->is_deposited[$i],
+            ]);
         }
         
         return true;

@@ -11,7 +11,7 @@ class DepositItems extends Model
 
     protected $fillable = [
         'deposit_id',
-        'receipt_reference_id',
+        'receipt_cash_transaction_id',
     ];
 
     public function deposit()

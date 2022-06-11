@@ -154,7 +154,7 @@ Route::group([
                 /** AJAX Calls */
                 Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
                 Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);
-                Route::get('/ajax/get/receipts', [ReceiptController::class, 'ajaxGetPaidReceipt']);
+                Route::get('/ajax/get/receipts', [ReceiptController::class, 'ajaxGetReceiptCashTransactions']);
             });
         
             /**
