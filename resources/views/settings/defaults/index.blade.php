@@ -149,7 +149,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Fs#-</span>
                             </div>
-                            <input type="text" class="form-control tagify-defaults" placeholder="Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
+                            <input disabled type="text" class="form-control tagify-defaults" placeholder="Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="form-group">
                                 <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button>
@@ -162,37 +162,37 @@
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="receipt_cash_on_hand">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="receipt_cash_on_hand">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">VAT Payable:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="receipt_vat_payable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="receipt_vat_payable">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Sales:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="receipt_sales">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="receipt_sales">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Account Receivable:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="receipt_account_receivable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="receipt_account_receivable">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Sales Discount:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="receipt_sales_discount">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="receipt_sales_discount">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Withholding:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="receipt_withholding">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="receipt_withholding">
                                 </div>
                         </div>
                         <div class="form-group">
@@ -212,7 +212,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">AdvRec#-</span>
                             </div>
-                            <input type="text" class="form-control tagify-defaults" placeholder="Advance Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
+                            <input disabled type="text" class="form-control tagify-defaults" placeholder="Advance Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="form-group">
                                 <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button>
@@ -225,13 +225,13 @@
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="advance_receipt_cash_on_hand">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="advance_receipt_cash_on_hand">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Advance Payment:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="advance_receipt_advance_payment">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="advance_receipt_advance_payment">
                                 </div>
                         </div>
                         <div class="form-group">
@@ -250,7 +250,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">CrR#-</span>
                             </div>
-                            <input type="text" class="form-control tagify-defaults" placeholder="Credit Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
+                            <input disabled type="text" class="form-control tagify-defaults" placeholder="Credit Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="form-group">
                                 <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button>
@@ -263,13 +263,13 @@
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="credit_receipt_cash_on_hand">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="credit_receipt_cash_on_hand">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Account Receivable</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="credit_receipt_account_receivable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="credit_receipt_account_receivable">
                                 </div>
                         </div>
                         <div class="form-group">
@@ -288,7 +288,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Bill#-</span>
                             </div>
-                            <input type="text" class="form-control tagify-defaults" placeholder="Bill Reference Number" aria-label="Username" aria-describedby="basic-addon1">
+                            <input disabled type="text" class="form-control tagify-defaults" placeholder="Bill Reference Number" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="form-group">
                                 <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button>
@@ -301,37 +301,37 @@
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="bill_cash_on_hand">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="bill_cash_on_hand">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Items for Sale</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="bill_items_for_sale">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="bill_items_for_sale">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Freight Charge Expense:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="bill_freight_charge_expense">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="bill_freight_charge_expense">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">VAT Receivable:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="bill_vat_receivable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="bill_vat_receivable">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Account Payable:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="bill_account_payable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="bill_account_payable">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Withholding:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="bill_withholding">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="bill_withholding">
                                 </div>
                         </div>
                         <div class="form-group">
@@ -350,7 +350,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">PV#-</span>
                             </div>
-                            <input type="text" class="form-control tagify-defaults" placeholder="Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
+                            <input disabled type="text" class="form-control tagify-defaults" placeholder="Receipt Reference Number" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="form-group">
                                 <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button>
@@ -363,37 +363,37 @@
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="payment_cash_on_hand">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="payment_cash_on_hand">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">VAT Receivable:</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="payment_vat_receivable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="payment_vat_receivable">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Account Payable</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="payment_account_payable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="payment_account_payable">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Withholding</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="payment_withholding">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="payment_withholding">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Salary Payable</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="payment_salary_payable">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="payment_salary_payable">
                                 </div>
                         </div>
                         <div class="form-group row">
                             <label  class="col-md-2 col-form-label">Commission Payment</label>
                                 <div class="col-md-10">
-                                    <input type="text" class="form-control tagify-defaults" name="payment_commission_payment">
+                                    <input disabled type="text" class="form-control tagify-defaults" name="payment_commission_payment">
                                 </div>
                         </div>
                         <div class="form-group">

@@ -39,6 +39,7 @@ request_defaults.always(function() {
     
     request.always(function() {
         tagify_defaults_elms.forEach(function(elm){
+            elm.disabled = false;
             console.log(elm.name);
             if(defaults_data[elm.name] != undefined) {
                 var tagify_defaults = defaults_data[elm.name];
