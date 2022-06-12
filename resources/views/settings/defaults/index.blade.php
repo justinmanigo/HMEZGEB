@@ -157,7 +157,7 @@
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
                     </form>    --}}
-                    <form class="my-3 ajax-submit-updated" method="post" action="{{ url('/ajax/settings/defaults/receipts') }}" data-message="Changes saved.">
+                    <form id="form-defaults-receipts" class="my-3 ajax-submit-updated" data-noreload="1" method="post" action="{{ url('/ajax/settings/defaults/receipts') }}" data-message="Changes saved.">
                         @csrf
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -197,7 +197,7 @@
                         </div>
                         <div class="form-group">
                             {{-- <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button> --}}
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            <button type="submit" class="btn btn-primary btn-sm" form="form-defaults-receipts">Save</button>
                             <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                         <div>
                     </form>
@@ -220,7 +220,7 @@
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
                     </form>    --}}
-                    <form class="my-3 ajax-submit-updated" method="post" action="{{ url('/ajax/settings/defaults/advance-receipts') }}" data-message="Changes saved.">
+                    <form id="form-defaults-advance-receipts" class="my-3 ajax-submit-updated" data-noreload="1" method="post" action="{{ url('/ajax/settings/defaults/advance-receipts') }}" data-message="Changes saved.">
                         @csrf
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -236,7 +236,7 @@
                         </div>
                         <div class="form-group">
                             {{-- <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button> --}}
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            <button type="submit" class="btn btn-primary btn-sm" form="form-defaults-advance-receipts">Save</button>
                             <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                         <div>
                     </form>
@@ -258,7 +258,7 @@
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
                     </form>    --}}
-                    <form class="my-3 ajax-submit-updated" method="post" action="{{ url('/ajax/settings/defaults/credit-receipts') }}" data-message="Changes saved.">
+                    <form id="form-defaults-credit-receipts" class="my-3 ajax-submit-updated" data-noreload="1" method="post" action="{{ url('/ajax/settings/defaults/credit-receipts') }}" data-message="Changes saved.">
                         @csrf
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -274,7 +274,7 @@
                         </div>
                         <div class="form-group">
                             {{-- <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button> --}}
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            <button type="submit" class="btn btn-primary btn-sm" form="form-defaults-credit-receipts">Save</button>
                             <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                         <div>
                     </form>
@@ -296,7 +296,7 @@
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
                     </form>    --}}
-                    <form class="my-3 ajax-submit-updated" method="post" action="{{ url('/ajax/settings/defaults/bills') }}" data-message="Changes saved.">
+                    <form id="form-defaults-bills" class="my-3 ajax-submit-updated" data-noreload="1" method="post" action="{{ url('/ajax/settings/defaults/bills') }}" data-message="Changes saved.">
                         @csrf
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -336,7 +336,7 @@
                         </div>
                         <div class="form-group">
                             {{-- <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button> --}}
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            <button type="submit" class="btn btn-primary btn-sm" form="form-defaults-bills">Save</button>
                             <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                         <div>
                     </form>
@@ -358,7 +358,7 @@
                                 <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                             <div>
                     </form>    --}}
-                    <form class="my-3 ajax-submit-updated" method="post" action="{{ url('/ajax/settings/defaults/payments') }}" data-message="Changes saved.">
+                    <form id="form-defaults-payments" class="my-3 ajax-submit-updated" data-noreload="1" method="post" action="{{ url('/ajax/settings/defaults/payments') }}" data-message="Changes saved.">
                         @csrf
                         <div class="form-group row">
                             <label class="col-md-2 col-form-label">Cash on Hand:</label>
@@ -398,7 +398,7 @@
                         </div>
                         <div class="form-group">
                             {{-- <button type="submit" class="btn btn-secondary btn-sm">Set as Default</button> --}}
-                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                            <button type="submit" class="btn btn-primary btn-sm" form="form-defaults-payments">Save</button>
                             <button type="button" class="btn btn-danger btn-sm">Cancel</button>
                         <div>
                     </form>
