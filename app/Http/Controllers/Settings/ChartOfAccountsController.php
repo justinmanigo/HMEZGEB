@@ -212,6 +212,7 @@ class ChartOfAccountsController extends Controller
         $coa = ChartOfAccounts::select(
                 'chart_of_accounts.id as value',
                 'chart_of_accounts.chart_of_account_no',
+                DB::raw('CONCAT(chart_of_accounts.chart_of_account_no, " - ", chart_of_accounts.account_name) as label'),
                 'chart_of_accounts.account_name',
                 // 'chart_of_account_categories.id',
                 'chart_of_account_categories.category',
