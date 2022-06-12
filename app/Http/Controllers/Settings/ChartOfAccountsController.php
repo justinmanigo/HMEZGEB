@@ -227,7 +227,7 @@ class ChartOfAccountsController extends Controller
                 ->orWhere('chart_of_account_categories.type', 'LIKE', '%' . $query . '%');
         }
 
-        return $coa->limit(5)->get();
+        return $coa->get();
     }
 
     function ajaxGetCOAForBeginningBalance()
