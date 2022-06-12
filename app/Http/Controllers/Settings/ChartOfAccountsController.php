@@ -207,9 +207,9 @@ class ChartOfAccountsController extends Controller
 
     /**====================== */
 
-    function ajaxSearchCOA($query)
+    function ajaxSearchCOA($query = null)
     {
-        return ChartOfAccounts::select(
+        $coa = ChartOfAccounts::select(
                 'chart_of_accounts.id as value',
                 'chart_of_accounts.chart_of_account_no',
                 'chart_of_accounts.account_name',
@@ -218,11 +218,15 @@ class ChartOfAccountsController extends Controller
                 'chart_of_account_categories.type',
                 'chart_of_account_categories.normal_balance',
             )
-            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id')
-            ->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
-            ->orWhere('chart_of_account_categories.category', 'LIKE', '%' . $query . '%')
-            ->orWhere('chart_of_account_categories.type', 'LIKE', '%' . $query . '%')
-            ->get();
+            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id');
+
+        if($query) {
+            $coa->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
+                ->orWhere('chart_of_account_categories.category', 'LIKE', '%' . $query . '%')
+                ->orWhere('chart_of_account_categories.type', 'LIKE', '%' . $query . '%');
+        }
+
+        return $coa->limit(5)->get();
     }
 
     function ajaxGetCOAForBeginningBalance()
