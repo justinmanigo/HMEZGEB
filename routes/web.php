@@ -600,6 +600,8 @@ Route::group([
                     'as' => 'ajax.',
                     'prefix' => 'ajax/settings/defaults',
                 ], function(){
+                    Route::get('/', [DefaultsController::class, 'getDefaults'])->name('getDefaults');
+
                     Route::post('/receipts', [DefaultsController::class, 'updateReceipts'])->name('updateReceipts');
                     Route::post('/advance-receipts', [DefaultsController::class, 'updateAdvanceReceipts'])->name('updateAdvanceReceipts');
                     Route::post('/credit-receipts', [DefaultsController::class, 'updateCreditReceipts'])->name('updateCreditReceipts');

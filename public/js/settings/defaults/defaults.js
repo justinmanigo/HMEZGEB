@@ -2,53 +2,77 @@ var controller;
 
 var tagify_defaults_elms = document.querySelectorAll('.tagify-defaults');
 var tagify_defaults = [];
+var defaults_data;
 
 var coa_whitelist = [];
-var request = $.ajax({
-    url: '/ajax/settings/coa/search/',
+
+var request_defaults = $.ajax({
+    url: '/ajax/settings/defaults',
     type: 'GET',
-    dataType: 'json'
+    dataType: 'json',
 });
 
-request.done(function(data) {
+request_defaults.done(function(data) {
     console.log(data);
-    coa_whitelist = data;
+    defaults_data = data;
 });
 
-request.fail(function(jqXHR, textStatus) {
+request_defaults.fail(function(jqXHR, textStatus) {
     console.log('Request failed: ' + textStatus);
 });
 
-request.always(function() {
-    tagify_defaults_elms.forEach(function(elm){
-
-        var tagify = new Tagify(elm, {
-            tagTextProp: 'label', // very important since a custom template is used with this property as text
-            enforceWhitelist: true,
-            mode : "select",
-            skipInvalid: false, // do not remporarily add invalid tags
-            dropdown: {
-                closeOnSelect: true,
-                enabled: 0,
-                classname: 'customers-list',
-                searchKeys: ['label']  // very important to set by which keys to search for suggesttions when typing
-            },
-            templates: {
-                tag: coaTagTemplate,
-                dropdownItem: coaSuggestionItemTemplate
-            },
-            whitelist: coa_whitelist,
-        });
-    
-        tagify.on('dropdown:show dropdown:updated', onDefaultsDropdownShow);
-        tagify.on('dropdown:select', onDefaultsSelectSuggestion);
-        tagify.on('input', onDefaultsInput);
-        tagify.on('remove', onDefaultsRemove);
-    
-        tagify_defaults.push(tagify);
-    
+request_defaults.always(function() {
+    var request = $.ajax({
+        url: '/ajax/settings/coa/search/',
+        type: 'GET',
+        dataType: 'json'
     });
-})
+    
+    request.done(function(data) {
+        console.log(data);
+        coa_whitelist = data;
+    });
+    
+    request.fail(function(jqXHR, textStatus) {
+        console.log('Request failed: ' + textStatus);
+    });
+    
+    request.always(function() {
+        tagify_defaults_elms.forEach(function(elm){
+            console.log(elm.name);
+            if(defaults_data[elm.name] != undefined) {
+                var tagify_defaults = defaults_data[elm.name];
+                elm.value = `${tagify_defaults.chart_of_account_no} - ${tagify_defaults.account_name}`;
+            }
+    
+            var tagify = new Tagify(elm, {
+                tagTextProp: 'label', // very important since a custom template is used with this property as text
+                enforceWhitelist: true,
+                mode : "select",
+                skipInvalid: false, // do not remporarily add invalid tags
+                dropdown: {
+                    closeOnSelect: true,
+                    enabled: 0,
+                    classname: 'customers-list',
+                    searchKeys: ['label']  // very important to set by which keys to search for suggesttions when typing
+                },
+                templates: {
+                    tag: coaTagTemplate,
+                    dropdownItem: coaSuggestionItemTemplate
+                },
+                whitelist: coa_whitelist,
+            });
+        
+            tagify.on('dropdown:show dropdown:updated', onDefaultsDropdownShow);
+            tagify.on('dropdown:select', onDefaultsSelectSuggestion);
+            tagify.on('input', onDefaultsInput);
+            tagify.on('remove', onDefaultsRemove);
+        
+            window['tagify_defaults'].push(tagify);
+        
+        });
+    });
+});
 
 function onDefaultsDropdownShow(e) {
     var tagify = e.detail.tagify;

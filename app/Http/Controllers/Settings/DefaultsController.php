@@ -18,6 +18,39 @@ class DefaultsController extends Controller
         return view('settings.defaults.index');
     }
 
+    public function getDefaults()
+    {
+        $accounting_system = AccountingSystem::find(session('accounting_system_id'));
+        $accounting_system->receiptCashOnHand;
+        $accounting_system->receiptVatPayable;
+        $accounting_system->receiptSales;
+        $accounting_system->receiptAccountReceivable;
+        $accounting_system->receiptSalesDiscount;
+        $accounting_system->receiptWithholding;
+
+        $accounting_system->advanceReceiptCashOnHand;
+        $accounting_system->advanceReceiptAdvancePayment;
+
+        $accounting_system->creditReceiptCashOnHand;
+        $accounting_system->creditReceiptAccountReceivable;
+
+        $accounting_system->billCashOnHand;
+        $accounting_system->billItemsForSale;
+        $accounting_system->billFreightChargeExpense;
+        $accounting_system->billVatReceivable;
+        $accounting_system->billAccountPayable;
+        $accounting_system->billWithholding;
+
+        $accounting_system->paymentCashOnHand;
+        $accounting_system->paymentVatReceivable;
+        $accounting_system->paymentAccountPayable;
+        $accounting_system->paymentWithholding;
+        $accounting_system->paymentSalaryPayable;
+        $accounting_system->paymentCommissionPayment;
+
+        return $accounting_system;
+    }
+
     public function updateReceipts(UpdateReceiptDefaultsRequest $request)
     {
         return AccountingSystem::find($request->accounting_system_id)->update([
