@@ -34,7 +34,15 @@ $(".ajax-submit-updated").submit(function(e){
         // Remove query string on currentLink
         currentLink = currentLink.split("?");
         // Redirect using currentLink with new query string
-        window.location.href = `${currentLink[0]}?success=${e.target.dataset.message}`;
+        if(e.target.dataset.noreload != undefined)
+        {
+            $(`#${e.target.id}`).prepend(generateAlert(e.target.dataset.message, "success"));
+        }
+        else
+        {
+            window.location.href = `${currentLink[0]}?success=${e.target.dataset.message}`;
+        }
+
     });
 
     // If request has errors (e.g. validation errors).
@@ -97,4 +105,16 @@ function enableSubmitButtonUpdated(btn) {
 
 function disableSubmitButtonUpdated(btn) {
     btn.attr('disabled', true);
+}
+
+function generateAlert(message, bgColor) {
+    let alert = `
+        <div class="alert alert-${bgColor} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    return alert;
 }

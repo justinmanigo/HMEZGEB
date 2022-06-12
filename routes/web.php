@@ -59,6 +59,8 @@ use App\Http\Controllers\Settings\CompanyInfoController;
 
 // Notifications
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Settings\DefaultsController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -566,7 +568,7 @@ Route::group([
                 Route::post('/settings/coa', [ChartOfAccountsController::class, 'store'])->name('store');
                 
                 // AJAX
-                Route::get('/ajax/settings/coa/search/{query}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
+                Route::get('/ajax/settings/coa/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
                 Route::get('/ajax/settings/coa_categories/search', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa_categories/search/{query}', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa/beginning-balance', [ChartOfAccountsController::class, 'ajaxGetCOAForBeginningBalance']);
@@ -591,7 +593,21 @@ Route::group([
                 'as' => 'defaults.'
             ], function(){
                 // HTTP
-                Route::view('/settings/defaults', 'settings.defaults.index')->name('index');
+                Route::get('/settings/defaults', [DefaultsController::class, 'index'])->name('index');
+
+                // AJAX
+                Route::group([
+                    'as' => 'ajax.',
+                    'prefix' => 'ajax/settings/defaults',
+                ], function(){
+                    Route::get('/', [DefaultsController::class, 'getDefaults'])->name('getDefaults');
+
+                    Route::post('/receipts', [DefaultsController::class, 'updateReceipts'])->name('updateReceipts');
+                    Route::post('/advance-receipts', [DefaultsController::class, 'updateAdvanceReceipts'])->name('updateAdvanceReceipts');
+                    Route::post('/credit-receipts', [DefaultsController::class, 'updateCreditReceipts'])->name('updateCreditReceipts');
+                    Route::post('/bills', [DefaultsController::class, 'updateBills'])->name('updateBills');
+                    Route::post('/payments' ,[DefaultsController::class, 'updatePayments'])->name('updatePayments');
+                });
             });
         });
     });
