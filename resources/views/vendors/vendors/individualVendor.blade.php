@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="container">
-    <div class="d-sm-flex align-items-start justify-content-between mb-2">
+    <div class="mb-2">
         <h1>{{$vendor->name}}</h1>
         <!--- card for account payable--->
         <div class="col-xl-3 col-md-6 mb-4 border-1">
@@ -55,16 +55,18 @@
                     <label for="#">Country</label>
                     <input type="text" value="{{$vendor->country}}" name="country" class="form-control">
                 </div>
+
                 <div class="col">
-                    <label for="#">Mobile number</label>
-                    <input type="text" value="{{$vendor->mobile_number}}" name="mobile_number" class="form-control">
+                    <label for="#">Website</label>
+                    <input type="text" class="form-control" name="website" value="{{$vendor->website}}">
                 </div>
             </div>
             <div class="row my-2">
                 <div class="col">
-                    <label for="#">Contact Person</label>
-                    <input type="text" class="form-control" name="contact_person" value="{{$vendor->contact_person}}">
+                    <label for="#">Email</label>
+                    <input type="email" class="form-control" name="email" value="{{$vendor->email}}">
                 </div>
+               
                 <div class="col-3">
                     <label for="#">Phone one</label>
                     <input type="text" class="form-control" name="telephone_one" value="{{$vendor->telephone_one}}">
@@ -84,14 +86,15 @@
                     <input type="text" class="form-control" name="fax" value="{{$vendor->fax}}">
                 </div>
             </div>
-            <div class="row my-2">
+            <h5 class="my-3">Contact Person</h5>
+            <div class="row my-2">  
                 <div class="col">
-                    <label for="#">Email</label>
-                    <input type="email" class="form-control" name="email" value="{{$vendor->email}}">
+                    <label for="#">Name</label>
+                    <input type="text" class="form-control" name="contact_person" value="{{$vendor->contact_person}}">
                 </div>
                 <div class="col">
-                    <label for="#">Website</label>
-                    <input type="text" class="form-control" name="website" value="{{$vendor->website}}">
+                    <label for="#">Mobile number</label>
+                    <input type="text" value="{{$vendor->mobile_number}}" name="mobile_number" class="form-control">
                 </div>
             </div>    
             <div class="row form-group mt-4">
@@ -125,8 +128,11 @@
                 </div>
             </div>
             <div class="row  mt-3 d-flex justify-content-between">
-                    <button class="btn btn-danger mr-3 " type="button" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                    <button class="btn btn-secondary mx-1" type="submit">Update Vendor</button>
+                    <div>
+                        <button class="btn btn-danger mr-3 " type="button" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        <a href="{{ route('vendors.') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                    <button class="btn btn-primary mx-1" type="submit">Update Vendor</button>
             </div>
         </form>
     </div>

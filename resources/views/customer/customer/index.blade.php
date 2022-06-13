@@ -68,7 +68,6 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
-                            <th id="thead-actions">Actions</th>
                             <th>Customer Name</th>
                             <th>Tin #</th>
                             <th>City</th>
@@ -79,29 +78,15 @@
                         </thead>
                         <tbody>
                             @foreach ($customers as $customer)
-                            <tr>
-                                <td>
-                                    
-                                    <a type="button" class="btn btn-primary" href="{{ url('/customers/customers/'.$customer->id) }}">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
-                                    <button type="button" class="btn btn-danger "
-                                    onClick='showModel({!! $customer->id !!})'>
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                    </button>
-                                </td>
-                                <td class="table-item-content"> {{$customer->name}} </td>
-                                <td class="table-item-content"> {{$customer->tin_number}}</td>
-                                <td class="table-item-content"> {{$customer->city}}</td>
-                                <td class="table-item-content"> {{$customer->contact_person}}</td>
-                                <td class="table-item-content"> {{$customer->mobile_number}}</td>
-                                <td class="table-item-content"><span class="badge badge-primary"> {{$customer->label}}</span></td>
-                                <td class="table-item-content"> </td>
-                            </tr>
+                            <tr onclick="window.location.href='{{  url('/customers/customers/'.$customer->id) }} }}'">
+                                    <td class="table-item-content"> {{$customer->name}} </td>
+                                    <td class="table-item-content"> {{$customer->tin_number}}</td>
+                                    <td class="table-item-content"> {{$customer->city}}</td>
+                                    <td class="table-item-content"> {{$customer->contact_person}}</td>
+                                    <td class="table-item-content"> {{$customer->mobile_number}}</td>
+                                    <td class="table-item-content"><span class="badge badge-primary"> {{$customer->label}}</span></td>
+                                    <td class="table-item-content"> </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -257,29 +242,6 @@
         </div>
     </div>
 </div>
-{{-- Customer Delete Modal --}}
-<div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog"
-	aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-customer-label">Delete Customer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-			<div class="modal-body">Are you sure to delete this record?</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" onClick="dismissModel()">Cancel</button>
-				<form id="delete-frm" class="" action="" method="POST">
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn btn-danger">Delete</button>
-                </form>
-			</div>
-		</div>
-	</div>
-</div>
 
 
 
@@ -351,21 +313,5 @@
             $('#dataTables').DataTable();
             $('.dataTables_filter').addClass('pull-right');
         });
-
-    function showModel(id) {
-        var frmDelete = document.getElementById("delete-frm");
-        frmDelete.action = '/customers/customers/'+id;
-        var confirmationModal = document.getElementById("deleteConfirmationModel");
-        confirmationModal.style.display = 'block';
-        confirmationModal.classList.remove('fade');
-        confirmationModal.classList.add('show');
-    }
-    
-    function dismissModel() {
-        var confirmationModal = document.getElementById("deleteConfirmationModel");
-        confirmationModal.style.display = 'none';
-        confirmationModal.classList.remove('show');
-        confirmationModal.classList.add('fade');
-    }
     </script>
 @endsection
