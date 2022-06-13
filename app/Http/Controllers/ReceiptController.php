@@ -220,13 +220,36 @@ class ReceiptController extends Controller
             $request->attachment->storeAs('public/receipt-attachment'/'advance-revenues', $fileAttachment);
         }
 
-        return AdvanceRevenues::create([
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+
+        // Create Debit Postings
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->advance_receipt_cash_on_hand);
+        $debit_amount[] = $request->amount_received;
+
+        // Create Credit Postings
+        $credit_accounts[] = CreateJournalPostings::encodeAccount($request->advance_receipt_advance_payment);
+        $credit_amount[] = $request->amount_received;
+
+        CreateJournalPostings::run($je, 
+            $debit_accounts, $debit_amount,
+            $credit_accounts, $credit_amount,
+            $accounting_system_id);
+
+        AdvanceRevenues::create([
             'receipt_reference_id' => $reference->id,
             'total_amount_received' => $request->amount_received,
             'reason' => $request->reason,
             'remark' => $request->remark,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
+
+        return [
+            'debit_accounts' => $debit_accounts,
+            'debit_amount' => $debit_amount,
+            'credit_accounts' => $credit_accounts,
+            'credit_amount' => $credit_amount,
+        ];
     }
 
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
