@@ -44,12 +44,6 @@
                 </span>
                 <span class="text">Export</span>
             </button>
-            {{-- <button type="button" class="btn btn-secondary">
-                <span class="icon text-white-50">
-                    <i class="fas fa-download"></i>
-                </span>
-                <span class="text">Download Excel Format</span>
-            </button>     --}}
         </div>
         @if(session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -69,7 +63,7 @@
         @endif
        
         {{-- Page Content --}}
-        <div class="card">
+        <div class="card shadow mb-4">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -353,6 +347,11 @@
  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
  <script>
+      $(document).ready(function () {
+            $('#dataTables').DataTable();
+            $('.dataTables_filter').addClass('pull-right');
+        });
+
     function showModel(id) {
         var frmDelete = document.getElementById("delete-frm");
         frmDelete.action = '/customers/customers/'+id;
