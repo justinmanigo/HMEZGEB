@@ -43,6 +43,7 @@ class StoreReceiptRequest extends FormRequest
             // 'discount' => ['required', 'numeric'],
             // 'withholding' => ['required', 'numeric'],
             // 'taxable' => ['required', 'numeric'],
+            'tax_total' => ['required', 'numeric', 'min:0'],
             'grand_total' => ['required', 'numeric', 'min:0'],
             'remark' => ['sometimes'],
             'attachment' => ['sometimes', 'file', 'mimes:pdf,jpg,png,jpeg,doc,docx,xls,xlsx,txt,csv'],

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
 use App\Actions\UpdateInventoryItemQuantity;
 use App\Actions\Customer\Receipt\CreateReceiptReference;
 use App\Actions\Customer\Receipt\DetermineReceiptStatus;
@@ -141,6 +143,34 @@ class ReceiptController extends Controller
             ]);
         }
 
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+
+        // Create Debit Postings
+        // This determines which is which to include in debit postings
+        if($status == 'paid' || $status == 'partially_paid') {
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_cash_on_hand);
+            $debit_amount[] = $request->total_amount_received;
+        }
+        if($status == 'partially_paid' || $status == 'unpaid') {
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_account_receivable);
+            $debit_amount[] = $request->grand_total - $request->total_amount_received;
+        }
+
+        // Create Credit Postings
+        // This checks whether to add credit tax posting
+        if($request->tax_total > 0) {
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_vat_payable);
+            $credit_amount[] = $request->tax_total;
+        }
+        // Add credit sales posting
+        $credit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_sales);
+        $credit_amount[] = $request->sub_total;
+
+        CreateJournalPostings::run($je, 
+            $debit_accounts, $debit_amount,
+            $credit_accounts, $credit_amount,
+            $accounting_system_id);
         
         //  image upload and save to database 
         // if($request->hasFile('attachment'))
@@ -154,7 +184,7 @@ class ReceiptController extends Controller
 
         // // TODO: Refactor Attachment Upload
         
-        return Receipts::create([
+        Receipts::create([
             'receipt_reference_id' => $reference->id,
             'due_date' => $request->due_date,
             'sub_total' => $request->sub_total,
@@ -168,8 +198,15 @@ class ReceiptController extends Controller
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received,
-            'chart_of_account_id' => null, // TODO: Add later
+            'chart_of_account_id' => $request->receipt_cash_on_hand,
         ]);
+
+        return [
+            'debit_accounts' => $debit_accounts,
+            'debit_amount' => $debit_amount,
+            'credit_accounts' => $credit_accounts,
+            'credit_amount' => $credit_amount,
+        ];
     }
 
     public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
