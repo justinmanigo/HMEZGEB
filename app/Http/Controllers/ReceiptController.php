@@ -280,15 +280,24 @@ class ReceiptController extends Controller
             }
         }
 
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
 
-        return CreditReceipts::create([
+        // Create Debit Postings
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_cash_on_hand);
+        $debit_amount[] = $request->total_received;
+
+        // Create Credit Postings
+        $credit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_account_receivable);
+        $credit_amount[] = $request->total_received;
+
+        CreditReceipts::create([
             'receipt_reference_id' => $reference->id,
             'total_amount_received' => floatval($request->total_received),
             'description' => $request->description,
             'remark' => $request->remark,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-        ]);;
-
+        ]);
     }
 
     public function storeProforma(StoreProformaRequest $request)
