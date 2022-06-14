@@ -75,7 +75,7 @@ class DefaultsController extends Controller
     {
         return AccountingSystem::find($request->accounting_system_id)->update([
             'credit_receipt_cash_on_hand' => $request->credit_receipt_cash_on_hand,
-            'credit_receipt_credit_payment' => $request->credit_receipt_credit_payment,
+            'credit_receipt_account_receivable' => $request->credit_receipt_account_receivable,
         ]);
     }
 

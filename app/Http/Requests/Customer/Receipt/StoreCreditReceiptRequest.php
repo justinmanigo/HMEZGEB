@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Customer\Receipt;
 
 use App\Http\Requests\Api\FormRequest;
+use App\Models\AccountingSystem;
 
 class StoreCreditReceiptRequest extends FormRequest
 {
@@ -61,6 +62,16 @@ class StoreCreditReceiptRequest extends FormRequest
         ];
     }
 
+    protected function prepareForValidation()
+    {
+        $accounting_system = AccountingSystem::find(session('accounting_system_id'));
+
+        $this->merge([
+            'credit_receipt_cash_on_hand' => $accounting_system->credit_receipt_cash_on_hand,
+            'credit_receipt_account_receivable' => $accounting_system->credit_receipt_account_receivable,
+        ]);
+    }
+
     public function withValidator($validator)
     {
         $validator->after(function ($validator){
@@ -90,6 +101,13 @@ class StoreCreditReceiptRequest extends FormRequest
                 {
                     $validator->errors()->add('total_received', 'Please select at least one item and place an amount to be paid.');
                 }
+            }
+
+            if(!$this->get('credit_receipt_cash_on_hand')) {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for Cash on Hand. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if(!$this->get('credit_receipt_account_receivable')) {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for Account Receivable. Please make sure that everything is set at `Settings > Defaults`');
             }
         });
     }

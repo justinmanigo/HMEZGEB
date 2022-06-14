@@ -4,6 +4,7 @@ namespace App\Http\Requests\Customer\Receipt;
 
 use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
+use App\Models\AccountingSystem;
 use App\Models\Inventory;
 
 class StoreReceiptRequest extends FormRequest
@@ -42,6 +43,7 @@ class StoreReceiptRequest extends FormRequest
             // 'discount' => ['required', 'numeric'],
             // 'withholding' => ['required', 'numeric'],
             // 'taxable' => ['required', 'numeric'],
+            'tax_total' => ['required', 'numeric', 'min:0'],
             'grand_total' => ['required', 'numeric', 'min:0'],
             'remark' => ['sometimes'],
             'attachment' => ['sometimes', 'file', 'mimes:pdf,jpg,png,jpeg,doc,docx,xls,xlsx,txt,csv'],
@@ -67,11 +69,21 @@ class StoreReceiptRequest extends FormRequest
             }
         }
 
+        $accounting_system = AccountingSystem::find(session('accounting_system_id'));
+
         $this->merge([
             'customer' => DecodeTagifyField::run($this->customer),
             'item' => $item,
             'proforma' => $this->proforma != null ? DecodeTagifyField::run($this->proforma) : null,
             'tax' => $tax,
+
+            // Merge COA defaults to request
+            'receipt_cash_on_hand' => $accounting_system->receipt_cash_on_hand,
+            'receipt_vat_payable' => $accounting_system->receipt_vat_payable,
+            'receipt_sales' => $accounting_system->receipt_sales,
+            'receipt_account_receivable' => $accounting_system->receipt_account_receivable,
+            'receipt_sales_discount' => $accounting_system->receipt_sales_discount,
+            'receipt_withholding' => $accounting_system->receipt_withholding,
         ]);
     }
 
@@ -89,6 +101,32 @@ class StoreReceiptRequest extends FormRequest
                 {
                     $validator->errors()->add("quantity.{$i}", "The remaining stocks of item {$input_items[$i]->name} is not enough. Remaining stocks: {$inventory_item->quantity}");
                 }
+            }
+
+            // Check if either of the COA defaults is blank.
+            if($this->get('receipt_cash_on_hand') == null)
+            {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for Cash on Hand. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('receipt_vat_payable') == null)
+            {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for VAT Payable. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('receipt_sales') == null)
+            {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for Sales. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('receipt_account_receivable') == null)
+            {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for Account Receivable. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('receipt_sales_discount') == null)
+            {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for Sales Discount. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('receipt_withholding') == null)
+            {
+                $validator->errors()->add('customer', 'You haven\'t set the default COA for Withholding. Please make sure that everything is set at `Settings > Defaults`');
             }
         });
     }
