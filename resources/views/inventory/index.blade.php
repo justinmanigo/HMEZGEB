@@ -74,11 +74,18 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+            @elseif(session()->has('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session()->get('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             @endif
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
-                        <th class="w-15">Action</th>
+                        {{-- <th class="w-15">Action</th> --}}
                         <th class="w-15">Item Code</th>
                         <th>Item Name</th>
                         <th>Purchase Price</th>
@@ -90,7 +97,8 @@
                     <tbody>
                         @foreach($inventories as $inventory)
 
-                        <tr>
+                        <tr onclick="window.location.href='{{ url('inventory/'.$inventory->id.'/edit') }}'">
+
                             {{-- <td class=" d-flex justify-content-center">
                                <img src="
                                     @if($inventory->picture)
@@ -100,7 +108,7 @@
                             @endif
                             " class="w-100 img-responsive" style="min-width:100px">
                             </td>--}}
-                            <td> <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id.'/edit') }}">
+                                {{-- <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id.'/edit') }}">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-pen"></i>
                                     </span>
@@ -110,8 +118,8 @@
                                     <span class="icon text-white-50">
                                         <i class="fas fa-trash"></i>
                                     </span>
-                                </button>
-                            </td>
+                                </button> --}}
+
                             <td class="table-item-content">{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
                             <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
