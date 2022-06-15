@@ -414,6 +414,61 @@ class ReceiptController extends Controller
         return redirect('receipt/')->with('danger', "Successfully deleted customer");
     }
 
+    // export
+    public function exportReceipts()
+    {
+        // convert receipts, proforma, credit_receipts,advance_revenue into one csv
+        $receipts = Receipts::all();
+        $proforma = Proformas::all();
+        $credit_receipts = CreditReceipts::all();
+        $advance_revenue = AdvanceRevenues::all();
+        // open file
+        $file = fopen('receipts.csv', 'w');
+        // write header
+        fputcsv($file, array('Receipts'));
+        fputcsv($file, array('id','receipt_reference_id','proforma_id','chart_of_account_id','discount','due_date','sub_total','discount','tax','grand_total','total_amount_received','withholding','remark','created_at','attachment','payment_method','created_at','updated_by'));
+        // loop through the array
+        foreach ($receipts as $receipt) {
+            // add the data to the file
+            $receipt = $receipt->toArray();
+            fputcsv($file, $receipt);
+        }
+        
+        // write header
+        fputcsv($file, array('Proforma'));
+        fputcsv($file, array('id','receipt_reference_id','due_date','amount','tax','terms_and_condition','attachment','created_at','updated_by'));
+        
+        foreach ($proforma as $proforma) {
+            // add the data to the file
+            $proforma = $proforma->toArray();
+            fputcsv($file, $proforma);
+        }
+
+        // write header
+        fputcsv($file, array('Credit Receipts'));
+        fputcsv($file, array('id','receipt_reference_id','credit_receipt_number','total_amount_received','description','remark','attachment','created_at','updated_by'));
+        
+        foreach ($credit_receipts as $credit_receipt) {
+            // add the data to the file
+            $credit_receipt = $credit_receipt->toArray();
+            fputcsv($file, $credit_receipt);
+        }
+
+        // write header
+        fputcsv($file, array('Advance Revenue'));
+        fputcsv($file, array('id','receipt_reference_id','advance_revenue_number','total_amount_received','reason','remark','attachment','created_at','updated_by'));
+        foreach ($advance_revenue as $advance_revenue) {
+            // add the data to the file
+            $advance_revenue = $advance_revenue->toArray();
+            fputcsv($file, $advance_revenue);
+        }
+        // close the file
+        fclose($file);
+        // redirect to the file
+        return response()->download('receipts.csv');
+    }
+
+
     /*********** AJAX *************/
 
     public function ajaxSearchCustomerProforma(Customers $customer, $value)

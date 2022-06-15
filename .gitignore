@@ -15,3 +15,5 @@ yarn-error.log
 /.vscode
 public/vendors.csv
 public/customers.csv
+public/receipts.csv
+

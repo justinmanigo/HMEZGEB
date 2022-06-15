@@ -149,6 +149,7 @@ Route::group([
                 Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
                 Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
         
+                Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
                 Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
                 Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
                 Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
