@@ -25,18 +25,38 @@ class ChartOfAccountsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
+        $sum_debits = JournalPostings::select(
+                'chart_of_account_id',
+                DB::raw('SUM(amount) as total_debit'),
+            )
+            ->where('type', 'debit')
+            ->groupBy('chart_of_account_id');
+
+        $sum_credits = JournalPostings::select(
+                'chart_of_account_id',
+                DB::raw('SUM(amount) as total_credit'),
+            )
+            ->where('type', 'credit')
+            ->groupBy('chart_of_account_id');
+
         $chart_of_accounts = ChartOfAccounts::select(
                 'chart_of_accounts.id',
                 'chart_of_accounts.chart_of_account_no',
                 'chart_of_accounts.account_name',
                 'chart_of_account_categories.type',
                 'chart_of_account_categories.category',
-                'chart_of_accounts.current_balance',
                 'chart_of_accounts.status',
+                DB::raw('IFNULL(sum_debits.total_debit, 0) as total_debit'),
+                DB::raw('IFNULL(sum_credits.total_credit, 0) as total_credit'),
+                DB::raw('IFNULL(sum_debits.total_debit, 0) - IFNULL(sum_credits.total_credit, 0) as current_balance'),
             )
             ->leftJoin('chart_of_account_categories', 'chart_of_account_category_id', '=', 'chart_of_account_categories.id')
+            ->leftJoinSub($sum_debits, 'sum_debits', 'chart_of_accounts.id', '=', 'sum_debits.chart_of_account_id')
+            ->leftJoinSub($sum_credits, 'sum_credits', 'chart_of_accounts.id', '=', 'sum_credits.chart_of_account_id')
             ->where('chart_of_accounts.accounting_system_id', $accounting_system_id)
             ->get();
+
+        // return $chart_of_accounts;
 
         return view('settings.chart_of_account.index', compact('chart_of_accounts'));
     }
