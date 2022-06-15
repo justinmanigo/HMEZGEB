@@ -38,12 +38,13 @@
                 </span>
                 <span class="text">Import</span>
             </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
+            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
                 </span>
                 <span class="text">Export</span>
-            </button>
+            </button> --}}
+            <a class="btn btn-secondary" href="{{route('customers.customers.export.csv')}}">Export</a>
         </div>
         @if(session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -274,7 +275,7 @@
     </div>
 </div>
 
-{{-- Export --}}
+{{-- Export
 <div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="modal-export-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -304,7 +305,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 

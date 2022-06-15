@@ -170,7 +170,8 @@ Route::group([
                 Route::get('/customers/customers/{id}', [CustomerController::class, 'edit']);
                 Route::put('/customers/customers/{id}', [CustomerController::class, 'update']);
                 Route::delete('/customers/customers/{id}', [CustomerController::class, 'destroy']);
-                
+            
+                Route::get('/customers/export/csv', [CustomerController::class, 'toCSV'])->name('customers.export.csv');
                 Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
             });
