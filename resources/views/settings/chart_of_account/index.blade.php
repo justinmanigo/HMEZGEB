@@ -174,7 +174,13 @@
                                     <td class="table-item-content">{{ $coa->account_name }}</td> 
                                     <td class="table-item-content">{{ $coa->type }}</td>
                                     <td class="table-item-content">{{ $coa->category }}</td>
-                                    <td class="table-item-content">{{ $coa->current_balance }}</td>
+                                    <td class="table-item-content">
+                                        @if($coa->normal_balance == 'Debit')
+                                            {{ $coa->balance_if_debit }}
+                                        @elseif($coa->normal_balance == 'Credit')
+                                            {{ $coa->balance_if_credit }}
+                                        @endif
+                                    </td>
                                     <td class="table-item-content h6">
                                         @if($coa->status == 'Active')
                                             <span class="badge badge-success">{{ $coa->status }}</span>
@@ -361,10 +367,6 @@
 
             console.log("Request successful.");
             console.log(res);
-
-            $("#bb_accounting_period_number").html(`Accounting Period # ${res.accounting_period.period_number}`);
-            $("#bb_accounting_period_date_from").html(res.accounting_period.date_from);
-            $("#bb_accounting_period_date_to").html(res.accounting_period.date_to);
             
             res.debits.forEach(function(d){
                 createBeginningBalanceRow(d, 'debit');
