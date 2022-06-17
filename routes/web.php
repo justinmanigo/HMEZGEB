@@ -260,8 +260,9 @@ Route::group([
                 'as'=>'accounts.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/accounts', [BankAccountsController::class, 'index'])->name('bank.accounts');
-            
+                Route::get('/banking/accounts', [BankAccountsController::class, 'index']);
+                Route::get('/banking/accounts/{id}', [BankAccountsController::class, 'edit'])->name('bank.accounts.edit');
+         
                 // RESOURCE
                 Route::resource('/banking/accounts', BankAccountsController::class);
             });
@@ -273,7 +274,7 @@ Route::group([
                 'as'=>'transfers.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/transfer', [TransfersController::class, 'index'])->name('bank.transfers');
+                Route::get('/banking/transfer', [TransfersController::class, 'index']);
                 Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
 
                 // RESOURCE

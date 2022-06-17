@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BankAccounts;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BankAccountsController extends Controller
 {
@@ -84,9 +85,11 @@ class BankAccountsController extends Controller
      * @param  \App\Models\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function edit(Accounts $accounts)
+    public function edit($id)
     {
         //
+        $accounts = BankAccounts::find($id);
+        return view('banking.accounts.edit', compact('accounts'));
     }
 
     /**
@@ -96,9 +99,20 @@ class BankAccountsController extends Controller
      * @param  \App\Models\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Accounts $accounts)
+    public function update(Request $request, $id)
     {
         //
+        $accounts = BankAccounts::find($id);
+        $accounts->bank_branch = $request->bank_branch;
+        $accounts->bank_account_number = $request->bank_account_number;
+        $accounts->bank_account_type = $request->bank_account_type;
+        $coa = ChartOfAccounts::find($accounts->id);
+        $coa->account_name = $request->account_name;
+        $coa->chart_of_account_no = $request->coa_number;
+        $coa->save();
+        $accounts->save();
+
+        return redirect()->back()->with('success', 'Bank Account Updated Successfully');
     }
 
     /**
@@ -107,8 +121,19 @@ class BankAccountsController extends Controller
      * @param  \App\Models\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Accounts $accounts)
+    public function destroy($id)
     {
         //
+        try{
+
+            $accounts = BankAccounts::find($id);
+            $coa = ChartOfAccounts::find($accounts->chart_of_account_id);       
+            $accounts->delete();
+            $coa->delete();
+        }
+        catch(\Exception $e){
+            return redirect('/banking/accounts')->with('error', 'Error deleting bank account');
+        }
+        return redirect('/banking/accounts')->with('success', 'Bank Account Deleted Successfully');
     }
 }
