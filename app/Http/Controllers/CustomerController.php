@@ -129,6 +129,27 @@ class CustomerController extends Controller
 
     }
 
+    public function toCSV()
+    {
+        // create a csv file
+        $customers = Customers::all();
+        // open file
+        $file = fopen('customers.csv', 'w');
+        // write header
+        fputcsv($file, array('id', 'accounting_system_id','name', 'tin_number', 'address', 'city', 'country', 'mobile_number', 'telephone_one', 'telephone_two', 'fax', 'website', 'email', 'contact_person', 'image','label', 'is_active','created_at','updated_at','updated_by'));
+        // loop through the array
+        foreach ($customers as $customer) {
+            // add the data to the file
+            $customer = $customer->toArray();
+            fputcsv($file, $customer);
+        }
+        // close the file
+        fclose($file);
+        // redirect to the file
+        return response()->download('customers.csv');
+
+    }
+
     /*=================================*/
 
     public function queryCustomers($query)

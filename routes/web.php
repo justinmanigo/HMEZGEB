@@ -149,6 +149,7 @@ Route::group([
                 Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
                 Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
         
+                Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
                 Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
                 Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
                 Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
@@ -170,7 +171,8 @@ Route::group([
                 Route::get('/customers/customers/{id}', [CustomerController::class, 'edit']);
                 Route::put('/customers/customers/{id}', [CustomerController::class, 'update']);
                 Route::delete('/customers/customers/{id}', [CustomerController::class, 'destroy']);
-                
+            
+                Route::get('/customers/export/csv', [CustomerController::class, 'toCSV'])->name('customers.export.csv');
                 Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
             });

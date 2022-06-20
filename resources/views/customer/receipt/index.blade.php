@@ -143,12 +143,13 @@
                 </span>
                 <span class="text">Import</span>
             </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
+            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
                 </span>
                 <span class="text">Export</span>
-            </button>
+            </button> --}}
+        <a class="btn btn-secondary" href="{{route('receipts.export.csv')}}">Export</a>
             {{-- <button type="button" class="btn btn-secondary">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
@@ -489,7 +490,7 @@ POTENTIAL SOLUTIONS:
     </div>
 </div>
 
-{{-- Export --}}
+{{-- Export
 <div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="modal-export-label"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -521,7 +522,7 @@ POTENTIAL SOLUTIONS:
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 <script>
     $(document).ready(function () {
