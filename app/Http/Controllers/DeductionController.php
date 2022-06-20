@@ -6,6 +6,7 @@ use App\Models\Deduction;
 use App\Models\Employee;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\HumanResource\StoreDeductionRequest;
 
 class DeductionController extends Controller
 {
@@ -25,6 +26,7 @@ class DeductionController extends Controller
         )->select(
             'deductions.id',
             'deductions.date',
+            'deductions.price',
             'employees.first_name',
             'employees.type',
         )->where('deductions.accounting_system_id', session('accounting_system_id'))
@@ -48,25 +50,22 @@ class DeductionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDeductionRequest $request)
     {
         //
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         for($i = 0; $i < count($request->employee); $i++)
-        {
-        $employee = json_decode($request->employee[$i]);
-            $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
-            
+        {        
             // Store
                $deduction = new Deduction;
                $deduction->accounting_system_id = $accounting_system_id;
-               $deduction->employee_id = $e[$i]->value;
+               $deduction->employee_id = $request->employee[$i]->value;
                $deduction->date = $request->date;
                $deduction->price = $request->price[$i];
                $deduction->description = $request->description;
                $deduction->save();
         }
-        return redirect()->back()->with('success', 'Deduction has been added.');
+        return true;
     }
 
     /**
