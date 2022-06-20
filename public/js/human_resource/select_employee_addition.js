@@ -31,12 +31,15 @@ function createEmployeeEntry()
         <tr data-id="${addition_count}" id="a_employee_entry_${addition_count}">
         <td>
             <div class="input-group">
-                <input data-id="${addition_count}" id="a_employee_${addition_count}" class="a_employee form-control" name='employee[]' required>
+                <input data-id="${addition_count}" id="a_employee_${addition_count}" class="a_employee form-control" name='employee[]'>
                 <input type="hidden" name="employee_id[]" value="">
+                <p class="error-message error-message-employee text-danger" style="display:none"></p>
+
             </div>
         </td>
         <td>
-            <input type="number" min="0" title="Invalid input" placeholder="0.00" data-id="${addition_count}" id="a_price_${addition_count}" class="form-control" name="price[]" required>
+            <input type="number" min="0" title="Invalid input" placeholder="0.00" data-id="${addition_count}" id="a_price_${addition_count}" class="form-control" name="price[]">
+            <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${addition_count}" id="a_employee_delete_${addition_count}" class="btn btn-icon btn-danger a_employee_delete" data-toggle="tooltip" data-placement="batom" title="Edit">

@@ -149,7 +149,7 @@
                         <td class="table-employee-content">{{ $addition->date }}</td>
                         <td class="table-employee-content">{{ $addition->first_name }}</td>
                         <td class="table-employee-content"><span class="badge badge-secondary">{{ $addition->type }}</span></td>
-                        <td class="table-employee-content"{{ $addition->price }}</td>
+                        <td class="table-employee-content">{{ $addition->price }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -170,12 +170,13 @@
             </div>
 
             <div class="modal-body">
-                <form action="{{route('additions.store')}}" id="form-addition" method="POST">
+                <form action="{{route('additions.store')}}" class="ajax-submit-updated" enctype="multipart/form-data" id="form-addition" method="POST" data-message="Successfully added additions.">
                     @csrf
                     <div class="form-group row">
                         <label for="a_date" class="col-sm-3 col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="a_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                            <input type="date" class="form-control" id="a_date" name="date" placeholder="" value="{{date('Y-m-d')}}" >
+                            <p class="text-danger error-message error-message-date" style="display:none"></p>
                         </div>
                     </div>
 
@@ -195,7 +196,7 @@
 
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control text-right" name="price[]" placeholder="0.00" required>
+                                        <input type="text" class="form-control text-right" name="price[]" placeholder="0.00" >
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-icon btn-danger" data-toggle="tooltip"
