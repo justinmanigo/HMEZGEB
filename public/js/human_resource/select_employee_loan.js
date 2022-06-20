@@ -29,16 +29,17 @@ function createEmployeeEntry() {
     let inner = `
         <tr data-id="${loan_count}" id="l_employee_entry_${loan_count}">
         <td>
-            <div class="input-group">
+
                 <input data-id="${loan_count}" id="l_employee_${loan_count}" class="l_employee form-control" name='employee[]'>
                 <input type="hidden" name="employee_id[]" value="">
-            </div>
+                <p class="error-message error-message-employee text-danger" style="display:none"></p> 
         </td>
         <td>
-            <input type="number" min="0" data-id="${loan_count}" id="l_loan_${loan_count}" class="form-control" name="loan[]" required>
+            <input type="number" min="0" data-id="${loan_count}" id="l_loan_${loan_count}" class="form-control" name="loan[]" >
+            <p class="error-message error-message-loan text-danger" style="display:none"></p>
         </td>
         <td>
-            <select data-id="${loan_count}" id="l_paid_in_${loan_count}" class="form-control" name="paid_in[]" required>
+            <select data-id="${loan_count}" id="l_paid_in_${loan_count}" class="form-control" name="paid_in[]" >
                 <option value="">-Select Paid In-</option>
                 <option value="1 Month">1 Month</option>
                 <option value="3 Months">3 Months</option>
@@ -50,6 +51,7 @@ function createEmployeeEntry() {
                 <option value="30 Months">30 Months</option>
                 <option value="36 Months">36 Months</option>
             </select>
+            <p class="error-message error-message-paid_in text-danger" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${loan_count}" id="l_employee_delete_${loan_count}" class="btn btn-icon btn-danger l_employee_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">

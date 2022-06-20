@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\Employee;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\HumanResource\StoreLoanRequest;
 
 class LoanController extends Controller
 {
@@ -25,6 +26,8 @@ class LoanController extends Controller
         )->select(
             'loans.id',
             'loans.date',
+            'loans.loan',
+            'loans.paid_in',
             'employees.first_name',
             'employees.type',
         )->where('loans.accounting_system_id', session('accounting_system_id'))
@@ -48,19 +51,17 @@ class LoanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreLoanRequest $request)
     {
         //
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         for($i = 0; $i < count($request->employee); $i++)
         {
-        $employee = json_decode($request->employee[$i]);
-            $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
-            
+
             // Store
                $loan = new Loan;
                $loan->accounting_system_id = $accounting_system_id;
-               $loan->employee_id = $e[$i]->value;
+               $loan->employee_id = $request->employee[$i]->value;
                $loan->date = $request->date;
                $loan->loan = $request->loan[$i];
                $loan->paid_in = $request->paid_in[$i];
