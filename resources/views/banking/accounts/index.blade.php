@@ -67,6 +67,26 @@
         {{-- Tab Contents --}}
         <div class="card" class="content-card">
             <div class="card-body tab-content" id="myTabContent">
+                {{-- success message --}}
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+        
+                    </div>
+                @endif
+                {{-- error message --}}
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                @endif
+
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
@@ -82,7 +102,7 @@
                             </thead>
                             <tbody>
                                 @foreach($bank_accounts as $account)
-                                <tr>
+                                <tr onclick="window.location.href='{{  url('/banking/accounts/'.$account->id)}}'">
                                     <td>{{ $account->chartOfAccount->chart_of_account_no }}</td>
                                     <td>{{ $account->chartOfAccount->account_name }}</td>
                                     <td>{{ $account->bank_branch }}</td>
