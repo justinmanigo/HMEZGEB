@@ -289,6 +289,15 @@ function calculateReceiptGrandTotal()
     grandtotal += tax_total;
 
     $(`#r_grand_total`).val(parseFloat(grandtotal).toFixed(2))
+
+    withholding_total = calculateReceiptWithholding(grandtotal);
+    $(`#r_withholding`).val(parseFloat(withholding_total).toFixed(2));
+}
+
+function calculateReceiptWithholding(grandTotal)
+{
+    // Assuming the withholding percentage is currently at 2%.
+    return grandTotal * 0.02;
 }
 
 /** === Tagify Related Functions for Receipt Items === */
@@ -319,16 +328,19 @@ function onReceiptItemRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     
     //Subtract total when x is clicked in tagify
-    $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
-    $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
+    // $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
+    // $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     $(`#r_item_quantity_${id}`).attr('disabled', 'disabled')
     $(`#r_item_tax_${id}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled');
-
-    getReceiptItemEntry(id).tax.removeTag(e.detail.tag.value);
-
     $(`#r_item_quantity_${id}`).val("0")
     $(`#r_item_price_${id}`).val("0.00")
     $(`#r_item_total_${id}`).val("0.00")
+    
+    getReceiptItemEntry(id).tax.removeTag(e.detail.tag.value);
+    calculateReceiptSubTotal();
+    calculateReceiptGrandTotal();
+
+
 
 }
 
