@@ -170,12 +170,13 @@
             </div>
 
             <div class="modal-body">
-                <form action="{{route('deductions.store')}}"  id="form-deduction" method="POST">
+                <form action="{{route('deductions.store')}}" class="ajax-submit-updated" enctype="multipart/form-data"  id="form-deduction" method="POST" data-message="Successfully added deductions.">
                     @csrf
                     <div class="form-group row">
                         <label for="d_date" class="col-sm-3 col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="d_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                            <input type="date" class="form-control" id="d_date" name="date" placeholder="" value="{{date('Y-m-d')}}">
+                            <p class="text-danger error-message error-message-date" style="display:none"></p>
                         </div>
                     </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Addition;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Http\Requests\HumanResource\StoreAdditionRequest;
 
 class AdditionController extends Controller
 {
@@ -25,6 +26,7 @@ class AdditionController extends Controller
         )->select(
             'additions.id',
             'additions.date',
+            'additions.price',
             'employees.first_name',
             'employees.type',
         )->where('additions.accounting_system_id', session('accounting_system_id'))->get();
@@ -47,25 +49,24 @@ class AdditionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAdditionRequest $request)
     {
         //
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
          for($i = 0; $i < count($request->employee); $i++)
          {
-         $employee = json_decode($request->employee[$i]);
-             $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
-             
+
              // Store
                 $addition = new Addition;
                 $addition->accounting_system_id = $accounting_system_id;
-                $addition->employee_id = $e[$i]->value;
+                $addition->employee_id = $request->employee[$i]->value;
                 $addition->date = $request->date;
                 $addition->price = $request->price[$i];
                 $addition->description = $request->description;
                 $addition->save();
          }
-         return redirect()->back()->with('success', 'Addition has been added.');
+        //  return redirect()->back()->with('success', 'Addition has been added.');
+        return true;
     }
 
     /**

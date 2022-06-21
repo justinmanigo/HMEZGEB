@@ -30,14 +30,14 @@ function createEmployeeEntry()
     let inner = `
         <tr data-id="${deduction_count}" id="d_employee_entry_${deduction_count}">
         <td>
-            <div class="input-group">
-                <input data-id="${deduction_count}" id="d_employee_${deduction_count}" class="d_employee form-control" name='employee[]' required>
+                <input data-id="${deduction_count}" id="d_employee_${deduction_count}" class="d_employee form-control" name='employee[]'>
                 <input type="hidden" name="employee_id[]" value="">
-            </div>
+                <p class="error-message error-message-employee text-danger" style="display:none"></p>
         </td>
         <td>
-            <input type="number" min="0" placeholder="0.00" data-id="${deduction_count}" id="d_price_${deduction_count}" class="form-control" name="price[]" required>
-        </td>
+            <input type="number" min="0" placeholder="0.00" data-id="${deduction_count}" id="d_price_${deduction_count}" class="form-control" name="price[]">
+            <p class="error-message error-message-price text-danger" style="display:none"></p>
+            </td>
         <td>
             <button type="button" data-id="${deduction_count}" id="d_employee_delete_${deduction_count}" class="btn btn-icon btn-danger d_employee_delete" data-toggle="tooltip" data-placement="batom" title="Edit">
                 <span class="icon text-white-50">

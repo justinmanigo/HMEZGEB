@@ -191,7 +191,8 @@
                     <th>Date</th>
                     <th>Employee Name</th>
                     <th>Type</th>
-                    <th>Price</th>
+                    <th>loan</th>
+                    <th>Paid in</th>
                 </thead>
                 <tbody>
                     @foreach($loans as $loan)
@@ -215,7 +216,8 @@
                         <td>{{ $loan->date }}</td>
                         <td>{{ $loan->first_name }}</td>
                         <td>{{ $loan->type }}</td>
-                        <td>{{ $loan->price }}</td>
+                        <td>{{ $loan->loan }}</td>
+                        <td>{{ $loan->paid_in }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -237,13 +239,14 @@
             </div>
 
             <div class="modal-body">
-                <form action="{{route('loans.store')}}" id="form-loan" method="POST">
+                <form action="{{route('loans.store')}}" class="ajax-submit-updated" ata-message="Successfully added loan." enctype="multipart/form-data" id="form-loan" method="POST">
                     @csrf
                     <div class="form-group row">
                         <label for="l_date" class="col-sm-3 col-lg-2 col-form-label">Date<span
                                 class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="l_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                            <input type="date" class="form-control" id="l_date" name="date" placeholder="" value="{{date('Y-m-d')}}">
+                            <p class="text-danger error-message error-message-date" style="display:none"></p>
                         </div>
                     </div>
 
@@ -265,10 +268,10 @@
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-right" name="price[]"
-                                            placeholder="0.00" required>
+                                            placeholder="0.00">
                                     </td>
                                     <td>
-                                        <select class="form-control" name="paid_in[]" required>
+                                        <select class="form-control" name="paid_in[]">
                                             <option value="">-Select Paid In-</option>
                                             <option value="1 Month">1 Month</option>
                                             <option value="3 Months">3 Months</option>

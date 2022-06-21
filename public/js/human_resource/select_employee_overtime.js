@@ -30,16 +30,17 @@ function createEmployeeEntry()
     let inner = `
         <tr data-id="${overtime_count}" id="ot_employee_entry_${overtime_count}">
         <td>
-            <div class="input-group">
                 <input data-id="${overtime_count}" id="ot_employee_${overtime_count}" class="ot_employee form-control" name='employee[]'>
                 <input type="hidden" name="employee_id[]" value="">
-            </div>
+                <p class="error-message error-message-employee text-danger" style="display:none"></p>
         </td>
         <td>
-            <input type="time" data-id="${overtime_count}" id="ot_employee_from_${overtime_count}" class="form-control" name="from[]" required>
+            <input type="time" data-id="${overtime_count}" id="ot_employee_from_${overtime_count}" class="form-control" name="from[]" >
+            <p class="error-message error-message-from text-danger" style="display:none"></p>
         </td>
             <td>
-            <input type="time" data-id="${overtime_count}" id="ot_employee_to_${overtime_count}" class="form-control" name="to[]" required>
+            <input type="time" data-id="${overtime_count}" id="ot_employee_to_${overtime_count}" class="form-control" name="to[]" >
+            <p class="error-message error-message-to text-danger" style="display:none"></p>
         </td>
         <td>
             <button type="button" data-id="${overtime_count}" id="ot_employee_delete_${overtime_count}" class="btn btn-icon btn-danger ot_employee_delete" data-toggle="tooltip" data-placement="bottom" title="Edit">

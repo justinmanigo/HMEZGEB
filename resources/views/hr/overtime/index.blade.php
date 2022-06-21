@@ -127,7 +127,9 @@
                     <th>Date</th>
                     <th>Employee Name</th>
                     <th>Type</th>
-                    <th>Price</th>
+                    <th>from</th>
+                    <th>to</th>
+                    <th>Weekend/Holiday</th>
                 </thead>
                 <tbody>
                     @foreach ($overtimes as $overtime)
@@ -151,7 +153,9 @@
                         <td>{{ $overtime->date }}</td>
                         <td>{{ $overtime->first_name }}</td>
                         <td>{{ $overtime->type }}</td>
-                        <td>{{ $overtime->price }}</td>
+                        <td>{{ date('h:i A', strtotime($overtime->from)) }}</td>
+                        <td>{{ date('h:i A', strtotime($overtime->to)) }}</td>
+                        <td>{{ $overtime->is_weekend_holiday }}</td>
                     </tr>
                     @endforeach
                     </tr> 
@@ -174,13 +178,14 @@
             </div>
 
             <div class="modal-body">
-                <form action="{{route('overtime.store')}}" id="form-overtime" method="POST">
+                <form action="{{route('overtime.store')}}" class="ajax-submit-updated" enctype="multipart/form-data" id="form-overtime" method="POST" data-message="Successfully added overtime.">
                     @csrf
                     <div class="form-group row">
                         <div class="col-md-8 d-flex">
                             <label for="o_date col-6" >Date<span
                                     class="text-danger ml-1">*</span></label>
-                                <input type="date" class="form-control col-8 ml-3" id="o_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                                <input type="date" class="form-control col-8 ml-3" id="o_date" name="date" placeholder="" value="{{date('Y-m-d')}}">
+                                <p class="text-danger error-message error-message-date" style="display:none"></p>
                         </div>
                         <div class="col-md-4">
                             <input class="form-check-input" type="checkbox" name="is_weekend_holiday" id="weekend_holiday" value="yes">

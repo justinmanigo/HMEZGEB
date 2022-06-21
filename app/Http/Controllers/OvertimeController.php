@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Overtime;
 use Illuminate\Http\Request;
+use App\Http\Requests\HumanResource\StoreOvertimeRequest;
 
 
 class OvertimeController extends Controller
@@ -24,6 +25,9 @@ class OvertimeController extends Controller
         )->select(
             'overtimes.id',
             'overtimes.date',
+            'overtimes.from',
+            'overtimes.to',
+            'overtimes.is_weekend_holiday',
             'employees.first_name',
             'employees.type',
         )->where('overtimes.accounting_system_id', session('accounting_system_id'))
@@ -47,19 +51,16 @@ class OvertimeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreOvertimeRequest $request)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
         for($i = 0; $i < count($request->employee); $i++)
         {
-            $employee = json_decode($request->employee[$i]);
-            $e[$i] = $employee[0]; // decoded json always have index 0, thus it needs to be removed.
-            
             // Store
             $overtime = new Overtime;
             $overtime->accounting_system_id = $accounting_system_id;
-            $overtime->employee_id = $e[$i]->value;
+            $overtime->employee_id =  $request->employee[$i]->value;;
             $overtime->date = $request->date;
             if($request->is_weekend_holiday != null)
             {
@@ -74,7 +75,7 @@ class OvertimeController extends Controller
             $overtime->description = $request->description;
             $overtime->save();
         }
-        return redirect()->back()->with('success', 'Overtime has been added.');
+        return true;
     }
 
     /**
