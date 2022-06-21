@@ -180,6 +180,7 @@ class DepositsController extends Controller
              ->leftJoin('bank_accounts', 'chart_of_accounts.id', '=', 'bank_accounts.chart_of_account_id')
              ->where('chart_of_account_categories.category' , '=', 'Cash')
              ->where('bank_accounts.bank_account_number' , '!=', NULL)
+             ->where('chart_of_accounts.accounting_system_id', session('accounting_system_id'))
              ->where(function($sql) use ($query) {
                  $sql->where('chart_of_accounts.account_name', 'LIKE', "%{$query}%")
                      ->orWhere('chart_of_accounts.chart_of_account_no', 'LIKE', "%{$query}%")
