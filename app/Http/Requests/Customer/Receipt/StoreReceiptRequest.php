@@ -73,9 +73,9 @@ class StoreReceiptRequest extends FormRequest
 
         $this->merge([
             'customer' => DecodeTagifyField::run($this->customer),
-            'item' => $item,
+            'item' => isset($item) ? $item : [],
             'proforma' => $this->proforma != null ? DecodeTagifyField::run($this->proforma) : null,
-            'tax' => $tax,
+            'tax' => isset($tax) ? $tax : [],
 
             // Merge COA defaults to request
             'receipt_cash_on_hand' => $accounting_system->receipt_cash_on_hand,
@@ -84,6 +84,8 @@ class StoreReceiptRequest extends FormRequest
             'receipt_account_receivable' => $accounting_system->receipt_account_receivable,
             'receipt_sales_discount' => $accounting_system->receipt_sales_discount,
             'receipt_withholding' => $accounting_system->receipt_withholding,
+
+            'as_business_type' => $accounting_system->business_type,
         ]);
     }
 
@@ -127,6 +129,15 @@ class StoreReceiptRequest extends FormRequest
             else if($this->get('receipt_withholding') == null)
             {
                 $validator->errors()->add('customer', 'You haven\'t set the default COA for Withholding. Please make sure that everything is set at `Settings > Defaults`');
+            }
+
+            if($this->get('as_business_type') == 'PLC' && $this->get('withholding_check') == null) {
+                $validator->errors()->add('total_amount_received', 'Withholding is required for a Private Limited Company. Kindly check to proceed.');
+            }
+
+            // Check if total amount received is more than or equal to withholding
+            if($this->get('withholding_check') != null && $this->get('total_amount_received') < $this->get('withholding')) {
+                $validator->errors()->add('total_amount_received', 'You have enabled withholding for this receipt. Please pay at least the withholding amount to proceed.');
             }
         });
     }
