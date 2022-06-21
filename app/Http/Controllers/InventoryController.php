@@ -175,7 +175,15 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
-        //
+        try
+        {
+            $inventory->delete();
+            return redirect('/inventory')->with('success', 'Successfully deleted item.');
+        }
+        catch(\Exception $e)
+        {
+            return redirect('/inventory')->with('error', 'Can not delete item. This item already exists in Receipts/Bills.');
+        }
     }
 
     /*=================================*/
