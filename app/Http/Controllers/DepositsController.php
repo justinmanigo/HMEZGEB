@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
 use App\Http\Requests\Customer\Deposit\StoreDepositRequest;
 use App\Models\Deposits;
 use App\Models\DepositItems;
@@ -52,19 +54,66 @@ class DepositsController extends Controller
             'total_amount' => $request->total_amount,
             'remark' => $request->remark,
         ]);
+
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->deposit_ticket_date, $request->remark, session('accounting_system_id'));
+
+        // Initialize the COAs and Amount from different cash on hand
+        $credit_accounts = [];
+        $credit_amount = [];
+
+        // Stores the COA of Bank
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($coa->id);
+        $debit_amount[] = $request->total_amount;
+
+        $coa = [];
+
         for($i = 0; $i < count($request->is_deposited); $i++)
         {
             $cash_transaction = ReceiptCashTransactions::find($request->is_deposited[$i]);
+
+            $cash_transaction->receiptReference->receipt;
+            
             $cash_transaction->is_deposited = 'yes';
             $cash_transaction->save();
-
+            
             $deposit_item = DepositItems::create([
                 'deposit_id' => $deposits->id,
                 'receipt_cash_transaction_id' => $request->is_deposited[$i],
             ]);
+
+            // Deduct balance from COA for transfer
+            $coa_id = $cash_transaction->receiptReference->receipt->chart_of_account_id;
+            $amount_received = $cash_transaction->amount_received;
+            
+            $idx = -1;
+            for($j = 0; $j < count($credit_accounts); $j++)
+            {
+                if($credit_accounts[$j] == $coa_id) {
+                    $credit_amount[$j] += $cash_transaction->amount_received;
+                    $idx = $j;
+                }
+            }
+            if($idx == -1) {
+                $credit_accounts[] = $coa_id;
+                $credit_amount[] = $cash_transaction->amount_received;
+            }
         }
-        
-        return true;
+
+        for($i = 0; $i < count($credit_accounts); $i++)
+            $credit_accounts[$i] = CreateJournalPostings::encodeAccount($credit_accounts[$i]);
+
+        CreateJournalPostings::run($je,
+            $debit_accounts, $debit_amount,
+            $credit_accounts, $credit_amount,
+            session('accounting_system_id'));
+
+        return [
+            'debit_accounts' => $debit_accounts,
+            'debit_amount' => $debit_amount,
+            'credit_accounts' => $credit_accounts,
+            'credit_amount' => $credit_amount,
+        ];
     }
 
     /**
