@@ -88,15 +88,20 @@
                     </td>
                     <td></td>
                 </tr> --}}
-                {{-- <tr>
-                    <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
+                <tr>
+                    <td colspan="3" class="text-right">
+                        <div class="form-check">
+                            <label class="form-check-label mr-5" for="c_is_active">Include Withholding 2%</label>
+                            <input class="form-check-input" id="c_is_active" type="checkbox" value="on" name="withholding_check" @if(\App\Models\AccountingSystem::where('id', session('accounting_system_id'))->first()->business_type == 'PLC') checked @endif>
+                        </div>
+                    </td>
                     <td class="text-right table-item-content"><strong>Withholding: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
+                        <input type="text" class="form-control text-right" name="withholding" id="r_withholding" value="0.00" readonly>
                         <p class="text-danger error-message error-message-withholding" style="display:none"></p>
                     </td>
                     <td></td>
-                </tr> --}}
+                </tr>
                 {{-- <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
                     <td>
