@@ -149,8 +149,18 @@ class ReceiptController extends Controller
         // Create Debit Postings
         // This determines which is which to include in debit postings
         if($status == 'paid' || $status == 'partially_paid') {
+            
+            $cash_on_hand = $request->total_amount_received;
+
+            if($request->withholding_check != null) {
+                $cash_on_hand -= $request->withholding;
+
+                $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_withholding);
+                $debit_amount[] = $request->withholding;
+            }
+        
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_cash_on_hand);
-            $debit_amount[] = $request->total_amount_received;
+            $debit_amount[] = $cash_on_hand;
         }
         if($status == 'partially_paid' || $status == 'unpaid') {
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_account_receivable);
@@ -193,7 +203,7 @@ class ReceiptController extends Controller
             'remark' => $request->remark,           
             'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
             'discount' => '0.00', // Temporary discount
-            'withholding' => '0.00', // Temporary Withholding
+            'withholding' => isset($request->withholding_check) ? $request->withholding : '0.00',
             'tax' => $request->tax_total,
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
