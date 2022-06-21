@@ -56,7 +56,7 @@ class UserTableSeeder extends Seeder
                 'contact_person' => 'PocketMaster',
                 'contact_person_position' => 'Member',
                 'contact_person_mobile_number' => '09123456789',
-                'business_type' => 'Sole Proprietorship',
+                'business_type' => 'PLC',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -134,6 +134,15 @@ class UserTableSeeder extends Seeder
         DB::table('accounting_systems')->insert($accounting_systems);
         DB::table('accounting_system_users')->insert($accounting_system_users);
         DB::table('journal_entries')->insert($journal_entries);
+
+        // Create withholding entry for Accounting System # 1
+        DB::table('withholdings')->insert([
+            [
+                'accounting_system_id' => 1,
+                'name' => 'Withholding',
+                'percentage' => 2,
+            ]
+        ]);
 
         // Loop accounting systems
         for($i = 0; $i < count($accounting_systems); $i++)
