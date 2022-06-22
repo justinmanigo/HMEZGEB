@@ -69,13 +69,13 @@
                                                         {!! \Session::get('error') !!}
                                                     </div>
                                                     @endif
-                                                    <form id="loginForm" class="user">
+                                                    <form method="POST" action="{{ route('login') }}" class="user">
                                                         @csrf
                                                         <div class="form-group">
                                                             <input type="email" class="form-control form-control-user"
-                                                                id="loginEmail" name="loginEmail" aria-describedby="loginEmail"
+                                                                id="exampleInputEmail" name="email" aria-describedby="emailHelp"
                                                                 placeholder="Enter Email Address...">
-                                                            @error('loginEmail')
+                                                            @error('email')
                                                                 <span class="invalid-feedback" role="alert">
                                                                     <strong>{{ $message }}</strong>
                                                                 </span>
@@ -83,13 +83,13 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <input type="password" class="form-control form-control-user"
-                                                                id="loginPassword" name="loginpassword" placeholder="Password">
-
-                                                                @error('loginpassword')
-                                                                    <span class="invalid-feedback" role="alert">
-                                                                        <strong>{{ $message }}</strong>
-                                                                    </span>
-                                                                @enderror
+                                                                id="exampleInputPassword" name="password" placeholder="Password">
+                
+                                                            @error('password')
+                                                                <span class="invalid-feedback" role="alert">
+                                                                    <strong>{{ $message }}</strong>
+                                                                </span>
+                                                            @enderror
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="custom-control custom-checkbox small">
@@ -98,10 +98,9 @@
                                                                     Me</label>
                                                             </div>
                                                         </div>
-                                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                                            Login
-                                                        </button>
-                                                    
+                                                        <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
+                                                            
+                                                       
                                                     </form>
                                                     <hr>
                                                     <div class="text-center">
@@ -445,7 +444,7 @@
     </script>
 
     {{-- loginForm --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $( "#loginForm" ).on('submit',function(e){
             e.preventDefault();
             let email = $('#loginEmail').val();
@@ -473,10 +472,10 @@
             });
           
         });
-    </script>
+    </script> --}}
 
     {{-- registerForm --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         // $( "#registerForm" ).on('submit',function(e){
         //     e.preventDefault();
         //     let referralCode = $('#referralCode').val();
@@ -497,10 +496,10 @@
         //     // });
            
         // });
-    </script>
+    </script> --}}
 
    {{-- step1Form --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $( "#step1Form" ).on('submit',function(e){
             e.preventDefault();
             let email = $('#registerEmail').val();
@@ -521,10 +520,10 @@
             // });
         
         });
-    </script>
+    </script> --}}
 
     {{-- step2_1Form --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $( "#step2_1Form" ).on('submit',function(e){
             e.preventDefault();
             let password = $('#createPassword').val();
@@ -548,10 +547,10 @@
             // });
        
         });
-    </script>
+    </script> --}}
 
     {{-- step2_2Form --}}
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $( "#step2_2Form" ).on('submit',function(e){
             e.preventDefault();
             let password = $('#existpassword').val();
@@ -572,7 +571,7 @@
             // });
         
         });
-    </script>
+    </script> --}}
 
     <script type="text/javascript">
         $(document).on('submit', '#form-register', function(e) {
