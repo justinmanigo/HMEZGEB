@@ -666,10 +666,12 @@ Route::group([
     Route::get('/verify-password', [RegisterController::class, 'verifyPasswordView'])->name('verifyPasswordView');
     Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
 
-    Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral');
-        Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
+    Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
     Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
     Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
     Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
+    
+    Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral'); // Initial signup
+    Route::post('/check-email-registration', [RegisterController::class, 'checkIfEmailExists'])->name('checkIfEmailExists'); // Step 1
 
 });

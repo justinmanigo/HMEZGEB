@@ -44,36 +44,92 @@
 
                         <div class="row">
                            
-                            <div class="col-lg-12">
+                            <div id="step1" class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Enter your email address</h1>
                                     </div>
-                                    <form action="{{route('register.submitEmail')}}" method="POST"   class="user">
+                                    <form id="form-step1" action="{{ url('/check-email-registration') }}" method="POST" class="user">
                                         @csrf
+                                        <p id="step1-error" class="alert alert-danger" style="display:none">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" id="registerEmail" name="registerEmail"
-                                                placeholder="Email Address">
+                                            <input type="email" class="form-control form-control-user" id="email" name="email"
+                                                placeholder="Email Address" required>
+                                        </div>
+                                    
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Next
+                                        </button>                                    
+                                    </form>
+                                </div>
+                            </div>
+
+                            {{-- If email does exist. --}}
+                            <div id="step2a" style="display:none" class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Enter your current password</h1>
+                                    </div>
+                                    <form id="form-step2a" action="" method="POST" class="user">
+                                        @csrf
+                                        <p>Your email <strong id="step2a-email"></strong> already exists in our system. Please re-enter your password to confirm your identity and proceed with the referral.</p>
+                                        <p id="step2a-error" class="alert alert-danger" style="display:none">
+                                       
+                                        <input type="email" id="step2a-email" name="email"
+                                            value="" readonly hidden required>
+
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" id="step2a-password" name="password"
+                                                placeholder="Current Password">
+                                        </div>
+                                    
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Authenticate and Merge Accounts
+                                        </button>
+                                        
+                                        <hr>
+
+                                        <div class="text-center">
+                                            <a class="small form-step2-back" href="javascript:void(0)" role="button">Go Back</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            {{-- If email does not exist. --}}
+                            <div id="step2b" style="display:none" class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Enter your new credentials</h1>
+                                    </div>
+                                    <form id="form-step2b" action="" method="POST" class="user">
+                                        @csrf
+                                        <p>Our system indicates you're creating a new account. Kindly enter your preferred password to proceed with the registration.</p>
+                                        <p id="step2b-error" class="alert alert-danger" style="display:none">
+                                        
+                                        <input type="email" id="step2b-email" name="email"
+                                            value="" readonly hidden required>
+
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" id="step2b-new-password" name="new_password"
+                                                placeholder="New Password">
                                         </div>
 
-                                        @error('registerEmail')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                       
-
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Register Accounts
-                                        </button>
-                                         
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" id="step2b-confirm-password" name="confirm_password"
+                                                placeholder="Confirm Password">
+                                        </div>
                                     
-                                    <hr>
-                                   
-                                    <div class="text-center">
-                                        <a class="small" href="/">Already have an account? Login!</a>
-                                    </div>
-                                </form>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Register Account
+                                        </button>                
+                                        
+                                        <hr>
+
+                                        <div class="text-center">
+                                            <a class="small form-step2-back" href="javascript:void(0)" role="button">Go Back</a>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -82,40 +138,8 @@
             </div>   
         </div>   
     </div>
-    
- 
- 
 
-
-    
-     
- 
-
-
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-
-    <script type="text/javascript">
-    $(document).ready(function() {
-      
-        // $( "#step1Container").hide();
-        // $( "#step2_1Container").hide();
-        // $( "#step2_2Container").hide();
-        // $( "#step3Container").hide();
-
-       
-    });
-
-    </script>
- 
-
-  
- 
-
-   
-    
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>  
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{URL::asset('vendor/jquery/jquery.min.js')}}"></script> 
@@ -126,7 +150,56 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script> 
- 
+
+    <script>
+        // TODO: On form submit, make an AJAX call to check whether the email already exists in the system or not yet.
+        // (Step 2A) If email exists, prompt the user to enter his/her current password indicating the user wishes to merge accounts.
+        // (Step 2B) Otherwise, prompt the user to enter new passwords. 
+
+        $(document).on('submit', '#form-step1', function(e) {
+            e.preventDefault();
+            console.log(e);
+
+            var email = $('#email').val();
+            $('#step1-error').hide();
+
+            var request = $.ajax({
+                url: e.currentTarget.action,
+                method: e.currentTarget.method,
+                data: $(e.currentTarget).serialize(),
+            });
+
+            request.done(function(response) {
+                console.log(response);
+                // If email exists, proceed to Step 2A
+                if(response.email_exists == true) {
+                    $('#step2a').show();
+                    $('#step2a-email').html(email);
+                    $('#step2a-email').val(email);
+                }
+                // Otherwise, proceed to Step 2B
+                else {
+                    $('#step2b').show();
+                    $('#step2b-email').val(email);
+                }
+
+                $('#step1').hide();
+            });
+
+            request.fail(function(response) {
+                console.log(response);
+                $('#step1-error').show().html("Referral code does not exist.");
+            });
+        });
+
+        $(document).on('click', '.form-step2-back', function(e) {
+            e.preventDefault();
+            $('#step2a').hide();
+            $('#step2b').hide();
+            $('#step1').show();
+        });
+
+    </script>
 
 </body>
 

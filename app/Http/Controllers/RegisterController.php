@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
+    /**
+     * This function checks whether the referral code exists or not.
+     * If the referral code exists, it will return 'sod', thus the frontend will
+     * redirect to the create account view.
+     */
     public function findReferralCode(Request $request)
     {
         Log::info($request);
@@ -23,32 +28,56 @@ class RegisterController extends Controller
 
         return 'sod';
     }
+
+    /**
+     * This functions checks whether the email exists.
+     * 
+     * If the email exists, in the front end, it will proceed to step 2A where the user
+     * will confirm his/her identity and merge accounts.
+     * Otherwise, it will proceed to Step 2B where the user will create a new account.
+     */
+    public function checkIfEmailExists(Request $request)
+    {
+        Log::info($request);
+
+        if(!session('referralCode')){
+            return response()->json(['error' => 'Error processing request.'], 422);
+        }
+
+        // Check whether the email is registered or not.
+        $user = User::where('email', $request->email)->first();
+
+        if($user)   return response()->json(['email_exists' => true], 200);
+        else        return response()->json(['email_exists' => false], 200);
+    }
    
     public function createAccount(Request $request)
     {
+        
+
          
-        Log::info($request);
-        $this->request->session()->put('registerEmail',$request->registerEmail);
-        //     //1.Find email address
-        //     //2.If email exist return to verify password and compare password and ask if to merged account
-        //     //2.1.If merged, redirect to create new another company info and redirect to dashboard
-        //     //2.2.Else redirect back to input email address
-        //     //3.Else if not exist input newly created password and redirect to input user details
-        // }
-        if($this->request->session()->get('referralCode')){
-            $user = User::where('email',$request->registerEmail)->first();
-            Log::info($user);
-            if($user){
-                Log::info("sod");
-                return redirect()->route('register.verifyPasswordView');  
-            }else{
-                Log::info("wa sod");
+        // Log::info($request);
+        // $this->request->session()->put('registerEmail',$request->registerEmail);
+        // //     //1.Find email address
+        // //     //2.If email exist return to verify password and compare password and ask if to merged account
+        // //     //2.1.If merged, redirect to create new another company info and redirect to dashboard
+        // //     //2.2.Else redirect back to input email address
+        // //     //3.Else if not exist input newly created password and redirect to input user details
+        // // }
+        // if($this->request->session()->get('referralCode')){
+        //     $user = User::where('email',$request->registerEmail)->first();
+        //     Log::info($user);
+        //     if($user){
+        //         Log::info("sod");
+        //         return redirect()->route('register.verifyPasswordView');  
+        //     }else{
+        //         Log::info("wa sod");
                
-                return redirect()->route('register.createPasswordView'); 
-            }
-        }else{
-            abort(500);
-        }
+        //         return redirect()->route('register.createPasswordView'); 
+        //     }
+        // }else{
+        //     abort(500);
+        // }
     }
 
     public function createPassword(Request $request)
