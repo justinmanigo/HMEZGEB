@@ -54,7 +54,7 @@ $(".ajax-submit-updated").submit(function(e){
         {
             console.log(jqXHR.responseJSON.message);
             // generateToast(jqXHR.responseJSON.message, 'bg-danger');
-            closeButtonElement.click();
+            // closeButtonElement.click();
         }
         else
         {
