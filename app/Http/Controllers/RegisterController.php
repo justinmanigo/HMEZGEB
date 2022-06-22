@@ -16,26 +16,12 @@ class RegisterController extends Controller
     {
         Log::info($request);
         
+        $referral = Referral::where('code', $request->referralCode)->firstOrFail();
+
         $this->request->session()->put('referralCode',$request->referralCode);
         Log::info($this->request->session()->get('referralCode'));
 
-        // if(session()->has('referral_code')){
-        //     //1. Find referral code
-        //     //2. if code !exist = error
-        //     //3. else redirect to next page to  input email
-        //     //4. 
-        // }
-    
-        
-        $referral = Referral::where('name',$request->referralCode)->first();
-        Log::info($referral);
-        if($referral){
-            Log::info("sod");
-            return redirect()->route('register.createAccountView');
-        }else{
-            Log::info("wa sod");
-            return redirect()->back()->with('error','Referral Code does not exist!');
-        }
+        return 'sod';
     }
    
     public function createAccount(Request $request)

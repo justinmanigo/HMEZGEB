@@ -127,18 +127,19 @@
                                                     {!! \Session::get('error') !!}
                                                 </div>
                                                 @endif
-                                                <form action="{{route('register.submitReferral')}}" method="POST"  id="registerForm"  class="user">
+                                                <form id="form-register" action="{{route('register.submitReferral')}}" method="POST" class="user">
                                                     @csrf
+                                                    <p id="error-referral-code" class="alert alert-danger error-message error-message-referralCode" style="display:none"></p>
                                                     
                                                     <div class="form-group">
                                                         <input type="text" class="form-control form-control-user"
                                                             id="referralCode" name="referralCode" placeholder="Enter Referral Code">
 
-                                                            @error('referralCode')
-                                                                <span class="invalid-feedback" role="alert">
-                                                                    <strong>{{ $message }}</strong>
-                                                                </span>
-                                                            @enderror
+                                                            {{-- @error('referralCode') --}}
+                                                                {{-- <span id="error-referral-code-alert" class="invalid-feedback" role="alert" style="display:none">
+                                                                    <strong id="error-referral-code-message">{{ $message }}</strong>
+                                                                </span> --}}
+                                                            {{-- @enderror --}}
                                                     </div>
                                                     
                                                     <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -573,6 +574,34 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).on('submit', '#form-register', function(e) {
+            e.preventDefault();
+            console.log(e);
+            $('#error-referral-code').hide();
+
+            var request = $.ajax({
+                url: e.currentTarget.action,
+                method: e.currentTarget.method,
+                data: $(e.currentTarget).serialize(),
+            });
+
+            request.done(function(response) {
+                console.log(response);
+
+                // If successful, redirect user to create-account view.
+                window.location.href = "/create-account";
+            });
+
+            request.fail(function(response) {
+                console.log(response);
+                $('#error-referral-code').show().html("Referral code does not exist.");
+            });
+        });
+    </script>
+
+    
+
 
 
     <!-- Bootstrap core JavaScript-->
@@ -585,6 +614,8 @@
     <!-- Custom scripts for all pages-->
     <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script> 
  
+    <!-- Custom script for this page -->
+    <script src="{{ url('/js/ajax-submit-updated.js') }}"></script>
 
 </body>
 
