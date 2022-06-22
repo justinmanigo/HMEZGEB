@@ -654,22 +654,22 @@ Route::post('/userlogin', function (Request $request){
 })->name('userlogin');
 
 
-        /**
-         * Referral Module
-         */
-        Route::group([
-            'as' => 'register.'
-        ], function(){ 
-            Route::get('/create-account', [RegisterController::class, 'createAccountView'])->name('createAccountView');
-            Route::get('/create-password', [RegisterController::class, 'createPasswordView'])->name('createPasswordView');
-            Route::get('/create-user', [RegisterController::class, 'createUserView'])->name('createUser');
-            Route::get('/verify-password', [RegisterController::class, 'verifyPasswordView'])->name('verifyPasswordView');
-            Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+/**
+ * Referral Module
+ */
+Route::group([
+    'as' => 'register.'
+], function(){ 
+    Route::get('/create-account', [RegisterController::class, 'createAccountView'])->name('createAccountView');
+    Route::get('/create-password', [RegisterController::class, 'createPasswordView'])->name('createPasswordView');
+    Route::get('/create-user', [RegisterController::class, 'createUserView'])->name('createUser');
+    Route::get('/verify-password', [RegisterController::class, 'verifyPasswordView'])->name('verifyPasswordView');
+    Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
 
-            Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral');
-              Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
-            Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
-            Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
-            Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
+    Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral');
+        Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
+    Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
+    Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
+    Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
 
-        });
+});
