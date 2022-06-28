@@ -671,7 +671,13 @@ Route::group([
     Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
     Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
     
-    Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral'); // Initial signup
-    Route::post('/check-email-registration', [RegisterController::class, 'checkIfEmailExists'])->name('checkIfEmailExists'); // Step 1
+    // Step 0
+    Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral');
+    // Step 1
+    Route::post('/check-email-registration', [RegisterController::class, 'checkIfEmailExists'])->name('checkIfEmailExists');
+    // Step 2a
+    Route::post('/validate-account', [RegisterController::class, 'validateExistingAccount'])->name('validateAccount');
+    // Step 2b
+    Route::post('/create-account', [RegisterController::class, 'createAccount'])->name('createAccount');
 
 });

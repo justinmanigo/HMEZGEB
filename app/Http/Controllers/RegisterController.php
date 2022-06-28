@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateAccountRequest;
+use App\Http\Requests\ValidateExistingAccountRequest;
 use App\Models\Register;
 use App\Models\Referral;
 use App\Models\User;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 class RegisterController extends Controller
 {
     /**
+     * Step 0
      * This function checks whether the referral code exists or not.
      * If the referral code exists, it will return 'sod', thus the frontend will
      * redirect to the create account view.
@@ -30,6 +33,7 @@ class RegisterController extends Controller
     }
 
     /**
+     * Step 1
      * This functions checks whether the email exists.
      * 
      * If the email exists, in the front end, it will proceed to step 2A where the user
@@ -50,9 +54,38 @@ class RegisterController extends Controller
         if($user)   return response()->json(['email_exists' => true], 200);
         else        return response()->json(['email_exists' => false], 200);
     }
-   
-    public function createAccount(Request $request)
+
+    /**
+     * Step 2a
+     * This function validates the existing account credentials. Then logs the user in and proceeds
+     * to the referral code onboarding.
+     * 
+     * TODO: Create a middleware that checks if a referral code exists in the session, 
+     * thus will redirect to the accounting system onboarding process.
+     * If the user wishes to cancel, then the referral code will not be consumed and the session
+     * key will be removed. Then redirects to the switch account view.
+     */
+    public function validateExistingAccount(ValidateExistingAccountRequest $request)
     {
+        return $request;
+    }
+
+    /**
+     * Step 2b
+     * This function validates the new account credentials, then creates a new account.
+     * 
+     * TODO: Create a middleware that checks if a referral code exists in the session, 
+     * thus will redirect to the accounting system onboarding process.
+     * If the user wishes to cancel, then the referral code will not be consumed and the session
+     * key will be removed. Then redirects to the switch account view.
+     */
+    public function createAccount(CreateAccountRequest $request)
+    {
+        return $request;
+    }
+   
+    // public function createAccount(Request $request)
+    // {
         
 
          
@@ -78,7 +111,7 @@ class RegisterController extends Controller
         // }else{
         //     abort(500);
         // }
-    }
+    // }
 
     public function createPassword(Request $request)
     {
