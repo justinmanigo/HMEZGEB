@@ -208,7 +208,7 @@
 
             request.done(function(response){
                 console.log(response);
-                // TODO: Redirect
+                window.location.href = "/onboarding";
             });
 
             request.fail(function(response){
@@ -248,7 +248,7 @@
 
             request.done(function(response) {
                 console.log(response);
-                // TODO: Redirect
+                window.location.href = "/onboarding";
             });
 
             request.fail(function(response) {

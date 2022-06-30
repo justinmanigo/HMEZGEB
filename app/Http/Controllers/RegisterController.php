@@ -9,8 +9,10 @@ use App\Models\Referral;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Kaiopiola\Keygen\Key;
 
 class RegisterController extends Controller
 {
@@ -67,7 +69,19 @@ class RegisterController extends Controller
      */
     public function validateExistingAccount(ValidateExistingAccountRequest $request)
     {
-        return $request;
+        // return $request;
+
+        // Validates the account then logs the user in
+        $user = User::where('email', $request->email)->first();
+        if(!$user) return response()->json(['error' => 'Error processing request.'], 422);
+
+        if(!Hash::check($request->password, $user->password)) return response()->json(['error' => 'Error processing request.'], 422);
+
+        // Logs the user in
+        Auth::login($user);
+
+        // Returns true that signals that the user is logged in.
+        return response()->json(['success' => true], 200);
     }
 
     /**
@@ -81,7 +95,24 @@ class RegisterController extends Controller
      */
     public function createAccount(CreateAccountRequest $request)
     {
-        return $request;
+        // return $request;
+
+        // Validates the account then creates the account
+        $user = new User;
+        $user->email = $request->email;
+        // generate random username
+        $exampleKey = new Key;
+        $exampleKey->setPattern("xxxxxxxx");
+        $user->username = (string)$exampleKey->generate();
+        $user->code = (string)$exampleKey->generate();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Logs the user in
+        Auth::login($user);
+
+        // Returns true that signals that the user is logged in.
+        return response()->json(['success' => true], 200);
     }
    
     // public function createAccount(Request $request)
@@ -179,6 +210,10 @@ class RegisterController extends Controller
 
     public function createCompanyInfoView()
     {
+        // return [
+        //     Auth::user(),
+        //     session('referralCode')
+        // ];
         return view('register.create-company-info');
     }
 

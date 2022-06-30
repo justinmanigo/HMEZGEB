@@ -664,7 +664,9 @@ Route::group([
     Route::get('/create-password', [RegisterController::class, 'createPasswordView'])->name('createPasswordView');
     Route::get('/create-user', [RegisterController::class, 'createUserView'])->name('createUser');
     Route::get('/verify-password', [RegisterController::class, 'verifyPasswordView'])->name('verifyPasswordView');
-    Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+    // Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+
+    Route::get('/onboarding', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
 
     Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
     Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
