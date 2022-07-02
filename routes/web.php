@@ -681,5 +681,7 @@ Route::group([
     Route::post('/validate-account', [RegisterController::class, 'validateExistingAccount'])->name('validateAccount');
     // Step 2b
     Route::post('/create-account', [RegisterController::class, 'createAccount'])->name('createAccount');
+    // Step 3
+    Route::post('/onboarding', [RegisterController::class, 'createAccountingSystem'])->name('createAccountingSystem');
 
 });

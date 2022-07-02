@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateAccountingSystemRequest;
 use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\ValidateExistingAccountRequest;
 use App\Models\Register;
@@ -113,6 +114,18 @@ class RegisterController extends Controller
 
         // Returns true that signals that the user is logged in.
         return response()->json(['success' => true], 200);
+    }
+
+    /**
+     * Step 3
+     * This function creates the accounting system of the user. The same function also links
+     * the stored referral code to the user, disallowing reuse for other users.
+     * 
+     * TODO: Create Accounting System for the User
+     */
+    public function createAccountingSystem(CreateAccountingSystemRequest $request)
+    {
+        return $request;
     }
    
     // public function createAccount(Request $request)
