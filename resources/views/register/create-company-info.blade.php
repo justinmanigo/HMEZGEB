@@ -416,12 +416,19 @@
 
             request.done(function(data){
                 console.log(data);
+                // Redirect to /switch
+                window.location.href = '/switch';
             });
 
             request.fail(function(response){
                 console.log(response);
                 $('#btn-submit-step3').removeAttr('disabled');
             });
+
+            // temp
+            // request.always(function(){
+            //     $('#btn-submit-step3').removeAttr('disabled');
+            // });
         });
 
         // Step 3 to Step 4

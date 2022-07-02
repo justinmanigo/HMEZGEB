@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateAccountingSystem;
 use App\Http\Requests\CreateAccountingSystemRequest;
 use App\Http\Requests\CreateAccountRequest;
 use App\Http\Requests\ValidateExistingAccountRequest;
+use App\Models\AccountingSystem;
 use App\Models\Register;
 use App\Models\Referral;
+use App\Models\Subscription;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -125,7 +128,56 @@ class RegisterController extends Controller
      */
     public function createAccountingSystem(CreateAccountingSystemRequest $request)
     {
-        return $request;
+        // return $request;
+
+        try {
+            $referral = Referral::where('code', $request->referral_code)->firstOrFail();
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error processing request.'], 422);
+        }
+        
+        if(Subscription::where('referral_id', $referral->id)->count()){
+            return response()->json(['error' => `Can't create accounting system. Referral code is already used by someone else.`], 422);
+        }
+
+        // Determine Date To
+        $dateTo = \Carbon\Carbon::now();
+        switch($referral->trial_duration_type)
+        {
+            case 'day':
+                $dateTo = $dateTo->addDays($referral->trial_duration);
+                break;
+            case 'week':
+                $dateTo = $dateTo->addWeeks($referral->trial_duration);
+                break;
+            case 'month':
+                $dateTo = $dateTo->addMonths($referral->trial_duration);
+                break;
+        }
+
+        // Create Subscription
+        // TODO: Update this to add support for Advanced Subscription
+        $subscription = Subscription::create([
+            'referral_id' => $referral->id,
+            'user_id' => Auth::user()->id,
+            'account_limit' => 3,
+            'account_type' => 'admin',
+            'date_from' => now()->format('Y-m-d'),
+            'date_to' => $dateTo->format('Y-m-d'),
+            'status' => 'trial', // TODO: Update this one when support for `paid` is added.
+        ]);
+
+        // Create the accounting system
+        $as = CreateAccountingSystem::run($request, $subscription);
+
+        // Add accounting system to session
+        $this->request->session()->put('accounting_system_id', $as['accounting_system']->id);
+        $this->request->session()->put('accounting_system_user_id', $as['accounting_system_user']->id);
+
+        // Remove referral code to session
+        $this->request->session()->forget('referralCode');
+
+        return $subscription;
     }
    
     // public function createAccount(Request $request)
