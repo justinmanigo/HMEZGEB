@@ -131,8 +131,6 @@ class RegisterController extends Controller
      * Step 3
      * This function creates the accounting system of the user. The same function also links
      * the stored referral code to the user, disallowing reuse for other users.
-     * 
-     * TODO: Create Accounting System for the User
      */
     public function createAccountingSystem(CreateAccountingSystemRequest $request)
     {
