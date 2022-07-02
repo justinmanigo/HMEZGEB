@@ -32,6 +32,14 @@ class RegisterController extends Controller
         
         $referral = Referral::where('code', $request->referralCode)->firstOrFail();
 
+        // Check if the referral code is already used or not.
+        $subscription = Subscription::where('referral_id', $referral->id)->first();
+
+        if(($subscription && $referral->type == 'normal') ||
+            ($subscription->date_from != null && $referral->type == 'advanced')){
+            return response()->json(['error' => 'Referral code is already used by someone else.'], 422);
+        }
+
         $this->request->session()->put('referralCode',$request->referralCode);
         Log::info($this->request->session()->get('referralCode'));
 
@@ -135,9 +143,12 @@ class RegisterController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error processing request.'], 422);
         }
-        
-        if(Subscription::where('referral_id', $referral->id)->count()){
-            return response()->json(['error' => `Can't create accounting system. Referral code is already used by someone else.`], 422);
+
+        $subscription = Subscription::where('referral_id', $referral->id)->first();
+
+        if(($subscription && $referral->type == 'normal') ||
+            ($subscription->date_from != null && $referral->type == 'advanced')){
+            return response()->json(['error' => 'Can\'t create accounting system. Referral code is already used by someone else.'], 422);
         }
 
         // Determine Date To
