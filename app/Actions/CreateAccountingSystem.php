@@ -16,7 +16,7 @@ class CreateAccountingSystem
     {
         $accounting_system = $this->create($request, $subscription);
         
-        $as_user = $this->addUserAndPermission($accounting_system->id);
+        $as_user = $this->addUserAndPermission($accounting_system->id, $subscription->account_type);
 
         GenerateAccountingPeriods::run($accounting_system->id, $request->calendar_type, $request->accounting_year, $as_user->id);
 
@@ -57,13 +57,12 @@ class CreateAccountingSystem
         ]);
     }
 
-    // TODO: Add support to advanced referral
-    private function addUserAndPermission($id)
+    private function addUserAndPermission($id, $role)
     {
         $user = AccountingSystemUser::create([
             'accounting_system_id' => $id,
             'user_id' => auth()->user()->id,
-            'role' => 'admin',
+            'role' => $role,
         ]);
 
         // Loop permissions

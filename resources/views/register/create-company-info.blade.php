@@ -259,6 +259,8 @@
                                                 <p>Select a payment method for this accounting system.</p>
                                             </div>
 
+                                            <p class="text-danger error-message error-message-main" style="display:none"></p>
+
                                             <!-- Select Calendar Type -->
                                             <div class="form-group row">
                                                 <label for="ci-payment_method" class="col-lg-3">Payment Method<span class="text-danger ml-1">*</span></label>
@@ -416,13 +418,20 @@
 
             request.done(function(data){
                 console.log(data);
-                // Redirect to /switch
-                window.location.href = '/switch';
+                if(data.success) {
+                    // Redirect to /switch
+                    window.location.href = '/switch';
+                }
+                else {
+                    $('#btn-submit-step3').removeAttr('disabled');
+                    $('.error-message-main').html(data.error);
+                }
             });
 
             request.fail(function(response){
                 console.log(response);
                 $('#btn-submit-step3').removeAttr('disabled');
+                $('.error-message-main').html(data.error);
             });
 
             // temp

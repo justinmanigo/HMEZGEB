@@ -166,17 +166,26 @@ class RegisterController extends Controller
                 break;
         }
 
-        // Create Subscription
-        // TODO: Update this to add support for Advanced Subscription
-        $subscription = Subscription::create([
-            'referral_id' => $referral->id,
-            'user_id' => Auth::user()->id,
-            'account_limit' => 3,
-            'account_type' => 'admin',
-            'date_from' => now()->format('Y-m-d'),
-            'date_to' => $dateTo->format('Y-m-d'),
-            'status' => 'trial', // TODO: Update this one when support for `paid` is added.
-        ]);
+        if(!$subscription)
+        {
+            // Create Subscription
+            $subscription = Subscription::create([
+                'referral_id' => $referral->id,
+                'user_id' => Auth::user()->id,
+                'account_limit' => 3,
+                'account_type' => 'admin',
+                'date_from' => now()->format('Y-m-d'),
+                'date_to' => $dateTo->format('Y-m-d'),
+                'status' => 'trial', // TODO: Update this one when support for `paid` is added.
+            ]);
+        }
+        else {
+            // Update subscription
+            $subscription->date_from = now()->format('Y-m-d');
+            $subscription->date_to = $dateTo->format('Y-m-d');
+            $subscription->status = 'trial'; // TODO: Update this one when support for `paid` is added.
+            $subscription->save();
+        }
 
         // Create the accounting system
         $as = CreateAccountingSystem::run($request, $subscription);
@@ -188,7 +197,7 @@ class RegisterController extends Controller
         // Remove referral code to session
         $this->request->session()->forget('referralCode');
 
-        return $subscription;
+        return response()->json(['success' => true], 200);
     }
    
     // public function createAccount(Request $request)
