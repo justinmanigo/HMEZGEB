@@ -301,6 +301,9 @@ class RegisterController extends Controller
 
     public function createCompanyInfoView()
     {
+        if(!session('referralCode')){
+            abort(404);
+        }
         // return [
         //     Auth::user(),
         //     session('referralCode')
