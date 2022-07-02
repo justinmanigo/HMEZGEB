@@ -34,7 +34,7 @@ class ValidateExistingAccountRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $user = User::where('email', $this->input('email'))->first();
+            $user = User::where('email', $this->get('email'))->first();
             if (!$user) {
                 $validator->errors()->add('password', 'Email is not registered.');
             } else {

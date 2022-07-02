@@ -35,8 +35,8 @@ class RegisterController extends Controller
         // Check if the referral code is already used or not.
         $subscription = Subscription::where('referral_id', $referral->id)->first();
 
-        if(($subscription && $referral->type == 'normal') ||
-            ($subscription->date_from != null && $referral->type == 'advanced')){
+        if((isset($subscription) && $referral->type == 'normal') ||
+            (isset($subscription) && $subscription->date_from != null && $referral->type == 'advanced')){
             return response()->json(['error' => 'Referral code is already used by someone else.'], 422);
         }
 
@@ -85,9 +85,9 @@ class RegisterController extends Controller
 
         // Validates the account then logs the user in
         $user = User::where('email', $request->email)->first();
-        if(!$user) return response()->json(['error' => 'Error processing request.'], 422);
+        // if(!$user) return response()->json(['error' => 'Email does not exist.'], 422);
 
-        if(!Hash::check($request->password, $user->password)) return response()->json(['error' => 'Error processing request.'], 422);
+        // if(!Hash::check($request->password, $user->password)) return response()->json(['error' => 'Invalid password.'], 422);
 
         // Logs the user in
         Auth::login($user);
@@ -117,7 +117,7 @@ class RegisterController extends Controller
         $exampleKey->setPattern("XXXXXXXX");
         $user->username = (string)$exampleKey->generate();
         $user->code = (string)$exampleKey->generate();
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($request->new_password);
         $user->save();
 
         // Logs the user in
@@ -146,8 +146,8 @@ class RegisterController extends Controller
 
         $subscription = Subscription::where('referral_id', $referral->id)->first();
 
-        if(($subscription && $referral->type == 'normal') ||
-            ($subscription->date_from != null && $referral->type == 'advanced')){
+        if((isset($subscription) && $referral->type == 'normal') ||
+            (isset($subscription) && $subscription->date_from != null && $referral->type == 'advanced')){
             return response()->json(['error' => 'Can\'t create accounting system. Referral code is already used by someone else.'], 422);
         }
 
