@@ -78,14 +78,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- <div class="col-12 col-lg-3 mb-3 mb-lg-0">
-                                            <div id="step-indicator-4" class="card">
-                                                <div class="card-body">
-                                                    <div class="icon"><strong>Step 4</strong></div>
-                                                    <div class="text">Accounting System Confirmation</div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
                                     </div>
                                     
                                     <!-- Company Information -->
@@ -295,16 +287,6 @@
                                             </button>
                                         </form>
                                     </div>
-
-                                    <!-- Confirmation -->
-                                    {{-- <div id="onboarding-step4" style="display:none">
-                                        <button id="btn-submit-step4" type="submit" class="btn btn-primary btn-submit" style="width:30%">
-                                            Submit & Finish
-                                        </button>
-                                        <button id="btn-previous-step4" type="button" class="btn btn-outline-secondary btn-previous">
-                                            Previous Step
-                                        </button>
-                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -433,43 +415,7 @@
                 $('#btn-submit-step3').removeAttr('disabled');
                 $('.error-message-main').html(data.error);
             });
-
-            // temp
-            // request.always(function(){
-            //     $('#btn-submit-step3').removeAttr('disabled');
-            // });
         });
-
-        // Step 3 to Step 4
-        // $(document).on('click', '#btn-next-step3', function(e) {
-        //     console.log('clicked btn next step3')
-        //     e.preventDefault();
-        //     $(`.error-message`).hide();
-
-        //             $('#onboarding-step3').hide();
-        //             $('#onboarding-step4').show();
-
-        //             $('#step-indicator-3').removeClass('border-success');
-        //             $('#step-indicator-3 .icon').removeClass('text-success');
-
-        //             $('#step-indicator-4').addClass('border-success');
-        //             $('#step-indicator-4 .icon').addClass('text-success');
-        // });
-
-        // Step 4 to Step 3
-        // $(document).on('click', '#btn-previous-step4', function(e) {
-        //     console.log('clicked btn prev step4')
-        //     e.preventDefault();
-
-        //     $('#onboarding-step4').hide();
-        //     $('#onboarding-step3').show();
-
-        //     $('#step-indicator-4').removeClass('border-success');
-        //     $('#step-indicator-4 .icon').removeClass('text-success');
-
-        //     $('#step-indicator-3').addClass('border-success');
-        //     $('#step-indicator-3 .icon').addClass('text-success');
-        // });
 
         // Step 3 to Step 2
         $(document).on('click', '#btn-previous-step3', function(e) {
