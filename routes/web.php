@@ -684,4 +684,6 @@ Route::group([
     // Step 3
     Route::post('/onboarding', [RegisterController::class, 'createAccountingSystem'])->name('createAccountingSystem');
 
+    Route::post('/onboarding/cancel', [RegisterController::class, 'cancelOnboarding'])->name('cancelOnboarding');
+
 });

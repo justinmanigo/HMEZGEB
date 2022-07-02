@@ -200,7 +200,7 @@
                                             <button id="btn-next-step1" type="submit" class="btn btn-primary btn-next" style="width:30%">
                                                 Next Step
                                             </button>
-                                            <button type="button-cancel-step1" class="btn btn-outline-secondary btn-cancel" disabled>
+                                            <button id="button-cancel-step1" type="button" class="btn btn-outline-secondary btn-cancel" data-toggle="modal" data-target="#modal-cancel">
                                                 Cancel
                                             </button>
                                         </form>
@@ -297,6 +297,30 @@
         </div>   
     </div>  
 
+    <!-- MODAL - Cancel -->
+    <div class="modal fade" id="modal-cancel" tabindex="-1" role="dialog" aria-labelledby="Cancel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-customer-label">Cancel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to cancel? Your referral code will not be consumed.
+                    <form id="form-cancel" class="" action="/onboarding/cancel" method="POST">
+                        @csrf
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Continue</button>
+                    <button type="submit" class="btn btn-danger" form="form-cancel">Yes, Cancel Onboarding</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{URL::asset('vendor/jquery/jquery.min.js')}}"></script> 
     <script src="{{URL::asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script> 
@@ -355,7 +379,7 @@
             else if(value == 'ethiopian') {
                 for(i = 0; i < 7; i++) {
                     var year = currentYear - i - 7;
-                    $('#ci-accounting_year').append(`<option value=${year}">${year} (${year+7} - ${year+8})</option>`).removeAttr('disabled');
+                    $('#ci-accounting_year').append(`<option value="${year}">${year} (${year+7} - ${year+8})</option>`).removeAttr('disabled');
                 }
             }
         });

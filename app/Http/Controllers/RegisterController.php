@@ -199,6 +199,14 @@ class RegisterController extends Controller
 
         return response()->json(['success' => true], 200);
     }
+
+    public function cancelOnboarding()
+    {
+        // Remove referral code to session
+        $this->request->session()->forget('referralCode');
+
+        return redirect('/switch');
+    }
    
     // public function createAccount(Request $request)
     // {
