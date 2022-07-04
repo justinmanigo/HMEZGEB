@@ -14,8 +14,8 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        
-        return view('banking.transactions.index');
+        $transactions = Transactions::where('accounting_system_id', session()->get('accounting_system_id'))->get();
+        return view('banking.transactions.index', compact('transactions'));
     }
 
     /**

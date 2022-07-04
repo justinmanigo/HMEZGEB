@@ -67,17 +67,27 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
-                          
-                            <th>Deposit Date</th>
-                            <th>Deposit ID</th>
-                            <th>Account</th>
-                            <th>Label</th>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Bank Account</th>
+                            <th>Type</th>
+                            <th>Description</th>
                             <th>Amount</th>
-                            <th id="thead-actions">Actions</th>
+                            {{-- <th id="thead-actions">Actions</th> --}}
                         </thead>
-                        <tbody>
-                            <tr>  	 	 	 	 
-                                <td class="table-item-content">01/31/2022</td>
+                        <tbody> 
+                                {{-- get all transactions	 	 	  --}}
+                                @foreach($transactions as $transaction)
+                                <tr>
+                                    <td>{{ $transaction->id }}</td>
+                                    <td>{{ $transaction->created_at->format('d/m/Y') }}</td>
+                                    <td>{{ $transaction->chartOfAccount->account_name }}</td>
+                                    <td>{{ $transaction->type }}</td>
+                                    <td>{{ $transaction->description }}</td>
+                                    <td>{{ $transaction->amount }}</td>
+                                </tr>
+                                @endforeach
+                                {{-- <td class="table-item-content">01/31/2022</td>
                                 <td class="table-item-content">DS003</td>
                                 <td class="table-item-content">Commercial Bank</td>
                                 <td class="table-item-content">Self</td>
@@ -93,8 +103,8 @@
                                             <i class="fas fa-trash"></i>
                                         </span>
                                     </button>
-                                </td>  
-                            </tr>
+                                </td>   --}}
+                          
                         </tbody>
                     </table>
                 </div>
