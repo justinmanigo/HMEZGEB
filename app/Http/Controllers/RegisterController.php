@@ -179,6 +179,7 @@ class RegisterController extends Controller
         }
         else {
             // Update subscription
+            $subscription->user_id = Auth::user()->id;
             $subscription->date_from = now()->format('Y-m-d');
             $subscription->date_to = $dateTo->format('Y-m-d');
             $subscription->status = 'trial'; // TODO: Update this one when support for `paid` is added.
