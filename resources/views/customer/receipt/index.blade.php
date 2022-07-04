@@ -552,6 +552,7 @@ POTENTIAL SOLUTIONS:
     </script>
     <script src="/js/customer/receipt/template_select_customer.js"></script>
     <script src="/js/customer/receipt/template_select_tax.js"></script>
+ 
     <script src="/js/customer/receipt/select_customer_receipt.js"></script>
     <script src="/js/customer/receipt/select_customer_proforma.js"></script>
     <script src="/js/customer/receipt/select_customer_advancerevenue.js"></script>

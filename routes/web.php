@@ -60,6 +60,10 @@ use App\Http\Controllers\Settings\CompanyInfoController;
 // Notifications
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Settings\DefaultsController;
+ 
+//Register
+use App\Http\Controllers\RegisterController
+;
 
 /*
 |--------------------------------------------------------------------------
@@ -649,3 +653,37 @@ Route::post('/userlogin', function (Request $request){
 
 })->name('userlogin');
 
+
+/**
+ * Referral Module
+ */
+Route::group([
+    'as' => 'register.'
+], function(){ 
+    Route::get('/create-account', [RegisterController::class, 'createAccountView'])->name('createAccountView');
+    Route::get('/create-password', [RegisterController::class, 'createPasswordView'])->name('createPasswordView');
+    Route::get('/create-user', [RegisterController::class, 'createUserView'])->name('createUser');
+    Route::get('/verify-password', [RegisterController::class, 'verifyPasswordView'])->name('verifyPasswordView');
+    // Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+
+    Route::get('/onboarding', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+
+    Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
+    Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
+    Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
+    Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
+    
+    // Step 0
+    Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral');
+    // Step 1
+    Route::post('/check-email-registration', [RegisterController::class, 'checkIfEmailExists'])->name('checkIfEmailExists');
+    // Step 2a
+    Route::post('/validate-account', [RegisterController::class, 'validateExistingAccount'])->name('validateAccount');
+    // Step 2b
+    Route::post('/create-account', [RegisterController::class, 'createAccount'])->name('createAccount');
+    // Step 3
+    Route::post('/onboarding', [RegisterController::class, 'createAccountingSystem'])->name('createAccountingSystem');
+
+    Route::post('/onboarding/cancel', [RegisterController::class, 'cancelOnboarding'])->name('cancelOnboarding');
+
+});
