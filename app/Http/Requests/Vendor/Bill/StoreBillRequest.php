@@ -4,6 +4,7 @@ namespace App\Http\Requests\Vendor\Bill;
 
 use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
+use App\Models\AccountingSystem;
 use App\Models\Inventory;
 
 class StoreBillRequest extends FormRequest
@@ -57,12 +58,53 @@ class StoreBillRequest extends FormRequest
             }
         }
 
+        $accounting_system = AccountingSystem::find(session('accounting_system_id'));
+
         $this->merge([
             'vendor' => DecodeTagifyField::run($this->vendor),
             'item' => isset($item) ? $item : [],
             'purchase_order' => $this->purchase_order != null ? DecodeTagifyField::run($this->purchase_order) : null,
+
+            // Merge COA defaults to request
+            'bill_cash_on_hand' => $accounting_system->bill_cash_on_hand,
+            'bill_items_for_sale' => $accounting_system->bill_items_for_sale,
+            'bill_freight_charge_expense' => $accounting_system->bill_freight_charge_expense,
+            'bill_vat_receivable' => $accounting_system->bill_vat_receivable,
+            'bill_account_payable' => $accounting_system->bill_account_payable,
+            'bill_withholding' => $accounting_system->bill_withholding,
         ]);
 
         // dd($this->all());
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            // Check if either of the COA defaults is blank.
+            if($this->get('bill_cash_on_hand') == null)
+            {
+                $validator->errors()->add('vendor', 'You haven\'t set the default COA for Cash on Hand. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('bill_items_for_sale') == null)
+            {
+                $validator->errors()->add('vendor', 'You haven\'t set the default COA for Items for Sale. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('bill_freight_charge_expense') == null)
+            {
+                $validator->errors()->add('vendor', 'You haven\'t set the default COA for Freight Charge Expense. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('bill_vat_receivable') == null)
+            {
+                $validator->errors()->add('vendor', 'You haven\'t set the default COA for VAT Receivable. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('bill_account_payable') == null)
+            {
+                $validator->errors()->add('vendor', 'You haven\'t set the default COA for Account Payable. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('bill_withholding') == null)
+            {
+                $validator->errors()->add('vendor', 'You haven\'t set the default COA for Withholding. Please make sure that everything is set at `Settings > Defaults`');
+            }
+        });
     }
 }
