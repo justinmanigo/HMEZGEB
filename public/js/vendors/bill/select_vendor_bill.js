@@ -1,4 +1,5 @@
 var bill_select_vendor_elm = document.querySelector('#b_vendor');
+var bill_vendor_id = undefined; // used to enable proforma field
 
 // initialize Tagify on the above input node reference
 var bill_select_vendor_tagify = new Tagify(bill_select_vendor_elm, {
@@ -47,6 +48,8 @@ function onDropdownShow(e){
 function onBillVendorSelectSuggestion(e){
     // checks for data of selected vendor
     console.log(e.detail.data);
+
+    bill_vendor_id = e.detail.data.value;
 
     $("#b_vendor_id").val(e.detail.data.value)
     $("#b_address").val(e.detail.data.address)

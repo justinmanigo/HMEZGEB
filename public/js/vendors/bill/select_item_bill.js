@@ -155,7 +155,25 @@ function createBillItemEntry(item = undefined)
         whitelist: whitelist,
     });
 
-    $(`#b_item_tax_${bill_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
+    if(item == undefined) {
+        $(`#b_item_tax_${bill_count}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled')
+    }
+    else if(item.inventory.tax != undefined) {
+        tax_whitelist = [
+            {
+                "value": item.inventory.tax.id,
+                "label": `${item.inventory.tax.name} (${item.inventory.tax.percentage}%)`,
+                "name": item.inventory.tax.name,
+                "percentage": item.inventory.tax.percentage,
+            }
+        ];
+
+        tax_tagify.whitelist = tax_whitelist;
+
+        $(`#b_item_tax_${receipt_count}`).parents('td').find('span').html(tax_whitelist[0].label);
+        $(`#b_item_tax_${receipt_count}`).parents('td').find('tag').attr('percentage', tax_whitelist[0].percentage);
+        $(`#b_item_tax_percentage_${receipt_count}`).val(tax_whitelist[0].percentage);
+    }
 
     // Set events of tagify instance.
     tax_tagify.on('dropdown:show dropdown:updated', onTaxBillDropdownShow)

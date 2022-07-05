@@ -60,7 +60,7 @@ class StoreBillRequest extends FormRequest
         $this->merge([
             'vendor' => DecodeTagifyField::run($this->vendor),
             'item' => isset($item) ? $item : [],
-            // 'purchase_order' => $this->purchase_order != null ? DecodeTagifyField::run($this->purchase_order) : null,
+            'purchase_order' => $this->purchase_order != null ? DecodeTagifyField::run($this->purchase_order) : null,
         ]);
 
         // dd($this->all());
