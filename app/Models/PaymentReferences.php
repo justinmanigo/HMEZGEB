@@ -11,6 +11,7 @@ class PaymentReferences extends Model
     use HasFactory;
 
     protected $fillable = [
+        'accounting_system_id',
         'vendor_id',
         'type',
         'date',
