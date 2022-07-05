@@ -635,6 +635,8 @@ Route::group([
             'as' => 'control.',
         ], function() {
             Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+            
+            Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
         });
     });
 });
