@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
 use App\Actions\UpdateInventoryItemQuantity;
 use App\Actions\Vendor\Bill\StoreBillItems;
 use App\Actions\Vendor\Bill\UpdateBillStatus;
@@ -110,8 +112,33 @@ class BillsController extends Controller
         
         UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'increase');
         StoreBillitems::run($request->item, $request->quantity, $reference->id);
+
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->date, $request->remark, session('accounting_system_id'));
+
+        // Create Debit Postings
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_items_for_sale);
+        $debit_amount[] = $request->sub_total;
+
+        // Create Credit Postings
+        // This determines which is which to include in debit postings
+        if($status == 'paid' || $status == 'partially_paid') {
+            $cash_on_hand = $request->total_amount_received;
             
-        return Bills::create([
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_cash_on_hand);
+            $credit_amount[] = $cash_on_hand;
+        }
+        if($status == 'partially_paid' || $status == 'unpaid') {
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_account_payable);
+            $credit_amount[] = $request->grand_total - $request->total_amount_received;
+        }
+
+        CreateJournalPostings::run($je,
+            $debit_accounts, $debit_amount,
+            $credit_accounts, $credit_amount,
+            session('accounting_system_id'));
+            
+        Bills::create([
             'payment_reference_id' => $reference->id,
             // 'withholding_payment_id' => '0', // temporary
             'purchase_order_id' => isset($request->purchase_order) ? $request->purchase_order->value : null,
@@ -127,6 +154,12 @@ class BillsController extends Controller
             'amount_received' => $request->total_amount_received,
         ]);
         
+        return [
+            'debit_accounts' => $debit_accounts,
+            'debit_amount' => $debit_amount,
+            'credit_accounts' => $credit_accounts,
+            'credit_amount' => $credit_amount,
+        ];
     }
 
     public function storePurchaseOrder(StorePurchaseOrderRequest $request)
