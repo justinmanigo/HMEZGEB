@@ -205,6 +205,35 @@ class VendorsController extends Controller
 
     }
 
-    
+    public function ajaxSearchVendorPurchaseOrder(Vendors $vendor, $value)
+    {
+        $purchase_orders = PaymentReferences::select(
+            'payment_references.id as value',
+            'payment_references.date',
+            'purchase_orders.grand_total as amount',
+            'purchase_orders.due_date',
+        )
+        ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+        ->where('vendor_id', $vendor->id)
+        ->where('type', 'purchase_order')
+        ->where('status', 'unpaid')
+        ->get();
+
+        return $purchase_orders;
+    }
+
+    public function ajaxGetPurchaseOrder(PaymentReferences $purchaseOrder)
+    {
+        // Load relationships.
+        $purchaseOrder->purchaseOrders;
+        $purchaseOrder->billItems;
+        for($i = 0; $i < count($purchaseOrder->billItems); $i++){
+            $purchaseOrder->billItems[$i]->inventory;
+            $purchaseOrder->billItems[$i]->inventory->tax;
+        }
+
+        // Return response
+        return $purchaseOrder;
+    }
 }
 

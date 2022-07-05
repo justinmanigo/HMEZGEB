@@ -74,7 +74,10 @@ class PaymentReferences extends Model
         return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
     }
 
-
+    public function billItems()
+    {
+        return $this->hasMany(BillItem::class, 'payment_reference_id', 'id');
+    }
 
     
 }

@@ -295,8 +295,10 @@ $(document).ready(function() {
 <!-- Vendors -->
 <script src="/js/vendors/template_select_tax.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
+<script src="/js/vendors/template_select_purchase_order.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
 <script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>
+<script src="/js/vendors/bill/select_purchase_order_bill.js"></script>
 
 <!-- Items -->
 <script src="/js/vendors/template_select_item.js"></script>
