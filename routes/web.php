@@ -62,7 +62,10 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Settings\DefaultsController;
  
 //Register
-use App\Http\Controllers\RegisterController
+use App\Http\Controllers\RegisterController;
+
+// Control Panel
+use App\Http\Controllers\ControlPanelController;
 ;
 
 /*
@@ -623,6 +626,15 @@ Route::group([
                     Route::post('/payments' ,[DefaultsController::class, 'updatePayments'])->name('updatePayments');
                 });
             });
+        });
+
+        /**
+         * Control Panel
+         */
+        Route::group([
+            'as' => 'control.',
+        ], function() {
+            Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
         });
     });
 });
