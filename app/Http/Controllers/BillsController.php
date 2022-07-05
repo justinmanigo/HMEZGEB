@@ -74,6 +74,7 @@ class BillsController extends Controller
 
         // Create BillReference Record
         $reference = PaymentReferences::create([
+            'accounting_system_id' => session('accounting_system_id'),
             'vendor_id' => $request->vendor->value,
             'date' => $request->date,
             'type' => 'bill',
@@ -119,6 +120,7 @@ class BillsController extends Controller
     {
         // Create Payment Reference Record
         $reference = PaymentReferences::create([
+            'accounting_system_id' => session('accounting_system_id'),
             'vendor_id' => $request->vendor->value,
             'date' => $request->date,
             'type' => 'purchase_order',

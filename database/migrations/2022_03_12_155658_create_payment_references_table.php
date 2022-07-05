@@ -24,6 +24,7 @@ class CreatePaymentReferencesTable extends Migration
             $table->string('attachment')->nullable();
             $table->timestamps();
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
+            $table->foreignId('accounting_system_id')->constrained();
             // $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
         });
     }
