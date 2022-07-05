@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\UpdateInventoryItemQuantity;
 use App\Actions\Vendor\Bill\StoreBillItems;
+use App\Actions\Vendor\Bill\UpdateBillStatus;
 use App\Http\Requests\Vendor\Bill\StoreBillRequest;
 use App\Http\Requests\Vendor\Bill\StorePurchaseOrderRequest;
 use App\Models\Bills;
@@ -60,7 +61,8 @@ class BillsController extends Controller
     {
         // return $request;
 
-        // TODO: Link with Purchase Order (if applicable)
+        // If this transaction is linked to Proforma
+        if(isset($request->purchase_order)) UpdateBillStatus::run($request->proforma->value, 'paid');
 
         // Determine bill status.
         if($request->grand_total == $request->total_amount_received)
@@ -98,7 +100,7 @@ class BillsController extends Controller
         return Bills::create([
             'payment_reference_id' => $reference->id,
             // 'withholding_payment_id' => '0', // temporary
-            'purchase_order_id' => $request->purchase_order_id,
+            'purchase_order_id' => isset($request->purchase_order) ? $request->purchase_order->value : null,
             'due_date' => $request->due_date,
             'chart_of_account_id' => $request->chart_of_account_id,
             'sub_total' => $request->sub_total,
