@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transfers;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
 use App\Models\BankAccounts;
 use App\Models\ChartOfAccounts;
@@ -80,6 +81,15 @@ class TransfersController extends Controller
             'amount' => $request->amount,
             'reason' => $request->reason,
             'journal_entry_id' => $je->id,
+        ]);
+
+        // create transaction
+        Transactions::create([
+            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
+            'chart_of_account_id' => $request->from_account_id,
+            'type' => 'Transfer',
+            'description' => $request->reason,
+            'amount' => $request->amount,
         ]);
 
         return redirect()->back()->with('success', 'Transfer has been made successfully');

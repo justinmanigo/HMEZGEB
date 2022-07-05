@@ -8,6 +8,7 @@ use App\Http\Requests\Customer\Deposit\StoreDepositRequest;
 use App\Models\Deposits;
 use App\Models\DepositItems;
 use App\Models\ReceiptCashTransactions;
+use App\Models\Transactions;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\ReceiptReferences;
 use Illuminate\Support\Facades\Log;
@@ -53,6 +54,15 @@ class DepositsController extends Controller
             'deposit_ticket_date' => $request->deposit_ticket_date,
             'total_amount' => $request->total_amount,
             'remark' => $request->remark,
+        ]);
+
+        // create transaction
+        Transactions::create([
+            'accounting_system_id' => session()->get('accounting_system_id'),
+            'chart_of_account_id' => $coa->id,
+            'type' => 'Deposit',
+            'description' => $request->remark,
+            'amount' => $request->total_amount,
         ]);
 
         // Create Journal Entry
@@ -107,7 +117,7 @@ class DepositsController extends Controller
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
             session('accounting_system_id'));
-
+        
         return [
             'debit_accounts' => $debit_accounts,
             'debit_amount' => $debit_amount,
