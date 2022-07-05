@@ -24,18 +24,31 @@ class BillsController extends Controller
      */
     public function index()
     {
-        // get vendors table join
-          $bill = Vendors::join('payment_references', 'payment_references.vendor_id', '=', 'vendors.id')
-            ->join('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
-            ->select('payment_references.*', 'vendors.name', 'bills.grand_total');
-
-        $bill_and_purchase_order = Vendors::join('payment_references', 'payment_references.vendor_id', '=', 'vendors.id')
-            ->join('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
-            ->select('payment_references.*', 'vendors.name', 'purchase_orders.grand_total')
-            ->union($bill)
-            ->get();        
+        $transactions = PaymentReferences::leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
+            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+            // where subquery
+            ->where(function ($query) {
+                $query->where('payment_references.type', '=', 'bill')
+                    ->orWhere('payment_references.type', '=', 'purchase_order');
+            })
+            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
+            ->select(
+                'vendors.name',
+                'payment_references.id',
+                'payment_references.vendor_id',
+                'payment_references.type',
+                'payment_references.date',
+                'payment_references.status',
+                // 'payment_references.is_void',
+                'bills.grand_total as bill_amount',
+                'purchase_orders.grand_total as purchase_order_amount',
+            )
+            ->get();
        
-        return view('vendors.bills.index',compact('bill_and_purchase_order'));
+        return view('vendors.bills.index', [
+            'transactions' => $transactions,
+        ]);
     }
 
     /**

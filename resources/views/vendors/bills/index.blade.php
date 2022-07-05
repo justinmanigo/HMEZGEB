@@ -166,29 +166,35 @@
 
                         <tbody>
                             <!-- foreach bills -->
-                            @foreach($bill_and_purchase_order as $bill)
+                            @foreach($transactions as $transaction)
                             <tr onclick="window.location='/'">
-                                <td>{{$bill->date}}</td>
-                                <td>{{$bill->id}}</td>
+                                <td>{{$transaction->date}}</td>
+                                <td>{{$transaction->id}}</td>
                                 <!-- Select type -->
                                 <td class="h6">
-                                    @if($bill->type == 'bill')<span class="badge badge-primary">Bill</span>
-                                    @elseif($bill->type == 'purchase_order')<span class="badge badge-primary">Purchase
+                                    @if($transaction->type == 'bill')<span class="badge badge-primary">Bill</span>
+                                    @elseif($transaction->type == 'purchase_order')<span class="badge badge-primary">Purchase
                                         Order</span>
                                 </td>
                                 @endif
-                                <td>{{$bill->name}}</td>
+                                <td>{{$transaction->name}}</td>
                                 <!-- Select status -->
                                 <td class="h6">
-                                    @if($bill->status == 'paid')<span class="badge badge-success">Paid</span>
-                                    @elseif($bill->status == 'unpaid')<span class="badge badge-danger">Unpaid</span>
-                                    @elseif($bill->status == 'partially_paid')<span
+                                    @if($transaction->status == 'paid')<span class="badge badge-success">Paid</span>
+                                    @elseif($transaction->status == 'unpaid')<span class="badge badge-danger">Unpaid</span>
+                                    @elseif($transaction->status == 'partially_paid')<span
                                         class="badge badge-warning">Partially
                                         Paid</span>
                                     @endif
                                 </td>
 
-                                <td>{{$bill->grand_total}}</td>
+                                <td>
+                                    @if($transaction->type == 'bill')
+                                        {{ number_format($transaction->bill_amount, 2) }}
+                                    @elseif($transaction->type == 'purchase_order')
+                                        {{ number_format($transaction->purchase_order_amount, 2) }}
+                                    @endif
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
