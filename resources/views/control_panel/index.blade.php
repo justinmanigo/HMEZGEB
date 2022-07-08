@@ -94,7 +94,7 @@
 
 {{-- Modals --}}
 {{-- Add New Super Admin User --}}
-<form action="{{ url('/control/admins/add') }}" id="form-add-new-user" method="post" data-message="Successfully added credit receipt.">
+<form action="{{ url('/control/admins/add') }}" id="form-add-new-user" method="post" data-message="Successfully added user for Super Admin Role.">
     @csrf
     @method('PUT')
     <div class="modal fade" id="modal-add-new-user" tabindex="-1" role="dialog"
@@ -167,10 +167,50 @@
     </div>
 </form>
 
+{{-- Add New Super Admin User --}}
+<form action="{{ url('/control/admins/add') }}" id="form-add-existing-user" method="post" data-message="Successfully added existing user for Super Admin Role.">
+    @csrf
+    <div class="modal fade" id="modal-add-existing-user" tabindex="-1" role="dialog"
+        aria-labelledby="modal-add-existing-user-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-credit-receipt-label">Add Existing User for Super Admin Role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="e_user" class="col-sm-6 col-form-label">User<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="e_user" name="user">
+                            <p class="text-danger error-message error-message-user" style="display:none"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="control_panel_role" class="col-sm-6 col-form-label">Role<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="e_control_panel_role" name="control_panel_role"
+                                required>
+                                <option value="" hidden selected disabled>Select Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="staff">Staff</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-add-existing-user">Save & Add Super Admin User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 @endsection
 
 @section('accounts_script')
-    <script>
-
-    </script>
+    <script src="{{ url('/js/control/template_select_user.js') }}"></script>
+    <script src="{{ url('/js/control/select_existing_user.js') }}"></script>
 @endsection

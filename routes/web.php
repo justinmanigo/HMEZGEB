@@ -637,6 +637,15 @@ Route::group([
             Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
             
             Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
+            Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
+
+            // AJAX
+            Route::group([
+                'as', 'ajax.',
+                'prefix' => 'ajax/control/user',
+            ], function(){
+                Route::get('/search/{query?}', [ControlPanelController::class, 'ajaxSearchUser']);
+            });
         });
     });
 });
