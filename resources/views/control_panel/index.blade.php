@@ -22,6 +22,15 @@
 </div>
 
 <div class="table-responsive">
+    @if(isset($_GET['success']))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ $_GET['success'] }}
+            {{-- {{ session()->get('success') }} --}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <table class="table table-bordered">
         <thead>
             <th>Name</th>
