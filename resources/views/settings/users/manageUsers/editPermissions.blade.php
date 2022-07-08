@@ -2,8 +2,7 @@
 
 @section('accounts_content')
 
-<h5>Edit Accounting System User</h5>
-<p>You are currently editing <strong>{{ $as_user->user->firstName . ' ' . $as_user->user->lastName }}</strong></p>
+<h1>Edit User Permissions</h1>
 
 @if(session()->has('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -14,25 +13,9 @@
     </div>
 @endif
 
-<form id="form_permissions" method="post" action="/settings/users/{{ $user_id }}/edit">
+<form id="form_permissions" method="post" action="/settings/users/{{ $user_id }}/permissions">
     @csrf
     @method('PUT')
-    <h5>Edit Role</h5>
-    <div class="form-group row">
-        <div class="col-12 col-lg-3">
-            <label for="role">Role</label>
-        </div>
-        <div class="col-12 col-lg-6">
-            <select class="form-control" id="role" name="role" required>
-                <option value="" disabled hidden selected>Select a role</option>
-                <option value="admin" {{ $as_user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="moderator" {{ $as_user->role == 'moderator' ? 'selected' : '' }}>Moderator</option>
-                <option value="member" {{ $as_user->role == 'member' ? 'selected' : '' }}>Member</option>
-            </select>
-        </div>
-    </div>
-
-    <h5>Edit User Permissions</h5>
     <div class="table-responsive">
         <div class="card-columns">
 
