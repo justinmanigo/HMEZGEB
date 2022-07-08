@@ -94,7 +94,7 @@
 
 {{-- Modals --}}
 {{-- Add New Super Admin User --}}
-<form action="{{ url('/control/admins/add') }}" id="form-add-new-user" method="post" data-message="Successfully added user for Super Admin Role.">
+<form class="ajax-submit-updated" action="{{ url('/control/admins/add') }}" id="form-add-new-user" method="post" data-message="Successfully added user for Super Admin Role.">
     @csrf
     @method('PUT')
     <div class="modal fade" id="modal-add-new-user" tabindex="-1" role="dialog"
@@ -114,6 +114,7 @@
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="firstName" name="firstName"
                                 placeholder="First Name" required>
+                            <p class="text-danger error-message error-message-firstName" style="display:none"></p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -121,6 +122,7 @@
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="lastName" name="lastName"
                                 placeholder="Last Name" required>
+                            <p class="text-danger error-message error-message-lastName" style="display:none"></p>
                         </div>
                     </div>
                     <h5>Login Credentials</h5>
@@ -129,6 +131,7 @@
                         <div class="col-sm-6">
                             <input type="email" class="form-control" id="email" name="email" placeholder="Email"
                                 required>
+                            <p class="text-danger error-message error-message-email" style="display:none"></p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -136,6 +139,7 @@
                         <div class="col-sm-6">
                             <input type="password" class="form-control" id="password" name="password"
                                 placeholder="Password" required>
+                            <p class="text-danger error-message error-message-password" style="display:none"></p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -143,6 +147,7 @@
                         <div class="col-sm-6">
                             <input type="password" class="form-control" id="password_confirmation"
                                 name="password_confirmation" placeholder="Confirm Password" required>
+                            <p class="text-danger error-message error-message-password_confirmation" style="display:none"></p>
                         </div>
                     </div>
                     <h5>Role</h5>
@@ -155,6 +160,7 @@
                                 <option value="admin">Admin</option>
                                 <option value="staff">Staff</option>
                             </select>
+                            <p class="text-danger error-message error-message-control_panel_role" style="display:none"></p>
                         </div>
                     </div>
                 </div>
@@ -167,8 +173,8 @@
     </div>
 </form>
 
-{{-- Add New Super Admin User --}}
-<form action="{{ url('/control/admins/add') }}" id="form-add-existing-user" method="post" data-message="Successfully added existing user for Super Admin Role.">
+{{-- Add Existing Super Admin User --}}
+<form class="ajax-submit-updated" action="{{ url('/control/admins/add') }}" id="form-add-existing-user" method="post" data-message="Successfully added existing user for Super Admin Role.">
     @csrf
     <div class="modal fade" id="modal-add-existing-user" tabindex="-1" role="dialog"
         aria-labelledby="modal-add-existing-user-label" aria-hidden="true">
