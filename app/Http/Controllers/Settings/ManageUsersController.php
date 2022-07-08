@@ -18,6 +18,9 @@ class ManageUsersController extends Controller
      */
     public function index()
     {
+        // Don't include the user who owned the subscription in the list.
+        $first_as_user = AccountingSystemUser::where('accounting_system_id', session('accounting_system_id'))->first();
+
         $accountingSystemUsers = AccountingSystemUser::select(
                 'accounting_system_users.id as accounting_system_user_id',
                 'users.firstName',
@@ -29,6 +32,7 @@ class ManageUsersController extends Controller
             ->leftJoin('users', 
             'users.id', '=', 'accounting_system_users.user_id')
             ->where('accounting_system_id', $this->request->session()->get('accounting_system_id'))
+            ->where('accounting_system_users.id', '!=', $first_as_user->id)
             ->get();
 
         return view('settings.users.manageUsers.index', [
