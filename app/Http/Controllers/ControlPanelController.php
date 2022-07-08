@@ -7,6 +7,7 @@ use App\Http\Requests\Control\AddExistingUserAsSuperAdmin;
 use App\Http\Requests\Control\AddNewSuperAdminRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Kaiopiola\Keygen\Key;
@@ -16,7 +17,10 @@ class ControlPanelController extends Controller
     public function index()
     {
         // Query Super Admins
-        $super_admins = User::where('control_panel_role', '!=', NULL)->get();
+        $super_admins = User::where('control_panel_role', '!=', NULL)
+            ->where('id', '!=', Auth::user()->id)
+            ->where('id', '!=', 1)
+            ->get();
 
         return view('control_panel.index', [
             'super_admins' => $super_admins
@@ -57,6 +61,34 @@ class ControlPanelController extends Controller
     }
 
     /**
+     * 
+     */
+    public function editSuperAdmin(User $user, Request $request)
+    {
+        $user->control_panel_role = $request->control_panel_role;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * 
+     */
+    public function removeSuperAdmin(User $user)
+    {
+        $user->control_panel_role = NULL;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'user' => $user
+        ]);
+    }
+
+    /**
      * AJAX endpoint to search for users that aren't super admins.
      */
     public function ajaxSearchUser($query = null)
@@ -73,5 +105,13 @@ class ControlPanelController extends Controller
             'email',   
         )
         ->get();
+    }
+
+    /**
+     * AJAX endpoint to get user details.
+     */
+    public function ajaxGetUser(User $user)
+    {
+        return $user;
     }
 }

@@ -639,11 +639,15 @@ Route::group([
             Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
             Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
 
+            Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
+            Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
+
             // AJAX
             Route::group([
                 'as', 'ajax.',
                 'prefix' => 'ajax/control/user',
             ], function(){
+                Route::get('/get/{user}', [ControlPanelController::class, 'ajaxGetUser']);
                 Route::get('/search/{query?}', [ControlPanelController::class, 'ajaxSearchUser']);
             });
         });
