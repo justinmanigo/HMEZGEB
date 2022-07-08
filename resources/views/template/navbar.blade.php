@@ -334,8 +334,14 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                @if(Auth::user()->control_panel_role != null)
+                                    <a class="dropdown-item" href="/control/">
+                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Control Panel
+                                    </a>
+                                @endif
                                 <a class="dropdown-item" href="/account/">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Account Settings
                                 </a>
                                 <a class="dropdown-item" href="/referrals/">
