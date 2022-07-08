@@ -5,21 +5,23 @@
 <h3>Manage Super Admin Users</h3>
 
 {{-- Button Group Navigation --}}
-<div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-    <div class="btn-group" role="group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+@if(auth()->user()->control_panel_role == 'admin')
+    <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="icon text-white-50">
-                <i class="fas fa-user"></i>
-            </span>
-            <span class="text">Add Super Admin</span>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-new-user">New User</a>
-            <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-existing-user">Existing User</a>
+                <span class="icon text-white-50">
+                    <i class="fas fa-user"></i>
+                </span>
+                <span class="text">Add Super Admin</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-new-user">New User</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-existing-user">Existing User</a>
+            </div>
         </div>
     </div>
-</div>
+@endif
 
 <div class="table-responsive">
     @if(isset($_GET['success']))
@@ -36,7 +38,9 @@
             <th>Name</th>
             <th>E-mail</th>
             <th>Role</th>
-            <th>Actions</th>
+            @if(auth()->user()->control_panel_role == 'admin')
+                <th>Actions</th>
+            @endif
         </thead>
         <tbody>
             @foreach($super_admins as $user)
@@ -50,20 +54,22 @@
                             <span class="badge badge-secondary">{{ ucwords($user->control_panel_role) }}</span>
                         @endif
                     </td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-primary btn-sa-edit" data-id="{{ $user->id }}" data-toggle="modal" data-target="#modal-sa-edit">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-pen"></i>
-                                <span class="ml-1">Edit</span>
-                            </span>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-danger btn-sa-remove" data-id="{{ $user->id }}" data-toggle="modal" data-target="#modal-sa-remove">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-trash"></i>
-                                <span class="ml-1">Remove</span>
-                            </span>
-                        </button>
-                    </td>
+                    @if(auth()->user()->control_panel_role == 'admin')
+                        <td>
+                            <button type="button" class="btn btn-sm btn-primary btn-sa-edit" data-id="{{ $user->id }}" data-toggle="modal" data-target="#modal-sa-edit">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-pen"></i>
+                                    <span class="ml-1">Edit</span>
+                                </span>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger btn-sa-remove" data-id="{{ $user->id }}" data-toggle="modal" data-target="#modal-sa-remove">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-trash"></i>
+                                    <span class="ml-1">Remove</span>
+                                </span>
+                            </button>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
