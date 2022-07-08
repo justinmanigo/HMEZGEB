@@ -66,6 +66,11 @@ use App\Http\Controllers\RegisterController;
 
 // Control Panel
 use App\Http\Controllers\ControlPanelController;
+use App\Http\Controllers\Subscription\DashboardController;
+// Subscription Panel
+use App\Http\Controllers\Subscription\ManageAccountingSystemsController;
+use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
+
 ;
 
 /*
@@ -131,6 +136,20 @@ Route::group([
             Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername']);
             Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail']);
             Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
+        });
+
+        /**
+         * Subscription Module
+         */
+        Route::group([
+            'as' => 'subscription.',
+        ], function(){
+            // HTML
+            Route::get('/subscription', [DashboardController::class, 'index'])->name('subscription.index');
+            Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
+            Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
+
+            // AJAX
         });
 
         /**===================== SIDEBAR MODULES =====================**/

@@ -340,6 +340,10 @@
                                         Control Panel
                                     </a>
                                 @endif
+                                <a class="dropdown-item" href="/subscription/">
+                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Subscription Panel
+                                </a>
                                 <a class="dropdown-item" href="/account/">
                                     <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Account Settings

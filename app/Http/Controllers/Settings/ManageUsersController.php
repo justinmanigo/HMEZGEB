@@ -33,6 +33,7 @@ class ManageUsersController extends Controller
             'users.id', '=', 'accounting_system_users.user_id')
             ->where('accounting_system_id', $this->request->session()->get('accounting_system_id'))
             ->where('accounting_system_users.id', '!=', $first_as_user->id)
+            ->where('accounting_system_users.id', '!=', session('accounting_system_user'))
             ->get();
 
         return view('settings.users.manageUsers.index', [

@@ -4,6 +4,25 @@
 
 <h1>Manage Users</h1>
 
+{{-- Button Group Navigation --}}
+@if(auth()->user()->control_panel_role == 'admin')
+    <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+                <span class="icon text-white-50">
+                    <i class="fas fa-user"></i>
+                </span>
+                <span class="text">Add User</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-new-user">New User</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-existing-user">Existing User</a>
+            </div>
+        </div>
+    </div>
+@endif
+
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
