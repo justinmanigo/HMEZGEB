@@ -33,7 +33,7 @@
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>
                     <td>
-                        <a type="button" class="btn btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
+                        <a type="button" class="btn btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/edit">
                             <span class="icon text-white-50">
                                 <i class="fas fa-pen"></i>
                             </span>
