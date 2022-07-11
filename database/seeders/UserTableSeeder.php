@@ -62,6 +62,19 @@ class UserTableSeeder extends Seeder
             ],
         ];
 
+        $subscription_users = [
+            [
+                'subscription_id' => 1,
+                'user_id' => 1,
+                'role' => 'super admin',
+            ],
+            [
+                'subscription_id' => 2,
+                'user_id' => 2,
+                'role' => 'super admin',
+            ]
+        ];
+
         $accounting_systems = [
             [
                 'name' => 'Test Accounting System',
@@ -119,18 +132,15 @@ class UserTableSeeder extends Seeder
         $accounting_system_users = [
             [
                 'accounting_system_id' => 1,
-                'user_id' => 1,
-                'role' => 'admin',
+                'subscription_user_id' => 1,
             ],
             [
                 'accounting_system_id' => 2,
-                'user_id' => 2,
-                'role' => 'admin',
+                'subscription_user_id' => 2,
             ],
             [
                 'accounting_system_id' => 3,
-                'user_id' => 2,
-                'role' => 'admin',
+                'subscription_user_id' => 2,
             ]
         ];
 
@@ -154,6 +164,7 @@ class UserTableSeeder extends Seeder
 
         DB::table('users')->insert($users);
         DB::table('subscriptions')->insert($subscriptions);
+        DB::table('subscription_users')->insert($subscription_users);
         DB::table('accounting_systems')->insert($accounting_systems);
         DB::table('accounting_system_users')->insert($accounting_system_users);
         DB::table('journal_entries')->insert($journal_entries);
