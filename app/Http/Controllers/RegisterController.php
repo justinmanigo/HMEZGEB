@@ -166,7 +166,7 @@ class RegisterController extends Controller
                     break;
             }
 
-            if(!$subscription)
+            if(!isset($subscription))
             {
                 // Create Subscription
                 $subscription = Subscription::create([
@@ -188,7 +188,7 @@ class RegisterController extends Controller
                 $subscription->save();
             }
 
-            SubscriptionUser::create([
+            $subscription_user = SubscriptionUser::create([
                 'subscription_id' => $subscription->id,
                 'user_id' => Auth::user()->id,
                 'role' => $subscription->account_type,
@@ -200,9 +200,9 @@ class RegisterController extends Controller
             $idx = -1;
             for($i = 0; $i < count($user->subscriptions); $i++) {
                 $user->subscriptions[$i]->accountingSystems;
-                $num_accts[] = $user->subscriptions[$i]->accountingSystems->count();
+                $num_accts[] = count($user->subscriptions[$i]->accountingSystems);
                 $acct_limit[] = $user->subscriptions[$i]->account_limit;
-                if($acct_limit = $num_accts > 0) {
+                if($acct_limit[$i] - $num_accts[$i] > 0) {
                     $idx = $i;
                     break;
                 }
@@ -212,10 +212,12 @@ class RegisterController extends Controller
             {
                 return response()->json(['error' => 'You no longer have available accounting system slots to process this request. Please upgrade your subscription first.'], 422);
             }
+
+            $subscription_user = SubscriptionUser::where('subscription_id', $user->subscriptions[$idx]->id)->where('user_id', Auth::user()->id)->first();
         }
 
         // Create the accounting system
-        $as = CreateAccountingSystem::run($request, isset($subscription) ? $subscription : $user->subscriptions[$idx]);
+        $as = CreateAccountingSystem::run($request, isset($subscription) ? $subscription : $user->subscriptions[$idx], $subscription_user);
 
         // Add accounting system to session
         $this->request->session()->put('accounting_system_id', $as['accounting_system']->id);
@@ -336,9 +338,9 @@ class RegisterController extends Controller
             $idx = -1;
             for($i = 0; $i < count($user->subscriptions); $i++) {
                 $user->subscriptions[$i]->accountingSystems;
-                $num_accts[] = $user->subscriptions[$i]->accountingSystems->count();
+                $num_accts[] = count($user->subscriptions[$i]->accountingSystems);
                 $acct_limit[] = $user->subscriptions[$i]->account_limit;
-                if($acct_limit = $num_accts > 0) {
+                if($acct_limit[$i] - $num_accts[$i] > 0) {
                     $idx = $i;
                     break;
                 }

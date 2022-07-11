@@ -10,7 +10,7 @@ class SubscriptionUser extends Model
     use HasFactory;
 
     protected $fillable = [
-        'accounting_system_id',
+        'subscription_id',
         'user_id',
         'role',
     ];
