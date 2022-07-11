@@ -193,20 +193,29 @@
                                 <th>From Bank</th>
                                 <th>To Bank</th>
                                 <th>Amount</th>
+                                <th>Status</th>
                                 <th>Reason</th>
-                                <th class="thead-actions">Actions</th>
+                                {{-- <th class="thead-actions">Actions</th> --}}
                                  
                             </thead>
                             <tbody>
                                 @foreach($transfers as $transfer)
-                                <tr>
+                                <tr onclick="window.location.href='{{  url('/banking/transfer/'.$transfer->id.'/edit')}}'">
                                     <td class="table-item-content">{{ $transfer->created_at->format('d-m-Y') }}</td>
                                     <td class="table-item-content">{{$transfer->id}}</td>
                                     <td class="table-item-content">{{$transfer->fromAccount->bank_branch}}</td>
                                     <td class="table-item-content">{{$transfer->toAccount->bank_branch}}</td>
                                     <td class="table-item-content">{{$transfer->amount}}</td>
+                                    <td class="table-item-content">
+                                        {{-- add badge --}}
+                                        @if($transfer->status == 'void')
+                                            <span class="badge badge-warning">{{$transfer->status}}</span>
+                                        @elseif($transfer->status == 'completed')
+                                            <span class="badge badge-success">{{$transfer->status}}</span>
+                                        @endif
+                                    </td>
                                     <td class="table-item-content">{{$transfer->reason}}</td>
-                                    <td>
+                                    {{-- <td>
                                         <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
@@ -217,8 +226,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button>
-                                    </td> 	 	  
-                                  
+                                    </td> 	 	   --}}          
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -7,6 +7,8 @@ use App\Models\Transactions;
 use Illuminate\Http\Request;
 use App\Models\BankAccounts;
 use App\Models\ChartOfAccounts;
+use App\Models\Settings\ChartOfAccounts\JournalEntries;
+use App\Models\Settings\ChartOfAccounts\JournalPostings;
 use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\DecodeTagifyField;
@@ -73,18 +75,8 @@ class TransfersController extends Controller
             $credit_accounts, [$request->amount], 
             $this->request->session()->get('accounting_system_id')
         );
-
-        Transfers::create([
-            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
-            'from_account_id' => $request->from_account_id,
-            'to_account_id' => $request->to_account_id,
-            'amount' => $request->amount,
-            'reason' => $request->reason,
-            'journal_entry_id' => $je->id,
-        ]);
-
-        // create transaction
-        Transactions::create([
+  
+        $transactions = Transactions::create([
             'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
             'chart_of_account_id' => $request->from_account_id,
             'type' => 'Transfer',
@@ -92,6 +84,16 @@ class TransfersController extends Controller
             'amount' => $request->amount,
         ]);
 
+        Transfers::create([
+            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
+            'from_account_id' => $request->from_account_id,
+            'to_account_id' => $request->to_account_id,
+            'amount' => $request->amount,
+            'reason' => $request->reason,
+            'status' => 'completed',
+            'journal_entry_id' => $je->id,
+            'transaction_id' =>  $transactions->id,
+        ]);
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }
 
@@ -112,9 +114,16 @@ class TransfersController extends Controller
      * @param  \App\Models\Transfers  $transfers
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transfers $transfers)
+    public function edit($id)
     {
-        //
+        //Open the form for editing the transfer
+          $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
+          $transfers = Transfers::where('accounting_system_id', $accounting_system_id)
+          ->find($id);
+  
+          return view('banking.transfers.edit', compact('transfers'));
+        
     }
 
     /**
@@ -124,9 +133,24 @@ class TransfersController extends Controller
      * @param  \App\Models\Transfers  $transfers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transfers $transfers)
+    public function update(Request $request, $id)
     {
-        //
+        
+        $transfers = Transfers::where('id', $id)->first();
+        // Find connected relationships with transfers
+        $transactions = Transactions::where('id', $transfers->transaction_id)->first();
+        $je = JournalEntries::where('id', $transfers->journal_entry_id)->first();
+        
+        // Update the transfer/transaction/journal entry description
+        $transfers->reason = $request->reason;
+        $transactions->description = $request->reason;
+        $je->notes = $request->reason;
+
+        $transfers->save();
+        $transactions->save();
+        $je->save();
+
+        return redirect()->route('transfers.transfer.index')->with('success', 'Transfer has been updated successfully');
     }
 
     /**
@@ -135,9 +159,40 @@ class TransfersController extends Controller
      * @param  \App\Models\Transfers  $transfers
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transfers $transfers)
+    public function destroy($id)
     {
         //
+        $transfers = Transfers::where('id', $id)->first();
+        $transfers->delete();
+
+        return redirect()->route('transfers.transfer.index')->with('success', 'Transfer has been deleted successfully');
+    }
+
+    public function void($id)
+    {
+        $transfers = Transfers::where('id', $id)->first();
+
+        // Find connected relationships with transfers
+        $transactions = Transactions::where('id', $transfers->transaction_id)->first();
+        $je = JournalEntries::where('id', $transfers->journal_entry_id)->first();
+
+        // deduct and add in coa balances 
+        $fromAccount = BankAccounts::find($transfers->from_account_id);
+        $toAccount = BankAccounts::find($transfers->to_account_id);
+
+        $fromAccount->chartOfAccount->current_balance += $transfers->amount;
+        $toAccount->chartOfAccount->current_balance -= $transfers->amount;
+        $fromAccount->chartOfAccount->save();
+        $toAccount->chartOfAccount->save();
+
+        $transfers->status = 'void';
+        $transfers->journal_entry_id= null;
+        $transfers->transaction_id= null;
+        $transfers->save();
+        $transactions->delete();
+        $je->delete();
+
+        return redirect()->route('transfers.transfer.index')->with('success', 'Transfer has been voided successfully');
     }
 
     public function queryBank($query)
