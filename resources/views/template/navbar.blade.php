@@ -5,7 +5,6 @@
     $permissions = \App\Actions\GetAccountingSystemUserPermissions::run($modules, session('accounting_system_user_id'), true);
 
     $accounting_system = \App\Models\AccountingSystem::find(session('accounting_system_id'));
-    $accounting_system_count = \App\Models\AccountingSystemUser::where('user_id', Auth::user()->id)->count();
     $accounting_period = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::find(session('accounting_period_id'));
     $accounting_period_year = \Carbon\Carbon::parse($accounting_period->date_from);
 
@@ -353,7 +352,7 @@
                                     Referrals
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                @if($accounting_system_count > 1)
+                                @if(session('acct_system_count') > 1)
                                     <a class="dropdown-item" href="{{ url('/switch') }}">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Switch Accounting Systems

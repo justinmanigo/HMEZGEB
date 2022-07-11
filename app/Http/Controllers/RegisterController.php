@@ -10,6 +10,7 @@ use App\Models\AccountingSystem;
 use App\Models\Register;
 use App\Models\Referral;
 use App\Models\Subscription;
+use App\Models\SubscriptionUser;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -186,6 +187,12 @@ class RegisterController extends Controller
                 $subscription->status = 'trial'; // TODO: Update this one when support for `paid` is added.
                 $subscription->save();
             }
+
+            SubscriptionUser::create([
+                'subscription_id' => $subscription->id,
+                'user_id' => Auth::user()->id,
+                'role' => $subscription->account_type,
+            ]);
         }
         else {
             $user = User::find(auth()->id());

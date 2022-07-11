@@ -39,14 +39,16 @@
                     <td>{{ ucwords($user->firstName . ' ' . $user->lastName) }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
-                        @if($user->role == 'admin')
+                        @if($user->role == 'super admin')
                             <span class="badge badge-success">{{ ucwords($user->role) }}</span>
-                        @elseif($user->role == 'moderator')
+                        @elseif($user->role == 'admin')
                             <span class="badge badge-info">{{ ucwords($user->role) }}</span>
-                        @elseif($user->role == 'member')
+                        @elseif($user->role == 'moderator')
                             <span class="badge badge-warning">{{ ucwords($user->role) }}</span>
+                        @elseif($user->role == 'member')
+                            <span class="badge badge-secondary">{{ ucwords($user->role) }}</span>
                         @else
-                            <span class="badge badge-secondary">{{ 'Unknown' }}</span>
+                            <span class="badge badge-danger">{{ 'Unknown' }}</span>
                         @endif
                     </td>
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>
