@@ -136,58 +136,79 @@ class RegisterController extends Controller
     {
         // return $request;
 
-        try {
-            $referral = Referral::where('code', $request->referral_code)->firstOrFail();
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Error processing request.'], 422);
-        }
+        if($request->referral_code != null) {
+            try {
+                $referral = Referral::where('code', $request->referral_code)->firstOrFail();
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Error processing request.'], 422);
+            }
+    
+            $subscription = Subscription::where('referral_id', $referral->id)->first();
+    
+            if((isset($subscription) && $referral->type == 'normal') ||
+                (isset($subscription) && $subscription->date_from != null && $referral->type == 'advanced')){
+                return response()->json(['error' => 'Can\'t create accounting system. Referral code is already used by someone else.'], 422);
+            }
 
-        $subscription = Subscription::where('referral_id', $referral->id)->first();
+            // Determine Date To
+            $dateTo = \Carbon\Carbon::now();
+            switch($referral->trial_duration_type)
+            {
+                case 'day':
+                    $dateTo = $dateTo->addDays($referral->trial_duration);
+                    break;
+                case 'week':
+                    $dateTo = $dateTo->addWeeks($referral->trial_duration);
+                    break;
+                case 'month':
+                    $dateTo = $dateTo->addMonths($referral->trial_duration);
+                    break;
+            }
 
-        if((isset($subscription) && $referral->type == 'normal') ||
-            (isset($subscription) && $subscription->date_from != null && $referral->type == 'advanced')){
-            return response()->json(['error' => 'Can\'t create accounting system. Referral code is already used by someone else.'], 422);
-        }
-
-        // Determine Date To
-        $dateTo = \Carbon\Carbon::now();
-        switch($referral->trial_duration_type)
-        {
-            case 'day':
-                $dateTo = $dateTo->addDays($referral->trial_duration);
-                break;
-            case 'week':
-                $dateTo = $dateTo->addWeeks($referral->trial_duration);
-                break;
-            case 'month':
-                $dateTo = $dateTo->addMonths($referral->trial_duration);
-                break;
-        }
-
-        if(!$subscription)
-        {
-            // Create Subscription
-            $subscription = Subscription::create([
-                'referral_id' => $referral->id,
-                'user_id' => Auth::user()->id,
-                'account_limit' => 3,
-                'account_type' => 'admin',
-                'date_from' => now()->format('Y-m-d'),
-                'date_to' => $dateTo->format('Y-m-d'),
-                'status' => 'trial', // TODO: Update this one when support for `paid` is added.
-            ]);
+            if(isset($subscription))
+            {
+                // Create Subscription
+                $subscription = Subscription::create([
+                    'referral_id' => $referral->id,
+                    'user_id' => Auth::user()->id,
+                    'account_limit' => 3,
+                    'account_type' => 'admin',
+                    'date_from' => now()->format('Y-m-d'),
+                    'date_to' => $dateTo->format('Y-m-d'),
+                    'status' => 'trial', // TODO: Update this one when support for `paid` is added.
+                ]);
+            }
+            else {
+                // Update subscription
+                $subscription->user_id = Auth::user()->id;
+                $subscription->date_from = now()->format('Y-m-d');
+                $subscription->date_to = $dateTo->format('Y-m-d');
+                $subscription->status = 'trial'; // TODO: Update this one when support for `paid` is added.
+                $subscription->save();
+            }
         }
         else {
-            // Update subscription
-            $subscription->user_id = Auth::user()->id;
-            $subscription->date_from = now()->format('Y-m-d');
-            $subscription->date_to = $dateTo->format('Y-m-d');
-            $subscription->status = 'trial'; // TODO: Update this one when support for `paid` is added.
-            $subscription->save();
+            $user = User::find(auth()->id());
+            $user->subscriptions;
+            $idx = -1;
+            for($i = 0; $i < count($user->subscriptions); $i++) {
+                $user->subscriptions[$i]->accountingSystems;
+                $num_accts[] = $user->subscriptions[$i]->accountingSystems->count();
+                $acct_limit[] = $user->subscriptions[$i]->account_limit;
+                if($acct_limit = $num_accts > 0) {
+                    $idx = $i;
+                    break;
+                }
+            }
+
+            if($idx == -1)
+            {
+                return response()->json(['error' => 'You no longer have available accounting system slots to process this request. Please upgrade your subscription first.'], 422);
+            }
         }
 
         // Create the accounting system
-        $as = CreateAccountingSystem::run($request, $subscription);
+        $as = CreateAccountingSystem::run($request, isset($subscription) ? $subscription : $user->subscriptions[$idx]);
 
         // Add accounting system to session
         $this->request->session()->put('accounting_system_id', $as['accounting_system']->id);
@@ -303,7 +324,21 @@ class RegisterController extends Controller
     public function createCompanyInfoView()
     {
         if(!session('referralCode')){
-            abort(404);
+            $user = User::find(auth()->id());
+            $user->subscriptions;
+            $idx = -1;
+            for($i = 0; $i < count($user->subscriptions); $i++) {
+                $user->subscriptions[$i]->accountingSystems;
+                $num_accts[] = $user->subscriptions[$i]->accountingSystems->count();
+                $acct_limit[] = $user->subscriptions[$i]->account_limit;
+                if($acct_limit = $num_accts > 0) {
+                    $idx = $i;
+                    break;
+                }
+            }
+
+            if($idx == -1)
+                abort(404);
         }
         // return [
         //     Auth::user(),

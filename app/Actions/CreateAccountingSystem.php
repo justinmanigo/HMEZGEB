@@ -62,7 +62,7 @@ class CreateAccountingSystem
         $user = AccountingSystemUser::create([
             'accounting_system_id' => $id,
             'user_id' => auth()->user()->id,
-            'role' => $role,
+            'role' => $role == 'super admin' ? 'admin' : $role,
         ]);
 
         // Loop permissions
