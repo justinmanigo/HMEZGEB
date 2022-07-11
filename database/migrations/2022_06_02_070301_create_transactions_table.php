@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('chart_of_account_id');
             $table->string('type');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->float('amount');
             $table->timestamps();
 
