@@ -43,9 +43,29 @@ class UserTableSeeder extends Seeder
             ],
         ];
 
+        $subscriptions = [
+            [
+                'user_id' => 1,
+                'account_limit' => 10,
+                'account_type' => 'super admin',
+                'date_from' => null,
+                'date_to' => null,
+                'status' => 'active',
+            ],
+            [
+                'user_id' => 2,
+                'account_limit' => 10,
+                'account_type' => 'super admin',
+                'date_from' => null,
+                'date_to' => null,
+                'status' => 'active',
+            ],
+        ];
+
         $accounting_systems = [
             [
                 'name' => 'Test Accounting System',
+                'subscription_id' => 1,
                 'calendar_type' => 'gregorian',
                 'accounting_year' => 2022,
                 'address' => 'Cebu',
@@ -62,6 +82,7 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Test Accounting System 2',
+                'subscription_id' => 2,
                 'calendar_type' => 'ethiopian',
                 'accounting_year' => 2014,
                 'address' => 'Cebu',
@@ -78,6 +99,7 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Test Accounting System 3',
+                'subscription_id' => 2,
                 'calendar_type' => 'gregorian',
                 'accounting_year' => 2022,
                 'address' => 'Cebu',
@@ -131,6 +153,7 @@ class UserTableSeeder extends Seeder
         ];
 
         DB::table('users')->insert($users);
+        DB::table('subscriptions')->insert($subscriptions);
         DB::table('accounting_systems')->insert($accounting_systems);
         DB::table('accounting_system_users')->insert($accounting_system_users);
         DB::table('journal_entries')->insert($journal_entries);

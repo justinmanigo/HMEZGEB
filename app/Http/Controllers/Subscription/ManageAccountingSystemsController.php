@@ -3,12 +3,29 @@
 namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ManageAccountingSystemsController extends Controller
 {
     public function index()
     {
-        return view('subscription.accounting_system.index');
+        // Get accounting systems of current subscription
+        $user = User::find(auth()->id());
+        $user->subscriptions;
+
+        $total_accts = 0;
+        $total_acct_limit = 0;
+        for($i = 0; $i < count($user->subscriptions); $i++) {
+            $user->subscriptions[$i]->accountingSystems;
+            $total_accts += $user->subscriptions[$i]->accountingSystems->count();
+            $total_acct_limit += $user->subscriptions[$i]->account_limit;
+        }
+
+        return view('subscription.accounting_system.index', [
+            'user' => $user,
+            'total_accts' => $total_accts,
+            'total_acct_limit' => $total_acct_limit,
+        ]);
     }
 }
