@@ -136,7 +136,7 @@ class RegisterController extends Controller
     {
         // return $request;
 
-        if($request->referral_code != null) {
+        if(session('referralCode')){
             try {
                 $referral = Referral::where('code', $request->referral_code)->firstOrFail();
             } catch (\Exception $e) {
@@ -165,7 +165,7 @@ class RegisterController extends Controller
                     break;
             }
 
-            if(isset($subscription))
+            if(!$subscription)
             {
                 // Create Subscription
                 $subscription = Subscription::create([
