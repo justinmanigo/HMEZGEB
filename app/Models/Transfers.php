@@ -21,7 +21,9 @@ class Transfers extends Model
         'to_account_id',
         'amount',
         'reason',
+        'status',
         'journal_entry_id',
+        'transaction_id',
     ];
 
     public function fromAccount()
