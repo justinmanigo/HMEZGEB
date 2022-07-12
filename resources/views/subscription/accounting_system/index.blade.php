@@ -15,12 +15,16 @@
 <div class="card">
     <div class="card-body">
         <div class="btn-group mb-4" role="group">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-create-as" disabled>
+            <a 
+                role="button" 
+                class="btn btn-primary @if($total_acct_limit - $total_accts <= 0) {{ 'disabled' }} @endif" 
+                @if($total_accts < $total_acct_limit) href="{{ url('/onboarding') }}" @endif
+            >
                 <span class="icon text-white-50">
                     <i class="fas fa-file-import"></i>
                 </span>
                 <span class="text">Create Accounting System</span>
-            </button>
+            </a>
         </div>  
         <p>Accounts: {{ $total_accts }} / {{ $total_acct_limit }}</p>
 
