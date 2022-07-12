@@ -26,7 +26,10 @@
                 <span class="text">Create Accounting System</span>
             </a>
         </div>  
-        <p>Accounts: {{ $total_accts }} / {{ $total_acct_limit }}</p>
+        <p>
+            Accounts: {{ $total_accts }} / {{ $total_acct_limit }}
+            @if($total_acct_limit - $total_accts <= 0) <span class="text-danger">(Account limit reached. Please upgrade your account.)</span> @endif
+        </p>
 
         <div class="table-responsive">
             <table class="table table-bordered">
