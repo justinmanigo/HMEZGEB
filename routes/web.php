@@ -150,6 +150,15 @@ Route::group([
             Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
 
             // AJAX
+            Route::group([
+                'as', 'ajax.',
+                'prefix' => 'ajax/subscription/user',
+            ], function(){
+                Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
+                Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
+                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
+                Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
+            });
         });
 
         /**===================== SIDEBAR MODULES =====================**/
