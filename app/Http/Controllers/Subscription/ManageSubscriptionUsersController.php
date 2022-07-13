@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\AddExistingUserRequest;
+use App\Models\AccountingSystemUser;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 use App\Models\User;
@@ -103,10 +104,30 @@ class ManageSubscriptionUsersController extends Controller
     }
 
     public function ajaxAddAccess(SubscriptionUser $subscriptionUser, Request $request)
-    {
-        return [
-            'subscriptionUser' => $subscriptionUser,
-            'accountingSystem' => $request->accounting_system,
-        ];
+    { 
+        for($i = 0; $i < count($request->accounting_systems); $i++) {
+            $as[] = AccountingSystemUser::create([
+                'accounting_system_id' => $request->accounting_systems[$i],
+                'subscription_user_id' => $subscriptionUser->id,
+            ]);
+
+            // Add all permissions
+            for($j = 1; $j <= 24; $j++)
+            {
+                $permissions[] = [
+                    'accounting_system_user_id' => $as[$i]->id,
+                    'access_level' => 'rw',
+                    'sub_module_id' => $j,
+                ];
+            }
+
+            DB::table('permissions')->insert($permissions);
+        }
+
+        return response()->json([
+            'success' => true,
+            'subscription_user' => $subscriptionUser,
+            'accounting_systems' => $as,
+        ]);
     }
 }

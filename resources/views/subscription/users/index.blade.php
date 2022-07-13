@@ -27,6 +27,16 @@
             </div>
         </div>
 
+        @if(isset($_GET['success']))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ $_GET['success'] }}
+                {{-- {{ session()->get('success') }} --}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 @foreach($user->subscriptions as $subscription)
@@ -419,24 +429,18 @@
 
                 res.forEach(function(as){
                     // add row to table
-                    $('#aau_accounting_systems').append(
-                        '<tr>'+
-                            '<td>'+
-                                '<div class="form-group form-check">'+
-                                    '<input type="checkbox" class="form-check-input" id="exampleCheck1">'+
-                                '</div>'+
-                            '</td>'+
-                            '<td>'+
-                                '<label class="form-check-label" for="exampleCheck1">'+as.name+'</label>'+
-                            '</td>'+
-                            '<td>'+
-                                '<label class="form-check-label" for="exampleCheck1">'+as.accounting_year+'</label>'+
-                            '</td>'+
-                            '<td>'+
-                                '<label class="form-check-label" for="exampleCheck1">'+as.calendar_type+'</label>'+
-                            '</td>'+
-                        '</tr>'
-                    );
+                    $('#aau_accounting_systems').append(`
+                        <tr>
+                            <td>
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="aau_as_${as.id}" value="${as.id}" name="accounting_systems[]">
+                                </div>
+                            </td>
+                            <td><label class="form-check-label" for="aau_as_${as.id}">${as.name}</label></td>
+                            <td><label class="form-check-label" for="aau_as_${as.id}">${as.accounting_year}</label></td>
+                            <td><label class="form-check-label" for="aau_as_${as.id}">${as.calendar_type}</label></td>
+                        </tr>
+                    `);
                 });
             });
 
@@ -447,6 +451,46 @@
             console.log(`printAccountingSystems: ${success}`);
             return success;
         }
+
+        $(document).on('submit', '#form-add-access-user', function(e){
+            e.preventDefault();
+            console.log($(this).serialize());
+            console.log($(this).attr('action'));
+            console.log($(this).attr('method'));
+
+            request = $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+            });
+
+            request.done(function(res){
+                console.log(res);
+
+                message = `Successfully added user to subscription.`;
+                window.location.href = `/subscription/users?success=${message}`;
+            });
+
+            request.fail(function(res){
+                console.log(res);
+
+                if(res.status != 422)
+                {
+                    console.log(res.responseJSON.message);
+                    // generateToast(jqXHR.responseJSON.message, 'bg-danger');
+                    // closeButtonElement.click();
+                }
+                else
+                {
+                    console.log(res.responseJSON.errors);
+                    showFormErrorsUpdated(res.responseJSON.errors, $(this).attr('id'));
+                }
+            });
+
+            request.always(function(){
+                $('#form-add-access-user button[type="submit"]').prop('disabled', true);
+            });
+        });
     </script>
     
 @endpush
