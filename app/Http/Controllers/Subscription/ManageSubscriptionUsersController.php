@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\AddExistingUserRequest;
+use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -73,6 +74,7 @@ class ManageSubscriptionUsersController extends Controller
 
         return response()->json([
             'success' => true,
+            'subscription_id' => $request->subscription_id,
             'user' => $user,
             // 'password' => $password, // TODO: send email with password when invited
         ]);
@@ -88,7 +90,13 @@ class ManageSubscriptionUsersController extends Controller
 
         return response()->json([
             'success' => true,
+            'subscription_id' => $request->subscription_id,
             'user' => $request->user,
         ]);
+    }
+
+    public function ajaxGetAccountingSystems(Subscription $subscription)
+    {
+        return $subscription->accountingSystems;
     }
 }

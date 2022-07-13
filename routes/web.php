@@ -156,8 +156,16 @@ Route::group([
             ], function(){
                 Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
                 Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
+                Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
+
+                // Part 1: When adding new user.
                 Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
                 Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
+
+                // Part 2: Adding access after adding new user.
+                Route::post('/add/access', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
+
+                // TODO: Editing a user. Both parts are merged since there is already an ID.
             });
         });
 

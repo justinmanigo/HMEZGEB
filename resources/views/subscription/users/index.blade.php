@@ -96,7 +96,7 @@
 </div>
 
 {{-- Modals --}}
-{{-- Add New User --}}
+{{-- P1: Add New User --}}
 <div class="modal fade" id="modal-add-new-user" tabindex="-1" role="dialog" aria-labelledby="modal-add-new-user-label" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -161,7 +161,7 @@
     </div>
 </div>
 
-{{-- Add Existing User --}}
+{{-- P1: Add Existing User --}}
 <div class="modal fade" id="modal-add-existing-user" tabindex="-1" role="dialog" aria-labelledby="modal-add-existing-user-label" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
@@ -214,6 +214,79 @@
     </div>
 </div>
 
+{{-- P2: Assign Accounting Systems to User --}}
+<div class="modal fade" id="modal-add-access-user" tabindex="-1" role="dialog" aria-labelledby="modal-add-access-user-label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-add-existing-user-label">Assign Accounting Systems to User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-add-existing-user-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-add-access-user" method="post" action="{{ url('/ajax/subscription/user/add/access')}}">
+                    @csrf
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-3 col-xl-2">
+                            <h5>User Details</h5>
+                            <p>
+                                Name:<br>
+                                <strong id="aau_name">Test User</strong>
+                            </p>
+                            <p>
+                                Subscription ID:<br>
+                                <strong id="aau_subscription_id">0</strong>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-lg-9 col-xl-10">
+                            <div class="card border-success mb-3">
+                                <div class="card-body">
+                                    <p class="text-success m-0 p-0">Successfully added a subscription user.</p>
+                                </div>
+                            </div>
+                            
+                            <p>Assign this user access to certain accounting systems of this subscription.</p>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <th></th>
+                                        <th>Accounting System</th>
+                                        <th>Accounting Year</th>
+                                        <th>Calendar Type</th>
+                                    </thead>
+                                    <tbody id="aau_accounting_systems">
+                                        {{-- <tr>
+                                            <td>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <label class="form-check-label" for="exampleCheck1">Test Accounting System</label>
+                                            </td>
+                                            <td>2022</td>
+                                            <td>Gregorian</td>
+                                        </tr> --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="anu_submit_btn" form="form-add-access-user">Assign Accounting System Access</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -227,6 +300,149 @@
             console.log(this.dataset.id);
             $('.select-subscription option[value="'+this.dataset.id+'"]').prop('selected', true);
         });
+
+        // Event when form-add-new-user is submitted.
+        $(document).on('submit', '#form-add-new-user', function(e){
+            e.preventDefault();
+
+            $('#form-add-new-user button[type="submit"]').prop('disabled', true);
+
+            console.log($(this).serialize());
+            console.log($(this).attr('action'));
+            console.log($(this).attr('method'));
+
+            request = $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+            });
+
+            request.done(function(res){
+                console.log(res);
+
+                $('#modal-add-new-user').modal('hide');
+                $('#modal-add-access-user').modal('show');
+
+                $('#aau_name').text(res.user.firstName + ' ' + res.user.lastName);
+                $('#aau_subscription_id').text(res.subscription_id);
+
+                printAccountingSystems(res.subscription_id);
+            });
+
+            request.fail(function(res){
+                console.log(res);
+
+                if(res.status != 422)
+                {
+                    console.log(res.responseJSON.message);
+                    // generateToast(jqXHR.responseJSON.message, 'bg-danger');
+                    // closeButtonElement.click();
+                }
+                else
+                {
+                    console.log(res.responseJSON.errors);
+                    showFormErrorsUpdated(res.responseJSON.errors, $(this).attr('id'));
+                }
+            });
+
+            request.always(function(){
+                $('#form-add-new-user button[type="submit"]').prop('disabled', true);
+            });
+        });
+
+        // Event when form-add-existing-user is submitted.
+        $(document).on('submit', '#form-add-existing-user', function(e){
+            e.preventDefault();
+            console.log($(this).serialize());
+            console.log($(this).attr('action'));
+            console.log($(this).attr('method'));
+
+            request = $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize(),
+            });
+
+            request.done(function(res){
+                console.log(res);
+
+                $('#modal-add-existing-user').modal('hide');
+                $('#modal-add-access-user').modal('show');
+
+                $('#aau_name').text(res.user.firstName + ' ' + res.user.lastName);
+                $('#aau_subscription_id').text(res.subscription_id);
+
+                printAccountingSystems(res.subscription_id);     
+            });
+
+            request.fail(function(res){
+                console.log(res);
+
+                if(res.status != 422)
+                {
+                    console.log(res.responseJSON.message);
+                    // generateToast(jqXHR.responseJSON.message, 'bg-danger');
+                    // closeButtonElement.click();
+                }
+                else
+                {
+                    console.log(res.responseJSON.errors);
+                    showFormErrorsUpdated(res.responseJSON.errors, $(this).attr('id'));
+                }
+            });
+
+            request.always(function(){
+                $('#form-add-new-user button[type="submit"]').prop('disabled', true);
+            });
+        });
+
+        function printAccountingSystems(subscription_id)
+        {
+            var success = false;
+            request = $.ajax({
+                url: `/ajax/subscription/user/get/accounting-systems/${subscription_id}`,
+                method: 'GET',
+                data: {
+                    subscription_id: subscription_id,
+                },
+            });
+
+            request.done(function(res){
+                success = true;
+                console.log(res);
+
+                $('#aau_accounting_systems').html('');
+
+                res.forEach(function(as){
+                    // add row to table
+                    $('#aau_accounting_systems').append(
+                        '<tr>'+
+                            '<td>'+
+                                '<div class="form-group form-check">'+
+                                    '<input type="checkbox" class="form-check-input" id="exampleCheck1">'+
+                                '</div>'+
+                            '</td>'+
+                            '<td>'+
+                                '<label class="form-check-label" for="exampleCheck1">'+as.name+'</label>'+
+                            '</td>'+
+                            '<td>'+
+                                '<label class="form-check-label" for="exampleCheck1">'+as.accounting_year+'</label>'+
+                            '</td>'+
+                            '<td>'+
+                                '<label class="form-check-label" for="exampleCheck1">'+as.calendar_type+'</label>'+
+                            '</td>'+
+                        '</tr>'
+                    );
+                });
+            });
+
+            // request.fail(function(res){
+            //     // console.log(res);
+            // });
+
+            console.log(`printAccountingSystems: ${success}`);
+            return success;
+        }
     </script>
     
 @endpush
