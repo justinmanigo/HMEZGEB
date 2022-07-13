@@ -26,16 +26,15 @@ class HomeController extends Controller
         // Retrieves the accounting systems' the authenticated user belongs.
         // $user = User::find(Auth::id());
 
-        $acct_systems = SubscriptionUser::where('subscription_users.user_id', Auth::id())
-            ->select(
+        $acct_systems = SubscriptionUser::select(
                 'accounting_systems.id as accounting_system_id', 
                 'accounting_systems.name',
                 'accounting_systems.accounting_year',
                 'accounting_systems.calendar_type',
-                'subscriptions.user_id',
             )
-            ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_users.subscription_id')
-            ->leftJoin('accounting_systems', 'accounting_systems.subscription_id', '=', 'subscriptions.id')
+            ->where('subscription_users.user_id', Auth::id())
+            ->rightJoin('accounting_system_users', 'subscription_users.id', '=', 'accounting_system_users.subscription_user_id')
+            ->leftJoin('accounting_systems', 'accounting_system_users.accounting_system_id', '=', 'accounting_systems.id')
             ->get();
 
         $this->request->session()->put('acct_system_count', count($acct_systems));
