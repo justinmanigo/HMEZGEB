@@ -66,7 +66,7 @@ class ManageSubscriptionUsersController extends Controller
             'password' => bcrypt($password),
         ]);
 
-        SubscriptionUser::create([
+        $subscription_user = SubscriptionUser::create([
             'subscription_id' => $request->subscription_id,
             'user_id' => $user->id,
             'role' => $request->role,
@@ -75,6 +75,7 @@ class ManageSubscriptionUsersController extends Controller
         return response()->json([
             'success' => true,
             'subscription_id' => $request->subscription_id,
+            'subscription_user' => $subscription_user,
             'user' => $user,
             // 'password' => $password, // TODO: send email with password when invited
         ]);
@@ -82,7 +83,7 @@ class ManageSubscriptionUsersController extends Controller
 
     public function ajaxAddExistingUser(AddExistingUserRequest $request)
     {
-        SubscriptionUser::create([
+        $subscription_user = SubscriptionUser::create([
             'subscription_id' => $request->subscription_id,
             'user_id' => $request->user->value,
             'role' => $request->role,
@@ -91,6 +92,7 @@ class ManageSubscriptionUsersController extends Controller
         return response()->json([
             'success' => true,
             'subscription_id' => $request->subscription_id,
+            'subscription_user' => $subscription_user,
             'user' => $request->user,
         ]);
     }
@@ -98,5 +100,13 @@ class ManageSubscriptionUsersController extends Controller
     public function ajaxGetAccountingSystems(Subscription $subscription)
     {
         return $subscription->accountingSystems;
+    }
+
+    public function ajaxAddAccess(SubscriptionUser $subscriptionUser, Request $request)
+    {
+        return [
+            'subscriptionUser' => $subscriptionUser,
+            'accountingSystem' => $request->accounting_system,
+        ];
     }
 }

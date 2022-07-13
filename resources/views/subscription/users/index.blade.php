@@ -228,7 +228,7 @@
                 <div id="modal-add-existing-user-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-add-access-user" method="post" action="{{ url('/ajax/subscription/user/add/access')}}">
+                <form id="form-add-access-user" method="post" action="">
                     @csrf
                     <div class="row">
                         <div class="col-xs-12 col-lg-3 col-xl-2">
@@ -326,6 +326,8 @@
                 $('#aau_name').text(res.user.firstName + ' ' + res.user.lastName);
                 $('#aau_subscription_id').text(res.subscription_id);
 
+                $('#form-add-access-user').attr('action', `/ajax/subscription/user/add/access/${res.subscription_user.id}`);
+
                 printAccountingSystems(res.subscription_id);
             });
 
@@ -371,6 +373,8 @@
 
                 $('#aau_name').text(res.user.firstName + ' ' + res.user.lastName);
                 $('#aau_subscription_id').text(res.subscription_id);
+
+                $('#form-add-access-user').attr('action', `/ajax/subscription/user/add/access/${res.subscription_user.id}`);
 
                 printAccountingSystems(res.subscription_id);     
             });
