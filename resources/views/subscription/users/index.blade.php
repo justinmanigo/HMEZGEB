@@ -87,12 +87,12 @@
                                                 </span>
                                                 <span class="text">Edit</span>
                                             </a>
-                                            <a href="#" role="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user">
+                                            <button role="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-trash"></i>
                                                 </span>
                                                 <span class="text">Remove</span>
-                                            </a>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
