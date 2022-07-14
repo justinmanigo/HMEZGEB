@@ -111,7 +111,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-add-new-user-label">Add New User</h5>
+                <h5 class="modal-title" id="modal-add-new-user-label">Add New User to Subscription</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -176,7 +176,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-add-existing-user-label">Add New User</h5>
+                <h5 class="modal-title" id="modal-add-existing-user-label">Add Existing User to Subscription</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
