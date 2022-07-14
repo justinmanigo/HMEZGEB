@@ -284,6 +284,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <p class="text-danger error-message error-message-accounting_systems mt-4" style="display:none"></p>
                         </div>
                     </div>
 
@@ -454,14 +455,16 @@
 
         $(document).on('submit', '#form-add-access-user', function(e){
             e.preventDefault();
-            console.log($(this).serialize());
-            console.log($(this).attr('action'));
-            console.log($(this).attr('method'));
+            form = $(this);
+
+            console.log(form.serialize());
+            console.log(form.attr('action'));
+            console.log(form.attr('method'));
 
             request = $.ajax({
-                url: $(this).attr('action'),
-                method: $(this).attr('method'),
-                data: $(this).serialize(),
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
             });
 
             request.done(function(res){
@@ -483,7 +486,7 @@
                 else
                 {
                     console.log(res.responseJSON.errors);
-                    showFormErrorsUpdated(res.responseJSON.errors, $(this).attr('id'));
+                    showFormErrorsUpdated(res.responseJSON.errors, form.attr('id'));
                 }
             });
 

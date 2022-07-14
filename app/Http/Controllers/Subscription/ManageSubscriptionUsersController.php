@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Subscription\AddAccountingSystemAccessRequest;
 use App\Http\Requests\Subscription\AddExistingUserRequest;
 use App\Models\AccountingSystemUser;
 use App\Models\Subscription;
@@ -103,8 +104,8 @@ class ManageSubscriptionUsersController extends Controller
         return $subscription->accountingSystems;
     }
 
-    public function ajaxAddAccess(SubscriptionUser $subscriptionUser, Request $request)
-    { 
+    public function ajaxAddAccess(SubscriptionUser $subscriptionUser, AddAccountingSystemAccessRequest $request)
+    {
         for($i = 0; $i < count($request->accounting_systems); $i++) {
             $as[] = AccountingSystemUser::create([
                 'accounting_system_id' => $request->accounting_systems[$i],
