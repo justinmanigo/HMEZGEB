@@ -43,11 +43,13 @@ class AddExistingUserRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if ($this->user->value == Auth::user()->id) {
-                $validator->errors()->add('user', 'You cannot add yourself as a user.');
-            }
-            else if(SubscriptionUser::where('subscription_id', $this->subscription_id)->where('user_id', $this->user->value)->exists()) {
-                $validator->errors()->add('user', 'This user is already a user of this subscription.');
+            if(isset($user)) {
+                if ($this->user->value == Auth::user()->id) {
+                    $validator->errors()->add('user', 'You cannot add yourself as a user.');
+                }
+                else if(SubscriptionUser::where('subscription_id', $this->subscription_id)->where('user_id', $this->user->value)->exists()) {
+                    $validator->errors()->add('user', 'This user is already a user of this subscription.');
+                }
             }
         });
     }

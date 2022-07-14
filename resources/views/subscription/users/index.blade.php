@@ -200,7 +200,8 @@
                     <div class="form-group row">
                         <label for="aeu_user" class="col-12 col-lg-6 col-form-label">Select User<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="aeu_user" name="user" required>
+                            <input type="text" class="form-control" id="aeu_user" name="user">
+                            <p class="text-danger error-message error-message-user" style="display:none"></p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -316,16 +317,18 @@
         $(document).on('submit', '#form-add-new-user', function(e){
             e.preventDefault();
 
+            form = $(this);
+
             $('#form-add-new-user button[type="submit"]').prop('disabled', true);
 
-            console.log($(this).serialize());
-            console.log($(this).attr('action'));
-            console.log($(this).attr('method'));
+            console.log(form.serialize());
+            console.log(form.attr('action'));
+            console.log(form.attr('method'));
 
             request = $.ajax({
-                url: $(this).attr('action'),
-                method: $(this).attr('method'),
-                data: $(this).serialize(),
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
             });
 
             request.done(function(res){
@@ -354,7 +357,7 @@
                 else
                 {
                     console.log(res.responseJSON.errors);
-                    showFormErrorsUpdated(res.responseJSON.errors, $(this).attr('id'));
+                    showFormErrorsUpdated(res.responseJSON.errors, form.attr('id'));
                 }
             });
 
@@ -366,14 +369,17 @@
         // Event when form-add-existing-user is submitted.
         $(document).on('submit', '#form-add-existing-user', function(e){
             e.preventDefault();
-            console.log($(this).serialize());
-            console.log($(this).attr('action'));
-            console.log($(this).attr('method'));
+
+            form = $(this);
+
+            console.log(form.serialize());
+            console.log(form.attr('action'));
+            console.log(form.attr('method'));
 
             request = $.ajax({
-                url: $(this).attr('action'),
-                method: $(this).attr('method'),
-                data: $(this).serialize(),
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
             });
 
             request.done(function(res){
@@ -402,7 +408,7 @@
                 else
                 {
                     console.log(res.responseJSON.errors);
-                    showFormErrorsUpdated(res.responseJSON.errors, $(this).attr('id'));
+                    showFormErrorsUpdated(res.responseJSON.errors, form.attr('id'));
                 }
             });
 
