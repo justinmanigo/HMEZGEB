@@ -155,6 +155,7 @@ Route::group([
                 'prefix' => 'ajax/subscription/user',
             ], function(){
                 Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
+                Route::get('/u/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxGetSubscriptionUser']);
                 Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
                 Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
 
@@ -166,6 +167,8 @@ Route::group([
                 Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
 
                 // TODO: Editing a user. Both parts are merged since there is already an ID.
+
+                Route::delete('/remove/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxRemoveUser']);
             });
         });
 

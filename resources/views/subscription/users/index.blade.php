@@ -87,7 +87,7 @@
                                                 </span>
                                                 <span class="text">Edit</span>
                                             </a>
-                                            <a href="#" role="button" class="btn btn-sm btn-danger disabled">
+                                            <a href="#" role="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-trash"></i>
                                                 </span>
@@ -299,6 +299,41 @@
     </div>
 </div>
 
+{{-- TODO: Edit Modal --}}
+
+{{-- Delete Modal --}}
+<div class="modal fade" id="modal-delete-user" tabindex="-1" role="dialog" aria-labelledby="Modal Delete User">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Remove User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="du_error" class="card border-danger mb-2" style="display:none">
+                    <div class="card-body">
+                        <p class="text-danger m-0 p-0"></p>
+                    </div>
+                </div>
+                <p>
+                    Are you sure to remove <strong id="du_name"></strong> access to this subscription? 
+                    This will also remove his/her permissions and access to accounting systems.
+                </p>
+                <form id="form-remove-user" class="" action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Cancel</button>
+                <button type="submit" class="btn btn-danger" form="form-remove-user">Yes, Remove User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -499,6 +534,62 @@
             request.always(function(){
                 $('#form-add-access-user button[type="submit"]').prop('disabled', true);
             });
+        });
+
+        $(document).on('click', '.btn-remove-user', function(e){
+            console.log($(this).data('id'));
+            id = $(this).data('id');
+
+            $('#du_error').hide();
+            $('#du_name').html("");
+            $('button[form="form-remove-user"]').attr('disabled', true)
+
+            // Get user info
+            request = $.ajax({
+                'url': '/ajax/subscription/user/u/' + id,
+                'method': 'GET',
+            });
+
+            request.done(function(res){
+                console.log(res);
+
+                $('#du_name').html(`${res.user.firstName} ${res.user.lastName}`);
+                $('button[form="form-remove-user"]').attr('disabled', false)
+                $('#form-remove-user').attr('action', '/ajax/subscription/user/remove/' + res.id)
+            });
+
+            request.fail(function(res){
+                $('#du_error').show();
+                $('#du_error .text-danger').html("Can't obtain user data from the server. This user must be deleted already.")
+            });
+        });
+
+        $(document).on('submit', '#form-remove-user', function(e){
+            e.preventDefault();
+            $('button[form="form-remove-user"]').attr('disabled', true)
+
+            form = $(this);
+
+            console.log(form.serialize());
+            console.log(form.attr('action'));
+            console.log(form.attr('method'));
+
+            request = $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize()
+            });
+
+            request.done(function(res){
+                message = `Successfully removed user to subscription.`;
+                window.location.href = `/subscription/users?success=${message}`;
+            });
+
+            request.fail(function(res){
+                console.log(res);
+                $('#du_error').show();
+                $('#du_error .text-danger').html("Can't process user removal from the server. This user must be deleted already.")
+            })
         });
     </script>
     

@@ -26,7 +26,6 @@ class ManageSubscriptionUsersController extends Controller
                 $user->subscriptions[$i]->subscriptionUsers[$j]->user;
             }
         }
-        // return $user;
 
         return view('subscription.users.index', [
             'user' => $user,
@@ -36,6 +35,13 @@ class ManageSubscriptionUsersController extends Controller
     public function ajaxGetUser(User $user)
     {
         return $user;
+    }
+
+    public function ajaxGetSubscriptionUser(SubscriptionUser $subscriptionUser)
+    {
+        $subscriptionUser->user;
+
+        return $subscriptionUser;
     }
 
     public function ajaxSearchUser($query)
@@ -129,6 +135,28 @@ class ManageSubscriptionUsersController extends Controller
             'success' => true,
             'subscription_user' => $subscriptionUser,
             'accounting_systems' => $as,
+        ]);
+    }
+
+    public function ajaxRemoveUser(SubscriptionUser $subscriptionUser)
+    {
+        // Get accounting systems and permissions the user has access
+        $as_user = AccountingSystemUser::where('subscription_user_id', $subscriptionUser->id)->get();
+        for($i = 0; $i < count($as_user); $i++) {
+            $as_user[$i]->permissions;
+            $as_user[$i]->accountingSystems;
+            foreach($as_user[$i]->permissions as $permission)
+                $permission->delete();
+            foreach($as_user[$i]->accountingSystems as $as)
+                $as->delete();
+            $as_user[$i]->delete();
+        }
+
+        // Remove subscription user
+        $subscriptionUser->delete();
+
+        return response()->json([
+            'success' => true,
         ]);
     }
 }
