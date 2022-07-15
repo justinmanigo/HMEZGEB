@@ -16,6 +16,9 @@ use App\Models\BillItem;
 use App\Models\PurchaseOrders;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use App\Mail\MailVendorBill;
+use Illuminate\Support\Facades\Mail;
+
 
 class BillsController extends Controller
 {
@@ -153,6 +156,9 @@ class BillsController extends Controller
             'payment_method' => $payment_method,
             'amount_received' => $request->total_amount_received,
         ]);
+        
+        $emailAddress = 'test@example.com';
+        Mail::to($emailAddress)->send(new MailVendorBill);
         
         return [
             'debit_accounts' => $debit_accounts,
