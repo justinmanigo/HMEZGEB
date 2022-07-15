@@ -14,7 +14,8 @@ use App\Models\PensionPayments;
 use App\Models\BillPayments;
 use App\Models\Bills;
 use App\Models\WithholdingPayments;
-
+use App\Mail\MailBankTransfer;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -127,6 +128,10 @@ class PaymentsController extends Controller
             $messageType = 'warning';
             $messageContent = 'There are no bills to pay.';
         }
+
+        // Mail
+        $emailAddress = 'test@example.com';
+        Mail::to($emailAddress)->send(new MailVendorPayment);
   
         return redirect()->back()->with($messageType, $messageContent);
 
