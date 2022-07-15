@@ -30,6 +30,5 @@ class MailVendorBill extends Mailable
     {
         return $this->subject('Vendor Bill')
         ->view('vendors.bills.mail');
-
     }
 }
