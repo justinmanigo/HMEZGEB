@@ -26,6 +26,9 @@ use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
 use App\Models\ReceiptCashTransactions;
 use Illuminate\Support\Facades\Log;
+use App\Mail\MailCustomerReceipt;
+use Illuminate\Support\Facades\Mail;
+
 
 class ReceiptController extends Controller
 {
@@ -210,6 +213,10 @@ class ReceiptController extends Controller
             'total_amount_received' => $request->total_amount_received,
             'chart_of_account_id' => $request->receipt_cash_on_hand,
         ]);
+
+        // Mail
+        $emailAddress = 'test@example.com';
+        Mail::to($emailAddress)->send(new MailCustomerReceipt);
 
         return [
             'debit_accounts' => $debit_accounts,
