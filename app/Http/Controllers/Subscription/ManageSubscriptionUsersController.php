@@ -138,17 +138,97 @@ class ManageSubscriptionUsersController extends Controller
         ]);
     }
 
+    public function ajaxEditUser(SubscriptionUser $subscriptionUser)
+    {
+        $subscriptionUser->user;
+        $subscriptionUser->subscription;
+        $subscriptionUser->accountingSystemAccess;
+        return $subscriptionUser;
+    }
+
+    public function ajaxUpdateUser(SubscriptionUser $subscriptionUser, Request $request)
+    {
+        $current = AccountingSystemUser::where('subscription_user_id', $subscriptionUser->id)->get();
+        $added = [];
+        $reviewed = [];
+
+        $subscriptionUser->role = $request->role;
+        $subscriptionUser->save();
+
+        // this is used as the length of the loop
+        $m = isset($current) ? count($current) : 0;
+        $n = isset($request->accounting_systems) ? count($request->accounting_systems) : 0;
+
+        for($i = 0; $i < $n; $i++) {
+            $test[] = $request->accounting_systems[$i];
+        }
+
+        // Add new access
+        for($i = 0; $i < $n; $i++) {
+            $found = false;
+            $reviewed[] = $request->accounting_systems[$i];
+            for($j = 0; $j < $m; $j++) {
+                if($current[$j]->accounting_system_id == $request->accounting_systems[$i]) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            if(!$found)
+            {
+                $new = AccountingSystemUser::create([
+                    'accounting_system_id' => $request->accounting_systems[$i],
+                    'subscription_user_id' => $subscriptionUser->id,
+                ]);
+                $added[] = $new;
+    
+                // Add all permissions
+                for($j = 1; $j <= 24; $j++)
+                {
+                    $permissions[] = [
+                        'accounting_system_user_id' => $new->id,
+                        'access_level' => 'rw',
+                        'sub_module_id' => $j,
+                    ];
+                }
+
+                DB::table('permissions')->insert($permissions);
+            }
+
+        }
+
+        // Remove access
+        for($i = 0; $i < $m; $i++) {
+            $found = false;
+            for($j = 0; $j < $n; $j++) {
+                if($current[$i]->accounting_system_id == $request->accounting_systems[$j]) {
+                    $found = true;
+                    break;
+                }
+            }
+            if(!$found) {
+                $removed[] = $current[$i];
+                $current[$i]->permissions()->delete();
+                $current[$i]->delete();
+            }
+        }
+
+        return [
+            'current' => $current,
+            'request' => $request->accounting_systems,
+            'reviewed' => isset($reviewed) ? $reviewed : [],
+            'added' => isset($added) ? $added : [],
+            'removed' => isset($removed) ? $removed : null,
+            'test_count' => isset($request->accounting_systems) ? count($request->accounting_systems) : 0,
+        ];
+    }
+
     public function ajaxRemoveUser(SubscriptionUser $subscriptionUser)
     {
         // Get accounting systems and permissions the user has access
         $as_user = AccountingSystemUser::where('subscription_user_id', $subscriptionUser->id)->get();
         for($i = 0; $i < count($as_user); $i++) {
-            $as_user[$i]->permissions;
-            $as_user[$i]->accountingSystems;
-            foreach($as_user[$i]->permissions as $permission)
-                $permission->delete();
-            foreach($as_user[$i]->accountingSystems as $as)
-                $as->delete();
+            $as_user[$i]->permissions()->delete();
             $as_user[$i]->delete();
         }
 

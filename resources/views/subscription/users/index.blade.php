@@ -81,12 +81,12 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="#" role="button" class="btn btn-sm btn-primary disabled">
+                                            <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-edit-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                                 <span class="text">Edit</span>
-                                            </a>
+                                            </button>
                                             <button role="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-trash"></i>
@@ -300,6 +300,87 @@
 </div>
 
 {{-- TODO: Edit Modal --}}
+<div class="modal fade" id="modal-edit-user" tabindex="-1" role="dialog" aria-labelledby="Modal Edit User">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="eu_error" class="card border-danger mb-2" style="display:none">
+                    <div class="card-body">
+                        <p class="text-danger m-0 p-0"></p>
+                    </div>
+                </div>
+                <form id="form-edit-user" method="post" action="">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-3 col-xl-2">
+                            <h5>User Details</h5>
+                            <p>
+                                Name:<br>
+                                <strong id="eu_name">Test User</strong>
+                            </p>
+                            <p>
+                                Subscription ID:<br>
+                                <strong id="eu_subscription_id">0</strong>
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-lg-9 col-xl-10">            
+                            <p>Select what role this user posess.</p>
+                            <div class="form-group row">
+                                <label for="eu_role" class="col-sm-4 col-lg-2 col-form-label">Role</label>
+                                <div class="col-sm-8 col-lg-4">
+                                    <select class="form-control" id="eu_role" name="role">
+                                        <option value="">Select a role</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="moderator">Moderator</option>
+                                        <option value="member">Member</option>
+                                    </select>
+                                </div>    
+                            </div>                
+                            <p>Assign this user access to certain accounting systems of this subscription.</p>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <th></th>
+                                        <th>Accounting System</th>
+                                        <th>Accounting Year</th>
+                                        <th>Calendar Type</th>
+                                    </thead>
+                                    <tbody id="eu_accounting_systems">
+                                        {{-- <tr>
+                                            <td>
+                                                <div class="form-group form-check">
+                                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <label class="form-check-label" for="exampleCheck1">Test Accounting System</label>
+                                            </td>
+                                            <td>2022</td>
+                                            <td>Gregorian</td>
+                                        </tr> --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="text-danger error-message error-message-accounting_systems mt-4" style="display:none"></p>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" form="form-edit-user">Update User</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{-- Delete Modal --}}
 <div class="modal fade" id="modal-delete-user" tabindex="-1" role="dialog" aria-labelledby="Modal Delete User">
@@ -428,7 +509,7 @@
 
                 $('#form-add-access-user').attr('action', `/ajax/subscription/user/add/access/${res.subscription_user.id}`);
 
-                printAccountingSystems(res.subscription_id);     
+                printAccountingSystems(res.subscription_id, '#aau_accounting_systems');     
             });
 
             request.fail(function(res){
@@ -452,9 +533,10 @@
             });
         });
 
-        function printAccountingSystems(subscription_id)
+        function printAccountingSystems(subscription_id, elm_id, d = null)
         {
             var success = false;
+            var data = d;
             request = $.ajax({
                 url: `/ajax/subscription/user/get/accounting-systems/${subscription_id}`,
                 method: 'GET',
@@ -463,24 +545,25 @@
                 },
             });
 
-            request.done(function(res){
+            request.done(function(res) {
                 success = true;
                 console.log(res);
 
-                $('#aau_accounting_systems').html('');
+                $(elm_id).html('');
 
                 res.forEach(function(as){
+                    console.log(data);
                     // add row to table
-                    $('#aau_accounting_systems').append(`
+                    $(elm_id).append(`
                         <tr>
                             <td>
                                 <div class="form-group form-check">
-                                    <input type="checkbox" class="form-check-input" id="aau_as_${as.id}" value="${as.id}" name="accounting_systems[]">
+                                    <input type="checkbox" class="form-check-input" id="eu_as_${as.id}" value="${as.id}" name="accounting_systems[]" ${checkIfUserHasASAccess(data, as.id)}>
                                 </div>
                             </td>
-                            <td><label class="form-check-label" for="aau_as_${as.id}">${as.name}</label></td>
-                            <td><label class="form-check-label" for="aau_as_${as.id}">${as.accounting_year}</label></td>
-                            <td><label class="form-check-label" for="aau_as_${as.id}">${as.calendar_type}</label></td>
+                            <td><label class="form-check-label" for="eu_as_${as.id}">${as.name}</label></td>
+                            <td><label class="form-check-label" for="eu_as_${as.id}">${as.accounting_year}</label></td>
+                            <td><label class="form-check-label" for="eu_as_${as.id}">${as.calendar_type}</label></td>
                         </tr>
                     `);
                 });
@@ -492,6 +575,21 @@
 
             console.log(`printAccountingSystems: ${success}`);
             return success;
+        }
+
+        function checkIfUserHasASAccess(data, id)
+        {
+            console.log('checkIfUserHasASAccess');
+            console.log(data);
+            var response = '';
+            data.forEach(function(d){
+                if(d.accounting_system_id == id)
+                {
+                    response = `checked='true'`;
+                }
+            });
+
+            return response;
         }
 
         $(document).on('submit', '#form-add-access-user', function(e){
@@ -535,6 +633,80 @@
                 $('#form-add-access-user button[type="submit"]').prop('disabled', true);
             });
         });
+
+        /**
+         * Edit User
+         */
+
+        $(document).on('click', '.btn-edit-user', function(e){
+            console.log($(this).data('id'));
+            id = $(this).data('id');
+
+            $('#eu_error').hide();
+            $('#eu_name').html('');
+            $('button[form="form-edit-user"]').prop('disabled', true);
+
+            // Get user info
+            request = $.ajax({
+                'url': '/ajax/subscription/user/edit/' + id,
+                'method': 'GET',
+            });
+
+            request.done(function(res){
+                console.log(res);
+
+                $('#eu_name').html(`${res.user.firstName} ${res.user.lastName}`);
+                $('#eu_subscription_id').html(`${res.subscription.id}`)
+                $('button[form="form-edit-user"]').attr('disabled', false)
+                $('#form-edit-user').attr('action', '/ajax/subscription/user/update/' + res.id)
+                $('#eu_role').val(res.role);
+
+                console.log(res.accounting_system_access);
+
+                printAccountingSystems(res.subscription.id, '#eu_accounting_systems', res.accounting_system_access);
+            });
+
+            request.fail(function(res){
+                $('#eu_error').show();
+                $('#eu_error .text-danger').html("Can't obtain user data from the server. This user must be deleted already.")
+            });
+        })
+
+        $(document).on('submit', '#form-edit-user', function(e){
+            e.preventDefault();
+
+            $('button[form="form-edit-user"]').attr('disabled', true)
+
+            form = $(this);
+
+            console.log(form.serialize());
+            console.log(form.attr('action'));
+            console.log(form.attr('method'));
+
+            request = $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize()
+            });
+
+            request.done(function(res){
+                message = `Successfully updated user to subscription.`;
+                console.log('form-edit-user submit')
+                // $('button[form="form-edit-user"]').prop('disabled', false)
+                console.log(res);
+                window.location.href = `/subscription/users?success=${message}`;
+            });
+
+            request.fail(function(res){
+                console.log(res);
+                $('#eu_error').show();
+                $('#eu_error .text-danger').html("Can't process user removal from the server. This user must be deleted already.")
+            })
+        })
+
+        /**
+         * Remove User
+         */
 
         $(document).on('click', '.btn-remove-user', function(e){
             console.log($(this).data('id'));

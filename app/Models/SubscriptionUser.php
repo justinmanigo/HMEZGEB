@@ -24,4 +24,9 @@ class SubscriptionUser extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function accountingSystemAccess()
+    {
+        return $this->hasMany(AccountingSystemUser::class);
+    }
 }
