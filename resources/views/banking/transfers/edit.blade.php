@@ -1,47 +1,46 @@
 @extends('template.index')
 @section('content')
-<div class="container">
-    <div class="mb-2">
-        <div class="row">
-            <div class="col-md-6">
-                <h3>From Account</h3>
-                <h2>{{$transfers->fromAccount->chartOfAccount->account_name}}</h2>
-            </div>
-            <div class="col-md-6">
-                <h3>To Account</h3>
-                <h2>{{$transfers->toAccount->chartOfAccount->account_name}}</h2>
+<a type="button" href="{{route('transfers.transfer.index')}}" class="btn btn-secondary">Back</a>
+
+    <div class="d-md-flex mt-3">
+        <div class="card px-4 py-3">
+            <h5 class="card-title">From Account</h5>
+            <p class="card-text">{{$transfers->fromAccount->chartOfAccount->account_name}}</p>
+            <h5 class="card-title">To Account</h5>
+            <p class="card-text">{{$transfers->toAccount->chartOfAccount->account_name}}</p>
+            <h5 class="card-title">Amount</h5>
+            <p class="card-text">{{$transfers->amount}}</p>
+            {{-- delete void--}}
+            <div>
+                @if($transfers->status == 'completed')
+                <button class="btn btn-danger mr-3 " type="button" data-toggle="modal"
+                    data-target="#voidConfirmationModel">Void</button>
+                @else
+                <button class="btn btn-danger" type="button" data-toggle="modal"
+                    data-target="#deleteConfirmationModel">Delete</button>
+                @endif
             </div>
         </div>
-    </div>
-
-    <div class="container card shadow px-4 py-3">
-            <form action="{{route('transfers.transfer.update', $transfers->id)}}" id="form-deposit" method="post" enctype="multipart/form-data">
+        <div class="card px-4 py-3 col-lg-4">
+            <form action="{{route('transfers.transfer.update', $transfers->id)}}" id="form-deposit" method="post"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="form-group row">
-                    <label for="te_reason" class="col-sm-3 col-lg-4 col-form-label">Reason</label>
+                    <label for="te_reason" class="col-sm-3 col-form-label">Reason</label>
                     <div class="col-sm-9 col-lg-12 mb-3 mb-lg-0">
-                        <textarea class="form-control" id="te_reason" name="reason" rows="3">{{$transfers->reason}}</textarea>
+                        <textarea class="form-control" id="te_reason" name="reason"
+                            rows="6">{{$transfers->reason}}</textarea>
                     </div>
                 </div>
 
-            <div class="row  mt-3 d-flex justify-content-between">
-                {{-- delete void--}}
-                <div>
-                    @if($transfers->status == 'completed')
-                    <button class="btn btn-danger mr-3 " type="button" data-toggle="modal"
-                    data-target="#voidConfirmationModel">Void</button>
-                    @else
-                    <button class="btn btn-danger mr-3 " type="button" data-toggle="modal"
-                        data-target="#deleteConfirmationModel">Delete</button>
-                    @endif
-                    <a type="button" href="{{route('transfers.transfer.index')}}" class="btn btn-secondary">Back</a>
+                <div class="row mt-4">
+                    <button type="submit" class="btn btn-primary">Update Information</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Update Information</button>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
-</div>
+
 
 {{-- Void --}}
 <div class="modal fade" id="voidConfirmationModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -78,7 +77,8 @@
             <div class="modal-body">Are you sure to delete this record?</div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
-                <form id="delete-frm" class="" action="{{route('transfers.transfer.destroy',$transfers->id)}}" method="POST">
+                <form id="delete-frm" class="" action="{{route('transfers.transfer.destroy',$transfers->id)}}"
+                    method="POST">
                     @method('DELETE')
                     @csrf
                     <button class="btn btn-danger">Delete</button>
@@ -89,4 +89,3 @@
 </div>
 
 @endsection
-
