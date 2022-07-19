@@ -15,6 +15,21 @@ class CreatePayrollsTable extends Migration
     {
         Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('period_id');
+            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('accounting_system_id')->constrained();
+            $table->enum('status', ['pending', 'partially_paid','paid', 'cancelled'])->default('pending');
+            $table->string('paid_by')->nullable();
+            $table->float('total_salary', 10, 2)->default(0);
+            $table->float('total_addition', 10, 2)->default(0);
+            $table->float('total_deduction', 10, 2)->default(0);
+            $table->float('total_overtime', 10, 2)->default(0);
+            $table->float('total_loan', 10, 2)->default(0);
+            $table->float('total_tax', 10, 2)->default(0);
+            $table->float('total_pension', 10, 2)->default(0);
+            $table->foreign('period_id')->references('id')->on('accounting_periods');
+            $table->foreign('employee_id')->references('id')->on('employees');
+
             $table->timestamps();
         });
     }
