@@ -6,7 +6,8 @@ use App\Models\Employee;
 use App\Models\Overtime;
 use Illuminate\Http\Request;
 use App\Http\Requests\HumanResource\StoreOvertimeRequest;
-
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class OvertimeController extends Controller
 {
@@ -28,6 +29,7 @@ class OvertimeController extends Controller
             'overtimes.from',
             'overtimes.to',
             'overtimes.is_weekend_holiday',
+            'overtimes.price',
             'employees.first_name',
             'employees.type',
         )->where('overtimes.accounting_system_id', session('accounting_system_id'))
@@ -54,24 +56,62 @@ class OvertimeController extends Controller
     public function store(StoreOvertimeRequest $request)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-
+        
         for($i = 0; $i < count($request->employee); $i++)
         {
             // Store
             $overtime = new Overtime;
             $overtime->accounting_system_id = $accounting_system_id;
-            $overtime->employee_id =  $request->employee[$i]->value;;
+            $overtime->employee_id =  $request->employee[$i]->value;
             $overtime->date = $request->date;
+            $overtime->from = $request->from[$i];
+            $overtime->to = $request->to[$i];
+
+            $from = Carbon::parse($request->from[$i]);
+            $to = Carbon::parse($request->to[$i]);
+            // Convert to minutes to include minutes in the calculation          
+            // convert to hours
+
+
             if($request->is_weekend_holiday != null)
             {
                 $overtime->is_weekend_holiday = 'yes';
+                $holiday_hours = ($from->diffInMinutes($to)) / 60;
+                $computeTotal = $overtime->calculateHourRate($request->employee[$i]->value)*$holiday_hours;
+                $overtime->price = $overtime->holidayWeekendRate($computeTotal) ;
             }
             else
             {
                 $overtime->is_weekend_holiday = 'no';
+
+                // get 24 hour format of $from and $to
+                $from_24_hour = $from->format('H:i');
+                $to_24_hour = $to->format('H:i');
+
+                // if $to is greater than 6:00 pm, compute difference of $to and 6pm               
+                if($to_24_hour>'18:00' && $from_24_hour < '18:00')
+                {
+                    $night_hours = (($to->diffInMinutes('18:00')) / 60);
+                    //  set value of $to to 5:59pm to compute the day rate. 
+                    $to = Carbon::parse('17:59');
+                    // convert to hours
+                    $day_hours = ($from->diffInMinutes($to)) / 60;
+                    $overtime->price =  $overtime->calculateHourRate($request->employee[$i]->value)*($overtime->nightRate($night_hours)+$overtime->dayRate($day_hours));
+                }
+
+                else
+                {
+                    if($from_24_hour >= '18:00' && $to_24_hour < '6:00')
+                    {
+                        $night_hours = ($from->diffInMinutes($to)) / 60;
+                        $overtime->price =  $overtime->calculateHourRate($request->employee[$i]->value)*($overtime->nightRate($night_hours));
+                    }
+                    else{
+                        $day_hours = ($from->diffInMinutes($to)) / 60;
+                        $overtime->price = $overtime->calculateHourRate($request->employee[$i]->value)*($overtime->dayRate($day_hours));
+                    }
+                }
             }
-            $overtime->from = $request->from[$i];
-            $overtime->to = $request->to[$i];
             $overtime->description = $request->description;
             $overtime->save();
         }
