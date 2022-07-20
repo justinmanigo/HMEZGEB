@@ -14,7 +14,7 @@ use App\Models\PensionPayments;
 use App\Models\BillPayments;
 use App\Models\Bills;
 use App\Models\WithholdingPayments;
-use App\Mail\MailBankTransfer;
+use App\Mail\MailVendorPayment;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -131,9 +131,10 @@ class PaymentsController extends Controller
             $messageContent = 'There are no bills to pay.';
         }
 
-        // Mail;
-        $emailAddress = $reference->vendor->email;
-        Mail::to($emailAddress)->send(new MailVendorPayment);
+        // TODO : Refactor this into action button.
+        // // Mail;
+        // $emailAddress = $reference->vendor->email;
+        // Mail::to($emailAddress)->send(new MailVendorPayment);
   
         return redirect()->back()->with($messageType, $messageContent);
 
