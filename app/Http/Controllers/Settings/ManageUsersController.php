@@ -18,17 +18,23 @@ class ManageUsersController extends Controller
      */
     public function index()
     {
+        // Don't include the user who owned the subscription in the list.
+        $first_as_user = AccountingSystemUser::where('accounting_system_id', session('accounting_system_id'))->first();
+
         $accountingSystemUsers = AccountingSystemUser::select(
                 'accounting_system_users.id as accounting_system_user_id',
                 'users.firstName',
                 'users.lastName',
                 'users.email',
-                'accounting_system_users.role',
+                'subscription_users.role',
                 // TODO: Add Status and Last Logged In
             )
+            ->leftJoin('subscription_users', 'subscription_users.id', '=', 'accounting_system_users.subscription_user_id')
             ->leftJoin('users', 
-            'users.id', '=', 'accounting_system_users.user_id')
+            'users.id', '=', 'subscription_users.user_id')
             ->where('accounting_system_id', $this->request->session()->get('accounting_system_id'))
+            ->where('accounting_system_users.id', '!=', $first_as_user->id)
+            ->where('accounting_system_users.id', '!=', session('accounting_system_user'))
             ->get();
 
         return view('settings.users.manageUsers.index', [

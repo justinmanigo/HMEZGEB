@@ -4,6 +4,25 @@
 
 <h1>Manage Users</h1>
 
+{{-- Button Group Navigation --}}
+@if(auth()->user()->control_panel_role == 'admin')
+    <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+                <span class="icon text-white-50">
+                    <i class="fas fa-user"></i>
+                </span>
+                <span class="text">Add User</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-new-user">New User</a>
+                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-existing-user">Existing User</a>
+            </div>
+        </div>
+    </div>
+@endif
+
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -20,14 +39,16 @@
                     <td>{{ ucwords($user->firstName . ' ' . $user->lastName) }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
-                        @if($user->role == 'admin')
+                        @if($user->role == 'super admin')
                             <span class="badge badge-success">{{ ucwords($user->role) }}</span>
-                        @elseif($user->role == 'moderator')
+                        @elseif($user->role == 'admin')
                             <span class="badge badge-info">{{ ucwords($user->role) }}</span>
-                        @elseif($user->role == 'member')
+                        @elseif($user->role == 'moderator')
                             <span class="badge badge-warning">{{ ucwords($user->role) }}</span>
+                        @elseif($user->role == 'member')
+                            <span class="badge badge-secondary">{{ ucwords($user->role) }}</span>
                         @else
-                            <span class="badge badge-secondary">{{ 'Unknown' }}</span>
+                            <span class="badge badge-danger">{{ 'Unknown' }}</span>
                         @endif
                     </td>
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>

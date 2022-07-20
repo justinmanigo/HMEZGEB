@@ -16,12 +16,7 @@ class CreateAccountingSystemUsersTable extends Migration
         Schema::create('accounting_system_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->enum('role', [
-                'admin',        // admin
-                'moderator',    // manage users
-                'member',       // profile
-            ]);
+            $table->foreignId('subscription_user_id')->constrained();
             $table->timestamps();
         });
     }

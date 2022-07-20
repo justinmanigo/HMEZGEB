@@ -12,11 +12,11 @@ class CreateAccountingSystem
 {
     use AsAction;
 
-    public function handle($request, $subscription)
+    public function handle($request, $subscription, $subscription_user)
     {
         $accounting_system = $this->create($request, $subscription);
         
-        $as_user = $this->addUserAndPermission($accounting_system->id, $subscription->account_type);
+        $as_user = $this->addUserAndPermission($accounting_system->id, $subscription_user->id);
 
         GenerateAccountingPeriods::run($accounting_system->id, $request->calendar_type, $request->accounting_year, $as_user->id);
 
@@ -57,12 +57,13 @@ class CreateAccountingSystem
         ]);
     }
 
-    private function addUserAndPermission($id, $role)
+    private function addUserAndPermission($id, $subscription_user_id)
     {
         $user = AccountingSystemUser::create([
             'accounting_system_id' => $id,
-            'user_id' => auth()->user()->id,
-            'role' => $role,
+            'subscription_user_id' => $subscription_user_id,
+            // 'role' => $role == 'super admin' ? 'admin' : $role,
+            //! Temporarily disabled due to changes in database structure.
         ]);
 
         // Loop permissions

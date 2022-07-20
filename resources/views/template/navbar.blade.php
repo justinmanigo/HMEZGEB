@@ -5,7 +5,6 @@
     $permissions = \App\Actions\GetAccountingSystemUserPermissions::run($modules, session('accounting_system_user_id'), true);
 
     $accounting_system = \App\Models\AccountingSystem::find(session('accounting_system_id'));
-    $accounting_system_count = \App\Models\AccountingSystemUser::where('user_id', Auth::user()->id)->count();
     $accounting_period = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::find(session('accounting_period_id'));
     $accounting_period_year = \Carbon\Carbon::parse($accounting_period->date_from);
 
@@ -14,6 +13,7 @@
     $unreadNotifications = Notification::where('accounting_system_id', session('accounting_system_id'))
         ->where('resolved', 0)->count();
     $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
+    $subscriptions_count = \App\Models\Subscription::where('user_id', auth()->id())->count();
 @endphp
  
  <!-- Sidebar -->
@@ -340,6 +340,12 @@
                                         Control Panel
                                     </a>
                                 @endif
+                                @if($subscriptions_count > 0)
+                                    <a class="dropdown-item" href="/subscription/">
+                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Subscription Panel
+                                    </a>
+                                @endif
                                 <a class="dropdown-item" href="/account/">
                                     <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Account Settings
@@ -349,7 +355,7 @@
                                     Referrals
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                @if($accounting_system_count > 1)
+                                @if(session('acct_system_count') > 1)
                                     <a class="dropdown-item" href="{{ url('/switch') }}">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Switch Accounting Systems

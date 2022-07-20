@@ -55,9 +55,9 @@ class User extends Authenticatable
         return $this->hasMany(Referral::class);
     }
 
-    public function subscription()
+    public function subscriptions()
     {
-        return $this->hasOne(Subscription::class);
+        return $this->hasMany(Subscription::class);
     }
 
     public function referredSubscriptions()
