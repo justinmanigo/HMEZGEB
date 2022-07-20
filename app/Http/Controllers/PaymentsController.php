@@ -54,6 +54,7 @@ class PaymentsController extends Controller
 
     public function storeBillPayment(Request $request)
     {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         // Update Bills to Pay
         $b = 0;
         if(isset($request->is_paid))
@@ -100,6 +101,7 @@ class PaymentsController extends Controller
         if($b > 0) {
             // Create PaymentReference Record
             $reference = PaymentReferences::create([
+                'accounting_system_id' => $accounting_system_id,
                 'vendor_id' => $request->vendor_id,
                 'date' => $request->date,
                 'type' => 'bill_payment',
@@ -129,8 +131,8 @@ class PaymentsController extends Controller
             $messageContent = 'There are no bills to pay.';
         }
 
-        // Mail
-        $emailAddress = 'test@example.com';
+        // Mail;
+        $emailAddress = $reference->vendor->email;
         Mail::to($emailAddress)->send(new MailVendorPayment);
   
         return redirect()->back()->with($messageType, $messageContent);
@@ -142,6 +144,7 @@ class PaymentsController extends Controller
 
         // Store payment reference
         $reference = PaymentReferences::create([
+            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
             'vendor_id' => $request->vendor_id,
             'date' => $request->date,
             'type' => 'income_tax_payment',
@@ -169,6 +172,7 @@ class PaymentsController extends Controller
 
         // Store payment reference
         $reference = PaymentReferences::create([
+            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
             'vendor_id' => $request->vendor_id,
             'date' => $request->date,
             'type' => 'pension_payment',
@@ -246,6 +250,7 @@ class PaymentsController extends Controller
         if($w > 0) {
             // Create PaymentReference Record
             $reference = PaymentReferences::create([
+                'accounting_system_id' => $accounting_system_id,
                 'vendor_id' => $request->vendor_id,
                 'date' => $request->date,
                 'type' => 'withholding_payment',
