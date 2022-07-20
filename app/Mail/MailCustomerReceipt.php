@@ -29,6 +29,6 @@ class MailCustomerReceipt extends Mailable
     public function build()
     {
         return $this->subject('Customer Receipt')
-        ->view('customers.receipt.mail');
+        ->view('customer.receipt.mail');
     }
 }

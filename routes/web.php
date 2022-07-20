@@ -160,7 +160,10 @@ Route::group([
                 Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
                 Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
                 Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
-        
+                
+                // Mail
+                Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
+
                 /** AJAX Calls */
                 Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
                 Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);

@@ -214,10 +214,6 @@ class ReceiptController extends Controller
             'chart_of_account_id' => $request->receipt_cash_on_hand,
         ]);
 
-        // Mail
-        $emailAddress = 'test@example.com';
-        Mail::to($emailAddress)->send(new MailCustomerReceipt);
-
         return [
             'debit_accounts' => $debit_accounts,
             'debit_amount' => $debit_amount,
@@ -429,6 +425,17 @@ class ReceiptController extends Controller
         $receipt->delete();
   
         return redirect('receipt/')->with('danger', "Successfully deleted customer");
+    }
+
+    // Mail
+    public function sendMailReceipt($id)
+    {
+        // Mail
+        $receipt = Receipts::find($id);
+        $emailAddress = $receipt->receiptReference->customer;
+        Mail::to($emailAddress)->send(new MailCustomerReceipt);
+
+        return redirect()->route('receipts.receipt.index')->with('success', "Successfully sent email to customer.");
     }
 
     // export

@@ -184,21 +184,57 @@
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                    @elseif(session()->has('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session()->get('success') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     @endif
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
-                                <th id="thead-actions">Actions</th>
                                 <th>Date</th>
                                 <th>Type</th>
                                 <th>Customer Name</th>
                                 <th>Status</th>
                                 <th>Amount</th>
+                                <th id="thead-actions">Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($transactions as $transaction)
                       
                                 <tr>
+                                    <td class="table-item-content">{{$transaction->date}}</td>
+                                    <td class="table-item-content">
+                                        @if($transaction->type == 'receipt')
+                                        <span class="badge badge-success">Receipt</span>
+                                        @elseif($transaction->type == 'advance_receipt')
+                                        <span class="badge badge-primary">Advance Revenue</span>
+                                        @elseif($transaction->type == 'credit_receipt')
+                                        <span class="badge badge-info">Credit Receipt</span>
+                                        @endif
+                                    </td>
+                                    <td class="table-item-content">{{$transaction->name}}</td>
+                                    <td class="table-item-content">
+                                        @if($transaction->status == 'unpaid')
+                                        <span class="badge badge-danger">Unpaid</span>
+                                        @elseif($transaction->status == 'partially_paid')
+                                        <span class="badge badge-warning">Partially Paid</span>
+                                        @elseif($transaction->status == 'paid')
+                                        <span class="badge badge-success">Paid</span>
+                                        @endif
+                                    </td>
+                                    <td class="table-item-content text-right">
+                                        @if($transaction->type == 'receipt')
+                                        {{ number_format($transaction->amount, 2) }}
+                                        @elseif($transaction->type == 'advance_receipt')
+                                        {{ number_format($transaction->advance_revenue_amount, 2) }}
+                                        @elseif($transaction->type == 'credit_receipt')
+                                            {{ number_format($transaction->credit_receipt_amount, 2) }}
+                                        @endif
+                                    </td>
                                     <td> 
                                         {{-- <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
                                             <span class="icon text-white-50">
@@ -212,39 +248,17 @@
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button> --}}
-                                    </td>
-                                    <td class="table-item-content">{{$transaction->date}}</td>
-                                    <td class="table-item-content">
                                         @if($transaction->type == 'receipt')
-                                            <span class="badge badge-success">Receipt</span>
-                                        @elseif($transaction->type == 'advance_receipt')
-                                            <span class="badge badge-primary">Advance Revenue</span>
-                                        @elseif($transaction->type == 'credit_receipt')
-                                            <span class="badge badge-info">Credit Receipt</span>
-                                        @endif
-                                    </td>
-                                    <td class="table-item-content">{{$transaction->name}}</td>
-                                    <td class="table-item-content">
-                                        @if($transaction->status == 'unpaid')
-                                            <span class="badge badge-danger">Unpaid</span>
-                                        @elseif($transaction->status == 'partially_paid')
-                                            <span class="badge badge-warning">Partially Paid</span>
-                                        @elseif($transaction->status == 'paid')
-                                            <span class="badge badge-success">Paid</span>
-                                        @endif
-                                    </td>
-                                    <td class="table-item-content text-right">
-                                        @if($transaction->type == 'receipt')
-                                            {{ number_format($transaction->amount, 2) }}
-                                        @elseif($transaction->type == 'advance_receipt')
-                                            {{ number_format($transaction->advance_revenue_amount, 2) }}
-                                        @elseif($transaction->type == 'credit_receipt')
-                                            {{ number_format($transaction->credit_receipt_amount, 2) }}
+                                        <a class="btn btn-secondary btn-sm" href="{{route('receipts.receipt.mail',$transaction->receipt->id)}}">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </a>
                                         @endif
                                     </td>
                                 </tr>
                                 @endforeach
-
+                                
                             </tbody>
                         </table>
                     </div>
