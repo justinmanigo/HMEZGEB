@@ -27,7 +27,12 @@ class PayrollController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $payrolls = Payroll::where('accounting_system_id', $accounting_system_id)
             ->orderBy('created_at', 'desc')->get();
-        return view('hr.payroll.index', compact('payrolls'));
+        // get payrolls of this year for selecting period
+        $payrolls_this_year = Payroll::where('accounting_system_id', $accounting_system_id)
+            ->whereYear('created_at', date('Y'))
+            ->orderBy('created_at', 'desc')->get();
+
+        return view('hr.payroll.index', compact('payrolls', 'payrolls_this_year'));
     }
 
     /**

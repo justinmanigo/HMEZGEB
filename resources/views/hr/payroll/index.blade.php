@@ -180,18 +180,14 @@
                         <label for="month" class="col-12 col-md-4">Accounting Period</label>
                         <div class="col-12 col-lg-8">
                             <select class="form-control" id="period" name="period">
-                                <option value="1">Period 1</option>
-                                <option value="2">Period 2</option>
-                                <option value="3">Period 3</option>
-                                <option value="4">Period 4</option>
-                                <option value="5">Period 5</option>
-                                <option value="6">Period 6</option>
-                                <option value="7">Period 7</option>
-                                <option value="8">Period 8</option>
-                                <option value="9">Period 9</option>
-                                <option value="10">Period 10</option>
-                                <option value="11">Period 11</option>
-                                <option value="12">Period 12</option>
+                                @if($payrolls_this_year->count() > 0)){
+                                    {{-- display last record of $periods + 1--}}
+                                    <option value="{{$payrolls_this_year ->last()->period_id+1}}">Period {{$payrolls_this_year ->last()->period_id+1}}</option>
+                                    }
+                                @else{
+                                    <option value="1">Period 1</option>
+                                }
+                                @endif
                             </select>
                         </div>
                     </div>
