@@ -219,6 +219,8 @@
                                                 <p>Select a type of calendar and accounting year for this accounting system.</p>
                                             </div>
 
+                                            <p class="text-danger error-message error-message-main" style="display:none"></p>
+
                                             <!-- Select Calendar Type -->
                                             <div class="form-group row">
                                                 <label for="ci-calendar_type" class="col-lg-3">Calendar Type<span class="text-danger ml-1">*</span></label>
@@ -433,13 +435,15 @@
                     else {
                         $('#btn-submit-step2').removeAttr('disabled');
                         $('.error-message-main').html(data.error);
+                        $('.error-message-main').show();
                     }
                 });
 
                 request.fail(function(response){
                     console.log(response);
                     $('#btn-submit-step2').removeAttr('disabled');
-                    $('.error-message-main').html(data.error);
+                    $('.error-message-main').html(response.responseJSON.error);
+                    $('.error-message-main').show();
                 });
             }
             else {
@@ -483,13 +487,15 @@
                 else {
                     $('#btn-submit-step3').removeAttr('disabled');
                     $('.error-message-main').html(data.error);
+                    $('.error-message-main').show();
                 }
             });
 
             request.fail(function(response){
                 console.log(response);
                 $('#btn-submit-step3').removeAttr('disabled');
-                $('.error-message-main').html(data.error);
+                $('.error-message-main').html(response.responseJSON.error);
+                $('.error-message-main').show();
             });
         });
 

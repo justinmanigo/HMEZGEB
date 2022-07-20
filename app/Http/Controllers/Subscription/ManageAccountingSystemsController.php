@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Subscription;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Subscription\ManageAccountingSystems\SelectSubscriptionRequest;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -27,5 +29,11 @@ class ManageAccountingSystemsController extends Controller
             'total_accts' => $total_accts,
             'total_acct_limit' => $total_acct_limit,
         ]);
+    }
+
+    public function ajaxSelectSubscription(SelectSubscriptionRequest $request)
+    {
+        $this->request->session()->put('subscription_id', $request->subscription_id);
+        return response()->json(['success' => true]);
     }
 }

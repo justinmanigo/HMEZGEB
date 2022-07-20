@@ -148,7 +148,10 @@ Route::group([
             // HTML
             Route::get('/subscription', [SummaryController::class, 'index'])->name('subscription.index');
             Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
+            Route::post('/ajax/subscription/accounting-systems/select-subscription/', [ManageAccountingSystemsController::class, 'ajaxSelectSubscription']);
+
             Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
+
 
             // AJAX
             Route::group([
@@ -735,19 +738,22 @@ Route::post('/userlogin', function (Request $request){
 Route::group([
     'as' => 'register.'
 ], function(){ 
+
+    /**
+     * Step 0 - 2b (UI)
+     */
+    // Step 0
     Route::get('/create-account', [RegisterController::class, 'createAccountView'])->name('createAccountView');
+    // Step 1
     Route::get('/create-password', [RegisterController::class, 'createPasswordView'])->name('createPasswordView');
+    // Step 2a
     Route::get('/create-user', [RegisterController::class, 'createUserView'])->name('createUser');
+    // Step 2b
     Route::get('/verify-password', [RegisterController::class, 'verifyPasswordView'])->name('verifyPasswordView');
-    // Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
 
-    Route::get('/onboarding', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
-
-    Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
-    Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
-    Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
-    Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
-    
+    /**
+     * Step 0 - 2b (AJAX)
+     */
     // Step 0
     Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral');
     // Step 1
@@ -756,9 +762,26 @@ Route::group([
     Route::post('/validate-account', [RegisterController::class, 'validateExistingAccount'])->name('validateAccount');
     // Step 2b
     Route::post('/create-account', [RegisterController::class, 'createAccount'])->name('createAccount');
-    // Step 3
-    Route::post('/onboarding', [RegisterController::class, 'createAccountingSystem'])->name('createAccountingSystem');
+    
+    /**
+     * Step 3
+     */
+    Route::group([
+        'middleware' => 'auth',
+    ], function(){
+        // HTML
+        Route::get('/onboarding', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+        // AJAX
+        Route::post('/onboarding', [RegisterController::class, 'createAccountingSystem'])->name('createAccountingSystem');
+        Route::post('/onboarding/cancel', [RegisterController::class, 'cancelOnboarding'])->name('cancelOnboarding');
+    });
 
-    Route::post('/onboarding/cancel', [RegisterController::class, 'cancelOnboarding'])->name('cancelOnboarding');
-
+    /**
+     * Deprecated Routes
+     */ 
+    // Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+    // Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
+    // Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
+    // Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
+    // Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
 });

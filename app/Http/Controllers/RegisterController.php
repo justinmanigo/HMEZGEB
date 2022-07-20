@@ -210,6 +210,9 @@ class RegisterController extends Controller
 
             if($idx == -1)
             {
+                // Remove referral code to session
+                if(session('referralCode')) $this->request->session()->forget('referralCode');
+                if(session('subscription_id')) $this->request->session()->forget('subscription_id');
                 return response()->json(['error' => 'You no longer have available accounting system slots to process this request. Please upgrade your subscription first.'], 422);
             }
 
@@ -224,7 +227,9 @@ class RegisterController extends Controller
         $this->request->session()->put('accounting_system_user_id', $as['accounting_system_user']->id);
 
         // Remove referral code to session
-        $this->request->session()->forget('referralCode');
+        if(session('referralCode')) $this->request->session()->forget('referralCode');
+        if(session('subscription_id')) $this->request->session()->forget('subscription_id');
+       
 
         return response()->json(['success' => true], 200);
     }
@@ -333,26 +338,11 @@ class RegisterController extends Controller
     public function createCompanyInfoView()
     {
         if(!session('referralCode')){
-            $user = User::find(auth()->id());
-            $user->subscriptions;
-            $idx = -1;
-            for($i = 0; $i < count($user->subscriptions); $i++) {
-                $user->subscriptions[$i]->accountingSystems;
-                $num_accts[] = count($user->subscriptions[$i]->accountingSystems);
-                $acct_limit[] = $user->subscriptions[$i]->account_limit;
-                if($acct_limit[$i] - $num_accts[$i] > 0) {
-                    $idx = $i;
-                    break;
-                }
-            }
-
-            if($idx == -1)
+            if(!session('subscription_id')) {
                 abort(404);
+            }
         }
-        // return [
-        //     Auth::user(),
-        //     session('referralCode')
-        // ];
+
         return view('register.create-company-info');
     }
 

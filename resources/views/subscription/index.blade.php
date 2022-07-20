@@ -23,7 +23,7 @@
                         <td>Account Usage / Limit</td>
                         <td class="text-right">
                             <span class="badge 
-                                @if($subscription->accountingSystems->count() / $subscription->account_limit > 75)
+                                @if($subscription->account_limit - $subscription->accountingSystems->count() < 2)
                                     badge-danger
                                 @else
                                     badge-success
