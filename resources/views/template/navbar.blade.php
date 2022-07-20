@@ -13,6 +13,7 @@
     $unreadNotifications = Notification::where('accounting_system_id', session('accounting_system_id'))
         ->where('resolved', 0)->count();
     $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
+    $subscriptions_count = \App\Models\Subscription::where('user_id', auth()->id())->count();
 @endphp
  
  <!-- Sidebar -->
@@ -339,10 +340,12 @@
                                         Control Panel
                                     </a>
                                 @endif
-                                <a class="dropdown-item" href="/subscription/">
-                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Subscription Panel
-                                </a>
+                                @if($subscriptions_count > 0)
+                                    <a class="dropdown-item" href="/subscription/">
+                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Subscription Panel
+                                    </a>
+                                @endif
                                 <a class="dropdown-item" href="/account/">
                                     <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Account Settings
