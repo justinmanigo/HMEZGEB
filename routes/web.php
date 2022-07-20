@@ -143,6 +143,7 @@ Route::group([
          */
         Route::group([
             'as' => 'subscription.',
+            'middleware' => 'auth.subscription',
         ], function(){
             // HTML
             Route::get('/subscription', [DashboardController::class, 'index'])->name('subscription.index');
