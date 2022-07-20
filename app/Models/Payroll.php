@@ -23,7 +23,9 @@ class Payroll extends Model
         'total_overtime',
         'total_loan',
         'total_tax',
-        'total_pension',
+        'total_pension_7',
+        'total_pension_11',
+        'net_pay',
     ];
 
     public function period()

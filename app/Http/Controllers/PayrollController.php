@@ -11,6 +11,7 @@ use App\Models\Deduction;
 use App\Models\Overtime;
 use App\Models\Loan;
 use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
+use App\Models\Settings\PayrollRules\IncomeTaxPayrollRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -155,8 +156,47 @@ class PayrollController extends Controller
                 // Update payroll total loan
                 $payroll->total_loan = $total_loan;
                 $payroll->save();
-            }
-        
+                
+                // Pension 7% of basic salary
+                $pension = new PayrollItems();
+                $pension->payroll_id = $payroll->id;
+                $pension->source = 'pension_07';
+                $pension->status = 'pending';
+                $pension->amount = $employee->basic_salary * 0.07;
+                $pension->save();
+                $total_pension_7 = $employee->basic_salary * 0.07;
+                $payroll->total_pension_7 = $total_pension_7;
+                // Pension 11% of basic salary
+                $pension = new PayrollItems();
+                $pension->payroll_id = $payroll->id;
+                $pension->source = 'pension_11';
+                $pension->status = 'pending';
+                $pension->amount = $employee->basic_salary * 0.07;
+                $pension->save();
+                $total_pension_11 = $employee->basic_salary * 0.11;
+                $payroll->total_pension_11= $total_pension_11;
+                $payroll->save();
+           
+                // Tax
+                // add all total_salary , total_addition , total_overtime 
+                $taxable_income = $total_salary + $total_addition + $total_overtime;
+                Log::info('taxable_income: '.$taxable_income);
+
+                // get tax settings
+                $tax_settings = IncomeTaxPayrollRules::where('accounting_system_id',$accounting_system->id)->get();
+                foreach($tax_settings as $tax_setting){
+                    if($taxable_income>$tax_setting->income){
+                        $tax = ($taxable_income*($tax_setting->rate/100)) - $tax_setting->deduction;
+                        $payroll->total_tax = $tax;
+                        $payroll->save();
+                        break;
+                    }
+                }
+                // Net Pay
+                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax;
+                $payroll->net_pay = $net_pay;
+                $payroll->save();
+        }
             // TODO: Check if records are empty
             // if($salary->isEmpty() && $additions->isEmpty() && $deductions->isEmpty() && $overtimes->isEmpty())
             // return redirect()->route('payrolls.payrolls.index')->with('error','No records to create Payroll');

@@ -111,6 +111,7 @@
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
                     {{-- <th id="thead-actions">Actions</th>     --}}
+                    <th>Period</th>
                     <th>Employee Name</th>
                     <th>Status</th>
                     <th>Basic Salary</th>
@@ -119,7 +120,9 @@
                     <th>Overtime</th>
                     <th>Loan</th>
                     <th>Tax</th>
-                    <th>Pension</th>
+                    <th>Pension 7%</th>
+                    <th>Pension 11%</th>
+                    <th>Net Pay</th>
                 </thead>
                 <tbody>
                     @foreach($payrolls as $payroll)
@@ -136,6 +139,7 @@
                                 </span>
                             </button>
                         </td> --}}
+                        <td class="table-item-content">{{$payroll->period->period_number}}</td>
                         <td class="table-item-content">{{$payroll->employee->first_name}}</td>
                         <td class="table-item-content"><span class="badge badge-secondary">{{$payroll->status}}</span></td>
                         <td class="table-item-content">{{$payroll->total_salary}} Birr</td>
@@ -144,7 +148,10 @@
                         <td class="table-item-content">{{$payroll->total_overtime}} Birr</td>
                         <td class="table-item-content">{{$payroll->total_loan}} Birr</td>
                         <td class="table-item-content">{{$payroll->total_tax}} Birr</td>
-                        <td class="table-item-content">{{$payroll->total_pension}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_pension_7}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_pension_11}} Birr</td>
+                        <td class="table-item-content">{{$payroll->net_pay}} Birr</td>
+
                     </tr>
                     @endforeach
                 </tbody>

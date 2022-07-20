@@ -26,7 +26,9 @@ class CreatePayrollsTable extends Migration
             $table->float('total_overtime', 10, 2)->default(0);
             $table->float('total_loan', 10, 2)->default(0);
             $table->float('total_tax', 10, 2)->default(0);
-            $table->float('total_pension', 10, 2)->default(0);
+            $table->float('total_pension_7', 10, 2)->default(0);
+            $table->float('total_pension_11', 10, 2)->default(0);
+            $table->float('net_pay', 10, 2)->default(0);
             $table->foreign('period_id')->references('id')->on('accounting_periods');
             $table->foreign('employee_id')->references('id')->on('employees');
 
