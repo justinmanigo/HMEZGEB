@@ -66,7 +66,7 @@ use App\Http\Controllers\RegisterController;
 
 // Control Panel
 use App\Http\Controllers\ControlPanelController;
-use App\Http\Controllers\Subscription\DashboardController;
+use App\Http\Controllers\Subscription\SummaryController;
 // Subscription Panel
 use App\Http\Controllers\Subscription\ManageAccountingSystemsController;
 use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
@@ -146,7 +146,7 @@ Route::group([
             'middleware' => 'auth.subscription',
         ], function(){
             // HTML
-            Route::get('/subscription', [DashboardController::class, 'index'])->name('subscription.index');
+            Route::get('/subscription', [SummaryController::class, 'index'])->name('subscription.index');
             Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
             Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
 

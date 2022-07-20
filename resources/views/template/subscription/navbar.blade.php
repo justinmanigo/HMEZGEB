@@ -30,7 +30,7 @@
             <li class="nav-item">
                 <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Subscription Dashboard</span>
+                    <span>Subscription Summary</span>
                 </a>
             </li>
 
