@@ -144,10 +144,17 @@
             <div class="card-body">
                 @if(isset($_GET['success']))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ $_GET['success'] }}
+                    {{ $_GET['success'] }} 
                     {{-- {{ session()->get('success') }} --}}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @elseif(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 @endif
@@ -161,6 +168,7 @@
                                 <th>Vendor Name</th>
                                 <th>Remark</th>
                                 <th>Amount</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
 
@@ -193,6 +201,17 @@
                                         {{ number_format($transaction->bill_amount, 2) }}
                                     @elseif($transaction->type == 'purchase_order')
                                         {{ number_format($transaction->purchase_order_amount, 2) }}
+                                    @endif
+                                </td>
+                                <td>
+                                    {{-- TODO: Implement hover action bar --}}
+                                    {{-- mail --}}
+                                    @if($transaction->type == 'bill')
+                                        <a href="{{route('bills.bill.mail', $transaction->bills->id)}}" class="btn btn-secondary btn-sm">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </a>
                                     @endif
                                 </td>
                             </tr>

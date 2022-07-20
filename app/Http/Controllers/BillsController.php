@@ -157,9 +157,6 @@ class BillsController extends Controller
             'amount_received' => $request->total_amount_received,
         ]);
         
-        $emailAddress = 'test@example.com';
-        Mail::to($emailAddress)->send(new MailVendorBill);
-        
         return [
             'debit_accounts' => $debit_accounts,
             'debit_amount' => $debit_amount,
@@ -198,6 +195,16 @@ class BillsController extends Controller
             // image upload
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
+    }
+
+    // send Email
+    public function sendMailBill($id)
+    {
+        $bills = Bills::find($id);
+        $emailAddress = $bills->paymentReference->vendor->email;
+        Mail::to($emailAddress)->send(new MailVendorBill);
+        
+        return redirect()->route('bills.bill.index')->with('success', 'Email has been sent!');
     }
 
     /**

@@ -217,6 +217,9 @@ Route::group([
                 Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
                 Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
 
+                // Mail
+                Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
+
                 // AJAX
                 Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);
                 Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [VendorsController::class, 'ajaxGetPurchaseOrder']);
