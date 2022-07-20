@@ -182,13 +182,20 @@ class PayrollController extends Controller
                 // Tax
                 // add all total_salary , total_addition , total_overtime 
                 $taxable_income = $total_salary + $total_addition + $total_overtime;
-                Log::info('taxable_income: '.$taxable_income);
 
                 // get tax settings
                 $tax_settings = IncomeTaxPayrollRules::where('accounting_system_id',$accounting_system->id)->get();
+                $tax=0;
                 foreach($tax_settings as $tax_setting){
                     if($taxable_income>$tax_setting->income){
                         $tax = ($taxable_income*($tax_setting->rate/100)) - $tax_setting->deduction;
+                        $tax_item = new PayrollItems();
+                        $tax_item->payroll_id = $payroll->id;
+                        $tax_item->source = 'tax';
+                        $tax_item->status = 'pending';
+                        $tax_item->amount = $tax;
+                        $tax_item->save();
+
                         $payroll->total_tax = $tax;
                         $payroll->save();
                         break;
@@ -209,9 +216,13 @@ class PayrollController extends Controller
      * @param  \App\Models\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function show(Payroll $payroll)
+    public function show($id)
     {
         //
+        $payroll_items = PayrollItems::where('payroll_id',$id)->get();
+
+        // return view
+        return view('hr.payroll.show',compact('payroll_items'));
     }
 
     /**

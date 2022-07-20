@@ -126,7 +126,8 @@
                 </thead>
                 <tbody>
                     @foreach($payrolls as $payroll)
-                    <tr>
+
+                    <tr onclick="window.location='{{ route('payrolls.payrolls.show', $payroll->id) }}'">
                         {{-- <td>
                             <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="View">
                                 <span class="icon text-white-50">
