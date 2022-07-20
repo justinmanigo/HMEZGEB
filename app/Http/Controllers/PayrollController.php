@@ -63,13 +63,15 @@ class PayrollController extends Controller
             $accounting_system = AccountingSystem::where('id', $accounting_period->accounting_system_id)->first();
 
             $employees = Employee::where('accounting_system_id',$accounting_system->id)->where('type','employee')->get();
-           
+            if($employees->isEmpty())
+                return redirect()->route('payrolls.payrolls.index')->with('error','No records to create Payroll');
+
             foreach($employees as $employee){
                 $additions = Addition::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();
                 $deductions = Deduction::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();
                 $overtimes = Overtime::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();
                 $loans = Loan::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();            
-               
+                
                 // Create Payroll
                 $payroll = new Payroll;
                 $payroll->period_id = $accounting_period->id;
@@ -197,10 +199,6 @@ class PayrollController extends Controller
                 $payroll->net_pay = $net_pay;
                 $payroll->save();
         }
-            // TODO: Check if records are empty
-            // if($salary->isEmpty() && $additions->isEmpty() && $deductions->isEmpty() && $overtimes->isEmpty())
-            // return redirect()->route('payrolls.payrolls.index')->with('error','No records to create Payroll');
-
         }
         return redirect()->route('payrolls.payrolls.index')->with('success','Payroll Created Successfully');
     }
