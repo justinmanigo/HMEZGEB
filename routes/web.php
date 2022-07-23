@@ -369,7 +369,6 @@ Route::group([
                 'as' => 'payrolls.'
             ], function(){
                 // HTML
-                Route::get('/hr/payrolls', [PayrollController::class, 'index']);
                 Route::resource('/hr/payrolls', PayrollController::class);
             });
         
