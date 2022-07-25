@@ -458,7 +458,7 @@
 
                 $('#form-add-access-user').attr('action', `/ajax/subscription/user/add/access/${res.subscription_user.id}`);
 
-                printAccountingSystems(res.subscription_id);
+                printAccountingSystems(res.subscription_id, '#aau_accounting_systems');   
             });
 
             request.fail(function(res){
@@ -558,7 +558,7 @@
                         <tr>
                             <td>
                                 <div class="form-group form-check">
-                                    <input type="checkbox" class="form-check-input" id="eu_as_${as.id}" value="${as.id}" name="accounting_systems[]" ${checkIfUserHasASAccess(data, as.id)}>
+                                    <input type="checkbox" class="form-check-input" id="eu_as_${as.id}" value="${as.id}" name="accounting_systems[]" ${(data != null ? checkIfUserHasASAccess(data, as.id) : '')}>
                                 </div>
                             </td>
                             <td><label class="form-check-label" for="eu_as_${as.id}">${as.name}</label></td>
