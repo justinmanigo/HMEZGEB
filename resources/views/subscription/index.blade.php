@@ -16,20 +16,25 @@
     @foreach($subscriptions as $subscription)
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Subscription ID: {{ $subscription->id }}</h5>
+            <h5 class="card-title">
+                Subscription ID: {{ $subscription->id }}
+                @if(auth()->id() == $subscription->user_id)
+                    <span class='badge badge-success'>Owned</span>
+                @endif
+            </h5>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tr>
                         <td>Account Usage / Limit</td>
                         <td class="text-right">
                             <span class="badge 
-                                @if($subscription->account_limit - $subscription->accountingSystems->count() < 2)
+                                @if($subscription->account_limit - $subscription->count < 2)
                                     badge-danger
                                 @else
                                     badge-success
                                 @endif"
                             >
-                                {{ $subscription->accountingSystems->count() }}/{{ $subscription->account_limit }}
+                                {{ $subscription->count }}/{{ $subscription->account_limit }}
                             </span>
                         </td>
                     </tr>
