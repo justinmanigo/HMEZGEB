@@ -60,7 +60,12 @@
                             <tbody>
                                 @foreach($info['accounting_systems'] as $accounting_system)
                                     <tr>
-                                        <td>{{ $accounting_system->name }}</td>
+                                        <td>
+                                            {{ $accounting_system->name }}
+                                            @if($accounting_system->hasAccess)
+                                                <span class='badge badge-success'>🗸</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $accounting_system->accounting_year }}</td>
                                         <td>
                                             @if($accounting_system->calendar_type == 'gregorian')
@@ -70,12 +75,17 @@
                                             @endif
                                         </td>
                                         <td>
-        
+                                            @if(!$accounting_system->hasAccess)
+                                            
+                                            @else
+
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        <small>Checkmark indicates that you have access to that accounting system.</small>
                     </div>
                 </div>
             @endforeach
