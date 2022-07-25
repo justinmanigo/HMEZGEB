@@ -15,7 +15,7 @@
 <div class="card">
     <div class="card-body">
         <div class="btn-group mb-4" role="group">
-            <button type="button" class="btn btn-primary" 
+            {{-- <button type="button" class="btn btn-primary" 
                 @if($total_acct_limit - $total_accts <= 0) disabled 
                 @else data-toggle="modal" data-target="#modal-select-subscription"
                 @endif>
@@ -23,19 +23,19 @@
                     <i class="fas fa-file-import"></i>
                 </span>
                 <span class="text">Create Accounting System</span>
-            </button>
+            </button> --}}
         </div>  
-        <p>
+        {{-- <p>
             Accounts: {{ $total_accts }} / {{ $total_acct_limit }}
             @if($total_acct_limit - $total_accts <= 0) <span class="text-danger">(Account limit reached. Please upgrade your account.)</span> @endif
-        </p>
+        </p> --}}
 
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                @foreach($user->subscriptions as $subscription)
-                    <a class="nav-item nav-link @if($loop->first) active @endif" id="nav-{{ $subscription->id }}-tab"
-                        data-toggle="tab" href="#nav-{{ $subscription->id }}" role="tab" aria-controls="nav-{{ $subscription->id }}"
-                        aria-selected="true">Subscription # {{ $subscription->id }}</a>
+                @foreach($result as $info)
+                    <a class="nav-item nav-link @if($loop->first) active @endif" id="nav-{{ $info['subscription']->id }}-tab"
+                        data-toggle="tab" href="#nav-{{ $info['subscription']->id }}" role="tab" aria-controls="nav-{{ $info['subscription']->id }}"
+                        aria-selected="true">Subscription # {{ $info['subscription']->id }} @if(auth()->id() == $info['subscription']->user_id) <span class='badge badge-success'>Owned</span> @endif</a>
                 @endforeach
                 {{-- <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
                     aria-controls="nav-home" aria-selected="true">Home</a>
@@ -47,8 +47,8 @@
         </nav>
 
         <div class="tab-content" id="nav-tabContent">
-            @foreach($user->subscriptions as $subscription)
-                <div class="tab-pane fade show active" id="nav-{{ $subscription->id }}" role="tabpanel" aria-labelledby="nav-{{ $subscription->id }}-tab">
+            @foreach($result as $info)
+                <div class="tab-pane fade show @if($loop->first) active @endif" id="nav-{{ $info['subscription']->id }}" role="tabpanel" aria-labelledby="nav-{{ $info['subscription']->id }}-tab">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -58,23 +58,21 @@
                                 <th>Actions</th>
                             </thead>
                             <tbody>
-                                @foreach($user->subscriptions as $subscription)
-                                    @foreach($subscription->accountingSystems as $accounting_system)
-                                        <tr>
-                                            <td>{{ $accounting_system->name }}</td>
-                                            <td>{{ $accounting_system->accounting_year }}</td>
-                                            <td>
-                                                @if($accounting_system->calendar_type == 'gregorian')
-                                                    <span class="badge badge-primary">Gregorian</span>
-                                                @elseif($accounting_system->calendar_type == 'ethiopian')
-                                                    <span class="badge badge-success">Ethiopian</span>
-                                                @endif
-                                            </td>
-                                            <td>
-            
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                @foreach($info['accounting_systems'] as $accounting_system)
+                                    <tr>
+                                        <td>{{ $accounting_system->name }}</td>
+                                        <td>{{ $accounting_system->accounting_year }}</td>
+                                        <td>
+                                            @if($accounting_system->calendar_type == 'gregorian')
+                                                <span class="badge badge-primary">Gregorian</span>
+                                            @elseif($accounting_system->calendar_type == 'ethiopian')
+                                                <span class="badge badge-success">Ethiopian</span>
+                                            @endif
+                                        </td>
+                                        <td>
+        
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -110,9 +108,9 @@
                         <label for="ss_subscription_id" class="col-12 col-lg-6 col-form-label">Subscription<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <select class="form-control form-control-select select-subscription" id="ss_subscription_id" name="subscription_id" required>
-                                @foreach($user->subscriptions as $subscription)
+                                {{-- @foreach($user->subscriptions as $subscription)
                                     <option value="{{ $subscription->id }}">Subscription # {{ $subscription->id }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
                     </div>
