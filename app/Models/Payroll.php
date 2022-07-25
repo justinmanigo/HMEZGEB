@@ -12,7 +12,7 @@ class Payroll extends Model
     use HasFactory;
 
     protected $fillable = [
-        'period_id',
+        'payroll_period_id',
         'employee_id',
         'accounting_system_id',
         'status',
@@ -28,9 +28,9 @@ class Payroll extends Model
         'net_pay',
     ];
 
-    public function period()
+    public function payrollPeriod()
     {
-        return $this->belongsTo(AccountingPeriods::class, 'period_id');
+        return $this->belongsTo(PayrollPeriod::class, 'payroll_period_id');
     }
 
     public function employee()
