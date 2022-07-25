@@ -14,21 +14,11 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="btn-group mb-4" role="group">
-            {{-- <button type="button" class="btn btn-primary" 
-                @if($total_acct_limit - $total_accts <= 0) disabled 
-                @else data-toggle="modal" data-target="#modal-select-subscription"
-                @endif>
-                <span class="icon text-white-50">
-                    <i class="fas fa-file-import"></i>
-                </span>
-                <span class="text">Create Accounting System</span>
-            </button> --}}
-        </div>  
-        {{-- <p>
-            Accounts: {{ $total_accts }} / {{ $total_acct_limit }}
-            @if($total_acct_limit - $total_accts <= 0) <span class="text-danger">(Account limit reached. Please upgrade your account.)</span> @endif
-        </p> --}}
+        <div id="ss_error" class="card border-danger mb-2" style="display:none">
+            <div class="card-body">
+                <p class="text-danger m-0 p-0"></p>
+            </div>
+        </div>
 
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -49,6 +39,36 @@
         <div class="tab-content" id="nav-tabContent">
             @foreach($result as $info)
                 <div class="tab-pane fade show @if($loop->first) active @endif" id="nav-{{ $info['subscription']->id }}" role="tabpanel" aria-labelledby="nav-{{ $info['subscription']->id }}-tab">
+                    <div class="btn-group mt-4 mb-1" role="group">
+                        <form class="cas-select-subscription" 
+                            @if($info['subscription']->account_limit - count($info['accounting_systems']) > 0 && auth()->id() == $info['subscription']->user_id)
+                                action="{{ url('/ajax/subscription/accounting-systems/select-subscription/') }}"
+                                method="POST"
+                                data-id="{{ $info['subscription']->id }}"
+                            @endif
+                        >
+                            @csrf
+                            <button type="submit" class="btn btn-primary" 
+                                @if($info['subscription']->account_limit - count($info['accounting_systems']) <= 0 || 
+                                    $info['subscription']->user_id != auth()->id()) 
+                                    disabled 
+                                @endif>
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-file-import"></i>
+                                </span>
+                                <span class="text">Create Accounting System</span>
+                            </button>
+                        </form>
+                    </div>  
+                    <p>
+                        Accounts: {{ count($info['accounting_systems']) }} / {{ $info['subscription']->account_limit }}
+                        @if($info['subscription']->account_limit - count($info['accounting_systems']) <= 0)
+                            <span class="text-danger">(Account limit reached. Please upgrade your account.)</span> 
+                        @elseif($info['subscription']->user_id != auth()->id())
+                            <span class="text-warning">(Only the owner can add accounting systems to this subscription.)</span>
+                        @endif
+                    </p>
+
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -93,65 +113,22 @@
     </div>
 </div>
 
-{{-- P1: Select Subscription --}}
-<div class="modal fade" id="modal-select-subscription" tabindex="-1" role="dialog" aria-labelledby="modal-select-subscription-label" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-add-existing-user-label">Select Subscription to Proceed</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="modal-select-subscription-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <form id="form-select-subscription" method="post" action="{{ url('/ajax/subscription/accounting-systems/select-subscription/') }}">
-                    @csrf
-                    <div id="ss_error" class="card border-danger mb-2" style="display:none">
-                        <div class="card-body">
-                            <p class="text-danger m-0 p-0"></p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="ss_subscription_id" class="col-12 col-lg-6 col-form-label">Subscription<span class="text-danger ml-1">*</span></label>
-                        <div class="col-12 col-lg-6">
-                            <select class="form-control form-control-select select-subscription" id="ss_subscription_id" name="subscription_id" required>
-                                {{-- @foreach($user->subscriptions as $subscription)
-                                    <option value="{{ $subscription->id }}">Subscription # {{ $subscription->id }}</option>
-                                @endforeach --}}
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="ss_submit_btn" form="form-select-subscription">Proceed to Onboarding</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @push('scripts')
 <script>
-    $(document).on('submit', '#form-select-subscription', function(e){
+    $(document).on('submit', '.cas-select-subscription', function(e){
         e.preventDefault();
-        $('button[form="form-select-subscription"]').attr('disabled', true)
 
+        var subscription_id = $(this).data('id');
         form = $(this);
-
-        console.log(form.serialize());
-        console.log(form.attr('action'));
-        console.log(form.attr('method'));
+        console.log('submit select subscription new')
+        console.log(subscription_id);
 
         request = $.ajax({
             url: form.attr('action'),
             method: form.attr('method'),
-            data: form.serialize()
+            data: `${form.serialize()}&subscription_id=${subscription_id}`
         });
 
         request.done(function(res){
@@ -165,6 +142,6 @@
             $('#ss_error').show();
             $('#ss_error .text-danger').html(res.responseJSON.errors.subscription_id[0]);
         })
-    })
+    });
 </script>
 @endpush
