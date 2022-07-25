@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Overtime;
+use App\Actions\Hr\Payroll\CalculateHourRate;
+use App\Actions\Hr\Payroll\DayRate;
+use App\Actions\Hr\Payroll\NightRate;
+use App\Actions\Hr\Payroll\HolidayWeekRate;
 use Illuminate\Http\Request;
 use App\Http\Requests\HumanResource\StoreOvertimeRequest;
 use Illuminate\Support\Facades\Log;
@@ -77,8 +81,8 @@ class OvertimeController extends Controller
             {
                 $overtime->is_weekend_holiday = 'yes';
                 $holiday_hours = ($from->diffInMinutes($to)) / 60;
-                $computeTotal = $overtime->calculateHourRate($request->employee[$i]->value)*$holiday_hours;
-                $overtime->price = $overtime->holidayWeekendRate($computeTotal) ;
+                $computeTotal = CalculateHourRate::run($request->employee[$i]->value,$accounting_system_id)*$holiday_hours;
+                $overtime->price = HolidayWeekendRate::run($computeTotal,$accounting_system_id);
             }
             else
             {
@@ -96,7 +100,7 @@ class OvertimeController extends Controller
                     $to = Carbon::parse('17:59');
                     // convert to hours
                     $day_hours = ($from->diffInMinutes($to)) / 60;
-                    $overtime->price =  $overtime->calculateHourRate($request->employee[$i]->value)*($overtime->nightRate($night_hours)+$overtime->dayRate($day_hours));
+                    $overtime->price =  CalculateHourRate::run($request->employee[$i]->value, $accounting_system_id)*(NightRate::run($night_hours,$accounting_system_id)+DayRate::run($day_hours,$accounting_system_id));
                 }
 
                 else
@@ -104,11 +108,11 @@ class OvertimeController extends Controller
                     if($from_24_hour >= '18:00' && $to_24_hour < '6:00')
                     {
                         $night_hours = ($from->diffInMinutes($to)) / 60;
-                        $overtime->price =  $overtime->calculateHourRate($request->employee[$i]->value)*($overtime->nightRate($night_hours));
+                        $overtime->price =  CalculateHourRate::run($request->employee[$i]->value,$accounting_system_id)*(NightRate::run($night_hours,$accounting_system_id));
                     }
                     else{
                         $day_hours = ($from->diffInMinutes($to)) / 60;
-                        $overtime->price = $overtime->calculateHourRate($request->employee[$i]->value)*($overtime->dayRate($day_hours));
+                        $overtime->price = CalculateHourRate::run($request->employee[$i]->value,$accounting_system_id)*(DayRate::run($day_hours,$accounting_system_id));
                     }
                 }
             }
