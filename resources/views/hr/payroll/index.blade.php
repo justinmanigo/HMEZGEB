@@ -140,7 +140,7 @@
                                 </span>
                             </button>
                         </td> --}}
-                        <td class="table-item-content">{{$payroll->period->period_number}}</td>
+                        <td class="table-item-content">{{$payroll->payrollPeriod->period->period_number}}</td>
                         <td class="table-item-content">{{$payroll->employee->first_name}}</td>
                         <td class="table-item-content"><span class="badge badge-secondary">{{$payroll->status}}</span></td>
                         <td class="table-item-content">{{$payroll->total_salary}} Birr</td>
@@ -188,14 +188,9 @@
                         <label for="month" class="col-12 col-md-4">Accounting Period</label>
                         <div class="col-12 col-lg-8">
                             <select class="form-control" id="period" name="period">
-                                @if($payrolls_this_year->count() > 0)){
-                                    {{-- display last record of $periods + 1--}}
-                                    <option value="{{$payrolls_this_year ->last()->period_id+1}}">Period {{$payrolls_this_year ->last()->period_id+1}}</option>
-                                    }
-                                @else{
-                                    <option value="1">Period 1</option>
-                                }
-                                @endif
+                                @foreach($accounting_periods_with_no_payroll as $period)
+                                    <option value="{{$period->id}}">{{$period->period_number}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

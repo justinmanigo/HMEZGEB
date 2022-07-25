@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payroll;
+use App\Models\PayrollPeriod;
 use App\Models\PayrollItems;
 use App\Models\Employee;
 use App\Models\AccountingSystem;
@@ -28,12 +29,13 @@ class PayrollController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $payrolls = Payroll::where('accounting_system_id', $accounting_system_id)
             ->orderBy('created_at', 'desc')->get();
-        // get payrolls of this year for selecting period
-        $payrolls_this_year = Payroll::where('accounting_system_id', $accounting_system_id)
-            ->whereYear('created_at', date('Y'))
-            ->orderBy('created_at', 'desc')->get();
-
-        return view('hr.payroll.index', compact('payrolls', 'payrolls_this_year'));
+        
+        // get accounting_periods with no payrolls for select menu
+        $accounting_periods_with_no_payroll = AccountingPeriods::where('accounting_system_id', $accounting_system_id)
+            ->whereDoesntHave('payrollPeriod')
+            ->get();
+        
+        return view('hr.payroll.index', compact('payrolls', 'accounting_periods_with_no_payroll'));
     }
 
     /**
@@ -57,24 +59,40 @@ class PayrollController extends Controller
     {
         //Get Accounting Period
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $accounting_period = AccountingPeriods::where('period_number',$request->period)->where('accounting_system_id', $accounting_system_id)->first(); 
+        $accounting_period = AccountingPeriods::where('id',$request->period)->first(); 
         if($accounting_period){
             // get id from Accounting system related to the period
             $accounting_system = AccountingSystem::where('id', $accounting_period->accounting_system_id)->first();
-
-            $employees = Employee::where('accounting_system_id',$accounting_system->id)->where('type','employee')->get();
+            
+            //Get salary
+            $employees = Employee::where('accounting_system_id',$accounting_system->id)->where('type','employee')
+            ->get();
+                       
             if($employees->isEmpty())
                 return redirect()->route('payrolls.payrolls.index')->with('error','No records to create Payroll');
 
             foreach($employees as $employee){
-                $additions = Addition::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();
-                $deductions = Deduction::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();
-                $overtimes = Overtime::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();
-                $loans = Loan::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)->get();            
+                $additions = Addition::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
+                ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
+                ->get();
+                $deductions = Deduction::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
+                ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
+                ->get();
+                $overtimes = Overtime::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
+                ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
+                ->get();
+                $loans = Loan::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
+                ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
+                ->get();            
                 
+                // Create Payroll Period
+                $payroll_period = new PayrollPeriod;
+                $payroll_period->period_id = $accounting_period->id;
+                $payroll_period->accounting_system_id = $accounting_system_id;
+                $payroll_period->save();
                 // Create Payroll
                 $payroll = new Payroll;
-                $payroll->period_id = $accounting_period->id;
+                $payroll->payroll_period_id = $payroll_period->id;
                 $payroll->status = 'pending';
                 $payroll->employee_id = $employee->id;
                 $payroll->accounting_system_id = $accounting_system_id;
