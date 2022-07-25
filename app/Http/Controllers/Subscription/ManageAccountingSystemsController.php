@@ -42,6 +42,8 @@ class ManageAccountingSystemsController extends Controller
                 ->get();
         }
 
+        // return $result;
+
         return view('subscription.accounting_system.index', [
             'result' => $result,
         ]);
