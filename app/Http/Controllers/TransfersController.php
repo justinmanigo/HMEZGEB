@@ -11,6 +11,8 @@ use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\DecodeTagifyField;
 use Illuminate\Support\Facades\Log;
+use App\Mail\MailBankTransfer;
+use Illuminate\Support\Facades\Mail;
 
 class TransfersController extends Controller
 {
@@ -91,6 +93,10 @@ class TransfersController extends Controller
             'description' => $request->reason,
             'amount' => $request->amount,
         ]);
+
+        // Mail
+        $emailAddress = 'test@example.com';
+        Mail::to($emailAddress)->send(new MailBankTransfer);
 
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }

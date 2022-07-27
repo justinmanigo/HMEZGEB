@@ -6,6 +6,8 @@ use App\Models\BankAccounts;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Mail\MailBankAccount;
+use Illuminate\Support\Facades\Mail;
 
 class BankAccountsController extends Controller
 {
@@ -64,6 +66,10 @@ class BankAccountsController extends Controller
         $account->bank_account_number = $request->bank_account_number;
         $account->bank_account_type = $request->bank_account_type;
         $account->save();
+
+        // Mail
+        $emailAddress = 'test@example.com';
+        Mail::to($emailAddress)->send(new MailBankAccount);
 
         return redirect()->back()->with('success', 'Bank Account Created Successfully');
     }

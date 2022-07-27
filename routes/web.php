@@ -205,7 +205,10 @@ Route::group([
                 Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
                 Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
                 Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
-        
+                
+                // Mail
+                Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
+
                 /** AJAX Calls */
                 Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
                 Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);
@@ -261,6 +264,9 @@ Route::group([
                 Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
                 Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
                 Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
+
+                // Mail
+                Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
 
                 // AJAX
                 Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);

@@ -17,15 +17,15 @@ request.done(function(response, textStatus, jqXHR){
 
     // initialize tagify
     coa_select_category_tagify = new Tagify(coa_select_category_elm, {
-        tagTextProp: 'category', // very important since a custom template is used with this property as text
+        tagTextProp: 'value', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode : "select",
-        skipInvalid: false, // do not remporarily add invalid tags
+        skipInvalid: true, // do not remporarily add invalid tags
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: 'coa-list',
-            searchKeys: ['category', 'type', 'normal_balance']  // very important to set by which keys to search for suggesttions when typing
+            classname: 'customer-list',
+            searchKeys: ['value']  // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
             tag: coaCategoryTagTemplate,
@@ -53,7 +53,7 @@ function onCOASelectCategorySelectSuggestion(e){
     console.log(e.detail.data);
 
     // If Cash, enable checkbox "Is this a Bank Account?"
-    if(e.detail.data.value == 1) 
+    if(e.detail.data.value == 'Cash') 
         $("#coa_is_bank").removeAttr("disabled");
     else {
         if($('#coa_is_bank').is(":checked"))
