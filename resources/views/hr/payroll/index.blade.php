@@ -50,7 +50,7 @@
 
 @section('content')
 
-<div class="card col-12 col-lg-6 mb-3">
+{{-- <div class="card col-12 col-lg-6 mb-3">
     <div class="card-body">
         <p>Filter</p>
         <hr>
@@ -82,64 +82,134 @@
             </div>
         </form>
     </div>
-</div>
+</div> --}}
 
 {{-- Button Group Navigation --}}
-{{-- <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-    <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-employee">
+<div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-select-period">
         <span class="icon text-white-50">
             <i class="fas fa-pen"></i>
         </span>
         <span class="text">New</span>
     </button>   
-</div> --}}
+</div>
 
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
+        {{-- alert messge --}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @elseif (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
+                    {{-- <th id="thead-actions">Actions</th>     --}}
+                    <th>Period</th>
                     <th>Employee Name</th>
                     <th>Status</th>
                     <th>Basic Salary</th>
                     <th>Additions</th>
                     <th>Deductions</th>
-                    <th>Grand Total</th>
+                    <th>Overtime</th>
+                    <th>Loan</th>
+                    <th>Tax</th>
+                    <th>Pension 7%</th>
+                    <th>Pension 11%</th>
+                    <th>Net Pay</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
+                    @foreach($payrolls as $payroll)
+
+                    <tr onclick="window.location='{{ route('payrolls.payrolls.show', $payroll->id) }}'">
+                        {{-- <td>
                             <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="View">
                                 <span class="icon text-white-50">
                                     <i class='fa fa-eye text-white'></i>
                                 </span>
-                            </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-payment">
+                            </button> --}}
+                            {{-- <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-payment">
                                 <span class="icon text-white-50">
                                     <i class='fa fa-money text-white'></i>
                                 </span>
                             </button>
-                        </td>
-                        <td class="table-item-content">Graeme Xyber Pastoril</td>
-                        <td class="table-item-content"><span class="badge badge-secondary">Unpaid</span></td>
-                        <td class="table-item-content">Birr 10,000</td>
-                        <td class="table-item-content">Birr 0.00</td>
-                        <td class="table-item-content">Birr 0.00</td>
-                        <td class="table-item-content">Birr 10,000.00</td>
+                        </td> --}}
+                        <td class="table-item-content">{{$payroll->payrollPeriod->period->period_number}}</td>
+                        <td class="table-item-content">{{$payroll->employee->first_name}}</td>
+                        <td class="table-item-content"><span class="badge badge-secondary">{{$payroll->status}}</span></td>
+                        <td class="table-item-content">{{$payroll->total_salary}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_addition}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_deduction}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_overtime}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_loan}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_tax}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_pension_7}} Birr</td>
+                        <td class="table-item-content">{{$payroll->total_pension_11}} Birr</td>
+                        <td class="table-item-content">{{$payroll->net_pay}} Birr</td>
+
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+{{-- Select Accounting Period Modal --}}
+<div class="modal fade" id="modal-select-period" tabindex="-1" role="dialog" aria-labelledby="modal-select-period" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-select-period">Select Accounting Period</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('payrolls.payrolls.store')}}" method="post">
+                    @csrf
+                    {{-- <div class="form-group row">
+                        <label for="employee" class="col-12 col-md-3">Employee</label>
+                        <div class="col-12 col-lg-6">
+                            <select class="form-control select2" id="employee" name="employee">
+                                <option>Graeme Xyber Pastoril</option>
+                                <option>Justin Manigo</option>
+                                <option>Lester Fong</option>
+                            </select>
+                        </div>
+                    </div> --}}
+                    <div class="form-group row  mb-3">
+                        <label for="month" class="col-12 col-md-4">Accounting Period</label>
+                        <div class="col-12 col-lg-8">
+                            <select class="form-control" id="period" name="period">
+                                @foreach($accounting_periods_with_no_payroll as $period)
+                                    <option value="{{$period->id}}">{{$period->period_number}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-end">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary mx-2">Generate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {{-- TODO Later when more info arrives: --}}
 {{-- Salary Details Modal (Eye Icon)--}}
 
 {{-- Payment Modal (Money Icon)--}}
-<div class="modal fade" id="modal-payment" tabindex="-1" role="dialog" aria-labelledby="modal-payment-label" aria-hidden="true">
+{{-- <div class="modal fade" id="modal-payment" tabindex="-1" role="dialog" aria-labelledby="modal-payment-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -206,7 +276,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 
 <script>

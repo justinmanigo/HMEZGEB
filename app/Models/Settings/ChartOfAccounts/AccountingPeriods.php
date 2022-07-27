@@ -4,6 +4,7 @@ namespace App\Models\Settings\ChartOfAccounts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PayrollPeriod;
 
 class AccountingPeriods extends Model
 {
@@ -26,5 +27,10 @@ class AccountingPeriods extends Model
     public function journalPostings()
     {
         return $this->hasMany(JournalPostings::class, 'chart_of_accounts_id','id');
+    }
+    
+    public function payrollPeriod()
+    {
+        return $this->hasOne(PayrollPeriod::class, 'period_id','id');
     }
 }

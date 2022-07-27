@@ -251,7 +251,7 @@
 </div>
 
 {{-- Delete Employee Modal --}}
-<div class="modal fade" id="modal-employee-delete" tabindex="-1" role="dialog" aria-labelledby="Modal Delete Tax">
+<div class="modal fade" id="modal-employee-delete" tabindex="-1" role="dialog" aria-labelledby="Modal Delete Employee">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -269,7 +269,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger" form="form-employee-delete">Delete Tax</button>
+                <button type="submit" class="btn btn-danger" form="form-employee-delete">Delete Employee</button>
             </div>
         </div>
     </div>

@@ -21,6 +21,7 @@ class CreateOvertimesTable extends Migration
             $table->enum('is_weekend_holiday', ['yes', 'no'])->nullable();
             $table->time('from');
             $table->time('to');
+            $table->float('price', 10, 2)->default(0);
             $table->string('description')->nullable();
             $table->timestamps();
         });
