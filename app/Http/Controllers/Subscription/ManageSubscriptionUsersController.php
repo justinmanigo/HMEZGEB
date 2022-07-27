@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Subscription;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\AddAccountingSystemAccessRequest;
 use App\Http\Requests\Subscription\AddExistingUserRequest;
+use App\Models\AccountingSystem;
 use App\Models\AccountingSystemUser;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
@@ -17,18 +18,21 @@ class ManageSubscriptionUsersController extends Controller
 {
     public function index()
     {
-        // Get subscription
-        $user = User::find(auth()->id());
-        $user->subscriptions;
-        for($i = 0; $i < count($user->subscriptions); $i++) {
-            $user->subscriptions[$i]->subscriptionUsers;
-            for($j = 0; $j < count($user->subscriptions[$i]->subscriptionUsers); $j++) {
-                $user->subscriptions[$i]->subscriptionUsers[$j]->user;
-            }
-        }
+        $subscription_access = SubscriptionUser::where('user_id', auth()->id())->get();
+
+        $result = [];
+
+        for($i = 0; $i < count($subscription_access); $i++)
+        {
+            $result[$i]['subscription'] = Subscription::find($subscription_access[$i]->subscription_id);
+
+            $result[$i]['users'] = SubscriptionUser::where('subscription_id', $subscription_access[$i]->subscription_id)
+                ->leftJoin('users', 'users.id', '=', 'subscription_users.user_id')
+                ->select('users.firstName', 'users.lastName', 'users.email', 'users.id as user_id', 'subscription_users.id as id', 'subscription_users.role')
+                ->get();
 
         return view('subscription.users.index', [
-            'user' => $user,
+            'result' => $result,
         ]);
     }
 

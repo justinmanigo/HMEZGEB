@@ -39,10 +39,10 @@
 
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                @foreach($user->subscriptions as $subscription)
-                    <a class="sub-tab nav-item nav-link @if($loop->first) active @endif" data-id="{{ $subscription->id }}" id="nav-{{ $subscription->id }}-tab"
-                        data-toggle="tab" href="#nav-{{ $subscription->id }}" role="tab" aria-controls="nav-{{ $subscription->id }}"
-                        aria-selected="true">Subscription # {{ $subscription->id }}</a>
+                @foreach($result as $output)
+                    <a class="sub-tab nav-item nav-link @if($loop->first) active @endif" data-id="{{ $output['subscription']->id }}" id="nav-{{ $output['subscription']->id }}-tab"
+                        data-toggle="tab" href="#nav-{{ $output['subscription']->id }}" role="tab" aria-controls="nav-{{ $output['subscription']->id }}"
+                        aria-selected="true">Subscription # {{ $output['subscription']->id }}</a>
                 @endforeach
                 {{-- <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
                     aria-controls="nav-home" aria-selected="true">Home</a>
@@ -54,8 +54,8 @@
         </nav>
 
         <div class="tab-content" id="nav-tabContent">
-            @foreach($user->subscriptions as $subscription)
-                <div class="tab-pane fade show active" id="nav-{{ $subscription->id }}" role="tabpanel" aria-labelledby="nav-{{ $subscription->id }}-tab">
+            @foreach($result as $output)
+                <div class="tab-pane fade show @if($loop->first) active @endif" id="nav-{{ $output['subscription']->id }}" role="tabpanel" aria-labelledby="nav-{{ $output['subscription']->id }}-tab">
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -65,7 +65,7 @@
                                 <th>Actions</th>
                             </thead>
                             <tbody>
-                                @foreach($subscription->subscriptionUsers as $subscriptionUser)
+                                @foreach($output['users'] as $subscriptionUser)
                                     <tr>
                                         <td>{{ $subscriptionUser->user->firstName . ' ' . $subscriptionUser->user->lastName }}</td>
                                         <td>{{ $subscriptionUser->user->email }}</td>
@@ -126,8 +126,8 @@
                         <label for="anu_subscription_id" class="col-12 col-lg-6 col-form-label">Subscription<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <select class="form-control form-control-select select-subscription" id="anu_subscription_id" name="subscription_id" required>
-                                @foreach($user->subscriptions as $subscription)
-                                    <option value="{{ $subscription->id }}">Subscription # {{ $subscription->id }}</option>
+                                @foreach($result as $output)
+                                    <option value="{{ $output['subscription']->id }}">Subscription # {{ $output['subscription']->id }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -191,8 +191,8 @@
                         <label for="aeu_subscription_id" class="col-12 col-lg-6 col-form-label">Subscription<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <select class="form-control form-control-select select-subscription" id="aeu_subscription_id" name="subscription_id" required>
-                                @foreach($user->subscriptions as $subscription)
-                                    <option value="{{ $subscription->id }}">Subscription # {{ $subscription->id }}</option>
+                                @foreach($result as $output)
+                                    <option value="{{ $output['subscription']->id }}">Subscription # {{ $output['subscription']->id }}</option>
                                 @endforeach
                             </select>
                         </div>
