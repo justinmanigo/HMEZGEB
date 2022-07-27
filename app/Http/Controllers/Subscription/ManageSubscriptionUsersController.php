@@ -30,7 +30,7 @@ class ManageSubscriptionUsersController extends Controller
                 ->leftJoin('users', 'users.id', '=', 'subscription_users.user_id')
                 ->select('users.firstName', 'users.lastName', 'users.email', 'users.id as user_id', 'subscription_users.id as id', 'subscription_users.role')
                 ->get();
-
+        }
         return view('subscription.users.index', [
             'result' => $result,
         ]);
