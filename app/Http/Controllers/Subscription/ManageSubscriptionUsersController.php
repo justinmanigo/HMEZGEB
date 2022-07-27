@@ -18,7 +18,10 @@ class ManageSubscriptionUsersController extends Controller
 {
     public function index()
     {
-        $subscription_access = SubscriptionUser::where('user_id', auth()->id())->get();
+        $subscription_access = SubscriptionUser::where('user_id', auth()->id())
+            ->where('subscription_users.role', '!=', 'member')
+            ->where('subscription_users.role', '!=', 'moderator')
+            ->get();
 
         $result = [];
 
