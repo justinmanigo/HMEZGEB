@@ -10,6 +10,9 @@ use App\Models\User;
 use App\Models\Settings\Users\Module;
 use App\Models\Settings\Users\SubModule;
 use App\Models\Settings\Users\Permission;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailSettingUser;
+
 
 class ManageUsersController extends Controller
 {
@@ -72,5 +75,15 @@ class ManageUsersController extends Controller
         }
 
         return redirect()->back()->with('success', 'Successfully updated permissions.');
+    }
+
+    // Mail
+    public function sendMailNewSuperAdmin(AccountingSystemUser $accountingSystemUser)
+    {
+        // Mail
+        $emailAddress = $accountingSystemUser->user->email;
+        Mail::to($emailAddress)->send(new MailSettingUser);
+
+        return redirect()->back()->with('success', 'Successfully sent mail.');
     }
 }
