@@ -17,7 +17,10 @@ class ManageAccountingSystemsController extends Controller
     public function index()
     {
         // Get accounting systems where the current user has access with
-        $subscription_access = SubscriptionUser::where('user_id', auth()->id())->get();
+        $subscription_access = SubscriptionUser::where('user_id', auth()->id())
+            ->where('subscription_users.role', '!=', 'member')
+            ->where('subscription_users.role', '!=', 'moderator')
+            ->get();
         // return $subscription_access;
 
         $result = [];

@@ -22,6 +22,8 @@ class SummaryController extends Controller
             ->leftJoinSub($subQuery, 't', function($join){
                 $join->on('t.id', '=', 'subscriptions.id');
             })
+            ->where('subscription_users.role', '!=', 'member')
+            ->where('subscription_users.role', '!=', 'moderator')
             ->get();
 
         // return $subscriptions;
