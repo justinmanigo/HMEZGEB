@@ -16,7 +16,6 @@
     $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
         ->where('subscription_users.role', '!=', 'member')
         ->where('subscription_users.role', '!=', 'moderator')
-        ->where('subscription_users.is_accepted', true)
         ->count();
 @endphp
  
