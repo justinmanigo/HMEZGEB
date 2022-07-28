@@ -13,6 +13,7 @@ class SubscriptionUser extends Model
         'subscription_id',
         'user_id',
         'role',
+        'is_accepted',
     ];
 
     public function subscription()
