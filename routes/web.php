@@ -601,7 +601,10 @@ Route::group([
                 Route::post('/settings/withholding', [WithholdingController::class, 'store'])->name('store');
                 Route::put('/settings/withholding/{withholding}', [WithholdingController::class, 'update'])->name('update');
                 Route::delete('/settings/withholding/{withholding}', [WithholdingController::class, 'destroy'])->name('destroy');
-
+                // Import Export
+                Route::post('/settings/withholding/import', [WithholdingController::class, 'import'])->name('import');
+                Route::post('/settings/withholding/export', [WithholdingController::class, 'export'])->name('export');
+                
                 // AJAX
                 Route::get('/ajax/settings/withholding/get/{withholding}', [WithholdingController::class, 'ajaxGetWithholding']);
             });

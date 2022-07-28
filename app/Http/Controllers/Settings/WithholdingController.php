@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Settings\Withholding\Withholding;
+use App\Imports\ImportSettingWithholding;
+use App\Exports\ExportSettingWithholding;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WithholdingController extends Controller
 {
@@ -116,6 +119,31 @@ class WithholdingController extends Controller
     }
 
     /*===========================*/
+
+    // Import
+
+    public function import(Request $request)
+    {
+        try {
+            Excel::import(new ImportSettingWithholding, $request->file('file'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: Cannot import withholding records. Make sure you have the correct format.');
+        }        
+        return redirect()->back()->with('success', 'Successfully imported withholding records.');
+    }
+
+    // Export
+    public function export(Request $request)
+    {
+       if($request->type=="excel")
+            return Excel::download(new ExportSettingWithholding, 'settingwithholding.xlsx');
+        else
+        $withholdings = Withholding::all();
+        $pdf = \PDF::loadView('settings.withholding.pdf', compact('withholdings'));
+
+        return $pdf->download('settingWithholding_'.date('Y_m_d').'.pdf');
+
+    }
 
     /**
      * Returns the specified resource queried from routes.
