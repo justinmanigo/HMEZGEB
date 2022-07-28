@@ -13,7 +13,10 @@
     $unreadNotifications = Notification::where('accounting_system_id', session('accounting_system_id'))
         ->where('resolved', 0)->count();
     $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
-    $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())->count();
+    $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
+        ->where('subscription_users.role', '!=', 'member')
+        ->where('subscription_users.role', '!=', 'moderator')
+        ->count();
 @endphp
  
  <!-- Sidebar -->

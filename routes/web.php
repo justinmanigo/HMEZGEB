@@ -152,6 +152,10 @@ Route::group([
 
             Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
 
+            // Invitation Accept/Reject
+            Route::patch('/ajax/subscription/accept-invitation', [SummaryController::class, 'ajaxAcceptInvitation']);
+            Route::delete('/ajax/subscription/reject-invitation', [SummaryController::class, 'ajaxRejectInvitation']);
+
 
             // AJAX
             Route::group([
@@ -164,8 +168,9 @@ Route::group([
                 Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
 
                 // Part 1: When adding new user.
-                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
-                Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
+                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']); 
+                // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
+                // Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
 
                 // Part 2: Adding access after adding new user.
                 Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);

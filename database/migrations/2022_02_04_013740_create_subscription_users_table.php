@@ -23,6 +23,7 @@ class CreateSubscriptionUsersTable extends Migration
                 'moderator',    // manage users
                 'member',       // profile
             ]);
+            $table->boolean('is_accepted')->default(true);
             $table->timestamps();
         });
     }
