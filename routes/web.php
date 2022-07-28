@@ -634,7 +634,9 @@ Route::group([
                 // HTTP
                 Route::get('/settings/coa', [ChartOfAccountsController::class, 'index'])->name('index');
                 Route::post('/settings/coa', [ChartOfAccountsController::class, 'store'])->name('store');
-                
+                // Import Export
+                Route::post('/settings/coa/import', [ChartOfAccountsController::class, 'import'])->name('import');
+                Route::post('/settings/coa/export', [ChartOfAccountsController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/ajax/settings/coa/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
                 Route::get('/ajax/settings/coa_categories/search', [ChartOfAccountsController::class, 'ajaxSearchCategories']);

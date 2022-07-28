@@ -11,6 +11,9 @@ use App\Models\Settings\ChartOfAccounts\ChartOfAccountCategory;
 use App\Models\Settings\ChartOfAccounts\PeriodOfAccounts;
 use App\Models\Settings\ChartOfAccounts\JournalEntries;
 use App\Models\Settings\ChartOfAccounts\JournalPostings;
+use App\Imports\ImportSettingChartOfAccount;
+use App\Exports\ExportSettingChartOfAccount;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\BankAccounts;
 use Illuminate\Support\Facades\DB;
 
@@ -82,6 +85,7 @@ class ChartOfAccountsController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $coa_category = json_decode($request->coa_category, true);
         
+        return $request->coa_category;
         // To get the category_id of coa, use
         // $coa[0]['value'];
         // other related info such as type, category name,
@@ -99,6 +103,7 @@ class ChartOfAccountsController extends Controller
         $coa->account_name = $request->account_name;
         $coa->current_balance = 0.00;
         $coa->save();
+        
         // If COA is Cash (id:1) and checkbox is checked.
         if(isset($request->coa_is_bank) && $coa_category[0]['value'] == 1)
         {
@@ -224,8 +229,35 @@ class ChartOfAccountsController extends Controller
     {
         //
     }
+    
+        // Import Export
+    /**====================== */
+    public function import(Request $request)
+    {
+        try {
+            Excel::import(new ImportSettingChartOfAccount, $request->file('file'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: Cannot import chartOfAccount records. Make sure you have the correct format.');
+        }        
+        return redirect()->back()->with('success', 'Successfully imported Chart Of Accounts record.');
+    }
+
+    // Export
+    public function export(Request $request)
+    {
+       if($request->type=="excel")
+            return Excel::download(new ExportSettingChartOfAccount, 'settingChartOfAccount_'.date('Y_m_d').'.xlsx');
+        else
+        $coas = ChartOfAccounts::all();
+        $pdf = \PDF::loadView('settings.chart_of_account.pdf', compact('coas'));
+
+        return $pdf->download('settingChartOfAccount_'.date('Y_m_d').'.pdf');
+
+    }
 
     /**====================== */
+
+
 
     function ajaxSearchCOA($query = null)
     {
