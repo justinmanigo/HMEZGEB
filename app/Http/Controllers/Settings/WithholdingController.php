@@ -136,7 +136,7 @@ class WithholdingController extends Controller
     public function export(Request $request)
     {
        if($request->type=="excel")
-            return Excel::download(new ExportSettingWithholding, 'settingwithholding.xlsx');
+            return Excel::download(new ExportSettingWithholding, 'settingWithholding_'.date('Y_m_d').'.xlsx');
         else
         $withholdings = Withholding::all();
         $pdf = \PDF::loadView('settings.withholding.pdf', compact('withholdings'));

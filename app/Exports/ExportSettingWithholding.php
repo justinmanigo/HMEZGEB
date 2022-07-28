@@ -13,7 +13,7 @@ class ExportSettingWithholding implements FromCollection
     public function collection()
     {
         $withholdings = Withholding::all();
-        $withholdings->prepend(['Accounting System ID', 'ID', 'Name', 'Percentage']);
+        $withholdings->prepend(['accounting_system_id', 'id', 'name', 'percentage','created_at', 'updated_at']);
         return $withholdings;
     }
 }
