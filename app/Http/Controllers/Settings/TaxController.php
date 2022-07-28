@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Settings\Taxes\Tax;
 use Illuminate\Support\Facades\DB;
+use App\Imports\ImportSettingTax;
+use App\Exports\ExportSettingTax;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaxController extends Controller
 {
@@ -114,6 +117,31 @@ class TaxController extends Controller
             ->delete();
 
         return back()->with('success', 'Successfully deleted tax reccord.');
+    }
+
+    // Import
+
+    public function import(Request $request)
+    {
+        try {
+            Excel::import(new ImportSettingTax, $request->file('file'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: Cannot import tax records. Make sure you have the correct format.');
+        }        
+        return redirect()->back()->with('success', 'Successfully imported tax records.');
+    }
+
+    // Export
+    public function export(Request $request)
+    {
+       if($request->type=="excel")
+            return Excel::download(new ExportSettingTax, 'settingTax_'.date('Y_m_d').'.xlsx');
+        else
+        $taxes = Tax::all();
+        $pdf = \PDF::loadView('settings.taxes.pdf', compact('taxes'));
+
+        return $pdf->download('settingTax_'.date('Y_m_d').'.pdf');
+
     }
 
     /*===========================*/

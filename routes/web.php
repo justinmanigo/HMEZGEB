@@ -584,6 +584,9 @@ Route::group([
                 Route::post('/settings/taxes', [TaxController::class, 'store'])->name('store');
                 Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('update');
                 Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('destroy');
+                // Import Export
+                Route::post('/settings/taxes/import', [TaxController::class, 'import'])->name('import');
+                Route::post('/settings/taxes/export', [TaxController::class, 'export'])->name('export');
 
                 // AJAX
                 Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
