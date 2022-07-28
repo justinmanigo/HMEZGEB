@@ -67,7 +67,12 @@
                             <tbody>
                                 @foreach($output['users'] as $subscriptionUser)
                                     <tr>
-                                        <td>{{ $subscriptionUser->user->firstName . ' ' . $subscriptionUser->user->lastName }}</td>
+                                        <td>
+                                            {{ $subscriptionUser->user->firstName . ' ' . $subscriptionUser->user->lastName }}
+                                            @if(!$subscriptionUser->is_accepted)
+                                                <span class="badge badge-warning">Invited</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $subscriptionUser->user->email }}</td>
                                         <td>
                                             @if($subscriptionUser->role == 'super admin')
@@ -106,12 +111,12 @@
 </div>
 
 {{-- Modals --}}
-{{-- P1: Add New User --}}
+{{-- P1: Formerly Add New User, Now Invite User --}}
 <div class="modal fade" id="modal-add-new-user" tabindex="-1" role="dialog" aria-labelledby="modal-add-new-user-label" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-add-new-user-label">Add New User to Subscription</h5>
+                <h5 class="modal-title" id="modal-add-new-user-label">Invite User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -123,7 +128,7 @@
                 <form id="form-add-new-user" method="post" action="{{ url('/ajax/subscription/user/add/new')}}">
                     @csrf
                     <div class="form-group row">
-                        <label for="anu_subscription_id" class="col-12 col-lg-6 col-form-label">Subscription<span class="text-danger ml-1">*</span></label>
+                        <label for="anu_subscription_id" class="col-12 col-lg-6 col-form-label">Select Subscription<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <select class="form-control form-control-select select-subscription" id="anu_subscription_id" name="subscription_id" required>
                                 @foreach($result as $output)
@@ -132,22 +137,23 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="anu_first_name" class="col-12 col-lg-6 col-form-label">First Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <input type="text" class="form-control" id="anu_first_name" name="first_name" required>
                         </div>
-                    </div>
-                    <div class="form-group row">
+                    </div> --}}
+                    {{-- <div class="form-group row">
                         <label for="anu_last_name" class="col-12 col-lg-6 col-form-label">Last Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <input type="text" class="form-control" id="anu_last_name" name="last_name" required>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="form-group row">
                         <label for="anu_email" class="col-12 col-lg-6 col-form-label">Email<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <input type="email" class="form-control" id="anu_email" name="email" required>
+                            <p class="text-danger error-message error-message-email" style="display:none"></p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -165,7 +171,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="anu_submit_btn" form="form-add-new-user">Create & Invite User</button>
+                <button type="submit" class="btn btn-primary" id="anu_submit_btn" form="form-add-new-user">Invite User</button>
             </div>
         </div>
     </div>
@@ -434,6 +440,7 @@
             e.preventDefault();
 
             form = $(this);
+            $('#modal-add-new-user .error-message').hide();
 
             $('#form-add-new-user button[type="submit"]').prop('disabled', true);
 
@@ -449,6 +456,11 @@
 
             request.done(function(res){
                 console.log(res);
+
+                if(res.success == false) {
+                    $('#modal-add-new-user .error-message').text(res.message).show();
+                    return;
+                }
 
                 $('#modal-add-new-user').modal('hide');
                 $('#modal-add-access-user').modal('show');
