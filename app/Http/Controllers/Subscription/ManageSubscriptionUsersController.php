@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Subscription;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\AddAccountingSystemAccessRequest;
 use App\Http\Requests\Subscription\AddExistingUserRequest;
+use App\Models\AccountingSystem;
 use App\Models\AccountingSystemUser;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
@@ -17,18 +18,24 @@ class ManageSubscriptionUsersController extends Controller
 {
     public function index()
     {
-        // Get subscription
-        $user = User::find(auth()->id());
-        $user->subscriptions;
-        for($i = 0; $i < count($user->subscriptions); $i++) {
-            $user->subscriptions[$i]->subscriptionUsers;
-            for($j = 0; $j < count($user->subscriptions[$i]->subscriptionUsers); $j++) {
-                $user->subscriptions[$i]->subscriptionUsers[$j]->user;
-            }
-        }
+        $subscription_access = SubscriptionUser::where('user_id', auth()->id())
+            ->where('subscription_users.role', '!=', 'member')
+            ->where('subscription_users.role', '!=', 'moderator')
+            ->get();
 
+        $result = [];
+
+        for($i = 0; $i < count($subscription_access); $i++)
+        {
+            $result[$i]['subscription'] = Subscription::find($subscription_access[$i]->subscription_id);
+
+            $result[$i]['users'] = SubscriptionUser::where('subscription_id', $subscription_access[$i]->subscription_id)
+                ->leftJoin('users', 'users.id', '=', 'subscription_users.user_id')
+                ->select('users.firstName', 'users.lastName', 'users.email', 'users.id as user_id', 'subscription_users.id as id', 'subscription_users.role')
+                ->get();
+        }
         return view('subscription.users.index', [
-            'user' => $user,
+            'result' => $result,
         ]);
     }
 
@@ -107,7 +114,27 @@ class ManageSubscriptionUsersController extends Controller
 
     public function ajaxGetAccountingSystems(Subscription $subscription)
     {
-        return $subscription->accountingSystems;
+        $subscription_access = SubscriptionUser::where('user_id', auth()->id())
+            ->where('subscription_id', $subscription->id)
+            ->firstOrFail();
+
+        $subQuery = DB::table('accounting_system_users')
+                ->select('accounting_system_id as id', DB::raw('COUNT(accounting_system_id) as hasAccess'))
+                ->where('subscription_user_id', $subscription_access->id)
+                ->groupBy('accounting_system_id');
+
+        $result = AccountingSystem::select(
+                'accounting_systems.*',
+                DB::raw('IFNULL(t.hasAccess, 0) as hasAccess')
+            )   
+            ->where('subscription_id', $subscription->id)
+            ->leftJoinSub($subQuery, 't', function($join){
+                $join->on('t.id', '=', 'accounting_systems.id');
+            })
+            ->where('t.hasAccess', '>', 0)
+            ->get();
+
+        return $result;
     }
 
     public function ajaxAddAccess(SubscriptionUser $subscriptionUser, AddAccountingSystemAccessRequest $request)
@@ -148,7 +175,20 @@ class ManageSubscriptionUsersController extends Controller
 
     public function ajaxUpdateUser(SubscriptionUser $subscriptionUser, Request $request)
     {
-        $current = AccountingSystemUser::where('subscription_user_id', $subscriptionUser->id)->get();
+        // $current = AccountingSystemUser::where('subscription_user_id', $subscriptionUser->id)->get();
+
+        $current = AccountingSystemUser::where('subscription_user_id', $subscriptionUser->id)
+            ->leftJoin('accounting_systems', 'accounting_systems.id', '=', 'accounting_system_users.accounting_system_id')
+            ->leftJoin('subscription_users', 'subscription_users.id', '=', 'accounting_system_users.subscription_user_id')
+            ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_users.subscription_id')
+            ->select(
+                'accounting_system_users.id as id', 
+                'subscription_users.id as subscription_user_id',
+                'accounting_systems.id as accounting_system_id', 
+                'accounting_systems.name as accounting_system_name', 
+                'subscriptions.id as subscription_id',
+            )
+            ->get();
         $added = [];
         $reviewed = [];
 
@@ -207,6 +247,34 @@ class ManageSubscriptionUsersController extends Controller
                 }
             }
             if(!$found) {
+                // check if authenticated user has access to this accounting system. if the authenticated user
+                // doesn't, this user's access to this accounting system will remain as is.
+                $subscription_access = SubscriptionUser::where('user_id', auth()->id())
+                    ->where('subscription_id', $current[$i]->subscription_id)
+                    ->first();
+
+                $subQuery = DB::table('accounting_system_users')
+                        ->select('accounting_system_id as id', DB::raw('COUNT(accounting_system_id) as hasAccess'))
+                        ->where('subscription_user_id', $subscription_access->id)
+                        ->groupBy('accounting_system_id');
+
+                $result = AccountingSystem::select(
+                        'accounting_systems.*',
+                        DB::raw('IFNULL(t.hasAccess, 0) as hasAccess')
+                    )   
+                    ->where('subscription_id', $current[$i]->subscription_id)
+                    ->where('accounting_systems.id', $current[$i]->accounting_system_id)
+                    ->leftJoinSub($subQuery, 't', function($join){
+                        $join->on('t.id', '=', 'accounting_systems.id');
+                    })
+                    ->first();
+
+                if(!$result || $result->hasAccess == 0) {
+                    continue;
+                }              
+
+                // if authenticated user actually has access to this accounting system, then he/she can
+                // revoke this user access to this accounting system.
                 $removed[] = $current[$i];
                 $current[$i]->permissions()->delete();
                 $current[$i]->delete();

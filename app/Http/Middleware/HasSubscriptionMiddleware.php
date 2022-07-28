@@ -16,9 +16,9 @@ class HasSubscriptionMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $subscriptions_count = \App\Models\Subscription::where('user_id', auth()->id())->count();
+        $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())->count();
 
-        if($subscriptions_count == 0) {
+        if($subscription_admin_count == 0) {
             return abort(403);
         }
 
