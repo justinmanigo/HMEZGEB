@@ -13,7 +13,8 @@
     <div class="card-body">
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
             <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-new-user">Invite User</button>
+                {{-- <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                     <span class="icon text-white-50">
                         <i class="fas fa-user"></i>
@@ -23,7 +24,7 @@
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-new-user">New User</a>
                     <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-existing-user">Existing User</a>
-                </div>
+                </div> --}}
             </div>
         </div>
 
