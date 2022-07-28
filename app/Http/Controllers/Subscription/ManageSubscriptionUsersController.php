@@ -88,7 +88,7 @@ class ManageSubscriptionUsersController extends Controller
             'password' => bcrypt($password),
         ]);
 
-        $subscription_user = SubscriptionUser::firstOrCreate([
+        $subscription_user = SubscriptionUser::updateOrCreate([
             'subscription_id' => $request->subscription_id,
             'user_id' => $user->id,
         ], [
