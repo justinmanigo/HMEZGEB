@@ -20,6 +20,7 @@ class ManageAccountingSystemsController extends Controller
         $subscription_access = SubscriptionUser::where('user_id', auth()->id())
             ->where('subscription_users.role', '!=', 'member')
             ->where('subscription_users.role', '!=', 'moderator')
+            ->where('subscription_users.is_accepted', true)
             ->get();
         // return $subscription_access;
 
