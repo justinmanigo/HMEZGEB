@@ -152,6 +152,10 @@ Route::group([
 
             Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
 
+            // Invitation Accept/Reject
+            Route::patch('/ajax/subscription/accept-invitation', [SummaryController::class, 'ajaxAcceptInvitation']);
+            Route::delete('/ajax/subscription/reject-invitation', [SummaryController::class, 'ajaxRejectInvitation']);
+
 
             // AJAX
             Route::group([
