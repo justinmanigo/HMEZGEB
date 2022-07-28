@@ -35,6 +35,7 @@ class HomeController extends Controller
             ->where('subscription_users.user_id', Auth::id())
             ->rightJoin('accounting_system_users', 'subscription_users.id', '=', 'accounting_system_users.subscription_user_id')
             ->leftJoin('accounting_systems', 'accounting_system_users.accounting_system_id', '=', 'accounting_systems.id')
+            ->where('subscription_users.is_accepted', true)
             ->get();
 
         $this->request->session()->put('acct_system_count', count($acct_systems));

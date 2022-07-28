@@ -21,6 +21,7 @@ class ManageSubscriptionUsersController extends Controller
         $subscription_access = SubscriptionUser::where('user_id', auth()->id())
             ->where('subscription_users.role', '!=', 'member')
             ->where('subscription_users.role', '!=', 'moderator')
+            ->where('subscription_users.is_accepted', true)
             ->get();
 
         $result = [];
@@ -31,7 +32,7 @@ class ManageSubscriptionUsersController extends Controller
 
             $result[$i]['users'] = SubscriptionUser::where('subscription_id', $subscription_access[$i]->subscription_id)
                 ->leftJoin('users', 'users.id', '=', 'subscription_users.user_id')
-                ->select('users.firstName', 'users.lastName', 'users.email', 'users.id as user_id', 'subscription_users.id as id', 'subscription_users.role')
+                ->select('users.firstName', 'users.lastName', 'users.email', 'users.id as user_id', 'subscription_users.id as id', 'subscription_users.role', 'subscription_users.is_accepted')
                 ->get();
         }
         return view('subscription.users.index', [
@@ -66,6 +67,55 @@ class ManageSubscriptionUsersController extends Controller
         ->get();
     }
 
+    /**
+     * Replaces ajaxAddNewUser() and ajaxAddExistingUser()
+     * Though uses the frontend intended for ajaxAddNewUser()
+     * with the exclusion of firstName and lastName inputs.
+     */
+    public function ajaxInviteUser(Request $request)
+    {
+        $exampleKey = new Key();
+        $exampleKey->setPattern('XXXXXXXX');
+        $username = strtolower((string)$exampleKey->generate());
+        $password = strtolower((string)$exampleKey->generate());
+
+        $user = User::firstOrCreate([
+            'email' => $request->email,
+        ], [
+            'firstName' => 'New',
+            'lastName' => 'User',
+            'username' => $username,
+            'password' => bcrypt($password),
+        ]);
+
+        $subscription_user = SubscriptionUser::firstOrCreate([
+            'subscription_id' => $request->subscription_id,
+            'user_id' => $user->id,
+        ], [
+            'role' => $request->role,
+            'is_accepted' => false,
+        ]);
+
+        if($subscription_user->is_accepted)
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'User already has access to this subscription.',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'subscription_id' => $request->subscription_id,
+            'subscription_user' => $subscription_user,
+            'user' => $user,
+            // 'password' => $password, // TODO: send email with password when invited
+        ]);
+    }
+
+    /**
+     * ? DEPRECATED IN LIEU OF ajaxInviteUser()
+     */
     public function ajaxAddNewUser(Request $request)
     {
         $exampleKey = new Key;
@@ -96,6 +146,9 @@ class ManageSubscriptionUsersController extends Controller
         ]);
     }
 
+    /**
+     * ? DEPRECATED IN LIEU OF ajaxInviteUser()
+     */
     public function ajaxAddExistingUser(AddExistingUserRequest $request)
     {
         $subscription_user = SubscriptionUser::create([
