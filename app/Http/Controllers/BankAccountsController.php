@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BankAccounts;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
+use App\Imports\ImportBankAccount;
+use App\Exports\ExportBankAccount;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -17,16 +20,18 @@ class BankAccountsController extends Controller
     public function index()
     {
         //
-        $bank_accounts = BankAccounts::leftJoin('chart_of_accounts', 'bank_accounts.chart_of_account_id', '=', 'chart_of_accounts.id')
-            ->where('chart_of_accounts.accounting_system_id', $this->request->session()->get('accounting_system_id'))->get();
-        $coa_number = 1030;
+        $bank_accounts = BankAccounts::Join('chart_of_accounts', 'bank_accounts.chart_of_account_id', '=', 'chart_of_accounts.id')
+            ->where('chart_of_accounts.accounting_system_id', $this->request->session()->get('accounting_system_id'))
+            ->select('bank_accounts.*', 'chart_of_accounts.account_name')->get();
+
+
         // $coa_last_record = BankAccounts::orderBy('created_at', 'desc')->first();
         // if (empty($coa_last_record)) {
         //     $coa_number = 1030;
         // } else {
         //     $coa_number = $coa_last_record->chartOfAccount->chart_of_account_no + 1;
         // }
-        return view('banking.accounts.index', compact('bank_accounts','coa_number'));
+        return view('banking.accounts.index', compact('bank_accounts'));
     }
 
     /**
@@ -74,7 +79,7 @@ class BankAccountsController extends Controller
      * @param  \App\Models\Accounts  $accounts
      * @return \Illuminate\Http\Response
      */
-    public function show(Accounts $accounts)
+    public function show(BankAccounts $accounts)
     {
         //
     }
@@ -87,8 +92,8 @@ class BankAccountsController extends Controller
      */
     public function edit($id)
     {
-        //
         $accounts = BankAccounts::find($id);
+
         return view('banking.accounts.edit', compact('accounts'));
     }
 
@@ -136,4 +141,28 @@ class BankAccountsController extends Controller
         }
         return redirect('/banking/accounts')->with('success', 'Bank Account Deleted Successfully');
     }
+
+    // Import Export
+    public function import(Request $request)
+    {
+        try {
+            Excel::import(new ImportBankAccount, $request->file('file'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: Cannot import accounts records. Make sure you have the correct format.');
+        }        
+        return redirect()->back()->with('success', 'Successfully imported accounts records.');
+    }
+
+    // Export
+    public function export(Request $request)
+    {
+       if($request->file_type=="pdf"){
+           $accounts = BankAccounts::all();
+           $pdf = \PDF::loadView('banking.accounts.pdf', compact('accounts'));
+           return $pdf->download('BankAccount_'.date('Y_m_d').'.pdf');
+        }
+       else
+       return Excel::download(new ExportBankAccount, 'settingBankAccount_'.date('Y_m_d').'.csv');
+    }
+
 }

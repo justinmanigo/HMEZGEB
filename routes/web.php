@@ -223,13 +223,12 @@ Route::group([
             Route::group([
                 'as'=>'customers.'
             ], function(){ 
-                Route::get('/customers/customers/', [CustomerController::class, 'index']);
-                Route::post('/customers/customers/', [CustomerController::class, 'store']); 
-                Route::get('/customers/customers/{id}', [CustomerController::class, 'edit']);
-                Route::put('/customers/customers/{id}', [CustomerController::class, 'update']);
-                Route::delete('/customers/customers/{id}', [CustomerController::class, 'destroy']);
-            
-                Route::get('/customers/export/csv', [CustomerController::class, 'toCSV'])->name('customers.export.csv');
+                // Resource
+                Route::resource('/customers', CustomerController::class);
+                // Import Export
+                Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
+                Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');
+                // AJAX
                 Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
             });
@@ -298,16 +297,13 @@ Route::group([
             Route::group([
                 'as'=>'vendors.'
             ], function(){ 
-                // HTML
-                Route::get('/vendors/vendors/',[VendorsController::class,'index']);
-                Route::get('/vendors/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
-                Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
-                Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
-                Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');
-                
+                // Resource
+                Route::resource('/vendors', VendorsController::class);
+                // Import Export
+                Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
+                Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
-                Route::get('/vendors/export/csv', [VendorsController::class, 'toCSV'])->name('vendors.export.csv');
             });
         });
 
@@ -324,10 +320,9 @@ Route::group([
             Route::group([
                 'as'=>'accounts.'
             ], function(){ 
-                // HTML
-                Route::get('/banking/accounts', [BankAccountsController::class, 'index']);
-                Route::get('/banking/accounts/{id}', [BankAccountsController::class, 'edit'])->name('bank.accounts.edit');
-         
+                // Import Export
+                Route::post('/banking/accounts/import', [BankAccountsController::class, 'import'])->name('accounts.import');
+                Route::post('/banking/accounts/export', [BankAccountsController::class, 'export'])->name('accounts.export');
                 // RESOURCE
                 Route::resource('/banking/accounts', BankAccountsController::class);
             });
@@ -590,6 +585,9 @@ Route::group([
                 Route::post('/settings/taxes', [TaxController::class, 'store'])->name('store');
                 Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('update');
                 Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('destroy');
+                // Import Export
+                Route::post('/settings/taxes/import', [TaxController::class, 'import'])->name('import');
+                Route::post('/settings/taxes/export', [TaxController::class, 'export'])->name('export');
 
                 // AJAX
                 Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
@@ -607,7 +605,10 @@ Route::group([
                 Route::post('/settings/withholding', [WithholdingController::class, 'store'])->name('store');
                 Route::put('/settings/withholding/{withholding}', [WithholdingController::class, 'update'])->name('update');
                 Route::delete('/settings/withholding/{withholding}', [WithholdingController::class, 'destroy'])->name('destroy');
-
+                // Import Export
+                Route::post('/settings/withholding/import', [WithholdingController::class, 'import'])->name('import');
+                Route::post('/settings/withholding/export', [WithholdingController::class, 'export'])->name('export');
+                
                 // AJAX
                 Route::get('/ajax/settings/withholding/get/{withholding}', [WithholdingController::class, 'ajaxGetWithholding']);
             });
@@ -634,7 +635,9 @@ Route::group([
                 // HTTP
                 Route::get('/settings/coa', [ChartOfAccountsController::class, 'index'])->name('index');
                 Route::post('/settings/coa', [ChartOfAccountsController::class, 'store'])->name('store');
-                
+                // Import Export
+                Route::post('/settings/coa/import', [ChartOfAccountsController::class, 'import'])->name('import');
+                Route::post('/settings/coa/export', [ChartOfAccountsController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/ajax/settings/coa/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
                 Route::get('/ajax/settings/coa_categories/search', [ChartOfAccountsController::class, 'ajaxSearchCategories']);

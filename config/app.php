@@ -168,7 +168,8 @@ return [
         Riskihajar\Terbilang\TerbilangServiceProvider::class,
         // PDF converter
 	    Barryvdh\DomPDF\ServiceProvider::class,
-        
+        // Import Export
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -238,6 +239,8 @@ return [
         'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
         // PDF converter
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        // Import Export
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

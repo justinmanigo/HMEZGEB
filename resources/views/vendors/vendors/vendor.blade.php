@@ -22,16 +22,33 @@
                 </span>
                 <span class="text">Import</span>
             </button>
-            <a href="{{route('vendors.vendors.export.csv')}}" class="btn btn-secondary">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
                 </span>
                 <span class="text">Export</span>
-            </a>
+            </button>
         </div>
 
         <div class="card shadow mb-4">
             <div class="card-body">
+                {{-- success error --}}
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" width="100%" id="dataTables" cellspacing="100">
                         <thead>
@@ -48,7 +65,7 @@
 
                         <tbody>
                             @foreach($vendors as $vendor)
-                            <tr onclick="window.location='{{ route('vendors.vendors.edit',$vendor->id) }}'">
+                            <tr onclick="window.location='{{ route('vendors.vendors.edit', $vendor->id) }}'">
                                 <td>{{$vendor->name}}</td>
                                 <td>{{$vendor->tin_number}}</td>
                                 <td>{{$vendor->city}}</td>
@@ -161,6 +178,75 @@
         </div>
     </div>
 </div>
+
+
+{{-- Import Modal --}}
+<div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="Modal Import Vendor">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Import Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-import-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-import" method="post" action="{{ route('vendors.import') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group row container">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="file" required>
+                            <label class="custom-file-label" for="file">Choose file</label>
+                          </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="i_submit_btn" form="form-import">Import Vendor</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Export --}}
+
+<div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="Modal Export Vendor">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Export Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-export-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-export" method="post" action="{{ route('vendors.export') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group row">
+                        <label for="e_type" class="col-12 col-lg-6 col-form-label">Type<span class="text-danger ml-1">*</span></label>
+                        <div class="col-12 col-lg-6">
+                            <select class="form-control" id="e_type" name="type" required>
+                                <option value="csv">CSV</option>
+                                <option value="pdf">PDF</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="e_submit_btn" form="form-export">Export Vendor</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
 <script>
@@ -168,6 +254,12 @@
             $('#dataTables').DataTable();
             $('.dataTables_filter').addClass('pull-right');
         });
+
+    // add the file name only in file input field
+    $('.custom-file-input').on('change', function() {
+    var fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
 
         //$('#details').trumbowyg();
         //$('#features').trumbowyg();
