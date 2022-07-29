@@ -1,5 +1,8 @@
 @php
-
+$subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
+    ->where('subscription_users.role', '!=', 'member')
+    ->where('subscription_users.role', '!=', 'moderator')
+    ->count();
 @endphp
  
  <!-- Sidebar -->
@@ -27,32 +30,81 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Subscription Summary</span>
-                </a>
-            </li>
+            @if(auth()->user()->control_panel_role != null)
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Control Panel
+                </div>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                {{-- <li class="nav-item">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/control/') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li> --}}
+
+                <li class="nav-item">
+                    <a class="nav-link dynamic-nav" href="{{ url('/control') }}">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+            @endif
+
+
+            @if($subscription_admin_count > 0)
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Subscriptions
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Subscription Summary</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Manage Acct. Systems</span><br>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link dynamic-nav" href="{{ url('/subscription/users') }}">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+            @endif
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Management
+                Your Account
             </div>
 
             <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
+                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Accounting Systems</span>
+                    <span>Account Settings</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link dynamic-nav" href="{{ url('/subscription/users') }}">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Subscription Users</span>
+                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Referrals</span>
                 </a>
             </li>
 
