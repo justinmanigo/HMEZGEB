@@ -319,10 +319,9 @@ Route::group([
             Route::group([
                 'as'=>'accounts.'
             ], function(){ 
-                // HTML
-                Route::get('/banking/accounts', [BankAccountsController::class, 'index']);
-                Route::get('/banking/accounts/{id}', [BankAccountsController::class, 'edit'])->name('bank.accounts.edit');
-         
+                // Import Export
+                Route::post('/banking/accounts/import', [BankAccountsController::class, 'import'])->name('accounts.import');
+                Route::post('/banking/accounts/export', [BankAccountsController::class, 'export'])->name('accounts.export');
                 // RESOURCE
                 Route::resource('/banking/accounts', BankAccountsController::class);
             });
