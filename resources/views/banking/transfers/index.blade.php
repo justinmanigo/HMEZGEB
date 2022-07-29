@@ -126,7 +126,18 @@
                 </span>
                 <span class="text">Transfer</span>
             </button>
-          
+            <button type="button" class="btn btn-secondary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-import">
+                <span class="icon text-white-50">
+                    <i class="fas fa-file-import"></i>
+                </span>
+                <span class="text">Import</span>
+            </button>
+            <button type="button" class="btn btn-secondary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-export">
+                <span class="icon text-white-50">
+                    <i class="fas fa-file-export"></i>
+                </span>
+                <span class="text">Export</span>
+            </button>
         </div>
         {{-- Button Group Navigation --}}
         {{-- <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
@@ -285,7 +296,75 @@
     </div>
 </div>
 
+
+{{-- Import --}}
+<div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-import-label">Import Transfers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-import" action="{{route('transfers.transfers.import')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group row container">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="file" required>
+                            <label class="custom-file-label" for="file">Choose file</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="form-import">Import Transfers</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+ {{-- Export --}}
+<div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="modal-export-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-export-label">Export Transfers</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-export" action="{{route('transfers.transfers.export')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group row">
+                        <label for="e_file_type" class="col-sm-4 col-form-label">File Type<span class="text-danger ml-1">*</span></label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="e_file_type" name="file_type" required>
+                                <option value="csv">CSV</option>
+                                <option value="pdf">PDF</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="form-export">Export Transfers</button>
+            </div>
+        </div>
+    </div>
+</div> 
+
 <script>
+    // add the file name only in file input field
+    $('.custom-file-input').on('change', function() {
+    var fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+    });
+
     $(document).ready(function () {
     $('#dataTables').DataTable();
     $('.dataTables_filter').addClass('pull-right');

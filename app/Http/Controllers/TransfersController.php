@@ -13,6 +13,9 @@ use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\DecodeTagifyField;
 use Illuminate\Support\Facades\Log;
+use App\Imports\ImportBankTransfer;
+use App\Exports\ExportBankTransfer;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransfersController extends Controller
 {
@@ -194,6 +197,35 @@ class TransfersController extends Controller
 
         return redirect()->route('transfers.transfer.index')->with('success', 'Transfer has been voided successfully');
     }
+
+     // Import Export
+
+     public function import(Request $request)
+     {
+         if (!$request->file('file'))
+         {
+             return back()->with('error', 'Please select a file');
+         }
+         try {
+           Excel::import(new ImportBankTransfer, $request->file('file'));
+           return redirect()->back()->with('success', 'Successfully imported bank transfer records.');
+        } catch (\Exception $e) {
+             return back()->with('error', 'Error: Cannot import bank transfer records. Make sure you have the correct format.');
+         }   
+
+ 
+     }
+ 
+     public function export(Request $request)
+     {
+         if($request->file_type=="csv")
+         return Excel::download(new ExportBankTransfer, 'bankTransfer_'.date('Y_m_d').'.csv');
+         else
+         $transfers = Transfers::all();
+         $pdf = \PDF::loadView('banking.transfers.pdf', compact('transfers'));
+         return $pdf->download('bankTransfer_'.date('Y_m_d').'.pdf');
+  
+     }
 
     public function queryBank($query)
     {   

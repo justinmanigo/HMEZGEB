@@ -334,10 +334,11 @@ Route::group([
                 'as'=>'transfers.'
             ], function(){ 
                 // HTML
-                Route::get('/banking/transfer', [TransfersController::class, 'index']);
                 Route::post('/banking/transfer/{id}/void', [TransfersController::class, 'void'])->name('transfer.void');
                 Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
-
+                // Import Export
+                Route::post('/banking/transfers/import', [TransfersController::class, 'import'])->name('transfers.import');
+                Route::post('/banking/transfers/export', [TransfersController::class, 'export'])->name('transfers.export');
                 // RESOURCE
                 Route::resource('/banking/transfer', TransfersController::class);
             });
