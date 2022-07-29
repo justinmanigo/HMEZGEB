@@ -128,30 +128,32 @@
                 @endif
             @endfor
 
-            <!-- Nav Item - Settings Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settings"
-                    aria-expanded="true" aria-controls="settings">
-                    <i class="fas fa-fw fa-cogs"></i>
-                    <span>Settings</span>
-                </a>
-                <div id="settings" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="/settings/company">Company Info</a>
-                        <a class="collapse-item" href="/settings/users">Users</a>
-                        {{-- <a class="collapse-item" href="/settings/themes">Theme</a> --}}
-                        <a class="collapse-item" href="/settings/taxes">Taxes</a>
-                        <a class="collapse-item" href="/settings/withholding">Withholding</a>
-                        <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
-                        <a class="collapse-item" href="/settings/coa">Chart of Account</a>
-                        <a class="collapse-item" href="/settings/inventory">Inventory</a>
-                        <a class="collapse-item" href="/settings/defaults">Defaults</a>
-                        {{-- <a class="collapse-item" href="utilities-other.html">Taxes</a> --}}
+            @if(session('subscription_user_role') != 'member')
+                <!-- Nav Item - Settings Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settings"
+                        aria-expanded="true" aria-controls="settings">
+                        <i class="fas fa-fw fa-cogs"></i>
+                        <span>Settings</span>
+                    </a>
+                    <div id="settings" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Menu:</h6>
+                            <a class="collapse-item" href="/settings/company">Company Info</a>
+                            <a class="collapse-item" href="/settings/users">Users</a>
+                            {{-- <a class="collapse-item" href="/settings/themes">Theme</a> --}}
+                            <a class="collapse-item" href="/settings/taxes">Taxes</a>
+                            <a class="collapse-item" href="/settings/withholding">Withholding</a>
+                            <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
+                            <a class="collapse-item" href="/settings/coa">Chart of Account</a>
+                            <a class="collapse-item" href="/settings/inventory">Inventory</a>
+                            <a class="collapse-item" href="/settings/defaults">Defaults</a>
+                            {{-- <a class="collapse-item" href="utilities-other.html">Taxes</a> --}}
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider">
