@@ -4,6 +4,9 @@ $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth(
     ->where('subscription_users.role', '!=', 'moderator')
     ->count();
 
+if(session('accounting_system_id'))
+    $curr_acct_sys = \App\Models\AccountingSystem::where('id', session('accounting_system_id'))->first();
+
 $route_name = Route::currentRouteName();
 $route_name = explode('.', $route_name);
 $route_name = $route_name[0];
@@ -23,13 +26,40 @@ $route_name = $route_name[0];
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/switch') }}">
-                    <i class="fas fa-fw fa-arrow-left"></i>
-                    <span>Acct. System Selection</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#control"
+                    aria-expanded="true" aria-controls="control">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>{{ auth()->user()->firstName }}</span>
                 </a>
+                <div id="control" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @if(session('acct_system_count') > 1)
+                            <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
+                            <hr class="collapse-divider mx-4 my-2">
+                        @endif
+                        <a class="collapse-item" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal">Log Out</a>
+                    </div>
+                </div>
             </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            @if(isset($curr_acct_sys))
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Go back
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/') }}">
+                        <i class="fas fa-fw fa-arrow-left"></i>
+                        <span>{{ $curr_acct_sys->name }}</span>
+                    </a>
+                </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider">

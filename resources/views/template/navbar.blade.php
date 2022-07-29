@@ -33,20 +33,51 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="/home">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#control"
+                    aria-expanded="true" aria-controls="control">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>{{ auth()->user()->firstName }}</span>
+                </a>
+                <div id="control" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @if(session('acct_system_count') > 1)
+                            <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
+                            <hr class="collapse-divider mx-4 my-2">
+                        @endif
+                        @if(Auth::user()->control_panel_role != null || $subscription_admin_count > 0)
+                            @if(Auth::user()->control_panel_role != null)
+                                <a class="collapse-item" href="{{ url('/control') }}">Control Panel</a>
+                            @endif
+                            @if($subscription_admin_count > 0)
+                                <a class="collapse-item" href="{{ url('/subscription') }}">Subscription Panel</a>
+                            @endif
+                            <hr class="collapse-divider mx-4 my-2">
+                        @endif
+                        <a class="collapse-item" href="{{ url('/account') }}">Account Settings</a>
+                        <a class="collapse-item" href="{{ url('/referrals') }}">Referrals</a>
+                        <hr class="collapse-divider mx-4 my-2">
+                        <a class="collapse-item" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal">Log Out</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            {{-- <div class="sidebar-heading">
-                Interface
-            </div> --}}
+            <div class="sidebar-heading">
+                Accounting System
+            </div>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/home">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
 
             @for($i = 0; $i < count($modules); $i++)
                 {{-- If there are more than 1 submodules --}}
