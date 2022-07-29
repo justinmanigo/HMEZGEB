@@ -134,7 +134,21 @@ $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth(
                     </button>
 
                     <!-- Topbar Accounting System Name & Year -->
-                    <h5>Subscription Panel</h5>
+                    <h5>
+                        <!-- get route name -->
+                        @php
+                            $route_name = Route::currentRouteName();
+                            $route_name = explode('.', $route_name);
+                            $route_name = $route_name[0];
+                            
+                            if($route_name == 'subscription')
+                                echo "Subscription Panel";
+                            else if($route_name == 'control')
+                                echo "Control Panel";
+                            else if($route_name == 'account' || $route_name == 'referrals')
+                                echo "Your Account";
+                        @endphp
+                    </h5>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
