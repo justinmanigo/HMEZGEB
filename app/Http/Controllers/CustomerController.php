@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Customers;
+use App\Imports\ImportCustomersCustomer;
+use App\Exports\ExportCustomersCustomer;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ReceiptReferences;
 use Illuminate\Http\Request;
 
@@ -62,7 +65,7 @@ class CustomerController extends Controller
         $customers->image =  isset($imageName) ? $imageName : null;
         $customers->is_active ='Yes';
         $customers->save();
-        return redirect('/customers/customers')->with('success', "Successfully added new customer.");
+        return redirect()->back()->with('success', "Successfully added new customer.");
 
     }
 
@@ -84,7 +87,7 @@ class CustomerController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::find($id);
         if($customers->accounting_system_id != $accounting_system_id)
-            return redirect('/customers/customers')->with('danger', "You are not authorized to edit this customer.");
+            return redirect()->route('cutomer.cutomer.index')->with('danger', "You are not authorized to edit this customer.");
 
         return view('customer.customer.edit', compact('customers'));
     }
@@ -109,7 +112,7 @@ class CustomerController extends Controller
         $customers->is_active ='Yes';
         $customers->update();
 
-        return redirect('/customers/customers')->with('success', "Successfully edited customer.");
+        return redirect()->back()->with('success', "Successfully edited customer.");
 
     }
 
@@ -125,29 +128,34 @@ class CustomerController extends Controller
         $customers = Customers::find($id);
         $customers->delete();
         
-        return redirect('/customers/customers')->with('danger', "Successfully deleted customer");
+        return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
 
     }
 
-    public function toCSV()
+    // Import Export
+    public function import(Request $request)
     {
-        // create a csv file
-        $customers = Customers::all();
-        // open file
-        $file = fopen('customers.csv', 'w');
-        // write header
-        fputcsv($file, array('id', 'accounting_system_id','name', 'tin_number', 'address', 'city', 'country', 'mobile_number', 'telephone_one', 'telephone_two', 'fax', 'website', 'email', 'contact_person', 'image','label', 'is_active','created_at','updated_at','updated_by'));
-        // loop through the array
-        foreach ($customers as $customer) {
-            // add the data to the file
-            $customer = $customer->toArray();
-            fputcsv($file, $customer);
+        if (!$request->file('file'))
+        {
+            return back()->with('error', 'Please select a file');
         }
-        // close the file
-        fclose($file);
-        // redirect to the file
-        return response()->download('customers.csv');
+        try {
+            Excel::import(new ImportCustomersCustomer, $request->file('file'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error: Cannot import customer records. Make sure you have the correct format.');
+        }        
+        return redirect()->back()->with('success', 'Successfully imported customer records.');
 
+    }
+
+    public function export(Request $request)
+    {
+        if($request->file_type=="csv")
+        return Excel::download(new ExportCustomersCustomer, 'customersCustomer_'.date('Y_m_d').'.csv');
+        else
+        $customers = Customers::all();
+        $pdf = \PDF::loadView('customer.customer.pdf', compact('customers'));
+        return $pdf->download('customersCustomer_'.date('Y_m_d').'.pdf');
     }
 
     /*=================================*/

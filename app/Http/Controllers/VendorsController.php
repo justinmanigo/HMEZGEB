@@ -171,7 +171,7 @@ class VendorsController extends Controller
         try {
             Excel::import(new ImportVendorsVendor, $request->file('file'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Error: Cannot import vendor records. Make sure you have the correct format.'.$e->getMessage());
+            return back()->with('error', 'Error: Cannot import vendor records. Make sure you have the correct format.');
         }        
         return redirect()->back()->with('success', 'Successfully imported vendor records.');
 

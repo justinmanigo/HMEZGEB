@@ -223,13 +223,12 @@ Route::group([
             Route::group([
                 'as'=>'customers.'
             ], function(){ 
-                Route::get('/customers/customers/', [CustomerController::class, 'index']);
-                Route::post('/customers/customers/', [CustomerController::class, 'store']); 
-                Route::get('/customers/customers/{id}', [CustomerController::class, 'edit']);
-                Route::put('/customers/customers/{id}', [CustomerController::class, 'update']);
-                Route::delete('/customers/customers/{id}', [CustomerController::class, 'destroy']);
-            
-                Route::get('/customers/export/csv', [CustomerController::class, 'toCSV'])->name('customers.export.csv');
+                // Resource
+                Route::resource('/customers', CustomerController::class);
+                // Import Export
+                Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
+                Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');
+                // AJAX
                 Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
             });
