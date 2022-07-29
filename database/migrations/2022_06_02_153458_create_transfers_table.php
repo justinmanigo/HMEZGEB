@@ -20,7 +20,9 @@ class CreateTransfersTable extends Migration
             $table->unsignedBigInteger('to_account_id');
             $table->decimal('amount', 10, 2)->nullable();
             $table->string('reason')->nullable();
+            $table->enum('status', ['completed', 'void'])->default('completed');
             $table->foreignId('journal_entry_id')->nullable()->constrained();
+            $table->foreignId('transaction_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

@@ -340,6 +340,7 @@ Route::group([
             ], function(){ 
                 // HTML
                 Route::get('/banking/transfer', [TransfersController::class, 'index']);
+                Route::post('/banking/transfer/{id}/void', [TransfersController::class, 'void'])->name('transfer.void');
                 Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
 
                 // RESOURCE
