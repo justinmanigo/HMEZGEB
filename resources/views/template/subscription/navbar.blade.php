@@ -95,14 +95,14 @@ $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth(
             </div>
 
             <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
+                <a class="nav-link active dynamic-nav" href="{{ url('/account/') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Account Settings</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
+                <a class="nav-link active dynamic-nav" href="{{ url('/referrals/') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Referrals</span>
                 </a>
