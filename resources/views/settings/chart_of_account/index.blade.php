@@ -376,7 +376,7 @@
     </div>
 </div>
 
-{{-- Export Modal Excel or PDF--}}
+{{-- Export Modal CSV or PDF--}}
 
 <div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="Modal Export Chart Of Account">
     <div class="modal-dialog" role="document">
@@ -397,7 +397,7 @@
                         <label for="e_type" class="col-12 col-lg-6 col-form-label">Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
                             <select class="form-control" id="e_type" name="type" required>
-                                <option value="excel">Excel</option>
+                                <option value="csv">CSV</option>
                                 <option value="pdf">PDF</option>
                             </select>
                         </div>

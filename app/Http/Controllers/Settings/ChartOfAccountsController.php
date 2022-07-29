@@ -245,8 +245,8 @@ class ChartOfAccountsController extends Controller
     // Export
     public function export(Request $request)
     {
-       if($request->type=="excel")
-            return Excel::download(new ExportSettingChartOfAccount, 'settingChartOfAccount_'.date('Y_m_d').'.xlsx');
+       if($request->type=="csv")
+            return Excel::download(new ExportSettingChartOfAccount, 'settingChartOfAccount_'.date('Y_m_d').'.csv');
         else
         $coas = ChartOfAccounts::all();
         $pdf = \PDF::loadView('settings.chart_of_account.pdf', compact('coas'));

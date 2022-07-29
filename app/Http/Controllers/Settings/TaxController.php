@@ -134,8 +134,8 @@ class TaxController extends Controller
     // Export
     public function export(Request $request)
     {
-       if($request->type=="excel")
-            return Excel::download(new ExportSettingTax, 'settingTax_'.date('Y_m_d').'.xlsx');
+       if($request->type=="csv")
+            return Excel::download(new ExportSettingTax, 'settingTax_'.date('Y_m_d').'.csv');
         else
         $taxes = Tax::all();
         $pdf = \PDF::loadView('settings.taxes.pdf', compact('taxes'));
