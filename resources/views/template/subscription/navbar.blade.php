@@ -59,10 +59,11 @@ $route_name = $route_name[0];
                         <span>{{ $curr_acct_sys->name }}</span>
                     </a>
                 </li>
+                
+                <!-- Divider -->
+                <hr class="sidebar-divider">
             @endif
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
             @if(auth()->user()->control_panel_role != null)
                 <!-- Heading -->
@@ -199,47 +200,6 @@ $route_name = $route_name[0];
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </li>
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">  
-                                     {{-- {{ Auth::user()->firstName}} {{Auth::user()->lastName }}  --}}
-                                </span>
-                                {{-- <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg"> --}}
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                @if(Auth::user()->control_panel_role != null)
-                                    <a class="dropdown-item" href="/control/">
-                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Control Panel
-                                    </a>
-                                @endif
-                                <a class="dropdown-item" href="/subscription/">
-                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Subscription Panel
-                                </a>
-                                <a class="dropdown-item" href="/account/">
-                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Account Settings
-                                </a>
-                                <a class="dropdown-item" href="/referrals/">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Referrals
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
                             </div>
                         </li>
 
