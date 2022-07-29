@@ -31,10 +31,15 @@ class HomeController extends Controller
                 'accounting_systems.name',
                 'accounting_systems.accounting_year',
                 'accounting_systems.calendar_type',
+                'subscriptions.id as subscription_id',
+                'users.firstName as user_first_name',
+                'users.lastName as user_last_name',
             )
             ->where('subscription_users.user_id', Auth::id())
             ->rightJoin('accounting_system_users', 'subscription_users.id', '=', 'accounting_system_users.subscription_user_id')
             ->leftJoin('accounting_systems', 'accounting_system_users.accounting_system_id', '=', 'accounting_systems.id')
+            ->leftJoin('subscriptions', 'subscription_users.subscription_id', '=', 'subscriptions.id')
+            ->leftJoin('users', 'subscriptions.user_id', '=', 'users.id')
             ->where('subscription_users.is_accepted', true)
             ->get();
 
@@ -54,11 +59,15 @@ class HomeController extends Controller
         }
         
         // Otherwise, let the authenticated user select which accounting system to manage.
-        return view('view-accounting-systems', [
+        // return view('view-accounting-systems', [
+        return view('switch', [
             'accountingSystems' => $acct_systems,
         ]);
     }
 
+    /**
+     * AJAX Call for /switch
+     */
     public function switchAccountingSystem()
     {
         // return $this->request;
@@ -76,10 +85,9 @@ class HomeController extends Controller
         $this->request->session()->put('accounting_system_user_id', $accounting_system_user->id);
         $this->request->session()->put('accounting_period_id', $latest_accounting_period->id);
         
-        return redirect('/');
+        // return redirect('/');
+        return response()->json([
+            'success' => true,
+        ]);
     }
-
-
-   
-
 }
