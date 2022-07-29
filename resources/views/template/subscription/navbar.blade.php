@@ -7,6 +7,23 @@ $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth(
 if(session('accounting_system_id'))
     $curr_acct_sys = \App\Models\AccountingSystem::where('id', session('accounting_system_id'))->first();
 
+$acct_systems = \App\Models\SubscriptionUser::select(
+            'accounting_systems.id as accounting_system_id', 
+            'accounting_systems.name',
+            'accounting_systems.accounting_year',
+            'accounting_systems.calendar_type',
+            'subscriptions.id as subscription_id',
+            'users.firstName as user_first_name',
+            'users.lastName as user_last_name',
+        )
+        ->where('subscription_users.user_id', Auth::id())
+        ->rightJoin('accounting_system_users', 'subscription_users.id', '=', 'accounting_system_users.subscription_user_id')
+        ->leftJoin('accounting_systems', 'accounting_system_users.accounting_system_id', '=', 'accounting_systems.id')
+        ->leftJoin('subscriptions', 'subscription_users.subscription_id', '=', 'subscriptions.id')
+        ->leftJoin('users', 'subscriptions.user_id', '=', 'users.id')
+        ->where('subscription_users.is_accepted', true)
+        ->get();
+
 $route_name = Route::currentRouteName();
 $route_name = explode('.', $route_name);
 $route_name = $route_name[0];
@@ -57,6 +74,23 @@ $route_name = $route_name[0];
                     <a class="nav-link" href="{{ url('/') }}">
                         <i class="fas fa-fw fa-arrow-left"></i>
                         <span>{{ $curr_acct_sys->name }}</span>
+                    </a>
+                </li>
+                
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+            @endif
+
+            @if(!isset($curr_acct_sys) && count($acct_systems) == 1)
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Go To
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/') }}">
+                        <i class="fas fa-fw fa-arrow-left"></i>
+                        <span>{{ $acct_systems[0]->name }}</span>
                     </a>
                 </li>
                 
