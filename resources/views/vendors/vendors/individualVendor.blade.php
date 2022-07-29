@@ -34,8 +34,27 @@
     
     </div>
     <div class="container card shadow px-4 py-3">
-        <form action="{{ route('vendors.vendors.update',$vendor->id) }}" method="POST" enctype="multipart/form-data">
+        {{-- success error --}}
+        @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{session('success')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+        @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{session('error')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+        {{-- end success error --}}
+        <form action="{{ route('vendors.vendors.update', $vendor->id) }}" method="POST" enctype="multipart/form-data">
         @CSRF    
+        @method('PUT')
         <div class="row my-2">
                 <div class="col">
                     <label for="#">Vendor Name</label>
@@ -130,7 +149,7 @@
             <div class="row  mt-3 d-flex justify-content-between">
                     <div>
                         <button class="btn btn-danger mr-3 " type="button" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                        <a href="{{ route('vendors.') }}" class="btn btn-secondary">Cancel</a>
+                        <a href="{{ route('vendors.vendors.index') }}" class="btn btn-secondary">Cancel</a>
                     </div>
                     <button class="btn btn-primary mx-1" type="submit">Update Vendor</button>
             </div>

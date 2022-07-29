@@ -293,16 +293,13 @@ Route::group([
             Route::group([
                 'as'=>'vendors.'
             ], function(){ 
-                // HTML
-                Route::get('/vendors/vendors/',[VendorsController::class,'index']);
-                Route::get('/vendors/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
-                Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
-                Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
-                Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');
-                
+                // Resource
+                Route::resource('/vendors', VendorsController::class);
+                // Import Export
+                Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
+                Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
-                Route::get('/vendors/export/csv', [VendorsController::class, 'toCSV'])->name('vendors.export.csv');
             });
         });
 
