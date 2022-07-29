@@ -1,6 +1,6 @@
-@extends('template.account')
+@extends('template.subscription')
 
-@section('accounts_content')
+@section('content')
 
 <h3>Manage Super Admin Users</h3>
 
@@ -305,7 +305,7 @@
 </form>
 @endsection
 
-@section('accounts_script')
+@push('scripts')
     <script src="{{ url('/js/control/template_select_user.js') }}"></script>
     <script src="{{ url('/js/control/select_existing_user.js') }}"></script>
     <script>
@@ -362,4 +362,4 @@
             });
         });
     </script>
-@endsection
+@endpush
