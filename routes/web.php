@@ -516,6 +516,7 @@ Route::group([
          * ========== Reports Module ==========
          */
         Route::group([
+            // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
             'as' => 'reports.',
             'prefix' => 'reports'
         ], function() {
@@ -562,7 +563,8 @@ Route::group([
          * ========== Settings Module ==========
          */
         Route::group([
-            'as' => 'settings.'
+            'as' => 'settings.',
+            'middleware' => 'acctsys.settings'
         ], function() {
 
             /**
