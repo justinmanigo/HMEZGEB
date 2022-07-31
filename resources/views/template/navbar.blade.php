@@ -33,20 +33,51 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="/home">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#control"
+                    aria-expanded="true" aria-controls="control">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>{{ auth()->user()->firstName }}</span>
+                </a>
+                <div id="control" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @if(session('acct_system_count') > 1)
+                            <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
+                            <hr class="collapse-divider mx-4 my-2">
+                        @endif
+                        @if(Auth::user()->control_panel_role != null || $subscription_admin_count > 0)
+                            @if(Auth::user()->control_panel_role != null)
+                                <a class="collapse-item" href="{{ url('/control') }}">Control Panel</a>
+                            @endif
+                            @if($subscription_admin_count > 0)
+                                <a class="collapse-item" href="{{ url('/subscription') }}">Subscription Panel</a>
+                            @endif
+                            <hr class="collapse-divider mx-4 my-2">
+                        @endif
+                        <a class="collapse-item" href="{{ url('/account') }}">Account Settings</a>
+                        <a class="collapse-item" href="{{ url('/referrals') }}">Referrals</a>
+                        <hr class="collapse-divider mx-4 my-2">
+                        <a class="collapse-item" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal">Log Out</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            {{-- <div class="sidebar-heading">
-                Interface
-            </div> --}}
+            <div class="sidebar-heading">
+                Accounting System
+            </div>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/home">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
 
             @for($i = 0; $i < count($modules); $i++)
                 {{-- If there are more than 1 submodules --}}
@@ -97,30 +128,32 @@
                 @endif
             @endfor
 
-            <!-- Nav Item - Settings Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settings"
-                    aria-expanded="true" aria-controls="settings">
-                    <i class="fas fa-fw fa-cogs"></i>
-                    <span>Settings</span>
-                </a>
-                <div id="settings" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Menu:</h6>
-                        <a class="collapse-item" href="/settings/company">Company Info</a>
-                        <a class="collapse-item" href="/settings/users">Users</a>
-                        {{-- <a class="collapse-item" href="/settings/themes">Theme</a> --}}
-                        <a class="collapse-item" href="/settings/taxes">Taxes</a>
-                        <a class="collapse-item" href="/settings/withholding">Withholding</a>
-                        <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
-                        <a class="collapse-item" href="/settings/coa">Chart of Account</a>
-                        <a class="collapse-item" href="/settings/inventory">Inventory</a>
-                        <a class="collapse-item" href="/settings/defaults">Defaults</a>
-                        {{-- <a class="collapse-item" href="utilities-other.html">Taxes</a> --}}
+            @if(session('subscription_user_role') != 'member')
+                <!-- Nav Item - Settings Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settings"
+                        aria-expanded="true" aria-controls="settings">
+                        <i class="fas fa-fw fa-cogs"></i>
+                        <span>Settings</span>
+                    </a>
+                    <div id="settings" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Menu:</h6>
+                            <a class="collapse-item" href="/settings/company">Company Info</a>
+                            <a class="collapse-item" href="/settings/users">Users</a>
+                            {{-- <a class="collapse-item" href="/settings/themes">Theme</a> --}}
+                            <a class="collapse-item" href="/settings/taxes">Taxes</a>
+                            <a class="collapse-item" href="/settings/withholding">Withholding</a>
+                            <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
+                            <a class="collapse-item" href="/settings/coa">Chart of Account</a>
+                            <a class="collapse-item" href="/settings/inventory">Inventory</a>
+                            <a class="collapse-item" href="/settings/defaults">Defaults</a>
+                            {{-- <a class="collapse-item" href="utilities-other.html">Taxes</a> --}}
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            @endif
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -319,55 +352,6 @@
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">  
-                                     {{-- {{ Auth::user()->firstName}} {{Auth::user()->lastName }}  --}}
-                                </span>
-                                {{-- <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg"> --}}
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                @if(Auth::user()->control_panel_role != null)
-                                    <a class="dropdown-item" href="/control/">
-                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Control Panel
-                                    </a>
-                                @endif
-                                @if($subscription_admin_count > 0)
-                                    <a class="dropdown-item" href="/subscription/">
-                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Subscription Panel
-                                    </a>
-                                @endif
-                                <a class="dropdown-item" href="/account/">
-                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Account Settings
-                                </a>
-                                <a class="dropdown-item" href="/referrals/">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Referrals
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                @if(session('acct_system_count') > 1)
-                                    <a class="dropdown-item" href="{{ url('/switch') }}">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Switch Accounting Systems
-                                    </a>
-                                @endif
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
                             </div>
                         </li>
 

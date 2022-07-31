@@ -86,107 +86,132 @@ use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
 
 Route::group([
     'middleware' => 'auth',
-], function(){
+], function()
+{
     /**
-     * Switch Accounting Systems
+     * ========== Accounting System Switcher ==========
      */
     Route::get('/switch', [HomeController::class, 'viewAccountingSystems']);
     Route::put('/switch', [HomeController::class, 'switchAccountingSystem']);
-    
+
     /**
-     * Notification
+     * ========== Referrals ==========
      */
-    Route::resource('notifications', NotificationController::class);
-
     Route::group([
-        'middleware' => 'auth.accountingsystem',
+        'as' => 'referrals.'
     ], function(){
-        /**
-         * Home
-         */
-        Route::get('/', [HomeController::class, 'index']);
-        Route::get('/home', [HomeController::class, 'index'])->name('home');
+        Route::get('/referrals', [ReferralsController::class, 'index'])->name('index');
+        Route::post('/referrals', [ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
+        Route::put('/referrals', [ReferralsController::class, 'storeAdvancedReferral'])->name('store.advanced');
+        Route::patch('/referrals', [ReferralsController::class, 'generateReferrals'])->name('generate');
+    });
+
+    /**
+     * ========== Account Settings ==========
+     */
+    Route::group([
+        'as' => 'account.'
+    ], function() {
+        // HTTP
+        Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
+        Route::post('/account/2fa/confirm', [AccountSettingsController::class, 'confirm2FA'])->name('confirm2FA');
+
+        // AJAX
+        Route::post('/ajax/account/show/recoverycodes', [AccountSettingsController::class, 'showRecoveryCodes']);
+        Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername']);
+        Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail']);
+        Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
+    });
+
+    /**
+     * ========== Control Panel ==========
+     */
+    Route::group([
+        'as' => 'control.',
+    ], function() {
+        Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
         
-        /**===================== ACCOUNT MODULES =====================**/
+        Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
+        Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
 
-        /**
-         * Referral Module
-         */
+        Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
+        Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
+
+        // AJAX
         Route::group([
-            'as' => 'referrals.'
+            'as', 'ajax.',
+            'prefix' => 'ajax/control/user',
         ], function(){
-            Route::get('/referrals', [ReferralsController::class, 'index'])->name('index');
-            Route::post('/referrals', [ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
-            Route::put('/referrals', [ReferralsController::class, 'storeAdvancedReferral'])->name('store.advanced');
-            Route::patch('/referrals', [ReferralsController::class, 'generateReferrals'])->name('generate');
+            Route::get('/get/{user}', [ControlPanelController::class, 'ajaxGetUser']);
+            Route::get('/search/{query?}', [ControlPanelController::class, 'ajaxSearchUser']);
         });
+    });
 
-        /**
-         * Account Settings Module
-         */
-        Route::group([
-            'as' => 'account.'
-        ], function() {
-            // HTTP
-            Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
-            Route::post('/account/2fa/confirm', [AccountSettingsController::class, 'confirm2FA'])->name('confirm2FA');
+    /**
+     * ========== Subscription Panel ==========
+     */
+    Route::group([
+        'as' => 'subscription.',
+        'middleware' => 'auth.subscription',
+    ], function(){
+        // HTML
+        Route::get('/subscription', [SummaryController::class, 'index'])->name('subscription.index');
+        Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
+        Route::post('/ajax/subscription/accounting-systems/select-subscription/', [ManageAccountingSystemsController::class, 'ajaxSelectSubscription']);
 
-            // AJAX
-            Route::post('/ajax/account/show/recoverycodes', [AccountSettingsController::class, 'showRecoveryCodes']);
-            Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername']);
-            Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail']);
-            Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
-        });
+        Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
 
-        /**
-         * Subscription Module
-         */
-        Route::group([
-            'as' => 'subscription.',
-            'middleware' => 'auth.subscription',
-        ], function(){
-            // HTML
-            Route::get('/subscription', [SummaryController::class, 'index'])->name('subscription.index');
-            Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
-            Route::post('/ajax/subscription/accounting-systems/select-subscription/', [ManageAccountingSystemsController::class, 'ajaxSelectSubscription']);
-
-            Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
+        // Invitation Accept/Reject
+        Route::patch('/ajax/subscription/accept-invitation', [SummaryController::class, 'ajaxAcceptInvitation']);
+        Route::delete('/ajax/subscription/reject-invitation', [SummaryController::class, 'ajaxRejectInvitation']);
 
             // Invitation Accept/Reject
             Route::patch('/ajax/subscription/accept-invitation', [SummaryController::class, 'ajaxAcceptInvitation']);
             Route::delete('/ajax/subscription/reject-invitation', [SummaryController::class, 'ajaxRejectInvitation']);
 
 
-            // AJAX
-            Route::group([
-                'as', 'ajax.',
-                'prefix' => 'ajax/subscription/user',
-            ], function(){
-                Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
-                Route::get('/u/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxGetSubscriptionUser']);
-                Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
-                Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
+        // AJAX
+        Route::group([
+            'as', 'ajax.',
+            'prefix' => 'ajax/subscription/user',
+        ], function(){
+            Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
+            Route::get('/u/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxGetSubscriptionUser']);
+            Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
+            Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
 
-                // Part 1: When adding new user.
-                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']); 
-                // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
-                // Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
+            // Part 1: When adding new user.
+            Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']); 
+            // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
+            // Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
 
-                // Part 2: Adding access after adding new user.
-                Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
+            // Part 2: Adding access after adding new user.
+            Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
 
-                // TODO: Editing a user. Both parts are merged since there is already an ID.
-                Route::get('/edit/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxEditUser']);
-                Route::put('/update/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxUpdateUser']);
+            // TODO: Editing a user. Both parts are merged since there is already an ID.
+            Route::get('/edit/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxEditUser']);
+            Route::put('/update/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxUpdateUser']);
 
-                Route::delete('/remove/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxRemoveUser']);
-            });
+            Route::delete('/remove/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxRemoveUser']);
         });
-
-        /**===================== SIDEBAR MODULES =====================**/
+    });
+    
+    
+    /**
+     * ========== Accounting System Routes ==========
+     */
+    Route::group([
+        'middleware' => 'auth.accountingsystem',
+    ], function()
+    {
+        /**
+         * ========== Accounting System Dashboard ==========
+         */
+        Route::get('/', [HomeController::class, 'index']);
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
 
         /**
-         * Customers Module
+         * ========== Customers Module ==========
          */
         Route::group([
             // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
@@ -248,7 +273,7 @@ Route::group([
         });
 
         /**
-         * Vendors Module
+         * ========== Vendors Module ==========
          */
         Route::group([
             // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
@@ -308,7 +333,7 @@ Route::group([
         });
 
         /**
-         * Banking Module
+         * ========== Banking Module ==========
          */
         Route::group([
             // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
@@ -371,7 +396,7 @@ Route::group([
         });
 
         /**
-         * Journal Vouchers Module
+         * ========== Journal Vouchers Module ==========
          */
         Route::group([
             // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
@@ -384,7 +409,7 @@ Route::group([
         });
 
         /**
-         * Inventory Module
+         * ========== Inventory Module ==========
          */
         Route::group([
             // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
@@ -403,7 +428,7 @@ Route::group([
         });
 
         /**
-         * Human Resource Module
+         * ========== Human Resource Module ==========
          */
         Route::group([
             // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
@@ -488,9 +513,10 @@ Route::group([
         });
 
         /**
-         * Reports Module
+         * ========== Reports Module ==========
          */
         Route::group([
+            // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
             'as' => 'reports.',
             'prefix' => 'reports'
         ], function() {
@@ -534,10 +560,11 @@ Route::group([
         });
             
         /**
-         * Settings Module
+         * ========== Settings Module ==========
          */
         Route::group([
-            'as' => 'settings.'
+            'as' => 'settings.',
+            'middleware' => 'acctsys.settings'
         ], function() {
 
             /**
@@ -684,28 +711,11 @@ Route::group([
         });
 
         /**
-         * Control Panel
+         * ========== Misclaneous Routes (required for some functions to work) ==========
          */
-        Route::group([
-            'as' => 'control.',
-        ], function() {
-            Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
-            
-            Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
-            Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
 
-            Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
-            Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
-
-            // AJAX
-            Route::group([
-                'as', 'ajax.',
-                'prefix' => 'ajax/control/user',
-            ], function(){
-                Route::get('/get/{user}', [ControlPanelController::class, 'ajaxGetUser']);
-                Route::get('/search/{query?}', [ControlPanelController::class, 'ajaxSearchUser']);
-            });
-        });
+        // Notifications
+        Route::resource('notifications', NotificationController::class);
     });
 });
 

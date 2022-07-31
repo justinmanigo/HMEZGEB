@@ -1,5 +1,32 @@
 @php
+$subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
+    ->where('subscription_users.role', '!=', 'member')
+    ->where('subscription_users.role', '!=', 'moderator')
+    ->count();
 
+if(session('accounting_system_id'))
+    $curr_acct_sys = \App\Models\AccountingSystem::where('id', session('accounting_system_id'))->first();
+
+$acct_systems = \App\Models\SubscriptionUser::select(
+            'accounting_systems.id as accounting_system_id', 
+            'accounting_systems.name',
+            'accounting_systems.accounting_year',
+            'accounting_systems.calendar_type',
+            'subscriptions.id as subscription_id',
+            'users.firstName as user_first_name',
+            'users.lastName as user_last_name',
+        )
+        ->where('subscription_users.user_id', Auth::id())
+        ->rightJoin('accounting_system_users', 'subscription_users.id', '=', 'accounting_system_users.subscription_user_id')
+        ->leftJoin('accounting_systems', 'accounting_system_users.accounting_system_id', '=', 'accounting_systems.id')
+        ->leftJoin('subscriptions', 'subscription_users.subscription_id', '=', 'subscriptions.id')
+        ->leftJoin('users', 'subscriptions.user_id', '=', 'users.id')
+        ->where('subscription_users.is_accepted', true)
+        ->get();
+
+$route_name = Route::currentRouteName();
+$route_name = explode('.', $route_name);
+$route_name = $route_name[0];
 @endphp
  
  <!-- Sidebar -->
@@ -16,43 +43,137 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/switch') }}">
-                    <i class="fas fa-fw fa-arrow-left"></i>
-                    <span>Acct. System Selection</span>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#control"
+                    aria-expanded="true" aria-controls="control">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>{{ auth()->user()->firstName }}</span>
                 </a>
+                <div id="control" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @if(session('acct_system_count') > 1)
+                            <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
+                            <hr class="collapse-divider mx-4 my-2">
+                        @endif
+                        <a class="collapse-item" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal">Log Out</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Subscription Summary</span>
-                </a>
-            </li>
+            @if(isset($curr_acct_sys))
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Go back
+                </div>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/') }}">
+                        <i class="fas fa-fw fa-arrow-left"></i>
+                        <span>{{ $curr_acct_sys->name }}</span>
+                    </a>
+                </li>
+                
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+            @endif
+
+            @if(!isset($curr_acct_sys) && count($acct_systems) == 1)
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Go To
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/') }}">
+                        <i class="fas fa-fw fa-arrow-left"></i>
+                        <span>{{ $acct_systems[0]->name }}</span>
+                    </a>
+                </li>
+                
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+            @endif
+
+
+            @if(auth()->user()->control_panel_role != null)
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Control Panel
+                </div>
+
+                {{-- <li class="nav-item">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/control/') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li> --}}
+
+                <li class="nav-item">
+                    <a class="nav-link dynamic-nav" href="{{ url('/control') }}">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+            @endif
+
+
+            @if($subscription_admin_count > 0)
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Subscriptions
+                </div>
+
+                <li class="nav-item">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Subscription Summary</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Manage Acct. Systems</span><br>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link dynamic-nav" href="{{ url('/subscription/users') }}">
+                        <i class="fas fa-fw fa-user"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+            @endif
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Management
+                Your Account
             </div>
 
             <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
+                <a class="nav-link active dynamic-nav" href="{{ url('/account/') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Accounting Systems</span>
+                    <span>Account Settings</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link dynamic-nav" href="{{ url('/subscription/users') }}">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Subscription Users</span>
+                <a class="nav-link active dynamic-nav" href="{{ url('/referrals/') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Referrals</span>
                 </a>
             </li>
 
@@ -82,7 +203,12 @@
                     </button>
 
                     <!-- Topbar Accounting System Name & Year -->
-                    <h5>Subscription Panel</h5>
+                    <h5>
+                        @if($route_name == 'control') Control Panel
+                        @elseif($route_name == 'subscription') Subscription
+                        @elseif($route_name == 'account' || $route_name == 'referrals') Your Account
+                        @endif
+                    </h5>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -108,47 +234,6 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </li>
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">  
-                                     {{-- {{ Auth::user()->firstName}} {{Auth::user()->lastName }}  --}}
-                                </span>
-                                {{-- <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg"> --}}
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                @if(Auth::user()->control_panel_role != null)
-                                    <a class="dropdown-item" href="/control/">
-                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Control Panel
-                                    </a>
-                                @endif
-                                <a class="dropdown-item" href="/subscription/">
-                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Subscription Panel
-                                </a>
-                                <a class="dropdown-item" href="/account/">
-                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Account Settings
-                                </a>
-                                <a class="dropdown-item" href="/referrals/">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Referrals
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
                             </div>
                         </li>
 
