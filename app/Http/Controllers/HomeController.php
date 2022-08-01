@@ -34,6 +34,7 @@ class HomeController extends Controller
                 'subscriptions.id as subscription_id',
                 'users.firstName as user_first_name',
                 'users.lastName as user_last_name',
+                'subscription_users.id as subscription_user_id',
                 'subscription_users.role as subscription_user_role',
             )
             ->where('subscription_users.user_id', Auth::id())
@@ -48,7 +49,7 @@ class HomeController extends Controller
 
         // If the number of accounting systems' is only one, skip ahead to dashboard.
         if(count($acct_systems) == 1) {
-            $accounting_system_user = GetLoggedAccountingSystemUserId::run($acct_systems[0]->accounting_system_id, Auth::id());
+            $accounting_system_user = GetLoggedAccountingSystemUserId::run($acct_systems[0]->accounting_system_id, $acct_systems[0]->subscription_user_id);
 
             $latest_accounting_period = GetLatestAccountingPeriod::run($acct_systems[0]->accounting_system_id);
             
@@ -74,8 +75,9 @@ class HomeController extends Controller
     {
         // return $this->request;
         // Get the accounting system user id.
-        $accounting_system_user = GetLoggedAccountingSystemUserId::run($this->request->accounting_system_id, Auth::id());
-        $subscription_user = SubscriptionUser::where('id', $accounting_system_user->subscription_user_id)->first();
+        $accounting_system_user = GetLoggedAccountingSystemUserId::run($this->request->accounting_system_id, $this->request->subscription_user_id);
+
+        $subscription_user = SubscriptionUser::where('id', $this->request->subscription_user_id)->first();
         
         // If the result is null, redirect him back to the accounting system selection page.
         if(!$accounting_system_user) return redirect('/switch')->with('danger', "You are not a member of this accounting system.");
