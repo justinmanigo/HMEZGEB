@@ -33,7 +33,7 @@
                             <small class="m-0">Subscription # {{ $account->subscription_id }} | {{ $account->user_first_name . ' ' . $account->user_last_name }}</small>
                         </div>
                         <div>
-                            <button class="btn btn-primary m-0 accounting_system_item" data-id="{{ $account->accounting_system_id }}">
+                            <button class="btn btn-primary m-0 accounting_system_item" data-id="{{ $account->accounting_system_id }}" data-suid="{{ $account->subscription_user_id }}">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400"></i>
                             </button>
                         </div>
@@ -60,6 +60,7 @@
     $(document).on('click', '.accounting_system_item', function(e) {
         console.log($(this).data('id'));
         var accounting_system_id = $(this).data('id');
+        var subscription_user_id = $(this).data('suid');
 
         $('.accounting_system_item').attr('disabled', true);
 
@@ -68,6 +69,7 @@
             method: "POST",
             data: {
                 accounting_system_id: accounting_system_id,
+                subscription_user_id: subscription_user_id,
                 _token: "{{ csrf_token() }}",
                 _method: "PUT",
             }
