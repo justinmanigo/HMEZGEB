@@ -60,6 +60,7 @@ class Kernel extends HttpKernel
         'acctsys.permission' => \App\Http\Middleware\EnsureUserHasPermission::class,
         'acctsys.settings' => \App\Http\Middleware\HasSettingsAccess::class,
         'auth.subscription' => \App\Http\Middleware\HasSubscriptionMiddleware::class,
+        'auth.control' => \App\Http\Middleware\HasControlAccess::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,

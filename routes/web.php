@@ -128,6 +128,7 @@ Route::group([
      */
     Route::group([
         'as' => 'control.',
+        'middleware' => 'auth.control',
     ], function() {
         Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
         
