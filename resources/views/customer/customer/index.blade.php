@@ -160,7 +160,7 @@
                 <div class="modal-body">
                     <h5>Customer</h5>
                     <div class="form-group row">
-                        <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name<span class="text-danger ml-1">*</span> :</label>
+                        <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name:</label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
                         </div>
@@ -206,12 +206,15 @@
                     <div class="form-group row">
                         <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="file" id="c_picture" name="image">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="file" name="image">
+                                <label class="custom-file-label" for="file">Choose file</label>
+                            </div>
                         </div>
 
                         <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_label" name="label" placeholder="Label" required>
+                            <input type="text" class="form-control" id="c_label" name="label" required>
                         </div>
                     </div> 
 
@@ -318,6 +321,14 @@
  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
  <script>
+        // add <span class="text-danger ml-1">*</span> after the label of required input
+        $('label').each(function(){
+            if($(this).attr('for') != ''){
+                if($('#'+$(this).attr('for')).prop('required')){
+                    $(this).append(' <span class="text-danger ml-1">*</span>');
+                }
+            }
+        });
         // add the file name only in file input field
         $('.custom-file-input').on('change', function() {
         var fileName = $(this).val().split('\\').pop();

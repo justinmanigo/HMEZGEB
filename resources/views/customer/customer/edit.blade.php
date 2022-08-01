@@ -82,13 +82,16 @@
             <div class="form-group row">
                 <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
                 <div class="col-sm-9 col-lg-4">
-                    <input type="file" id="c_picture" name="image">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file" name="image" value="{{$customers->image}}">
+                        <label class="custom-file-label" for="file">{{$customers->image ? $customers->image : 'Choose Image'}}</label>
+                    </div>
                 </div>
 
                 <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
                 <div class="col-sm-9 col-lg-4">
                     <input type="text" class="form-control" id="c_label" name="label"
-                        value="{{ $customers->label }}Label" required>
+                        value="{{ $customers->label }}" required>
                 </div>
             </div>
 
