@@ -22,7 +22,7 @@ class HasSubscriptionMiddleware
             ->count();
 
         if($subscription_admin_count == 0) {
-            return abort(403);
+            return abort(403, 'You do not have permission to access this page.');
         }
 
         return $next($request);
