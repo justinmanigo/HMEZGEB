@@ -209,10 +209,14 @@ class TransfersController extends Controller
          try {
            Excel::import(new ImportBankTransfer, $request->file('file'));
            return redirect()->back()->with('success', 'Successfully imported bank transfer records.');
-        } catch (\Exception $e) {
-             return back()->with('error', 'Error: Cannot import bank transfer records. Make sure you have the correct format.');
-         }   
-
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $message = $failures[0]->errors();
+            return back()->with('error', $message[0].' Please check the file format');        
+        }   
+        catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error importing bank account');
+        }  
  
      }
  

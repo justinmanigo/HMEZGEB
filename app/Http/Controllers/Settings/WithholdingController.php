@@ -130,6 +130,9 @@ class WithholdingController extends Controller
             $failures = $e->failures();
             $message = $failures[0]->errors();
             return back()->with('error', $message[0].' Please check the file format');
+        }  
+        catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error importing bank account');
         }      
         return redirect()->back()->with('success', 'Successfully imported withholding records.');
     }

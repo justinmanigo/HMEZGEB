@@ -161,7 +161,7 @@
                     @csrf
                     <div class="form-group row container">
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="file" name="file">
+                            <input type="file" class="custom-file-input" id="file" name="file" required>
                             <label class="custom-file-label" for="file">Choose file</label>
                         </div>
                     </div>
@@ -192,8 +192,8 @@
                         <label for="e_file_type" class="col-sm-4 col-form-label">File Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-8">
                             <select class="form-control" id="e_file_type" name="file_type" required>
-                                <option value="pdf">PDF</option>
                                 <option value="csv">CSV</option>
+                                <option value="pdf">PDF</option>
                             </select>
                         </div>
                     </div>

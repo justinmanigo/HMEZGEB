@@ -27,7 +27,7 @@ class ImportSettingWithholding implements ToModel, WithHeadingRow, WithValidatio
     public function rules(): array
     {
         return [
-            'accounting_system_id' => 'required|integer',
+            'accounting_system_id' => 'required|integer|exists:accounting_systems,id',
             'name' => 'required|string|max:255',
             'percentage' => 'required|numeric|between:0,100',
         ];
@@ -38,8 +38,9 @@ class ImportSettingWithholding implements ToModel, WithHeadingRow, WithValidatio
         return [
             'accounting_system_id.required' => 'The accounting system id field is required.',
             'accounting_system_id.integer' => 'The accounting system id must be an integer.',
+            'accounting_system_id.exists' => 'The selected accounting system id is invalid.',
             'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a string.',
+            'name.string' => 'The name must not be numerical.',
             'name.max' => 'The name may not be greater than 255 characters.',
             'percentage.required' => 'The percentage field is required.',
             'percentage.numeric' => 'The percentage must be a number.',
