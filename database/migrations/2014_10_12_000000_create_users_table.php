@@ -19,8 +19,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('username')->unique();
-            $table->string('firstName')->nullable();
-            $table->string('lastName')->nullable();
+            $table->string('firstName')->nullable()->default('New');
+            $table->string('lastName')->nullable()->default('User');
             $table->enum('control_panel_role', [
                 'staff',
                 'admin',
