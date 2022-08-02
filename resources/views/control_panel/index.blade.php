@@ -246,7 +246,7 @@
                         <div class="row">
                             <p>Privileges include:</p>
                             <ul>
-                                <li>Access to the control panel that manages the whole HMEZGEB System</li>
+                                <li>Access to the control panel that manages the HMEZGEB System based on your role: <strong>{{ ucwords(auth()->user()->control_panel_role) }}</strong></li>
                                 <li>A subscription that never expires (as long as you're a super admin)</li>
                                 <li>A subscription that allows you to create up to 10 accounting systems</li>
                             </ul>
