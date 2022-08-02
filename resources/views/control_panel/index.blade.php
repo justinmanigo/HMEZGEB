@@ -212,7 +212,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to remove Super Admin <strong id="remove-sa-name"></strong> with User ID: <strong id="remove-sa-id"></strong> and Email <strong id="remove-sa-email"></strong>? His/her user account won't be deleted and his/her accounting systems will remain intact.</p>
+                    <p>Are you sure you want to remove Super Admin <strong id="remove-sa-name"></strong> with User ID: <strong id="remove-sa-id"></strong> and Email <strong id="remove-sa-email"></strong>? <br>
+                        His/her user account won't be deleted and the subscription not associated with the super admin status will remain intact. <br>
+                        However, the subscription related to this privilege will expire after 7 days, and will be unaccessible until reinstated.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Close</button>
