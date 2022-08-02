@@ -131,9 +131,12 @@ Route::group([
         'middleware' => 'auth.control',
     ], function() {
         Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+        Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+
+        Route::put('/control/accept', [ControlPanelController::class, 'acceptInvitation'])->name('accept');
+        Route::post('/control/reject', [ControlPanelController::class, 'rejectInvitation'])->name('reject');
         
-        Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
-        Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
+        Route::put('/control/admins/add', [ControlPanelController::class, 'ajaxInviteUser'])->name('ajaxInviteUser');
 
         Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
         Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');

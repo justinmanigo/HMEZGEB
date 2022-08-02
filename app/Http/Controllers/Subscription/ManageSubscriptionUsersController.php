@@ -82,8 +82,6 @@ class ManageSubscriptionUsersController extends Controller
         $user = User::firstOrCreate([
             'email' => $request->email,
         ], [
-            'firstName' => 'New',
-            'lastName' => 'User',
             'username' => $username,
             'password' => bcrypt($password),
         ]);
@@ -110,58 +108,6 @@ class ManageSubscriptionUsersController extends Controller
             'subscription_user' => $subscription_user,
             'user' => $user,
             // 'password' => $password, // TODO: send email with password when invited
-        ]);
-    }
-
-    /**
-     * ? DEPRECATED IN LIEU OF ajaxInviteUser()
-     */
-    public function ajaxAddNewUser(Request $request)
-    {
-        $exampleKey = new Key;
-        $exampleKey->setPattern("XXXXXXXX");
-        $username = strtolower((string)$exampleKey->generate());
-        $password = strtolower((string)$exampleKey->generate());
-
-        $user = User::create([
-            'firstName' => $request->first_name,
-            'lastName' => $request->last_name,
-            'email' => $request->email,
-            'username' => $username,
-            'password' => bcrypt($password),
-        ]);
-
-        $subscription_user = SubscriptionUser::create([
-            'subscription_id' => $request->subscription_id,
-            'user_id' => $user->id,
-            'role' => $request->role,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'subscription_id' => $request->subscription_id,
-            'subscription_user' => $subscription_user,
-            'user' => $user,
-            // 'password' => $password, // TODO: send email with password when invited
-        ]);
-    }
-
-    /**
-     * ? DEPRECATED IN LIEU OF ajaxInviteUser()
-     */
-    public function ajaxAddExistingUser(AddExistingUserRequest $request)
-    {
-        $subscription_user = SubscriptionUser::create([
-            'subscription_id' => $request->subscription_id,
-            'user_id' => $request->user->value,
-            'role' => $request->role,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'subscription_id' => $request->subscription_id,
-            'subscription_user' => $subscription_user,
-            'user' => $request->user,
         ]);
     }
 

@@ -16,13 +16,21 @@
 @section('content')
 
 <div class="container-fluid">
+    @if(\Session::has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {!! \Session::get('success') !!}
+            {{-- {{ session()->get('success') }} --}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     
     @if (count($accountingSystems))
 
         <div class="row">
             <h4 class="mb-4">Choose an Accounting System</h4>
         </div>
-
         @foreach($accountingSystems as $account)
         <div class="row">
             <div class="card col-12 col-sm-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mb-2">

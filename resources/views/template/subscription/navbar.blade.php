@@ -2,6 +2,7 @@
 $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
     ->where('subscription_users.role', '!=', 'member')
     ->where('subscription_users.role', '!=', 'moderator')
+    ->where('subscription_users.is_accepted', true)
     ->count();
 
 if(session('accounting_system_id'))
@@ -150,6 +151,7 @@ $route_name = $route_name[0];
                         <span>Manage Users</span>
                     </a>
                 </li>
+
             @endif
 
             <!-- Divider -->

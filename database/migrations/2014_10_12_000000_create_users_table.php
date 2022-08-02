@@ -19,12 +19,13 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('username')->unique();
-            $table->string('firstName')->nullable();
-            $table->string('lastName')->nullable();
+            $table->string('firstName')->nullable()->default('New');
+            $table->string('lastName')->nullable()->default('User');
             $table->enum('control_panel_role', [
                 'staff',
                 'admin',
             ])->nullable();
+            $table->boolean('is_control_panel_access_accepted')->default(false);
             $table->string('code')->nullable();
             $table->enum('activated',['Yes','No'])->default('Yes');
             $table->rememberToken();

@@ -78,31 +78,19 @@
                                     </td>
                                 </tr>
                             @endif
-                            <tr>
-                                <td>Subscription Status</td>
-                                <td class="text-right">
-                                    @if($subscription->status == 'trial')
-                                        <span class="badge badge-warning">{{ 'Trial' }}</span>
-                                    @elseif($subscription->status == 'active')
-                                        <span class="badge badge-success">Active</span>
-                                    @elseif($subscription->status == 'expired')
-                                        <span class="badge badge-danger">Expired</span>
-                                    @else
-                                        <span class="badge badge-secondary">{{ $subscription->status }}</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        </table>
-                        @if($subscription->is_accepted == 0)
-                            You are invited to this subscription.
-                            <!-- Add button group with accept and reject buttons -->
-                            <div class="btn-group">
-                                <button type="button" data-id="{{ $subscription->subscription_user_id }}" class="btn btn-success btn-accept-invitation">Accept</button>
-                                <button type="button" data-id="{{ $subscription->subscription_user_id }}" class="btn btn-danger btn-reject-invitation">Reject</button>
-                            </div>
-                        @endif
+                        </td>
+                    </tr>
+                </table>
+                @if($subscription->is_accepted == 0 && $subscription->account_type != 'super admin')
+                    You are invited to this subscription.
+                    <!-- Add button group with accept and reject buttons -->
+                    <div class="btn-group">
+                        <button type="button" data-id="{{ $subscription->subscription_user_id }}" class="btn btn-success btn-accept-invitation">Accept</button>
+                        <button type="button" data-id="{{ $subscription->subscription_user_id }}" class="btn btn-danger btn-reject-invitation">Reject</button>
                     </div>
-                </div>
+                @elseif($subscription->is_accepted == 0 && $subscription->account_type == 'super admin')
+                    To gain access to this subscription, you must accept the invitation as HMEZGEB Admin/Staff.
+                @endif
             </div>
             @endforeach
         </div>
