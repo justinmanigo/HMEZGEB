@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
                 'staff',
                 'admin',
             ])->nullable();
+            $table->boolean('is_control_panel_access_accepted')->default(false);
             $table->string('code')->nullable();
             $table->enum('activated',['Yes','No'])->default('Yes');
             $table->rememberToken();
