@@ -79,13 +79,15 @@
                         </td>
                     </tr>
                 </table>
-                @if($subscription->is_accepted == 0)
+                @if($subscription->is_accepted == 0 && $subscription->account_type != 'super admin')
                     You are invited to this subscription.
                     <!-- Add button group with accept and reject buttons -->
                     <div class="btn-group">
                         <button type="button" data-id="{{ $subscription->subscription_user_id }}" class="btn btn-success btn-accept-invitation">Accept</button>
                         <button type="button" data-id="{{ $subscription->subscription_user_id }}" class="btn btn-danger btn-reject-invitation">Reject</button>
                     </div>
+                @elseif($subscription->is_accepted == 0 && $subscription->account_type == 'super admin')
+                    To gain access to this subscription, you must accept the invitation as HMEZGEB Admin/Staff.
                 @endif
             </div>
         </div>
