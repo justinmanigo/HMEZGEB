@@ -125,20 +125,20 @@ $route_name = $route_name[0];
 
             @endif
 
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Subscriptions
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Subscription Summary</span>
+                </a>
+            </li>
 
             @if($subscription_admin_count > 0)
 
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Subscriptions
-                </div>
-
-                <li class="nav-item">
-                    <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Subscription Summary</span>
-                    </a>
-                </li>
 
                 <li class="nav-item">
                     <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
@@ -153,12 +153,12 @@ $route_name = $route_name[0];
                         <span>Manage Users</span>
                     </a>
                 </li>
-
+                
+                @endif
+                
                 <!-- Divider -->
                 <hr class="sidebar-divider">
-
-            @endif
-
+                
             <!-- Heading -->
             <div class="sidebar-heading">
                 Your Account
