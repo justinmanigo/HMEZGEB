@@ -82,8 +82,6 @@ class ManageSubscriptionUsersController extends Controller
         $user = User::firstOrCreate([
             'email' => $request->email,
         ], [
-            'firstName' => 'New',
-            'lastName' => 'User',
             'username' => $username,
             'password' => bcrypt($password),
         ]);
