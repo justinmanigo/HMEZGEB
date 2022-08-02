@@ -8,9 +8,11 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\Settings\ChartOfAccounts\JournalEntries;
 use App\Models\Settings\ChartOfAccounts\JournalPostings;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Validation\Rule;
 
 
-class ImportSettingChartOfAccount implements ToModel, WithHeadingRow
+class ImportSettingChartOfAccount implements ToModel, WithHeadingRow, WithValidation
 {
     /**
     * @param array $row

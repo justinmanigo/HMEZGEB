@@ -5,8 +5,10 @@ namespace App\Imports;
 use App\Models\Settings\Taxes\Tax;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Validation\Rule;
 
-class ImportSettingTax implements ToModel, WithHeadingRow
+class ImportSettingTax implements ToModel, WithHeadingRow, WithValidation
 {
     /**
     * @param array $row
@@ -21,5 +23,28 @@ class ImportSettingTax implements ToModel, WithHeadingRow
             'name' => $row['name'],
             'percentage' => $row['percentage'],
         ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+            'accounting_system_id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'percentage' => 'required|numeric|between:0,100',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            'accounting_system_id.required' => 'The accounting system id field is required.',
+            'accounting_system_id.integer' => 'The accounting system id must be an integer.',
+            'name.required' => 'The name field is required.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name may not be greater than 255 characters.',
+            'percentage.required' => 'The percentage field is required.',
+            'percentage.numeric' => 'The percentage must be a number.',
+            'percentage.between' => 'The percentage must be between 0 and 100.',
+        ];
     }
 }
