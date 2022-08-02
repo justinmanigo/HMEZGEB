@@ -133,13 +133,11 @@ $route_name = $route_name[0];
             <li class="nav-item">
                 <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Subscription Summary</span>
+                    <span>Subscriptions</span>
                 </a>
             </li>
 
             @if($subscription_admin_count > 0)
-
-
                 <li class="nav-item">
                     <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -153,12 +151,12 @@ $route_name = $route_name[0];
                         <span>Manage Users</span>
                     </a>
                 </li>
-                
-                @endif
-                
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-                
+
+            @endif
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
             <!-- Heading -->
             <div class="sidebar-heading">
                 Your Account

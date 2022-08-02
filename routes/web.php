@@ -156,46 +156,49 @@ Route::group([
      */
     Route::group([
         'as' => 'subscription.',
-        'middleware' => 'auth.subscription',
     ], function(){
         // HTML
         Route::get('/subscription', [SummaryController::class, 'index'])->name('subscription.index');
-        Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
-        Route::post('/ajax/subscription/accounting-systems/select-subscription/', [ManageAccountingSystemsController::class, 'ajaxSelectSubscription']);
-
-        Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
 
         // Invitation Accept/Reject
         Route::patch('/ajax/subscription/accept-invitation', [SummaryController::class, 'ajaxAcceptInvitation']);
         Route::delete('/ajax/subscription/reject-invitation', [SummaryController::class, 'ajaxRejectInvitation']);
-
-
-        // AJAX
+        
         Route::group([
-            'as', 'ajax.',
-            'prefix' => 'ajax/subscription/user',
+            'middleware' => 'auth.subscription',
         ], function(){
-            Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
-            Route::get('/u/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxGetSubscriptionUser']);
-            Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
-            Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
-
-            // Part 1: When adding new user.
-            Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']); 
-            // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
-            // Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
-
-            // Part 2: Adding access after adding new user.
-            Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
-
-            // TODO: Editing a user. Both parts are merged since there is already an ID.
-            Route::get('/edit/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxEditUser']);
-            Route::put('/update/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxUpdateUser']);
-
-            Route::delete('/remove/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxRemoveUser']);
-        });
-    });
+            Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
+            Route::post('/ajax/subscription/accounting-systems/select-subscription/', [ManageAccountingSystemsController::class, 'ajaxSelectSubscription']);
     
+            Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
+    
+            // AJAX
+            Route::group([
+                'as', 'ajax.',
+                'prefix' => 'ajax/subscription/user',
+            ], function(){
+                Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
+                Route::get('/u/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxGetSubscriptionUser']);
+                Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
+                Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
+    
+                // Part 1: When adding new user.
+                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']); 
+                // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
+                // Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
+    
+                // Part 2: Adding access after adding new user.
+                Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
+    
+                // TODO: Editing a user. Both parts are merged since there is already an ID.
+                Route::get('/edit/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxEditUser']);
+                Route::put('/update/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxUpdateUser']);
+    
+                Route::delete('/remove/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxRemoveUser']);
+            });
+        });
+
+    });
     
     /**
      * ========== Accounting System Routes ==========
