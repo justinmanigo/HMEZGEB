@@ -83,6 +83,46 @@ class ControlPanelController extends Controller
         ]);
     }
 
+    public function acceptInvitation(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        // check password
+        if(!Hash::check($request->password, $user->password))
+        {
+            return redirect()->route('control.index')
+                ->with('error', 'Password is incorrect.');
+        }
+
+        $user->is_control_panel_access_accepted = true;
+        $user->save();
+
+        $subscription = Subscription::where('user_id', $user->id)
+            ->where('account_type', 'super admin')
+            ->first();
+
+        $subscription_user = SubscriptionUser::where('subscription_id', $subscription->id)
+            ->where('user_id', $user->id)
+            ->where('role', 'super admin')
+            ->first();
+
+        $subscription_user->is_accepted = true;
+        $subscription_user->save();
+
+        return redirect()->route('control.index')
+            ->with('success', 'You have accepted the invitation to the control panel.');
+    }
+
+    public function rejectInvitation()
+    {
+        $user = User::find(Auth::user()->id);
+        $user->is_control_panel_access_accepted = false;
+        $user->control_panel_role = null;
+        $user->save();
+
+        return redirect('/switch')
+            ->with('success', 'You have rejected the invitation to the control panel.');
+    }
+
     /**
      * 
      */

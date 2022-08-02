@@ -131,6 +131,10 @@ Route::group([
         'middleware' => 'auth.control',
     ], function() {
         Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+        Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+
+        Route::put('/control/accept', [ControlPanelController::class, 'acceptInvitation'])->name('accept');
+        Route::post('/control/reject', [ControlPanelController::class, 'rejectInvitation'])->name('reject');
         
         Route::put('/control/admins/add', [ControlPanelController::class, 'ajaxInviteUser'])->name('ajaxInviteUser');
 
