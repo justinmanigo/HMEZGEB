@@ -8,17 +8,13 @@
 @if(auth()->user()->control_panel_role == 'admin')
     <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
         <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-new-user"
             aria-haspopup="true" aria-expanded="false">
                 <span class="icon text-white-50">
                     <i class="fas fa-user"></i>
                 </span>
-                <span class="text">Add Super Admin</span>
+                <span class="text">Invite Super Admin</span>
             </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-new-user">New User</a>
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-existing-user">Existing User</a>
-            </div>
         </div>
     </div>
 @endif
@@ -134,24 +130,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{-- <h5>Name</h5>
-                    <div class="form-group row">
-                        <label for="firstName" class="col-sm-6 col-form-label">First Name<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="firstName" name="firstName"
-                                placeholder="First Name" required>
-                            <p class="text-danger error-message error-message-firstName" style="display:none"></p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="lastName" class="col-sm-6 col-form-label">Last Name<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="lastName" name="lastName"
-                                placeholder="Last Name" required>
-                            <p class="text-danger error-message error-message-lastName" style="display:none"></p>
-                        </div>
-                    </div> --}}
-                    {{-- <h5>Login Credentials</h5> --}}
                     <div class="form-group row">
                         <label for="email" class="col-sm-6 col-form-label">Email<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-6">
@@ -160,23 +138,6 @@
                             <p id="error-iu-email" class="text-danger error-message error-message-email" style="display:none"></p>
                         </div>
                     </div>
-                    {{-- <div class="form-group row">
-                        <label for="password" class="col-sm-6 col-form-label">Password<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-6">
-                            <input type="password" class="form-control" id="password" name="password"
-                                placeholder="Password" required>
-                            <p class="text-danger error-message error-message-password" style="display:none"></p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="password_confirmation" class="col-sm-6 col-form-label">Confirm Password<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-6">
-                            <input type="password" class="form-control" id="password_confirmation"
-                                name="password_confirmation" placeholder="Confirm Password" required>
-                            <p class="text-danger error-message error-message-password_confirmation" style="display:none"></p>
-                        </div>
-                    </div> --}}
-                    {{-- <h5>Role</h5> --}}
                     <div class="form-group row">
                         <label for="control_panel_role" class="col-sm-6 col-form-label">Role<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-6">
@@ -193,48 +154,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" form="form-add-new-user">Invite Super Admin</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
-{{-- Add Existing Super Admin User --}}
-<form class="ajax-submit-updated" action="{{ url('/control/admins/add') }}" id="form-add-existing-user" method="post" data-message="Successfully added existing user for Super Admin Role.">
-    @csrf
-    <div class="modal fade" id="modal-add-existing-user" tabindex="-1" role="dialog"
-        aria-labelledby="modal-add-existing-user-label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-credit-receipt-label">Add Existing User for Super Admin Role</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label for="e_user" class="col-sm-6 col-form-label">User<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="e_user" name="user">
-                            <p class="text-danger error-message error-message-user" style="display:none"></p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="control_panel_role" class="col-sm-6 col-form-label">Role<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-6">
-                            <select class="form-control" id="e_control_panel_role" name="control_panel_role"
-                                required>
-                                <option value="" hidden selected disabled>Select Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="staff">Staff</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" form="form-add-existing-user">Save & Add Super Admin User</button>
                 </div>
             </div>
         </div>
@@ -334,7 +253,6 @@
                 else {
                     $('button[form="form-add-new-user"]').prop('disabled', false);
                     $('#error-iu-email').show().text(res.message);
-                    // ! TODO - Test this one.
                 }
             });
 
