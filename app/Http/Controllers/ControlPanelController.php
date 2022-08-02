@@ -61,40 +61,6 @@ class ControlPanelController extends Controller
             'user' => $user
         ]);
     }
-    
-
-    /**
-     * AJAX endpoint to add a new super admin user account.
-     */
-    public function addNewSuperAdmin(AddNewSuperAdminRequest $request)
-    {
-        $exampleKey = new Key;
-        $exampleKey->setPattern("XXXXXXXX");
-
-        $user = User::create([
-            'firstName' => $request->firstName,
-            'lastName' => $request->lastName,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'control_panel_role' => $request->control_panel_role,
-            'code' => (string)$exampleKey->generate(),
-            'username' => (string)$exampleKey->generate(),
-        ]);
-
-        return $user;
-    }
-
-    /**
-     * AJAX endpoint to add an existing user as a super admin.
-     */
-    public function addExistingUserAsSuperAdmin(AddExistingUserAsSuperAdmin $request)
-    {
-        $user = User::findOrFail($request->user->value);
-        $user->control_panel_role = $request->control_panel_role;
-        $user->save();
-
-        return $user;
-    }
 
     /**
      * 
