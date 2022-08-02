@@ -119,8 +119,8 @@
 </div> --}}
 
 {{-- Modals --}}
-{{-- Add New Super Admin User --}}
-<form class="ajax-submit-updated" action="{{ url('/control/admins/add') }}" id="form-add-new-user" method="post" data-message="Successfully added user for Super Admin Role.">
+{{-- FORMERLY: Add New Super Admin User, Now Invite Super Admin --}}
+<form action="{{ url('/control/admins/add') }}" id="form-add-new-user" method="post" data-message="Successfully added user for Super Admin Role.">
     @csrf
     @method('PUT')
     <div class="modal fade" id="modal-add-new-user" tabindex="-1" role="dialog"
@@ -128,13 +128,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-credit-receipt-label">Add New Super Admin User</h5>
+                    <h5 class="modal-title" id="modal-credit-receipt-label">Invite Super Admin</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h5>Name</h5>
+                    {{-- <h5>Name</h5>
                     <div class="form-group row">
                         <label for="firstName" class="col-sm-6 col-form-label">First Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-6">
@@ -150,17 +150,17 @@
                                 placeholder="Last Name" required>
                             <p class="text-danger error-message error-message-lastName" style="display:none"></p>
                         </div>
-                    </div>
-                    <h5>Login Credentials</h5>
+                    </div> --}}
+                    {{-- <h5>Login Credentials</h5> --}}
                     <div class="form-group row">
                         <label for="email" class="col-sm-6 col-form-label">Email<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-6">
                             <input type="email" class="form-control" id="email" name="email" placeholder="Email"
                                 required>
-                            <p class="text-danger error-message error-message-email" style="display:none"></p>
+                            <p id="error-iu-email" class="text-danger error-message error-message-email" style="display:none"></p>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="password" class="col-sm-6 col-form-label">Password<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-6">
                             <input type="password" class="form-control" id="password" name="password"
@@ -175,8 +175,8 @@
                                 name="password_confirmation" placeholder="Confirm Password" required>
                             <p class="text-danger error-message error-message-password_confirmation" style="display:none"></p>
                         </div>
-                    </div>
-                    <h5>Role</h5>
+                    </div> --}}
+                    {{-- <h5>Role</h5> --}}
                     <div class="form-group row">
                         <label for="control_panel_role" class="col-sm-6 col-form-label">Role<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-6">
@@ -192,7 +192,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" form="form-add-new-user">Save & Add Super Admin User</button>
+                    <button type="submit" class="btn btn-primary" form="form-add-new-user">Invite Super Admin</button>
                 </div>
             </div>
         </div>
@@ -309,6 +309,41 @@
     <script src="{{ url('/js/control/template_select_user.js') }}"></script>
     <script src="{{ url('/js/control/select_existing_user.js') }}"></script>
     <script>
+        $(document).on('submit', '#form-add-new-user', function(e){
+            e.preventDefault();
+            var form = $(this);
+            var formData = form.serialize();
+            var url = form.attr('action');
+            var method = form.attr('method');
+
+            $('#error-iu-email').hide();
+            $('button[form="form-add-new-user"]').prop('disabled', true);
+
+            var request = $.ajax({
+                url: url,
+                type: method,
+                data: formData,
+                dataType: 'json',
+            });
+
+            request.done(function(res) {
+                console.log(res);
+                if(res.success) {
+                    window.location.href = '{{ url("/control/?success=") }}' + res.message;
+                }
+                else {
+                    $('button[form="form-add-new-user"]').prop('disabled', false);
+                    $('#error-iu-email').show().text(res.message);
+                    // ! TODO - Test this one.
+                }
+            });
+
+            request.fail(function(res) {
+                console.log(res);
+                $('button[form="form-add-new-user"]').prop('disabled', false);
+            });
+        })
+
         $(document).on('click', '.btn-sa-edit', function(e) {
             $('#form-edit-sa button[type="submit"]').attr('disabled', true);
 

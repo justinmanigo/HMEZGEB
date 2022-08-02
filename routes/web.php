@@ -132,8 +132,8 @@ Route::group([
     ], function() {
         Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
         
-        Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
-        Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
+        Route::put('/control/admins/add', [ControlPanelController::class, 'ajaxInviteUser'])->name('ajaxInviteUser');
+        // Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
 
         Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
         Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');

@@ -28,6 +28,42 @@ class ControlPanelController extends Controller
     }
 
     /**
+     * AJAX endpoint to invite a new super admin user account.
+     */
+    public function ajaxInviteUser(Request $request)
+    {
+        $exampleKey = new Key();
+        $exampleKey->setPattern('XXXXXXXX');
+        $username = strtolower((string)$exampleKey->generate());
+        $password = strtolower((string)$exampleKey->generate());
+
+        $user = User::firstOrCreate([
+            'email' => $request->email,
+        ], [
+            'username' => $username,
+            'password' => Hash::make($password),
+        ]);
+
+        if($user->is_control_panel_access_accepted)
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'User already has access to the control panel.'
+            ]);
+        }
+
+        $user->control_panel_role = $request->control_panel_role;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User has been invited to the control panel.',
+            'user' => $user
+        ]);
+    }
+    
+
+    /**
      * AJAX endpoint to add a new super admin user account.
      */
     public function addNewSuperAdmin(AddNewSuperAdminRequest $request)
