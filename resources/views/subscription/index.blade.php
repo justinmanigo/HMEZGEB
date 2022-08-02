@@ -27,45 +27,55 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tr>
-                        <td>Account Usage / Limit</td>
+                        <td>Owner</td>
                         <td class="text-right">
-                            <span class="badge 
-                                @if($subscription->account_limit - $subscription->count < 2)
-                                    badge-danger
-                                @else
-                                    badge-success
-                                @endif"
-                            >
-                                {{ $subscription->count }}/{{ $subscription->account_limit }}
-                            </span>
+                            {{ $subscription->subscription_owner_name }}
                         </td>
                     </tr>
+                    @if($subscription->subscription_user_role == 'admin' || $subscription->subscription_user_role == 'super admin')
+                        <tr>
+                            <td>Account Usage / Limit</td>
+                            <td class="text-right">
+                                <span class="badge 
+                                    @if($subscription->account_limit - $subscription->count < 2)
+                                        badge-danger
+                                    @else
+                                        badge-success
+                                    @endif"
+                                >
+                                    {{ $subscription->count }}/{{ $subscription->account_limit }}
+                                </span>
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
-                        <td>Account Type</td>
+                        <td>Account Role</td>
                         <td class="text-right">
-                            @if($subscription->account_type == 'super admin')
+                            @if($subscription->subscription_user_role == 'super admin')
                                 <span class="badge badge-success">Super Admin</span>
-                            @elseif($subscription->account_type == 'admin')
+                            @elseif($subscription->subscription_user_role == 'admin')
                                 <span class="badge badge-info">Admin</span>
-                            @elseif($subscription->account_type == 'moderator')
+                            @elseif($subscription->subscription_user_role == 'moderator')
                                 <span class="badge badge-warning">Moderator</span>
-                            @elseif($subscription->account_type == 'user')
-                                <span class="badge badge-secondary">User</span>
+                            @elseif($subscription->subscription_user_role == 'member')
+                                <span class="badge badge-secondary">Member</span>
                             @endif
                         </td>
                     </tr>
+                    @if($subscription->subscription_user_role == 'admin' || $subscription->subscription_user_role == 'super admin')
+                        <tr>
+                            <td>Expires At</td>
+                            <td class="text-right">
+                                @if($subscription->account_type == 'super admin' && $subscription->expires_at == null)
+                                    <span class="badge badge-success">Never Expires</span>
+                                @else
+                                    {{ $subscription->date_to }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
-                        <td>Expires At</td>
-                        <td class="text-right">
-                            @if($subscription->account_type == 'super admin' && $subscription->expires_at == null)
-                                <span class="badge badge-success">Never Expires</span>
-                            @else
-                                {{ $subscription->date_to }}
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
+                        <td>Subscription Status</td>
                         <td class="text-right">
                             @if($subscription->status == 'trial')
                                 <span class="badge badge-warning">{{ 'Trial' }}</span>
