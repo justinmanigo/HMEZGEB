@@ -14,17 +14,6 @@
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-new-user">Invite User</button>
-                {{-- <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-user"></i>
-                    </span>
-                    <span class="text">Add User</span>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-new-user">New User</a>
-                    <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-add-existing-user">Existing User</a>
-                </div> --}}
             </div>
         </div>
 
@@ -45,12 +34,6 @@
                         data-toggle="tab" href="#nav-{{ $output['subscription']->id }}" role="tab" aria-controls="nav-{{ $output['subscription']->id }}"
                         aria-selected="true">Subscription # {{ $output['subscription']->id }}</a>
                 @endforeach
-                {{-- <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
-                    aria-controls="nav-home" aria-selected="true">Home</a>
-                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
-                    aria-controls="nav-profile" aria-selected="false">Profile</a>
-                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
-                    aria-controls="nav-contact" aria-selected="false">Contact</a> --}}
             </div>
         </nav>
 
@@ -138,18 +121,6 @@
                             </select>
                         </div>
                     </div>
-                    {{-- <div class="form-group row">
-                        <label for="anu_first_name" class="col-12 col-lg-6 col-form-label">First Name<span class="text-danger ml-1">*</span></label>
-                        <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="anu_first_name" name="first_name" required>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="form-group row">
-                        <label for="anu_last_name" class="col-12 col-lg-6 col-form-label">Last Name<span class="text-danger ml-1">*</span></label>
-                        <div class="col-12 col-lg-6">
-                            <input type="text" class="form-control" id="anu_last_name" name="last_name" required>
-                        </div>
-                    </div> --}}
                     <div class="form-group row">
                         <label for="anu_email" class="col-12 col-lg-6 col-form-label">Email<span class="text-danger ml-1">*</span></label>
                         <div class="col-12 col-lg-6">
