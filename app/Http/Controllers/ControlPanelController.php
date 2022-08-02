@@ -54,7 +54,6 @@ class ControlPanelController extends Controller
             ]);
         }
 
-        //! Need thorough testing of this code.
         $subscription = Subscription::updateOrCreate([
             'user_id' => $user->id,
             'account_type' => 'super admin',
