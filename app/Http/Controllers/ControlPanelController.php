@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\CreateAccountingSystem;
 use App\Http\Requests\Control\AddExistingUserAsSuperAdmin;
 use App\Http\Requests\Control\AddNewSuperAdminRequest;
+use App\Models\Subscription;
+use App\Models\SubscriptionUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +53,25 @@ class ControlPanelController extends Controller
                 'message' => 'User already has access to the control panel.'
             ]);
         }
+
+        //! Need thorough testing of this code.
+        $subscription = Subscription::updateOrCreate([
+            'user_id' => $user->id,
+            'account_type' => 'super admin',
+        ], [
+            'account_limit' => 10,
+            'date_from' => now(),
+            'date_to' => null,
+            'status' => 'active',
+        ]);
+
+        $subscription_user = SubscriptionUser::firstOrCreate([
+            'subscription_id' => $subscription->id,
+            'user_id' => $user->id,
+            'role' => 'super admin',
+        ], [
+            'is_accepted' => false,
+        ]);
 
         $user->control_panel_role = $request->control_panel_role;
         $user->save();
