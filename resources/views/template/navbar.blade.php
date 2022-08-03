@@ -42,13 +42,11 @@
                             <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
                             <hr class="collapse-divider mx-4 my-2">
                         @endif
-                        @if(Auth::user()->control_panel_role != null || $subscription_admin_count > 0)
-                            @if(Auth::user()->control_panel_role != null)
-                                <a class="collapse-item" href="{{ url('/control') }}">Control Panel</a>
-                            @endif
-                            <a class="collapse-item" href="{{ url('/subscription') }}">Subscription Panel</a>
-                            <hr class="collapse-divider mx-4 my-2">
+                        @if(Auth::user()->control_panel_role != null)
+                            <a class="collapse-item" href="{{ url('/control') }}">Control Panel</a>
                         @endif
+                        <a class="collapse-item" href="{{ url('/subscription') }}">Subscription Panel</a>
+                        <hr class="collapse-divider mx-4 my-2">
                         <a class="collapse-item" href="{{ url('/account') }}">Account Settings</a>
                         <a class="collapse-item" href="{{ url('/referrals') }}">Referrals</a>
                         <hr class="collapse-divider mx-4 my-2">
