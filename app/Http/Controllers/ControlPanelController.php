@@ -144,6 +144,14 @@ class ControlPanelController extends Controller
         $user->control_panel_role = NULL;
         $user->save();
 
+        // Expire subscription in 7 days
+        $subscription = Subscription::where('user_id', $user->id)
+            ->where('account_type', 'super admin')
+            ->first();
+
+        $subscription->date_to = now()->addDays(7);
+        $subscription->save();
+
         return response()->json([
             'success' => true,
             'user' => $user
