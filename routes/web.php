@@ -95,18 +95,22 @@ Route::group([
         return view('account_settings.update-password');
     });
 
-    
-
     /**
      * ========== Accounting System Switcher ==========
      */
-    Route::get('/switch', [HomeController::class, 'viewAccountingSystems']);
-    Route::put('/switch', [HomeController::class, 'switchAccountingSystem']);
+    Route::group([
+        'middleware' => 'auth.password',
+        'prefix' => '/switch'
+    ], function(){
+        Route::get('/', [HomeController::class, 'viewAccountingSystems']);
+        Route::put('/', [HomeController::class, 'switchAccountingSystem']);
+    });
 
     /**
      * ========== Referrals ==========
      */
     Route::group([
+        'middleware' => 'auth.password',
         'as' => 'referrals.'
     ], function(){
         Route::get('/referrals', [ReferralsController::class, 'index'])->name('index');
@@ -121,9 +125,13 @@ Route::group([
     Route::group([
         'as' => 'account.'
     ], function() {
-        // HTTP
-        Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
-        Route::post('/account/2fa/confirm', [AccountSettingsController::class, 'confirm2FA'])->name('confirm2FA');
+        Route::group([
+            'middleware' => 'auth.password',
+        ], function(){
+            // HTTP
+            Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
+            Route::post('/account/2fa/confirm', [AccountSettingsController::class, 'confirm2FA'])->name('confirm2FA');
+        });
 
         // AJAX
         Route::post('/ajax/account/show/recoverycodes', [AccountSettingsController::class, 'showRecoveryCodes']);
@@ -137,7 +145,7 @@ Route::group([
      */
     Route::group([
         'as' => 'control.',
-        'middleware' => 'auth.control',
+        'middleware' => ['auth.password', 'auth.control'],
     ], function() {
         Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
         Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
@@ -165,6 +173,7 @@ Route::group([
      */
     Route::group([
         'as' => 'subscription.',
+        'middleware' => 'auth.password',
     ], function(){
         // HTML
         Route::get('/subscription', [SummaryController::class, 'index'])->name('subscription.index');
@@ -213,7 +222,7 @@ Route::group([
      * ========== Accounting System Routes ==========
      */
     Route::group([
-        'middleware' => 'auth.accountingsystem',
+        'middleware' => ['auth.password', 'auth.accountingsystem'],
     ], function()
     {
         /**
