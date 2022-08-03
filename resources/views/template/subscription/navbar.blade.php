@@ -62,119 +62,123 @@ $route_name = $route_name[0];
                 </div>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+            @if(!auth()->user()->must_update_password)
 
-            @if(isset($curr_acct_sys))
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                @if(isset($curr_acct_sys))
+                    <!-- Heading -->
+                    <div class="sidebar-heading">
+                        Go back
+                    </div>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">
+                            <i class="fas fa-fw fa-arrow-left"></i>
+                            <span>{{ $curr_acct_sys->name }}</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Divider -->
+                    <hr class="sidebar-divider">
+                @endif
+
+                @if(!isset($curr_acct_sys) && count($acct_systems) == 1)
+                    <!-- Heading -->
+                    <div class="sidebar-heading">
+                        Go To
+                    </div>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">
+                            <i class="fas fa-fw fa-arrow-left"></i>
+                            <span>{{ $acct_systems[0]->name }}</span>
+                        </a>
+                    </li>
+                    
+                    <!-- Divider -->
+                    <hr class="sidebar-divider">
+                @endif
+
+
+                @if(auth()->user()->control_panel_role != null)
+                    <!-- Heading -->
+                    <div class="sidebar-heading">
+                        Control Panel
+                    </div>
+
+                    {{-- <li class="nav-item">
+                        <a class="nav-link active dynamic-nav" href="{{ url('/control/') }}">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li> --}}
+
+                    <li class="nav-item">
+                        <a class="nav-link dynamic-nav" href="{{ url('/control') }}">
+                            <i class="fas fa-fw fa-user"></i>
+                            <span>Manage Users</span>
+                        </a>
+                    </li>
+
+                    <!-- Divider -->
+                    <hr class="sidebar-divider">
+
+                @endif
+
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Go back
+                    Subscriptions
                 </div>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">
-                        <i class="fas fa-fw fa-arrow-left"></i>
-                        <span>{{ $curr_acct_sys->name }}</span>
-                    </a>
-                </li>
-                
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-            @endif
-
-            @if(!isset($curr_acct_sys) && count($acct_systems) == 1)
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Go To
-                </div>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">
-                        <i class="fas fa-fw fa-arrow-left"></i>
-                        <span>{{ $acct_systems[0]->name }}</span>
-                    </a>
-                </li>
-                
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-            @endif
-
-
-            @if(auth()->user()->control_panel_role != null)
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Control Panel
-                </div>
-
-                {{-- <li class="nav-item">
-                    <a class="nav-link active dynamic-nav" href="{{ url('/control/') }}">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li> --}}
-
-                <li class="nav-item">
-                    <a class="nav-link dynamic-nav" href="{{ url('/control') }}">
-                        <i class="fas fa-fw fa-user"></i>
-                        <span>Manage Users</span>
+                        <span>Subscriptions</span>
                     </a>
                 </li>
+
+                @if($subscription_admin_count > 0)
+                    <li class="nav-item">
+                        <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
+                            <i class="fas fa-fw fa-tachometer-alt"></i>
+                            <span>Manage Acct. Systems</span><br>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link dynamic-nav" href="{{ url('/subscription/users') }}">
+                            <i class="fas fa-fw fa-user"></i>
+                            <span>Manage Users</span>
+                        </a>
+                    </li>
+
+                @endif
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
-            @endif
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Your Account
+                </div>
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Subscriptions
-            </div>
-
-            <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/subscription/') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Subscriptions</span>
-                </a>
-            </li>
-
-            @if($subscription_admin_count > 0)
                 <li class="nav-item">
-                    <a class="nav-link active dynamic-nav" href="{{ url('/subscription/accounting-systems') }}">
+                    <a class="nav-link active dynamic-nav" href="{{ url('/account/') }}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Manage Acct. Systems</span><br>
+                        <span>Account Settings</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link dynamic-nav" href="{{ url('/subscription/users') }}">
-                        <i class="fas fa-fw fa-user"></i>
-                        <span>Manage Users</span>
+                    <a class="nav-link active dynamic-nav" href="{{ url('/referrals/') }}">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Referrals</span>
                     </a>
                 </li>
 
             @endif
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Your Account
-            </div>
-
-            <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/account/') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Account Settings</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link active dynamic-nav" href="{{ url('/referrals/') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Referrals</span>
-                </a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
