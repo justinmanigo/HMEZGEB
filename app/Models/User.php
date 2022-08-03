@@ -29,6 +29,8 @@ class User extends Authenticatable
         'email',
         'password',
         'password_updated_at',
+        'must_update_password',
+        'is_control_panel_access_accepted'
     ];
 
     /**
