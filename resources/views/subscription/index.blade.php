@@ -70,7 +70,7 @@
                                 <tr>
                                     <td>Expires At</td>
                                     <td class="text-right">
-                                        @if($subscription->account_type == 'super admin' && $subscription->expires_at == null)
+                                        @if($subscription->account_type == 'super admin' && $subscription->date_to == null)
                                             <span class="badge badge-success">Never Expires</span>
                                         @else
                                             {{ $subscription->date_to }}
