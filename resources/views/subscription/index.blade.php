@@ -69,18 +69,19 @@
                                 </tr>
                                 @if($subscription->subscription_user_role == 'admin' || $subscription->subscription_user_role == 'super admin')
                                     <tr>
-                                        <td>Expires At</td>
-                                        <td class="text-right">
-                                            @if($subscription->account_type == 'super admin' && $subscription->date_to == null)
-                                                <span class="badge badge-success">Never Expires</span>
-                                            @elseif(now()->diffInDays($subscription->date_to, false) > 7)
-                                                <span class="badge badge-success">{{ $subscription->date_to }}</span>
-                                            @elseif(now()->diffInDays($subscription->date_to, false) > 0)
-                                                <span class="badge badge-warning">{{ $subscription->date_to }}</span>
-                                            @else
-                                                <span class="badge badge-danger">{{ $subscription->date_to }}</span>
-                                            @endif
-                                        </td>
+                                        @if($subscription->account_type == 'super admin' && $subscription->date_to == null)
+                                            <td>Expires On</td>
+                                            <td class="text-right"><span class="badge badge-success">Never Expires</span></td>
+                                        @elseif(now()->diffInDays($subscription->date_to, false) > 7)
+                                            <td>Expires On</td>
+                                            <td class="text-right"><span class="badge badge-success">{{ $subscription->date_to }}</span></td>
+                                        @elseif(now()->diffInDays($subscription->date_to, false) > 0)
+                                            <td>Expires On</td>
+                                            <td class="text-right"><span class="badge badge-success">{{ $subscription->date_to }}</span></td>
+                                        @else
+                                            <td>Expired At</td>
+                                            <td class="text-right"><span class="badge badge-danger">{{ $subscription->date_to }}</span></td>
+                                        @endif
                                     </tr>
                                 @endif
                             </td>
