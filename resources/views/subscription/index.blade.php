@@ -73,8 +73,12 @@
                                         <td class="text-right">
                                             @if($subscription->account_type == 'super admin' && $subscription->date_to == null)
                                                 <span class="badge badge-success">Never Expires</span>
+                                            @elseif(now()->diffInDays($subscription->date_to, false) > 7)
+                                                <span class="badge badge-success">{{ $subscription->date_to }}</span>
+                                            @elseif(now()->diffInDays($subscription->date_to, false) > 0)
+                                                <span class="badge badge-warning">{{ $subscription->date_to }}</span>
                                             @else
-                                                {{ $subscription->date_to }}
+                                                <span class="badge badge-danger">{{ $subscription->date_to }}</span>
                                             @endif
                                         </td>
                                     </tr>
