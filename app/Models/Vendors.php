@@ -18,12 +18,14 @@ class Vendors extends Model
         'country',
         'mobile_number',
         'telephone_one',
+        'telephone_two',
         'website',
         'email',
         'contact_person',
         'label',
         'image',
         'is_active',
+        'fax',
     ];
 
     public function PaymentReferences()

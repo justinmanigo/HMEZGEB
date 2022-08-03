@@ -42,6 +42,7 @@ class HomeController extends Controller
             ->leftJoin('accounting_systems', 'accounting_system_users.accounting_system_id', '=', 'accounting_systems.id')
             ->leftJoin('subscriptions', 'subscription_users.subscription_id', '=', 'subscriptions.id')
             ->leftJoin('users', 'subscriptions.user_id', '=', 'users.id')
+
             ->where('subscription_users.is_accepted', true)
             ->get();
 
