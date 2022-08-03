@@ -13,10 +13,6 @@
     $unreadNotifications = Notification::where('accounting_system_id', session('accounting_system_id'))
         ->where('resolved', 0)->count();
     $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
-    $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
-        ->where('subscription_users.role', '!=', 'member')
-        ->where('subscription_users.role', '!=', 'moderator')
-        ->count();
 @endphp
  
  <!-- Sidebar -->
@@ -46,15 +42,11 @@
                             <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
                             <hr class="collapse-divider mx-4 my-2">
                         @endif
-                        @if(Auth::user()->control_panel_role != null || $subscription_admin_count > 0)
-                            @if(Auth::user()->control_panel_role != null)
-                                <a class="collapse-item" href="{{ url('/control') }}">Control Panel</a>
-                            @endif
-                            @if($subscription_admin_count > 0)
-                                <a class="collapse-item" href="{{ url('/subscription') }}">Subscription Panel</a>
-                            @endif
-                            <hr class="collapse-divider mx-4 my-2">
+                        @if(Auth::user()->control_panel_role != null)
+                            <a class="collapse-item" href="{{ url('/control') }}">Control Panel</a>
                         @endif
+                        <a class="collapse-item" href="{{ url('/subscription') }}">Subscription Panel</a>
+                        <hr class="collapse-divider mx-4 my-2">
                         <a class="collapse-item" href="{{ url('/account') }}">Account Settings</a>
                         <a class="collapse-item" href="{{ url('/referrals') }}">Referrals</a>
                         <hr class="collapse-divider mx-4 my-2">

@@ -17,7 +17,7 @@ class HasSettingsAccess
     public function handle(Request $request, Closure $next)
     {
         if(session('subscription_user_role') == 'member') {
-            return abort(403);
+            return abort(403, 'You do not have permission to access this page.');
         }
 
         return $next($request);

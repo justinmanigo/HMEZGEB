@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class HasSubscriptionMiddleware
+class MustUpdatePassword
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,8 @@ class HasSubscriptionMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
-            ->where('subscription_users.role', '!=', 'member')
-            ->where('subscription_users.role', '!=', 'moderator')
-            ->count();
-
-        if($subscription_admin_count == 0) {
-            return abort(403, 'You do not have permission to access this page.');
+        if(auth()->user()->must_update_password) {
+            return redirect('/update-password');
         }
 
         return $next($request);

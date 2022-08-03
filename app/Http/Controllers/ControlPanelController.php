@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\CreateAccountingSystem;
 use App\Http\Requests\Control\AddExistingUserAsSuperAdmin;
 use App\Http\Requests\Control\AddNewSuperAdminRequest;
+use App\Models\Subscription;
+use App\Models\SubscriptionUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,36 +30,96 @@ class ControlPanelController extends Controller
     }
 
     /**
-     * AJAX endpoint to add a new super admin user account.
+     * AJAX endpoint to invite a new super admin user account.
      */
-    public function addNewSuperAdmin(AddNewSuperAdminRequest $request)
+    public function ajaxInviteUser(Request $request)
     {
-        $exampleKey = new Key;
-        $exampleKey->setPattern("XXXXXXXX");
+        $exampleKey = new Key();
+        $exampleKey->setPattern('XXXXXXXX');
+        $username = strtolower((string)$exampleKey->generate());
+        $password = strtolower((string)$exampleKey->generate());
 
-        $user = User::create([
-            'firstName' => $request->firstName,
-            'lastName' => $request->lastName,
+        $user = User::firstOrCreate([
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'control_panel_role' => $request->control_panel_role,
-            'code' => (string)$exampleKey->generate(),
-            'username' => (string)$exampleKey->generate(),
+        ], [
+            'username' => $username,
+            'password' => Hash::make($password),
         ]);
 
-        return $user;
-    }
+        if($user->is_control_panel_access_accepted)
+        {
+            return response()->json([
+                'success' => false,
+                'message' => 'User already has access to the control panel.'
+            ]);
+        }
 
-    /**
-     * AJAX endpoint to add an existing user as a super admin.
-     */
-    public function addExistingUserAsSuperAdmin(AddExistingUserAsSuperAdmin $request)
-    {
-        $user = User::findOrFail($request->user->value);
+        $subscription = Subscription::updateOrCreate([
+            'user_id' => $user->id,
+            'account_type' => 'super admin',
+        ], [
+            'account_limit' => 10,
+            'date_from' => now(),
+            'date_to' => null,
+            'status' => 'active',
+        ]);
+
+        $subscription_user = SubscriptionUser::firstOrCreate([
+            'subscription_id' => $subscription->id,
+            'user_id' => $user->id,
+            'role' => 'super admin',
+        ], [
+            'is_accepted' => false,
+        ]);
+
         $user->control_panel_role = $request->control_panel_role;
         $user->save();
 
-        return $user;
+        return response()->json([
+            'success' => true,
+            'message' => 'User has been invited to the control panel.',
+            'user' => $user
+        ]);
+    }
+
+    public function acceptInvitation(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+        // check password
+        if(!Hash::check($request->password, $user->password))
+        {
+            return redirect()->route('control.index')
+                ->with('error', 'Password is incorrect.');
+        }
+
+        $user->is_control_panel_access_accepted = true;
+        $user->save();
+
+        $subscription = Subscription::where('user_id', $user->id)
+            ->where('account_type', 'super admin')
+            ->first();
+
+        $subscription_user = SubscriptionUser::where('subscription_id', $subscription->id)
+            ->where('user_id', $user->id)
+            ->where('role', 'super admin')
+            ->first();
+
+        $subscription_user->is_accepted = true;
+        $subscription_user->save();
+
+        return redirect()->route('control.index')
+            ->with('success', 'You have accepted the invitation to the control panel.');
+    }
+
+    public function rejectInvitation()
+    {
+        $user = User::find(Auth::user()->id);
+        $user->is_control_panel_access_accepted = false;
+        $user->control_panel_role = null;
+        $user->save();
+
+        return redirect('/switch')
+            ->with('success', 'You have rejected the invitation to the control panel.');
     }
 
     /**
@@ -81,6 +143,14 @@ class ControlPanelController extends Controller
     {
         $user->control_panel_role = NULL;
         $user->save();
+
+        // Expire subscription in 7 days
+        $subscription = Subscription::where('user_id', $user->id)
+            ->where('account_type', 'super admin')
+            ->first();
+
+        $subscription->date_to = now()->addDays(7);
+        $subscription->save();
 
         return response()->json([
             'success' => true,

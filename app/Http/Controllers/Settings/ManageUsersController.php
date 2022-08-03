@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Actions\GetAccountingSystemUserPermissions;
 use App\Http\Controllers\Controller;
+use App\Models\AccountingSystem;
 use App\Models\AccountingSystemUser;
 use App\Models\User;
 use App\Models\Settings\Users\Module;
 use App\Models\Settings\Users\SubModule;
 use App\Models\Settings\Users\Permission;
+use App\Models\Subscription;
+use App\Models\SubscriptionUser;
+use Illuminate\Support\Facades\DB;
+use Kaiopiola\Keygen\Key;
 
 class ManageUsersController extends Controller
 {
@@ -40,6 +45,69 @@ class ManageUsersController extends Controller
         return view('settings.users.manageUsers.index', [
             'accountingSystemUsers' => $accountingSystemUsers,
         ]);
+    }
+
+    /**
+     * 
+     */
+    public function inviteUser(Request $request)
+    {
+        $exampleKey = new Key();
+        $exampleKey->setPattern('XXXXXXXX');
+        $username = strtolower((string)$exampleKey->generate());
+        $password = strtolower((string)$exampleKey->generate());
+
+        $user = User::firstOrCreate([
+            'email' => $request->email,
+        ], [
+            'username' => $username,
+            'password' => bcrypt($password),
+        ]);
+
+        // Get accounting system information
+        $accounting_system = AccountingSystem::where('id', session('accounting_system_id'))->first();
+
+        // Get subscription
+        $subscription = Subscription::where('id', $accounting_system->subscription_id)->first();
+
+        // Get subscription user
+        $subscription_user = SubscriptionUser::updateOrCreate([
+            'user_id' => $user->id,
+            'subscription_id' => $subscription->id,
+        ], [
+            'role' => 'member',
+            'is_accepted' => false,
+        ]);
+
+        // Check if the user is already a member of the accounting system
+        $accounting_system_user = AccountingSystemUser::where('accounting_system_id', session('accounting_system_id'))
+            ->where('subscription_user_id', $subscription_user->id)
+            ->first();
+
+        if($accounting_system_user) {
+            // User is already a member of the accounting system
+            return redirect()->back()->with('error', 'User is already a member of the accounting system.');
+        }
+
+        // Create the accounting system user
+        $accounting_system_user = AccountingSystemUser::create([
+            'accounting_system_id' => session('accounting_system_id'),
+            'subscription_user_id' => $subscription_user->id,
+        ]);
+
+        // Add all permissions
+        for($j = 1; $j <= 24; $j++)
+        {
+            $permissions[] = [
+                'accounting_system_user_id' => $accounting_system_user->id,
+                'access_level' => 'rw',
+                'sub_module_id' => $j,
+            ];
+        }
+
+        DB::table('permissions')->insert($permissions);
+
+        return redirect()->back()->with('success', 'User has been invited successfully.');
     }
 
     /**  

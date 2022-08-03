@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class HasSubscriptionMiddleware
+class EnsureUserHasPermission
 {
     /**
      * Handle an incoming request.
@@ -14,15 +14,15 @@ class HasSubscriptionMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
-    {
-        $subscription_admin_count = \App\Models\SubscriptionUser::where('user_id', auth()->id())
-            ->where('subscription_users.role', '!=', 'member')
-            ->where('subscription_users.role', '!=', 'moderator')
+    public function handle(Request $request, Closure $next, $sub_module_id)
+    {        
+        $as_user_id = session('accounting_system_user_id');
+        $permission = \App\Models\Settings\Users\Permission::where('accounting_system_user_id', $as_user_id)
+            ->where('sub_module_id', $sub_module_id)
             ->count();
 
-        if($subscription_admin_count == 0) {
-            return abort(403, 'You do not have permission to access this page.');
+        if($permission == 0) {
+            abort(403, 'You do not have permission to access this page.');
         }
 
         return $next($request);

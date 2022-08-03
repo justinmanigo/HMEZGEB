@@ -17,14 +17,20 @@ class SummaryController extends Controller
             ->groupBy('subscription_id');
         
         $subscriptions = SubscriptionUser::where('subscription_users.user_id', auth()->id())
-            ->select('subscriptions.*', 't.count', 'subscription_users.id as subscription_user_id', 'subscription_users.is_accepted')
+            ->select(
+                'subscriptions.*', 
+                't.count', 
+                'subscription_users.id as subscription_user_id', 
+                'subscription_users.role as subscription_user_role',
+                'subscription_users.is_accepted',
+                DB::raw('CONCAT(users.firstName, " ", users.lastName) as subscription_owner_name')
+            )
             ->leftJoin('subscriptions', 'subscriptions.id', '=', 'subscription_users.subscription_id')
+            ->leftJoin('users', 'users.id', '=', 'subscriptions.user_id')
             // left join get accounting systems count of subscriptions
             ->leftJoinSub($subQuery, 't', function($join){
                 $join->on('t.id', '=', 'subscriptions.id');
             })
-            ->where('subscription_users.role', '!=', 'member')
-            ->where('subscription_users.role', '!=', 'moderator')
             ->get();
 
         // return $subscriptions;
