@@ -89,6 +89,15 @@ Route::group([
 ], function()
 {
     /**
+     * ========== Mandatory Update Password ==========
+     */
+    Route::get('/update-password', function() {
+        return view('account_settings.update-password');
+    });
+
+    
+
+    /**
      * ========== Accounting System Switcher ==========
      */
     Route::get('/switch', [HomeController::class, 'viewAccountingSystems']);
