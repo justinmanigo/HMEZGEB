@@ -119,6 +119,7 @@ class RegisterController extends Controller
         $user->username = (string)$exampleKey->generate();
         $user->code = (string)$exampleKey->generate();
         $user->password = Hash::make($request->new_password);
+        $user->must_update_password = false;
         $user->save();
 
         // Logs the user in
