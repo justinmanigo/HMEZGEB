@@ -10,6 +10,7 @@ use App\Models\AccountingSystem;
 use App\Models\Register;
 use App\Models\Referral;
 use App\Models\Subscription;
+use App\Models\SubscriptionUser;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -118,6 +119,7 @@ class RegisterController extends Controller
         $user->username = (string)$exampleKey->generate();
         $user->code = (string)$exampleKey->generate();
         $user->password = Hash::make($request->new_password);
+        $user->must_update_password = false;
         $user->save();
 
         // Logs the user in
@@ -136,65 +138,99 @@ class RegisterController extends Controller
     {
         // return $request;
 
-        try {
-            $referral = Referral::where('code', $request->referral_code)->firstOrFail();
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Error processing request.'], 422);
-        }
+        if(session('referralCode')){
+            try {
+                $referral = Referral::where('code', $request->referral_code)->firstOrFail();
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Error processing request.'], 422);
+            }
+    
+            $subscription = Subscription::where('referral_id', $referral->id)->first();
+    
+            if((isset($subscription) && $referral->type == 'normal') ||
+                (isset($subscription) && $subscription->date_from != null && $referral->type == 'advanced')){
+                return response()->json(['error' => 'Can\'t create accounting system. Referral code is already used by someone else.'], 422);
+            }
 
-        $subscription = Subscription::where('referral_id', $referral->id)->first();
+            // Determine Date To
+            $dateTo = \Carbon\Carbon::now();
+            switch($referral->trial_duration_type)
+            {
+                case 'day':
+                    $dateTo = $dateTo->addDays($referral->trial_duration);
+                    break;
+                case 'week':
+                    $dateTo = $dateTo->addWeeks($referral->trial_duration);
+                    break;
+                case 'month':
+                    $dateTo = $dateTo->addMonths($referral->trial_duration);
+                    break;
+            }
 
-        if((isset($subscription) && $referral->type == 'normal') ||
-            (isset($subscription) && $subscription->date_from != null && $referral->type == 'advanced')){
-            return response()->json(['error' => 'Can\'t create accounting system. Referral code is already used by someone else.'], 422);
-        }
+            if(!isset($subscription))
+            {
+                // Create Subscription
+                $subscription = Subscription::create([
+                    'referral_id' => $referral->id,
+                    'user_id' => Auth::user()->id,
+                    'account_limit' => 3,
+                    'account_type' => 'admin',
+                    'date_from' => now()->format('Y-m-d'),
+                    'date_to' => $dateTo->format('Y-m-d'),
+                    'status' => 'trial', // TODO: Update this one when support for `paid` is added.
+                ]);
+            }
+            else {
+                // Update subscription
+                $subscription->user_id = Auth::user()->id;
+                $subscription->date_from = now()->format('Y-m-d');
+                $subscription->date_to = $dateTo->format('Y-m-d');
+                $subscription->status = 'trial'; // TODO: Update this one when support for `paid` is added.
+                $subscription->save();
+            }
 
-        // Determine Date To
-        $dateTo = \Carbon\Carbon::now();
-        switch($referral->trial_duration_type)
-        {
-            case 'day':
-                $dateTo = $dateTo->addDays($referral->trial_duration);
-                break;
-            case 'week':
-                $dateTo = $dateTo->addWeeks($referral->trial_duration);
-                break;
-            case 'month':
-                $dateTo = $dateTo->addMonths($referral->trial_duration);
-                break;
-        }
-
-        if(!$subscription)
-        {
-            // Create Subscription
-            $subscription = Subscription::create([
-                'referral_id' => $referral->id,
+            $subscription_user = SubscriptionUser::create([
+                'subscription_id' => $subscription->id,
                 'user_id' => Auth::user()->id,
-                'account_limit' => 3,
-                'account_type' => 'admin',
-                'date_from' => now()->format('Y-m-d'),
-                'date_to' => $dateTo->format('Y-m-d'),
-                'status' => 'trial', // TODO: Update this one when support for `paid` is added.
+                'role' => $subscription->account_type,
             ]);
         }
         else {
-            // Update subscription
-            $subscription->user_id = Auth::user()->id;
-            $subscription->date_from = now()->format('Y-m-d');
-            $subscription->date_to = $dateTo->format('Y-m-d');
-            $subscription->status = 'trial'; // TODO: Update this one when support for `paid` is added.
-            $subscription->save();
+            $user = User::find(auth()->id());
+            $user->subscriptions;
+            $idx = -1;
+            for($i = 0; $i < count($user->subscriptions); $i++) {
+                $user->subscriptions[$i]->accountingSystems;
+                $num_accts[] = count($user->subscriptions[$i]->accountingSystems);
+                $acct_limit[] = $user->subscriptions[$i]->account_limit;
+                if($acct_limit[$i] - $num_accts[$i] > 0) {
+                    $idx = $i;
+                    break;
+                }
+            }
+
+            if($idx == -1)
+            {
+                // Remove referral code to session
+                if(session('referralCode')) $this->request->session()->forget('referralCode');
+                if(session('subscription_id')) $this->request->session()->forget('subscription_id');
+                return response()->json(['error' => 'You no longer have available accounting system slots to process this request. Please upgrade your subscription first.'], 422);
+            }
+
+            $subscription_user = SubscriptionUser::where('subscription_id', $user->subscriptions[$idx]->id)->where('user_id', Auth::user()->id)->first();
         }
 
         // Create the accounting system
-        $as = CreateAccountingSystem::run($request, $subscription);
+        $as = CreateAccountingSystem::run($request, isset($subscription) ? $subscription : $user->subscriptions[$idx], $subscription_user);
 
         // Add accounting system to session
         $this->request->session()->put('accounting_system_id', $as['accounting_system']->id);
         $this->request->session()->put('accounting_system_user_id', $as['accounting_system_user']->id);
 
         // Remove referral code to session
-        $this->request->session()->forget('referralCode');
+        if(session('referralCode')) $this->request->session()->forget('referralCode');
+        if(session('subscription_id')) $this->request->session()->forget('subscription_id');
+       
 
         return response()->json(['success' => true], 200);
     }
@@ -303,12 +339,11 @@ class RegisterController extends Controller
     public function createCompanyInfoView()
     {
         if(!session('referralCode')){
-            abort(404);
+            if(!session('subscription_id')) {
+                abort(404);
+            }
         }
-        // return [
-        //     Auth::user(),
-        //     session('referralCode')
-        // ];
+
         return view('register.create-company-info');
     }
 

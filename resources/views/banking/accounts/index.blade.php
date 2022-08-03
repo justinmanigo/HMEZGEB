@@ -91,6 +91,7 @@
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+                
                             <thead>
                                 
                                 <th>Chart of Acct#</th>
@@ -102,7 +103,7 @@
                             </thead>
                             <tbody>
                                 @foreach($bank_accounts as $account)
-                                <tr onclick="window.location.href='{{  url('/banking/accounts/'.$account->id)}}'">
+                                <tr onclick="window.location='{{ route('accounts.accounts.edit',$account->id) }}'">
                                     <td>{{ $account->chartOfAccount->chart_of_account_no }}</td>
                                     <td>{{ $account->chartOfAccount->account_name }}</td>
                                     <td>{{ $account->bank_branch }}</td>
@@ -150,24 +151,25 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-import-label">Import Receipts</h5>
+                <h5 class="modal-title" id="modal-import-label">Import Accounts</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-import" method="post" enctype="multipart/form-data">
-                    <div class="form-group row">
-                        <label for="i_file" class="col-sm-4 col-form-label">File<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-8">
-                            <input type="file" id="i_file" name="file" class="mt-1" required>
+                <form id="form-import" action="{{route('accounts.accounts.import')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group row container">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" name="file" required>
+                            <label class="custom-file-label" for="file">Choose file</label>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-import">Import Receipts</button>
+                <button type="submit" class="btn btn-primary" form="form-import">Import Accounts</button>
             </div>
         </div>
     </div>
@@ -178,20 +180,20 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-export-label">Export Receipts</h5>
+                <h5 class="modal-title" id="modal-export-label">Export Accounts</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-export" method="post" enctype="multipart/form-data">
+                <form id="form-export" action="{{route('accounts.accounts.export')}}" method="post" enctype="multipart/form-data">
+                    @csrf
                     <div class="form-group row">
                         <label for="e_file_type" class="col-sm-4 col-form-label">File Type<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-8">
                             <select class="form-control" id="e_file_type" name="file_type" required>
-                                <option>HTML</option>
-                                <option>PDF</option>
-                                <option>CSV</option>
+                                <option value="csv">CSV</option>
+                                <option value="pdf">PDF</option>
                             </select>
                         </div>
                     </div>
@@ -199,7 +201,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="form-export">Export Receipts</button>
+                <button type="submit" class="btn btn-primary" form="form-export">Export Accounts</button>
             </div>
         </div>
     </div>
@@ -263,6 +265,12 @@
 </div>
 
 <script>
+        // add the file name only in file input field
+        $('.custom-file-input').on('change', function() {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+    
         $(document).ready(function () {
             $('#dataTables').DataTable();
             $('.dataTables_filter').addClass('pull-right');

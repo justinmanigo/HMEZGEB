@@ -18,7 +18,7 @@ class CreateSubscriptionsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('referral_id')->nullable()->constrained();
             $table->tinyInteger('account_limit')->default(3);
-            $table->enum('account_type', [
+            $table->enum('account_type', [ // Deprecated
                 'super admin',
                 'admin',
                 'moderator',

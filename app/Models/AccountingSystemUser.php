@@ -12,7 +12,7 @@ class AccountingSystemUser extends Model
 
     protected $fillable = [
         'accounting_system_id',
-        'user_id',
+        'subscription_user_id',
         'role',
     ];
 

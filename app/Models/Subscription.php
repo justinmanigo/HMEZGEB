@@ -33,4 +33,9 @@ class Subscription extends Model
     {
         return $this->hasMany(AccountingSystem::class);
     }
+
+    public function subscriptionUsers()
+    {
+        return $this->hasMany(SubscriptionUser::class);
+    }
 }

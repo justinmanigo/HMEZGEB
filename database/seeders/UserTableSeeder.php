@@ -26,6 +26,8 @@ class UserTableSeeder extends Seeder
                 'firstName' => 'hmezgeb',
                 'lastName' => 'admin',
                 'control_panel_role' => 'admin',
+                'is_control_panel_access_accepted' => true,
+                'must_update_password' => false,
                 'code' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -37,15 +39,50 @@ class UserTableSeeder extends Seeder
                 'firstName' => 'hmezgeb',
                 'lastName' => 'staff',
                 'control_panel_role' => 'staff',
+                'is_control_panel_access_accepted' => true,
+                'must_update_password' => false,
                 'code' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ];
 
+        $subscriptions = [
+            [
+                'user_id' => 1,
+                'account_limit' => 10,
+                'account_type' => 'super admin',
+                'date_from' => null,
+                'date_to' => null,
+                'status' => 'active',
+            ],
+            [
+                'user_id' => 2,
+                'account_limit' => 10,
+                'account_type' => 'super admin',
+                'date_from' => null,
+                'date_to' => null,
+                'status' => 'active',
+            ],
+        ];
+
+        $subscription_users = [
+            [
+                'subscription_id' => 1,
+                'user_id' => 1,
+                'role' => 'super admin',
+            ],
+            [
+                'subscription_id' => 2,
+                'user_id' => 2,
+                'role' => 'super admin',
+            ]
+        ];
+
         $accounting_systems = [
             [
                 'name' => 'Test Accounting System',
+                'subscription_id' => 1,
                 'calendar_type' => 'gregorian',
                 'accounting_year' => 2022,
                 'address' => 'Cebu',
@@ -62,6 +99,7 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Test Accounting System 2',
+                'subscription_id' => 2,
                 'calendar_type' => 'ethiopian',
                 'accounting_year' => 2014,
                 'address' => 'Cebu',
@@ -78,6 +116,7 @@ class UserTableSeeder extends Seeder
             ],
             [
                 'name' => 'Test Accounting System 3',
+                'subscription_id' => 2,
                 'calendar_type' => 'gregorian',
                 'accounting_year' => 2022,
                 'address' => 'Cebu',
@@ -97,18 +136,15 @@ class UserTableSeeder extends Seeder
         $accounting_system_users = [
             [
                 'accounting_system_id' => 1,
-                'user_id' => 1,
-                'role' => 'admin',
+                'subscription_user_id' => 1,
             ],
             [
                 'accounting_system_id' => 2,
-                'user_id' => 2,
-                'role' => 'admin',
+                'subscription_user_id' => 2,
             ],
             [
                 'accounting_system_id' => 3,
-                'user_id' => 2,
-                'role' => 'admin',
+                'subscription_user_id' => 2,
             ]
         ];
 
@@ -131,6 +167,8 @@ class UserTableSeeder extends Seeder
         ];
 
         DB::table('users')->insert($users);
+        DB::table('subscriptions')->insert($subscriptions);
+        DB::table('subscription_users')->insert($subscription_users);
         DB::table('accounting_systems')->insert($accounting_systems);
         DB::table('accounting_system_users')->insert($accounting_system_users);
         DB::table('journal_entries')->insert($journal_entries);

@@ -66,6 +66,11 @@ use App\Http\Controllers\RegisterController;
 
 // Control Panel
 use App\Http\Controllers\ControlPanelController;
+use App\Http\Controllers\Subscription\SummaryController;
+// Subscription Panel
+use App\Http\Controllers\Subscription\ManageAccountingSystemsController;
+use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
+
 ;
 
 /*
@@ -81,72 +86,164 @@ use App\Http\Controllers\ControlPanelController;
 
 Route::group([
     'middleware' => 'auth',
-], function(){
+], function()
+{
     /**
-     * Switch Accounting Systems
+     * ========== Mandatory Update Password ==========
      */
-    Route::get('/switch', [HomeController::class, 'viewAccountingSystems']);
-    Route::put('/switch', [HomeController::class, 'switchAccountingSystem']);
-    
-    /**
-     * Notification
-     */
-    Route::resource('notifications', NotificationController::class);
+    Route::get('/update-password', function() {
+        return view('account_settings.update-password');
+    });
 
+    /**
+     * ========== Accounting System Switcher ==========
+     */
     Route::group([
-        'middleware' => 'auth.accountingsystem',
+        'middleware' => 'auth.password',
+        'prefix' => '/switch'
     ], function(){
-        /**
-         * Home
-         */
-        Route::get('/', [HomeController::class, 'index']);
-        Route::get('/home', [HomeController::class, 'index'])->name('home');
-        
-        /**===================== ACCOUNT MODULES =====================**/
+        Route::get('/', [HomeController::class, 'viewAccountingSystems']);
+        Route::put('/', [HomeController::class, 'switchAccountingSystem']);
+    });
 
-        /**
-         * Referral Module
-         */
+    /**
+     * ========== Referrals ==========
+     */
+    Route::group([
+        'middleware' => 'auth.password',
+        'as' => 'referrals.'
+    ], function(){
+        Route::get('/referrals', [ReferralsController::class, 'index'])->name('index');
+        Route::post('/referrals', [ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
+        Route::put('/referrals', [ReferralsController::class, 'storeAdvancedReferral'])->name('store.advanced');
+        Route::patch('/referrals', [ReferralsController::class, 'generateReferrals'])->name('generate');
+    });
+
+    /**
+     * ========== Account Settings ==========
+     */
+    Route::group([
+        'as' => 'account.'
+    ], function() {
         Route::group([
-            'as' => 'referrals.'
+            'middleware' => 'auth.password',
         ], function(){
-            Route::get('/referrals', [ReferralsController::class, 'index'])->name('index');
-            Route::post('/referrals', [ReferralsController::class, 'storeNormalReferral'])->name('store.normal');
-            Route::put('/referrals', [ReferralsController::class, 'storeAdvancedReferral'])->name('store.advanced');
-            Route::patch('/referrals', [ReferralsController::class, 'generateReferrals'])->name('generate');
-        });
-
-        /**
-         * Account Settings Module
-         */
-        Route::group([
-            'as' => 'account.'
-        ], function() {
             // HTTP
             Route::get('/account/', [AccountSettingsController::class, 'index'])->name('index');
             Route::post('/account/2fa/confirm', [AccountSettingsController::class, 'confirm2FA'])->name('confirm2FA');
-
-            // AJAX
-            Route::post('/ajax/account/show/recoverycodes', [AccountSettingsController::class, 'showRecoveryCodes']);
-            Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername']);
-            Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail']);
-            Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
         });
 
-        /**===================== SIDEBAR MODULES =====================**/
+        // AJAX
+        Route::post('/ajax/account/show/recoverycodes', [AccountSettingsController::class, 'showRecoveryCodes']);
+        Route::put('/ajax/account/update/username', [AccountSettingsController::class, 'updateUsername']);
+        Route::put('/ajax/account/update/email', [AccountSettingsController::class, 'updateEmail']);
+        Route::put('/ajax/account/update/password', [AccountSettingsController::class, 'updatePassword']);
+    });
+
+    /**
+     * ========== Control Panel ==========
+     */
+    Route::group([
+        'as' => 'control.',
+        'middleware' => ['auth.password', 'auth.control'],
+    ], function() {
+        Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+        Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+
+        Route::put('/control/accept', [ControlPanelController::class, 'acceptInvitation'])->name('accept');
+        Route::post('/control/reject', [ControlPanelController::class, 'rejectInvitation'])->name('reject');
+        
+        Route::put('/control/admins/add', [ControlPanelController::class, 'ajaxInviteUser'])->name('ajaxInviteUser');
+
+        Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
+        Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
+
+        // AJAX
+        Route::group([
+            'as', 'ajax.',
+            'prefix' => 'ajax/control/user',
+        ], function(){
+            Route::get('/get/{user}', [ControlPanelController::class, 'ajaxGetUser']);
+            Route::get('/search/{query?}', [ControlPanelController::class, 'ajaxSearchUser']);
+        });
+    });
+
+    /**
+     * ========== Subscription Panel ==========
+     */
+    Route::group([
+        'as' => 'subscription.',
+        'middleware' => 'auth.password',
+    ], function(){
+        // HTML
+        Route::get('/subscription', [SummaryController::class, 'index'])->name('subscription.index');
+
+        // Invitation Accept/Reject
+        Route::patch('/ajax/subscription/accept-invitation', [SummaryController::class, 'ajaxAcceptInvitation']);
+        Route::delete('/ajax/subscription/reject-invitation', [SummaryController::class, 'ajaxRejectInvitation']);
+
+        Route::group([
+            'middleware' => 'auth.subscription',
+        ], function(){
+            Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
+            Route::post('/ajax/subscription/accounting-systems/select-subscription/', [ManageAccountingSystemsController::class, 'ajaxSelectSubscription']);
+    
+            Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
+    
+            // AJAX
+            Route::group([
+                'as', 'ajax.',
+                'prefix' => 'ajax/subscription/user',
+            ], function(){
+                Route::get('/get/{user}', [ManageSubscriptionUsersController::class, 'ajaxGetUser']);
+                Route::get('/u/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxGetSubscriptionUser']);
+                Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
+                Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
+    
+                // Part 1: When adding new user.
+                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']); 
+                // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
+                // Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
+    
+                // Part 2: Adding access after adding new user.
+                Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
+    
+                // TODO: Editing a user. Both parts are merged since there is already an ID.
+                Route::get('/edit/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxEditUser']);
+                Route::put('/update/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxUpdateUser']);
+    
+                Route::delete('/remove/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxRemoveUser']);
+            });
+        });
+
+    });
+    
+    /**
+     * ========== Accounting System Routes ==========
+     */
+    Route::group([
+        'middleware' => ['auth.password', 'auth.accountingsystem'],
+    ], function()
+    {
+        /**
+         * ========== Accounting System Dashboard ==========
+         */
+        Route::get('/', [HomeController::class, 'index']);
+        Route::get('/home', [HomeController::class, 'index'])->name('home');
 
         /**
-         * Customers Module
+         * ========== Customers Module ==========
          */
         Route::group([
-            // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
+            
         ], function(){
-
+        
             /**
              * Customers > Receipts
              */
             Route::group([
-                'as'=>'receipts.'
+                'as'=>'receipts.',
+                'middleware' => 'acctsys.permission:2', 
             ], function(){
                 Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
                 
@@ -169,20 +266,20 @@ Route::group([
                 Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);
                 Route::get('/ajax/get/receipts', [ReceiptController::class, 'ajaxGetReceiptCashTransactions']);
             });
-        
+
             /**
              * Customers > Customers
              */
             Route::group([
-                'as'=>'customers.'
+                'as'=>'customers.',
+                'middleware' => 'acctsys.permission:1', 
             ], function(){ 
-                Route::get('/customers/customers/', [CustomerController::class, 'index']);
-                Route::post('/customers/customers/', [CustomerController::class, 'store']); 
-                Route::get('/customers/customers/{id}', [CustomerController::class, 'edit']);
-                Route::put('/customers/customers/{id}', [CustomerController::class, 'update']);
-                Route::delete('/customers/customers/{id}', [CustomerController::class, 'destroy']);
-            
-                Route::get('/customers/export/csv', [CustomerController::class, 'toCSV'])->name('customers.export.csv');
+                // Resource
+                Route::resource('/customers', CustomerController::class);
+                // Import Export
+                Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
+                Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');
+                // AJAX
                 Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
             });
@@ -191,7 +288,8 @@ Route::group([
              * Customers > Deposits
              */
             Route::group([
-                'as'=>'deposits.'
+                'as'=>'deposits.',
+                'middleware' => 'acctsys.permission:3', 
             ], function(){ 
                 Route::get('/customers/deposits/', [DepositsController::class, 'index']);
                 Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
@@ -202,17 +300,18 @@ Route::group([
         });
 
         /**
-         * Vendors Module
+         * ========== Vendors Module ==========
          */
         Route::group([
-            // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
+            
         ], function(){
             
             /**
              * Vendors > Bills
              */
             Route::group([
-                'as'=>'bills.'
+                'as'=>'bills.',
+                'middleware' => 'acctsys.permission:5', 
             ], function(){ 
                 // HTML
                 Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
@@ -232,7 +331,8 @@ Route::group([
              * Vendors > Payments
              */
             Route::group([
-                'as'=>'payments.'
+                'as'=>'payments.',
+                'middleware' => 'acctsys.permission:6',
             ], function(){ 
                 // HTML
                 Route::get('/vendors/payments',[PaymentsController::class,'index']);
@@ -252,23 +352,21 @@ Route::group([
              * Vendors > Vendors
              */
             Route::group([
-                'as'=>'vendors.'
+                'as'=>'vendors.',
+                'middleware' => 'acctsys.permission:4',
             ], function(){ 
-                // HTML
-                Route::get('/vendors/vendors/',[VendorsController::class,'index']);
-                Route::get('/vendors/{id}',[VendorsController::class,'edit'])->name('vendors.edit');
-                Route::post('/vendors/{id}',[VendorsController::class,'update'])->name('vendors.update');
-                Route::delete('/vendors/{id}',[VendorsController::class,'destroy'])->name('vendors.destroy');
-                Route::post('/vendors', [VendorsController::class, 'store'])->name('vendors.store');
-                
+                // Resource
+                Route::resource('/vendors', VendorsController::class);
+                // Import Export
+                Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
+                Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
-                Route::get('/vendors/export/csv', [VendorsController::class, 'toCSV'])->name('vendors.export.csv');
             });
         });
 
         /**
-         * Banking Module
+         * ========== Banking Module ==========
          */
         Route::group([
             // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
@@ -278,12 +376,12 @@ Route::group([
              * Banking > Accounts
              */
             Route::group([
-                'as'=>'accounts.'
+                'as'=>'accounts.',
+                'middleware' => 'acctsys.permission:7',
             ], function(){ 
-                // HTML
-                Route::get('/banking/accounts', [BankAccountsController::class, 'index']);
-                Route::get('/banking/accounts/{id}', [BankAccountsController::class, 'edit'])->name('bank.accounts.edit');
-         
+                // Import Export
+                Route::post('/banking/accounts/import', [BankAccountsController::class, 'import'])->name('accounts.import');
+                Route::post('/banking/accounts/export', [BankAccountsController::class, 'export'])->name('accounts.export');
                 // RESOURCE
                 Route::resource('/banking/accounts', BankAccountsController::class);
             });
@@ -292,12 +390,15 @@ Route::group([
              * Banking > Transfer
              */
             Route::group([
-                'as'=>'transfers.'
+                'as'=>'transfers.',
+                'middleware' => 'acctsys.permission:8',
             ], function(){ 
                 // HTML
-                Route::get('/banking/transfer', [TransfersController::class, 'index']);
+                Route::post('/banking/transfer/{id}/void', [TransfersController::class, 'void'])->name('transfer.void');
                 Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
-
+                // Import Export
+                Route::post('/banking/transfers/import', [TransfersController::class, 'import'])->name('transfers.import');
+                Route::post('/banking/transfers/export', [TransfersController::class, 'export'])->name('transfers.export');
                 // RESOURCE
                 Route::resource('/banking/transfer', TransfersController::class);
             });
@@ -307,7 +408,8 @@ Route::group([
              * Same content as Customer > Deposits
              */
             Route::group([
-                'as'=>'deposits.'
+                'as'=>'deposits.',
+                'middleware' => 'acctsys.permission:3', // & 9 but duplicate
             ], function(){ 
                 // HTML
                 Route::redirect('/banking/deposits', '/customers/deposits');    
@@ -317,7 +419,8 @@ Route::group([
              * Banking > Transactions
              */
             Route::group([
-                'as'=>'transactions.'
+                'as'=>'transactions.',
+                'middleware' => 'acctsys.permission:10',
             ], function(){ 
                 // HTML
                 Route::get('/banking/transactions', [TransactionsController::class, 'index']);
@@ -326,15 +429,21 @@ Route::group([
             /**
              * TODO: Banking > Bank Reconcilation
              */
+            Route::group([
+                'as' => 'reconcilation.',
+                'middleware' => 'acctsys.permission:11',
+            ], function(){
+
+            });
             
         });
 
         /**
-         * Journal Vouchers Module
+         * ========== Journal Vouchers Module ==========
          */
         Route::group([
-            // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
-            'as'=>'journals.'
+            'as'=>'journals.',
+            'middleware' => 'acctsys.permission:12',
         ], function(){ 
             // HTML
             Route::get('/jv/', [JournalVouchersController::class, 'index'])->name('index');
@@ -343,11 +452,11 @@ Route::group([
         });
 
         /**
-         * Inventory Module
+         * ========== Inventory Module ==========
          */
         Route::group([
-            // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
-            'as'=>'inventory.'
+            'as'=>'inventory.',
+            'middleware' => 'acctsys.permission:19',
         ], function(){ 
             // HTML
             Route::get('/inventory/', [InventoryController::class, 'index']);
@@ -362,27 +471,29 @@ Route::group([
         });
 
         /**
-         * Human Resource Module
+         * ========== Human Resource Module ==========
          */
         Route::group([
-            // TODO: Disallow access if user does not have privileges (R/RW) through a custom middleware.
+
         ], function(){
 
             /**
              * Human Resource > Payrolls
              */
             Route::group([
-                'as' => 'payrolls.'
+                'as' => 'payrolls.',
+                'middleware' => 'acctsys.permission:14',
             ], function(){
                 // HTML
-                Route::get('/hr/payrolls', [PayrollController::class, 'index']);
+                Route::resource('/hr/payrolls', PayrollController::class);
             });
         
             /**
              * Human Resource > Employees
              */
             Route::group([
-                'as' => 'employees.'
+                'as' => 'employees.',
+                'middleware' => 'acctsys.permission:13',
             ], function(){
                 // HTML
                 Route::get('/hr/employees', [EmployeeController::class, 'index'])->name('index');
@@ -401,7 +512,8 @@ Route::group([
              * Human Resource > Overtime
              */
             Route::group([
-                'as' => 'overtime.'
+                'as' => 'overtime.',
+                'middleware' => 'acctsys.permission:17',
             ], function(){
                 // HTML
                 Route::get('/hr/overtime', [OvertimeController::class, 'index']);
@@ -413,7 +525,8 @@ Route::group([
              * Human Resource > Additions
              */
             Route::group([
-                'as' => 'additions.'
+                'as' => 'additions.',
+                'middleware' => 'acctsys.permission:15',
             ], function(){
                 // HTML
                 Route::get('/hr/addition', [AdditionController::class, 'index']);
@@ -425,7 +538,8 @@ Route::group([
              * Human Resource > Deductions
              */
             Route::group([
-                'as' => 'deductions.'
+                'as' => 'deductions.',
+                'middleware' => 'acctsys.permission:16',
             ], function(){
                 // HTML
                 Route::get('/hr/deduction', [DeductionController::class, 'index']);
@@ -437,7 +551,8 @@ Route::group([
              * Human Resource > Loans
              */
             Route::group([
-                'as' => 'loans.'
+                'as' => 'loans.',
+                'middleware' => 'acctsys.permission:18',
             ], function(){
                 // HTML
                 Route::get('/hr/loan', [LoanController::class, 'index']);
@@ -447,56 +562,103 @@ Route::group([
         });
 
         /**
-         * Reports Module
+         * ========== Reports Module ==========
          */
         Route::group([
+            // TODO: Add permission middleware
             'as' => 'reports.',
             'prefix' => 'reports'
         ], function() {
-            // HTTP
-            // Views
-            Route::get('/customers', [ReportsController::class, 'customers'])->name('customers');
-            Route::get('/vendors', [ReportsController::class, 'vendors'])->name('vendors');
-            Route::get('/sales', [ReportsController::class, 'sales'])->name('sales');
-            Route::get('/entries', [ReportsController::class, 'entries'])->name('entries');
-            Route::get('/financial_statement', [ReportsController::class, 'financial_statement'])->name('financial_statement');
-            
-            // pdf
-            // customers
-            Route::post('/customers/aged_receivable/pdf', [ReportsController::class, 'agedReceivablePDF'])->name('aged_receivable.pdf');
-            Route::post('/customers/cash_receipts_journal/pdf', [ReportsController::class, 'cashReceiptsJournalPDF'])->name('cash_receipts_journal.pdf');
-            Route::post('/customers/ledgers/pdf', [ReportsController::class, 'customerLedgersPDF'])->name('customer_ledgers.pdf');
 
-            // vendors
-            Route::post('/vendors/aged_payables/pdf', [ReportsController::class, 'agedPayablesPDF'])->name('aged_payables.pdf');
-            Route::post('/vendors/cash_disbursements_journal/pdf', [ReportsController::class, 'cashDisbursementsJournalPDF'])->name('cash_disbursements_journal.pdf');
-            Route::post('/vendors/cash_requirements/pdf', [ReportsController::class, 'cashRequirementsPDF'])->name('cash_requirements.pdf');
-            Route::post('/vendors/ledgers/pdf', [ReportsController::class, 'vendorLedgersPDF'])->name('vendor_ledgers.pdf');
-            
-            // sales
-            Route::post('/sales/pdf', [ReportsController::class, 'salesPDF'])->name('sales.pdf');
-            
-            // entries
-            Route::post('/entries/bill/pdf', [ReportsController::class, 'billPDF'])->name('bill.pdf');
-            Route::post('/entries/general_journal/pdf', [ReportsController::class, 'generalJournalPDF'])->name('general_journal.pdf');
-            Route::post('/entries/general_ledger/pdf', [ReportsController::class, 'generalLedgerPDF'])->name('general_ledger.pdf');
-            Route::post('/entries/payment/pdf', [ReportsController::class, 'paymentPDF'])->name('payment.pdf');
-            Route::post('/entries/receipt/pdf', [ReportsController::class, 'receiptPDF'])->name('receipt.pdf');
-            Route::post('/entries/journal_voucher/pdf', [ReportsController::class, 'journalVoucherPDF'])->name('journal_voucher.pdf');
+            /**
+             * Reports > Customers
+             */
+            Route::group([
+                // 'as' => 'customers.',
+                'middleware' => 'acctsys.permission:20',
+            ], function() {
+                Route::get('/customers', [ReportsController::class, 'customers'])->name('customers');
+
+                // pdf
+                // customers
+                Route::post('/customers/aged_receivable/pdf', [ReportsController::class, 'agedReceivablePDF'])->name('aged_receivable.pdf');
+                Route::post('/customers/cash_receipts_journal/pdf', [ReportsController::class, 'cashReceiptsJournalPDF'])->name('cash_receipts_journal.pdf');
+                Route::post('/customers/ledgers/pdf', [ReportsController::class, 'customerLedgersPDF'])->name('customer_ledgers.pdf');
+            });
 
             
-            // financial statement
-            Route::post('/financial_statement/balance/pdf', [ReportsController::class, 'balanceSheetPDF'])->name('balance_sheet.pdf');
-            Route::post('/financial_statement/balance/zero_account/pdf', [ReportsController::class, 'balanceSheetZeroAccountPDF'])->name('balance_sheet_zero_account.pdf');
-            Route::post('/financial_statement/income_statement_single/pdf', [ReportsController::class, 'incomeStatementSinglePDF'])->name('income_statement_single.pdf');
-            Route::post('/financial_statement/income_statement_multiple/pdf', [ReportsController::class, 'incomeStatementMultiplePDF'])->name('income_statement_multiple.pdf');
+            /**
+             * Reports > Vendors
+             */
+            Route::group([
+                // 'as' => 'vendors.',
+                'middleware' => 'acctsys.permission:21',
+            ], function() {
+                Route::get('/vendors', [ReportsController::class, 'vendors'])->name('vendors');
+
+                // vendors
+                Route::post('/vendors/aged_payables/pdf', [ReportsController::class, 'agedPayablesPDF'])->name('aged_payables.pdf');
+                Route::post('/vendors/cash_disbursements_journal/pdf', [ReportsController::class, 'cashDisbursementsJournalPDF'])->name('cash_disbursements_journal.pdf');
+                Route::post('/vendors/cash_requirements/pdf', [ReportsController::class, 'cashRequirementsPDF'])->name('cash_requirements.pdf');
+                Route::post('/vendors/ledgers/pdf', [ReportsController::class, 'vendorLedgersPDF'])->name('vendor_ledgers.pdf');
+            });
+
+
+            /**
+             * Reports > Sales
+             */
+            Route::group([
+                // 'as' => 'sales.',
+                'middleware' => 'acctsys.permission:22',
+            ], function() {
+                Route::get('/sales', [ReportsController::class, 'sales'])->name('sales');
+
+                // sales
+                Route::post('/sales/pdf', [ReportsController::class, 'salesPDF'])->name('sales.pdf');
+            });
+
+            /**
+             * Reports > Entries
+             */
+            Route::group([
+                // 'as' => 'entries.',
+                'middleware' => 'acctsys.permission:23',
+            ], function() {
+                Route::get('/entries', [ReportsController::class, 'entries'])->name('entries');
+
+                // entries
+                Route::post('/entries/bill/pdf', [ReportsController::class, 'billPDF'])->name('bill.pdf');
+                Route::post('/entries/general_journal/pdf', [ReportsController::class, 'generalJournalPDF'])->name('general_journal.pdf');
+                Route::post('/entries/general_ledger/pdf', [ReportsController::class, 'generalLedgerPDF'])->name('general_ledger.pdf');
+                Route::post('/entries/payment/pdf', [ReportsController::class, 'paymentPDF'])->name('payment.pdf');
+                Route::post('/entries/receipt/pdf', [ReportsController::class, 'receiptPDF'])->name('receipt.pdf');
+                Route::post('/entries/journal_voucher/pdf', [ReportsController::class, 'journalVoucherPDF'])->name('journal_voucher.pdf');
+            });
+
+
+            /**
+             * Reports > Financial Statement
+             */
+            Route::group([
+                // 'as' => 'financial.',
+                'middleware' => 'acctsys.permission:24',
+            ], function() {
+                Route::get('/financial_statement', [ReportsController::class, 'financial_statement'])->name('financial_statement');
+
+                // financial statement
+                Route::post('/financial_statement/balance/pdf', [ReportsController::class, 'balanceSheetPDF'])->name('balance_sheet.pdf');
+                Route::post('/financial_statement/balance/zero_account/pdf', [ReportsController::class, 'balanceSheetZeroAccountPDF'])->name('balance_sheet_zero_account.pdf');
+                Route::post('/financial_statement/income_statement_single/pdf', [ReportsController::class, 'incomeStatementSinglePDF'])->name('income_statement_single.pdf');
+                Route::post('/financial_statement/income_statement_multiple/pdf', [ReportsController::class, 'incomeStatementMultiplePDF'])->name('income_statement_multiple.pdf');
+            });
         });
             
         /**
-         * Settings Module
+         * ========== Settings Module ==========
          */
         Route::group([
-            'as' => 'settings.'
+            'as' => 'settings.',
+            'middleware' => 'acctsys.settings'
         ], function() {
 
             /**
@@ -520,6 +682,8 @@ Route::group([
             ], function() {
                 // HTTP
                 Route::get('/settings/users', [ManageUsersController::class, 'index'])->name('manageUsers');
+                Route::post('/settings/users/add/new', [ManageUsersController::class, 'inviteUser'])->name('inviteUser');
+
                 Route::get('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
                 Route::put('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
            
@@ -548,6 +712,9 @@ Route::group([
                 Route::post('/settings/taxes', [TaxController::class, 'store'])->name('store');
                 Route::put('/settings/taxes/{tax}', [TaxController::class, 'update'])->name('update');
                 Route::delete('/settings/taxes/{tax}', [TaxController::class, 'destroy'])->name('destroy');
+                // Import Export
+                Route::post('/settings/taxes/import', [TaxController::class, 'import'])->name('import');
+                Route::post('/settings/taxes/export', [TaxController::class, 'export'])->name('export');
 
                 // AJAX
                 Route::get('/ajax/settings/taxes/get/{tax}', [TaxController::class, 'ajaxGetTax']);
@@ -565,7 +732,10 @@ Route::group([
                 Route::post('/settings/withholding', [WithholdingController::class, 'store'])->name('store');
                 Route::put('/settings/withholding/{withholding}', [WithholdingController::class, 'update'])->name('update');
                 Route::delete('/settings/withholding/{withholding}', [WithholdingController::class, 'destroy'])->name('destroy');
-
+                // Import Export
+                Route::post('/settings/withholding/import', [WithholdingController::class, 'import'])->name('import');
+                Route::post('/settings/withholding/export', [WithholdingController::class, 'export'])->name('export');
+                
                 // AJAX
                 Route::get('/ajax/settings/withholding/get/{withholding}', [WithholdingController::class, 'ajaxGetWithholding']);
             });
@@ -592,7 +762,9 @@ Route::group([
                 // HTTP
                 Route::get('/settings/coa', [ChartOfAccountsController::class, 'index'])->name('index');
                 Route::post('/settings/coa', [ChartOfAccountsController::class, 'store'])->name('store');
-                
+                // Import Export
+                Route::post('/settings/coa/import', [ChartOfAccountsController::class, 'import'])->name('import');
+                Route::post('/settings/coa/export', [ChartOfAccountsController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/ajax/settings/coa/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
                 Route::get('/ajax/settings/coa_categories/search', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
@@ -638,28 +810,11 @@ Route::group([
         });
 
         /**
-         * Control Panel
+         * ========== Misclaneous Routes (required for some functions to work) ==========
          */
-        Route::group([
-            'as' => 'control.',
-        ], function() {
-            Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
-            
-            Route::put('/control/admins/add', [ControlPanelController::class, 'addNewSuperAdmin'])->name('addNewSuperAdmin');
-            Route::post('/control/admins/add', [ControlPanelController::class, 'addExistingUserAsSuperAdmin'])->name('addExistingUserAsSuperAdmin');
 
-            Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
-            Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
-
-            // AJAX
-            Route::group([
-                'as', 'ajax.',
-                'prefix' => 'ajax/control/user',
-            ], function(){
-                Route::get('/get/{user}', [ControlPanelController::class, 'ajaxGetUser']);
-                Route::get('/search/{query?}', [ControlPanelController::class, 'ajaxSearchUser']);
-            });
-        });
+        // Notifications
+        Route::resource('notifications', NotificationController::class);
     });
 });
 
@@ -702,19 +857,22 @@ Route::post('/userlogin', function (Request $request){
 Route::group([
     'as' => 'register.'
 ], function(){ 
+
+    /**
+     * Step 0 - 2b (UI)
+     */
+    // Step 0
     Route::get('/create-account', [RegisterController::class, 'createAccountView'])->name('createAccountView');
+    // Step 1
     Route::get('/create-password', [RegisterController::class, 'createPasswordView'])->name('createPasswordView');
+    // Step 2a
     Route::get('/create-user', [RegisterController::class, 'createUserView'])->name('createUser');
+    // Step 2b
     Route::get('/verify-password', [RegisterController::class, 'verifyPasswordView'])->name('verifyPasswordView');
-    // Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
 
-    Route::get('/onboarding', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
-
-    Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
-    Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
-    Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
-    Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
-    
+    /**
+     * Step 0 - 2b (AJAX)
+     */
     // Step 0
     Route::post('/submit-referral-code', [RegisterController::class, 'findReferralCode'])->name('submitReferral');
     // Step 1
@@ -723,9 +881,26 @@ Route::group([
     Route::post('/validate-account', [RegisterController::class, 'validateExistingAccount'])->name('validateAccount');
     // Step 2b
     Route::post('/create-account', [RegisterController::class, 'createAccount'])->name('createAccount');
-    // Step 3
-    Route::post('/onboarding', [RegisterController::class, 'createAccountingSystem'])->name('createAccountingSystem');
+    
+    /**
+     * Step 3
+     */
+    Route::group([
+        'middleware' => 'auth',
+    ], function(){
+        // HTML
+        Route::get('/onboarding', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+        // AJAX
+        Route::post('/onboarding', [RegisterController::class, 'createAccountingSystem'])->name('createAccountingSystem');
+        Route::post('/onboarding/cancel', [RegisterController::class, 'cancelOnboarding'])->name('cancelOnboarding');
+    });
 
-    Route::post('/onboarding/cancel', [RegisterController::class, 'cancelOnboarding'])->name('cancelOnboarding');
-
+    /**
+     * Deprecated Routes
+     */ 
+    // Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
+    // Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
+    // Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
+    // Route::post('/verify-password-post', [RegisterController::class, 'verifyPassword'])->name('verifyPassword');
+    // Route::get('/create-company-info-post', [RegisterController::class, 'createCompanyInfo'])->name('createCompanyInfo');
 });

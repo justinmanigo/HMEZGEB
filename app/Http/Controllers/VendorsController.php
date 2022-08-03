@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vendors;
+use App\Imports\ImportVendorsVendor;
+use App\Exports\ExportVendorsVendor;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\Log;
@@ -93,13 +96,15 @@ class VendorsController extends Controller
      */
     public function edit($id)
     {
+        
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         //view edit customer info
         $vendor = Vendors::where('id',$id)->first();
         if(!$vendor) return abort(404);
         if($vendor->accounting_system_id != $accounting_system_id) {
-            return redirect('/vendors/vendors')->with('danger', "You are not authorized to edit this vendor.");
+            return redirect()->route('vendors.vendors.index')->with('danger', "You are not authorized to edit this vendor.");
         }
+        
         return view('vendors.vendors.individualVendor', compact('vendor'));
     }
 
@@ -115,8 +120,13 @@ class VendorsController extends Controller
         // Update the form
       
         $vendor = Vendors::where('id',$id)->first();
-        $imageName = time().'.'.$request->image->extension();  
-        $request->image->storeAs('public/vendors/vendor', $imageName);
+        // if not null then update the image
+        if($request->image)
+        {
+            $imageName = time().'.'.$request->image->extension();  
+            $request->image->storeAs('public/vendors/vendor', $imageName);
+            $vendor->image = $imageName;
+        }
 
         $vendor->name =  $request->name;
         $vendor->tin_number =  $request->tin_number;
@@ -131,7 +141,6 @@ class VendorsController extends Controller
         $vendor->email =  $request->email;
         $vendor->contact_person =  $request->contact_person;
         $vendor->label =  $request->label;
-        $vendor->image = $imageName;
         $vendor->is_active =  $request->is_active;
 
         $vendor->save();
@@ -151,28 +160,37 @@ class VendorsController extends Controller
         return redirect('/vendors')->withSuccess('Successfully Deleted');;
     
     }
+    // Import Export
 
-    public function toCSV()
+    public function import(Request $request)
     {
-        
-        Log::info("Exporting Vendors");
-        // create a csv file
-        $vendors = Vendors::all();
-        // open file
-        $file = fopen('vendors.csv', 'w');
-        // add column name
-        fputcsv($file, array('ID','Account_ID', 'Name', 'TIN Number', 'Address', 'City', 'Country', 'Mobile Number', 'Telephone_one', 'Telephone_Two', 'Fax', 'Website', 'Email', 'Contact_person', 'Label', 'Image', 'is_active', 'Created_at', 'Updated_at'));
-
-        // loop through the array
-        foreach ($vendors as $vendor) {
-            // add the data to the file
-            $vendor = $vendor->toArray();
-            fputcsv($file, $vendor);
+        if (!$request->file('file'))
+        {
+            return back()->with('error', 'Please select a file');
         }
-        // close the file
-        fclose($file);
-        // redirect to the file
-        return response()->download('vendors.csv');
+        try {
+            Excel::import(new ImportVendorsVendor, $request->file('file'));
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $message = $failures[0]->errors();
+            return back()->with('error', $message[0].' Please check the file format');
+        }
+        catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error importing bank account');
+        }  
+        return redirect()->back()->with('success', 'Successfully imported vendor records.');
+
+    }
+
+    public function export(Request $request)
+    {
+
+        if($request->type=="csv")
+        return Excel::download(new ExportVendorsVendor, 'vendorsVendor_'.date('Y_m_d').'.csv');
+        else
+        $vendors = Vendors::all();
+        $pdf = \PDF::loadView('vendors.vendors.pdf', compact('vendors'));
+        return $pdf->download('vendorsVendor_'.date('Y_m_d').'.pdf');
  
     }
 

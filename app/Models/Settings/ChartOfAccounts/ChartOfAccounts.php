@@ -11,6 +11,7 @@ class ChartOfAccounts extends Model
     
     protected $fillable = [
         'id',
+        'accounting_system_id',
         'chart_of_account_category_id',
         'chart_of_account_no',
         'account_name',

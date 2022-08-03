@@ -17,15 +17,15 @@ class CreateCustomersTable extends Migration
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
             $table->string('name');
-            $table->string('tin_number')->nullable();;
+            $table->string('tin_number')->nullable();
             $table->longText('address');
             $table->string('city');
             $table->string('country');
             $table->string('mobile_number'); 
             $table->string('telephone_one');
             $table->string('telephone_two')->nullable();
-            $table->string('fax')->nullable();;   
-            $table->string('website')->nullable();;   
+            $table->string('fax')->nullable();   
+            $table->string('website')->nullable();   
             $table->string('email');   
             $table->string('contact_person');
             $table->string('image')->nullable();

@@ -7,7 +7,23 @@
     </div>
 
     <div class="container card shadow px-4 py-3">
-        <form id="form-customer" action="{{ url('/customers/customers/'.$customers->id) }}" method="post"
+        @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session()->get('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if(session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session()->get('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+        <form id="form-customer" action="{{ route('customers.customers.update',$customers->id) }}" method="post"
             enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -66,13 +82,16 @@
             <div class="form-group row">
                 <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
                 <div class="col-sm-9 col-lg-4">
-                    <input type="file" id="c_picture" name="image">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file" name="image" value="{{$customers->image}}">
+                        <label class="custom-file-label" for="file">{{$customers->image ? $customers->image : 'Choose Image'}}</label>
+                    </div>
                 </div>
 
                 <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
                 <div class="col-sm-9 col-lg-4">
                     <input type="text" class="form-control" id="c_label" name="label"
-                        value="{{ $customers->label }}Label" required>
+                        value="{{ $customers->label }}" required>
                 </div>
             </div>
 
@@ -119,7 +138,7 @@
                 <div>
                     <button class="btn btn-danger mr-3 " type="button" data-toggle="modal"
                         data-target="#deleteConfirmationModel">Delete</button>
-                    <a type="button" href="{{route('customers.')}}" class="btn btn-secondary">Back</a>
+                    <a type="button" href="{{route('customers.customers.index')}}" class="btn btn-secondary">Back</a>
                 </div>
                 <button type="submit" class="btn btn-primary">Update Customer</button>
         </form>
@@ -141,7 +160,7 @@
             <div class="modal-body">Are you sure to delete this record?</div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
-                <form id="delete-frm" class="" action="" method="POST">
+                <form id="delete-frm" class="" action="{{route('customers.customers.destroy', $customers->id)}}" method="POST">
                     @method('DELETE')
                     @csrf
                     <button class="btn btn-danger">Delete</button>

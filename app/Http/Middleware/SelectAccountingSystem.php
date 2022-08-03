@@ -32,10 +32,13 @@ class SelectAccountingSystem
             return redirect('/switch')->with('danger', 'The accounting system you selected no longer exists.');
         }
         
-        // If exists, check if the accounting system user belongs to the accounting system.
-        if(!$accountingSystem->accountingSystemUsers()->where('user_id', Auth::id())->count()) {
+        // If exists, check if the user is allowed to access the accounting system.
+        $subscription = $accountingSystem->subscription;
+        $subscriptionUser = $subscription->subscriptionUsers()->where('user_id', Auth::id())->first();
+
+        if(!$subscriptionUser) {
             $request->session()->forget('accounting_system_id');
-            return redirect('/switch')->with('danger', "You don't have the privileges to access that accounting system.");
+            return redirect('/switch')->with('danger', 'You are not allowed to access this accounting system.');
         }
 
         return $next($request);

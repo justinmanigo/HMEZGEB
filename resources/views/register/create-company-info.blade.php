@@ -70,14 +70,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-lg-4 mb-3 mb-lg-0">
-                                            <div id="step-indicator-3" class="card">
-                                                <div class="card-body">
-                                                    <div class="icon"><strong>Step 3</strong></div>
-                                                    <div class="text">Accounting System Payment</div>
+                                        @if(\Session::has('referralCode'))
+                                            <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+                                                <div id="step-indicator-3" class="card">
+                                                    <div class="card-body">
+                                                        <div class="icon"><strong>Step 3</strong></div>
+                                                        <div class="text">Accounting System Payment</div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <input id="subscription" type="hidden" value="no"/>
+                                        @else
+                                            <input id="subscription" type="hidden" value="yes"/>
+                                        @endif
                                     </div>
                                     
                                     <!-- Company Information -->
@@ -209,9 +214,12 @@
                                     <!-- Accounting Year & Calendar -->
                                     <div id="onboarding-step2" style="display:none">
                                         <form action="" method="POST" id="form-onboarding-step2">
+                                            @csrf
                                             <div class="text-center">
                                                 <p>Select a type of calendar and accounting year for this accounting system.</p>
                                             </div>
+
+                                            <p class="text-danger error-message error-message-main" style="display:none"></p>
 
                                             <!-- Select Calendar Type -->
                                             <div class="form-group row">
@@ -233,9 +241,15 @@
                                                 <p class="text-danger error-message error-message-accounting_year" style="display:none"></p>
                                             </div>
 
-                                            <button id="btn-next-step2" type="submit" class="btn btn-primary btn-next" style="width:30%">
-                                                Next Step
-                                            </button>
+                                            @if(\Session::has('referralCode'))
+                                                <button id="btn-next-step2" type="submit" class="btn btn-primary btn-next" style="width:30%">
+                                                    Next Step
+                                                </button>
+                                            @else
+                                                <button id="btn-submit-step2" type="submit" class="btn btn-primary btn-submit" style="width:30%">
+                                                    Submit & Finish
+                                                </button>
+                                            @endif
                                             <button id="btn-previous-step2" type="button" class="btn btn-outline-secondary btn-previous">
                                                 Previous Step
                                             </button>
@@ -393,14 +407,56 @@
             step2_formdata = formData;
             console.log(`${step1_formdata}&${step2_formdata}`);
 
-            $('#onboarding-step2').hide();
-            $('#onboarding-step3').show();
+            // Check if certain element exists
+            if($('#subscription').val() == 'yes') {
+                console.log('clicked btn submit step2')
+                e.preventDefault();
+                $('.error-message').hide();
 
-            $('#step-indicator-2').removeClass('border-success');
-            $('#step-indicator-2 .icon').removeClass('text-success');
+                $('#btn-submit-step2').attr('disabled', 'true');
 
-            $('#step-indicator-3').addClass('border-success');
-            $('#step-indicator-3 .icon').addClass('text-success');
+                var form = $(this);
+                var formData = form.serialize();
+                console.log(`${step1_formdata}&${formData}`);
+
+                var request = $.ajax({
+                    url: '/onboarding',
+                    type: 'POST',
+                    data: `${step1_formdata}&${formData}`,
+                    dataType: "json"
+                });
+
+                request.done(function(data){
+                    console.log(data);
+                    if(data.success) {
+                        // Redirect to /switch
+                        window.location.href = '/switch';
+                    }
+                    else {
+                        $('#btn-submit-step2').removeAttr('disabled');
+                        $('.error-message-main').html(data.error);
+                        $('.error-message-main').show();
+                    }
+                });
+
+                request.fail(function(response){
+                    console.log(response);
+                    $('#btn-submit-step2').removeAttr('disabled');
+                    $('.error-message-main').html(response.responseJSON.error);
+                    $('.error-message-main').show();
+                });
+            }
+            else {
+                $('#onboarding-step2').hide();
+                $('#onboarding-step3').show();
+    
+                $('#step-indicator-2').removeClass('border-success');
+                $('#step-indicator-2 .icon').removeClass('text-success');
+    
+                $('#step-indicator-3').addClass('border-success');
+                $('#step-indicator-3 .icon').addClass('text-success');
+            }
+
         });
 
         // Step 3 Submit
@@ -431,13 +487,15 @@
                 else {
                     $('#btn-submit-step3').removeAttr('disabled');
                     $('.error-message-main').html(data.error);
+                    $('.error-message-main').show();
                 }
             });
 
             request.fail(function(response){
                 console.log(response);
                 $('#btn-submit-step3').removeAttr('disabled');
-                $('.error-message-main').html(data.error);
+                $('.error-message-main').html(response.responseJSON.error);
+                $('.error-message-main').show();
             });
         });
 

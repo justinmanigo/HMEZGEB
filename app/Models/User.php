@@ -29,6 +29,8 @@ class User extends Authenticatable
         'email',
         'password',
         'password_updated_at',
+        'must_update_password',
+        'is_control_panel_access_accepted'
     ];
 
     /**
@@ -55,9 +57,9 @@ class User extends Authenticatable
         return $this->hasMany(Referral::class);
     }
 
-    public function subscription()
+    public function subscriptions()
     {
-        return $this->hasOne(Subscription::class);
+        return $this->hasMany(Subscription::class);
     }
 
     public function referredSubscriptions()
