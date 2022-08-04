@@ -54,7 +54,7 @@
                                         <p id="step1-error" class="alert alert-danger" style="display:none">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user" id="email" name="email"
-                                                placeholder="Email Address" required>
+                                                placeholder="Email Address" value="{{ \Session::get('referralEmail') }}" required>
                                         </div>
                                     
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
