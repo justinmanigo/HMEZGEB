@@ -92,7 +92,10 @@ Route::group([
      * ========== Mandatory Update Password ==========
      */
     Route::get('/update-password', function() {
-        return view('account_settings.update-password');
+        if(auth()->user()->must_update_password == true) {
+            return view('account_settings.update-password');
+        }
+        return redirect('/');
     });
 
     /**
