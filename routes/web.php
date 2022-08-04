@@ -703,6 +703,8 @@ Route::group([
            
                 // Mail
                 Route::get('/settings/users/{accountingSystemUser}/mail', [ManageUsersController::class, 'sendMailNewSuperAdmin'])->name('mail');
+
+                Route::delete('/settings/users/{accountingSystemUser}', [ManageUsersController::class, 'removeUser'])->name('removeUser');
             });
 
             /**
