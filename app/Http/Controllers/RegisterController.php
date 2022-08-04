@@ -131,6 +131,8 @@ class RegisterController extends Controller
         // generate random username
         $exampleKey = new Key;
         $exampleKey->setPattern("XXXXXXXX");
+        $user->firstName = $request->firstName;
+        $user->lastName = $request->lastName;
         $user->username = (string)$exampleKey->generate();
         $user->code = (string)$exampleKey->generate();
         $user->password = Hash::make($request->new_password);

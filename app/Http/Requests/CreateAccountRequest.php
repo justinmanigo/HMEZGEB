@@ -24,9 +24,20 @@ class CreateAccountRequest extends FormRequest
     public function rules()
     {
         return [
+            'firstName' => ['required', 'string', 'max:255'],
+            'lastName' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
             'new_password' => ['required', 'min:8'],
             'confirm_password' => ['required', 'min:8', 'same:new_password'], 
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if($this->firstName == 'New' && $this->lastName == 'User') {
+                $validator->errors()->add('firstName', 'New User is not allowed');
+            }
+        });
     }
 }
