@@ -694,6 +694,8 @@ Route::group([
 
                 Route::get('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
                 Route::put('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
+
+                Route::delete('/settings/users/{accountingSystemUser}', [ManageUsersController::class, 'removeUser'])->name('removeUser');
             });
 
             /**
