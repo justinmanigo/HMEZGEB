@@ -28,4 +28,13 @@ class UpdateNameRequest extends FormRequest
             'lastName' => ['required', 'string', 'max:255'],
         ];
     }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if($this->firstName == 'New' && $this->lastName == 'User') {
+                $validator->errors()->add('firstName', 'You cannot have a first name of `New` and a last name of `User`.');
+            }
+        });
+    }
 }
