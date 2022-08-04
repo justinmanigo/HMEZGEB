@@ -99,8 +99,11 @@ Route::group([
      * ========== Mandatory Update Name ==========
      */
     Route::get('/update-name', function() {
-        return view('account_settings.update-name');
-    });
+        if(auth()->user()->firstName == 'New' && auth()->user()->lastName == 'User') {
+            return view('account_settings.update-name');
+        }
+        return redirect('/');
+    })->name('must-update-name');
 
     /**
      * ========== Accounting System Switcher ==========
