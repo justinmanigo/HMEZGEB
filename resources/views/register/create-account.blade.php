@@ -184,7 +184,12 @@
 
             request.fail(function(response) {
                 console.log(response);
-                $('#step1-error').show().html("Referral code does not exist.");
+                if(response.responseJSON.email_exists == true) {
+                    $('#step1-error').show().html(response.responseJSON.error);
+                }
+                else {
+                    $('#step1-error').show().html("Referral code does not exist.");
+                }
             });
         });
 

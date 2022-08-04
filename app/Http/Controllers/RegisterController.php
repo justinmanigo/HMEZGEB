@@ -54,6 +54,10 @@ class RegisterController extends Controller
      * If the email exists, in the front end, it will proceed to step 2A where the user
      * will confirm his/her identity and merge accounts.
      * Otherwise, it will proceed to Step 2B where the user will create a new account.
+     * 
+     * Addt. Validation:
+     * If the email entered is the same as the one who generated the referral, it will
+     * return an error.
      */
     public function checkIfEmailExists(Request $request)
     {
@@ -66,8 +70,18 @@ class RegisterController extends Controller
         // Check whether the email is registered or not.
         $user = User::where('email', $request->email)->first();
 
-        if($user)   return response()->json(['email_exists' => true], 200);
-        else        return response()->json(['email_exists' => false], 200);
+        if(isset($user)) {
+            // Check if the email is the same as the one who generated the referral.
+            if($user->id == Referral::where('code', session('referralCode'))->first()->user_id){
+                return response()->json(['email_exists' => true, 'error' => 'You generated this code yourself. You cannot use it.'], 422);
+            }
+            else {
+                return response()->json(['email_exists' => true], 200);
+            }
+        }
+        else {
+            return response()->json(['email_exists' => false], 200);
+        }
     }
 
     /**
