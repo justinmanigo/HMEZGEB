@@ -42,6 +42,7 @@ class RegisterController extends Controller
         }
 
         $this->request->session()->put('referralCode',$request->referralCode);
+        $this->request->session()->put('referralEmail',$referral->email);
         Log::info($this->request->session()->get('referralCode'));
 
         return 'sod';
