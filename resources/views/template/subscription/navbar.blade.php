@@ -53,7 +53,7 @@ $route_name = $route_name[0];
                 <div id="control" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        @if(session('acct_system_count') > 1)
+                        @if(session('acct_system_count') > 1 && auth()->user()->must_update_password == false && !(auth()->user()->firstName == 'New' && auth()->user()->lastName == 'User'))
                             <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
                             <hr class="collapse-divider mx-4 my-2">
                         @endif
@@ -62,7 +62,7 @@ $route_name = $route_name[0];
                 </div>
             </li>
 
-            @if(!auth()->user()->must_update_password)
+            @if(auth()->user()->must_update_password == false && !(auth()->user()->firstName == 'New' && auth()->user()->lastName == 'User'))
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">

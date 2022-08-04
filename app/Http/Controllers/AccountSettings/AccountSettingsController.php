@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountSettings\UpdateUsernameRequest;
 use App\Http\Requests\AccountSettings\UpdateEmailRequest;
+use App\Http\Requests\AccountSettings\UpdateNameRequest;
 use App\Http\Requests\AccountSettings\UpdatePasswordRequest;
 use App\Models\User;
 
@@ -47,6 +48,16 @@ class AccountSettingsController extends Controller
     /**
      * Updating Info from Account Settings
      */
+
+    public function updateName(UpdateNameRequest $request)
+    {
+        $validated = $request->validated();
+
+        return User::find(Auth::user()->id)->update([
+            'firstName' => $validated['firstName'],
+            'lastName' => $validated['lastName']
+        ]);
+    }
 
     public function updateUsername(UpdateUsernameRequest $request)
     {
