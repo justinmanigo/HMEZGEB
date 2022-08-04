@@ -5,7 +5,7 @@
 <h1>Manage Users</h1>
 
 {{-- Button Group Navigation --}}
-@if(auth()->user()->control_panel_role == 'admin')
+@if(session('subscription_user_role') == 'admin' || session('subscription_user_role' == 'moderator'))
     <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
         <div class="btn-group" role="group">
             <button id="btnGroupDrop1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-new-user"
