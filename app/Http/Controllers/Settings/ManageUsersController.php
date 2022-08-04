@@ -147,4 +147,11 @@ class ManageUsersController extends Controller
 
         return redirect()->back()->with('success', 'Successfully updated permissions.');
     }
+
+    public function removeUser(AccountingSystemUser $accountingSystemUser)
+    {
+        $accountingSystemUser->permissions()->delete();
+        $accountingSystemUser->delete();
+        return redirect()->back()->with('success', 'Successfully removed user from accounting system.');
+    }
 }

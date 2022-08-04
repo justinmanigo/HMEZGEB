@@ -67,11 +67,15 @@
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>
                     <td>
-                        <a type="button" class="btn btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
+                        <a role="button" class="btn btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
                             <span class="icon text-white-50">
                                 <i class="fas fa-pen"></i>
                             </span>
                         </a>
+                        <button type="button" class="btn btn-danger btn-remove-user" data-id="{{ $user->accounting_system_user_id }}" data-toggle="modal" data-target="#modal-remove-user">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-trash"></i>
+                            </span>
                         </button>
                     </td>
                 </tr>
@@ -115,8 +119,48 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-remove-user" tabindex="-1" role="dialog" aria-labelledby="modal-add-new-user-label" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-add-new-user-label">Remove User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-remove-user-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <form id="form-remove-user" method="post" action="">
+                    @csrf
+                    @method('DELETE')
+                    <div class="form-group row">
+                        <p class="col-12">You are about to remove the following user "<strong id="ru-name"></strong>" with email "<strong id="ru-email"></strong>" access to this accounting system. This won't remove this user access from the subscription nor delete its user account.</p>
+                        <p class="alert alert-danger col-12">This action cannot be undone. To continue, click 'Remove User'.</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-danger" id="ru-submit" form="form-remove-user">Remove User</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('accounts_script')
-{{-- <script src="js/account/update_info.js"></script> --}}
+<script>
+    $(document).on('click', '.btn-remove-user', function(e){
+        e.preventDefault();
+        var as_user_id = $(this).data('id');
+        var user_name = $(this).closest('tr').find('td:nth-child(1)').text();
+        var user_email = $(this).closest('tr').find('td:nth-child(2)').text();
+        $('#ru-name').text(user_name);
+        $('#ru-email').text(user_email);
+        $('#form-remove-user').attr('action', '/settings/users/' + as_user_id);
+    });
+</script>
 @endsection
