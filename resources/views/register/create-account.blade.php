@@ -102,9 +102,20 @@
                                     </div>
                                     <form id="form-step2b" action="{{ url('/create-account') }}" method="POST" class="user">
                                         @csrf
-                                        <p>Our system indicates you're creating a new account. Kindly enter your preferred password to proceed with the registration.</p>
+                                        <p>Our system indicates you're creating a new account. Kindly enter your name and your preferred password to proceed with the registration.</p>
                                         <p id="step2b-error" class="alert alert-danger error-message-email error-message" style="display:none">
                                         
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control form-control-user" id="step2b-firstName" name="firstName"
+                                                placeholder="First Name">
+                                                <input type="text" class="form-control form-control-user" id="step2b-lastName" name="lastName"
+                                                placeholder="Last Name">
+                                            </div>
+                                            <p class="alert alert-danger error-message error-message-firstName" style="display:none">
+                                            <p class="alert alert-danger error-message error-message-lastName" style="display:none">
+                                        </div>
+
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user" id="step2b-new-password" name="new_password"
                                                 placeholder="New Password">
