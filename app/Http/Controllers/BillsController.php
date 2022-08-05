@@ -202,7 +202,7 @@ class BillsController extends Controller
     {
         $bills = Bills::find($id);
         $emailAddress = $bills->paymentReference->vendor->email;
-        Mail::to($emailAddress)->send(new MailVendorBill);
+        Mail::to($emailAddress)->queue(new MailVendorBill);
         
         return redirect()->route('bills.bill.index')->with('success', 'Email has been sent!');
     }

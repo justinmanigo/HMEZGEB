@@ -155,7 +155,7 @@ class ManageUsersController extends Controller
     {
         // Mail
         $emailAddress = $accountingSystemUser->user->email;
-        Mail::to($emailAddress)->send(new MailSettingUser);
+        Mail::to($emailAddress)->queue(new MailSettingUser);
 
         return redirect()->back()->with('success', 'Successfully sent mail.');
     }
