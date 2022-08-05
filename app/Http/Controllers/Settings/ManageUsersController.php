@@ -159,7 +159,7 @@ class ManageUsersController extends Controller
 
         return redirect()->back()->with('success', 'Successfully sent mail.');
     }
-    
+
     public function removeUser(AccountingSystemUser $accountingSystemUser)
     {
         $accountingSystemUser->permissions()->delete();

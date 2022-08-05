@@ -83,7 +83,6 @@
                                 <i class="fas fa-pen"></i>
                             </span>
                         </a>
-
                         <a type="button" class="btn btn-secondary" href="{{ route('settings.users.mail', $user->accounting_system_user_id) }}">
                             <span class="icon text-white-50">
                                 <i class="fas fa-envelope"></i>

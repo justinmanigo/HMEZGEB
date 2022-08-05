@@ -700,7 +700,7 @@ Route::group([
 
                 Route::get('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'editPermissions'])->name('editPermissions');
                 Route::put('/settings/users/{accountingSystemUser}/permissions', [ManageUsersController::class, 'updatePermissions'])->name('updatePermissions');
-           
+
                 // Mail
                 Route::get('/settings/users/{accountingSystemUser}/mail', [ManageUsersController::class, 'sendMailNewSuperAdmin'])->name('mail');
 
