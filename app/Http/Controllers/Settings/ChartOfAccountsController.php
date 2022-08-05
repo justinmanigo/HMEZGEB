@@ -85,7 +85,7 @@ class ChartOfAccountsController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $coa_category = json_decode($request->coa_category, true);
         
-        return $request->coa_category;
+        // return $request->coa_category;
         // To get the category_id of coa, use
         // $coa[0]['value'];
         // other related info such as type, category name,
