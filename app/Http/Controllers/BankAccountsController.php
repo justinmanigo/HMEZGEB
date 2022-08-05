@@ -73,8 +73,9 @@ class BankAccountsController extends Controller
         $account->save();
 
         // Mail
-        $emailAddress = 'test@example.com';
-        Mail::to($emailAddress)->send(new MailBankAccount);
+        // TODO : Confirm where to send the mail to.
+        // $emailAddress = 'test@example.com';
+        // Mail::to($emailAddress)->queue(new MailBankAccount);
 
         return redirect()->back()->with('success', 'Bank Account Created Successfully');
     }

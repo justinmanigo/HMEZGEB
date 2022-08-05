@@ -112,8 +112,10 @@ class TransfersController extends Controller
         ]);
 
         // Mail
-        $emailAddress = 'test@example.com';
-        Mail::to($emailAddress)->send(new MailBankTransfer);
+        // TODO: Confirm where to send the mail
+        // $emailAddress = 'test@example.com';
+        // Mail::to($emailAddress)->queue(new MailBankTransfer);
+        
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }
 
