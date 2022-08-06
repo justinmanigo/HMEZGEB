@@ -37,4 +37,47 @@ class Payroll extends Model
     {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
+    
+    // basic salary
+    public function basicSalary()
+    {
+        return $this->hasOne(BasicSalary::class, 'payroll_id');
+    }
+
+    // addition
+    public function additions()
+    {
+        return $this->hasMany(Addition::class, 'payroll_id');
+    }
+
+    // deduction
+    public function deductions()
+    {
+        return $this->hasMany(Deduction::class, 'payroll_id');
+    }
+
+    // overtime
+    public function overtimes()
+    {
+        return $this->hasMany(Overtime::class, 'payroll_id');
+    }
+
+    // loan
+    public function loans()
+    {
+        return $this->hasMany(Loan::class, 'payroll_id');
+    }
+
+    // tax
+    public function taxpayroll()
+    {
+        return $this->hasOne(TaxPayroll::class, 'payroll_id');
+    }
+
+    // pension
+    public function pension()
+    {
+        return $this->hasOne(Pension::class, 'payroll_id');
+    }
+    
 }
