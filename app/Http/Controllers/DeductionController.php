@@ -108,12 +108,17 @@ class DeductionController extends Controller
      * @param  \App\Models\Deduction  $deduction
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Deduction $deduction)
     {
-        //
-        $deduction = Deduction::find($id);
-        $deduction->delete();
-        
-        return redirect('deduction/')->with('danger', "Successfully deleted deduction");
+          //
+          if(isset($deduction->payroll_id))
+          {
+              return redirect()->back()->with('danger', 'Deduction already pending in payroll.');
+          }
+          else
+          {
+              $deduction->delete();
+              return redirect()->back()->with('success', 'Deduction has been deleted.');
+          }           
     }
 }

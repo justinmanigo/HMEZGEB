@@ -99,25 +99,25 @@
         <span class="text">New</span>
     </button>   
 </div>
-@if(session()->has('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session()->get('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
-@if(session()->has('danger'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    {{ session()->get('danger') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
 {{-- Page Content --}}
 <div class="card">
     <div class="card-body">
+        @if(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session()->get('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+        @if(session()->has('danger'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session()->get('danger') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">    
                 <thead>
@@ -170,7 +170,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="{{route('deductions.store')}}" class="ajax-submit-updated" enctype="multipart/form-data"  id="form-deduction" method="POST" data-message="Successfully added deductions.">
+                <form action="{{route('deductions.deduction.store')}}" class="ajax-submit-updated" enctype="multipart/form-data"  id="form-deduction" method="POST" data-message="Successfully added deductions.">
                     @csrf
                     <div class="form-group row">
                         <label for="d_date" class="col-sm-3 col-lg-2 col-form-label">Date<span class="text-danger ml-1">*</span></label>
@@ -248,7 +248,7 @@
 			<div class="modal-body">Are you sure to delete this record?</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" onClick="dismissModel()">Cancel</button>
-				<form id="delete-frm" class="" action="" method="POST">
+				<form id="delete-frm" class="" action="{{route('deductions.deduction.destroy', $deduction->id)}}" method="POST">
                     @method('DELETE')
                     @csrf
                     <button class="btn btn-danger">Delete</button>

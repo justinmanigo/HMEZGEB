@@ -70,4 +70,18 @@ class LoanController extends Controller
         }
         return redirect()->back()->with('success', 'Loan has been added.');
     }
+
+    public function destroy(Loan $loan)
+    {
+        //
+        if(isset($loan->payroll_id))
+        {
+            return redirect()->back()->with('danger', 'Loan already pending in payroll.');
+        }
+        else
+        {
+            $loan->delete();
+            return redirect()->back()->with('success', 'Loan has been deleted.');
+        }          
+    }
 }

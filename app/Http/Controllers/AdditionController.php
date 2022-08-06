@@ -109,12 +109,17 @@ class AdditionController extends Controller
      * @param  \App\Models\Addition  $addition
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Addition $addition)
     {
         //
-        $addition = Addition::find($id);
-        $addition->delete();
-        
-        return redirect('addition/')->with('danger', "Successfully deleted addition");
+        if(isset($addition->payroll_id))
+        {
+            return redirect()->back()->with('danger', 'Addition already pending in payroll.');
+        }
+        else
+        {
+            $addition->delete();
+            return redirect()->back()->with('success', 'Addition has been deleted.');
+        }      
     }
 }
