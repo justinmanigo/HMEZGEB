@@ -7,7 +7,7 @@ use App\Models\Overtime;
 use App\Actions\Hr\Payroll\CalculateHourRate;
 use App\Actions\Hr\Payroll\DayRate;
 use App\Actions\Hr\Payroll\NightRate;
-use App\Actions\Hr\Payroll\HolidayWeekRate;
+use App\Actions\Hr\Payroll\HolidayWeekendRate;
 use Illuminate\Http\Request;
 use App\Http\Requests\HumanResource\StoreOvertimeRequest;
 use Illuminate\Support\Facades\Log;
