@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Payroll;
 use App\Models\PayrollPeriod;
-use App\Models\PayrollItems;
-use App\Models\Employee;
 use App\Models\AccountingSystem;
+use App\Models\Employee;
+use App\Models\Pension;
+use App\Models\TaxPayroll;
+use App\Models\BasicSalary;
 use App\Models\Addition;
 use App\Models\Deduction;
 use App\Models\Overtime;
@@ -15,6 +17,7 @@ use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
 use App\Models\Settings\PayrollRules\IncomeTaxPayrollRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use DB;
 
 class PayrollController extends Controller
 {
@@ -102,11 +105,11 @@ class PayrollController extends Controller
                 $total_salary = 0;
                 $total_salary = $total_salary + $employee->basic_salary;
                 
-                $salary = new PayrollItems();
+                $salary = new BasicSalary();
+                $salary->accounting_system_id = $accounting_system_id;
+                $salary->employee_id = $employee->id;
                 $salary->payroll_id = $payroll->id;
-                $salary->source = 'salary'; 
-                $salary->status = 'pending';
-                $salary->amount = $employee->basic_salary;
+                $salary->price = $employee->basic_salary;
                 $salary->save();
               
                 // Update payroll total salary
@@ -118,12 +121,8 @@ class PayrollController extends Controller
                 foreach($additions as $add){
                     $total_addition = $total_addition + $add->price;
 
-                    $addition = new PayrollItems();
-                    $addition->payroll_id = $payroll->id;
-                    $addition->source = 'addition';
-                    $addition->status = 'pending';
-                    $addition->amount = $add->price;
-                    $addition->save();
+                    $add->payroll_id = $payroll->id;
+                    $add->save();
                 }
                 // Update payroll total addition
                 $payroll->total_addition = $total_addition;
@@ -134,12 +133,8 @@ class PayrollController extends Controller
                 foreach($deductions as $ded){
                     $total_deduction = $total_deduction + $ded->price;
 
-                    $deduction = new PayrollItems();
-                    $deduction->payroll_id = $payroll->id;
-                    $deduction->source = 'deduction';
-                    $deduction->status = 'pending';
-                    $deduction->amount = $ded->price;
-                    $deduction->save();
+                    $ded->payroll_id = $payroll->id;
+                    $ded->save();
                 }
                 // Update payroll total deduction
                 $payroll->total_deduction = $total_deduction;
@@ -150,12 +145,8 @@ class PayrollController extends Controller
                 foreach($overtimes as $ot){
                     $total_overtime = $total_overtime + $ot->price;
 
-                    $overtime = new PayrollItems();
-                    $overtime->payroll_id = $payroll->id;
-                    $overtime->source = 'overtime';
-                    $overtime->status = 'pending';
-                    $overtime->amount = $ot->price;
-                    $overtime->save();
+                    $ot->payroll_id = $payroll->id;
+                    $ot->save();
                 }
                 // Update payroll total overtime
                 $payroll->total_overtime = $total_overtime;
@@ -164,35 +155,26 @@ class PayrollController extends Controller
                     // employee LOANS
                 $total_loan = 0;
                 foreach($loans as $loan){
-                    $total_loan = $total_loan + $loan->loan_amount;
+                    $total_loan = $total_loan + $loan->loan;
 
-                    $loan_item = new PayrollItems();
-                    $loan_item->payroll_id = $payroll->id;
-                    $loan_item->source = 'loan';
-                    $loan_item->status = 'pending';
-                    $loan_item->amount = $loan->loan;
-                    $loan_item->save();
+                    $loan->payroll_id = $payroll->id;
+                    $loan->save();
                 }
                 // Update payroll total loan
                 $payroll->total_loan = $total_loan;
                 $payroll->save();
                 
-                // Pension 7% of basic salary
-                $pension = new PayrollItems();
+                // Pension
+                $pension = new Pension();
+                $pension->accounting_system_id = $accounting_system_id;
+                $pension->employee_id = $employee->id;
                 $pension->payroll_id = $payroll->id;
-                $pension->source = 'pension_07';
-                $pension->status = 'pending';
-                $pension->amount = $employee->basic_salary * 0.07;
+                $pension->pension_07_amount = $employee->basic_salary * 0.07;
+                $pension->pension_11_amount = $employee->basic_salary * 0.11;
                 $pension->save();
+                
                 $total_pension_7 = $employee->basic_salary * 0.07;
                 $payroll->total_pension_7 = $total_pension_7;
-                // Pension 11% of basic salary
-                $pension = new PayrollItems();
-                $pension->payroll_id = $payroll->id;
-                $pension->source = 'pension_11';
-                $pension->status = 'pending';
-                $pension->amount = $employee->basic_salary * 0.07;
-                $pension->save();
                 $total_pension_11 = $employee->basic_salary * 0.11;
                 $payroll->total_pension_11= $total_pension_11;
                 $payroll->save();
@@ -203,24 +185,27 @@ class PayrollController extends Controller
 
                 // get tax settings
                 $tax_settings = IncomeTaxPayrollRules::where('accounting_system_id',$accounting_system->id)->get();
-                $tax=0;
+                $tax_amount=0;
                 foreach($tax_settings as $tax_setting){
                     if($taxable_income>$tax_setting->income){
-                        $tax = ($taxable_income*($tax_setting->rate/100)) - $tax_setting->deduction;
-                        $tax_item = new PayrollItems();
-                        $tax_item->payroll_id = $payroll->id;
-                        $tax_item->source = 'tax';
-                        $tax_item->status = 'pending';
-                        $tax_item->amount = $tax;
-                        $tax_item->save();
-
-                        $payroll->total_tax = $tax;
+                        $tax_amount = ($taxable_income*($tax_setting->rate/100)) - $tax_setting->deduction;
+                        $tax = new TaxPayroll();
+                        $tax->accounting_system_id = $accounting_system_id;
+                        $tax->employee_id = $employee->id;
+                        $tax->payroll_id = $payroll->id;
+                        $tax->taxable_income = $taxable_income;
+                        $tax->tax_rate = $tax_setting->rate;
+                        $tax->tax_deduction = $tax_setting->deduction;
+                        $tax->tax_amount = $tax_amount;
+                        $tax->save();
+                        
+                        $payroll->total_tax = $tax_amount;
                         $payroll->save();
                         break;
                     }
                 }
                 // Net Pay
-                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax;
+                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax_amount;
                 $payroll->net_pay = $net_pay;
                 $payroll->save();
         }
@@ -236,10 +221,34 @@ class PayrollController extends Controller
      */
     public function show($id)
     {
-        //
-        $payroll_items = PayrollItems::where('payroll_id',$id)->get();
+        // get all related basic salary, additions, deductions, overtimes, loans, pensions, tax related to payroll
+        $payroll_items = DB::table('basic_salaries')
+        ->select('id','employee_id','payroll_id','price as amount','type')
+        ->where('payroll_id',$id)
+        ->union(DB::table('additions')
+        ->select('id','employee_id','payroll_id','price as amount','type')
+        ->where('payroll_id',$id))
+        ->union(DB::table('deductions')
+        ->select('id','employee_id','payroll_id','price as amount','type')
+        ->where('payroll_id',$id))
+        ->union(DB::table('overtimes')
+        ->select('id','employee_id','payroll_id','price as amount','type')
+        ->where('payroll_id',$id))
+        ->union(DB::table('loans')
+        ->select('id','employee_id','payroll_id','loan as amount','type')
+        ->where('payroll_id',$id))
+        ->union(DB::table('pensions')
+        ->select('id','employee_id','payroll_id','pension_07_amount as amount','type')
+        ->where('payroll_id',$id))
+        ->union(DB::table('pensions')
+        ->select('id','employee_id','payroll_id','pension_11_amount as amount','type')
+        ->where('payroll_id',$id))
+        ->union(DB::table('tax_payrolls')
+        ->select('id','employee_id','payroll_id','tax_amount as amount','type')
+        ->where('payroll_id',$id))
+        ->get();
 
-        // return view
+
         return view('hr.payroll.show',compact('payroll_items'));
     }
 
