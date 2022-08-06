@@ -58,29 +58,14 @@
                 <thead>
                     <th>#</th>
                     <th>Source</th>
-                    <th>Amount</th>
-                    <th>Actions</th>
-                    
+                    <th>Amount</th>              
                 </thead>
                 <tbody>
                     @foreach($payroll_items as $payroll)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        @if($payroll->source == 'pension_07' || $payroll->source == 'pension_11')
-                        <td>pension</td>
-                        @else
-                        <td>{{ $payroll->source }}</td>
-                        @endif
+                        <td>{{ $payroll->type }}</td>
                         <td>{{ $payroll->amount }}</td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                <a href="" class="btn btn-danger btn-sm btn-icon ">
-                                    <span class="icon text-white-50">
-                                    <i class="fas fa-trash "></i>
-                                </span>
-                                </a>
-                            </div>
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>
