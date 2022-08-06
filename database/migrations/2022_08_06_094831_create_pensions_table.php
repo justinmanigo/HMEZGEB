@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePayrollItemsTable extends Migration
+class CreatePensionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreatePayrollItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payroll_items', function (Blueprint $table) {
+        Schema::create('pensions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payroll_id');
-            $table->string('source')->nullable();
+            $table->foreignId('accounting_system_id')->constrained();
+            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('payroll_id')->nullable();
+            $table->float('pension_07_amount', 10,2)->default(0);
+            $table->float('pension_11_amount',10,2)->default(0);
+            $table->string('type')->default('pension');
             $table->enum('status',['pending','paid','cancelled'])->default('pending');
-            $table->float('amount', 10, 2)->default(0); 
             $table->foreign('payroll_id')->references('id')->on('payrolls');
             $table->timestamps();
         });
@@ -31,6 +34,6 @@ class CreatePayrollItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payroll_items');
+        Schema::dropIfExists('pensions');
     }
 }
