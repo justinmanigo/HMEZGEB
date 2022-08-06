@@ -249,7 +249,7 @@ class PayrollController extends Controller
         ->get();
 
 
-        return view('hr.payroll.show',compact('payroll_items'));
+        return view('hr.payroll.show',compact('payroll_items','id'));
     }
 
     /**
@@ -281,8 +281,27 @@ class PayrollController extends Controller
      * @param  \App\Models\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payroll $payroll)
+    public function destroy($id)
     {
-        //
+        $payroll = Payroll::find($id);
+        if($payroll->status == 'paid')
+        {
+            return redirect()->route('payrolls.payrolls.index')->with('error','Error Deleting Payroll. Payroll Already Paid');
+        }
+        else
+        {
+            // change all related records payroll_id to null
+            $basic_salaries = BasicSalary::where('payroll_id',$id)->delete();
+            $addition = Addition::where('payroll_id',$id)->update(['payroll_id'=>null]);
+            $deduction = Deduction::where('payroll_id',$id)->update(['payroll_id'=>null]);
+            $overtime = Overtime::where('payroll_id',$id)->update(['payroll_id'=>null]);
+            $loan = Loan::where('payroll_id',$id)->update(['payroll_id'=>null]);
+            $pension = Pension::where('payroll_id',$id)->delete();
+            $tax = TaxPayroll::where('payroll_id',$id)->delete();            
+            $payroll->delete();
+            $payroll_period = PayrollPeriod::where('id', $payroll->payroll_period_id)->delete();
+           
+            return redirect()->route('payrolls.payrolls.index')->with('success','Payroll Deleted Successfully');
+        }       
     }
 }

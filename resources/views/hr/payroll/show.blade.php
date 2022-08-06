@@ -34,27 +34,28 @@
     <span class="text">Back</span>
 </a>
 
-<a href="" class="btn btn-danger btn-icon mb-3">
+<button type="button" class="btn btn-danger btn-icon mb-3" data-toggle="modal" data-target="#DeleteModal">
     <span class="icon text-white-50">
         <i class="fas fa-trash"></i>
     </span>
     <span class="text">Delete Payroll</span>
-</a>
+  </button>
+
 {{-- Page Content --}}
 <div class="card">
+    {{-- alert messge --}}
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @elseif (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="card-body">
-        {{-- alert messge --}}
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @elseif (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+            <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <th>#</th>
                     <th>Source</th>
@@ -73,6 +74,32 @@
         </div>
     </div>
 </div>
+
+{{-- Delete Modal --}}
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Payroll</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this payroll?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{{ route('payrolls.payrolls.destroy', $id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
     $('#dataTables').DataTable();
