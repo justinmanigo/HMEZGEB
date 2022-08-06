@@ -162,12 +162,17 @@ class OvertimeController extends Controller
      * @param  \App\Models\Overtime  $overtime
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Overtime $overtime)
     {
-        // Delete
-        $overtime = Overtime::find($id);
-        $overtime->delete();
-        
-        return redirect('overtime/')->with('danger', "Successfully deleted overtime");
+        //
+        if(isset($overtime->payroll_id))
+        {
+            return redirect()->back()->with('danger', 'Overtime already pending in payroll.');
+        }
+        else
+        {
+            $overtime->delete();
+            return redirect()->back()->with('success', 'Overtime has been deleted.');
+        }     
     }
 }

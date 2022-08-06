@@ -520,13 +520,11 @@ Route::group([
              * Human Resource > Overtime
              */
             Route::group([
-                'as' => 'overtime.',
+                'as' => 'overtimes.',
                 'middleware' => 'acctsys.permission:17',
             ], function(){
                 // HTML
-                Route::get('/hr/overtime', [OvertimeController::class, 'index']);
-                Route::post('/overtime', [OvertimeController::class, 'store'])->name('store');
-                Route::delete('/overtime/{id}', [OvertimeController::class, 'destroy']);
+                Route::resource('/hr/overtime', OvertimeController::class);
             });
         
             /**
@@ -537,9 +535,7 @@ Route::group([
                 'middleware' => 'acctsys.permission:15',
             ], function(){
                 // HTML
-                Route::get('/hr/addition', [AdditionController::class, 'index']);
-                Route::post('/addition', [AdditionController::class, 'store'])->name('store');
-                Route::delete('/addition/{id}', [AdditionController::class, 'destroy']);
+                Route::resource('/hr/addition', AdditionController::class);
             });
         
             /**
@@ -550,9 +546,7 @@ Route::group([
                 'middleware' => 'acctsys.permission:16',
             ], function(){
                 // HTML
-                Route::get('/hr/deduction', [DeductionController::class, 'index']);
-                Route::post('/deduction', [DeductionController::class, 'store'])->name('store');
-                Route::delete('/deduction/{id}', [DeductionController::class, 'destroy']);
+                Route::resource('/hr/deduction', DeductionController::class);
             });
         
             /**
@@ -563,9 +557,7 @@ Route::group([
                 'middleware' => 'acctsys.permission:18',
             ], function(){
                 // HTML
-                Route::get('/hr/loan', [LoanController::class, 'index']);
-                Route::post('/loan', [LoanController::class, 'store'])->name('store');
-                Route::delete('/loan/{id}', [LoanController::class, 'destroy']);
+                Route::resource('/hr/loan', LoanController::class);
             });
         });
 
