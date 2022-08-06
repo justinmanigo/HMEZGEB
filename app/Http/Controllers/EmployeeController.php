@@ -64,6 +64,7 @@ class EmployeeController extends Controller
             'email' => $request->email,
             'tin_number' => $request->tin_number,
             'type' => $request->type,
+            'basic_salary' => $request->basic_salary,
             'date_started_working' => $request->date_started_working,
             'date_ended_working' => $request->date_ended_working,
             'emergency_contact_person' => $request->emergency_contact_person,
