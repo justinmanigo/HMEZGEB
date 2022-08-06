@@ -27,4 +27,9 @@ class Employee extends Model
         'emergency_contact_number'
     ];
     use HasFactory;
+
+    public function payroll()
+    {
+        return $this->hasMany(Payroll::class);
+    }
 }
