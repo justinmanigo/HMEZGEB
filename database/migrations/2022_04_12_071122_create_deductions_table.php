@@ -17,9 +17,13 @@ class CreateDeductionsTable extends Migration
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('payroll_id')->nullable();
             $table->date('date');
-            $table->double('price');
+            $table->float('price', 10, 2)->default(0);
             $table->string('description')->nullable();
+            $table->string('type')->default('deduction');
+            $table->enum('status',['pending','paid','cancelled'])->default('pending');
+            $table->foreign('payroll_id')->references('id')->on('payrolls');
             $table->timestamps();
         });
     }
