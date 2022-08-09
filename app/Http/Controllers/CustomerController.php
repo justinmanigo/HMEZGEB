@@ -6,7 +6,11 @@ use App\Imports\ImportCustomersCustomer;
 use App\Exports\ExportCustomersCustomer;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ReceiptReferences;
+use App\Models\Receipts;
 use Illuminate\Http\Request;
+use App\Mail\MailCustomerStatement;
+use Illuminate\Support\Facades\Mail;
+
 
 class CustomerController extends Controller
 {
@@ -131,7 +135,59 @@ class CustomerController extends Controller
         return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
 
     }
+    // Mail
+    public function mailCustomerStatements($id = null)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $customers = Customers::where('accounting_system_id', $accounting_system_id)
+        ->whereHas('receiptReference', function($query) {
+            $query->Where('status', 'unpaid')
+            ->orWhere('status', 'partially_paid')
+            ->where('type', 'receipt');
+        })->get();
 
+        if($customers->isEmpty())
+            return redirect()->back()->with('danger', "No pending statements found.");
+        foreach($customers as $customer) {
+            $data = $customer->toArray();
+            // add receipt reference in data
+            $receipts = $customer->receiptReference->toArray();
+            $receipts += $customer->receiptReference->receipt->toArray();
+            
+            Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
+        }
+
+        return redirect()->back()->with('success', "Successfully sent customer statements.");     
+    }
+
+    // Specific customer mail
+    public function mailCustomerStatement($id)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $customers = Customers::where('accounting_system_id', $accounting_system_id)
+        ->whereHas('receiptReference', function($query) {
+            $query->Where('status', 'unpaid')
+            ->orWhere('status', 'partially_paid')
+            ->where('type', 'receipt');
+        })->when($id, function($query) use ($id) {
+            return $query->where('id', $id);
+        })->get();
+
+        if($customers->isEmpty())
+            return redirect()->back()->with('danger', "No pending statements found.");
+        foreach($customers as $customer) {
+            $data = $customer->toArray();
+            // add receipt reference in data
+            $receipts = $customer->receiptReference->toArray();
+            $receipts += $customer->receiptReference->receipt->toArray();
+            
+            Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
+        }
+
+        return redirect()->back()->with('success', "Successfully sent customer statement.");     
+    }
+
+    
     // Import Export
     public function import(Request $request)
     {

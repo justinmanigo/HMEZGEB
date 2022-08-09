@@ -290,6 +290,10 @@ Route::group([
             ], function(){ 
                 // Resource
                 Route::resource('/customers', CustomerController::class);
+                // Mail
+                Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');             
+                Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');             
+
                 // Import Export
                 Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
                 Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');

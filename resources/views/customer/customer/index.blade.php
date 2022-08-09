@@ -44,6 +44,12 @@
                 </span>
                 <span class="text">Export</span>
             </button>
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-statements" >
+                <span class="icon text-white-50">
+                    <i class="fas fa-envelope"></i>
+                </span>
+                <span class="text">Mail Statements</span>
+            </button>
         </div>
         
             {{-- Page Content --}}
@@ -108,7 +114,7 @@
                                                 <i class="fas fa-print"></i>
                                             </span>
                                         </button>
-                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" id="individualMailStatement" data-toggle="modal" data-target="#modal-statement" onclick="addCustomerIdModal({{$customer->id}})">
                                             <!-- email -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
@@ -281,9 +287,6 @@
     </div>
 </div>
 
-
-
-
 {{-- Import --}}
 <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -345,9 +348,59 @@
     </div>
 </div> 
 
+{{-- statement confirmation modal --}}
+
+<div class="modal fade" id="modal-statements" tabindex="-1" role="dialog" aria-labelledby="modal-statements-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-statements-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mail statements to customers?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{{route('customers.statements.mail')}}" class="btn btn-primary">Send Mail</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- specific statement modal --}}
+
+<div class="modal fade" id="modal-statement" tabindex="-1" role="dialog" aria-labelledby="modal-statement-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-statement-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mail statements to this customer?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a id="specificStatement" class="btn btn-primary">Send Mail</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
  <script>
+        function addCustomerIdModal(id) {
+            $('#specificStatement').attr('href', "/customers/mail/statement/" + id);
+        }
         // add <span class="text-danger ml-1">*</span> after the label of required input
         $('label').each(function(){
             if($(this).attr('for') != ''){
