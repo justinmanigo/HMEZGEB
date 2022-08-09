@@ -72,12 +72,12 @@
                         <td>{{ $tax->name }}</td>
                         <td class="text-right">{{ number_format($tax->percentage, 2) }}%</td>
                         <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="modal" data-target="#modal-tax" onclick="initEditTax({{ $tax->id }})">
+                            <button type="button" class="btn btn-sm btn-icon btn-primary" data-toggle="modal" data-target="#modal-tax" onclick="initEditTax({{ $tax->id }})">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-pen"></i>
                                 </span>
                             </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-tax-delete" onclick="initDeleteTax({{ $tax->id }})">
+                            <button type="button" class="btn btn-sm btn-icon btn-danger" data-toggle="modal" data-target="#modal-tax-delete" onclick="initDeleteTax({{ $tax->id }})">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-trash"></i>
                                 </span>

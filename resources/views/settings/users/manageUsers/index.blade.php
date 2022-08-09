@@ -67,12 +67,12 @@
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>
                     <td><span class="text-muted">{{ 'To be added later' }}</span></td>
                     <td>
-                        <a role="button" class="btn btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
+                        <a role="button" class="btn btn-sm btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
                             <span class="icon text-white-50">
                                 <i class="fas fa-pen"></i>
                             </span>
                         </a>
-                        <button type="button" class="btn btn-danger btn-remove-user" data-id="{{ $user->accounting_system_user_id }}" data-toggle="modal" data-target="#modal-remove-user">
+                        <button type="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $user->accounting_system_user_id }}" data-toggle="modal" data-target="#modal-remove-user">
                             <span class="icon text-white-50">
                                 <i class="fas fa-trash"></i>
                             </span>
