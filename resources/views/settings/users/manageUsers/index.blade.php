@@ -42,8 +42,6 @@
             <th>Name</th>
             <th>E-mail</th>
             <th>Role</th>
-            <th>Status</th>
-            <th>Last Logged In</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -64,8 +62,6 @@
                             <span class="badge badge-danger">{{ 'Unknown' }}</span>
                         @endif
                     </td>
-                    <td><span class="text-muted">{{ 'To be added later' }}</span></td>
-                    <td><span class="text-muted">{{ 'To be added later' }}</span></td>
                     <td>
                         <a role="button" class="btn btn-sm btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
                             <span class="icon text-white-50">
