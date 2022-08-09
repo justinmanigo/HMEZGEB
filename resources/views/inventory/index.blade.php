@@ -85,11 +85,9 @@
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
-                        {{-- <th class="w-15">Action</th> --}}
                         <th class="w-15">Item Code</th>
                         <th>Item Name</th>
                         <th>Purchase Price</th>
-                        {{-- <th>Purchase Quantity</th> --}}
                         <th>Sale Price</th>
                         <th>Quantity</th>
                         <th>Inventory Value</th>
@@ -97,34 +95,10 @@
                     </thead>
                     <tbody>
                         @foreach($inventories as $inventory)
-
-
-                            {{-- <td class=" d-flex justify-content-center">
-                               <img src="
-                                    @if($inventory->picture)
-                                        {{ asset("/storage/inventories/{$inventory->picture}") }}
-                            @else
-                            {{ asset("/img/blank.jpg") }}
-                            @endif
-                            " class="w-100 img-responsive" style="min-width:100px">
-                            </td>--}}
-                                {{-- <a type="button" class="btn btn-primary" href="{{ url('inventory/'.$inventory->id.'/edit') }}">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-pen"></i>
-                                    </span>
-                                </a>
-                                <button type="button" class="btn btn-danger "
-                                    onClick=''>
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                </button> --}}
-
                         <tr>
                             <td class="table-item-content">{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
                             <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
-                            {{-- <td class="table-item-content">{{  $inventory->purchase_quantity }}</td> --}}
                             <td class="table-item-content">Birr {{ $inventory->sale_price }}</td>
                             <td class="table-item-content">
                                 @if($inventory->inventory_type != 'non_inventory_item')
