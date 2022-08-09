@@ -37,6 +37,17 @@
 @endif
 
 <div class="table-responsive">
+    {{-- message --}}
+    @if(Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+    @elseif(Session::has('error'))
+    <div class="alert alert-danger">
+        {{ Session::get('error') }}
+    </div>
+    @endif
+    {{-- end message --}}
     <table class="table table-bordered">
         <thead>
             <th>Name</th>
@@ -70,6 +81,11 @@
                         <a role="button" class="btn btn-primary" href="{{ url('settings/users/' . $user->accounting_system_user_id) }}/permissions">
                             <span class="icon text-white-50">
                                 <i class="fas fa-pen"></i>
+                            </span>
+                        </a>
+                        <a type="button" class="btn btn-secondary" href="{{ route('settings.users.mail', $user->accounting_system_user_id) }}">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-envelope"></i>
                             </span>
                         </a>
                         <button type="button" class="btn btn-danger btn-remove-user" data-id="{{ $user->accounting_system_user_id }}" data-toggle="modal" data-target="#modal-remove-user">

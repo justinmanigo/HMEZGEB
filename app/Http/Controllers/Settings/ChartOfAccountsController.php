@@ -85,27 +85,30 @@ class ChartOfAccountsController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $coa_category = json_decode($request->coa_category, true);
         
-        return $request->coa_category;
+        // return $request->coa_category;
         // To get the category_id of coa, use
         // $coa[0]['value'];
         // other related info such as type, category name,
         // can be seen by changing `value` to its corresponding
         // column name.
 
+        // Search category by value
+        $category = ChartOfAccountCategory::where('category', $coa_category[0]['value'])->first();
+        
         // Validation
         // TODO: Check if specific COA number already exists.
 
         // Create Chart of Account Entry
         $coa = new ChartOfAccounts();
         $coa->accounting_system_id = $accounting_system_id;
-        $coa->chart_of_account_category_id = $coa_category[0]['value'];
+        $coa->chart_of_account_category_id = $category['id'];
         $coa->chart_of_account_no = $request->coa_number;
         $coa->account_name = $request->account_name;
         $coa->current_balance = 0.00;
         $coa->save();
         
         // If COA is Cash (id:1) and checkbox is checked.
-        if(isset($request->coa_is_bank) && $coa_category[0]['value'] == 1)
+        if(isset($request->coa_is_bank) && $category['id'] == 1)
         {
             $accounts = new BankAccounts();
             $accounts->chart_of_account_id = $coa->id;
@@ -114,8 +117,6 @@ class ChartOfAccountsController extends Controller
             $accounts->bank_account_type = $request->bank_account_type;
             $accounts->save();
         }
-
-        
        
         // Get Beginning Balance Journal Entry
         $je = JournalEntries::where('accounting_system_id', $accounting_system_id)
@@ -126,7 +127,7 @@ class ChartOfAccountsController extends Controller
             'accounting_system_id' => $accounting_system_id,
             'journal_entry_id' => $je->id,
             'chart_of_account_id' => $coa->id,
-            'type' => $coa_category[0]['normal_balance'] == 'Debit' ? 'debit' : 'credit',
+            'type' => $category['normal_balance'] == 'Debit' ? 'debit' : 'credit',
             'amount' => 0.00,
         ]);
 
@@ -305,10 +306,10 @@ class ChartOfAccountsController extends Controller
     public function ajaxSearchCategories($query = null)
     {
         $categories = ChartOfAccountCategory::select(
-            'id as value', 
-            'category',
-            'type',
-            'normal_balance');
+            'category as value'); 
+            // 'category',
+            // 'type',
+            // 'normal_balance');
             
         if(isset($query))
             $categories->where('category', 'LIKE', '%' . $query . '%');
