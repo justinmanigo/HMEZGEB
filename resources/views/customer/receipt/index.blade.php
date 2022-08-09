@@ -188,31 +188,17 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
-                                <th id="thead-actions">Actions</th>
                                 <th>Date</th>
                                 <th>Type</th>
                                 <th>Customer Name</th>
                                 <th>Status</th>
                                 <th>Amount</th>
+                                <th>Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($transactions as $transaction)
                       
                                 <tr>
-                                    <td> 
-                                        {{-- <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </a>
-                                        </button>
-                                        <button type="button" class="btn btn-danger "
-                                        onClick="showModel({!! $transaction->id !!})">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                        </button> --}}
-                                    </td>
                                     <td class="table-item-content">{{$transaction->date}}</td>
                                     <td class="table-item-content">
                                         @if($transaction->type == 'receipt')
@@ -241,6 +227,38 @@
                                         @elseif($transaction->type == 'credit_receipt')
                                             {{ number_format($transaction->credit_receipt_amount, 2) }}
                                         @endif
+                                    </td>
+                                    <td> 
+                                        <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
+                                            <!-- edit -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                            <!-- print -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                            <!-- email -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                            <!-- void -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                            <!-- delete -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach

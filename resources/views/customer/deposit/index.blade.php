@@ -145,11 +145,35 @@
                             <td><span class="badge badge-primary">Self</span></td>
                             <td>{{$deposit->total_amount}}</td>
                             <td>
-                                <a href="" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-pen"></i>
+                                <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
+                                    <!-- edit -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
                                 </a>
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                    <!-- print -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-print"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                    <!-- email -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                    <!-- void -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-ban"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                    <!-- delete -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
                                 </button>
                             </td>
                         </tr>            
