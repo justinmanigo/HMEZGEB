@@ -91,48 +91,50 @@
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
-                
                             <thead>
-                                
                                 <th>Chart of Acct#</th>
                                 <th>Account Name</th>
                                 <th>Branch</th>
                                 <th>Type</th>
                                 <th>Account Number</th>
-                            
+                                <th>Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($bank_accounts as $account)
-                                <tr onclick="window.location='{{ route('accounts.accounts.edit',$account->id) }}'">
+                                <tr>
                                     <td>{{ $account->chartOfAccount->chart_of_account_no }}</td>
                                     <td>{{ $account->chartOfAccount->account_name }}</td>
                                     <td>{{ $account->bank_branch }}</td>
                                     <td>{{ $account->bank_account_type }}</td>
                                     <td>{{ $account->bank_account_number }}</td>
-                                    
-                                </tr>
-                                @endforeach
-                                {{-- <tr>
-                                    
-                                    <td class="table-item-content">1030</td>
-                                    <td class="table-item-content">Commercail Bank of Ethiopia	</td> 
-                                    <td class="table-item-content"> Main Branch	</td>
-                                    <td class="table-item-content"> Checking Account </td>
-                                    <td class="table-item-content">100002344758</td>
-                                    <td class="table-item-content">700,000.00 </td>
                                     <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                        <a href="{{ route('accounts.accounts.edit',$account->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
+                                            <!-- edit -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
                                             </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                            <!-- print -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
                                         </button>
-                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                            <!-- email -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                            <!-- delete -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button>
                                     </td>
-                                </tr> --}}
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
