@@ -272,10 +272,10 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                             <thead>
-                                <th id="thead-actions">Actions</th>
                                 <th>Date</th>
                                 <th>Customer Name</th>
                                 <th>Amount</th>
+                                <th id="thead-actions">Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($proformas as $proforma)
@@ -297,6 +297,20 @@
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
                                     <td class="table-item-content text-right">{{ number_format($proforma->proforma_amount, 2) }}</td>
+                                    <td>
+                                        <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
+                                            <!-- edit -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                            <!-- delete -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
