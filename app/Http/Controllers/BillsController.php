@@ -16,6 +16,9 @@ use App\Models\BillItem;
 use App\Models\PurchaseOrders;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use App\Mail\MailVendorBill;
+use Illuminate\Support\Facades\Mail;
+
 
 class BillsController extends Controller
 {
@@ -192,6 +195,16 @@ class BillsController extends Controller
             // image upload
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
+    }
+
+    // send Email
+    public function sendMailBill($id)
+    {
+        $bills = Bills::find($id);
+        $emailAddress = $bills->paymentReference->vendor->email;
+        Mail::to($emailAddress)->queue(new MailVendorBill);
+        
+        return redirect()->route('bills.bill.index')->with('success', 'Email has been sent!');
     }
 
     /**

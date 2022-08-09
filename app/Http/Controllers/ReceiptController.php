@@ -26,6 +26,9 @@ use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
 use App\Models\ReceiptCashTransactions;
 use Illuminate\Support\Facades\Log;
+use App\Mail\MailCustomerReceipt;
+use Illuminate\Support\Facades\Mail;
+
 
 class ReceiptController extends Controller
 {
@@ -422,6 +425,17 @@ class ReceiptController extends Controller
         $receipt->delete();
   
         return redirect('receipt/')->with('danger', "Successfully deleted customer");
+    }
+
+    // Mail
+    public function sendMailReceipt($id)
+    {
+        // Mail
+        $receipt = Receipts::find($id);
+        $emailAddress = $receipt->receiptReference->customer;
+        Mail::to($emailAddress)->queue(new MailCustomerReceipt);
+
+        return redirect()->route('receipts.receipt.index')->with('success', "Successfully sent email to customer.");
     }
 
     // export

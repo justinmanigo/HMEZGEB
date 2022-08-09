@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\Settings\Users\Module;
 use App\Models\Settings\Users\SubModule;
 use App\Models\Settings\Users\Permission;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailSettingUser;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 use Illuminate\Support\Facades\DB;
@@ -146,6 +148,16 @@ class ManageUsersController extends Controller
         }
 
         return redirect()->back()->with('success', 'Successfully updated permissions.');
+    }
+
+    // Mail
+    public function sendMailNewSuperAdmin(AccountingSystemUser $accountingSystemUser)
+    {
+        // Mail
+        $emailAddress = $accountingSystemUser->user->email;
+        Mail::to($emailAddress)->queue(new MailSettingUser);
+
+        return redirect()->back()->with('success', 'Successfully sent mail.');
     }
 
     public function removeUser(AccountingSystemUser $accountingSystemUser)

@@ -13,9 +13,12 @@ use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\DecodeTagifyField;
 use Illuminate\Support\Facades\Log;
+use App\Mail\MailBankTransfer;
+use Illuminate\Support\Facades\Mail;
 use App\Imports\ImportBankTransfer;
 use App\Exports\ExportBankTransfer;
 use Maatwebsite\Excel\Facades\Excel;
+
 
 class TransfersController extends Controller
 {
@@ -97,6 +100,22 @@ class TransfersController extends Controller
             'journal_entry_id' => $je->id,
             'transaction_id' =>  $transactions->id,
         ]);
+
+
+        // create transaction
+        Transactions::create([
+            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
+            'chart_of_account_id' => $request->from_account_id,
+            'type' => 'Transfer',
+            'description' => $request->reason,
+            'amount' => $request->amount,
+        ]);
+
+        // Mail
+        // TODO: Confirm where to send the mail
+        // $emailAddress = 'test@example.com';
+        // Mail::to($emailAddress)->queue(new MailBankTransfer);
+        
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }
 

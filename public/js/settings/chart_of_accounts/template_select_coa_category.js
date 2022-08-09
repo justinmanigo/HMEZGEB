@@ -1,6 +1,6 @@
 function coaCategoryTagTemplate(tagData){
     return `
-        <tag title="${tagData.category}"
+        <tag title="${tagData.value}"
                 contenteditable='false'
                 spellcheck='false'
                 tabIndex="-1"
@@ -11,7 +11,7 @@ function coaCategoryTagTemplate(tagData){
                 <div class='tagify__tag__avatar-wrap'>
                     <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
                 </div>
-                <span class='tagify__tag-text'>${tagData.category}</span>
+                <span class='tagify__tag-text'>${tagData.value}</span>
             </div>
         </tag>
     `
@@ -28,8 +28,7 @@ function coaCategorySuggestionItemTemplate(tagData){
                 <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
             </div>` : ''
             }
-            <strong>${tagData.category}</strong><br>
-            <span>${tagData.type}</span>
+            <strong>${tagData.value}</strong><br>
         </div>
     `
 }
