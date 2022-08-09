@@ -93,11 +93,11 @@
                         <th>Sale Price</th>
                         <th>Quantity</th>
                         <th>Inventory Value</th>
+                        <th>Actions</th>
                     </thead>
                     <tbody>
                         @foreach($inventories as $inventory)
 
-                        <tr onclick="window.location.href='{{ url('inventory/'.$inventory->id.'/edit') }}'">
 
                             {{-- <td class=" d-flex justify-content-center">
                                <img src="
@@ -120,6 +120,7 @@
                                     </span>
                                 </button> --}}
 
+                        <tr>
                             <td class="table-item-content">{{ $inventory->item_code }}</td>
                             <td class="table-item-content">{{ $inventory->item_name }}</td>
                             <td class="table-item-content">Birr {{  $inventory->purchase_price }}</td>
@@ -134,6 +135,20 @@
                                 @if($inventory->inventory_type != 'non_inventory_item')
                                     {{ $inventory->inventoryValue }}
                                 @endif
+                            </td>
+                            <td>
+                                <!-- edit -->
+                                <a href="{{ url('inventory/'.$inventory->id.'/edit') }}" class="btn btn-sm btn-primary">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                </a>
+                                <!-- delete -->
+                                <button type="button" class="btn btn-sm btn-danger" disabled>
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
+                                </button>
                             </td>
 
                         </tr>
