@@ -10,6 +10,7 @@ use App\Models\Receipts;
 use Illuminate\Http\Request;
 use App\Mail\MailCustomerStatement;
 use Illuminate\Support\Facades\Mail;
+use App\Exceptions;
 
 
 class CustomerController extends Controller
@@ -128,10 +129,13 @@ class CustomerController extends Controller
      */
     public function destroy( $id)
     {
-        
+        try{
         $customers = Customers::find($id);
         $customers->delete();
-        
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('danger', "You are not authorized to delete this customer.");
+        }
         return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
 
     }
