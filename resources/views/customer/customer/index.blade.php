@@ -83,17 +83,44 @@
                             <th>Mobile #</th>
                             <th>Label</th>
                             <th>Balance</th>
+                            <th>Actions</th>
                         </thead>
                         <tbody>
                             @foreach ($customers as $customer)
-                            <tr onclick="window.location='{{  route('customers.customers.edit',$customer->id) }}'">
-                                    <td class="table-item-content"> {{$customer->name}} </td>
-                                    <td class="table-item-content"> {{$customer->tin_number}}</td>
-                                    <td class="table-item-content"> {{$customer->city}}</td>
-                                    <td class="table-item-content"> {{$customer->contact_person}}</td>
-                                    <td class="table-item-content"> {{$customer->mobile_number}}</td>
-                                    <td class="table-item-content"><span class="badge badge-primary"> {{$customer->label}}</span></td>
-                                    <td class="table-item-content"> </td>
+                            <tr>
+                                    <td> {{$customer->name}} </td>
+                                    <td> {{$customer->tin_number}}</td>
+                                    <td> {{$customer->city}}</td>
+                                    <td> {{$customer->contact_person}}</td>
+                                    <td> {{$customer->mobile_number}}</td>
+                                    <td><span class="badge badge-primary"> {{$customer->label}}</span></td>
+                                    <td></td>
+                                    <td>
+                                        <a href="{{ route('customers.customers.edit', $customer->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
+                                            <!-- edit -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                            <!-- print -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                            <!-- email -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                            <!-- delete -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
