@@ -70,17 +70,15 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-edit-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
+                                            <button class="btn btn-sm btn-primary btn-icon btn-edit-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-edit-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
-                                                <span class="text">Edit</span>
                                             </button>
-                                            <button role="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
+                                            <button role="button" class="btn btn-sm btn-icon btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-trash"></i>
                                                 </span>
-                                                <span class="text">Remove</span>
                                             </button>
                                         </td>
                                     </tr>
