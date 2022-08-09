@@ -60,27 +60,15 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
                     <th>Employee Name</th>
                     <th>Tin Number</th>
                     <th>Mobile Number</th>
                     <th>Type</th>
+                    <th id="thead-actions">Actions</th>
                 </thead>
                 <tbody>
                     @foreach($employees as $employee)
                     <tr>
-                        <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="modal"
-                                data-target="#modal-employee" onclick="initEditEmployee({{ $employee->id }})">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-pen"></i>
-                                </span>
-                            </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal"
-                                data-target="#modal-employee-delete" onclick="initDeleteEmployee({{ $employee->id }})">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-trash"></i>
-                        </td>
                         <td class="table-item-content">{{ $employee->first_name . " " .$employee->father_name . " " .
                             $employee->grandfather_name }}</td>
                         <td class="table-item-content">{{ $employee->tin_number }}</td>
@@ -93,6 +81,20 @@
                             @else {{-- This is only included to visually catch errors. --}}
                             <span class="badge badge-secondary">Other</span>
                             @endif
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="modal"
+                                data-target="#modal-employee" onclick="initEditEmployee({{ $employee->id }})">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-pen"></i>
+                                </span>
+                            </button>
+                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal"
+                                data-target="#modal-employee-delete" onclick="initDeleteEmployee({{ $employee->id }})">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-trash"></i>
+                                </span>
+                            </button>
                         </td>
                     </tr>
                     @endforeach

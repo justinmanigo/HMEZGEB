@@ -121,15 +121,19 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
                     <th>Date</th>
                     <th>Employee Name</th>
                     <th>Type</th>
                     <th>Price</th>
+                    <th id="thead-actions">Actions</th>
                 </thead>
                 <tbody>
                     @foreach($additions as $addition)
                     <tr>
+                        <td class="table-employee-content">{{ $addition->date }}</td>
+                        <td class="table-employee-content">{{ $addition->first_name }}</td>
+                        <td class="table-employee-content"><span class="badge badge-secondary">{{ $addition->type }}</span></td>
+                        <td class="table-employee-content">{{ $addition->price }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                 <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip"
@@ -146,10 +150,6 @@
                                 </button>
                             </div>
                         </td>
-                        <td class="table-employee-content">{{ $addition->date }}</td>
-                        <td class="table-employee-content">{{ $addition->first_name }}</td>
-                        <td class="table-employee-content"><span class="badge badge-secondary">{{ $addition->type }}</span></td>
-                        <td class="table-employee-content">{{ $addition->price }}</td>
                     </tr>
                     @endforeach
                 </tbody>
