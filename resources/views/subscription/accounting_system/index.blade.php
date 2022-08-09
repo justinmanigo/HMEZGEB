@@ -75,7 +75,7 @@
                                 <th>Name</th>
                                 <th>Year</th>
                                 <th>Calendar Type</th>
-                                <th>Actions</th>
+                                {{-- <th>Actions</th> --}}
                             </thead>
                             <tbody>
                                 @foreach($info['accounting_systems'] as $accounting_system)
@@ -94,13 +94,13 @@
                                                 <span class="badge badge-success">Ethiopian</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             @if(!$accounting_system->hasAccess)
                                             
                                             @else
 
                                             @endif
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>
