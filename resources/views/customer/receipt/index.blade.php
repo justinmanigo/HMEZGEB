@@ -235,6 +235,15 @@
                                             {{ number_format($transaction->credit_receipt_amount, 2) }}
                                         @endif
                                     </td>
+                                    <td>
+                                        @if($transaction->type == 'receipt')
+                                        <a class="btn btn-secondary btn-sm" href="{{route('receipts.receipt.mail',$transaction->receipt->id)}}">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </a>
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                                 
@@ -255,7 +264,6 @@
                             <tbody>
                                 @foreach($proformas as $proforma)
                                 <tr>
-                                    <td>
                                         {{-- <button type="button" class="btn btn-small btn-icon btn-primary"
                                             data-toggle="tooltip" data-placement="bottom" title="Edit">
                                             <span class="icon text-white-50">
@@ -268,7 +276,6 @@
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button> --}}
-                                    </td>
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
                                     <td class="table-item-content text-right">{{ number_format($proforma->proforma_amount, 2) }}</td>

@@ -16,10 +16,15 @@ class MailCustomerReceipt extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+
+    public $receipt;
+
+    public function __construct($receipt)
     {
-        //
+        $this->receipt = $receipt;
+
     }
+
 
     /**
      * Build the message.
@@ -29,6 +34,8 @@ class MailCustomerReceipt extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->subject('Customer Receipt')
-        ->view('customer.receipt.mail');
+        ->markdown('customer.receipt.mail')->with([
+            'receipt' => $this->receipt,
+        ]);
     }
 }
