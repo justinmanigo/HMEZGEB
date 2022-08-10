@@ -38,6 +38,8 @@ class SubscriptionController extends Controller
         $subscription->date_to = $request->expiration_date;
         $subscription->save();
 
+        // TODO: send email to user
+
         return response()->json([
             'success' => true,
             'message' => 'Subscription activated successfully.',
@@ -49,6 +51,8 @@ class SubscriptionController extends Controller
         $subscription->status = 'suspended';
         $subscription->save();
 
+        // TODO: send email to user
+
         return response()->json([
             'success' => true,
             'message' => 'Subscription suspended successfully.',
@@ -59,6 +63,8 @@ class SubscriptionController extends Controller
     {
         $subscription->status = 'active';
         $subscription->save();
+
+        // TODO: send email to user
         
         return response()->json([
             'success' => true,
