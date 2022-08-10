@@ -291,7 +291,7 @@ Route::group([
                 // Resource
                 Route::resource('/customers', CustomerController::class);
                 // Mail
-                Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');             
+                // Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');             
                 Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');             
 
                 // Import Export
@@ -375,6 +375,8 @@ Route::group([
             ], function(){ 
                 // Resource
                 Route::resource('/vendors', VendorsController::class);
+                // Mail
+                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mailVendorStatement'])->name('mail');
                 // Import Export
                 Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
                 Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');

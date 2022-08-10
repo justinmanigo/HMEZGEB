@@ -179,7 +179,7 @@ class CustomerController extends Controller
             return redirect()->back()->with('danger', "No pending statements found.");
 
         $receipt_reference = ReceiptReferences::where('customer_id', $id)->where('type', 'receipt')
-        ->orWhere('status', 'unpaid')
+        ->Where('status', 'unpaid')
         ->orWhere('status', 'partially_paid')
         ->get(); 
 

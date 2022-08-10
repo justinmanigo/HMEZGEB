@@ -9,6 +9,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\Log;
+use App\Mail\MailVendorStatement;
+use Illuminate\Support\Facades\Mail;
+
 
 
 class VendorsController extends Controller
@@ -98,7 +101,7 @@ class VendorsController extends Controller
     {
         
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        //view edit customer info
+        //view edit vendor info
         $vendor = Vendors::where('id',$id)->first();
         if(!$vendor) return abort(404);
         if($vendor->accounting_system_id != $accounting_system_id) {
@@ -160,6 +163,41 @@ class VendorsController extends Controller
         return redirect('/vendors')->withSuccess('Successfully Deleted');;
     
     }
+
+    // Mail Statetment
+    public function mailVendorStatement($id)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
+        ->whereHas('PaymentReferences', function($query) {
+            $query->Where('status', 'unpaid')
+            ->orWhere('status', 'partially_paid')
+            ->where('type', 'bill');
+        })->where('id', $id)->first();
+
+
+        if(!$vendors)
+            return redirect()->back()->with('error', "No pending statements found.");
+        
+        $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
+        ->where('status', 'unpaid')
+        ->orWhere('status', 'partially_paid')
+        ->where('type', 'bill')->get();
+
+        $bills = [];
+        
+        foreach($payment_reference as $payment)
+        {
+            $bills[] = $payment->toArray() + $payment->bills->toArray();
+        }
+
+        Mail::to($vendors->email)->queue(new MailVendorStatement ($vendors, $bills));
+
+
+        return redirect()->back()->with('success', "Successfully sent vendor statement.");     
+    }
+
+
     // Import Export
 
     public function import(Request $request)
