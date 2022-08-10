@@ -293,7 +293,8 @@ Route::group([
                 // Mail
                 // Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');             
                 Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');             
-
+                // Print
+                Route::get('/customers/print/statement/{id}', [CustomerController::class, 'print'])->name('statement.print');
                 // Import Export
                 Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
                 Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');

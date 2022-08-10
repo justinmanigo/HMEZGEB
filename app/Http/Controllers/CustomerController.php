@@ -225,6 +225,14 @@ class CustomerController extends Controller
         return $pdf->download('customersCustomer_'.date('Y_m_d').'.pdf');
     }
 
+    // print
+    public function print($id)
+    {
+        $customers = Customers::find($id);
+        $pdf = \PDF::loadView('customer.customer.print', compact('customers'));
+        return $pdf->download('customersCustomer_'.date('Y_m_d').'.pdf');
+    }
+
     /*=================================*/
 
     public function queryCustomers($query)
