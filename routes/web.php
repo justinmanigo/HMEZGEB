@@ -65,9 +65,9 @@ use App\Http\Controllers\Settings\DefaultsController;
 use App\Http\Controllers\RegisterController;
 
 // Control Panel
-use App\Http\Controllers\ControlPanelController;
-use App\Http\Controllers\Subscription\SummaryController;
+use App\Http\Controllers\Control\SuperAdminController;
 // Subscription Panel
+use App\Http\Controllers\Subscription\SummaryController;
 use App\Http\Controllers\Subscription\ManageAccountingSystemsController;
 use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
 
@@ -161,24 +161,23 @@ Route::group([
         'as' => 'control.',
         'middleware' => ['auth.name', 'auth.password', 'auth.control'],
     ], function() {
-        Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
-        Route::get('/control', [ControlPanelController::class, 'index'])->name('index');
+        /** Super Admins */
+        Route::get('/control', [SuperAdminController::class, 'index'])->name('index');
+        Route::get('/control/admins', [SuperAdminController::class, 'index']);
+        Route::put('/control/accept', [SuperAdminController::class, 'acceptInvitation'])->name('accept');
+        Route::post('/control/reject', [SuperAdminController::class, 'rejectInvitation'])->name('reject');
+        Route::put('/control/admins/add', [SuperAdminController::class, 'ajaxInviteUser'])->name('ajaxInviteUser');
+        Route::put('/control/admins/edit/{user}', [SuperAdminController::class, 'editSuperAdmin'])->name('editSuperAdmin');
+        Route::delete('/control/admins/remove/{user}', [SuperAdminController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
 
-        Route::put('/control/accept', [ControlPanelController::class, 'acceptInvitation'])->name('accept');
-        Route::post('/control/reject', [ControlPanelController::class, 'rejectInvitation'])->name('reject');
-        
-        Route::put('/control/admins/add', [ControlPanelController::class, 'ajaxInviteUser'])->name('ajaxInviteUser');
-
-        Route::put('/control/admins/edit/{user}', [ControlPanelController::class, 'editSuperAdmin'])->name('editSuperAdmin');
-        Route::delete('/control/admins/remove/{user}', [ControlPanelController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
 
         // AJAX
         Route::group([
             'as', 'ajax.',
             'prefix' => 'ajax/control/user',
         ], function(){
-            Route::get('/get/{user}', [ControlPanelController::class, 'ajaxGetUser']);
-            Route::get('/search/{query?}', [ControlPanelController::class, 'ajaxSearchUser']);
+            Route::get('/get/{user}', [SuperAdminController::class, 'ajaxGetUser']);
+            Route::get('/search/{query?}', [SuperAdminController::class, 'ajaxSearchUser']);
         });
     });
 
