@@ -71,18 +71,18 @@
                     @if(auth()->user()->control_panel_role == 'admin')
                         <td>
                             @if($subscription->status != 'suspended' && $subscription->account_type != 'super admin')
-                                <button type="button" class="btn btn-sm btn-primary btn-sa-activate" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="Activate">
+                                <button type="button" class="btn btn-sm btn-primary btn-activate" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="Activate">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-check"></i>
                                     </span>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-danger btn-sa-suspend" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="Suspend">
+                                <button type="button" class="btn btn-sm btn-danger btn-suspend" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="Suspend">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-ban"></i>
                                     </span>
                                 </button>
                             @elseif($subscription->account_type != 'super admin')
-                                <button type="button" class="btn btn-sm btn-info btn-sa-reinstate" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="Suspend">
+                                <button type="button" class="btn btn-sm btn-info btn-reinstate" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="Suspend">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-check"></i>
                                     </span>
@@ -101,7 +101,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-activate">Activate Subscription</h5>
+                <h5 class="modal-title" id="modal-activate-label">Activate Subscription</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -111,7 +111,6 @@
                 <p class="alert alert-danger" id="error-sa" style="display:none"></p>
                 <form id="form-subscription-activate" method="POST">
                     @csrf
-                    <input type="hidden" name="subscription_id" id="subscription_id" value="">
                     <div class="form-group">
                         <label for="date_to">Expiration Date</label>
                         <input type="date" class="form-control" id="date_to" name="date_to" placeholder="Expiration Date">
@@ -120,7 +119,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Close</button>
-                <button type="button" class="btn btn-primary btn-sa-activate" form="form-subscription-activate">Yes, Activate</button>
+                <button type="submit" class="btn btn-primary" form="form-subscription-activate">Yes, Activate</button>
             </div>
         </div>
     </div>
@@ -130,7 +129,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-suspend">Suspend Subscription</h5>
+                <h5 class="modal-title" id="modal-suspend-label">Suspend Subscription</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -144,7 +143,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Close</button>
-                <button type="button" class="btn btn-danger btn-sa-suspend" form="form-subscription-suspend">Yes, Suspend</button>
+                <button type="submit" class="btn btn-danger" form="form-subscription-suspend">Yes, Suspend</button>
             </div>
         </div>
     </div>
@@ -154,7 +153,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-reinstate">Reinstate Subscription</h5>
+                <h5 class="modal-title" id="modal-reinstate-label">Reinstate Subscription</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -168,7 +167,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Close</button>
-                <button type="button" class="btn btn-primary btn-sa-reinstate" form="form-subscription-reinstate">Yes, Reinstate</button>
+                <button type="submit" class="btn btn-primary" form="form-subscription-reinstate">Yes, Reinstate</button>
             </div>
         </div>
     </div>
@@ -183,25 +182,26 @@
     <script src="{{ url('/js/control/select_existing_user.js') }}"></script>
     <script>
 
-        $(document).on('click', '.btn-sa-activate', function(){
-            $('#subscription_id').val($(this).data('id'));
+        $(document).on('click', '.btn-activate', function(){
+            $('#form-subscription-activate').attr('action', '/control/subscriptions/activate/' + $(this).data('id'));
             $('#modal-activate').modal('show');
         });
 
-        $(document).on('click', '.btn-sa-suspend', function(){
-            $('#form-subscription-suspend').attr('action', '/control-panel/subscriptions/suspend/' + $(this).data('id'));
+        $(document).on('click', '.btn-suspend', function(){
+            $('#form-subscription-suspend').attr('action', '/control/subscriptions/suspend/' + $(this).data('id'));
             $('#modal-suspend').modal('show');
         });
 
-        $(document).on('click', '.btn-sa-reinstate', function(){
-            $('#form-subscription-reinstate').attr('action', '/control-panel/subscriptions/reinstate/' + $(this).data('id'));
+        $(document).on('click', '.btn-reinstate', function(){
+            $('#form-subscription-reinstate').attr('action', '/control/subscriptions/reinstate/' + $(this).data('id'));
             $('#modal-reinstate').modal('show');
         });
 
         $(document).on('submit', '#form-subscription-activate', function(e){
+            console.log('activate');
             e.preventDefault();
             $('#error-sa').hide();
-            $('button[form="form-subscription-activate"]').prop('disabled', false);
+            $('button[form="form-subscription-activate"]').prop('disabled', true);
             $.ajax({
                 url: `/control/subscription/activate/`,
                 type: "POST",
@@ -222,6 +222,7 @@
         });
 
         $(document).on('submit', '#form-subscription-suspend', function(e){
+            console.log('suspend');
             e.preventDefault();
             $('button[form="form-subscription-suspend"]').prop('disabled', true);
             $('#error-ss').hide();
@@ -245,6 +246,7 @@
         });
 
         $(document).on('submit', '#form-subscription-reinstate', function(e){
+            console.log('reinstate');
             e.preventDefault();
             $('button[form="form-subscription-reinstate"]').prop('disabled', true);
             $('#error-sr').hide();
