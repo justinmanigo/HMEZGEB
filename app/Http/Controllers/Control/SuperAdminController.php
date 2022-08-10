@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Control;
 
-use App\Actions\CreateAccountingSystem;
-use App\Http\Requests\Control\AddExistingUserAsSuperAdmin;
-use App\Http\Requests\Control\AddNewSuperAdminRequest;
+use App\Http\Controllers\Controller;
 use App\Models\Subscription;
 use App\Models\SubscriptionUser;
 use App\Models\User;
@@ -14,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Kaiopiola\Keygen\Key;
 
-class ControlPanelController extends Controller
+class SuperAdminController extends Controller
 {
     public function index()
     {
@@ -24,7 +22,7 @@ class ControlPanelController extends Controller
             ->where('id', '!=', 1)
             ->get();
 
-        return view('control_panel.index', [
+        return view('control_panel.super_admins.index', [
             'super_admins' => $super_admins
         ]);
     }

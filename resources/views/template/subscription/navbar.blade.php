@@ -116,9 +116,16 @@ $route_name = $route_name[0];
                     </li> --}}
 
                     <li class="nav-item">
-                        <a class="nav-link dynamic-nav" href="{{ url('/control') }}">
+                        <a class="nav-link dynamic-nav" href="{{ url('/control/admins') }}">
                             <i class="fas fa-fw fa-user"></i>
-                            <span>Manage Users</span>
+                            <span>Manage Super Admins</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link dynamic-nav" href="{{ url('/control/subscriptions') }}">
+                            <i class="fas fa-fw fa-user"></i>
+                            <span>Manage Subscriptions</span>
                         </a>
                     </li>
 

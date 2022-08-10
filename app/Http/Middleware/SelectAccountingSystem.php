@@ -40,6 +40,14 @@ class SelectAccountingSystem
             $request->session()->forget('accounting_system_id');
             return redirect('/switch')->with('danger', 'You are not allowed to access this accounting system.');
         }
+        else if(isset($subscription->date_to) && $subscription->date_to < now()->format('Y-m-d') ) {
+            $request->session()->forget('accounting_system_id');
+            return redirect('/switch')->with('danger', 'The subscription that the current accounting system you accessed is already expired.');
+        }
+        else if($subscription->status == 'suspended') {
+            $request->session()->forget('accounting_system_id');
+            return redirect('/switch')->with('danger', 'The subscription that the current accounting system you accessed has been suspended.');
+        }
 
         return $next($request);
     }

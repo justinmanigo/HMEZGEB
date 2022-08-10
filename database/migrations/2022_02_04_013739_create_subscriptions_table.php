@@ -30,7 +30,7 @@ class CreateSubscriptionsTable extends Migration
                 'unused',
                 'trial',
                 'active',
-                'expired',
+                'suspended',
             ])->nullable()->default('unused');
             $table->timestamps();
         });
