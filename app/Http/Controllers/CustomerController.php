@@ -140,29 +140,29 @@ class CustomerController extends Controller
 
     }
     // Mail
-    public function mailCustomerStatements($id = null)
-    {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customers = Customers::where('accounting_system_id', $accounting_system_id)
-        ->whereHas('receiptReference', function($query) {
-            $query->Where('status', 'unpaid')
-            ->orWhere('status', 'partially_paid')
-            ->where('type', 'receipt');
-        })->get();
+    // public function mailCustomerStatements()
+    // {
+    //     $accounting_system_id = $this->request->session()->get('accounting_system_id');
+    //     $customers = Customers::where('accounting_system_id', $accounting_system_id)
+    //     ->whereHas('receiptReference', function($query) {
+    //         $query->Where('status', 'unpaid')
+    //         ->orWhere('status', 'partially_paid')
+    //         ->where('type', 'receipt');
+    //     })->get();
 
-        if($customers->isEmpty())
-            return redirect()->back()->with('danger', "No pending statements found.");
-        foreach($customers as $customer) {
-            $data = $customer->toArray();
-            // add receipt reference in data
-            $receipts = $customer->receiptReference->toArray();
-            $receipts += $customer->receiptReference->receipt->toArray();
-            
-            Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
-        }
+    //     if($customers->isEmpty())
+    //         return redirect()->back()->with('danger', "No pending statements found.");
+    //     foreach($customers as $customer) {
+    //         $data = $customer->toArray();
+    //         // add receipt reference in data
+    //         $receipts = $customer->receiptReference->toArray();
+    //         $receipts += $customer->receiptReference->receipt->toArray();
 
-        return redirect()->back()->with('success', "Successfully sent customer statements.");     
-    }
+    //         Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
+    //     }
+
+    //     return redirect()->back()->with('success', "Successfully sent customer statements.");     
+    // }
 
     // Specific customer mail
     public function mailCustomerStatement($id)
@@ -170,23 +170,25 @@ class CustomerController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::where('accounting_system_id', $accounting_system_id)
         ->whereHas('receiptReference', function($query) {
-            $query->Where('status', 'unpaid')
-            ->orWhere('status', 'partially_paid')
-            ->where('type', 'receipt');
-        })->when($id, function($query) use ($id) {
-            return $query->where('id', $id);
-        })->get();
+            $query->where('type', 'receipt')
+            ->orWhere('status', 'unpaid')
+            ->orWhere('status', 'partially_paid');     
+        })->where('id', $id)->first();
 
-        if($customers->isEmpty())
+        if(!$customers)
             return redirect()->back()->with('danger', "No pending statements found.");
-        foreach($customers as $customer) {
-            $data = $customer->toArray();
-            // add receipt reference in data
-            $receipts = $customer->receiptReference->toArray();
-            $receipts += $customer->receiptReference->receipt->toArray();
-            
-            Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
+
+        $receipt_reference = ReceiptReferences::where('customer_id', $id)->where('type', 'receipt')
+        ->orWhere('status', 'unpaid')
+        ->orWhere('status', 'partially_paid')
+        ->get(); 
+
+        $receipts = [];
+        foreach($receipt_reference as $receipt) {
+            $receipts[] = $receipt->toArray() + $receipt->receipt->toArray();  
         }
+
+        Mail::to($customers->email)->queue(new MailCustomerStatement ($customers, $receipts));
 
         return redirect()->back()->with('success', "Successfully sent customer statement.");     
     }

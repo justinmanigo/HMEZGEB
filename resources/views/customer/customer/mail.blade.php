@@ -7,10 +7,12 @@ This is your statement.
 @component('mail::table')
 | Date     | Due Date     | Amount |   Payment | Balance
 |:--------|:-------------|:-------|:---------|:-------|
-| {{$receipts['date']}} | {{$receipts['due_date']}} | {{$receipts['grand_total']}} | {{$receipts['total_amount_received']}} | {{$receipts['grand_total']-$receipts['total_amount_received']}} |
+@foreach($receipts as $receipt)
+| {{$receipt['date']}} | {{$receipt['due_date']}} | {{$receipt['grand_total']}} | {{$receipt['total_amount_received']}} | {{$receipt['grand_total']-$receipt['total_amount_received']}} |
+@endforeach
 @endcomponent
 
-Please pay the above before or on {{$receipts['due_date']}}.
+Please pay the above before or on {{$receipt['due_date']}}.
 
 Thanks,<br>
 {{ config('app.name') }}

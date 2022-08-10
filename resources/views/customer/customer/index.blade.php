@@ -44,12 +44,12 @@
                 </span>
                 <span class="text">Export</span>
             </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-statements" >
+            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-statements" >
                 <span class="icon text-white-50">
                     <i class="fas fa-envelope"></i>
                 </span>
                 <span class="text">Mail Statements</span>
-            </button>
+            </button> --}}
         </div>
         
             {{-- Page Content --}}
@@ -348,7 +348,7 @@
     </div>
 </div> 
 
-{{-- statement confirmation modal --}}
+{{-- statement confirmation modal
 
 <div class="modal fade" id="modal-statements" tabindex="-1" role="dialog" aria-labelledby="modal-statements-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -368,7 +368,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 {{-- specific statement modal --}}
 
