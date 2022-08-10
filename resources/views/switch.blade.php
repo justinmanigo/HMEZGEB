@@ -37,11 +37,18 @@
                 <div class="card-body">
                     <div class="grid-container">
                         <div>
-                            <h5 class="m-0">{{ $account->name }}</h5>
+                            <h5 class="m-0">
+                                {{ $account->name }}
+                                @if($account->status == 'suspended')
+                                    <span class="badge badge-danger">Subscription Suspended</span>
+                                @elseif($account->date_to < now()->format('Y-m-d'))
+                                    <span class="badge badge-danger">Subscription Expired</span>
+                                @endif
+                            </h5>
                             <small class="m-0">Subscription # {{ $account->subscription_id }} | {{ $account->user_first_name . ' ' . $account->user_last_name }}</small>
                         </div>
                         <div>
-                            <button class="btn btn-primary m-0 accounting_system_item" data-id="{{ $account->accounting_system_id }}" data-suid="{{ $account->subscription_user_id }}">
+                            <button class="btn btn-primary m-0 accounting_system_item" @if($account->status == 'suspended' || $account->date_to < now()->format('Y-m-d')) disabled @else data-id="{{ $account->accounting_system_id }}" data-suid="{{ $account->subscription_user_id }}" @endif>
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw text-gray-400"></i>
                             </button>
                         </div>

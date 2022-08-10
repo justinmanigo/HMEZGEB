@@ -70,13 +70,13 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-edit-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
+                                            <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-edit-user" @if($subscriptionUser->user->id == auth()->id() || $output['subscription']->status == 'suspended' || $output['subscription']->date_to < now()->format('Y-m-d')) {{ 'disabled' }} @endif>
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                                 <span class="text">Edit</span>
                                             </button>
-                                            <button role="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user" @if($subscriptionUser->user->id == auth()->id()) {{ 'disabled' }} @endif>
+                                            <button role="button" class="btn btn-sm btn-danger btn-remove-user" data-id="{{ $subscriptionUser->id }}" data-toggle="modal" data-target="#modal-delete-user" @if($subscriptionUser->user->id == auth()->id() || $output['subscription']->status == 'suspended' || $output['subscription']->date_to < now()->format('Y-m-d')) {{ 'disabled' }} @endif>
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-trash"></i>
                                                 </span>
@@ -116,7 +116,9 @@
                         <div class="col-12 col-lg-6">
                             <select class="form-control form-control-select select-subscription" id="anu_subscription_id" name="subscription_id" required>
                                 @foreach($result as $output)
-                                    <option value="{{ $output['subscription']->id }}">Subscription # {{ $output['subscription']->id }}</option>
+                                    @if($output['subscription']->status != 'suspended' && $output['subscription']->date_to > now()->format('Y-m-d'))
+                                        <option value="{{ $output['subscription']->id }}">Subscription # {{ $output['subscription']->id }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
