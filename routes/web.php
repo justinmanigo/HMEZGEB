@@ -310,10 +310,11 @@ Route::group([
                 'as'=>'deposits.',
                 'middleware' => 'acctsys.permission:3', 
             ], function(){ 
-                Route::get('/customers/deposits', [DepositsController::class, 'index']);
                 Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
                 // RESOURCE
                 Route::resource('customers/deposits', DepositsController::class);
+                // Mail
+                Route::get('/customers/deposits/mail/{id}', [DepositsController::class, 'mailDeposit'])->name('deposit.mail');
                 
             });
         });

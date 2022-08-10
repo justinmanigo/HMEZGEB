@@ -13,6 +13,8 @@ use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\ReceiptReferences;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Mail\MailCustomerDeposit;
+use Illuminate\Support\Facades\Mail;
 
 class DepositsController extends Controller
 {
@@ -169,6 +171,21 @@ class DepositsController extends Controller
     public function destroy(Deposits $deposits)
     {
         //
+    }
+
+    // Mail
+    public function mailDeposit($id)
+    {
+        // Mail
+        $deposit = Deposits::find($id);
+        $emailAddress = "test@test.com";
+        $data = [];
+        $data = $deposit->toArray() + $deposit->chartOfAccount->toArray();
+
+        Mail::to($emailAddress)->queue(new MailCustomerDeposit($data));
+        
+        return redirect()->route('deposits.deposits.index')->with('success', "Successfully sent email to customer.");
+
     }
 
      /******* AJAX ***********/

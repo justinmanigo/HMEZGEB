@@ -157,12 +157,12 @@
                                         <i class="fas fa-print"></i>
                                     </span>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                <a href="{{route('deposits.deposit.mail',$deposit->id)}}" class="btn btn-sm btn-icon btn-secondary mb-1" >
                                     <!-- email -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                </button>
+                                </a>
                                 <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
                                     <!-- void -->
                                     <span class="icon text-white-50">
