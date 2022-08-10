@@ -289,7 +289,7 @@ Route::group([
                 'middleware' => 'acctsys.permission:1', 
             ], function(){ 
                 // Resource
-                Route::resource('/customers', CustomerController::class);
+                Route::resource('/customers/customers', CustomerController::class);
                 // Mail
                 // Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');             
                 Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');             
@@ -310,10 +310,10 @@ Route::group([
                 'as'=>'deposits.',
                 'middleware' => 'acctsys.permission:3', 
             ], function(){ 
-                Route::get('/customers/deposits/', [DepositsController::class, 'index']);
+                Route::get('/customers/deposits', [DepositsController::class, 'index']);
                 Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
                 // RESOURCE
-                Route::resource('/deposits', DepositsController::class);
+                Route::resource('customers/deposits', DepositsController::class);
                 
             });
         });

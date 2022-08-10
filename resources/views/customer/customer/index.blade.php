@@ -453,7 +453,7 @@
 
         function deleteCustomer(id) {
             
-            $('#delete-frm').attr('action', "/customers/" + id);
+            $('#delete-frm').attr('action', "/customers/customers/" + id);
         }
         // add <span class="text-danger ml-1">*</span> after the label of required input
         $('label').each(function(){

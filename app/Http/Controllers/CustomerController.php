@@ -228,9 +228,17 @@ class CustomerController extends Controller
     // print
     public function print($id)
     {
-        $customers = Customers::find($id);
+        $customers = Customers::where('id', $id)
+        ->whereHas('receiptReference', function($query) {
+            $query->where('type', 'receipt')
+            ->orWhere('status', 'unpaid')
+            ->orWhere('status', 'partially_paid');     
+        })->first();
+        
+        if(!$customers)
+            return redirect()->back()->with('error', "No statements to print.");
         $pdf = \PDF::loadView('customer.customer.print', compact('customers'));
-        return $pdf->download('customersCustomer_'.date('Y_m_d').'.pdf');
+        return $pdf->download('customer_statement_'.date('Y_m_d').'.pdf');
     }
 
     /*=================================*/
