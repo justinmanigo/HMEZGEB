@@ -32,20 +32,37 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function activate(ActivateSubscriptionRequest $request)
+    public function activate(Subscription $subscription, ActivateSubscriptionRequest $request)
     {
-        // $subscription->activate();
-        // return redirect()->route('control.subscriptions.index');
-    }
+        $subscription->status = 'active';
+        $subscription->date_to = $request->expiration_date;
+        $subscription->save();
 
+        return response()->json([
+            'success' => true,
+            'message' => 'Subscription activated successfully.',
+        ]);
+    }
 
     public function suspend(Subscription $subscription)
     {
+        $subscription->status = 'suspended';
+        $subscription->save();
 
+        return response()->json([
+            'success' => true,
+            'message' => 'Subscription suspended successfully.',
+        ]);
     }
 
     public function reinstate(Subscription $subscription)
     {
-
+        $subscription->status = 'active';
+        $subscription->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Subscription reinstated successfully.',
+        ]);
     }
 }

@@ -13,7 +13,7 @@ class ActivateSubscriptionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class ActivateSubscriptionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'expiration_date' => ['required', 'date', 'after:today'],
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->subscription->date != null && $this->expiration_date < $this->subscription->date_to) {
+                $validator->errors()->add('expiration_date', 'The expiration date must be set after the subscription end date.');
+            }
+        });
     }
 }

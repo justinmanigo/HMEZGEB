@@ -113,7 +113,7 @@
                     @csrf
                     <div class="form-group">
                         <label for="date_to">Expiration Date</label>
-                        <input type="date" class="form-control" id="date_to" name="date_to" placeholder="Expiration Date">
+                        <input type="date" class="form-control" id="expiration_date" name="expiration_date" value="{{ now()->format('Y-m-d') }}">
                     </div>
                 </form>
             </div>
@@ -203,10 +203,11 @@
             $('#error-sa').hide();
             $('button[form="form-subscription-activate"]').prop('disabled', true);
             $.ajax({
-                url: `/control/subscription/activate/`,
+                url: $(this).attr('action'),
                 type: "POST",
                 data: $(this).serialize(),
                 success: function(data){
+                    console.log(data);
                     if(data.success){
                         window.location.href = '{{ url("/control/subscriptions?success=") }}' + data.message;
                     }else{
@@ -215,8 +216,9 @@
                     }
                 },
                 error: function(data){
+                    console.log(data);
                     $('button[form="form-subscription-activate"]').prop('disabled', false);
-                    $('#error-sa').show().text(data.responseJSON.message);
+                    $('#error-sa').show().text(data.responseJSON.errors.expiration_date);
                 }
             });
         });
@@ -231,6 +233,7 @@
                 type: "POST",
                 data: $(this).serialize(),
                 success: function(data){
+                    console.log(data);
                     if(data.success){
                         window.location.href = '{{ url("/control/subscriptions?success=") }}' + data.message;
                     }else{
@@ -239,6 +242,7 @@
                     }
                 },
                 error: function(data){
+                    console.log(data);
                     $('button[form="form-subscription-suspend"]').prop('disabled', false);
                     $('#error-ss').show().text(data.responseJSON.message);
                 }
@@ -255,6 +259,7 @@
                 type: "POST",
                 data: $(this).serialize(),
                 success: function(data){
+                    console.log(data);
                     if(data.success){
                         window.location.href = '{{ url("/control/subscriptions?success=") }}' + data.message;
                     }else{
@@ -263,6 +268,7 @@
                     }
                 },
                 error: function(data){
+                    console.log(data);
                     $('button[form="form-subscription-reinstate"]').prop('disabled', false);
                     $('#error-sr').show().text(data.responseJSON.message);
                 }
