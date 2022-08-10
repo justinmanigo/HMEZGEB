@@ -66,6 +66,8 @@ use App\Http\Controllers\RegisterController;
 
 // Control Panel
 use App\Http\Controllers\Control\SuperAdminController;
+use App\Http\Controllers\Control\SubscriptionController;
+
 // Subscription Panel
 use App\Http\Controllers\Subscription\SummaryController;
 use App\Http\Controllers\Subscription\ManageAccountingSystemsController;
@@ -170,6 +172,11 @@ Route::group([
         Route::put('/control/admins/edit/{user}', [SuperAdminController::class, 'editSuperAdmin'])->name('editSuperAdmin');
         Route::delete('/control/admins/remove/{user}', [SuperAdminController::class, 'removeSuperAdmin'])->name('removeSuperAdmin');
 
+        /** Subscriptions */
+        Route::get('/control/subscriptions', [SubscriptionController::class, 'index'])->name('index');
+        Route::post('/control/subscriptions/activate/{subscription}', [SubscriptionController::class, 'activate'])->name('activate');
+        Route::post('/control/subscriptions/suspend/{subscription}', [SubscriptionController::class, 'suspend'])->name('suspend');
+        Route::post('/control/subscriptions/reinstate/{subscription}', [SubscriptionController::class, 'reinstate'])->name('reinstate');
 
         // AJAX
         Route::group([
