@@ -237,7 +237,7 @@
                                     </td>
                                     <td>
                                         @if($transaction->type == 'receipt')
-                                        <a class="btn btn-secondary btn-sm" href="{{route('receipts.receipt.mail',$transaction->receipt->id)}}">
+                                        <a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->receipt->id}})" >
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
@@ -474,6 +474,27 @@ POTENTIAL SOLUTIONS:
     </div>
 </form>
 
+{{-- Mail confirmation modal --}}
+<div class="modal fade" id="modal-mail-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-mail-confirmation-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-mail-confirmation-label">Confirm Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to send this receipt to customer?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="btn-send-mail">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- Import --}}
 <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label"
     aria-hidden="true">
@@ -538,7 +559,15 @@ POTENTIAL SOLUTIONS:
     </div>
 </div> --}}
 
+
 <script>
+    // Get id of transaction to mail confirmation modal
+    function mailModal(id){
+        console.log(id);
+        // set attribute href of btn-send-mail
+        $('#btn-send-mail').attr('href', '{{ route("receipts.receipt.mail", ":id") }}'.replace(':id', id));
+    }
+
     $(document).ready(function () {
         $('#dataTables').DataTable();
         $('#dataTables2').DataTable();
