@@ -88,11 +88,17 @@
                     </select>
                 </div>
             </div>
-            <div class="row d-flex justify-content-end mt-3">
-                <div>
-                    <button class="btn btn-secondary mx-1">Edit</button>
-                    <button class="btn btn-danger mr-3">Delete</button>
-                </div>
+            <div class="row mt-3 d-flex justify-content-between">
+                    <div>
+                        <a href="{{route('bills.bills.index')}}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left"></i>
+                            Back
+                        </a>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary mx-1">Edit</button>
+                        <button class="btn btn-danger mr-3">Delete</button>
+                    </div>
             </div>
         </form>
     </div>

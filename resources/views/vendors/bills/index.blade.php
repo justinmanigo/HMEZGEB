@@ -175,7 +175,7 @@
                         <tbody>
                             <!-- foreach bills -->
                             @foreach($transactions as $transaction)
-                            <tr onclick="window.location='/'">
+                            <tr>
                                 <td>{{$transaction->date}}</td>
                                 <td>{{$transaction->id}}</td>
                                 <!-- Select type -->
@@ -207,7 +207,7 @@
                                     {{-- TODO: Implement hover action bar --}}
                                     
                                     <!-- edit -->
-                                    <a class="btn btn-primary btn-sm edit disabled">
+                                    <a href="{{route('bills.bills.show', $transaction->bills->id)}}" class="btn btn-primary btn-sm edit">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-edit"></i>
                                         </span>
@@ -307,7 +307,7 @@
                 <p class="h3 pl-4 m-auto">New Bill</p>
                 <a class="close" data-dismiss="modal">×</a>
             </div>
-            <form class="ajax-submit-updated" id="form-new-bill" action="{{route('bills.bill.store') }}" method="post"
+            <form class="ajax-submit-updated" id="form-new-bill" action="{{route('bills.bills.store') }}" method="post"
                 enctype="multipart/form-data" data-message="Successfully created bill.">
                 @csrf
                 @include('vendors.bills.forms.addBillModal')

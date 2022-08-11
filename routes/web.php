@@ -340,9 +340,10 @@ Route::group([
                 'middleware' => 'acctsys.permission:5', 
             ], function(){ 
                 // HTML
-                Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
-                Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
-                Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
+                Route::resource('/vendors/bills', BillsController::class);
+                // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
+                // Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
+                // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
                 Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
 
                 // Mail
