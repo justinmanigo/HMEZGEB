@@ -80,7 +80,7 @@ class BillsController extends Controller
         // return $request;
 
         // If this transaction is linked to Proforma
-        if(isset($request->purchase_order)) UpdateBillStatus::run($request->proforma->value, 'paid');
+        if(isset($request->purchase_order)) UpdateBillStatus::run($request->purchase_order->value, 'paid');
 
         // Determine bill status.
         if($request->grand_total == $request->total_amount_received)
