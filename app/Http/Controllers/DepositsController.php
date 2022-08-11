@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Mail\MailCustomerDeposit;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 class DepositsController extends Controller
 {
@@ -186,6 +187,15 @@ class DepositsController extends Controller
         
         return redirect()->route('deposits.deposits.index')->with('success', "Successfully sent email to customer.");
 
+    }
+
+    // Print
+    public function printDeposit($id)
+    {
+        $deposits = Deposits::find($id);
+        $pdf = PDF::loadView('customer.deposit.print', compact('deposits'));
+
+        return $pdf->download('deposit_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
      /******* AJAX ***********/

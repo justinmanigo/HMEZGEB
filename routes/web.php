@@ -322,7 +322,8 @@ Route::group([
                 Route::resource('customers/deposits', DepositsController::class);
                 // Mail
                 Route::get('/customers/deposits/mail/{id}', [DepositsController::class, 'mailDeposit'])->name('deposit.mail');
-                
+                // Print
+                Route::get('/customers/deposits/print/{id}', [DepositsController::class, 'printDeposit'])->name('deposit.print');
             });
         });
 
