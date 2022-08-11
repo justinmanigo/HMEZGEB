@@ -72,11 +72,6 @@ class BankAccountsController extends Controller
         $account->bank_account_type = $request->bank_account_type;
         $account->save();
 
-        // Mail
-        // TODO : Confirm where to send the mail to.
-        // $emailAddress = 'test@example.com';
-        // Mail::to($emailAddress)->queue(new MailBankAccount);
-
         return redirect()->back()->with('success', 'Bank Account Created Successfully');
     }
 
@@ -147,6 +142,19 @@ class BankAccountsController extends Controller
             return redirect('/banking/accounts')->with('error', 'Error deleting bank account');
         }
         return redirect('/banking/accounts')->with('success', 'Bank Account Deleted Successfully');
+    }
+
+    // Mail
+    public function mail($id)
+    {
+        $bank_accounts = BankAccounts::where('id', $id)->first();
+        $bank_accounts = $bank_accounts->toArray() + $bank_accounts->chartOfAccount->toArray();
+
+        // TODO: Add email to user
+        $email = "bank@email.com";
+        Mail::to($email)->queue(new MailBankAccount($bank_accounts));
+
+        return redirect()->back()->with('success', 'Email Sent Successfully!');
     }
 
     // Import Export

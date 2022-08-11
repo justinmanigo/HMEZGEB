@@ -408,11 +408,13 @@ Route::group([
                 'as'=>'accounts.',
                 'middleware' => 'acctsys.permission:7',
             ], function(){ 
+                // RESOURCE
+                Route::resource('/banking/accounts', BankAccountsController::class);
                 // Import Export
                 Route::post('/banking/accounts/import', [BankAccountsController::class, 'import'])->name('accounts.import');
                 Route::post('/banking/accounts/export', [BankAccountsController::class, 'export'])->name('accounts.export');
-                // RESOURCE
-                Route::resource('/banking/accounts', BankAccountsController::class);
+                // Mail
+                Route::get('/banking/accounts/mail/{id}', [BankAccountsController::class, 'mail'])->name('accounts.mail');
             });
         
             /**
