@@ -299,7 +299,7 @@ class PaymentsController extends Controller
         if($w > 0) {
             // Create PaymentReference Record
             $reference = PaymentReferences::create([
-                'accounting_system_id' => $accounting_system_id,
+                'accounting_system_id' => session('accounting_system_id'),
                 'vendor_id' => $request->vendor_id,
                 'date' => $request->date,
                 'type' => 'withholding_payment',
