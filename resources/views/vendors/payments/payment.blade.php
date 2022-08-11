@@ -327,39 +327,54 @@
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Date</th>
                             <th>Reference#</th>
-                            <th>Type</th>
+                            <th>Date</th>
                             <th>Paid to</th>
-                            <th>Remark</th>
                             <th>Amount</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr onclick="window.location='/individualBill'">
-                            <td>December 20, 2021</td>
-                            <td>P007</td>
-                            <td class="h5"><span class="badge badge-warning">Credit Bill</span></td>
-                            <td>John Doe</td>
-                            <td>Sales Commision</td>
-                            <td>2,900.00</td>
-                        </tr>
-                        <tr>
-                            <td>December 22, 2021</td>
-                            <td>P002</td>
-                            <td class="h5"><span class="badge badge-danger">Pension</span></td>
-                            <td>Jane Dough</td>
-                            <td>January 2022</td>
-                            <td>1,500.00</td>
-                        </tr>
-                        <tr>
-                            <td>January 11, 2021</td>
-                            <td>P012</td>
-                            <td class="h5"><span class="badge badge-secondary">Commision</span></td>
-                            <td>John Smith</td>
-                            <td>March 2021</td>
-                            <td>1,199.00</td>
-                        </tr>
+                        @foreach($billPayments as $payment)
+                            <tr>
+                                <td>{{ $payment->id }}</td>
+                                <td>{{ $payment->date }}</td>
+                                <td>{{ $payment->name }}</td>
+                                <td>{{ $payment->amount_paid }}</td>
+                                <td>
+                                    <!-- edit -->
+                                    <a class="btn btn-primary btn-sm edit disabled">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </a>
+                                    <!-- send email -->
+                                    <button class="btn btn-secondary btn-sm" disabled>
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </button>
+                                    <!-- print/pdf -->
+                                    <button class="btn btn-secondary btn-sm" disabled>
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-print"></i>
+                                        </span>
+                                    </button>
+                                    <!-- void -->
+                                    <button class="btn btn-danger btn-sm" disabled>
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-ban"></i>
+                                        </span>
+                                    </button>
+                                    <!-- make it active -->
+                                    <button class="btn btn-success btn-sm" disabled>
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -369,39 +384,94 @@
                     <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Vendor Name</th>
+                                <th>Reference #</th>
                                 <th>Date</th>
-                                <th>Due Date</th>
-                                <th>Bill No.</th>
-                                <th>Bill Type</th>
+                                <th>Vendor Name</th>
+                                <th>Type</th>
                                 <th>Status</th>
+                                <th>Amount</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr onclick="window.location='/individualBill'">
-                                <td>Anna Halcon</td>
-                                <td>December 20, 2021</td>
-                                <td>February 14, 2022</td>
-                                <td>000293</td>
-                                <td>Credit Invoice</td>
-                                <td>Paid</td>
-                            </tr>
-                            <tr>
-                                <td>Alvin Dexter</td>
-                                <td>December 22, 2021</td>
-                                <td>February 10, 2022</td>
-                                <td>000293</td>
-                                <td>Credit Invoice</td>
-                                <td>Partially Paid</td>
-                            </tr>
-                            <tr>
-                                <td>Ate Che-Che</td>
-                                <td>January 11, 2021</td>
-                                <td>February 15, 2022</td>
-                                <td>000255</td>
-                                <td>Credit Invoice</td>
-                                <td>Paid</td>
-                            </tr>
+                            @foreach($otherPayments as $payment)
+                                <tr>
+                                    <td>{{ $payment->id }}</td>
+                                    <td>{{ $payment->date }}</td>
+                                    <td>{{ $payment->name }}</td>
+                                    <td>
+                                        @if($payment->type == 'vat_payment')
+                                            <span class="badge badge-info">VAT Payment</span>
+                                        @elseif($payment->type == 'withholding_payment')
+                                            <span class="badge badge-warning">Withholding Payment</span>
+                                        {{-- @elseif($payment->type == 'payroll_payment') --}}
+                                            {{-- <span class="badge badge-success">Payroll Payment</span> --}}
+                                        @elseif($payment->type == 'income_tax_payment')
+                                            <span class="badge badge-danger">Income Tax Payment</span>
+                                        @elseif($payment->type == 'pension_payment')
+                                            <span class="badge badge-primary">Pension Payment</span>
+                                        {{-- @elseif($payment->type == 'commission_payment') --}}
+                                            {{-- <span class="badge badge-secondary">Commission Payment</span> --}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($payment->status == 'unpaid')
+                                            <span class="badge badge-danger">Unpaid</span>
+                                        @elseif($payment->status == 'partially_paid')
+                                            <span class="badge badge-warning">Partially Paid</span>
+                                        @elseif($payment->status == 'paid')
+                                            <span class="badge badge-success">Paid</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($payment->type == 'vat_payment')
+                                            {{ number_format($payment->vat_amount) }}
+                                        @elseif($payment->type == 'withholding_payment')
+                                            {{ number_format($payment->withholding_amount) }}
+                                        {{-- @elseif($payment->type == 'payroll_payment') --}}
+                                            {{-- {{ number_format($payment->payroll_amount) }} --}}
+                                        @elseif($payment->type == 'income_tax_payment')
+                                            {{ number_format($payment->income_tax_amount) }}
+                                        @elseif($payment->type == 'pension_payment')
+                                            {{ number_format($payment->pension_amount) }}
+                                        {{-- @elseif($payment->type == 'commission_payment') --}}
+                                            {{-- {{ number_format($payment->commission_amount) }} --}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <!-- edit -->
+                                        <a class="btn btn-primary btn-sm edit disabled">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
+                                        <!-- send email -->
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </button>
+                                        <!-- print/pdf -->
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        <!-- void -->
+                                        <button class="btn btn-danger btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </button>
+                                        <!-- make it active -->
+                                        <button class="btn btn-success btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
