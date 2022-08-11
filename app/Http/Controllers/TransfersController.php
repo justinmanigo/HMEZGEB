@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Imports\ImportBankTransfer;
 use App\Exports\ExportBankTransfer;
 use Maatwebsite\Excel\Facades\Excel;
-
+use PDF;
 
 class TransfersController extends Controller
 {
@@ -222,6 +222,15 @@ class TransfersController extends Controller
 
         return redirect()->back()->with('success', 'Successfully sent email!');
     }
+    // Print
+    public function print($id)
+    {
+        $transfers = Transfers::find($id);
+        $pdf = PDF::loadView('banking.transfers.print', compact('transfers'));
+        
+        return $pdf->download('bank_transfer_'.date('Y-m-d').'.pdf');
+    }
+
 
      // Import Export
 

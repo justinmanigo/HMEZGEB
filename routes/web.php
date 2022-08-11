@@ -438,6 +438,8 @@ Route::group([
                 Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
                 // Mail
                 Route::get('/banking/transfer/mail/{id}', [TransfersController::class, 'mail'])->name('transfer.mail');
+                // Print
+                Route::get('/banking/transfer/print/{id}', [TransfersController::class, 'print'])->name('transfer.print');
                 // Import Export
                 Route::post('/banking/transfers/import', [TransfersController::class, 'import'])->name('transfers.import');
                 Route::post('/banking/transfers/export', [TransfersController::class, 'export'])->name('transfers.export');

@@ -231,16 +231,16 @@
                                                 <i class="fas fa-pen"></i>
                                             </span>
                                         </a>
-                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
-                                            <!-- print -->
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-print"></i>
-                                            </span>
-                                        </button>
                                         <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#mail-modal" onclick="mailModal({{$transfer->id}})">
                                             <!-- email -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#print-modal" onclick="printModal({{$transfer->id}})">
+                                            <!-- print -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
                                             </span>
                                         </button>
                                         <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
@@ -388,7 +388,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to send this bank transfer record?</p>
+                <p>Are you sure you want to print this bank transfer record?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -398,10 +398,37 @@
     </div>
 </div>
 
+{{-- Print confirmation modal --}}
+<div class="modal fade" id="print-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Send Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to send this bank transfer record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="print-modal-btn">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function mailModal(id)
     {
         $('#mail-modal-btn').attr('href', '{{route("transfers.transfer.mail", ":id") }}'.replace(':id', id));
+    }
+
+    function printModal(id)
+    {
+        $('#print-modal-btn').attr('href', '{{route("transfers.transfer.print", ":id") }}'.replace(':id', id));
     }
 
     // add the file name only in file input field
