@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-    <h1>Vendor Statementt</h1>
+    <h3>Vendor Statement: {{$payment_reference[0]->vendor->name}}</h3>
     <table class="text-center">
         <thead>
             <tr>

@@ -228,16 +228,23 @@ class CustomerController extends Controller
     // print
     public function print($id)
     {
-        $customers = Customers::where('id', $id)
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $customers = Customers::where('accounting_system_id', $accounting_system_id)
         ->whereHas('receiptReference', function($query) {
             $query->where('type', 'receipt')
             ->orWhere('status', 'unpaid')
             ->orWhere('status', 'partially_paid');     
-        })->first();
-        
+        })->where('id', $id)->first();
+
         if(!$customers)
-            return redirect()->back()->with('error', "No statements to print.");
-        $pdf = \PDF::loadView('customer.customer.print', compact('customers'));
+            return redirect()->back()->with('danger', "No pending statements found.");
+
+        $receipt_reference = ReceiptReferences::where('customer_id', $id)->where('type', 'receipt')
+        ->Where('status', 'unpaid')
+        ->orWhere('status', 'partially_paid')
+        ->get(); 
+        
+        $pdf = \PDF::loadView('customer.customer.print', compact('receipt_reference'));
         return $pdf->download('customer_statement_'.date('Y_m_d').'.pdf');
     }
 

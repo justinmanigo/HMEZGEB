@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Customers</title>
+    <title>Customer Statement</title>
 
     <style>
         .page-break {
@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-    <h1>Customers</h1>
+    <h3>Customer Statement: {{$receipt_reference[0]->customer->name}}</h3>
     <table class="text-center">
         <thead>
             <tr>
@@ -35,13 +35,15 @@
             </tr>
         </thead>
         <tbody>
+                @foreach($receipt_reference as $receipt_reference)
                 <tr>
-                    <td>{{$customers->receiptReference->date}}</td>
-                    <td>{{$customers->receiptReference->receipt->due_date}}</td>
-                    <td>{{$customers->receiptReference->receipt->grand_total}}</td>
-                    <td>{{$customers->receiptReference->receipt->total_amount_received}}</td>
-                    <td>{{$customers->receiptReference->receipt->grand_total - $customers->receiptReference->receipt->total_amount_received}}</td>
+                    <td>{{$receipt_reference->date}}</td>
+                    <td>{{$receipt_reference->receipt->due_date}}</td>
+                    <td>{{$receipt_reference->receipt->grand_total}}</td>
+                    <td>{{$receipt_reference->receipt->total_amount_received}}</td>
+                    <td>{{$receipt_reference->receipt->grand_total - $receipt_reference->receipt->total_amount_received}}</td>
                 </tr>
+                @endforeach
         </tbody>
     </table>
 </body>
