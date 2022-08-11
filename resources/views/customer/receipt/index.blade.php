@@ -236,13 +236,48 @@
                                         @endif
                                     </td>
                                     <td>
+                                        {{-- TODO: Implement hover action bar --}}
                                         @if($transaction->type == 'receipt')
-                                        <a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->receipt->id}})" >
+                                        <a href="{{route('receipts.receipts.show', $transaction->receipt->id)}}" class="btn btn-primary btn-sm edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->receipt->id}})" >
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
-                                        </a>
+                                        </button>
+                                        @else
+                                            <a href="" class="btn btn-primary btn-sm edit disabled">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <a class="btn btn-secondary btn-sm disabled">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                            </a>
                                         @endif
+                                        <!-- print/pdf -->
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        <!-- void -->
+                                        <button class="btn btn-danger btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </button>
+                                        <!-- make it active -->
+                                        <button class="btn btn-success btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach

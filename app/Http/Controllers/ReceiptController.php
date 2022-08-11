@@ -377,6 +377,7 @@ class ReceiptController extends Controller
     
     public function show(Receipts $receipt)
     {   
+        return $receipt;
         // $receipt = Receipts::all();
         // return view('customer.receipt.index',compact('receipt'));
     }

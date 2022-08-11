@@ -265,8 +265,8 @@ Route::group([
                 'as'=>'receipts.',
                 'middleware' => 'acctsys.permission:2', 
             ], function(){
-                Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
-                
+                // Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
+                Route::resource('/customers/receipts', ReceiptController::class);
                 // Store
                 Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
                 Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
@@ -274,9 +274,9 @@ Route::group([
                 Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
         
                 Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
-                Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
-                Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
-                Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
+                // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
+                // Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
+                // Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
                 
                 // Mail
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
