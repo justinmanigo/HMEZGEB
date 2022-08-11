@@ -200,11 +200,13 @@ class BillsController extends Controller
     // send Email
     public function sendMailBill($id)
     {
+        
         $bills = Bills::find($id);
         $emailAddress = $bills->paymentReference->vendor->email;
-        Mail::to($emailAddress)->queue(new MailVendorBill);
+
+        Mail::to($emailAddress)->queue(new MailVendorBill ($bills));
         
-        return redirect()->route('bills.bill.index')->with('success', 'Email has been sent!');
+        return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
 
     /**

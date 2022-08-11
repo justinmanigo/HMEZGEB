@@ -16,11 +16,11 @@ class MailVendorBill extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public $bills;
+    public function __construct($bills)
     {
-        //
+        $this->bills = $bills;
     }
-
     /**
      * Build the message.
      *
@@ -28,7 +28,8 @@ class MailVendorBill extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Vendor Bill')
-        ->view('vendors.bills.mail');
+        return $this->markdown('vendors.bills.mail')->with([
+            'bills' => $this->bills,
+        ]);
     }
 }
