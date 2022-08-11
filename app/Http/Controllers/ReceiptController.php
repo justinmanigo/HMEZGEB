@@ -28,6 +28,7 @@ use App\Models\ReceiptCashTransactions;
 use Illuminate\Support\Facades\Log;
 use App\Mail\MailCustomerReceipt;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 
 class ReceiptController extends Controller
@@ -438,6 +439,15 @@ class ReceiptController extends Controller
         Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt));
         
         return redirect()->route('receipts.receipt.index')->with('success', "Successfully sent email to customer.");
+    }
+
+    // Print
+    public function printReceipt($id)
+    {
+        $receipt = Receipts::find($id);
+        $pdf = PDF::loadView('customer.receipt.print', compact('receipt'));
+
+        return $pdf->download('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     // export

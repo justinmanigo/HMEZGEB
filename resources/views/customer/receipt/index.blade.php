@@ -228,7 +228,7 @@
                                     </td>
                                     <td class="table-item-content text-right">
                                         @if($transaction->type == 'receipt')
-                                            {{ number_format($transaction->amount, 2) }}
+                                            {{ number_format($transaction->receipt_amount, 2) }}
                                         @elseif($transaction->type == 'advance_receipt')
                                             {{ number_format($transaction->advance_revenue_amount, 2) }}
                                         @elseif($transaction->type == 'credit_receipt')
@@ -248,6 +248,12 @@
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                         </button>
+                                        <!-- print/pdf -->
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->receipt->id}})" >
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
                                         @else
                                             <a href="" class="btn btn-primary btn-sm edit disabled">
                                                 <span class="icon text-white-50">
@@ -259,13 +265,13 @@
                                                     <i class="fas fa-envelope"></i>
                                                 </span>
                                             </a>
-                                        @endif
                                         <!-- print/pdf -->
-                                        <button class="btn btn-secondary btn-sm" disabled>
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-print"></i>
-                                            </span>
-                                        </button>
+                                            <button class="btn btn-secondary btn-sm" disabled>
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>
+                                        @endif
                                         <!-- void -->
                                         <button class="btn btn-danger btn-sm" disabled>
                                             <span class="icon text-white-50">
@@ -593,14 +599,38 @@ POTENTIAL SOLUTIONS:
         </div>
     </div>
 </div> --}}
-
+{{-- Print confirmation Modal --}}
+<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-print-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print receipt?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" id="print-receipt" class="btn btn-primary">Print</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     // Get id of transaction to mail confirmation modal
     function mailModal(id){
-        console.log(id);
         // set attribute href of btn-send-mail
         $('#btn-send-mail').attr('href', '{{ route("receipts.receipt.mail", ":id") }}'.replace(':id', id));
+    }
+
+    // Get id of transaction to print confirmation modal
+    function printModal(id){
+        // set attribute href of print-receipt
+        $('#print-receipt').attr('href', '{{ route("receipts.receipt.print", ":id") }}'.replace(':id', id));
     }
 
     $(document).ready(function () {
