@@ -111,11 +111,6 @@ class TransfersController extends Controller
             'amount' => $request->amount,
         ]);
 
-        // Mail
-        // TODO: Confirm where to send the mail
-        // $emailAddress = 'test@example.com';
-        // Mail::to($emailAddress)->queue(new MailBankTransfer);
-        
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }
 
@@ -215,6 +210,17 @@ class TransfersController extends Controller
         $je->delete();
 
         return redirect()->route('transfers.transfer.index')->with('success', 'Transfer has been voided successfully');
+    }
+
+    // Mail
+    public function mail($id)
+    {
+        $transfers = Transfers::where('id', $id)->first();
+        // TODO: Add mail to user;
+        $email = "transfer@email.com";
+        Mail::to($email)->queue(new MailBankTransfer($transfers));
+
+        return redirect()->back()->with('success', 'Successfully sent email!');
     }
 
      // Import Export

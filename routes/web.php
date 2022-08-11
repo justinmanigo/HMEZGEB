@@ -424,14 +424,16 @@ Route::group([
                 'as'=>'transfers.',
                 'middleware' => 'acctsys.permission:8',
             ], function(){ 
+                // RESOURCE
+                Route::resource('/banking/transfer', TransfersController::class);
                 // HTML
                 Route::post('/banking/transfer/{id}/void', [TransfersController::class, 'void'])->name('transfer.void');
                 Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
+                // Mail
+                Route::get('/banking/transfer/mail/{id}', [TransfersController::class, 'mail'])->name('transfer.mail');
                 // Import Export
                 Route::post('/banking/transfers/import', [TransfersController::class, 'import'])->name('transfers.import');
                 Route::post('/banking/transfers/export', [TransfersController::class, 'export'])->name('transfers.export');
-                // RESOURCE
-                Route::resource('/banking/transfer', TransfersController::class);
             });
         
             /**

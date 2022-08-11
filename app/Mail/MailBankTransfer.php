@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailBankTransfer extends Mailable implements ShouldQueue
+class MailBankTransfer extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,9 +16,11 @@ class MailBankTransfer extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public $bank_transfer;
+    public function __construct($bank_transfer)
     {
         //
+        $this->bank_transfer = $bank_transfer;
     }
 
     /**
@@ -28,7 +30,9 @@ class MailBankTransfer extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Bank Transfer')
-        ->view('banking.transfers.mail');
+        return $this->markdown('banking.transfers.mail')
+        ->with([
+            'bank_transfer' => $this->bank_transfer,
+        ]);
     }
 }
