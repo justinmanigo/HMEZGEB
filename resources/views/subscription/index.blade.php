@@ -67,7 +67,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @if($subscription->subscription_user_role == 'admin' || $subscription->subscription_user_role == 'super admin')
+                                    @if(($subscription->subscription_user_role == 'admin' || $subscription->subscription_user_role == 'super admin') && $subscription->status != 'suspended')
                                         <tr>
                                             @if($subscription->account_type == 'super admin' && $subscription->date_to == null)
                                                 <td>Expires On</td>
@@ -84,11 +84,32 @@
                                             @endif
                                         </tr>
                                     @endif
+                                    @if($subscription->status == 'suspended')
+                                        <tr>
+                                            <td>Status</td>
+                                            <td class="text-right"><span class="badge badge-danger">{{'Suspended'}}</span></td>
+                                        </tr>
+                                    @elseif($subscription->status == 'trial' && $subscription->date_to != null && $subscription->date_to > now()->format('Y-m-d'))
+                                        <tr>
+                                            <td>Status</td>
+                                            <td class="text-right"><span class="badge badge-warning">{{'Trial'}}</span></td>
+                                        </tr>
+                                    @elseif($subscription->date_to != null && $subscription->date_to < now()->format('Y-m-d'))
+                                        <tr>
+                                            <td>Status</td>
+                                            <td class="text-right"><span class="badge badge-danger">{{'Expired'}}</span></td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td>Status</td>
+                                            <td class="text-right"><span class="badge badge-success">{{'Active'}}</span></td>
+                                        </tr>
+                                    @endif
                                 </table>
                             </div>
                             @if($subscription->is_accepted == 0 && $subscription->account_type == 'super admin' && $subscription->subscription_user_role == 'super admin')
                                 To gain access to this subscription, you must accept the invitation as HMEZGEB Admin/Staff.
-                            @elseif($subscription->is_accepted == 0)
+                            @elseif($subscription->is_accepted == 0 && $subscription->status != 'suspended' && $subscription->date_to > now()->format('Y-m-d'))
                                 You are invited to this subscription.
                                 <!-- Add button group with accept and reject buttons -->
                                 <div class="btn-group">
