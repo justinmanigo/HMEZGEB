@@ -420,6 +420,8 @@ Route::group([
                 Route::post('/banking/accounts/export', [BankAccountsController::class, 'export'])->name('accounts.export');
                 // Mail
                 Route::get('/banking/accounts/mail/{id}', [BankAccountsController::class, 'mail'])->name('accounts.mail');
+                // Print
+                Route::get('/banking/accounts/print/{id}', [BankAccountsController::class, 'print'])->name('accounts.print');
             });
         
             /**

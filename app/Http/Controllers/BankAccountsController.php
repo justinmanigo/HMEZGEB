@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Mail\MailBankAccount;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 class BankAccountsController extends Controller
 {
@@ -155,6 +156,15 @@ class BankAccountsController extends Controller
         Mail::to($email)->queue(new MailBankAccount($bank_accounts));
 
         return redirect()->back()->with('success', 'Email Sent Successfully!');
+    }
+
+    // Print
+    public function print($id)
+    {
+        $accounts = BankAccounts::find($id);
+        
+        $pdf = PDF::loadView('banking.accounts.print', compact('accounts'));
+        return $pdf->download('accounts'.date('Y-m-d').'.pdf');
     }
 
     // Import Export
