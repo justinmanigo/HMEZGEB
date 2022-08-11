@@ -18,6 +18,7 @@ use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Mail\MailVendorBill;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 
 class BillsController extends Controller
@@ -200,7 +201,6 @@ class BillsController extends Controller
     // send Email
     public function sendMailBill($id)
     {
-        
         $bills = Bills::find($id);
         $emailAddress = $bills->paymentReference->vendor->email;
 
@@ -208,6 +208,16 @@ class BillsController extends Controller
         
         return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
+
+    // Print
+    public function printBill($id)
+    {
+        $bills = Bills::find($id);
+
+        $pdf = PDF::loadView('vendors.bills.print', compact('bills'));
+        return $pdf->download('bill_'.date('Y-m-d').'.pdf');
+    }
+
 
     /**
      * Display the specified resource.
@@ -253,4 +263,6 @@ class BillsController extends Controller
     {
         //
     }
+
+    
 }

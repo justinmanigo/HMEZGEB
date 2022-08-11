@@ -350,7 +350,8 @@ Route::group([
 
                 // Mail
                 Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
-
+                // Print
+                Route::get('/bill/print/{id}', [BillsController::class, 'printBill'])->name('bill.print');
                 // AJAX
                 Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);
                 Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [VendorsController::class, 'ajaxGetPurchaseOrder']);

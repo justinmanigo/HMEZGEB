@@ -221,6 +221,12 @@
                                             <i class="fas fa-envelope"></i>
                                         </span>
                                     </button>
+                                    <!-- print/pdf -->
+                                    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->bills->id}})">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-print"></i>
+                                        </span>
+                                    </button>
                                         {{-- <a href="{{route('bills.bill.mail', $transaction->bills->id)}}" class="btn btn-secondary btn-sm">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
@@ -232,13 +238,13 @@
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                         </a>
-                                    @endif
                                     <!-- print/pdf -->
                                     <button class="btn btn-secondary btn-sm" disabled>
                                         <span class="icon text-white-50">
                                             <i class="fas fa-print"></i>
                                         </span>
                                     </button>
+                                    @endif
                                     <!-- void -->
                                     <button class="btn btn-danger btn-sm" disabled>
                                         <span class="icon text-white-50">
@@ -363,6 +369,28 @@
     </div>
 </div>
 
+{{-- confirmation modal print --}}
+<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Send Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print this bill?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="modal-print-confirmation-btn">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
@@ -372,6 +400,13 @@
         // set attribute href of btn-send-mail
         $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.bill.mail", ":id") }}'.replace(':id', id));
     }
+
+    // Get id of transaction to print confirmation modal
+    function printModal(id){
+        // set attribute href of btn-send-mail
+        $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.bill.print", ":id") }}'.replace(':id', id));
+    }
+
 
     var controller;
 $(document).ready(function() {
