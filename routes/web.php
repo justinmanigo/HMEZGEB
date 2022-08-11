@@ -344,7 +344,7 @@ Route::group([
                 // HTML
                 Route::resource('/vendors/bills', BillsController::class);
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
-                // Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
+                Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
                 Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
 
@@ -387,7 +387,9 @@ Route::group([
                 // Resource
                 Route::resource('/vendors', VendorsController::class);
                 // Mail
-                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mailVendorStatement'])->name('mail');
+                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mailVendorStatement'])->name('statement.mail');
+                // Print
+                Route::get('/vendors/print/statement/{id}', [VendorsController::class, 'printVendorStatement'])->name('statement.print');
                 // Import Export
                 Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
                 Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');

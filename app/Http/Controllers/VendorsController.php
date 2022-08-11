@@ -11,6 +11,7 @@ use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\Log;
 use App\Mail\MailVendorStatement;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 
 
@@ -26,7 +27,7 @@ class VendorsController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
         
-        return view('vendors.vendors.vendor',compact('vendors'));
+        return view('vendors.vendors.index',compact('vendors'));
     }
 
     /**
@@ -88,7 +89,7 @@ class VendorsController extends Controller
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
         
-        return view('vendors.vendors.vendor',compact('vendors'));
+        return view('vendors.vendors.index',compact('vendors'));
     }
 
     /**
@@ -197,9 +198,32 @@ class VendorsController extends Controller
         return redirect()->back()->with('success', "Successfully sent vendor statement.");     
     }
 
+    // Print Statement
+    public function printVendorStatement($id)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
+        ->whereHas('PaymentReferences', function($query) {
+            $query->Where('status', 'unpaid')
+            ->orWhere('status', 'partially_paid')
+            ->where('type', 'bill');
+        })->where('id', $id)->first();
+
+
+        if(!$vendors)
+            return redirect()->back()->with('error', "No pending statements found.");
+        
+        $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
+        ->where('status', 'unpaid')
+        ->orWhere('status', 'partially_paid')
+        ->where('type', 'bill')->get();
+
+        $pdf = PDF::loadView('vendors.vendors.print', compact('payment_reference'));
+
+        return $pdf->download('statement_'.$id.'_'.date('Y-m-d').'.pdf');
+    }
 
     // Import Export
-
     public function import(Request $request)
     {
         if (!$request->file('file'))

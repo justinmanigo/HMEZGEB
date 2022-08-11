@@ -313,7 +313,7 @@
                 <p class="h3 pl-4 m-auto">New Bill</p>
                 <a class="close" data-dismiss="modal">×</a>
             </div>
-            <form class="ajax-submit-updated" id="form-new-bill" action="{{route('bills.bills.store') }}" method="post"
+            <form class="ajax-submit-updated" id="form-new-bill" action="{{route('bills.bill.store') }}" method="post"
                 enctype="multipart/form-data" data-message="Successfully created bill.">
                 @csrf
                 @include('vendors.bills.forms.addBillModal')

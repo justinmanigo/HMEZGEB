@@ -59,6 +59,7 @@
                                 <th>Contact Person</th>
                                 <th>Mobile#</th>
                                 <th>Label</th>
+                                <th>Balance</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -82,6 +83,7 @@
                                     <span class="badge badge-secondary">{{$vendor->label}}</span>
                                     @endif
                                 </td>
+                                <td>0.00</td>
                                 <td>
                                     <a href="{{ route('vendors.vendors.edit', $vendor->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
                                         <!-- edit -->
@@ -89,13 +91,13 @@
                                             <i class="fas fa-pen"></i>
                                         </span>
                                     </a>
-                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" disabled>
+                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$vendor->id}})">
                                         <!-- print -->
                                         <span class="icon text-white-50">
                                             <i class="fas fa-print"></i>
                                         </span>
                                     </button>
-                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" id="individualMailStatement" data-toggle="modal" data-target="#modal-statement" onclick="addVendorIdModal({{$vendor->id}})">
+                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-statement" onclick="addVendorIdModal({{$vendor->id}})">
                                         <!-- email -->
                                         <span class="icon text-white-50">
                                             <i class="fas fa-envelope"></i>
@@ -320,11 +322,38 @@
     </div>
 </div>
 
+{{-- Print confirmation modal --}}
+<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-print-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print deposit?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" id="print-deposit" class="btn btn-primary">Print</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
         function addVendorIdModal(id) {
-            $('#specificStatement').attr('href', "/vendors/mail/statement/" + id);
+            $('#specificStatement').attr('href', '{{ route("vendors.statement.mail", ":id") }}'.replace(':id', id));
         }
+
+        function printModal(id){
+            $('#print-deposit').attr('href', '{{ route("vendors.statement.print", ":id") }}'.replace(':id', id));
+        }
+
+        
 
         function deleteVendor(id) {
             
