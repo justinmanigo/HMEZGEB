@@ -28,7 +28,55 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        return view('vendors.payments.payment');
+        $billPayments = PaymentReferences::select(
+                'vendors.name',
+                'payment_references.id',
+                'payment_references.vendor_id',
+                'payment_references.date',
+                'payment_references.status',
+                // 'payment_references.is_void', // TODO: to implement
+                'bill_payments.amount_paid',
+            )
+            ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
+            ->leftJoin('bill_payments', 'payment_references.id', '=', 'bill_payments.payment_reference_id')
+            ->where('type', 'bill_payment')
+            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
+            ->get();
+
+        // return $billPayments;
+
+        $otherPayments = PaymentReferences::select(
+                'vendors.name',
+                'payment_references.id',
+                'payment_references.vendor_id',
+                'payment_references.type',
+                'payment_references.date',
+                'payment_references.status',
+                // 'payment_references.is_void', // TODO: to implement
+                'vat_payments.current_receivable as vat_amount',
+                'pension_payments.amount_received as pension_amount',
+                'income_tax_payments.amount_received as income_tax_amount',
+                'withholding_payments.amount_paid as withholding_amount',
+                // TODO: implement payroll and commission
+            )
+            ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
+            ->leftJoin('vat_payments', 'payment_references.id', '=', 'vat_payments.payment_reference_id')
+            ->leftJoin('pension_payments', 'payment_references.id', '=', 'pension_payments.payment_reference_id')
+            ->leftJoin('income_tax_payments', 'payment_references.id', '=', 'income_tax_payments.payment_reference_id')
+            ->leftJoin('withholding_payments', 'payment_references.id', '=', 'withholding_payments.payment_reference_id')
+            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
+            ->where('payment_references.type', '!=', 'bill_payment')
+            ->where('payment_references.type', '!=', 'bill')
+            ->where('payment_references.type', '!=', 'purchase_order')
+            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
+            ->get();
+
+        // return $otherPayments;
+
+        return view('vendors.payments.payment', [
+            'billPayments' => $billPayments,
+            'otherPayments' => $otherPayments,
+        ]);
     }
 
     /**
