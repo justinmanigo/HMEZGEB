@@ -51,7 +51,8 @@
                             <button type="submit" class="btn btn-primary" 
                                 @if($info['subscription']->account_limit - count($info['accounting_systems']) <= 0 || 
                                     $info['subscription']->user_id != auth()->id() ||
-                                    $info['subscription']->date_to < now()->format('Y-m-d')) 
+                                    (isset($info['subscription']->date_to) && $info['subscription']->date_to < now()->format('Y-m-d'))
+                                ) 
                                     disabled 
                                 @endif>
                                 <span class="icon text-white-50">
