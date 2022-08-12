@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Subscription;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\AddAccountingSystemAccessRequest;
 use App\Http\Requests\Subscription\AddExistingUserRequest;
+use App\Mail\Subscription\Users\InviteExistingUser;
+use App\Mail\Subscription\Users\InviteUser;
+use App\Mail\Subscription\Users\RemoveUser;
 use App\Models\AccountingSystem;
 use App\Models\AccountingSystemUser;
 use App\Models\Subscription;
@@ -12,6 +15,7 @@ use App\Models\SubscriptionUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Kaiopiola\Keygen\Key;
 
 class ManageSubscriptionUsersController extends Controller
@@ -79,12 +83,20 @@ class ManageSubscriptionUsersController extends Controller
         $username = strtolower((string)$exampleKey->generate());
         $password = strtolower((string)$exampleKey->generate());
 
-        $user = User::firstOrCreate([
-            'email' => $request->email,
-        ], [
-            'username' => $username,
-            'password' => bcrypt($password),
-        ]);
+        $user = User::where('email', $request->email)->first();
+        if(!$user) {
+            $user = User::create([
+                'firstName' => 'New',
+                'lastName' => 'User',
+                'email' => $request->email,
+                'username' => $username,
+                'password' => bcrypt($password),
+            ]);
+            $newUser = true;
+        }
+        else {
+            $newUser = false;
+        }
 
         $subscription_user = SubscriptionUser::updateOrCreate([
             'subscription_id' => $request->subscription_id,
@@ -100,6 +112,13 @@ class ManageSubscriptionUsersController extends Controller
                 'success' => false,
                 'message' => 'User already has access to this subscription.',
             ]);
+        }
+
+        if($newUser) {
+            Mail::to($user->email)->queue(new InviteUser($subscription_user->subscription_id, $subscription_user->role, $user, $password));
+        }
+        else {
+            Mail::to($user->email)->queue(new InviteExistingUser($subscription_user->subscription_id, $subscription_user->role, $user));
         }
 
         return response()->json([
@@ -301,6 +320,8 @@ class ManageSubscriptionUsersController extends Controller
 
         // Remove subscription user
         $subscriptionUser->delete();
+
+        Mail::to($subscriptionUser->user->email)->queue(new RemoveUser($subscriptionUser->subscription_id, $subscriptionUser->role, $subscriptionUser->user));
 
         return response()->json([
             'success' => true,

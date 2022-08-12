@@ -3,7 +3,7 @@
 
 Greetings!
 
-You are invited to join the {{ config('app.name') }} super admin team. Since you are already a registered user, you can use the current credentials to login and accept the invitation.
+You are invited to join the {{ config('app.name') }} super admin team. Since you are already a registered user, you can use your current credentials to login and accept the invitation.
 
 If you think this was sent as a mistake, you don't have to take any action.
 
