@@ -13,7 +13,7 @@ use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\DecodeTagifyField;
 use Illuminate\Support\Facades\Log;
-use App\Mail\MailBankTransfer;
+use App\Mail\Banking\MailBankTransfer;
 use Illuminate\Support\Facades\Mail;
 use App\Imports\ImportBankTransfer;
 use App\Exports\ExportBankTransfer;

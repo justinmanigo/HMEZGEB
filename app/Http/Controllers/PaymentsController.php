@@ -14,7 +14,7 @@ use App\Models\PensionPayments;
 use App\Models\BillPayments;
 use App\Models\Bills;
 use App\Models\WithholdingPayments;
-use App\Mail\MailVendorPayment;
+use App\Mail\Vendors\MailVendorPayment;
 use Illuminate\Support\Facades\Mail;
 
 

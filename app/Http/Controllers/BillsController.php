@@ -16,8 +16,8 @@ use App\Models\BillItem;
 use App\Models\PurchaseOrders;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
-use App\Mail\MailVendorBill;
-use App\Mail\MailVendorPurchaseOrder;
+use App\Mail\Vendors\MailVendorBill;
+use App\Mail\Vendors\MailVendorPurchaseOrder;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 

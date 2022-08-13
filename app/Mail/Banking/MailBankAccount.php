@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Banking;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailCustomerDeposit extends Mailable
+class MailBankAccount extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,11 +16,11 @@ class MailCustomerDeposit extends Mailable
      *
      * @return void
      */
-    public $deposits;
-    public function __construct($deposits)
+    public $bank_account;
+    public function __construct($bank_account)
     {
         //
-        $this->deposits = $deposits;
+        $this->bank_account = $bank_account;
     }
 
     /**
@@ -30,9 +30,9 @@ class MailCustomerDeposit extends Mailable
      */
     public function build()
     {
-        return $this->markdown('customer.deposit.mail')
-                    ->with([
-                        'deposits' => $this->deposits,
-                    ]);
+        return $this->markdown('banking.accounts.mail')
+        ->with([
+            'bank_account' => $this->bank_account,
+        ]);
     }
 }

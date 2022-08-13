@@ -9,7 +9,7 @@ use App\Exports\ExportBankAccount;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Mail\MailBankAccount;
+use App\Mail\Banking\MailBankAccount;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 

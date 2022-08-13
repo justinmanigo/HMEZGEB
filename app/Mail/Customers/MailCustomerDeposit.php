@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Customers;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailVendorPurchaseOrder extends Mailable
+class MailCustomerDeposit extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,10 +16,11 @@ class MailVendorPurchaseOrder extends Mailable
      *
      * @return void
      */
-    public $purchase_order;
-    public function __construct($purchase_order)
+    public $deposits;
+    public function __construct($deposits)
     {
-        $this->purchase_order = $purchase_order;
+        //
+        $this->deposits = $deposits;
     }
 
     /**
@@ -29,10 +30,9 @@ class MailVendorPurchaseOrder extends Mailable
      */
     public function build()
     {
-        return $this->markdown('vendors.bills.mailPurchaseOrder')
-            ->subject('Purchase Order')
-            ->with([
-                'purchase_order' => $this->purchase_order,
-            ]);
+        return $this->markdown('customer.deposit.mail')
+                    ->with([
+                        'deposits' => $this->deposits,
+                    ]);
     }
 }

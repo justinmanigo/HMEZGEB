@@ -13,7 +13,7 @@ use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\ReceiptReferences;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Mail\MailCustomerDeposit;
+use App\Mail\Customers\MailCustomerDeposit;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 

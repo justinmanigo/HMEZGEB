@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\Log;
-use App\Mail\MailVendorStatement;
+use App\Mail\Vendors\MailVendorStatement;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 
