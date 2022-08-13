@@ -466,6 +466,14 @@ class ReceiptController extends Controller
         return $pdf->download('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
+    public function printAdvanceRevenue($id)
+    {
+        $advance_revenue = AdvanceRevenues::find($id);
+        $pdf = PDF::loadView('customer.receipt.advance_revenue.print', compact('advance_revenue'));
+
+        return $pdf->download('advance_revenue_'.$id.'_'.date('Y-m-d').'.pdf');
+    }
+
     // export
     public function exportReceipts()
     {

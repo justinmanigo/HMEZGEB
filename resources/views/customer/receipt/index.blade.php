@@ -266,7 +266,7 @@
                                             </span>
                                         </a>
                                     <!-- print/pdf -->
-                                        <button class="btn btn-secondary btn-sm" disabled>
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')" >
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-print"></i>
                                             </span>
@@ -627,7 +627,7 @@ POTENTIAL SOLUTIONS:
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to print receipt?</p>
+                <p>Are you sure you want to print record?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -650,7 +650,10 @@ POTENTIAL SOLUTIONS:
     // Get id of transaction to print confirmation modal
     function printModal(id, type){
         // set attribute href of print-receipt
+        if(type=="receipt")
         $('#print-receipt').attr('href', '{{ route("receipts.receipt.print", ":id") }}'.replace(':id', id));
+        if(type=="advanceRevenue")
+        $('#print-receipt').attr('href', '{{ route("receipts.advanceRevenue.print", ":id") }}'.replace(':id', id));
     }
 
     $(document).ready(function () {
