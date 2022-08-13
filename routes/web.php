@@ -272,6 +272,7 @@ Route::group([
                 Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
                 Route::get('/advance-receipt/{receipt}',[ReceiptController::class,'showAdvanceRevenue'])->name('advanceReceipt.show');
                 Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
+                Route::get('/credit-receipt/{receipt}',[ReceiptController::class,'showCreditReceipt'])->name('creditReceipt.show');
                 Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
         
                 Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');

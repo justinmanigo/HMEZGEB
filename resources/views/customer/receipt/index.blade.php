@@ -265,14 +265,13 @@
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                         </a>
-                                    <!-- print/pdf -->
                                         <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')" >
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-print"></i>
                                             </span>
                                         </button>
-                                        @else
-                                            <a href="" class="btn btn-primary btn-sm edit disabled">
+                                        @elseif($transaction->type == 'credit_receipt')
+                                            <a href="{{route('receipts.creditReceipt.show', $transaction->creditReceipt->id)}}" class="btn btn-primary btn-sm edit">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>

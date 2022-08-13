@@ -388,6 +388,12 @@ class ReceiptController extends Controller
         return view('customer.receipt.advance_revenue.edit',compact('advance_revenue'));
     }
 
+    public function showCreditReceipt($id)
+    {
+        $credit_receipt = CreditReceipts::find($id);
+        return view('customer.receipt.credit_receipt.edit',compact('credit_receipt'));
+    }
+
     public function destroy($id)
     {
         $receipt = ReceiptReferences::find($id);
