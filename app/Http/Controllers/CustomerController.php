@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ReceiptReferences;
 use App\Models\Receipts;
 use Illuminate\Http\Request;
-use App\Mail\MailCustomerStatement;
+use App\Mail\Customers\MailCustomerStatement;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions;
 
