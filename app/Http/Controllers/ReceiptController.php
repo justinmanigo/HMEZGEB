@@ -519,6 +519,14 @@ class ReceiptController extends Controller
         return $pdf->download('credit_receipt_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
+    public function printProforma($id)
+    {
+        $proforma = Proformas::find($id);
+        $pdf = PDF::loadView('customer.receipt.proforma.print', compact('proforma'));
+
+        return $pdf->download('proforma_'.$id.'_'.date('Y-m-d').'.pdf');
+    }
+
     // export
     public function exportReceipts()
     {

@@ -663,6 +663,8 @@ POTENTIAL SOLUTIONS:
         $('#print-receipt').attr('href', '{{ route("receipts.advanceRevenue.print", ":id") }}'.replace(':id', id));
         if(type=="creditReceipt")
         $('#print-receipt').attr('href', '{{ route("receipts.creditReceipt.print", ":id") }}'.replace(':id', id));
+        if(type=="proforma")
+        $('#print-receipt').attr('href', '{{ route("receipts.proforma.print", ":id") }}'.replace(':id', id));
     }
 
     $(document).ready(function () {
