@@ -282,7 +282,7 @@
                                                 </span>
                                             </button>
                                         <!-- print/pdf -->
-                                            <button class="btn btn-secondary btn-sm" disabled>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-print"></i>
                                                 </span>
@@ -655,6 +655,8 @@ POTENTIAL SOLUTIONS:
         $('#print-receipt').attr('href', '{{ route("receipts.receipt.print", ":id") }}'.replace(':id', id));
         if(type=="advanceRevenue")
         $('#print-receipt').attr('href', '{{ route("receipts.advanceRevenue.print", ":id") }}'.replace(':id', id));
+        if(type=="creditReceipt")
+        $('#print-receipt').attr('href', '{{ route("receipts.creditReceipt.print", ":id") }}'.replace(':id', id));
     }
 
     $(document).ready(function () {
