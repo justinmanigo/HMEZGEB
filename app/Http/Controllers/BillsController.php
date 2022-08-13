@@ -229,6 +229,14 @@ class BillsController extends Controller
         return $pdf->download('bill_'.date('Y-m-d').'.pdf');
     }
 
+    public function printPurchaseOrder($id)
+    {
+        $purchaseOrders = PurchaseOrders::find($id);
+
+        $pdf = PDF::loadView('vendors.bills.purchase_order.print', compact('purchaseOrders'));
+        return $pdf->download('purchase_order_'.date('Y-m-d').'.pdf');
+    }
+
 
     /**
      * Display the specified resource.

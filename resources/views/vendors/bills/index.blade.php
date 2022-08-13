@@ -238,7 +238,7 @@
                                             </span>
                                         </button>
                                     <!-- print/pdf -->
-                                    <button class="btn btn-secondary btn-sm" disabled>
+                                    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-print"></i>
                                         </span>
@@ -407,7 +407,10 @@
     // Get id of transaction to print confirmation modal
     function printModal(id,type){
         // set attribute href of btn-send-mail
+        if(type == 'bill')
         $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.bill.print", ":id") }}'.replace(':id', id));
+        else if(type == 'purchaseOrder')
+        $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.print", ":id") }}'.replace(':id', id));
     }
 
 
