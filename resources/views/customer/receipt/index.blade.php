@@ -243,13 +243,13 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </a>
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->receipt->id}})" >
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->receipt->id}}, 'receipt')" >
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                         </button>
                                         <!-- print/pdf -->
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->receipt->id}})" >
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->receipt->id}}, 'receipt')" >
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-print"></i>
                                             </span>
@@ -260,7 +260,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </a>
-                                        <a class="btn btn-secondary btn-sm disabled">
+                                        <a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
@@ -543,7 +543,7 @@ POTENTIAL SOLUTIONS:
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to send this receipt to customer?</p>
+                <p>Are you sure you want to send this record to customer?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -639,13 +639,16 @@ POTENTIAL SOLUTIONS:
 
 <script>
     // Get id of transaction to mail confirmation modal
-    function mailModal(id){
+    function mailModal(id, type){
         // set attribute href of btn-send-mail
+        if(type=="receipt")
         $('#btn-send-mail').attr('href', '{{ route("receipts.receipt.mail", ":id") }}'.replace(':id', id));
+        if(type=="advanceRevenue")
+        $('#btn-send-mail').attr('href', '{{ route("receipts.advanceRevenue.mail", ":id") }}'.replace(':id', id));
     }
 
     // Get id of transaction to print confirmation modal
-    function printModal(id){
+    function printModal(id, type){
         // set attribute href of print-receipt
         $('#print-receipt').attr('href', '{{ route("receipts.receipt.print", ":id") }}'.replace(':id', id));
     }

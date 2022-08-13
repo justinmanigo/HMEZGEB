@@ -26,7 +26,8 @@ use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
 use App\Models\ReceiptCashTransactions;
 use Illuminate\Support\Facades\Log;
-use App\Mail\MailCustomerReceipt;
+use App\Mail\Customers\MailCustomerReceipt;
+use App\Mail\Customers\MailCustomerAdvanceRevenue;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 
@@ -442,7 +443,18 @@ class ReceiptController extends Controller
 
         Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt));
         
-        return redirect()->route('receipts.receipt.index')->with('success', "Successfully sent email to customer.");
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
+    }
+
+    public function sendMailAdvanceRevenue($id)
+    {
+        // Mail
+        $advance_revenue = AdvanceRevenues::find($id);
+        $emailAddress = $advance_revenue->receiptReference->customer->email; 
+        
+        Mail::to($emailAddress)->queue(new MailCustomerAdvanceRevenue($advance_revenue));
+        
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
     // Print
