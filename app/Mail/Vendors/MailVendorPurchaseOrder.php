@@ -29,7 +29,7 @@ class MailVendorPurchaseOrder extends Mailable
      */
     public function build()
     {
-        return $this->markdown('vendors.bills.mailPurchaseOrder')
+        return $this->markdown('vendors.bills.purchase_order.mail')
             ->subject('Purchase Order')
             ->with([
                 'purchase_order' => $this->purchase_order,

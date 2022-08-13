@@ -238,12 +238,13 @@ class BillsController extends Controller
      */
     public function show(Bills $bills)
     {
-        return view('vendors.bills.individualBill');
+        return view('vendors.bills.show');
     }
 
-    public function showPurchaseOrder(PurchaseOrders $purchaseOrders)
+    public function showPurchaseOrder($id)
     {
-        return view('vendors.bills.purchaseOrder');
+        $purchaseOrders = PurchaseOrders::find($id);
+        return view('vendors.bills.purchase_order.show', compact('purchaseOrders'));
     }
 
     /**
