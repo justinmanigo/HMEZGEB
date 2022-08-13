@@ -209,7 +209,7 @@ class CustomerController extends Controller
             return back()->with('error', $message[0].' Please check the file format');
         }    
         catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error importing bank account');
+            return redirect()->back()->with('error', 'Error importing customer records.');
         }  
         return redirect()->back()->with('success', 'Successfully imported customer records.');
 

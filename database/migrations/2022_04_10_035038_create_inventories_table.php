@@ -29,7 +29,7 @@ class CreateInventoriesTable extends Migration
             $table->string('default_expense_account')->nullable();
             $table->enum('inventory_type',['inventory_item','non_inventory_item']);           
             $table->string('picture')->nullable();      
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->enum('is_enabled',['Yes','No'])->default('Yes');
             $table->enum('notify_critical_quantity',['Yes','No'])->default('Yes');
             $table->timestamps();

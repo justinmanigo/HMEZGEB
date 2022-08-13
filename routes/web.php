@@ -504,6 +504,9 @@ Route::group([
         ], function(){ 
             // HTML
             Route::resource('/inventory', InventoryController::class);
+            // import export
+            Route::post('/inventory/import', [InventoryController::class, 'import'])->name('import');
+            Route::post('/inventory/export', [InventoryController::class, 'export'])->name('export');
             // Route::get('/inventory', [InventoryController::class, 'index']);
             // Route::post('/inventory', [InventoryController::class, 'store']);
             // Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);

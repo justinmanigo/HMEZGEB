@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Inventory;
 use App\Models\Settings\Taxes\Tax;
 use Illuminate\Http\Request;
+use App\Imports\ImportInventory;
+use App\Exports\ExportInventory;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
 {
@@ -106,20 +109,6 @@ class InventoryController extends Controller
             'inventory' => $inventory,
         ]);
     }
-
-    public function fifo()
-    {
-
-    }
-    public function lifo()
-    {
-              //sort the inventories
-        //   $inventory = $inventory->sortByDesc('created_at');
-    }
-    public function average()
-    {
-
-    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -184,6 +173,36 @@ class InventoryController extends Controller
         {
             return redirect('/inventory')->with('error', 'Error deleting inventory. Make sure no transactions are linked to this item.');
         }
+    }
+
+    // Import Export
+    public function import(Request $request)
+    {
+        if (!$request->file('file'))
+        {
+            return back()->with('error', 'Please select a file');
+        }
+        try {
+            Excel::import(new ImportInventory, $request->file('file'));
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $message = $failures[0]->errors();
+            return back()->with('error', $message[0].' Please check the file format');
+        }    
+        catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error importing inventory records.' . $e->getMessage());
+        }  
+        return redirect()->back()->with('success', 'Successfully imported inventory records.');
+    }
+
+    public function export(Request $request) 
+    {
+        if($request->file_type=="csv")
+        return Excel::download(new ExportInventory, 'inventory_'.date('Y_m_d').'.csv');
+        else
+        $inventories = Inventory::all();
+        $pdf = \PDF::loadView('inventory.pdf', compact('inventories'));
+        return $pdf->download('inventory'.date('Y_m_d').'.pdf');
     }
 
     /*=================================*/
