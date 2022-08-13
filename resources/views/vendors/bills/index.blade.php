@@ -232,11 +232,11 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </a>
-                                        <a class="btn btn-secondary btn-sm disabled">
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
-                                        </a>
+                                        </button>
                                     <!-- print/pdf -->
                                     <button class="btn btn-secondary btn-sm" disabled>
                                         <span class="icon text-white-50">

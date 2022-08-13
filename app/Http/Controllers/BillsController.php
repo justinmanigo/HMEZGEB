@@ -17,6 +17,7 @@ use App\Models\PurchaseOrders;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Mail\MailVendorBill;
+use App\Mail\MailVendorPurchaseOrder;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 
@@ -205,6 +206,16 @@ class BillsController extends Controller
         $emailAddress = $bills->paymentReference->vendor->email;
 
         Mail::to($emailAddress)->queue(new MailVendorBill ($bills));
+        
+        return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
+    }
+
+    public function sendMailPurchaseOrder($id)
+    {
+        $purchaseOrders = PurchaseOrders::find($id);
+        $emailAddress = $purchaseOrders->paymentReference->vendor->email;
+        
+        Mail::to($emailAddress)->queue(new MailVendorPurchaseOrder ($purchaseOrders));
         
         return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
