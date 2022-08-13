@@ -270,6 +270,7 @@ Route::group([
                 // Store
                 Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
                 Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
+                Route::get('/advance-receipt/{receipt}',[ReceiptController::class,'showAdvanceRevenue'])->name('advanceReceipt.show');
                 Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
                 Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
         

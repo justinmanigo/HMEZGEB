@@ -375,10 +375,16 @@ class ReceiptController extends Controller
         return redirect('receipt/')->with('success', "Successfully edited receipt.");
 
     }
-    
+    // SHOW
     public function show(Receipts $receipt)
     {   
         return view('customer.receipt.edit',compact('receipt'));
+    }
+
+    public function showAdvanceRevenue($id)
+    {   
+        $advance_revenue = AdvanceRevenues::find($id);
+        return view('customer.receipt.advance_revenue.edit',compact('advance_revenue'));
     }
 
     public function destroy($id)

@@ -254,6 +254,23 @@
                                                 <i class="fas fa-print"></i>
                                             </span>
                                         </button>
+                                        @elseif($transaction->type == 'advance_receipt')
+                                        <a href="{{route('receipts.advanceReceipt.show', $transaction->advanceRevenue->id)}}" class="btn btn-primary btn-sm edit ">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
+                                        <a class="btn btn-secondary btn-sm disabled">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </a>
+                                    <!-- print/pdf -->
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
                                         @else
                                             <a href="" class="btn btn-primary btn-sm edit disabled">
                                                 <span class="icon text-white-50">
