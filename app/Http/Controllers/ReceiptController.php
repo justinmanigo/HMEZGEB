@@ -395,6 +395,13 @@ class ReceiptController extends Controller
         return view('customer.receipt.credit_receipt.edit',compact('credit_receipt'));
     }
 
+    public function showProforma($id)
+    {
+        $proforma = Proformas::find($id);
+
+        return view('customer.receipt.proforma.edit',compact('proforma'));
+    }
+
     public function destroy($id)
     {
         $receipt = ReceiptReferences::find($id);

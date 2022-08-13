@@ -321,34 +321,38 @@
                             <tbody>
                                 @foreach($proformas as $proforma)
                                 <tr>
-                                        {{-- <button type="button" class="btn btn-small btn-icon btn-primary"
-                                            data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="btn btn-danger "
-                                        onClick="showModel({!! $proforma->id !!})">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                        </button> --}}
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
                                     <td class="table-item-content text-right">{{ number_format($proforma->proforma_amount, 2) }}</td>
                                     <td>
-                                        <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
-                                            <!-- edit -->
+                                        <a href="{{route('receipts.proforma.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
                                             <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
+                                                <i class="fas fa-edit"></i>
                                             </span>
                                         </a>
-                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
-                                            <!-- delete -->
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$proforma->id}}, 'proforma')">
                                             <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fas fa-envelope"></i>
                                             </span>
                                         </button>
+                                    <!-- print/pdf -->
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$proforma->id}}, 'proforma')">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                    <!-- void -->
+                                    <button class="btn btn-danger btn-sm" disabled>
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-ban"></i>
+                                        </span>
+                                    </button>
+                                    <!-- make it active -->
+                                    <button class="btn btn-success btn-sm" disabled>
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                    </button>
                                     </td>
                                 </tr>
                                 @endforeach
