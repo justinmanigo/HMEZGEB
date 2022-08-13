@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\Customers\MailCustomerReceipt;
 use App\Mail\Customers\MailCustomerAdvanceRevenue;
 use App\Mail\Customers\MailCustomerCreditReceipt;
+use App\Mail\Customers\MailCustomerProforma;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 
@@ -478,6 +479,17 @@ class ReceiptController extends Controller
         $emailAddress = $credit_receipt->receiptReference->customer->email; 
         
         Mail::to($emailAddress)->queue(new MailCustomerCreditReceipt($credit_receipt));
+        
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
+    }
+
+    public function sendMailProforma($id)
+    {
+        // Mail
+        $proforma = Proformas::find($id);
+        $emailAddress = $proforma->receiptReference->customer->email; 
+        
+        Mail::to($emailAddress)->queue(new MailCustomerProforma($proforma));
         
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }

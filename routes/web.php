@@ -284,6 +284,7 @@ Route::group([
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
                 Route::get('/advance-revenue/mail/{id}', [ReceiptController::class, 'sendMailAdvanceRevenue'])->name('advanceRevenue.mail');
                 Route::get('/credit-receipt/mail/{id}', [ReceiptController::class, 'sendMailCreditReceipt'])->name('creditReceipt.mail');
+                Route::get('/proforma/mail/{id}', [ReceiptController::class, 'sendMailProforma'])->name('proforma.mail');
                 // Print
                 Route::get('/receipt/print/{id}', [ReceiptController::class, 'printReceipt'])->name('receipt.print');
                 Route::get('/advance-revenue/print/{id}', [ReceiptController::class, 'printAdvanceRevenue'])->name('advanceRevenue.print');

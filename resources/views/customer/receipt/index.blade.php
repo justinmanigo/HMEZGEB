@@ -330,13 +330,13 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </a>
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$proforma->id}}, 'proforma')">
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$proforma->proforma->id}}, 'proforma')">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                         </button>
                                     <!-- print/pdf -->
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$proforma->id}}, 'proforma')">
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$proforma->proforma->id}}, 'proforma')">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-print"></i>
                                             </span>
@@ -650,6 +650,8 @@ POTENTIAL SOLUTIONS:
         $('#btn-send-mail').attr('href', '{{ route("receipts.advanceRevenue.mail", ":id") }}'.replace(':id', id));
         if(type=="creditReceipt")
         $('#btn-send-mail').attr('href', '{{ route("receipts.creditReceipt.mail", ":id") }}'.replace(':id', id));
+        if(type=="proforma")
+        $('#btn-send-mail').attr('href', '{{ route("receipts.proforma.mail", ":id") }}'.replace(':id', id));
     }
 
     // Get id of transaction to print confirmation modal
