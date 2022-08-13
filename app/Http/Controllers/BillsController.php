@@ -51,7 +51,7 @@ class BillsController extends Controller
                 'purchase_orders.grand_total as purchase_order_amount',
             )
             ->get();
-       
+
         return view('vendors.bills.index', [
             'transactions' => $transactions,
         ]);
@@ -228,6 +228,11 @@ class BillsController extends Controller
     public function show(Bills $bills)
     {
         return view('vendors.bills.individualBill');
+    }
+
+    public function showPurchaseOrder(PurchaseOrders $purchaseOrders)
+    {
+        return view('vendors.bills.purchaseOrder');
     }
 
     /**

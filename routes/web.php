@@ -347,9 +347,10 @@ Route::group([
                 Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
                 Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
-
+                Route::get('/purchaseorder/{id}',[BillsController::class,'showPurchaseOrder'])->name('purchaseOrder.show');
                 // Mail
                 Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
+                // Route::get('/purchaseOrder/mail/{id}', [BillsController::class, 'sendMailPurchaseOrder'])->name('purchaseOrder.mail');
                 // Print
                 Route::get('/bill/print/{id}', [BillsController::class, 'printBill'])->name('bill.print');
                 // AJAX

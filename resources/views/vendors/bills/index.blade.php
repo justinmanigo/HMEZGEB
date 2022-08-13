@@ -207,32 +207,31 @@
                                     {{-- TODO: Implement hover action bar --}}
                                     
                                     <!-- edit -->
+                                    @if($transaction->type == 'bill')
                                     <a href="{{route('bills.bills.show', $transaction->bills->id)}}" class="btn btn-primary btn-sm edit">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-edit"></i>
                                         </span>
                                     </a>
-                                    <!-- send email -->
                                     {{-- mail --}}
-                                    @if($transaction->type == 'bill')
                                     {{-- button mail confirmation modal  --}}
-                                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}})"> 
+                                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}},'bill')"> 
                                         <span class="icon text-white-50">
                                             <i class="fas fa-envelope"></i>
                                         </span>
                                     </button>
                                     <!-- print/pdf -->
-                                    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->bills->id}})">
+                                    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->bills->id}},'bill')">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-print"></i>
                                         </span>
                                     </button>
-                                        {{-- <a href="{{route('bills.bill.mail', $transaction->bills->id)}}" class="btn btn-secondary btn-sm">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-envelope"></i>
-                                            </span>
-                                        </a> --}}
                                     @else
+                                        <a href="{{route('bills.purchaseOrder.show', $transaction->purchaseOrders->id)}}" class="btn btn-primary btn-sm edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
                                         <a class="btn btn-secondary btn-sm disabled">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
@@ -359,7 +358,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to send this bill to the client?</p>
+                <p>Are you sure you want to send this record to the client?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -381,7 +380,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to print this bill?</p>
+                <p>Are you sure you want to print this record?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -396,13 +395,17 @@
 
 <script>
     // Get id of transaction to mail confirmation modal
-    function mailModal(id){
+    function mailModal(id,type){
         // set attribute href of btn-send-mail
+        if(type == 'bill')
         $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.bill.mail", ":id") }}'.replace(':id', id));
+        else if(type == 'purchaseOrder')
+        $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.mail", ":id") }}'.replace(':id', id));
+        
     }
 
     // Get id of transaction to print confirmation modal
-    function printModal(id){
+    function printModal(id,type){
         // set attribute href of btn-send-mail
         $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.bill.print", ":id") }}'.replace(':id', id));
     }
