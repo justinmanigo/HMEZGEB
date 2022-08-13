@@ -276,11 +276,11 @@
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                             </a>
-                                            <a class="btn btn-secondary btn-sm disabled">
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-envelope"></i>
                                                 </span>
-                                            </a>
+                                            </button>
                                         <!-- print/pdf -->
                                             <button class="btn btn-secondary btn-sm" disabled>
                                                 <span class="icon text-white-50">
@@ -644,6 +644,8 @@ POTENTIAL SOLUTIONS:
         $('#btn-send-mail').attr('href', '{{ route("receipts.receipt.mail", ":id") }}'.replace(':id', id));
         if(type=="advanceRevenue")
         $('#btn-send-mail').attr('href', '{{ route("receipts.advanceRevenue.mail", ":id") }}'.replace(':id', id));
+        if(type=="creditReceipt")
+        $('#btn-send-mail').attr('href', '{{ route("receipts.creditReceipt.mail", ":id") }}'.replace(':id', id));
     }
 
     // Get id of transaction to print confirmation modal

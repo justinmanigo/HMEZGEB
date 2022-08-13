@@ -28,6 +28,7 @@ use App\Models\ReceiptCashTransactions;
 use Illuminate\Support\Facades\Log;
 use App\Mail\Customers\MailCustomerReceipt;
 use App\Mail\Customers\MailCustomerAdvanceRevenue;
+use App\Mail\Customers\MailCustomerCreditReceipt;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 
@@ -459,6 +460,17 @@ class ReceiptController extends Controller
         $emailAddress = $advance_revenue->receiptReference->customer->email; 
         
         Mail::to($emailAddress)->queue(new MailCustomerAdvanceRevenue($advance_revenue));
+        
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
+    }
+
+    public function sendMailCreditReceipt($id)
+    {
+        // Mail
+        $credit_receipt = CreditReceipts::find($id);
+        $emailAddress = $credit_receipt->receiptReference->customer->email; 
+        
+        Mail::to($emailAddress)->queue(new MailCustomerCreditReceipt($credit_receipt));
         
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
