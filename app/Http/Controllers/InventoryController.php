@@ -182,7 +182,7 @@ class InventoryController extends Controller
         }
         catch(\Exception $e)
         {
-            return redirect('/inventory')->with('error', 'Can not delete item. This item already exists in Receipts/Bills.');
+            return redirect('/inventory')->with('error', 'Error deleting inventory. Make sure no transactions are linked to this item.');
         }
     }
 

@@ -92,11 +92,11 @@
                                     <a href="{{ url('inventory/'.$inventory->id.'/edit') }}"
                                         class="btn btn-sm btn-primary">
                                         <span class="icon text-white-50">
-                                            <i class="fas fa-edit"></i>
+                                            <i class="fas fa-pen"></i>
                                         </span>
                                     </a>
                                     <!-- delete -->
-                                    <button type="button" class="btn btn-sm btn-danger" disabled>
+                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-modal" onclick="deleteModal({{$inventory->id}})">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-trash"></i>
                                         </span>
@@ -147,11 +147,37 @@
     </div>
 </div>
 
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-delete-label">Delete Inventory Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure to delete this record?</div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                <form id="delete-frm" class="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
     $('#dataTables').DataTable();
     $('.dataTables_filter').addClass('pull-right');
 });
+    // delete
+    function deleteModal(id){
+            $('#delete-frm').attr('action', '{{ route("inventory.inventory.destroy", ":id") }}'.replace(':id', id))
+        }
 
 // This function toggles when the inventory_item radio button is changed
 $(document).ready(function() {

@@ -503,12 +503,13 @@ Route::group([
             'middleware' => 'acctsys.permission:19',
         ], function(){ 
             // HTML
-            Route::get('/inventory/', [InventoryController::class, 'index']);
-            Route::post('/inventory', [InventoryController::class, 'store']);
-            Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
-            Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
-            Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
-            Route::delete('/inventory/{inventory}', [InventoryController::class, 'destroy']);
+            Route::resource('/inventory', InventoryController::class);
+            // Route::get('/inventory', [InventoryController::class, 'index']);
+            // Route::post('/inventory', [InventoryController::class, 'store']);
+            // Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
+            // Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
+            // Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
+            // Route::delete('/inventory/{inventory}', [InventoryController::class, 'destroy']);
         
             // AJAX
             Route::get('/select/search/inventory/{query}', [InventoryController::class, 'ajaxSearchInventory']);
