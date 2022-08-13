@@ -126,7 +126,7 @@
                                                 <i class="fas fa-print"></i>
                                             </span>
                                         </button>
-                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" data-toggle="modal" data-target="#delete-modal" onclick="deleteModal({{$account->id}})">
                                             <!-- delete -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
@@ -310,9 +310,37 @@
     </div>
 </div>
 
+{{-- Customer Delete Modal --}}
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-delete-label">Delete Bank Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure to delete this record?</div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                <form id="delete-frm" class="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
         function mailModal(id){
             $('#mail-modal-btn').attr('href', '{{ route("accounts.accounts.mail", ":id") }}'.replace(':id', id))
+        }
+
+        // delete
+        function deleteModal(id){
+            $('#delete-frm').attr('action', '{{ route("accounts.accounts.destroy", ":id") }}'.replace(':id', id))
         }
 
         function printModal(id){

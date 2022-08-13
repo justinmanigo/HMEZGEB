@@ -131,18 +131,16 @@ class BankAccountsController extends Controller
      */
     public function destroy($id)
     {
-        //
         try{
-
             $accounts = BankAccounts::find($id);
             $coa = ChartOfAccounts::find($accounts->chart_of_account_id);       
             $accounts->delete();
             $coa->delete();
         }
         catch(\Exception $e){
-            return redirect('/banking/accounts')->with('error', 'Error deleting bank account');
+            return redirect()->back()->with('error', 'Error deleting bank account. Make sure no related transactions exist.');
         }
-        return redirect('/banking/accounts')->with('success', 'Bank Account Deleted Successfully');
+        return redirect()->route('accounts.accounts.index')->with('success', 'Bank Account Deleted Successfully');
     }
 
     // Mail

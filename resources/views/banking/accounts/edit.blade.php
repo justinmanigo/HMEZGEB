@@ -7,6 +7,25 @@
     </div>
 
     <div class="container card shadow px-4 py-3">
+            {{-- success message --}}
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+
+            </div>
+        @endif
+        {{-- error message --}}
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+        @endif
         <form id="form-customer" action="{{route('accounts.accounts.update',$accounts->id)}}" method="post"
             enctype="multipart/form-data">
             @csrf

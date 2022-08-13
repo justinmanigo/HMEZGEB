@@ -23,6 +23,9 @@ class CreateTransfersTable extends Migration
             $table->enum('status', ['completed', 'void'])->default('completed');
             $table->foreignId('journal_entry_id')->nullable()->constrained();
             $table->foreignId('transaction_id')->nullable()->constrained();
+
+            $table->foreign('from_account_id')->references('id')->on('bank_accounts');
+            $table->foreign('to_account_id')->references('id')->on('bank_accounts');
             $table->timestamps();
         });
     }
