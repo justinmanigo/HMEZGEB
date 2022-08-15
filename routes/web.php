@@ -49,6 +49,7 @@ use App\Http\Controllers\Settings\ChartOfAccountsController;
 use App\Http\Controllers\Settings\PayrollRulesController;
 use App\Http\Controllers\Settings\InventoryController as InventorySettingsController;
 use App\Http\Controllers\Settings\WithholdingController;
+use App\Http\Controllers\Settings\AccountingPeriodsController;
 
 // Account Settings
 use App\Http\Controllers\AccountSettings\AccountSettingsController;
@@ -703,6 +704,16 @@ Route::group([
                 Route::get('/settings/users/{accountingSystemUser}/mail', [ManageUsersController::class, 'sendMailNewSuperAdmin'])->name('mail');
 
                 Route::delete('/settings/users/{accountingSystemUser}', [ManageUsersController::class, 'removeUser'])->name('removeUser');
+            });
+
+            /**
+             * Settings > Accounting Periods
+             */
+            Route::group([
+                'as' => 'periods.',
+            ], function() {
+                // HTTP
+                Route::get('/settings/periods', [AccountingPeriodsController::class, 'index']);
             });
 
             /**
