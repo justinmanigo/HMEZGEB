@@ -133,6 +133,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Menu:</h6>
                             <a class="collapse-item" href="/settings/company">Company Info</a>
+                            <a class="collapse-item" href="/settings/periods">Accounting Periods</a>
                             <a class="collapse-item" href="/settings/users">Users</a>
                             {{-- <a class="collapse-item" href="/settings/themes">Theme</a> --}}
                             <a class="collapse-item" href="/settings/taxes">Taxes</a>
