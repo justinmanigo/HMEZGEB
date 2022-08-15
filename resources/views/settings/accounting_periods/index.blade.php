@@ -37,10 +37,10 @@
                                         <tr>
                                             <td><p class="mt-1 mb-0">{{ $period->number }}</td>
                                             <td>
-                                                <input type="date" class="form-control form-control-sm" name="date_from[]" value="{{ $period->date_from }}">
+                                                <input type="date" class="form-control form-control-sm" name="date_from[]" value="{{ $period->date_from }}" @if($loop->first) readonly @endif>
                                             </td>
                                             <td>
-                                                <input type="date" class="form-control form-control-sm" name="date_to[]" value="{{ $period->date_to }}">
+                                                <input type="date" class="form-control form-control-sm" name="date_to[]" value="{{ $period->date_to }}" @if($loop->last) readonly @endif>
                                             </td>
                                             <td class="d-none d-lg-block">
                                                 <p class="mt-1 mb-0">{{ $period->last_edited_by }} {{ \Carbon\Carbon::parse($period->updated_at)->diffForHumans() }}</p>
