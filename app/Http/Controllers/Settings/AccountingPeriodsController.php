@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\AccountingPeriods\UpdateAccountingPeriodsRequest;
 use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,5 +31,9 @@ class AccountingPeriodsController extends Controller
         return view('settings.accounting_periods.index', [
             'accounting_periods' => $accounting_periods,
         ]);
+    }
+
+    public function updateAjax(UpdateAccountingPeriodsRequest $request)
+    {
     }
 }

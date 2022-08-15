@@ -714,6 +714,9 @@ Route::group([
             ], function() {
                 // HTTP
                 Route::get('/settings/periods', [AccountingPeriodsController::class, 'index']);
+                
+                // AJAX
+                Route::put('/settings/periods', [AccountingPeriodsController::class, 'updateAjax']);
             });
 
             /**
