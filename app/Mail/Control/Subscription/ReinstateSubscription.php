@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ReinstateSubscription extends Mailable 
+class ReinstateSubscription extends Mailable implements ShouldQueue 
 {
     use Queueable, SerializesModels;
 

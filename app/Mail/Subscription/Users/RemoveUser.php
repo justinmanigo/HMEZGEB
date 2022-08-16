@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class RemoveUser extends Mailable 
+class RemoveUser extends Mailable implements ShouldQueue 
 {
     use Queueable, SerializesModels;
 
