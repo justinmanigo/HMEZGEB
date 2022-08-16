@@ -223,17 +223,17 @@ class BillsController extends Controller
     // Print
     public function printBill($id)
     {
-        $bills = Bills::find($id);
+        $bill = Bills::find($id);
 
-        $pdf = PDF::loadView('vendors.bills.print', compact('bills'));
+        $pdf = PDF::loadView('vendors.bills.print', compact('bill'));
         return $pdf->download('bill_'.date('Y-m-d').'.pdf');
     }
 
     public function printPurchaseOrder($id)
     {
-        $purchaseOrders = PurchaseOrders::find($id);
+        $purchase_order = PurchaseOrders::find($id);
 
-        $pdf = PDF::loadView('vendors.bills.purchase_order.print', compact('purchaseOrders'));
+        $pdf = PDF::loadView('vendors.bills.purchase_order.print', compact('purchase_order'));
         return $pdf->download('purchase_order_'.date('Y-m-d').'.pdf');
     }
 

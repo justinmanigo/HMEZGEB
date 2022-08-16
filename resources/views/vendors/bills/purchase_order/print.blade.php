@@ -11,10 +11,6 @@
             page-break-after: always;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
         table {
             border-collapse: collapse;
             width: 100%;
@@ -27,18 +23,26 @@
     <table class="text-center">
         <thead>
             <tr>
-                <th>Due Date</th>
-                <th>Sub Total</th>
-                <th>Tax</th>
-                <th>Grand Total</th>
+                <th>Name</th>
+                <th>Value</th>
             </tr>
         </thead>
         <tbody>
                 <tr>
-                    <td>{{ $purchaseOrders->due_date }}</td>
-                    <td>{{ $purchaseOrders->sub_total }}</td>
-                    <td>{{ $purchaseOrders->tax }}</td>
-                    <td>{{ $purchaseOrders->grand_total }}</td>
+                    <td>Due Date</td>
+                    <td>{{$purchase_order->due_date}}</td>
+                </tr>
+                <tr>
+                    <td>Sub Total</td>
+                    <td>{{$purchase_order->sub_total}}</td>
+                </tr>
+                <tr>
+                    <td>Tax</td>
+                    <td>{{$purchase_order->tax}}</td>
+                </tr>
+                <tr>
+                    <td>Grand Total</td>
+                    <td>{{$purchase_order->grand_total}}</td>
                 </tr>
         </tbody>
     </table>
