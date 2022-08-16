@@ -169,19 +169,23 @@ class CustomerController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
         ->whereHas('receiptReference', function($query) {
             $query->where('type', 'receipt')
-            ->orWhere('status', 'unpaid')
-            ->orWhere('status', 'partially_paid');     
-        })->where('id', $id)->first();
-
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
+            
         if(!$customers)
             return redirect()->back()->with('danger', "No pending statements found.");
 
-        $receipt_reference = ReceiptReferences::where('customer_id', $id)->where('type', 'receipt')
-        ->Where('status', 'unpaid')
-        ->orWhere('status', 'partially_paid')
-        ->get(); 
+        $receipt_reference = ReceiptReferences::where('customer_id', $id)
+        ->where('type', 'receipt')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
 
         $receipts = [];
         foreach($receipt_reference as $receipt) {
@@ -230,19 +234,23 @@ class CustomerController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
         ->whereHas('receiptReference', function($query) {
             $query->where('type', 'receipt')
-            ->orWhere('status', 'unpaid')
-            ->orWhere('status', 'partially_paid');     
-        })->where('id', $id)->first();
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
 
         if(!$customers)
             return redirect()->back()->with('danger', "No pending statements found.");
 
-        $receipt_reference = ReceiptReferences::where('customer_id', $id)->where('type', 'receipt')
-        ->Where('status', 'unpaid')
-        ->orWhere('status', 'partially_paid')
-        ->get(); 
+        $receipt_reference = ReceiptReferences::where('customer_id', $id)
+        ->where('type', 'receipt')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
         
         $pdf = \PDF::loadView('customer.customer.print', compact('receipt_reference'));
         return $pdf->download('customer_statement_'.date('Y_m_d').'.pdf');
