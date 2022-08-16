@@ -6,7 +6,7 @@
 @component('mail::message')
 Good day,
 
-This is your credit receipt.
+This is your proforma.
 
 @component('mail::table')
 | Due Date | Amount | Tax | Remark |
