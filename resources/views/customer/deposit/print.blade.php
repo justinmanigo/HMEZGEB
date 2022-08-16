@@ -11,10 +11,6 @@
             page-break-after: always;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
         table {
             border-collapse: collapse;
             width: 100%;
@@ -27,17 +23,25 @@
     <table class="text-center">
         <thead>
             <tr>
-                <td>Status</td>
-                <td>Ticket Date</td>
-                <td>Total Amount</td>
-                <td>Account Name</td>
+                <th>Name</th>
+                <th>Value</th>
             </tr>
         </thead>
         <tbody>
                 <tr>
+                    <td>Status</td>
                     <td>{{ $deposits->status }}</td>
+                </tr>
+                <tr>
+                    <td>Deposit Ticket Date</td>
                     <td>{{ $deposits->deposit_ticket_date }}</td>
+                </tr>
+                <tr>
+                    <td>Total Amount</td>
                     <td>{{ $deposits->total_amount }}</td>
+                </tr>
+                <tr>
+                    <td>Account Name</td>
                     <td>{{ $deposits->chartOfAccount->account_name }}</td>
                 </tr>
         </tbody>
