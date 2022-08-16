@@ -17,11 +17,11 @@ class MailCustomerReceipt extends Mailable
      * @return void
      */
 
-    public $receipt;
+    public $receipt_items;
 
-    public function __construct($receipt)
+    public function __construct($receipt_items)
     {
-        $this->receipt = $receipt;
+        $this->receipt_items = $receipt_items;
 
     }
 
@@ -35,7 +35,7 @@ class MailCustomerReceipt extends Mailable
     {
         return $this->subject('Customer Receipt')
         ->markdown('customer.receipt.mail')->with([
-            'receipt' => $this->receipt,
+            'receipt_items' => $this->receipt_items
         ]);
     }
 }

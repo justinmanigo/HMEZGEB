@@ -454,9 +454,11 @@ class ReceiptController extends Controller
     {
         // Mail
         $receipt = Receipts::find($id);
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $receipt->receipt_reference_id)->get();
+
         $emailAddress = $receipt->receiptReference->customer->email;
 
-        Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt));
+        Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt_items));
         
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
