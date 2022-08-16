@@ -10,11 +10,16 @@ Good day,
 
 This is your bill.
 
-
 @component('mail::table')
-Due Date | Sub Total | Discount | Tax | Grand Total | Total Amount Received | Withholding | Withholding Status  | Payment Method
-|:--------|:-------------|:-------|:---------|:-------| :-------|:-------|:-------|:-------| 
-| {{$bills['due_date']}} | {{$bills['grand_total']}} | {{$bills['discount']}} | {{$bills['tax']}} | {{$bills['grand_total']-$bills['amount_received']}} | {{$bills['amount_received']}} | {{$bills['withholding']}}|  {{$bills['withholding_status']}} | {{$bills['payment_method']}} |
+|# | Name | Quantity | Price | Total Price |
+|:-----|:-----|:-----|:-----|:-----|
+@foreach($bill_items as $item)
+| {{$loop->iteration}} | {{$item->inventory->name}} | {{$item->quantity}} | {{$item->price}} | {{$item->total_price}} |
+@endforeach
+||||**Sub Total:**| {{$item->paymentReference->bills->sub_total}} |
+||||**Tax:**| {{$item->paymentReference->bills->tax}} |
+||||**Withholding:**| {{$item->paymentReference->bills->withholding}} |
+||||**Grand Total:**| {{$item->paymentReference->bills->grand_total}} |
 @endcomponent
 
 

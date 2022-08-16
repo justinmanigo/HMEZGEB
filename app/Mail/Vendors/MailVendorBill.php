@@ -16,10 +16,10 @@ class MailVendorBill extends Mailable
      *
      * @return void
      */
-    public $bills;
-    public function __construct($bills)
+    public $bill_items;
+    public function __construct($bill_items)
     {
-        $this->bills = $bills;
+        $this->bill_items = $bill_items;
     }
     /**
      * Build the message.
@@ -29,7 +29,7 @@ class MailVendorBill extends Mailable
     public function build()
     {
         return $this->markdown('vendors.bills.mail')->with([
-            'bills' => $this->bills,
+            'bill_items' => $this->bill_items,
         ]);
     }
 }
