@@ -137,12 +137,12 @@
                         data-target="#modal-proforma">Proforma</a>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                 <span class="icon text-white-50">
                     <i class="fas fa-file-import"></i>
                 </span>
                 <span class="text">Import</span>
-            </button>
+            </button> --}}
             {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
