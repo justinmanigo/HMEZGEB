@@ -146,10 +146,10 @@ class BankAccountsController extends Controller
     // Mail
     public function mail($id)
     {
-        $bank_accounts = BankAccounts::where('id', $id)->first();
+        $bank_account = BankAccounts::where('id', $id)->first();
         // TODO: Add email to user
         $email = "bank@email.com";
-        Mail::to($email)->queue(new MailBankAccount($bank_accounts));
+        Mail::to($email)->queue(new MailBankAccount($bank_account));
 
         return redirect()->back()->with('success', 'Email Sent Successfully!');
     }
@@ -157,9 +157,9 @@ class BankAccountsController extends Controller
     // Print
     public function print($id)
     {
-        $accounts = BankAccounts::find($id);
+        $account = BankAccounts::find($id);
         
-        $pdf = PDF::loadView('banking.accounts.print', compact('accounts'));
+        $pdf = PDF::loadView('banking.accounts.print', compact('account'));
         return $pdf->download('accounts'.date('Y-m-d').'.pdf');
     }
 

@@ -11,10 +11,6 @@
             page-break-after: always;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
         table {
             border-collapse: collapse;
             width: 100%;
@@ -27,20 +23,34 @@
     <table class="text-center">
         <thead>
             <tr>
-                <th>Bank Branch</th>
-                <th>Account Number</th>
-                <th>Account Name</th>
-                <th>Account Type</th>
-                <th>Account Balance</th>
+                <th>Name</th>
+                <th>Value</th>
             </tr>
         </thead>
         <tbody>
                 <tr>
-                    <td>{{ $accounts->bank_branch }}</td>
-                    <td>{{ $accounts->bank_account_number }}</td>
-                    <td>{{ $accounts->chartOfAccount->account_name }}</td>
-                    <td>{{ $accounts->bank_account_type }}</td>
-                    <td>{{ $accounts->chartOfAccount->current_balance }}</td>    
+                    <td>Account Name</td>
+                    <td>{{ $account->chartOfAccount->account_name }}</td>
+                </tr>
+                <tr>
+                    <td>Account Number</td>
+                    <td>{{ $account->bank_account_number }}</td>
+                </tr>
+                <tr>
+                    <td>Bank Branch</td>
+                    <td>{{ $account->bank_branch }}</td>
+                </tr>
+                <tr>
+                    <td>Account Type</td>
+                    <td>{{ $account->bank_account_type }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>{{ $account->chartOfAccount->status }}</td>
+                </tr>
+                <tr>
+                    <td>Account Balance</td>
+                    <td>{{ $account->chartOfAccount->current_balance }}</td>
                 </tr>
         </tbody>
     </table>
