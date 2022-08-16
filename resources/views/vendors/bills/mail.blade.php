@@ -14,7 +14,7 @@ This is your bill.
 |# | Name | Quantity | Price | Total Price |
 |:-----|:-----|:-----|:-----|:-----|
 @foreach($bill_items as $item)
-| {{$loop->iteration}} | {{$item->inventory->name}} | {{$item->quantity}} | {{$item->price}} | {{$item->total_price}} |
+| {{$loop->iteration}} | {{$item->inventory->item_name}} | {{$item->quantity}} | {{$item->price}} | {{$item->total_price}} |
 @endforeach
 ||||**Sub Total:**| {{$item->paymentReference->bills->sub_total}} |
 ||||**Tax:**| {{$item->paymentReference->bills->tax}} |

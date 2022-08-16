@@ -46,7 +46,7 @@
                 @foreach($receipt_items as $item)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$item->inventory->name}}</td>
+                        <td>{{$item->inventory->item_name}}</td>
                         <td>{{$item->quantity}}</td>
                         <td>{{$item->price}}</td>
                         <td>{{$item->total_price}}</td>
