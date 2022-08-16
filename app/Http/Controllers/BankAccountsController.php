@@ -147,8 +147,6 @@ class BankAccountsController extends Controller
     public function mail($id)
     {
         $bank_accounts = BankAccounts::where('id', $id)->first();
-        $bank_accounts = $bank_accounts->toArray() + $bank_accounts->chartOfAccount->toArray();
-
         // TODO: Add email to user
         $email = "bank@email.com";
         Mail::to($email)->queue(new MailBankAccount($bank_accounts));
