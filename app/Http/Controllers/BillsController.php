@@ -225,8 +225,9 @@ class BillsController extends Controller
     public function printBill($id)
     {
         $bill = Bills::find($id);
+        $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
 
-        $pdf = PDF::loadView('vendors.bills.print', compact('bill'));
+        $pdf = PDF::loadView('vendors.bills.print', compact('bill_items'));
         return $pdf->download('bill_'.date('Y-m-d').'.pdf');
     }
 
