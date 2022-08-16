@@ -180,10 +180,8 @@ class DepositsController extends Controller
         // Mail
         $deposit = Deposits::find($id);
         $emailAddress = "test@test.com";
-        $data = [];
-        $data = $deposit->toArray() + $deposit->chartOfAccount->toArray();
 
-        Mail::to($emailAddress)->queue(new MailCustomerDeposit($data));
+        Mail::to($emailAddress)->queue(new MailCustomerDeposit($deposit));
         
         return redirect()->route('deposits.deposits.index')->with('success', "Successfully sent email to customer.");
 
