@@ -500,7 +500,9 @@ class ReceiptController extends Controller
     public function printReceipt($id)
     {
         $receipt = Receipts::find($id);
-        $pdf = PDF::loadView('customer.receipt.print', compact('receipt'));
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $receipt->receipt_reference_id)->get();
+
+        $pdf = PDF::loadView('customer.receipt.print', compact('receipt_items'));
 
         return $pdf->download('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
     }

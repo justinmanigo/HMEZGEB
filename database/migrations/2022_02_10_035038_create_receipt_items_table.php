@@ -21,6 +21,9 @@ class CreateReceiptItemsTable extends Migration
             $table->float('price')->nullable();
             $table->float('total_price')->nullable();
             $table->timestamps();
+
+            $table->foreign('inventory_id')->references('id')->on('inventories');
+            $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
         });
     }
 
