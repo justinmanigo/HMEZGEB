@@ -16,13 +16,13 @@ class MailCustomerProforma extends Mailable implements ShouldQueue
      *
      * @return void
      */
+    public $proforma_items;
     public $proforma;
-    public function __construct($proforma)
+    public function __construct($proforma_items, $proforma)
     {
-        //
+        $this->proforma_items = $proforma_items;
         $this->proforma = $proforma;
     }
-
     /**
      * Build the message.
      *
@@ -33,6 +33,7 @@ class MailCustomerProforma extends Mailable implements ShouldQueue
         return $this->markdown('customer.receipt.proforma.mail')
             ->subject('Proforma Invoice')
             ->with([
+                'proforma_items' => $this->proforma_items,
                 'proforma' => $this->proforma,
             ]);
     }
