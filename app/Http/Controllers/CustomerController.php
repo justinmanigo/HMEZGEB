@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Mail\Customers\MailCustomerStatement;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions;
+use App\Actions\Customer\CalculateBalanceCustomer;
+
 
 
 class CustomerController extends Controller
@@ -24,8 +26,16 @@ class CustomerController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
-
-        return view('customer.customer.index',compact('customers'));
+        
+        $total_balance = 0;
+        $total_customers = 0;
+        foreach($customers as $customer){
+            $customer->balance = CalculateBalanceCustomer::run($customer->id);
+            $total_balance += $customer->balance['balance'];
+            $total_customers += $customer->balance['customer_count'];
+        }
+        
+        return view('customer.customer.index',compact('customers', 'total_balance', 'total_customers'));
     }
     /**
      * Show the form for creating a new resource.
