@@ -15,9 +15,17 @@
             text-align: center;
         }
 
+        .text-right {
+            text-align: right;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid lightgray;
         }
 
     </style>
@@ -27,28 +35,42 @@
     <table class="text-center">
         <thead>
             <tr>
-                <td>Due Date</td>
-                <td>Sub Total</td>
-                <td>Discount</td>
-                <td>Tax</td>
-                <td>Grand Total</td>
-                <td>Total Amount Received</td>
-                <td>Withholding</td>
-                <td>Payment Method</td>
+                <th>#</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
             </tr>
         </thead>
         <tbody>
-                <tr>
-                    <td>{{ $receipt->due_date }}</td>
-                    <td>{{ $receipt->sub_total }}</td>
-                    <td>{{ $receipt->discount }}</td>
-                    <td>{{ $receipt->tax }}</td>
-                    <td>{{ $receipt->grand_total }}</td>
-                    <td>{{ $receipt->total_amount_received }}</td>
-                    <td>{{ $receipt->withholding }}</td>
-                    <td>{{ $receipt->payment_method }}</td>
-                </tr>
+                @foreach($receipt_items as $item)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->inventory->item_name}}</td>
+                        <td>{{$item->quantity}}</td>
+                        <td>{{$item->price}}</td>
+                        <td>{{$item->total_price}}</td>
+                    </tr>
+                @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-right" colspan="4"><b>Total :</b></td>
+                <td>{{$item->receiptReference->receipt->sub_total}}</td>
+            </tr>
+            <tr>
+                <td class="text-right" colspan="4"><b>Tax :</b></td>
+                <td>{{$item->receiptReference->receipt->tax}}</td>
+            </tr>
+            <tr>
+                <td class="text-right" colspan="4"><b>Withholding :</b></td>
+                <td>{{$item->receiptReference->receipt->withholding}}</td>
+            </tr>
+            <tr>
+                <td class="text-right" colspan="4"><b>Grand Total :</b></td>
+                <td>{{$item->receiptReference->receipt->grand_total}}</td>
+            </tr>
+        </tfoot>
     </table>
 </body>
 </html>

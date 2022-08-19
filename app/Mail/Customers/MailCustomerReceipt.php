@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailCustomerReceipt extends Mailable implements ShouldQueue
+class MailCustomerReceipt extends Mailable implements ShouldQueue 
 {
     use Queueable, SerializesModels;
 
@@ -17,11 +17,11 @@ class MailCustomerReceipt extends Mailable implements ShouldQueue
      * @return void
      */
 
-    public $receipt;
+    public $receipt_items;
 
-    public function __construct($receipt)
+    public function __construct($receipt_items)
     {
-        $this->receipt = $receipt;
+        $this->receipt_items = $receipt_items;
 
     }
 
@@ -35,7 +35,7 @@ class MailCustomerReceipt extends Mailable implements ShouldQueue
     {
         return $this->subject('Customer Receipt')
         ->markdown('customer.receipt.mail')->with([
-            'receipt' => $this->receipt,
+            'receipt_items' => $this->receipt_items
         ]);
     }
 }

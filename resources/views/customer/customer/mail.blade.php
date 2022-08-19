@@ -12,7 +12,6 @@ This is your statement.
 @endforeach
 @endcomponent
 
-Please pay the above before or on {{$receipt['due_date']}}.
 
 Thanks,<br>
 {{ config('app.name') }}

@@ -19,6 +19,8 @@ class CreateProformasTable extends Migration
             $table->date('due_date');
             $table->float('amount');
             $table->float('tax');
+            $table->float('sub_total');
+            $table->float('grand_total');
             $table->longText('terms_and_conditions')->nullable();
             $table->string('attachment')->nullable();
             $table->timestamps();

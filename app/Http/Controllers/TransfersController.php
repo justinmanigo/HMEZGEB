@@ -140,7 +140,6 @@ class TransfersController extends Controller
           ->find($id);
   
           return view('banking.transfers.edit', compact('transfers'));
-        
     }
 
     /**
@@ -215,18 +214,18 @@ class TransfersController extends Controller
     // Mail
     public function mail($id)
     {
-        $transfers = Transfers::where('id', $id)->first();
+        $bank_transfer = Transfers::where('id', $id)->first();
         // TODO: Add mail to user;
         $email = "transfer@email.com";
-        Mail::to($email)->queue(new MailBankTransfer($transfers));
+        Mail::to($email)->queue(new MailBankTransfer($bank_transfer));
 
         return redirect()->back()->with('success', 'Successfully sent email!');
     }
     // Print
     public function print($id)
     {
-        $transfers = Transfers::find($id);
-        $pdf = PDF::loadView('banking.transfers.print', compact('transfers'));
+        $bank_transfer = Transfers::find($id);
+        $pdf = PDF::loadView('banking.transfers.print', compact('bank_transfer'));
         
         return $pdf->download('bank_transfer_'.date('Y-m-d').'.pdf');
     }

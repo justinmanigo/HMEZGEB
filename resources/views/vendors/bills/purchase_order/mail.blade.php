@@ -5,9 +5,12 @@ Good day,
 This is your purchase order.
 
 @component('mail::table')
-| Due Date | Sub Total | Tax | Grand Total |
-| -------- |:----------:|----:| -----------:|
-| {{$purchase_order['due_date']}} | {{$purchase_order['sub_total']}} | {{$purchase_order['tax']}} | {{$purchase_order['grand_total']}} |
+| Name | Value |
+| :--- | :--- |
+| Due Date | {{$purchase_order->due_date}} |
+| Sub Total | {{$purchase_order->sub_total}} |
+| Tax | {{$purchase_order->tax}} |
+| Grand Total | {{$purchase_order->grand_total}} |
 @endcomponent
 
 

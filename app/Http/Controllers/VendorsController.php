@@ -170,20 +170,23 @@ class VendorsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
         ->whereHas('PaymentReferences', function($query) {
-            $query->Where('status', 'unpaid')
-            ->orWhere('status', 'partially_paid')
-            ->where('type', 'bill');
-        })->where('id', $id)->first();
-
+            $query->where('type', 'bill')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
 
         if(!$vendors)
             return redirect()->back()->with('error', "No pending statements found.");
         
         $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
-        ->where('status', 'unpaid')
-        ->orWhere('status', 'partially_paid')
-        ->where('type', 'bill')->get();
+        ->where('type', 'bill')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
 
         $bills = [];
         
@@ -203,20 +206,24 @@ class VendorsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
         ->whereHas('PaymentReferences', function($query) {
-            $query->Where('status', 'unpaid')
-            ->orWhere('status', 'partially_paid')
-            ->where('type', 'bill');
-        })->where('id', $id)->first();
+            $query->where('type', 'bill')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
 
 
         if(!$vendors)
             return redirect()->back()->with('error', "No pending statements found.");
         
         $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
-        ->where('status', 'unpaid')
-        ->orWhere('status', 'partially_paid')
-        ->where('type', 'bill')->get();
+        ->where('type', 'bill')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
 
         $pdf = PDF::loadView('vendors.vendors.print', compact('payment_reference'));
 

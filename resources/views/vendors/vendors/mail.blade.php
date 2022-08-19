@@ -12,8 +12,6 @@ This is your statement.
 @endforeach
 @endcomponent
 
-Please pay the above before or on {{$bill['due_date']}}.
-
 Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

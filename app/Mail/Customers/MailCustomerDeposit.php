@@ -16,11 +16,11 @@ class MailCustomerDeposit extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public $deposits;
-    public function __construct($deposits)
+    public $deposit;
+    public function __construct($deposit)
     {
         //
-        $this->deposits = $deposits;
+        $this->deposit = $deposit;
     }
 
     /**
@@ -32,7 +32,7 @@ class MailCustomerDeposit extends Mailable implements ShouldQueue
     {
         return $this->markdown('customer.deposit.mail')
                     ->with([
-                        'deposits' => $this->deposits,
+                        'deposit' => $this->deposit,
                     ]);
     }
 }

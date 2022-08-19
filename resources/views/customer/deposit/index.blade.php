@@ -145,22 +145,22 @@
                             <td><span class="badge badge-primary">Self</span></td>
                             <td>{{$deposit->total_amount}}</td>
                             <td>
-                                <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
+                                {{-- <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
                                     <!-- edit -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-pen"></i>
                                     </span>
-                                </a>
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})">
-                                    <!-- print -->
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-print"></i>
-                                    </span>
-                                </button>
+                                </a> --}}
                                 <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})">
                                     <!-- email -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})">
+                                    <!-- print -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-print"></i>
                                     </span>
                                 </button>
                                 <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>

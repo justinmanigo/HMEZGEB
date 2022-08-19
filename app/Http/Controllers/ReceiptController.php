@@ -337,6 +337,8 @@ class ReceiptController extends Controller
             'due_date' => $request->due_date,
             'amount' => $request->grand_total,
             'tax' => $request->tax_total,
+            'sub_total' => $request->sub_total,
+            'grand_total' => $request->grand_total,
             'terms_and_conditions' => $request->terms_and_conditions,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
@@ -454,9 +456,10 @@ class ReceiptController extends Controller
     {
         // Mail
         $receipt = Receipts::find($id);
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $receipt->receipt_reference_id)->get();
         $emailAddress = $receipt->receiptReference->customer->email;
-
-        Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt));
+        
+        Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt_items));
         
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
@@ -487,9 +490,10 @@ class ReceiptController extends Controller
     {
         // Mail
         $proforma = Proformas::find($id);
-        $emailAddress = $proforma->receiptReference->customer->email; 
-        
-        Mail::to($emailAddress)->queue(new MailCustomerProforma($proforma));
+        $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
+        $emailAddress = $proforma->receiptReference->customer->email;
+         
+        Mail::to($emailAddress)->queue(new MailCustomerProforma($proforma_items , $proforma));
         
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
@@ -498,7 +502,9 @@ class ReceiptController extends Controller
     public function printReceipt($id)
     {
         $receipt = Receipts::find($id);
-        $pdf = PDF::loadView('customer.receipt.print', compact('receipt'));
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $receipt->receipt_reference_id)->get();
+
+        $pdf = PDF::loadView('customer.receipt.print', compact('receipt_items'));
 
         return $pdf->download('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
     }
@@ -522,7 +528,9 @@ class ReceiptController extends Controller
     public function printProforma($id)
     {
         $proforma = Proformas::find($id);
-        $pdf = PDF::loadView('customer.receipt.proforma.print', compact('proforma'));
+        $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
+
+        $pdf = PDF::loadView('customer.receipt.proforma.print', compact('proforma_items','proforma'));
 
         return $pdf->download('proforma_'.$id.'_'.date('Y-m-d').'.pdf');
     }

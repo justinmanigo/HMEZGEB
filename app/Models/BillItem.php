@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class BillItem extends Model
 {
     use HasFactory;
@@ -20,5 +21,10 @@ class BillItem extends Model
     public function inventory()
     {
         return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
+    }
+
+    public function paymentReference()
+    {
+        return $this->belongsTo(PaymentReferences::class, 'payment_reference_id', 'id');
     }
 }

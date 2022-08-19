@@ -100,7 +100,7 @@
                                     <td> {{$customer->contact_person}}</td>
                                     <td> {{$customer->mobile_number}}</td>
                                     <td><span class="badge badge-primary"> {{$customer->label}}</span></td>
-                                    <td></td>
+                                    <td>{{$customer->balance['balance']}}</td>
                                     <td>
                                         <a href="{{ route('customers.customers.edit', $customer->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
                                             <!-- edit -->
@@ -145,9 +145,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{$total_balance}}</div>
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                2 Active</div>
+                                {{$total_customers}} Active</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}

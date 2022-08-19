@@ -202,20 +202,21 @@ class BillsController extends Controller
     // send Email
     public function sendMailBill($id)
     {
-        $bills = Bills::find($id);
-        $emailAddress = $bills->paymentReference->vendor->email;
+        $bill = Bills::find($id);
+        $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
+        $emailAddress = $bill->paymentReference->vendor->email;
 
-        Mail::to($emailAddress)->queue(new MailVendorBill ($bills));
+        Mail::to($emailAddress)->queue(new MailVendorBill ($bill_items));
         
         return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
 
     public function sendMailPurchaseOrder($id)
     {
-        $purchaseOrders = PurchaseOrders::find($id);
-        $emailAddress = $purchaseOrders->paymentReference->vendor->email;
+        $purchaseOrder = PurchaseOrders::find($id);
+        $emailAddress = $purchaseOrder->paymentReference->vendor->email;
         
-        Mail::to($emailAddress)->queue(new MailVendorPurchaseOrder ($purchaseOrders));
+        Mail::to($emailAddress)->queue(new MailVendorPurchaseOrder ($purchaseOrder));
         
         return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
@@ -223,17 +224,18 @@ class BillsController extends Controller
     // Print
     public function printBill($id)
     {
-        $bills = Bills::find($id);
+        $bill = Bills::find($id);
+        $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
 
-        $pdf = PDF::loadView('vendors.bills.print', compact('bills'));
+        $pdf = PDF::loadView('vendors.bills.print', compact('bill_items'));
         return $pdf->download('bill_'.date('Y-m-d').'.pdf');
     }
 
     public function printPurchaseOrder($id)
     {
-        $purchaseOrders = PurchaseOrders::find($id);
+        $purchase_order = PurchaseOrders::find($id);
 
-        $pdf = PDF::loadView('vendors.bills.purchase_order.print', compact('purchaseOrders'));
+        $pdf = PDF::loadView('vendors.bills.purchase_order.print', compact('purchase_order'));
         return $pdf->download('purchase_order_'.date('Y-m-d').'.pdf');
     }
 
