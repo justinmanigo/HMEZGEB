@@ -247,6 +247,104 @@
     </div>
 </div>
 
+<!-- Modals -->
+<!-- Correct and Match -->
+<div class="modal fade" id="correctAndMatch" tabindex="-1" role="dialog" aria-labelledby="correctAndMatchLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="correctAndMatchLabel">Correct and Match</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-lg-3">
+                        <h5>Transaction Details</h5>
+                        <p>
+                            Source:<br>
+                            <strong id="correctAndMatch-source">Bank Statement</strong>
+                        </p>
+                        <p>
+                            Date:<br>
+                            <strong id="correctAndMatch-date">2022-08-31</strong>
+                        </p>
+                        <p>
+                            Description:<br>
+                            <strong id="correctAndMatch-description">Test Description</strong>
+                        </p>
+                        <p>
+                            Debit:<br>
+                            <strong id="correctAndMatch-debit">0.00</strong>
+                        </p>
+                        <p>
+                            Credit:<br>
+                            <strong id="correctAndMatch-credit">300.00</strong>
+                        </p>
+
+                        <hr>
+
+                        <h5>Correct Amount</h5>
+                        <div class="input-group input-group-sm mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="">DR</span>
+                            </div>
+                            <input id="correctAndMatch-debit" type="text" class="form-control text-right" placeholder="Debit">
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="">CR</span>
+                            </div>
+                            <input id="correctAndMatch-credit" type="text" class="form-control text-right" placeholder="Credit">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-9">
+                        <h5>Find & Match Transaction</h5>
+                        <div class="form-group">
+                            <!-- search -->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="">Search</span>
+                                </div>
+                                <input id="correctAndMatch-search" type="text" class="form-control" placeholder="Search">
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                    <th></th>
+                                </thead>
+                                <div class="tbody">
+                                    <tr>
+                                        <td>August 31, 2022</td>
+                                        <td>Bank Statement</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>
+                                            <!-- checkbox -->
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </div>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <h5 class="mr-3">Difference: <strong class="text-danger">0.00 / (0.00)</strong></h5>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Correct & Match</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection
