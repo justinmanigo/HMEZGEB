@@ -227,6 +227,7 @@
                                         @endif
                                     </td>
                                     <td class="table-item-content text-right">
+                                        Birr
                                         @if($transaction->type == 'receipt')
                                             {{ number_format($transaction->receipt_amount, 2) }}
                                         @elseif($transaction->type == 'advance_receipt')
@@ -323,7 +324,7 @@
                                 <tr>
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
-                                    <td class="table-item-content text-right">{{ number_format($proforma->proforma_amount, 2) }}</td>
+                                    <td class="table-item-content text-right">Birr {{ number_format($proforma->proforma_amount, 2) }}</td>
                                     <td>
                                         <a href="{{route('receipts.proforma.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
                                             <span class="icon text-white-50">
@@ -395,7 +396,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{$total_balance}}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance,2)}}</div>
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 {{$count}} Active</div>
                         </div>
@@ -413,7 +414,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{$total_balance_past}}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_past,2)}}</div>
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                 {{$count_overdue}} Over Due</div>
                         </div>
