@@ -201,8 +201,8 @@
                                     <th>Actions</th>
                                     {{-- <th>OK?</th> --}}
                                 </thead>
-                                    <tr>
                                 <tbody>
+                                    <tr class="d-table-row">
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
@@ -232,8 +232,8 @@
                                     <th>Actions</th>
                                     {{-- <th>OK?</th> --}}
                                 </thead>
-                                    <tr>
                                 <tbody>
+                                    <tr class="d-table-row">
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
