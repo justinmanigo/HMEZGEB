@@ -201,8 +201,8 @@
                                     <th>Actions</th>
                                     {{-- <th>OK?</th> --}}
                                 </thead>
-                                <div class="tbody">
                                     <tr>
+                                <tbody>
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
@@ -216,7 +216,7 @@
                                             <a href="#" class="btn btn-sm btn-success">OK</a>
                                         </td> --}}
                                     </tr>
-                                </div>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -232,8 +232,8 @@
                                     <th>Actions</th>
                                     {{-- <th>OK?</th> --}}
                                 </thead>
-                                <div class="tbody">
                                     <tr>
+                                <tbody>
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
@@ -247,7 +247,7 @@
                                             <a href="#" class="btn btn-sm btn-success">OK</a>
                                         </td> --}}
                                     </tr>
-                                </div>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -330,7 +330,7 @@
                                     <th>Credit</th>
                                     <th></th>
                                 </thead>
-                                <div class="tbody">
+                                <tbody>
                                     <tr>
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
@@ -343,7 +343,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                </div>
+                                </tbody>
                             </table>
                         </div>
                     </div>
