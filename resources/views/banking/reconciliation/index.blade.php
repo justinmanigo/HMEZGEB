@@ -350,6 +350,76 @@
     </div>
 </div>
 
+<!-- Create Transaction -->
+<div class="modal fade" id="createAndMatch" tabindex="-1" role="dialog" aria-labelledby="createAndMatchLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAndMatchLabel">Create Transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-lg-3">
+                        <h5>Transaction Details</h5>
+                        <p>
+                            Source:<br>
+                            <strong id="createAndMatch-source">Bank Statement</strong>
+                        </p>
+                        <p>
+                            Date:<br>
+                            <strong id="createAndMatch-date">2022-08-31</strong>
+                        </p>
+                        <p>
+                            Description:<br>
+                            <strong id="createAndMatch-description">Test Description</strong>
+                        </p>
+                        <p>
+                            Debit:<br>
+                            <strong id="createAndMatch-debit">0.00</strong>
+                        </p>
+                        <p>
+                            Credit:<br>
+                            <strong id="createAndMatch-credit">300.00</strong>
+                        </p>
+
+                        <hr>
+
+                        <h5>Correct Amount</h5>
+                        <div class="input-group input-group-sm mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="">DR</span>
+                            </div>
+                            <input id="createAndMatch-debit" type="text" class="form-control text-right" placeholder="Debit">
+                        </div>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="">CR</span>
+                            </div>
+                            <input id="createAndMatch-credit" type="text" class="form-control text-right" placeholder="Credit">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-9">
+                        <h5>Create & Match Transaction</h5>
+                        <div class="form-group">
+                            <!-- search -->
+                            <label for="createAndMatch-search">Description</label>
+                            <textarea id="createAndMatch-description" type="text" class="form-control">
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Create Transaction</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
