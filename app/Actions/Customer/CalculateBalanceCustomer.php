@@ -26,7 +26,7 @@ class CalculateBalanceCustomer
         $total_balance_past = 0;
         // count receipt
         $count = 0;
-        $count_past = 0;
+        $count_overdue = 0;
         
         if($customer){
         $receipt_references = ReceiptReferences::where('customer_id', $customer->id)
@@ -47,15 +47,15 @@ class CalculateBalanceCustomer
                 }
                 else {
                     $total_balance_past += $receipt->grand_total-$receipt->total_amount_received;
-                    $count_past++;
+                    $count_overdue++;
                 }
             }
         }
  
-        return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_past' => $count_past];
+        return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_overdue' => $count_overdue];
         }
         else {
-            return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_past' => $count_past];
+            return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_overdue' => $count_overdue];
         }
     }
 }

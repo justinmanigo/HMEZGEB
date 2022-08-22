@@ -10,6 +10,7 @@ use App\Actions\Customer\Receipt\DetermineReceiptStatus;
 use App\Actions\Customer\Receipt\UpdateReceiptStatus;
 use App\Actions\Customer\Receipt\DeterminePaymentMethod;
 use App\Actions\Customer\Receipt\StoreReceiptItems;
+use App\Actions\Customer\CalculateBalanceCustomer;
 use App\Models\Proformas;
 use App\Models\CreditReceipts;
 use App\Models\AdvanceRevenues;
@@ -81,9 +82,28 @@ class ReceiptController extends Controller
             ->where('receipt_references.type', 'proforma')
             ->get();
 
+        // count advance revenues
+        $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
+
+        $total_balance = 0;
+        $total_balance_past = 0;
+        $count = 0;
+        $count_overdue = 0;
+
+        foreach($customers as $customer){
+            $total_balance += CalculateBalanceCustomer::run($customer->id)['total_balance'];
+            $total_balance_past += CalculateBalanceCustomer::run($customer->id)['total_balance_past'];
+            $count += CalculateBalanceCustomer::run($customer->id)['count'];
+            $count_overdue += CalculateBalanceCustomer::run($customer->id)['count_overdue'];
+        }
+
         return view('customer.receipt.index', [
             'transactions' => $transactions,
-            'proformas' => $proformas
+            'proformas' => $proformas,
+            'total_balance' => $total_balance,
+            'total_balance_past' => $total_balance_past,
+            'count' => $count,
+            'count_overdue' => $count_overdue,
         ]);
     }
 

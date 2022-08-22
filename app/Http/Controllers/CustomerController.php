@@ -30,16 +30,16 @@ class CustomerController extends Controller
         $total_balance = 0;
         $total_balance_past = 0;
         $count = 0;
-        $count_past = 0;
+        $count_overdue = 0;
         foreach($customers as $customer){
             $customer->balance = CalculateBalanceCustomer::run($customer->id);
             $total_balance += $customer->balance['total_balance'];
             $count += $customer->balance['count'];
             $total_balance_past += $customer->balance['total_balance_past'];
-            $count_past += $customer->balance['count_past'];
+            $count_overdue += $customer->balance['count_overdue'];
         }
         
-        return view('customer.customer.index',compact('customers', 'total_balance', 'count', 'total_balance_past', 'count_past'));
+        return view('customer.customer.index',compact('customers', 'total_balance', 'count', 'total_balance_past', 'count_overdue'));
     }
     /**
      * Show the form for creating a new resource.
