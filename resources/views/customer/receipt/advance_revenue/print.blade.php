@@ -43,7 +43,7 @@
         <tbody>
                 <tr>
                     <td>{{$advance_revenue->receiptReference->date}}</td>
-                    <td class="text-right">{{$advance_revenue->total_amount_received}}</td>
+                    <td class="text-right">{{number_format($advance_revenue->total_amount_received,2)}}</td>
                     <td>{{$advance_revenue->remark}}</td>
                 </tr>
         </tbody>

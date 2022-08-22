@@ -47,9 +47,9 @@
                 <tr>
                     <td>{{$receipt_reference->date}}</td>
                     <td>{{$receipt_reference->receipt->due_date}}</td>
-                    <td class="text-right">{{$receipt_reference->receipt->grand_total}}</td>
-                    <td class="text-right">{{$receipt_reference->receipt->total_amount_received}}</td>
-                    <td class="text-right">{{$receipt_reference->receipt->grand_total - $receipt_reference->receipt->total_amount_received}}</td>
+                    <td class="text-right">{{number_format($receipt_reference->receipt->grand_total,2)}}</td>
+                    <td class="text-right">{{number_format($receipt_reference->receipt->total_amount_received,2)}}</td>
+                    <td class="text-right">{{number_format($receipt_reference->receipt->grand_total - $receipt_reference->receipt->total_amount_received,2)}}</td>
                 </tr>
                 @endforeach
         </tbody>
@@ -57,7 +57,7 @@
             <tr>
                 {{-- total balance --}}
                 <th colspan="4" class="text-right">Total Balance:</th>
-                <td class="text-right">{{$total_balance}}</td>
+                <td class="text-right">{{number_format($total_balance,2)}}</td>
             </tr>  
         </tfoot>
     </table>

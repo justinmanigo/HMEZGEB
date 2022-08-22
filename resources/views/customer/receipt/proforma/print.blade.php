@@ -48,27 +48,27 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->inventory->item_name}}</td>
                         <td>{{$item->quantity}}</td>
-                        <td class="text-right">{{$item->price}}</td>
-                        <td class="text-right">{{$item->total_price}}</td>
+                        <td class="text-right">{{number_format($item->price,2)}}</td>
+                        <td class="text-right">{{number_format($item->total_price,2)}}</td>
                     </tr>
                 @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <td class="text-right" colspan="4"><b>Total :</b></td>
-                <td class="text-right">{{$proforma->sub_total}}</td>
+                <td class="text-right">{{number_format($proforma->sub_total,2)}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Tax :</b></td>
-                <td class="text-right">{{$proforma->tax}}</td>
+                <td class="text-right">{{number_format($proforma->tax,2)}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Withholding :</b></td>
-                <td class="text-right">{{$proforma->withholding}}</td>
+                <td class="text-right">{{number_format($proforma->withholding,2)}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Grand Total :</b></td>
-                <td class="text-right">{{$proforma->grand_total}}</td>
+                <td class="text-right">{{number_format($proforma->grand_total,2)}}</td>
             </tr>
         </tfoot>
     </table>

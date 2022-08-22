@@ -48,27 +48,27 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->inventory->item_name}}</td>
                         <td>{{$item->quantity}}</td>
-                        <td class="text-right">{{$item->price}}</td>
-                        <td class="text-right">{{$item->total_price}}</td>
+                        <td class="text-right">{{number_format($item->price,2)}}</td>
+                        <td class="text-right">{{number_format($item->total_price,2)}}</td>
                     </tr>
                 @endforeach
         </tbody>
         <tfoot>
             <tr>
                 <td class="text-right" colspan="4"><b>Total :</b></td>
-                <td class="text-right">{{$item->receiptReference->receipt->sub_total}}</td>
+                <td class="text-right">{{number_format($item->receiptReference->receipt->sub_total,2)}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Tax :</b></td>
-                <td class="text-right">{{$item->receiptReference->receipt->tax}}</td>
+                <td class="text-right">{{number_format($item->receiptReference->receipt->tax,2)}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Withholding :</b></td>
-                <td class="text-right">{{$item->receiptReference->receipt->withholding}}</td>
+                <td class="text-right">{{number_format($item->receiptReference->receipt->withholding,2)}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Grand Total :</b></td>
-                <td class="text-right">{{$item->receiptReference->receipt->grand_total}}</td>
+                <td class="text-right">{{number_format($item->receiptReference->receipt->grand_total,2)}}</td>
             </tr>
         </tfoot>
     </table>

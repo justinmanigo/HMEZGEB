@@ -43,7 +43,7 @@
         <tbody>
                 <tr>
                     <td>{{$credit_receipt->receiptReference->date}}</td>
-                    <td class="text-right">{{$credit_receipt->total_amount_received}}</td>
+                    <td class="text-right">{{number_format($credit_receipt->total_amount_received,2)}}</td>
                     <td>{{$credit_receipt->remark}}</td>
                 </tr>
         </tbody>
