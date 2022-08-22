@@ -392,22 +392,6 @@
                             Credit:<br>
                             <strong id="createAndMatch-credit">300.00</strong>
                         </p>
-
-                        <hr>
-
-                        <h5>Correct Amount</h5>
-                        <div class="input-group input-group-sm mb-1">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="">DR</span>
-                            </div>
-                            <input id="createAndMatch-debit" type="text" class="form-control text-right" placeholder="Debit">
-                        </div>
-                        <div class="input-group input-group-sm">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="">CR</span>
-                            </div>
-                            <input id="createAndMatch-credit" type="text" class="form-control text-right" placeholder="Credit">
-                        </div>
                     </div>
                     <div class="col-12 col-lg-9">
                         <h5>Create & Match Transaction</h5>
