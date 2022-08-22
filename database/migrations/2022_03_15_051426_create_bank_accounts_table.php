@@ -19,6 +19,7 @@ class CreateBankAccountsTable extends Migration
             $table->string('bank_branch')->nullable();
             $table->string('bank_account_number');
             $table->string('bank_account_type');
+            $table->smallInteger('bank_reconciliation_count')->default(0); // number of times the bank account has been reconciled. up to 12x
             $table->timestamps();
 
             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
