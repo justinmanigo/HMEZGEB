@@ -396,6 +396,24 @@
                     <div class="col-12 col-lg-9">
                         <h5>Create & Match Transaction</h5>
                         <div class="form-group">
+                            <!-- type -->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="">Type</span>
+                                </div>
+                                <select id="createAndMatch-type" class="form-control">
+                                    <option value="" disabled>BANK STATEMENT</option>
+                                    <option value="deposit_in_transit">&nbsp;&nbsp;Deposit in Transit</option><!-- Add -->
+                                    <option value="outstanding_cheque">&nbsp;&nbsp;Outstanding Cheque</option><!-- Deduct -->
+                                    <option value="" disabled>CASH BOOK</option>
+                                    <option value="missing_receipts">&nbsp;&nbsp;Missing Receipt</option><!-- Add -->
+                                    <option value="interest_received">&nbsp;&nbsp;Interest Received</option><!-- Add -->
+                                    <option value="bank_fee">&nbsp;&nbsp;Bank Fee</option><!-- Deduct -->
+                                    <option value="bounced_cheque">&nbsp;&nbsp;Bounced Cheque</option><!-- Deduct -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <!-- search -->
                             <label for="createAndMatch-search">Description</label>
                             <textarea id="createAndMatch-description" type="text" class="form-control">
