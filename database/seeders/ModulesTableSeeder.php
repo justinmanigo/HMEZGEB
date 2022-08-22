@@ -40,7 +40,7 @@ class ModulesTableSeeder extends Seeder
             ['module_id' => 3, 'name' => 'transfer', 'url' => '/banking/transfer/', 'duplicate_sub_module_id' => null],
             ['module_id' => 3, 'name' => 'deposits', 'url' => '/banking/deposits/', 'duplicate_sub_module_id' => 3],
             ['module_id' => 3, 'name' => 'transactions', 'url' => '/banking/transactions/', 'duplicate_sub_module_id' => null],
-            ['module_id' => 3, 'name' => 'bank reconcilation', 'url' => '/banking/reconcilation/', 'duplicate_sub_module_id' => null],
+            ['module_id' => 3, 'name' => 'bank reconciliation', 'url' => '/banking/reconciliation/', 'duplicate_sub_module_id' => null],
 
             // Journal Voucher [12]
             ['module_id' => 4, 'name' => 'journal vouchers', 'url' => '/jv/', 'duplicate_sub_module_id' => null],

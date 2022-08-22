@@ -17,6 +17,7 @@ use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\TransfersController;
 use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\TransactionsController;  
+use App\Http\Controllers\Banking\BankReconciliationController;
 // Vendor module
 use App\Http\Controllers\BillsController;
 use App\Http\Controllers\VendorsController;
@@ -451,10 +452,11 @@ Route::group([
              * TODO: Banking > Bank Reconcilation
              */
             Route::group([
-                'as' => 'reconcilation.',
+                'as' => 'reconciliation.',
                 'middleware' => 'acctsys.permission:11',
             ], function(){
-
+                // HTML
+                Route::get('/banking/reconciliation', [BankReconciliationController::class, 'index']);
             });
             
         });
