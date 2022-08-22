@@ -86,13 +86,13 @@ class ReceiptController extends Controller
         $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
 
         $total_balance = 0;
-        $total_balance_past = 0;
+        $total_balance_overdue = 0;
         $count = 0;
         $count_overdue = 0;
 
         foreach($customers as $customer){
             $total_balance += CalculateBalanceCustomer::run($customer->id)['total_balance'];
-            $total_balance_past += CalculateBalanceCustomer::run($customer->id)['total_balance_past'];
+            $total_balance_overdue += CalculateBalanceCustomer::run($customer->id)['total_balance_overdue'];
             $count += CalculateBalanceCustomer::run($customer->id)['count'];
             $count_overdue += CalculateBalanceCustomer::run($customer->id)['count_overdue'];
         }
@@ -101,7 +101,7 @@ class ReceiptController extends Controller
             'transactions' => $transactions,
             'proformas' => $proformas,
             'total_balance' => $total_balance,
-            'total_balance_past' => $total_balance_past,
+            'total_balance_overdue' => $total_balance_overdue,
             'count' => $count,
             'count_overdue' => $count_overdue,
         ]);

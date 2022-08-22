@@ -163,7 +163,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_past, 2)}}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue, 2)}}</div>
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                 {{$count_overdue}} Over Due</div>
                         </div>

@@ -23,7 +23,7 @@ class CalculateBalanceCustomer
 
         $balance = 0;
         $total_balance = 0;
-        $total_balance_past = 0;
+        $total_balance_overdue = 0;
         // count receipt
         $count = 0;
         $count_overdue = 0;
@@ -46,16 +46,16 @@ class CalculateBalanceCustomer
                     $count++;
                 }
                 else {
-                    $total_balance_past += $receipt->grand_total-$receipt->total_amount_received;
+                    $total_balance_overdue += $receipt->grand_total-$receipt->total_amount_received;
                     $count_overdue++;
                 }
             }
         }
  
-        return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_overdue' => $count_overdue];
+        return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_overdue' => $total_balance_overdue, 'count_overdue' => $count_overdue];
         }
         else {
-            return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_overdue' => $count_overdue];
+            return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_overdue' => $total_balance_overdue, 'count_overdue' => $count_overdue];
         }
     }
 }
