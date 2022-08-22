@@ -11,6 +11,7 @@ use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\Log;
 use App\Mail\Vendors\MailVendorStatement;
 use Illuminate\Support\Facades\Mail;
+use App\Actions\Vendor\CalculateBalanceVendor;
 use PDF;
 
 
@@ -26,8 +27,20 @@ class VendorsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
+
+        $total_balance = 0;
+        $total_balance_overdue = 0;
+        $count = 0;
+        $count_overdue = 0;
+        foreach($vendors as $vendor){
+            $vendor->balance = CalculateBalanceVendor::run($vendor->id);
+            $total_balance += $vendor->balance['total_balance'];
+            $count += $vendor->balance['count'];
+            $total_balance_overdue += $vendor->balance['total_balance_overdue'];
+            $count_overdue += $vendor->balance['count_overdue'];
+        }
         
-        return view('vendors.vendors.index',compact('vendors'));
+        return view('vendors.vendors.index',compact('vendors', 'total_balance', 'count', 'total_balance_overdue', 'count_overdue'));
     }
 
     /**
@@ -88,7 +101,7 @@ class VendorsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
-        
+
         return view('vendors.vendors.index',compact('vendors'));
     }
 

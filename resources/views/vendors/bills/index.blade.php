@@ -196,7 +196,7 @@
                                     @endif
                                 </td>
 
-                                <td>
+                                <td>Birr 
                                     @if($transaction->type == 'bill')
                                         {{ number_format($transaction->bill_amount, 2) }}
                                     @elseif($transaction->type == 'purchase_order')
@@ -274,9 +274,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance)}}</div>
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                2 Active</div>
+                                {{$count}} Active</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
@@ -292,9 +292,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue)}}</div>
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                5 Over Due</div>
+                                {{$count_overdue}} Over Due</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}

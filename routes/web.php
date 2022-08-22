@@ -396,7 +396,7 @@ Route::group([
                 'middleware' => 'acctsys.permission:4',
             ], function(){ 
                 // Resource
-                Route::resource('/vendors', VendorsController::class);
+                Route::resource('/vendors/vendors', VendorsController::class);
                 // Mail
                 Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mailVendorStatement'])->name('statement.mail');
                 // Print

@@ -7,6 +7,7 @@ use App\Actions\CreateJournalPostings;
 use App\Actions\UpdateInventoryItemQuantity;
 use App\Actions\Vendor\Bill\StoreBillItems;
 use App\Actions\Vendor\Bill\UpdateBillStatus;
+use App\Actions\Vendor\CalculateBalanceVendor;
 use App\Http\Requests\Vendor\Bill\StoreBillRequest;
 use App\Http\Requests\Vendor\Bill\StorePurchaseOrderRequest;
 use App\Models\Bills;
@@ -48,13 +49,32 @@ class BillsController extends Controller
                 'payment_references.date',
                 'payment_references.status',
                 // 'payment_references.is_void',
-                'bills.grand_total as bill_amount',
+                'bills.amount_received as bill_amount',
                 'purchase_orders.grand_total as purchase_order_amount',
             )
             ->get();
 
+        // count advance revenues
+        $vendors = Vendors::where('accounting_system_id', session('accounting_system_id'))->get();
+
+        $total_balance = 0;
+        $total_balance_overdue = 0;
+        $count = 0;
+        $count_overdue = 0;
+
+        foreach($vendors as $vendor){
+            $total_balance += CalculateBalanceVendor::run($vendor->id)['total_balance'];
+            $total_balance_overdue += CalculateBalanceVendor::run($vendor->id)['total_balance_overdue'];
+            $count += CalculateBalanceVendor::run($vendor->id)['count'];
+            $count_overdue += CalculateBalanceVendor::run($vendor->id)['count_overdue'];
+        } 
+
         return view('vendors.bills.index', [
             'transactions' => $transactions,
+            'total_balance' => $total_balance,
+            'total_balance_overdue' => $total_balance_overdue,
+            'count' => $count,
+            'count_overdue' => $count_overdue,
         ]);
     }
 
