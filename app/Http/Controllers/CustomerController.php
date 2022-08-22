@@ -178,7 +178,7 @@ class CustomerController extends Controller
     public function mailCustomerStatement($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customers = Customers::where('accounting_system_id', $accounting_system_id)
+        $customer = Customers::where('accounting_system_id', $accounting_system_id)
         ->where('id', $id)
         ->whereHas('receiptReference', function($query) {
             $query->where('type', 'receipt')
@@ -187,10 +187,10 @@ class CustomerController extends Controller
                   ->orWhere('status', 'partially_paid');
               });})->first();
             
-        if(!$customers)
+        if(!$customer)
             return redirect()->back()->with('danger', "No pending statements found.");
 
-        $receipt_reference = ReceiptReferences::where('customer_id', $id)
+        $receipt_references = ReceiptReferences::where('customer_id', $id)
         ->where('type', 'receipt')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
@@ -198,11 +198,11 @@ class CustomerController extends Controller
           })->get(); 
 
         $receipts = [];
-        foreach($receipt_reference as $receipt) {
+        foreach($receipt_references as $receipt) {
             $receipts[] = $receipt->toArray() + $receipt->receipt->toArray();  
         }
 
-        Mail::to($customers->email)->queue(new MailCustomerStatement ($customers, $receipts));
+        Mail::to($customer->email)->queue(new MailCustomerStatement ($customer, $receipts));
 
         return redirect()->back()->with('success', "Successfully sent customer statement.");     
     }
@@ -243,7 +243,7 @@ class CustomerController extends Controller
     public function print($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customers = Customers::where('accounting_system_id', $accounting_system_id)
+        $customer = Customers::where('accounting_system_id', $accounting_system_id)
         ->where('id', $id)
         ->whereHas('receiptReference', function($query) {
             $query->where('type', 'receipt')
@@ -252,7 +252,7 @@ class CustomerController extends Controller
                   ->orWhere('status', 'partially_paid');
               });})->first();
 
-        if(!$customers)
+        if(!$customer)
             return redirect()->back()->with('danger', "No pending statements found.");
 
         $receipt_reference = ReceiptReferences::where('customer_id', $id)

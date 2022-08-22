@@ -32,11 +32,12 @@
 </head>
 <body>
     <h1>Proforma Invoice</h1>
+    <h2>{{$proforma_items[0]->receiptReference->customer->name}}</h2>
     <table class="text-center">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Item Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Total Price</th>

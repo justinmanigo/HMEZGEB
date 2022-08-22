@@ -20,10 +20,15 @@
             width: 100%;
         }
 
+        table, th, td {
+            border: 1px solid lightgray;
+        }
+
     </style>
 </head>
 <body>
     <h1>Advance Revenue</h1>
+    <h2>{{$advance_revenue->receiptReference->customer->name}}</h2>
     <table class="text-center">
         <thead>
             <tr>
