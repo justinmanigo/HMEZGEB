@@ -46,21 +46,12 @@
                 <p>Account Number</p>
                 <p>Bank Reconcilation as of <strong>August 31, 2022</strong>
                 <hr>
-                <div class="row">
-                    <nav class="col-12 col-lg-8">
-                        <div class="nav nav-pills" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-status-tab" data-toggle="tab" href="#nav-status" role="tab" aria-controls="nav-status" aria-selected="false">Status</a>
-                            <a class="nav-item nav-link" id="nav-bank-statement-tab" data-toggle="tab" href="#nav-bank-statement" role="tab" aria-controls="nav-bank-statement" aria-selected="true">Bank Statement</a>
-                            <a class="nav-item nav-link" id="nav-cash-book-tab" data-toggle="tab" href="#nav-cash-book" role="tab" aria-controls="nav-cash-book" aria-selected="false">Cash Book</a>
-                        </div>
-                    </nav>
-                    <div class="col-12 col-lg-4 mt-3">
-                        <div class="form-check d-lg-flex justify-content-end">
-                            <input class="form-check-input" type="checkbox" id="toggle-reconciled-transactions">
-                            <label class="form-check-label mr-lg-4" for="toggle-reconciled-transactions">
-                                Show Reconciled Transactions
-                            </label>
-                        </div>
+                <nav>
+                    <div class="nav nav-pills" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-status-tab" data-toggle="tab" href="#nav-status" role="tab" aria-controls="nav-status" aria-selected="false">Status</a>
+                        <a class="nav-item nav-link" id="nav-bank-statement-tab" data-toggle="tab" href="#nav-bank-statement" role="tab" aria-controls="nav-bank-statement" aria-selected="true">Bank Statement</a>
+                        <a class="nav-item nav-link" id="nav-cash-book-tab" data-toggle="tab" href="#nav-cash-book" role="tab" aria-controls="nav-cash-book" aria-selected="false">Cash Book</a>
+                        <a class="nav-item nav-link" id="nav-reconciled-entries-tab" data-toggle="tab" href="#nav-reconciled-entries" role="tab" aria-controls="nav-reconciled-entries" aria-selected="false">Reconciled Entries</a>
                     </div>
                 </div>
                 <hr>
@@ -462,13 +453,6 @@
 <script src="/js/banking/reconciliation/select_bank.js"></script>
 <script>
     $(document).on('click', '#toggle-reconciled-transactions', function(e){
-        console.log($(this).is(':checked'));
-
-        if($(this).is(':checked')){
-            $('tr[data-reconciled="true"]').removeClass('d-none').addClass('d-table-row');
-        } else {
-            $('tr[data-reconciled="true"]').addClass('d-none').removeClass('d-table-row');
-        }
     });
 </script>
 @endpush
