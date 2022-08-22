@@ -193,7 +193,7 @@ class DepositsController extends Controller
         $deposits = Deposits::find($id);
         $pdf = PDF::loadView('customer.deposit.print', compact('deposits'));
 
-        return $pdf->download('deposit_'.$id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('deposit_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
      /******* AJAX ***********/

@@ -228,7 +228,7 @@ class BillsController extends Controller
         $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
 
         $pdf = PDF::loadView('vendors.bills.print', compact('bill_items'));
-        return $pdf->download('bill_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('bill_'.date('Y-m-d').'.pdf');
     }
 
     public function printPurchaseOrder($id)
@@ -236,7 +236,7 @@ class BillsController extends Controller
         $purchase_order = PurchaseOrders::find($id);
 
         $pdf = PDF::loadView('vendors.bills.purchase_order.print', compact('purchase_order'));
-        return $pdf->download('purchase_order_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('purchase_order_'.date('Y-m-d').'.pdf');
     }
 
 

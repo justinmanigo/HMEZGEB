@@ -263,7 +263,7 @@ class CustomerController extends Controller
           })->get(); 
         
         $pdf = \PDF::loadView('customer.customer.print', compact('receipt_reference'));
-        return $pdf->download('customer_statement_'.date('Y_m_d').'.pdf');
+        return $pdf->stream('customer_statement_'.date('Y_m_d').'.pdf');
     }
 
     /*=================================*/

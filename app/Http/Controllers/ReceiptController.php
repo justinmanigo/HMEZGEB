@@ -506,7 +506,7 @@ class ReceiptController extends Controller
 
         $pdf = PDF::loadView('customer.receipt.print', compact('receipt_items'));
 
-        return $pdf->download('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     public function printAdvanceRevenue($id)
@@ -514,7 +514,7 @@ class ReceiptController extends Controller
         $advance_revenue = AdvanceRevenues::find($id);
         $pdf = PDF::loadView('customer.receipt.advance_revenue.print', compact('advance_revenue'));
 
-        return $pdf->download('advance_revenue_'.$id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('advance_revenue_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     public function printCreditReceipt($id)
@@ -522,7 +522,7 @@ class ReceiptController extends Controller
         $credit_receipt = CreditReceipts::find($id);
         $pdf = PDF::loadView('customer.receipt.credit_receipt.print', compact('credit_receipt'));
 
-        return $pdf->download('credit_receipt_'.$id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('credit_receipt_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     public function printProforma($id)
@@ -532,7 +532,7 @@ class ReceiptController extends Controller
 
         $pdf = PDF::loadView('customer.receipt.proforma.print', compact('proforma_items','proforma'));
 
-        return $pdf->download('proforma_'.$id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('proforma_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     // export

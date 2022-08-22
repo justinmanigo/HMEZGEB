@@ -227,7 +227,7 @@ class VendorsController extends Controller
 
         $pdf = PDF::loadView('vendors.vendors.print', compact('payment_reference'));
 
-        return $pdf->download('vendor_statement_'.$id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('vendor_statement_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     // Import Export

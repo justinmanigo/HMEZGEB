@@ -160,7 +160,7 @@ class BankAccountsController extends Controller
         $account = BankAccounts::find($id);
         
         $pdf = PDF::loadView('banking.accounts.print', compact('account'));
-        return $pdf->download('accounts'.date('Y-m-d').'.pdf');
+        return $pdf->stream('accounts'.date('Y-m-d').'.pdf');
     }
 
     // Import Export

@@ -227,7 +227,7 @@ class TransfersController extends Controller
         $bank_transfer = Transfers::find($id);
         $pdf = PDF::loadView('banking.transfers.print', compact('bank_transfer'));
         
-        return $pdf->download('bank_transfer_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('bank_transfer_'.date('Y-m-d').'.pdf');
     }
 
 
