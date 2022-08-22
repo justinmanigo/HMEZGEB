@@ -360,7 +360,7 @@
 
 <!-- Create Transaction -->
 <div class="modal fade" id="createAndMatch" tabindex="-1" role="dialog" aria-labelledby="createAndMatchLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createAndMatchLabel">Create Transaction</h5>
