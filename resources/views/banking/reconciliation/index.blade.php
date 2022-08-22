@@ -56,8 +56,8 @@
                     </nav>
                     <div class="col-12 col-lg-4 mt-3">
                         <div class="form-check d-lg-flex justify-content-end">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label mr-lg-4" for="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" id="toggle-reconciled-transactions">
+                            <label class="form-check-label mr-lg-4" for="toggle-reconciled-transactions">
                                 Show Reconciled Transactions
                             </label>
                         </div>
@@ -213,7 +213,7 @@
                                     {{-- <th>OK?</th> --}}
                                 </thead>
                                 <tbody>
-                                    <tr class="d-table-row">
+                                    <tr class="d-table-row" data-reconciled="false">
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
@@ -222,6 +222,20 @@
                                         <td>
                                             <button data-id="1" data-type="bank-statement" class="btn btn-sm btn-primary btn-correct-and-match" data-toggle="modal" data-target="#correctAndMatch">Correct and Match</button>
                                             <button data-id="1" data-type="bank-statement" class="btn btn-sm btn-info btn-create-and-match" data-toggle="modal" data-target="#createAndMatch">Create Transaction</button>
+                                        </td>
+                                        {{-- <td>
+                                            <a href="#" class="btn btn-sm btn-success">OK</a>
+                                        </td> --}}
+                                    </tr>
+                                    <tr class="d-none" data-reconciled="true">
+                                        <td>August 31, 2022</td>
+                                        <td>Bank Statement</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>0.00</td>
+                                        <td>
+                                            <button data-id="2" data-type="bank-statement" class="btn btn-sm btn-primary btn-correct-and-match" data-toggle="modal" data-target="#correctAndMatch">Correct and Match</button>
+                                            <button data-id="2" data-type="bank-statement" class="btn btn-sm btn-info btn-create-and-match" data-toggle="modal" data-target="#createAndMatch">Create Transaction</button>
                                         </td>
                                         {{-- <td>
                                             <a href="#" class="btn btn-sm btn-success">OK</a>
@@ -244,15 +258,15 @@
                                     {{-- <th>OK?</th> --}}
                                 </thead>
                                 <tbody>
-                                    <tr class="d-table-row">
+                                    <tr class="d-none" data-reconciled="true">
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
                                         <td>0.00</td>
                                         <td>0.00</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Correct and Match</a>
-                                            <a href="#" class="btn btn-sm btn-info">Create Transaction</a>
+                                            <button data-id="1" data-type="cash-book" class="btn btn-sm btn-primary btn-correct-and-match" data-toggle="modal" data-target="#correctAndMatch">Correct and Match</button>
+                                            <button data-id="1" data-type="cash-book" class="btn btn-sm btn-info btn-create-and-match" data-toggle="modal" data-target="#createAndMatch">Create Transaction</button>
                                         </td>
                                         {{-- <td>
                                             <a href="#" class="btn btn-sm btn-success">OK</a>
@@ -446,4 +460,15 @@
 @push('scripts')
 <script src="/js/banking/template_select_bank.js"></script>
 <script src="/js/banking/reconciliation/select_bank.js"></script>
+<script>
+    $(document).on('click', '#toggle-reconciled-transactions', function(e){
+        console.log($(this).is(':checked'));
+
+        if($(this).is(':checked')){
+            $('tr[data-reconciled="true"]').removeClass('d-none').addClass('d-table-row');
+        } else {
+            $('tr[data-reconciled="true"]').addClass('d-none').removeClass('d-table-row');
+        }
+    });
+</script>
 @endpush
