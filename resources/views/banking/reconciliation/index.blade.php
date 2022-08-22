@@ -53,7 +53,7 @@
                         <a class="nav-item nav-link" id="nav-cash-book-tab" data-toggle="tab" href="#nav-cash-book" role="tab" aria-controls="nav-cash-book" aria-selected="false">Cash Book</a>
                         <a class="nav-item nav-link" id="nav-reconciled-entries-tab" data-toggle="tab" href="#nav-reconciled-entries" role="tab" aria-controls="nav-reconciled-entries" aria-selected="false">Reconciled Entries</a>
                     </div>
-                </div>
+                </nav>
                 <hr>
                 
                 <div class="tab-content" id="nav-tabContent">
@@ -193,7 +193,7 @@
                     </div>
                     <div class="tab-pane fade" id="nav-bank-statement" role="tabpanel" aria-labelledby="nav-bank-statement-tab">
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
+                            <table id="table-bank-statement" class="table table-sm table-bordered">
                                 <thead>
                                     <th>Date</th>
                                     <th>Description</th>
@@ -204,7 +204,8 @@
                                     {{-- <th>OK?</th> --}}
                                 </thead>
                                 <tbody>
-                                    <tr class="d-table-row" data-reconciled="false">
+                                    @for($i = 0; $i < 50; $i++)
+                                    <tr>
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
@@ -218,7 +219,7 @@
                                             <a href="#" class="btn btn-sm btn-success">OK</a>
                                         </td> --}}
                                     </tr>
-                                    <tr class="d-none" data-reconciled="true">
+                                    <tr>
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
@@ -232,13 +233,14 @@
                                             <a href="#" class="btn btn-sm btn-success">OK</a>
                                         </td> --}}
                                     </tr>
+                                    @endfor
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-cash-book" role="tabpanel" aria-labelledby="nav-cash-book-tab">
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
+                            <table id="table-cash-book" class="table table-sm table-bordered">
                                 <thead>
                                     <th>Date</th>
                                     <th>Description</th>
@@ -249,7 +251,7 @@
                                     {{-- <th>OK?</th> --}}
                                 </thead>
                                 <tbody>
-                                    <tr class="d-none" data-reconciled="true">
+                                    <tr>
                                         <td>August 31, 2022</td>
                                         <td>Bank Statement</td>
                                         <td>0.00</td>
@@ -267,7 +269,61 @@
                             </table>
                         </div>
                     </div>
-                    
+                    <div class="tab-pane fade" id="nav-reconciled-entries" role="tabpanel" aria-labelledby="nav-reconciled-entries-tab">
+                        
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>Bank Statement</h5>
+                                <div class="table-responsive">
+                                    <table id="table-bank-statement-reconciled" class="table table-sm table-bordered">
+                                        <thead>
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Debit</th>
+                                            <th>Credit</th>
+                                            <th>Balance</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>August 31, 2022</td>
+                                                <td>Bank Statement</td>
+                                                <td>0.00</td>
+                                                <td>0.00</td>
+                                                <td>0.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>Cash Book</h5>
+                                <div class="table-responsive">
+                                    <table id="table-cash-book-reconciled" class="table table-sm table-bordered">
+                                        <thead>
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Debit</th>
+                                            <th>Credit</th>
+                                            <th>Balance</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>August 31, 2022</td>
+                                                <td>Bank Statement</td>
+                                                <td>0.00</td>
+                                                <td>0.00</td>
+                                                <td>0.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -452,7 +508,24 @@
 <script src="/js/banking/template_select_bank.js"></script>
 <script src="/js/banking/reconciliation/select_bank.js"></script>
 <script>
-    $(document).on('click', '#toggle-reconciled-transactions', function(e){
+    $(document).ready(function () {
+        option = {
+            "ordering": false,
+            "info": true,
+            "lengthChange": true,
+            "searching": true,
+        };
+        option2 = {
+            "ordering": false,
+            "info": true,
+            "lengthChange": false,
+            "searching": false,
+        };
+        $('#table-bank-statement').DataTable(option);
+        $('#table-cash-book').DataTable(option);
+        $('#table-bank-statement-reconciled').DataTable(option2);
+        $('#table-cash-book-reconciled').DataTable(option2);
+        $('.dataTables_filter').addClass('pull-right');
     });
 </script>
 @endpush
