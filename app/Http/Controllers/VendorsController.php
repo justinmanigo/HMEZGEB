@@ -231,15 +231,19 @@ class VendorsController extends Controller
         if(!$vendors)
             return redirect()->back()->with('error', "No pending statements found.");
         
-        $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
+        $payment_references = PaymentReferences::where('vendor_id', $vendors->id)
         ->where('type', 'bill')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
               ->orWhere('status', 'partially_paid');
           })->get(); 
 
-        $pdf = PDF::loadView('vendors.vendors.print', compact('payment_reference'));
+        $total_balance = 0;
+        foreach($payment_references as $payment_reference) {
+            $total_balance += $payment_reference->bills->grand_total - $payment_reference->bills->amount_received;
+        }
 
+        $pdf = PDF::loadView('vendors.vendors.print', compact('payment_references','total_balance'));
         return $pdf->stream('vendor_statement_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 

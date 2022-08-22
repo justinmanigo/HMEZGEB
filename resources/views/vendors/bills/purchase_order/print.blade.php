@@ -16,14 +16,18 @@
             width: 100%;
         }
 
+        table, th, td {
+            border: 1px solid lightgray;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-    <h3>Vendor Purchase Order</h3>
-    <table class="text-center">
+    <h3>Purchase Order: {{$purchase_order->paymentReference->vendor->name}}</h3>
+    <table>
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Item Name</th>
                 <th>Value</th>
             </tr>
         </thead>
@@ -34,15 +38,15 @@
                 </tr>
                 <tr>
                     <td>Sub Total</td>
-                    <td>{{$purchase_order->sub_total}}</td>
+                    <td>{{number_format($purchase_order->sub_total, 2)}}</td>
                 </tr>
                 <tr>
                     <td>Tax</td>
-                    <td>{{$purchase_order->tax}}</td>
+                    <td>{{number_format($purchase_order->tax, 2)}}</td>
                 </tr>
                 <tr>
                     <td>Grand Total</td>
-                    <td>{{$purchase_order->grand_total}}</td>
+                    <td>{{number_format($purchase_order->grand_total, 2)}}</td>
                 </tr>
         </tbody>
     </table>
