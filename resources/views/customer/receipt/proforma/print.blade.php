@@ -56,19 +56,19 @@
         <tfoot>
             <tr>
                 <td class="text-right" colspan="4"><b>Total :</b></td>
-                <td>{{$proforma->sub_total}}</td>
+                <td class="text-right">{{$proforma->sub_total}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Tax :</b></td>
-                <td>{{$proforma->tax}}</td>
+                <td class="text-right">{{$proforma->tax}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Withholding :</b></td>
-                <td>{{$proforma->withholding}}</td>
+                <td class="text-right">{{$proforma->withholding}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Grand Total :</b></td>
-                <td>{{$proforma->grand_total}}</td>
+                <td class="text-right">{{$proforma->grand_total}}</td>
             </tr>
         </tfoot>
     </table>

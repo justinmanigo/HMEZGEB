@@ -56,19 +56,19 @@
         <tfoot>
             <tr>
                 <td class="text-right" colspan="4"><b>Total :</b></td>
-                <td>{{$item->receiptReference->receipt->sub_total}}</td>
+                <td class="text-right">{{$item->receiptReference->receipt->sub_total}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Tax :</b></td>
-                <td>{{$item->receiptReference->receipt->tax}}</td>
+                <td class="text-right">{{$item->receiptReference->receipt->tax}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Withholding :</b></td>
-                <td>{{$item->receiptReference->receipt->withholding}}</td>
+                <td class="text-right">{{$item->receiptReference->receipt->withholding}}</td>
             </tr>
             <tr>
                 <td class="text-right" colspan="4"><b>Grand Total :</b></td>
-                <td>{{$item->receiptReference->receipt->grand_total}}</td>
+                <td class="text-right">{{$item->receiptReference->receipt->grand_total}}</td>
             </tr>
         </tfoot>
     </table>
