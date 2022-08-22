@@ -28,14 +28,18 @@ class CustomerController extends Controller
         $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
         
         $total_balance = 0;
-        $total_customers = 0;
+        $total_balance_past = 0;
+        $count = 0;
+        $count_past = 0;
         foreach($customers as $customer){
             $customer->balance = CalculateBalanceCustomer::run($customer->id);
-            $total_balance += $customer->balance['balance'];
-            $total_customers += $customer->balance['customer_count'];
+            $total_balance += $customer->balance['total_balance'];
+            $count += $customer->balance['count'];
+            $total_balance_past += $customer->balance['total_balance_past'];
+            $count_past += $customer->balance['count_past'];
         }
         
-        return view('customer.customer.index',compact('customers', 'total_balance', 'total_customers'));
+        return view('customer.customer.index',compact('customers', 'total_balance', 'count', 'total_balance_past', 'count_past'));
     }
     /**
      * Show the form for creating a new resource.

@@ -22,11 +22,13 @@ class CalculateBalanceCustomer
               });})->first();
 
         $balance = 0;
-        $customer_count = 0;
+        $total_balance = 0;
+        $total_balance_past = 0;
+        // count receipt
+        $count = 0;
+        $count_past = 0;
         
         if($customer){
-        $customer_count++;
-
         $receipt_references = ReceiptReferences::where('customer_id', $customer->id)
         ->where('type', 'receipt')
         ->where(function ($query) {
@@ -39,13 +41,21 @@ class CalculateBalanceCustomer
             ->get();
             foreach($receipts as $receipt){
                 $balance += $receipt->grand_total-$receipt->total_amount_received;
+                if($receipt->due_date > date('Y-m-d')){
+                    $total_balance += $receipt->grand_total-$receipt->total_amount_received;
+                    $count++;
+                }
+                else {
+                    $total_balance_past += $receipt->grand_total-$receipt->total_amount_received;
+                    $count_past++;
+                }
             }
         }
  
-        return ['balance' => $balance, 'customer_count' => $customer_count];
+        return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_past' => $count_past];
         }
-        else{
-            return ['balance' => $balance, 'customer_count' => $customer_count];
+        else {
+            return ['balance' => $balance, 'count' => $count , 'total_balance' => $total_balance, 'total_balance_past' => $total_balance_past, 'count_past' => $count_past];
         }
     }
 }
