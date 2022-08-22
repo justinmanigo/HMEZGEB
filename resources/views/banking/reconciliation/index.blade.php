@@ -21,6 +21,9 @@
     <div class="row mb-4">
         <div class="card col-12 col-lg-6">
             <div class="card-body">
+                <p class="alert alert-danger">
+                    This feature is not yet available at the moment. This is only a static page for demonstration purposes.
+                </p>
                 <p>To proceed with the bank reconciliation process, kindly select a Bank Account and import its bank statement in the form below.</p>
                 <form id="form-getting-started" action="" method="POST">
                     <div class="form-group">
