@@ -46,14 +46,25 @@
                 <p>Account Number</p>
                 <p>Bank Reconcilation as of <strong>August 31, 2022</strong>
                 <hr>
-                <nav>
-                    <div class="nav nav-pills" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-status-tab" data-toggle="tab" href="#nav-status" role="tab" aria-controls="nav-status" aria-selected="false">Status</a>
-                        <a class="nav-item nav-link" id="nav-bank-statement-tab" data-toggle="tab" href="#nav-bank-statement" role="tab" aria-controls="nav-bank-statement" aria-selected="true">Bank Statement</a>
-                        <a class="nav-item nav-link" id="nav-cash-book-tab" data-toggle="tab" href="#nav-cash-book" role="tab" aria-controls="nav-cash-book" aria-selected="false">Cash Book</a>
+                <div class="row">
+                    <nav class="col-12 col-lg-8">
+                        <div class="nav nav-pills" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-status-tab" data-toggle="tab" href="#nav-status" role="tab" aria-controls="nav-status" aria-selected="false">Status</a>
+                            <a class="nav-item nav-link" id="nav-bank-statement-tab" data-toggle="tab" href="#nav-bank-statement" role="tab" aria-controls="nav-bank-statement" aria-selected="true">Bank Statement</a>
+                            <a class="nav-item nav-link" id="nav-cash-book-tab" data-toggle="tab" href="#nav-cash-book" role="tab" aria-controls="nav-cash-book" aria-selected="false">Cash Book</a>
+                        </div>
+                    </nav>
+                    <div class="col-12 col-lg-4 mt-3">
+                        <div class="form-check d-lg-flex justify-content-end">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label mr-lg-4" for="defaultCheck1">
+                                Show Reconciled Transactions
+                            </label>
+                        </div>
                     </div>
-                </nav>
+                </div>
                 <hr>
+                
                 <div class="tab-content" id="nav-tabContent">
                     
                     <div class="tab-pane fade show active" id="nav-status" role="tabpanel" aria-labelledby="nav-contact-tab">
