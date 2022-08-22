@@ -259,14 +259,18 @@ class CustomerController extends Controller
         if(!$customer)
             return redirect()->back()->with('danger', "No pending statements found.");
 
-        $receipt_reference = ReceiptReferences::where('customer_id', $id)
+        $receipt_references = ReceiptReferences::where('customer_id', $id)
         ->where('type', 'receipt')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
               ->orWhere('status', 'partially_paid');
           })->get(); 
         
-        $pdf = \PDF::loadView('customer.customer.print', compact('receipt_reference'));
+        $total_balance = 0;
+        foreach($receipt_references as $receipt_reference) {
+            $total_balance += $receipt_reference->receipt->grand_total - $receipt_reference->receipt->total_amount_received;
+        }
+        $pdf = \PDF::loadView('customer.customer.print', compact('receipt_references', 'total_balance'));
         return $pdf->stream('customer_statement_'.date('Y_m_d').'.pdf');
     }
 

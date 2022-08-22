@@ -31,16 +31,15 @@
     </style>
 </head>
 <body>
-    <h1>Customer Receipt</h1>
-    <h2>{{$receipt_items[0]->receiptReference->customer->name}}</h2>
+    <h3>Customer Receipt: {{$receipt_items[0]->receiptReference->customer->name}}</h3>
     <table class="text-center">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Item Name</th>
                 <th>Quantity</th>
-                <th>Price</th>
-                <th>Total Price</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Total Price</th>
             </tr>
         </thead>
         <tbody>
@@ -49,8 +48,8 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->inventory->item_name}}</td>
                         <td>{{$item->quantity}}</td>
-                        <td>{{$item->price}}</td>
-                        <td>{{$item->total_price}}</td>
+                        <td class="text-right">{{$item->price}}</td>
+                        <td class="text-right">{{$item->total_price}}</td>
                     </tr>
                 @endforeach
         </tbody>

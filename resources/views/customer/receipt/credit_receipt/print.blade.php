@@ -15,6 +15,10 @@
             text-align: center;
         }
 
+        .text-right {
+            text-align: right;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -27,20 +31,19 @@
     </style>
 </head>
 <body>
-    <h1>Credit Receipt</h1>
-    <h2>{{$credit_receipt->receiptReference->customer->name}}</h2>
+    <h3>Credit Receipt:{{$credit_receipt->receiptReference->customer->name}}</h3>
     <table class="text-center">
         <thead>
             <tr>
                 <th>Date</th>
-                <th>Total Amount Received</th>
+                <th class="text-right">Total Amount Received</th>
                 <th>Remark</th>
             </tr>
         </thead>
         <tbody>
                 <tr>
                     <td>{{$credit_receipt->receiptReference->date}}</td>
-                    <td>{{$credit_receipt->total_amount_received}}</td>
+                    <td class="text-right">{{$credit_receipt->total_amount_received}}</td>
                     <td>{{$credit_receipt->remark}}</td>
                 </tr>
         </tbody>
