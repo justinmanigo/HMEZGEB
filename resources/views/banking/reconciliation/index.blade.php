@@ -34,7 +34,7 @@
                         <label for="bank-statement">Bank Statement</label>
                         <input type="file" class="form-control-file" id="gs_bank_statement" name="bank_statement">
                     </div>
-                    <button type="submit" class="btn btn-primary">Import</button>
+                    <button type="submit" class="btn btn-primary" disabled>Import</button>
                 </form>
             </div>
         </div>        
