@@ -520,6 +520,18 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
+    public function voidProforma($id)
+    {
+        $proforma = Proformas::find($id);
+        if($proforma->receiptReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $proforma->receiptReference->is_void = "yes";
+        $proforma->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided proforma.");
+    }
+
     // REACTIVATE VOID
     public function reactivateReceipt($id)
     {

@@ -176,15 +176,8 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel"
                     aria-labelledby="transactions-tab">
-                    @if(isset($_GET['success']))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ $_GET['success'] }}
-                            {{-- {{ session()->get('success') }} --}}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @elseif(session()->has('success'))
+  
+                    @if(session()->has('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session()->get('success') }}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -197,7 +190,15 @@
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>  
+                        </div> 
+                    @elseif(isset($_GET['success']))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ $_GET['success'] }}
+                            {{-- {{ session()->get('success') }} --}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>     
                     @endif
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -383,17 +384,20 @@
                                             </span>
                                         </button>
                                     <!-- void -->
-                                    <button class="btn btn-danger btn-sm" disabled>
+                                    @if($proforma->proforma->receiptReference->is_void == 'no')
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$proforma->proforma->id}}, 'proforma')">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-ban"></i>
                                         </span>
                                     </button>
                                     <!-- make it active -->
+                                    @else
                                     <button class="btn btn-success btn-sm" disabled>
                                         <span class="icon text-white-50">
                                             <i class="fas fa-check"></i>
                                         </span>
                                     </button>
+                                    @endif
                                     </td>
                                 </tr>
                                 @endforeach
