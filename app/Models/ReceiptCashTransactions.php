@@ -24,6 +24,6 @@ class ReceiptCashTransactions extends Model
     }
     public function forReceiptReference()
     {
-        return $this->belongsTo(ReceiptReferences::class, 'receipt_reference_id');
+        return $this->belongsTo(ReceiptReferences::class, 'for_receipt_reference_id');
     }
 }

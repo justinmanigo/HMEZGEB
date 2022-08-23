@@ -327,7 +327,7 @@
                                             </button>
                                             @if($transaction->creditReceipt->receiptReference->is_void == 'no')
                                             <!-- void -->
-                                            <button class="btn btn-danger btn-sm" disabled>
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-ban"></i>
                                                 </span>
