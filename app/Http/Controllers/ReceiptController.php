@@ -574,6 +574,16 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
+    public function reactivateProforma($id)
+    {
+        $proforma = Proformas::find($id);
+        $proforma->receiptReference->is_void = "no";
+
+        $proforma->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated proforma.");
+    }
+
     // Mail
     public function sendMailReceipt($id)
     {
