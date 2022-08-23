@@ -690,6 +690,7 @@ class ReceiptController extends Controller
             ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
             ->where('receipt_cash_transactions.is_deposited', 'no')
             ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+            ->where('receipt_references.is_void', 'no')
             ->get();
 
         return $cash_transactions;

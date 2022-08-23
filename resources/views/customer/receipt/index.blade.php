@@ -696,7 +696,7 @@ POTENTIAL SOLUTIONS:
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <a href="" id="void-receipt" class="btn btn-primary">Print</a>
+                    <a href="" id="void-receipt" class="btn btn-primary">Void</a>
                 </div>
             </div>
         </div>

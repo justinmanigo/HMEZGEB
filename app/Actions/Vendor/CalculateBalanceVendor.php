@@ -17,6 +17,7 @@ class CalculateBalanceVendor
         $vendor = Vendors::where('id', $id)
         ->whereHas('PaymentReferences', function($query) {
             $query->where('type', 'bill')
+            ->where('is_void', 'no')
             ->where(function ($query) {
                 $query->where('status', 'unpaid')
                   ->orWhere('status', 'partially_paid');
@@ -32,6 +33,7 @@ class CalculateBalanceVendor
         if($vendor){
         $payment_references = PaymentReferences::where('vendor_id', $vendor->id)
         ->where('type', 'bill')
+        ->where('is_void', 'no')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
               ->orWhere('status', 'partially_paid');

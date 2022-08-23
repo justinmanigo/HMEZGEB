@@ -16,6 +16,7 @@ class CalculateBalanceCustomer
         $customer = Customers::where('id', $id)
         ->whereHas('receiptReference', function($query) {
             $query->where('type', 'receipt')
+            ->where('is_void', 'no')
             ->where(function ($query) {
                 $query->where('status', 'unpaid')
                   ->orWhere('status', 'partially_paid');
@@ -31,6 +32,7 @@ class CalculateBalanceCustomer
         if($customer){
         $receipt_references = ReceiptReferences::where('customer_id', $customer->id)
         ->where('type', 'receipt')
+        ->where('is_void', 'no')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
               ->orWhere('status', 'partially_paid');
