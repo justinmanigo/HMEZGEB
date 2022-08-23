@@ -19,6 +19,7 @@ class CreatePaymentReferencesTable extends Migration
             // $table->unsignedBigInteger('employee_id')->nullable();
             $table->string('type');
             $table->string('status')->nullable();
+            $table->enum('is_void',['yes','no'])->default('no');
             $table->longText('remark')->nullable();
             $table->longText('date')->nullable();         
             $table->string('attachment')->nullable();

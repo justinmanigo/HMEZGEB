@@ -18,6 +18,7 @@ class PaymentReferences extends Model
         'attachment',
         'remark',
         'status',
+        'is_void',
     ];
 
     public function vendor()
