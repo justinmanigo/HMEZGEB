@@ -284,7 +284,11 @@ Route::group([
                 Route::get('/advance-revenue/void/{id}', [ReceiptController::class, 'voidAdvanceRevenue'])->name('advanceRevenue.void');
                 Route::get('/credit-receipt/void/{id}', [ReceiptController::class, 'voidCreditReceipt'])->name('creditReceipt.void');
                 Route::get('/proforma/void/{id}', [ReceiptController::class, 'voidproforma'])->name('proforma.void');
-
+                // Reactivate void
+                Route::get('/receipt/reactivate/{id}', [ReceiptController::class, 'reactivateReceipt'])->name('receipt.reactivate');
+                Route::get('/advance-revenue/reactivate/{id}', [ReceiptController::class, 'reactivateAdvanceRevenue'])->name('advanceRevenue.reactivate');
+                Route::get('/credit-receipt/reactivate/{id}', [ReceiptController::class, 'reactivateCreditReceipt'])->name('creditReceipt.reactivate');
+                Route::get('/proforma/reactivate/{id}', [ReceiptController::class, 'reactivateproforma'])->name('proforma.reactivate');
                 // Mail
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
                 Route::get('/advance-revenue/mail/{id}', [ReceiptController::class, 'sendMailAdvanceRevenue'])->name('advanceRevenue.mail');

@@ -484,6 +484,17 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
+    // REACTIVATE VOID
+    public function reactivateReceipt($id)
+    {
+        $receipt = Receipts::find($id);
+        $receipt->receiptReference->is_void = "no";
+
+        $receipt->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated receipt.");
+    }
+
     // Mail
     public function sendMailReceipt($id)
     {
