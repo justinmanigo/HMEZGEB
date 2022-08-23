@@ -504,13 +504,17 @@ class ReceiptController extends Controller
 
         $credit_receipt->receiptReference->is_void = "yes";
         $credit_receipt->receiptReference->save();
-
+      
+        // Add the amount of credit receipt to the receipt it was added
         foreach($credit_receipt->receiptReference->ReceiptCashTransactions as $receiptCashTransaction)
         {
-           $receiptCashTransaction->forReceiptReference->receipt->total_amount_received -= $receiptCashTransaction->amount_received;
-           $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
-           $receiptCashTransaction->forReceiptReference->save();
-           $receiptCashTransaction->forReceiptReference->receipt->save();
+            $receiptCashTransaction->forReceiptReference->receipt->total_amount_received -= $receiptCashTransaction->amount_received;
+            $receiptCashTransaction->forReceiptReference->receipt->save();
+            if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
+            $receiptCashTransaction->forReceiptReference->status = 'paid';
+            else
+            $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
+            $receiptCashTransaction->forReceiptReference->save();
         }
 
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
@@ -527,7 +531,6 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }
 
-    // REACTIVATE VOID
     public function reactivateAdvanceRevenue($id)
     {
         $advance_revenue = AdvanceRevenues::find($id);
@@ -536,6 +539,27 @@ class ReceiptController extends Controller
         $advance_revenue->receiptReference->save();
 
         return redirect()->back()->with('success', "Successfully reactivated advance revenue.");
+    }
+
+    public function reactivateCreditReceipt($id)
+    {
+        $credit_receipt = CreditReceipts::find($id);
+        $credit_receipt->receiptReference->is_void = "no";
+        $credit_receipt->receiptReference->save();
+
+        // Add the amount of credit receipt to the receipt it was added
+        foreach($credit_receipt->receiptReference->ReceiptCashTransactions as $receiptCashTransaction)
+        {
+           $receiptCashTransaction->forReceiptReference->receipt->total_amount_received += $receiptCashTransaction->amount_received;
+           $receiptCashTransaction->forReceiptReference->receipt->save();
+           if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
+           $receiptCashTransaction->forReceiptReference->status = 'paid';
+           else
+           $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
+           $receiptCashTransaction->forReceiptReference->save();
+        }
+
+        return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
     // Mail
