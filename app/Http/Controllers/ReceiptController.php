@@ -507,6 +507,17 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }
 
+    // REACTIVATE VOID
+    public function reactivateAdvanceRevenue($id)
+    {
+        $advance_revenue = AdvanceRevenues::find($id);
+        $advance_revenue->receiptReference->is_void = "no";
+
+        $advance_revenue->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated advance revenue.");
+    }
+
     // Mail
     public function sendMailReceipt($id)
     {

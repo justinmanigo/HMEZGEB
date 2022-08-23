@@ -302,7 +302,7 @@
                                         </button>
                                         <!-- make it active -->
                                         @else
-                                        <button class="btn btn-success btn-sm" disabled>
+                                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-check"></i>
                                             </span>
