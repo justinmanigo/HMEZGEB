@@ -279,7 +279,12 @@ Route::group([
                 // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
                 // Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
                 // Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
-                
+                // Void
+                Route::get('/receipt/void/{id}', [ReceiptController::class, 'voidReceipt'])->name('receipt.void');
+                Route::get('/advance-revenue/void/{id}', [ReceiptController::class, 'voidAdvanceRevenue'])->name('advanceRevenue.void');
+                Route::get('/credit-receipt/void/{id}', [ReceiptController::class, 'voidCreditReceipt'])->name('creditReceipt.void');
+                Route::get('/proforma/void/{id}', [ReceiptController::class, 'voidproforma'])->name('proforma.void');
+
                 // Mail
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
                 Route::get('/advance-revenue/mail/{id}', [ReceiptController::class, 'sendMailAdvanceRevenue'])->name('advanceRevenue.mail');

@@ -17,6 +17,7 @@ class ReceiptReferences extends Model
         'type',
         'status',
         'is_void',
+        'is_deposited',
         'customer_id',
     ];
         

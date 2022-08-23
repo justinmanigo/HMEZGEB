@@ -468,13 +468,25 @@ class ReceiptController extends Controller
         }
         $receipt->delete();
   
-        return redirect('receipt/')->with('danger', "Successfully deleted customer");
+        return redirect('receipt/')->with('success', "Successfully deleted customer");
+    }
+
+    // VOID
+    public function voidReceipt($id)
+    {
+        $receipt = Receipts::find($id);
+        if($receipt->receiptReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $receipt->receiptReference->is_void = "yes";
+        $receipt->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
     // Mail
     public function sendMailReceipt($id)
     {
-        // Mail
         $receipt = Receipts::find($id);
         $receipt_items = ReceiptItem::where('receipt_reference_id' , $receipt->receipt_reference_id)->get();
         $emailAddress = $receipt->receiptReference->customer->email;

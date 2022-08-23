@@ -86,7 +86,8 @@ class DepositsController extends Controller
             $cash_transaction = ReceiptCashTransactions::find($request->is_deposited[$i]);
 
             $cash_transaction->receiptReference->receipt;
-            
+            $cash_transaction->receiptReference->is_deposited = 'yes';
+            $cash_transaction->receiptReference->save();
             $cash_transaction->is_deposited = 'yes';
             $cash_transaction->save();
             

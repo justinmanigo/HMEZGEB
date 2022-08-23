@@ -191,6 +191,13 @@
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                    @elseif(session()->has('danger'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session()->get('danger') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>  
                     @endif
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -254,7 +261,22 @@
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-print"></i>
                                             </span>
+                                        </button>                                        
+                                        @if($transaction->receipt->receiptReference->is_void == 'no')
+                                        <!-- void -->
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->receipt->id}}, 'receipt')" >
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
                                         </button>
+                                        @else
+                                        <!-- make it active -->
+                                        <button class="btn btn-success btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </button>
+                                        @endif
                                         @elseif($transaction->type == 'advance_receipt')
                                         <a href="{{route('receipts.advanceReceipt.show', $transaction->advanceRevenue->id)}}" class="btn btn-primary btn-sm edit ">
                                             <span class="icon text-white-50">
@@ -271,6 +293,21 @@
                                                 <i class="fas fa-print"></i>
                                             </span>
                                         </button>
+                                        @if($transaction->advanceRevenue->receiptReference->is_void == 'no')
+                                        <!-- void -->
+                                        <button class="btn btn-danger btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </button>
+                                        <!-- make it active -->
+                                        @else
+                                        <button class="btn btn-success btn-sm" disabled>
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </button>
+                                        @endif
                                         @elseif($transaction->type == 'credit_receipt')
                                             <a href="{{route('receipts.creditReceipt.show', $transaction->creditReceipt->id)}}" class="btn btn-primary btn-sm edit">
                                                 <span class="icon text-white-50">
@@ -282,25 +319,28 @@
                                                     <i class="fas fa-envelope"></i>
                                                 </span>
                                             </button>
-                                        <!-- print/pdf -->
+                                            <!-- print/pdf -->
                                             <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-print"></i>
                                                 </span>
                                             </button>
+                                            @if($transaction->creditReceipt->receiptReference->is_void == 'no')
+                                            <!-- void -->
+                                            <button class="btn btn-danger btn-sm" disabled>
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-ban"></i>
+                                                </span>
+                                            </button>
+                                            <!-- make it active -->
+                                            @else
+                                            <button class="btn btn-success btn-sm" disabled>
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-check"></i>
+                                                </span>
+                                            </button>
+                                            @endif
                                         @endif
-                                        <!-- void -->
-                                        <button class="btn btn-danger btn-sm" disabled>
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-ban"></i>
-                                            </span>
-                                        </button>
-                                        <!-- make it active -->
-                                        <button class="btn btn-success btn-sm" disabled>
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -641,6 +681,26 @@ POTENTIAL SOLUTIONS:
     </div>
 </div>
 
+{{-- Void Confirmation --}}
+    <div class="modal fade" id="modal-void-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-void-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-void-label">Void Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to void record?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="" id="void-receipt" class="btn btn-primary">Print</a>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
     // Get id of transaction to mail confirmation modal
     function mailModal(id, type){
@@ -666,6 +726,19 @@ POTENTIAL SOLUTIONS:
         $('#print-receipt').attr('href', '{{ route("receipts.creditReceipt.print", ":id") }}'.replace(':id', id));
         if(type=="proforma")
         $('#print-receipt').attr('href', '{{ route("receipts.proforma.print", ":id") }}'.replace(':id', id));
+    }
+
+    // Void record
+
+    function voidModal(id, type) {
+        if(type=="receipt")
+        $('#void-receipt').attr('href', '{{ route("receipts.receipt.void", ":id") }}'.replace(':id', id));
+        if(type=="advanceRevenue")
+        $('#void-receipt').attr('href', '{{ route("receipts.advanceRevenue.void", ":id") }}'.replace(':id', id));
+        if(type=="creditReceipt")
+        $('#void-receipt').attr('href', '{{ route("receipts.creditReceipt.void", ":id") }}'.replace(':id', id));
+        if(type=="proforma")
+        $('#void-receipt').attr('href', '{{ route("receipts.proforma.void", ":id") }}'.replace(':id', id));
     }
 
     $(document).ready(function () {
