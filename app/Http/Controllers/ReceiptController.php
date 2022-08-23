@@ -484,6 +484,18 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
+    public function voidAdvanceRevenue($id)
+    {
+        $advance_revenue = AdvanceRevenues::find($id);
+        if($advance_revenue->receiptReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $advance_revenue->receiptReference->is_void = "yes";
+        $advance_revenue->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided advance revenue.");
+    }
+
     // REACTIVATE VOID
     public function reactivateReceipt($id)
     {
