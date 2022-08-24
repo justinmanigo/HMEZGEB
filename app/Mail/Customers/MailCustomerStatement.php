@@ -35,9 +35,10 @@ class MailCustomerStatement extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->markdown('customer.customer.mail')
-            ->with([
-                'customer' => $this->customer,
-                'receipts' => $this->receipts,
-            ]);
+        ->subject('Customer Statement Invoice')
+        ->with([
+            'customer' => $this->customer,
+            'receipts' => $this->receipts,
+        ]);
     }
 }

@@ -29,7 +29,9 @@ class MailCustomerAdvanceRevenue extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('customer.receipt.advance_revenue.mail')->with([
+        return $this->markdown('customer.receipt.advance_revenue.mail')
+        ->subject('Advance Revenue Record')
+        ->with([
             'advance_revenue' => $this->advance_revenue,
         ]);
     }

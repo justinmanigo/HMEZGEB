@@ -35,6 +35,7 @@ class InviteUser extends Mailable implements ShouldQueue
         return $this->markdown('referrals.mail.invite-user', [
             'user' => $this->user,
             'code' => $this->code
-        ]);
+        ])
+        ->subject('Referral Invitation');
     }
 }

@@ -32,6 +32,7 @@ class ExistingSuperAdmin extends Mailable implements ShouldQueue
     {
         return $this->markdown('control_panel.super_admins.mail.existing-super-admin', [
             'user' => $this->user
-        ]);
+        ])
+        ->subject('Invite Existing Super Admin');
     }
 }

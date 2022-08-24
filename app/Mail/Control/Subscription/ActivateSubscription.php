@@ -35,6 +35,7 @@ class ActivateSubscription extends Mailable implements ShouldQueue
         return $this->markdown('control_panel.subscriptions.mail.activate', [
             'owner' => $this->owner,
             'subscription' => $this->subscription,
-        ]);
+        ])
+        ->subject('Activate Subscription');
     }
 }

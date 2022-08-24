@@ -43,6 +43,7 @@ class InviteExistingUser extends Mailable implements ShouldQueue
             'owner' => $this->owner,
             'role' => $this->role,
             'user' => $this->user
-        ]);
+        ])
+        ->subject('Existing User Invitaion');
     }
 }

@@ -31,6 +31,7 @@ class MailBankAccount extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->markdown('banking.accounts.mail')
+        ->subject('Bank Account Record')
         ->with([
             'bank_account' => $this->bank_account,
         ]);

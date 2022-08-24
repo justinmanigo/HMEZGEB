@@ -34,7 +34,9 @@ class MailCustomerReceipt extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->subject('Customer Receipt')
-        ->markdown('customer.receipt.mail')->with([
+        ->markdown('customer.receipt.mail')
+        ->subject('Receipt Invoice')
+        ->with([
             'receipt_items' => $this->receipt_items
         ]);
     }

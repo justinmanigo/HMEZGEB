@@ -35,6 +35,7 @@ class NewSuperAdmin extends Mailable implements ShouldQueue
         return $this->markdown('control_panel.super_admins.mail.new-super-admin', [
             'user' => $this->user,
             'password' => $this->rawPassword
-        ]);
+        ])
+        ->subject('Invite New Super Admin');
     }
 }

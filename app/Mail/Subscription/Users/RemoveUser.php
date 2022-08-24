@@ -43,6 +43,7 @@ class RemoveUser extends Mailable implements ShouldQueue
             'owner' => $this->owner,
             'role' => $this->role,
             'user' => $this->user
-        ]);
+        ])
+        ->subject('Account Removal');
     }
 }

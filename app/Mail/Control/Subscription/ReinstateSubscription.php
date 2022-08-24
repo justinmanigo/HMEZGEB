@@ -35,6 +35,7 @@ class ReinstateSubscription extends Mailable implements ShouldQueue
         return $this->markdown('control_panel.subscriptions.mail.reinstate', [
             'owner' => $this->owner,
             'subscription' => $this->subscription,
-        ]);
+        ])
+        ->subject('Reinstate Subscription');
     }
 }

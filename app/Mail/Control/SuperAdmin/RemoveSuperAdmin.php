@@ -32,6 +32,7 @@ class RemoveSuperAdmin extends Mailable implements ShouldQueue
     {
         return $this->markdown('control_panel.super_admins.mail.remove-super-admin', [
             'user' => $this->user
-        ]);
+        ])
+        ->subject('Remove Super Admin');
     }
 }

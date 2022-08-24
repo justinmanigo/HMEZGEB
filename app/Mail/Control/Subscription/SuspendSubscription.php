@@ -35,6 +35,7 @@ class SuspendSubscription extends Mailable implements ShouldQueue
         return $this->markdown('control_panel.subscriptions.mail.suspend', [
             'owner' => $this->owner,
             'subscription' => $this->subscription,
-        ]);
+        ])
+        ->subject('Suspend Subscription');
     }
 }

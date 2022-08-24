@@ -31,6 +31,7 @@ class MailBankTransfer extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->markdown('banking.transfers.mail')
+        ->subject('Bank Transfer Record')
         ->with([
             'bank_transfer' => $this->bank_transfer,
         ]);

@@ -31,8 +31,9 @@ class MailCustomerDeposit extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->markdown('customer.deposit.mail')
-                    ->with([
-                        'deposit' => $this->deposit,
-                    ]);
+        ->subject('Customer Deposit Record')
+        ->with([
+            'deposit' => $this->deposit,
+        ]);
     }
 }

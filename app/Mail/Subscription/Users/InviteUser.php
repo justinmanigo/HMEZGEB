@@ -46,6 +46,7 @@ class InviteUser extends Mailable implements ShouldQueue
             'role' => $this->role,
             'user' => $this->user,
             'password' => $this->password
-        ]);
+        ])
+        ->subject('User Invitation');
     }
 }
