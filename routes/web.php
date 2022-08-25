@@ -374,6 +374,9 @@ Route::group([
                 // Void
                 Route::get('/bill/void/{id}', [BillsController::class, 'voidBill'])->name('bill.void');
                 Route::get('/purchaseOrder/void/{id}', [BillsController::class, 'voidPurchaseOrder'])->name('purchaseOrder.void');               
+                // Reactivate
+                Route::get('/bill/reactivate/{id}', [BillsController::class, 'reactivateBill'])->name('bill.reactivate');
+                Route::get('/purchaseOrder/reactivate/{id}', [BillsController::class, 'reactivatePurchaseOrder'])->name('purchaseOrder.reactivate');               
                 // AJAX
                 Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);
                 Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [VendorsController::class, 'ajaxGetPurchaseOrder']);

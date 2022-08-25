@@ -260,7 +260,7 @@
                                     </button>
                                     <!-- make it active -->
                                     @else
-                                    <button class="btn btn-success btn-sm" disabled>
+                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->bills->id}},'bill')">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-check"></i>
                                         </span>
@@ -422,6 +422,27 @@
     </div>
 </div>
 
+{{-- confirmation modal reactivate --}}
+<div class="modal fade" id="modal-reactivate-confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Reactivate</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to reactivate this record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="modal-reactivate-confirmation-btn">Reactivate</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
@@ -453,6 +474,16 @@
         else if(type == 'purchaseOrder')
         $('#modal-void-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.void", ":id") }}'.replace(':id', id));
     }
+
+    //  Reactivate
+    function reactivateModal(id,type){
+        // set attribute href of btn-send-mail
+        if(type == 'bill')
+        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.bill.reactivate", ":id") }}'.replace(':id', id));
+        else if(type == 'purchaseOrder')
+        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.reactivate", ":id") }}'.replace(':id', id));
+    }
+
 
 
     var controller;

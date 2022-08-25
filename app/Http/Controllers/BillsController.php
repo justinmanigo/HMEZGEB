@@ -226,10 +226,22 @@ class BillsController extends Controller
         if($bill->paymentReference->is_deposited == "yes")
         return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
+        // TODO: Deactivate connected modules (Add inventory, adjust Journal entry/postings).
         $bill->paymentReference->is_void = "yes";
         $bill->paymentReference->save();
 
         return redirect()->back()->with('success', "Successfully voided bill.");
+    }
+
+    // Void
+    public function reactivateBill($id)
+    {
+        $bill = Bills::find($id);
+        // TODO: Reactivate connected modules (Deduct inventory, adjust Journal entry/postings).
+        $bill->paymentReference->is_void = "no";
+        $bill->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated bill.");
     }
 
     // send Email
