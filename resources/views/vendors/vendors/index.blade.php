@@ -357,7 +357,7 @@
 
         function deleteVendor(id) {
             
-            $('#delete-frm').attr('action', "/vendors/" + id);
+            $('#delete-frm').attr('action', "/vendors/vendors/" + id);
         }
 
     $(document).ready(function () {

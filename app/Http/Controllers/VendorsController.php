@@ -172,8 +172,14 @@ class VendorsController extends Controller
      */
     public function destroy($id)
     {
+        try{
         $vendor = Vendors::where('id',$id)->first();
         $vendor->delete();
+        }
+        catch(\Exception $e)
+        {
+            return back()->with('error', 'Make sure there are no related transactions with vendor.');
+        }
         return redirect('/vendors')->withSuccess('Successfully Deleted');;
     
     }
