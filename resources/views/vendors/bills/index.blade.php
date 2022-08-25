@@ -142,21 +142,28 @@
         <div class="card shadow mb-4">
             <!---------Table--------->
             <div class="card-body">
-                @if(isset($_GET['success']))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ $_GET['success'] }} 
-                    {{-- {{ session()->get('success') }} --}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                @if(session()->has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session()->get('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                @elseif(session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session()->get('success') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                        </button>
+                    </div>
+                @elseif(session()->has('danger'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session()->get('danger') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> 
+                @elseif(isset($_GET['success']))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ $_GET['success'] }}
+                        {{-- {{ session()->get('success') }} --}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>     
                 @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -245,17 +252,20 @@
                                     </button>
                                     @endif
                                     <!-- void -->
-                                    <button class="btn btn-danger btn-sm" disabled>
+                                    @if($transaction->is_void == 'no')
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->bills->id}},'bill')">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-ban"></i>
                                         </span>
                                     </button>
                                     <!-- make it active -->
+                                    @else
                                     <button class="btn btn-success btn-sm" disabled>
                                         <span class="icon text-white-50">
                                             <i class="fas fa-check"></i>
                                         </span>
                                     </button>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -390,6 +400,28 @@
     </div>
 </div>
 
+{{-- confirmation modal void --}}
+<div class="modal fade" id="modal-void-confirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Void</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to void this record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="modal-void-confirmation-btn">Void</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
@@ -411,6 +443,15 @@
         $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.bill.print", ":id") }}'.replace(':id', id));
         else if(type == 'purchaseOrder')
         $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.print", ":id") }}'.replace(':id', id));
+    }
+
+    // VOID
+    function voidModal(id,type){
+        // set attribute href of btn-send-mail
+        if(type == 'bill')
+        $('#modal-void-confirmation-btn').attr('href', '{{ route("bills.bill.void", ":id") }}'.replace(':id', id));
+        else if(type == 'purchaseOrder')
+        $('#modal-void-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.void", ":id") }}'.replace(':id', id));
     }
 
 

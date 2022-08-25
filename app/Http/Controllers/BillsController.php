@@ -48,7 +48,7 @@ class BillsController extends Controller
                 'payment_references.type',
                 'payment_references.date',
                 'payment_references.status',
-                // 'payment_references.is_void',
+                'payment_references.is_void',
                 'bills.amount_received as bill_amount',
                 'purchase_orders.grand_total as purchase_order_amount',
             )
@@ -217,6 +217,19 @@ class BillsController extends Controller
             // image upload
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
+    }
+
+    // Void
+    public function voidBill($id)
+    {
+        $bill = Bills::find($id);
+        if($bill->paymentReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $bill->paymentReference->is_void = "yes";
+        $bill->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided bill.");
     }
 
     // send Email
