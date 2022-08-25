@@ -223,14 +223,25 @@ class BillsController extends Controller
     public function voidBill($id)
     {
         $bill = Bills::find($id);
-        if($bill->paymentReference->is_deposited == "yes")
-        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        // if($bill->paymentReference->is_deposited == "yes")
+        // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
         // TODO: Deactivate connected modules (Add inventory, adjust Journal entry/postings).
         $bill->paymentReference->is_void = "yes";
         $bill->paymentReference->save();
 
         return redirect()->back()->with('success', "Successfully voided bill.");
+    }
+
+    public function voidPurchaseOrder($id)
+    {
+        $purchaseOrder = PurchaseOrders::find($id);
+        // if($purchaseOrder->paymentReference->is_deposited == "yes")
+        // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        $purchaseOrder->paymentReference->is_void = "yes";
+        $purchaseOrder->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided purchase order.");
     }
 
     // Void
@@ -242,6 +253,15 @@ class BillsController extends Controller
         $bill->paymentReference->save();
 
         return redirect()->back()->with('success', "Successfully reactivated bill.");
+    }
+
+    public function reactivatePurchaseOrder($id)
+    {
+        $purchase_order = PurchaseOrders::find($id);
+        $purchase_order->paymentReference->is_void = "no";
+        $purchase_order->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated purchase order.");
     }
 
     // send Email
