@@ -31,7 +31,7 @@
         <div class="card-body tab-content">
 
             <div class="tab-pane fade show balance_sheet_zero_account">
-                <form action="{{route('reports.balance_sheet_zero_account.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.balance_sheet_zero_account.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -61,7 +61,7 @@
             </div>
 
             <div class="tab-pane fade show active balance_sheet">
-                <form action="{{route('reports.balance_sheet.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.balance_sheet.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -91,7 +91,7 @@
             </div>
 
             <div class="tab-pane fade show income_statement_single">
-                <form action="{{route('reports.income_statement_single.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.income_statement_single.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -121,7 +121,7 @@
             </div>
 
             <div class="tab-pane fade show income_statement_multiple">
-                <form action="{{route('reports.income_statement_multiple.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.income_statement_multiple.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
