@@ -52,6 +52,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <select class="form-control form-control-select" id="type" name="type" required>
+                                    <option value="" hidden selected>Select Report Type ...</option>
+                                    <option value="summary">Summary</option>
+                                    <option value="detailed">Detailed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-xl-6 mt-3">
