@@ -17,7 +17,6 @@
         }
 
         .table-bordered th, .table-bordered td{
-            text-align:left;
             border: 1px solid black;
             border-collapse: collapse;
             padding: 2px;
