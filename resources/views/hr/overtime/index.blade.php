@@ -123,17 +123,23 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
                     <th>Date</th>
                     <th>Employee Name</th>
                     <th>Type</th>
                     <th>from</th>
                     <th>to</th>
                     <th>Weekend/Holiday</th>
+                    <th id="thead-actions">Actions</th>
                 </thead>
                 <tbody>
                     @foreach ($overtimes as $overtime)
                     <tr>
+                        <td>{{ $overtime->date }}</td>
+                        <td>{{ $overtime->first_name }}</td>
+                        <td>{{ $overtime->type }}</td>
+                        <td>{{ date('h:i A', strtotime($overtime->from)) }}</td>
+                        <td>{{ date('h:i A', strtotime($overtime->to)) }}</td>
+                        <td>{{ $overtime->is_weekend_holiday }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                 <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip"
@@ -150,12 +156,6 @@
                                 </button>
                             </div>
                         </td>
-                        <td>{{ $overtime->date }}</td>
-                        <td>{{ $overtime->first_name }}</td>
-                        <td>{{ $overtime->type }}</td>
-                        <td>{{ date('h:i A', strtotime($overtime->from)) }}</td>
-                        <td>{{ date('h:i A', strtotime($overtime->to)) }}</td>
-                        <td>{{ $overtime->is_weekend_holiday }}</td>
                     </tr>
                     @endforeach
                     </tr> 

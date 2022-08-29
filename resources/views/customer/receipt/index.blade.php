@@ -137,12 +137,12 @@
                         data-target="#modal-proforma">Proforma</a>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                 <span class="icon text-white-50">
                     <i class="fas fa-file-import"></i>
                 </span>
                 <span class="text">Import</span>
-            </button>
+            </button> --}}
             {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
                 <span class="icon text-white-50">
                     <i class="fas fa-download"></i>
@@ -176,21 +176,29 @@
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel"
                     aria-labelledby="transactions-tab">
-                    @if(isset($_GET['success']))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ $_GET['success'] }}
-                            {{-- {{ session()->get('success') }} --}}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @elseif(session()->has('success'))
+  
+                    @if(session()->has('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session()->get('success') }}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                    @elseif(session()->has('danger'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session()->get('danger') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div> 
+                    @elseif(isset($_GET['success']))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ $_GET['success'] }}
+                            {{-- {{ session()->get('success') }} --}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>     
                     @endif
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -200,7 +208,7 @@
                                 <th>Customer Name</th>
                                 <th>Status</th>
                                 <th>Amount</th>
-                                <th id="thead-actions">Actions</th>
+                                <th>Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($transactions as $transaction)
@@ -227,33 +235,112 @@
                                         @endif
                                     </td>
                                     <td class="table-item-content text-right">
+                                        Birr
                                         @if($transaction->type == 'receipt')
-                                            {{ number_format($transaction->amount, 2) }}
+                                            {{ number_format($transaction->receipt_amount, 2) }}
                                         @elseif($transaction->type == 'advance_receipt')
                                             {{ number_format($transaction->advance_revenue_amount, 2) }}
                                         @elseif($transaction->type == 'credit_receipt')
                                             {{ number_format($transaction->credit_receipt_amount, 2) }}
                                         @endif
                                     </td>
-                                    <td> 
-                                        {{-- <a type="button" class="btn btn-primary" href="{{ url('receipt/'. $transaction->id) }}">
+                                    <td>
+                                        {{-- TODO: Implement hover action bar --}}
+                                        @if($transaction->type == 'receipt')
+                                        <a href="{{route('receipts.receipts.show', $transaction->receipt->id)}}" class="btn btn-primary btn-sm edit">
                                             <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
+                                                <i class="fas fa-edit"></i>
                                             </span>
                                         </a>
-                                        </button>
-                                        <button type="button" class="btn btn-danger "
-                                        onClick="showModel({!! $transaction->id !!})">
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->receipt->id}}, 'receipt')" >
                                             <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fas fa-envelope"></i>
                                             </span>
-                                        </button> --}}
-                                        @if($transaction->type == 'receipt')
-                                        <a class="btn btn-secondary btn-sm" href="{{route('receipts.receipt.mail',$transaction->receipt->id)}}">
+                                        </button>
+                                        <!-- print/pdf -->
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->receipt->id}}, 'receipt')" >
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>                                        
+                                        @if($transaction->receipt->receiptReference->is_void == 'no')
+                                        <!-- void -->
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->receipt->id}}, 'receipt')" >
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </button>
+                                        @else
+                                        <!-- make it active -->
+                                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->receipt->id}}, 'receipt')" >
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </button>
+                                        @endif
+                                        @elseif($transaction->type == 'advance_receipt')
+                                        <a href="{{route('receipts.advanceReceipt.show', $transaction->advanceRevenue->id)}}" class="btn btn-primary btn-sm edit ">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
+                                        <a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                         </a>
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')" >
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        @if($transaction->advanceRevenue->receiptReference->is_void == 'no')
+                                        <!-- void -->
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </button>
+                                        <!-- make it active -->
+                                        @else
+                                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        </button>
+                                        @endif
+                                        @elseif($transaction->type == 'credit_receipt')
+                                            <a href="{{route('receipts.creditReceipt.show', $transaction->creditReceipt->id)}}" class="btn btn-primary btn-sm edit">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                            </button>
+                                            <!-- print/pdf -->
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>
+                                            @if($transaction->creditReceipt->receiptReference->is_void == 'no')
+                                            <!-- void -->
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-ban"></i>
+                                                </span>
+                                            </button>
+                                            <!-- make it active -->
+                                            @else
+                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-check"></i>
+                                                </span>
+                                            </button>
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>
@@ -268,31 +355,50 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                             <thead>
-                                <th id="thead-actions">Actions</th>
                                 <th>Date</th>
                                 <th>Customer Name</th>
                                 <th>Amount</th>
+                                <th id="thead-actions">Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($proformas as $proforma)
                                 <tr>
-                                    <td>
-                                        {{-- <button type="button" class="btn btn-small btn-icon btn-primary"
-                                            data-toggle="tooltip" data-placement="bottom" title="Edit">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="btn btn-danger "
-                                        onClick="showModel({!! $proforma->id !!})">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                        </button> --}}
-                                    </td>
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
-                                    <td class="table-item-content text-right">{{ number_format($proforma->proforma_amount, 2) }}</td>
+                                    <td class="table-item-content text-right">Birr {{ number_format($proforma->proforma_amount, 2) }}</td>
+                                    <td>
+                                        <a href="{{route('receipts.proforma.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$proforma->proforma->id}}, 'proforma')">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </button>
+                                    <!-- print/pdf -->
+                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$proforma->proforma->id}}, 'proforma')">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                    <!-- void -->
+                                    @if($proforma->proforma->receiptReference->is_void == 'no')
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$proforma->proforma->id}}, 'proforma')">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-ban"></i>
+                                        </span>
+                                    </button>
+                                    <!-- make it active -->
+                                    @else
+                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$proforma->proforma->id}}, 'proforma')">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                    </button>
+                                    @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -334,9 +440,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance,2)}}</div>
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                2 Active</div>
+                                {{$count}} Active</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
@@ -352,9 +458,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue,2)}}</div>
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                5 Over Due</div>
+                                {{$count_overdue}} Over Due</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
@@ -474,6 +580,27 @@ POTENTIAL SOLUTIONS:
     </div>
 </form>
 
+{{-- Mail confirmation modal --}}
+<div class="modal fade" id="modal-mail-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-mail-confirmation-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-mail-confirmation-label">Confirm Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to send this record to customer?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="btn-send-mail">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- Import --}}
 <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label"
     aria-hidden="true">
@@ -537,8 +664,120 @@ POTENTIAL SOLUTIONS:
         </div>
     </div>
 </div> --}}
+{{-- Print confirmation Modal --}}
+<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-print-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" id="print-receipt" class="btn btn-primary">Print</a>
+            </div>
+        </div>
+    </div>
+</div>
 
+{{-- Void Confirmation --}}
+    <div class="modal fade" id="modal-void-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-void-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-void-label">Void Record</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to void record?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="" id="void-receipt" class="btn btn-primary">Void</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{-- Reactivate Confirmation --}}
+<div class="modal fade" id="modal-reactivate-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-reactivate-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-reactivate-label">Reactivate Record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to reactivate record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" id="reactivate-receipt" class="btn btn-primary">Reactivate</a>
+            </div>
+        </div>
+    </div>
+</div>    
 <script>
+    // Get id of transaction to mail confirmation modal
+    function mailModal(id, type){
+        // set attribute href of btn-send-mail
+        if(type=="receipt")
+        $('#btn-send-mail').attr('href', '{{ route("receipts.receipt.mail", ":id") }}'.replace(':id', id));
+        if(type=="advanceRevenue")
+        $('#btn-send-mail').attr('href', '{{ route("receipts.advanceRevenue.mail", ":id") }}'.replace(':id', id));
+        if(type=="creditReceipt")
+        $('#btn-send-mail').attr('href', '{{ route("receipts.creditReceipt.mail", ":id") }}'.replace(':id', id));
+        if(type=="proforma")
+        $('#btn-send-mail').attr('href', '{{ route("receipts.proforma.mail", ":id") }}'.replace(':id', id));
+    }
+
+    // Get id of transaction to print confirmation modal
+    function printModal(id, type){
+        // set attribute href of print-receipt
+        if(type=="receipt")
+        $('#print-receipt').attr('href', '{{ route("receipts.receipt.print", ":id") }}'.replace(':id', id));
+        if(type=="advanceRevenue")
+        $('#print-receipt').attr('href', '{{ route("receipts.advanceRevenue.print", ":id") }}'.replace(':id', id));
+        if(type=="creditReceipt")
+        $('#print-receipt').attr('href', '{{ route("receipts.creditReceipt.print", ":id") }}'.replace(':id', id));
+        if(type=="proforma")
+        $('#print-receipt').attr('href', '{{ route("receipts.proforma.print", ":id") }}'.replace(':id', id));
+    }
+
+    // Void record
+
+    function voidModal(id, type) {
+        if(type=="receipt")
+        $('#void-receipt').attr('href', '{{ route("receipts.receipt.void", ":id") }}'.replace(':id', id));
+        if(type=="advanceRevenue")
+        $('#void-receipt').attr('href', '{{ route("receipts.advanceRevenue.void", ":id") }}'.replace(':id', id));
+        if(type=="creditReceipt")
+        $('#void-receipt').attr('href', '{{ route("receipts.creditReceipt.void", ":id") }}'.replace(':id', id));
+        if(type=="proforma")
+        $('#void-receipt').attr('href', '{{ route("receipts.proforma.void", ":id") }}'.replace(':id', id));
+    }
+
+    function reactivateModal(id, type)
+    {
+        if(type=="receipt")
+        $('#reactivate-receipt').attr('href', '{{ route("receipts.receipt.reactivate", ":id") }}'.replace(':id', id));
+        if(type=="advanceRevenue")
+        $('#reactivate-receipt').attr('href', '{{ route("receipts.advanceRevenue.reactivate", ":id") }}'.replace(':id', id));
+        if(type=="creditReceipt")
+        $('#reactivate-receipt').attr('href', '{{ route("receipts.creditReceipt.reactivate", ":id") }}'.replace(':id', id));
+        if(type=="proforma")
+        $('#reactivate-receipt').attr('href', '{{ route("receipts.proforma.reactivate", ":id") }}'.replace(':id', id));
+    }
+
     $(document).ready(function () {
         $('#dataTables').DataTable();
         $('#dataTables2').DataTable();

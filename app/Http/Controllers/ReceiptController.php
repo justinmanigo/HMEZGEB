@@ -10,6 +10,7 @@ use App\Actions\Customer\Receipt\DetermineReceiptStatus;
 use App\Actions\Customer\Receipt\UpdateReceiptStatus;
 use App\Actions\Customer\Receipt\DeterminePaymentMethod;
 use App\Actions\Customer\Receipt\StoreReceiptItems;
+use App\Actions\Customer\CalculateBalanceCustomer;
 use App\Models\Proformas;
 use App\Models\CreditReceipts;
 use App\Models\AdvanceRevenues;
@@ -26,8 +27,12 @@ use App\Http\Requests\Customer\Receipt\StoreCreditReceiptRequest;
 use App\Http\Requests\Customer\Receipt\StoreProformaRequest;
 use App\Models\ReceiptCashTransactions;
 use Illuminate\Support\Facades\Log;
-use App\Mail\MailCustomerReceipt;
+use App\Mail\Customers\MailCustomerReceipt;
+use App\Mail\Customers\MailCustomerAdvanceRevenue;
+use App\Mail\Customers\MailCustomerCreditReceipt;
+use App\Mail\Customers\MailCustomerProforma;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 
 class ReceiptController extends Controller
@@ -77,9 +82,28 @@ class ReceiptController extends Controller
             ->where('receipt_references.type', 'proforma')
             ->get();
 
+        // count advance revenues
+        $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
+
+        $total_balance = 0;
+        $total_balance_overdue = 0;
+        $count = 0;
+        $count_overdue = 0;
+
+        foreach($customers as $customer){
+            $total_balance += CalculateBalanceCustomer::run($customer->id)['total_balance'];
+            $total_balance_overdue += CalculateBalanceCustomer::run($customer->id)['total_balance_overdue'];
+            $count += CalculateBalanceCustomer::run($customer->id)['count'];
+            $count_overdue += CalculateBalanceCustomer::run($customer->id)['count_overdue'];
+        }
+
         return view('customer.receipt.index', [
             'transactions' => $transactions,
-            'proformas' => $proformas
+            'proformas' => $proformas,
+            'total_balance' => $total_balance,
+            'total_balance_overdue' => $total_balance_overdue,
+            'count' => $count,
+            'count_overdue' => $count_overdue,
         ]);
     }
 
@@ -333,6 +357,8 @@ class ReceiptController extends Controller
             'due_date' => $request->due_date,
             'amount' => $request->grand_total,
             'tax' => $request->tax_total,
+            'sub_total' => $request->sub_total,
+            'grand_total' => $request->grand_total,
             'terms_and_conditions' => $request->terms_and_conditions,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
@@ -374,11 +400,29 @@ class ReceiptController extends Controller
         return redirect('receipt/')->with('success', "Successfully edited receipt.");
 
     }
-    
+    // SHOW
     public function show(Receipts $receipt)
     {   
-        // $receipt = Receipts::all();
-        // return view('customer.receipt.index',compact('receipt'));
+        return view('customer.receipt.edit',compact('receipt'));
+    }
+
+    public function showAdvanceRevenue($id)
+    {   
+        $advance_revenue = AdvanceRevenues::find($id);
+        return view('customer.receipt.advance_revenue.edit',compact('advance_revenue'));
+    }
+
+    public function showCreditReceipt($id)
+    {
+        $credit_receipt = CreditReceipts::find($id);
+        return view('customer.receipt.credit_receipt.edit',compact('credit_receipt'));
+    }
+
+    public function showProforma($id)
+    {
+        $proforma = Proformas::find($id);
+
+        return view('customer.receipt.proforma.edit',compact('proforma'));
     }
 
     public function destroy($id)
@@ -424,18 +468,203 @@ class ReceiptController extends Controller
         }
         $receipt->delete();
   
-        return redirect('receipt/')->with('danger', "Successfully deleted customer");
+        return redirect('receipt/')->with('success', "Successfully deleted customer");
+    }
+
+    // VOID
+    public function voidReceipt($id)
+    {
+        $receipt = Receipts::find($id);
+        if($receipt->receiptReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $receipt->receiptReference->is_void = "yes";
+        $receipt->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided receipt.");
+    }
+
+    public function voidAdvanceRevenue($id)
+    {
+        $advance_revenue = AdvanceRevenues::find($id);
+        if($advance_revenue->receiptReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $advance_revenue->receiptReference->is_void = "yes";
+        $advance_revenue->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided advance revenue.");
+    }
+
+    public function voidCreditReceipt($id)
+    {
+        $credit_receipt = CreditReceipts::find($id);
+        if($credit_receipt->receiptReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $credit_receipt->receiptReference->is_void = "yes";
+        $credit_receipt->receiptReference->save();
+      
+        // Add the amount of credit receipt to the receipt it was added
+        foreach($credit_receipt->receiptReference->ReceiptCashTransactions as $receiptCashTransaction)
+        {
+            $receiptCashTransaction->forReceiptReference->receipt->total_amount_received -= $receiptCashTransaction->amount_received;
+            $receiptCashTransaction->forReceiptReference->receipt->save();
+            if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
+            $receiptCashTransaction->forReceiptReference->status = 'paid';
+            else
+            $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
+            $receiptCashTransaction->forReceiptReference->save();
+        }
+
+        return redirect()->back()->with('success', "Successfully voided credit receipt.");
+    }
+
+    public function voidProforma($id)
+    {
+        $proforma = Proformas::find($id);
+        if($proforma->receiptReference->is_deposited == "yes")
+        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $proforma->receiptReference->is_void = "yes";
+        $proforma->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided proforma.");
+    }
+
+    // REACTIVATE VOID
+    public function reactivateReceipt($id)
+    {
+        $receipt = Receipts::find($id);
+        $receipt->receiptReference->is_void = "no";
+
+        $receipt->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated receipt.");
+    }
+
+    public function reactivateAdvanceRevenue($id)
+    {
+        $advance_revenue = AdvanceRevenues::find($id);
+        $advance_revenue->receiptReference->is_void = "no";
+
+        $advance_revenue->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated advance revenue.");
+    }
+
+    public function reactivateCreditReceipt($id)
+    {
+        $credit_receipt = CreditReceipts::find($id);
+        $credit_receipt->receiptReference->is_void = "no";
+        $credit_receipt->receiptReference->save();
+
+        // Add the amount of credit receipt to the receipt it was added
+        foreach($credit_receipt->receiptReference->ReceiptCashTransactions as $receiptCashTransaction)
+        {
+           $receiptCashTransaction->forReceiptReference->receipt->total_amount_received += $receiptCashTransaction->amount_received;
+           $receiptCashTransaction->forReceiptReference->receipt->save();
+           if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
+           $receiptCashTransaction->forReceiptReference->status = 'paid';
+           else
+           $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
+           $receiptCashTransaction->forReceiptReference->save();
+        }
+
+        return redirect()->back()->with('success', "Successfully voided credit receipt.");
+    }
+
+    public function reactivateProforma($id)
+    {
+        $proforma = Proformas::find($id);
+        $proforma->receiptReference->is_void = "no";
+
+        $proforma->receiptReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated proforma.");
     }
 
     // Mail
     public function sendMailReceipt($id)
     {
-        // Mail
         $receipt = Receipts::find($id);
-        $emailAddress = $receipt->receiptReference->customer;
-        Mail::to($emailAddress)->queue(new MailCustomerReceipt);
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $receipt->receipt_reference_id)->get();
+        $emailAddress = $receipt->receiptReference->customer->email;
+        
+        Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt_items));
+        
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
+    }
 
-        return redirect()->route('receipts.receipt.index')->with('success', "Successfully sent email to customer.");
+    public function sendMailAdvanceRevenue($id)
+    {
+        // Mail
+        $advance_revenue = AdvanceRevenues::find($id);
+        $emailAddress = $advance_revenue->receiptReference->customer->email; 
+        
+        Mail::to($emailAddress)->queue(new MailCustomerAdvanceRevenue($advance_revenue));
+        
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
+    }
+
+    public function sendMailCreditReceipt($id)
+    {
+        // Mail
+        $credit_receipt = CreditReceipts::find($id);
+        $emailAddress = $credit_receipt->receiptReference->customer->email; 
+        
+        Mail::to($emailAddress)->queue(new MailCustomerCreditReceipt($credit_receipt));
+        
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
+    }
+
+    public function sendMailProforma($id)
+    {
+        // Mail
+        $proforma = Proformas::find($id);
+        $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
+        $emailAddress = $proforma->receiptReference->customer->email;
+         
+        Mail::to($emailAddress)->queue(new MailCustomerProforma($proforma_items , $proforma));
+        
+        return redirect()->back()->with('success', "Successfully sent email to customer.");
+    }
+
+    // Print
+    public function printReceipt($id)
+    {
+        $receipt = Receipts::find($id);
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $receipt->receipt_reference_id)->get();
+
+        $pdf = PDF::loadView('customer.receipt.print', compact('receipt_items'));
+
+        return $pdf->stream('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
+    }
+
+    public function printAdvanceRevenue($id)
+    {
+        $advance_revenue = AdvanceRevenues::find($id);
+        $pdf = PDF::loadView('customer.receipt.advance_revenue.print', compact('advance_revenue'));
+
+        return $pdf->stream('advance_revenue_'.$id.'_'.date('Y-m-d').'.pdf');
+    }
+
+    public function printCreditReceipt($id)
+    {
+        $credit_receipt = CreditReceipts::find($id);
+        $pdf = PDF::loadView('customer.receipt.credit_receipt.print', compact('credit_receipt'));
+
+        return $pdf->stream('credit_receipt_'.$id.'_'.date('Y-m-d').'.pdf');
+    }
+
+    public function printProforma($id)
+    {
+        $proforma = Proformas::find($id);
+        $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
+
+        $pdf = PDF::loadView('customer.receipt.proforma.print', compact('proforma_items','proforma'));
+
+        return $pdf->stream('proforma_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     // export
@@ -561,6 +790,7 @@ class ReceiptController extends Controller
             ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
             ->where('receipt_cash_transactions.is_deposited', 'no')
             ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+            ->where('receipt_references.is_void', 'no')
             ->get();
 
         return $cash_transactions;

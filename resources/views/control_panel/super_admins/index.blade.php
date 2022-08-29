@@ -65,13 +65,11 @@
                                 <button type="button" class="btn btn-sm btn-primary btn-sa-edit" data-id="{{ $user->id }}" data-toggle="modal" data-target="#modal-sa-edit">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-pen"></i>
-                                        <span class="ml-1">Edit</span>
                                     </span>
                                 </button>
                                 <button type="button" class="btn btn-sm btn-danger btn-sa-remove" data-id="{{ $user->id }}" data-toggle="modal" data-target="#modal-sa-remove">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-trash"></i>
-                                        <span class="ml-1">Remove</span>
                                     </span>
                                 </button>
                             </td>

@@ -15,12 +15,15 @@ class CreateReceiptItemsTable extends Migration
     {
         Schema::create('receipt_items', function (Blueprint $table) {
             $table->id();
-            $table->string('inventory_id');
-            $table->string('receipt_reference_id'); 
+            $table->unsignedBigInteger('inventory_id');
+            $table->unsignedBigInteger('receipt_reference_id'); 
             $table->integer('quantity'); 
             $table->float('price')->nullable();
             $table->float('total_price')->nullable();
             $table->timestamps();
+
+            $table->foreign('inventory_id')->references('id')->on('inventories');
+            $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
         });
     }
 

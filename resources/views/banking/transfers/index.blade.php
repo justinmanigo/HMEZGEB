@@ -198,7 +198,6 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">                        
                             <thead>
-                                
                                 <th>Date</th>
                                 <th>Reference</th>
                                 <th>From Bank</th>
@@ -206,12 +205,11 @@
                                 <th>Amount</th>
                                 <th>Status</th>
                                 <th>Reason</th>
-                                {{-- <th class="thead-actions">Actions</th> --}}
-                                 
+                                <th>Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($transfers as $transfer)
-                                <tr onclick="window.location.href='{{  url('/banking/transfer/'.$transfer->id.'/edit')}}'">
+                                <tr>
                                     <td class="table-item-content">{{ $transfer->created_at->format('d-m-Y') }}</td>
                                     <td class="table-item-content">{{$transfer->id}}</td>
                                     <td class="table-item-content">{{$transfer->fromAccount->bank_branch}}</td>
@@ -226,18 +224,38 @@
                                         @endif
                                     </td>
                                     <td class="table-item-content">{{$transfer->reason}}</td>
-                                    {{-- <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                    <td>
+                                        <a href="{{ url('/banking/transfer/'.$transfer->id.'/edit')}}" class="btn btn-sm btn-icon btn-primary mb-1">
+                                            <!-- edit -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
                                             </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#mail-modal" onclick="mailModal({{$transfer->id}})">
+                                            <!-- email -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
                                         </button>
-                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#print-modal" onclick="printModal({{$transfer->id}})">
+                                            <!-- print -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                            <!-- void -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-ban"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                            <!-- delete -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button>
-                                    </td> 	 	   --}}          
+                                    </td>        
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -358,7 +376,61 @@
     </div>
 </div> 
 
+{{-- Mail confirmation modal --}}
+<div class="modal fade" id="mail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Send Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print this bank transfer record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="mail-modal-btn">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Print confirmation modal --}}
+<div class="modal fade" id="print-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Print</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to send this bank transfer record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="print-modal-btn">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    function mailModal(id)
+    {
+        $('#mail-modal-btn').attr('href', '{{route("transfers.transfer.mail", ":id") }}'.replace(':id', id));
+    }
+
+    function printModal(id)
+    {
+        $('#print-modal-btn').attr('href', '{{route("transfers.transfer.print", ":id") }}'.replace(':id', id));
+    }
+
     // add the file name only in file input field
     $('.custom-file-input').on('change', function() {
     var fileName = $(this).val().split('\\').pop();

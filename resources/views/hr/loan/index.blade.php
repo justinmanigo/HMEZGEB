@@ -187,16 +187,21 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    <th id="thead-actions">Actions</th>
                     <th>Date</th>
                     <th>Employee Name</th>
                     <th>Type</th>
                     <th>loan</th>
                     <th>Paid in</th>
+                    <th id="thead-actions">Actions</th>
                 </thead>
                 <tbody>
                     @foreach($loans as $loan)
                     <tr>
+                        <td>{{ $loan->date }}</td>
+                        <td>{{ $loan->first_name }}</td>
+                        <td>{{ $loan->type }}</td>
+                        <td>{{ $loan->loan }}</td>
+                        <td>{{ $loan->paid_in }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                 <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip"
@@ -213,11 +218,6 @@
                                 </button>
                             </div>
                         </td>
-                        <td>{{ $loan->date }}</td>
-                        <td>{{ $loan->first_name }}</td>
-                        <td>{{ $loan->type }}</td>
-                        <td>{{ $loan->loan }}</td>
-                        <td>{{ $loan->paid_in }}</td>
                     </tr>
                     @endforeach
                 </tbody>

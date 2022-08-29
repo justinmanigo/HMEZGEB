@@ -13,6 +13,9 @@ use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\ReceiptReferences;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Mail\Customers\MailCustomerDeposit;
+use Illuminate\Support\Facades\Mail;
+use PDF;
 
 class DepositsController extends Controller
 {
@@ -83,7 +86,8 @@ class DepositsController extends Controller
             $cash_transaction = ReceiptCashTransactions::find($request->is_deposited[$i]);
 
             $cash_transaction->receiptReference->receipt;
-            
+            $cash_transaction->receiptReference->is_deposited = 'yes';
+            $cash_transaction->receiptReference->save();
             $cash_transaction->is_deposited = 'yes';
             $cash_transaction->save();
             
@@ -169,6 +173,28 @@ class DepositsController extends Controller
     public function destroy(Deposits $deposits)
     {
         //
+    }
+
+    // Mail
+    public function mailDeposit($id)
+    {
+        // Mail
+        $deposit = Deposits::find($id);
+        $emailAddress = "test@test.com";
+
+        Mail::to($emailAddress)->queue(new MailCustomerDeposit($deposit));
+        
+        return redirect()->route('deposits.deposits.index')->with('success', "Successfully sent email to customer.");
+
+    }
+
+    // Print
+    public function printDeposit($id)
+    {
+        $deposits = Deposits::find($id);
+        $pdf = PDF::loadView('customer.deposit.print', compact('deposits'));
+
+        return $pdf->stream('deposit_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
      /******* AJAX ***********/

@@ -91,48 +91,50 @@
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
-                
                             <thead>
-                                
                                 <th>Chart of Acct#</th>
                                 <th>Account Name</th>
                                 <th>Branch</th>
                                 <th>Type</th>
                                 <th>Account Number</th>
-                            
+                                <th>Actions</th>
                             </thead>
                             <tbody>
                                 @foreach($bank_accounts as $account)
-                                <tr onclick="window.location='{{ route('accounts.accounts.edit',$account->id) }}'">
+                                <tr>
                                     <td>{{ $account->chartOfAccount->chart_of_account_no }}</td>
                                     <td>{{ $account->chartOfAccount->account_name }}</td>
                                     <td>{{ $account->bank_branch }}</td>
                                     <td>{{ $account->bank_account_type }}</td>
                                     <td>{{ $account->bank_account_number }}</td>
-                                    
-                                </tr>
-                                @endforeach
-                                {{-- <tr>
-                                    
-                                    <td class="table-item-content">1030</td>
-                                    <td class="table-item-content">Commercail Bank of Ethiopia	</td> 
-                                    <td class="table-item-content"> Main Branch	</td>
-                                    <td class="table-item-content"> Checking Account </td>
-                                    <td class="table-item-content">100002344758</td>
-                                    <td class="table-item-content">700,000.00 </td>
                                     <td>
-                                        <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                        <a href="{{ route('accounts.accounts.edit',$account->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
+                                            <!-- edit -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
                                             </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#mail-modal" onclick="mailModal({{$account->id}})">
+                                            <!-- email -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
                                         </button>
-                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#print-modal" onclick="printModal({{$account->id}})">
+                                            <!-- print -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1" data-toggle="modal" data-target="#delete-modal" onclick="deleteModal({{$account->id}})">
+                                            <!-- delete -->
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button>
                                     </td>
-                                </tr> --}}
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -264,7 +266,87 @@
     </div>
 </div>
 
+{{-- Mail confirmation modal --}}
+<div class="modal fade" id="mail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Send Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to send this bank account record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="mail-modal-btn">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Print confirmation modal --}}
+<div class="modal fade" id="print-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Send Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print this bank account record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="print-modal-btn">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Customer Delete Modal --}}
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-delete-label">Delete Bank Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure to delete this record?</div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                <form id="delete-frm" class="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+        function mailModal(id){
+            $('#mail-modal-btn').attr('href', '{{ route("accounts.accounts.mail", ":id") }}'.replace(':id', id))
+        }
+
+        // delete
+        function deleteModal(id){
+            $('#delete-frm').attr('action', '{{ route("accounts.accounts.destroy", ":id") }}'.replace(':id', id))
+        }
+
+        function printModal(id){
+            $('#print-modal-btn').attr('href', '{{ route("accounts.accounts.print", ":id") }}'.replace(':id', id))
+        }
+
         // add the file name only in file input field
         $('.custom-file-input').on('change', function() {
         var fileName = $(this).val().split('\\').pop();

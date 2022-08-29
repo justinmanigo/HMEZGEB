@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Vendors;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailVendorBill extends Mailable implements ShouldQueue
+class MailVendorBill extends Mailable implements ShouldQueue 
 {
     use Queueable, SerializesModels;
 
@@ -16,11 +16,11 @@ class MailVendorBill extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public $bill_items;
+    public function __construct($bill_items)
     {
-        //
+        $this->bill_items = $bill_items;
     }
-
     /**
      * Build the message.
      *
@@ -28,7 +28,8 @@ class MailVendorBill extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Vendor Bill')
-        ->view('vendors.bills.mail');
+        return $this->markdown('vendors.bills.mail')->with([
+            'bill_items' => $this->bill_items,
+        ]);
     }
 }

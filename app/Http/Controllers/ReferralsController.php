@@ -6,9 +6,11 @@ use App\Actions\CreateReferral;
 use App\Http\Requests\StoreReferralRequest;
 use App\Http\Requests\StoreAdvancedReferralRequest;
 use App\Http\Requests\Referral\GenerateReferralsRequest;
+use App\Mail\Referral\InviteUser;
 use App\Models\Referral;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ReferralsController extends Controller
 {
@@ -25,7 +27,9 @@ class ReferralsController extends Controller
     {
         $validated = $request->validated();
 
-        CreateReferral::run($validated, 'normal');
+        $referral = CreateReferral::run($validated, 'normal');
+
+        Mail::to($referral->email)->queue(new InviteUser(auth()->user(), $referral->code));
 
         return 'Successfully created a referral.';
     }
@@ -44,6 +48,8 @@ class ReferralsController extends Controller
                     ? $validated['number_of_accounts'] 
                     : 1,
         ]);
+
+        Mail::to($referral->email)->queue(new InviteUser(auth()->user(), $referral->code));
 
         return 'Successfuly created an advanced referral.';
     }

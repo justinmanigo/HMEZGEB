@@ -60,12 +60,13 @@
                                 <th>Mobile#</th>
                                 <th>Label</th>
                                 <th>Balance</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @foreach($vendors as $vendor)
-                            <tr onclick="window.location='{{ route('vendors.vendors.edit', $vendor->id) }}'">
+                            <tr>
                                 <td>{{$vendor->name}}</td>
                                 <td>{{$vendor->tin_number}}</td>
                                 <td>{{$vendor->city}}</td>
@@ -82,7 +83,33 @@
                                     <span class="badge badge-secondary">{{$vendor->label}}</span>
                                     @endif
                                 </td>
-                                <td>12,000.00</td>
+                                <td>Birr {{number_format($vendor->balance['balance'],2)}}</td>
+                                <td>
+                                    <a href="{{ route('vendors.vendors.edit', $vendor->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
+                                        <!-- edit -->
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-pen"></i>
+                                        </span>
+                                    </a>
+                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$vendor->id}})">
+                                        <!-- print -->
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-print"></i>
+                                        </span>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-statement" onclick="addVendorIdModal({{$vendor->id}})">
+                                        <!-- email -->
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-danger mb-1"  data-toggle="modal" data-target="#deleteConfirmationModel" onclick="deleteVendor({{$vendor->id}})">
+                                        <!-- delete -->
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                    </button>
+                                </td>
                             </tr>
                             @endforeach
                             <!-- <tr onclick="window.location='/individualVendor'">
@@ -119,9 +146,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance,2)}}</div>
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                2 Active</div>
+                                {{$count}} Active</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
@@ -137,9 +164,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue,2)}}</div>
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                5 Over Due</div>
+                                {{$count_overdue}} Over Due</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
@@ -185,7 +212,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-customer-label">Import Vendor</h5>
+                <h5 class="modal-title" id="modal-vendor-label">Import Vendor</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -218,7 +245,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-customer-label">Export Vendor</h5>
+                <h5 class="modal-title" id="modal-vendor-label">Export Vendor</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -249,7 +276,90 @@
 </div>
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
+
+<div class="modal fade" id="modal-statement" tabindex="-1" role="dialog" aria-labelledby="modal-statement-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-statement-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mail statements to this vendor?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a id="specificStatement" class="btn btn-primary">Send Mail</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{-- Vendor Delete Modal --}}
+<div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-vendor-label">Delete Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure to delete this record?</div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                <form id="delete-frm" class="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Print confirmation modal --}}
+<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-print-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print deposit?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" id="print-deposit" class="btn btn-primary">Print</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
+        function addVendorIdModal(id) {
+            $('#specificStatement').attr('href', '{{ route("vendors.statement.mail", ":id") }}'.replace(':id', id));
+        }
+
+        function printModal(id){
+            $('#print-deposit').attr('href', '{{ route("vendors.statement.print", ":id") }}'.replace(':id', id));
+        }
+
+        
+
+        function deleteVendor(id) {
+            
+            $('#delete-frm').attr('action', "/vendors/vendors/" + id);
+        }
+
     $(document).ready(function () {
             $('#dataTables').DataTable();
             $('.dataTables_filter').addClass('pull-right');

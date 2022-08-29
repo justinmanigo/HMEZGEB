@@ -13,12 +13,12 @@ use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\DecodeTagifyField;
 use Illuminate\Support\Facades\Log;
-use App\Mail\MailBankTransfer;
+use App\Mail\Banking\MailBankTransfer;
 use Illuminate\Support\Facades\Mail;
 use App\Imports\ImportBankTransfer;
 use App\Exports\ExportBankTransfer;
 use Maatwebsite\Excel\Facades\Excel;
-
+use PDF;
 
 class TransfersController extends Controller
 {
@@ -111,11 +111,6 @@ class TransfersController extends Controller
             'amount' => $request->amount,
         ]);
 
-        // Mail
-        // TODO: Confirm where to send the mail
-        // $emailAddress = 'test@example.com';
-        // Mail::to($emailAddress)->queue(new MailBankTransfer);
-        
         return redirect()->back()->with('success', 'Transfer has been made successfully');
     }
 
@@ -145,7 +140,6 @@ class TransfersController extends Controller
           ->find($id);
   
           return view('banking.transfers.edit', compact('transfers'));
-        
     }
 
     /**
@@ -216,6 +210,26 @@ class TransfersController extends Controller
 
         return redirect()->route('transfers.transfer.index')->with('success', 'Transfer has been voided successfully');
     }
+
+    // Mail
+    public function mail($id)
+    {
+        $bank_transfer = Transfers::where('id', $id)->first();
+        // TODO: Add mail to user;
+        $email = "transfer@email.com";
+        Mail::to($email)->queue(new MailBankTransfer($bank_transfer));
+
+        return redirect()->back()->with('success', 'Successfully sent email!');
+    }
+    // Print
+    public function print($id)
+    {
+        $bank_transfer = Transfers::find($id);
+        $pdf = PDF::loadView('banking.transfers.print', compact('bank_transfer'));
+        
+        return $pdf->stream('bank_transfer_'.date('Y-m-d').'.pdf');
+    }
+
 
      // Import Export
 

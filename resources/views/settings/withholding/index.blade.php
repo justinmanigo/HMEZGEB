@@ -72,12 +72,12 @@
                         <td>{{ $withholding->name }}</td>
                         <td class="text-right">{{ number_format($withholding->percentage, 2) }}%</td>
                         <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="modal" data-target="#modal-withholding" onclick="initEditWithholding({{ $withholding->id }})">
+                            <button type="button" class="btn btn-sm btn-icon btn-primary" data-toggle="modal" data-target="#modal-withholding" onclick="initEditWithholding({{ $withholding->id }})">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-pen"></i>
                                 </span>
                             </button>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-withholding-delete" onclick="initDeleteWithholding({{ $withholding->id }})">
+                            <button type="button" class="btn btn-sm btn-icon btn-danger" data-toggle="modal" data-target="#modal-withholding-delete" onclick="initDeleteWithholding({{ $withholding->id }})">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-trash"></i>
                                 </span>

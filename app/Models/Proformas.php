@@ -15,6 +15,8 @@ class Proformas extends Model
         'due_date',
         'amount',
         'tax',
+        'sub_total',
+        'grand_total',
         'terms_and_condition',
         'remark',
         'attachment',

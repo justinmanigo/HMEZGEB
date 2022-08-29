@@ -51,7 +51,8 @@
                             <button type="submit" class="btn btn-primary" 
                                 @if($info['subscription']->account_limit - count($info['accounting_systems']) <= 0 || 
                                     $info['subscription']->user_id != auth()->id() ||
-                                    $info['subscription']->date_to < now()->format('Y-m-d')) 
+                                    (isset($info['subscription']->date_to) && $info['subscription']->date_to < now()->format('Y-m-d'))
+                                ) 
                                     disabled 
                                 @endif>
                                 <span class="icon text-white-50">
@@ -76,7 +77,7 @@
                                 <th>Name</th>
                                 <th>Year</th>
                                 <th>Calendar Type</th>
-                                <th>Actions</th>
+                                {{-- <th>Actions</th> --}}
                             </thead>
                             <tbody>
                                 @foreach($info['accounting_systems'] as $accounting_system)
@@ -95,13 +96,13 @@
                                                 <span class="badge badge-success">Ethiopian</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             @if(!$accounting_system->hasAccess)
                                             
                                             @else
 
                                             @endif
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>

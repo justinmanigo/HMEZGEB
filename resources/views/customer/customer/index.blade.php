@@ -44,6 +44,12 @@
                 </span>
                 <span class="text">Export</span>
             </button>
+            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-statements" >
+                <span class="icon text-white-50">
+                    <i class="fas fa-envelope"></i>
+                </span>
+                <span class="text">Mail Statements</span>
+            </button> --}}
         </div>
         
             {{-- Page Content --}}
@@ -83,17 +89,44 @@
                             <th>Mobile #</th>
                             <th>Label</th>
                             <th>Balance</th>
+                            <th>Actions</th>
                         </thead>
                         <tbody>
                             @foreach ($customers as $customer)
-                            <tr onclick="window.location='{{  route('customers.customers.edit',$customer->id) }}'">
-                                    <td class="table-item-content"> {{$customer->name}} </td>
-                                    <td class="table-item-content"> {{$customer->tin_number}}</td>
-                                    <td class="table-item-content"> {{$customer->city}}</td>
-                                    <td class="table-item-content"> {{$customer->contact_person}}</td>
-                                    <td class="table-item-content"> {{$customer->mobile_number}}</td>
-                                    <td class="table-item-content"><span class="badge badge-primary"> {{$customer->label}}</span></td>
-                                    <td class="table-item-content"> </td>
+                            <tr>
+                                    <td> {{$customer->name}} </td>
+                                    <td> {{$customer->tin_number}}</td>
+                                    <td> {{$customer->city}}</td>
+                                    <td> {{$customer->contact_person}}</td>
+                                    <td> {{$customer->mobile_number}}</td>
+                                    <td><span class="badge badge-primary"> {{$customer->label}}</span></td>
+                                    <td>Birr {{number_format($customer->balance['balance'],2)}}</td>
+                                    <td>
+                                        <a href="{{ route('customers.customers.edit', $customer->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
+                                            <!-- edit -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                        </a>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-print" onclick="printCustomerStatement({{$customer->id}})">
+                                            <!-- print -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-print"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" id="individualMailStatement" data-toggle="modal" data-target="#modal-statement" onclick="addCustomerIdModal({{$customer->id}})">
+                                            <!-- email -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </button>
+                                        <button class="btn btn-sm btn-icon btn-danger mb-1"  data-toggle="modal" data-target="#deleteConfirmationModel" onclick="deleteCustomer({{$customer->id}})">
+                                            <!-- delete -->
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash"></i>
+                                            </span>
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -112,9 +145,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance,2)}}</div>
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                2 Active</div>
+                                {{$count}} Active</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
@@ -130,9 +163,9 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr 215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue, 2)}}</div>
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                5 Over Due</div>
+                                {{$count_overdue}} Over Due</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
@@ -254,9 +287,6 @@
     </div>
 </div>
 
-
-
-
 {{-- Import --}}
 <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" aria-labelledby="modal-import-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -318,9 +348,113 @@
     </div>
 </div> 
 
+{{-- statement confirmation modal
+
+<div class="modal fade" id="modal-statements" tabindex="-1" role="dialog" aria-labelledby="modal-statements-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-statements-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mail statements to customers?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{{route('customers.statements.mail')}}" class="btn btn-primary">Send Mail</a>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+{{-- Print confirmation Modal --}}
+<div class="modal fade" id="modal-print" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-print-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print customer statement?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a  id="print-statement" class="btn btn-primary">Print</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- specific statement modal --}}
+
+<div class="modal fade" id="modal-statement" tabindex="-1" role="dialog" aria-labelledby="modal-statement-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-statement-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mail statements to this customer?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a id="specificStatement" class="btn btn-primary">Send Mail</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{-- Customer Delete Modal --}}
+<div class="modal fade" id="deleteConfirmationModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-customer-label">Delete Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">Are you sure to delete this record?</div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">Cancel</button>
+                <form id="delete-frm" class="" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
  <script>
+        function printCustomerStatement(id){
+            $('#print-statement').attr('href', "/customers/print/statement/" + id);
+        }
+
+        function addCustomerIdModal(id) {
+            $('#specificStatement').attr('href', "/customers/mail/statement/" + id);
+        }
+
+        function deleteCustomer(id) {
+            
+            $('#delete-frm').attr('action', "/customers/customers/" + id);
+        }
         // add <span class="text-danger ml-1">*</span> after the label of required input
         $('label').each(function(){
             if($(this).attr('for') != ''){

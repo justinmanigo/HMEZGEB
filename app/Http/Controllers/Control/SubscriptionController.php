@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Control\ActivateSubscriptionRequest;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class SubscriptionController extends Controller
 {
@@ -38,7 +39,10 @@ class SubscriptionController extends Controller
         $subscription->date_to = $request->expiration_date;
         $subscription->save();
 
-        // TODO: send email to user
+        // Get owner of subscription
+        $owner = $subscription->user;
+
+        Mail::to($owner->email)->queue(new \App\Mail\Control\Subscription\ActivateSubscription($owner, $subscription));
 
         return response()->json([
             'success' => true,
@@ -51,7 +55,9 @@ class SubscriptionController extends Controller
         $subscription->status = 'suspended';
         $subscription->save();
 
-        // TODO: send email to user
+        // Get owner of subscription
+        $owner = $subscription->user;
+        Mail::to($owner->email)->queue(new \App\Mail\Control\Subscription\SuspendSubscription($owner, $subscription));
 
         return response()->json([
             'success' => true,
@@ -64,7 +70,10 @@ class SubscriptionController extends Controller
         $subscription->status = 'active';
         $subscription->save();
 
-        // TODO: send email to user
+        // Get owner of subscription
+        $owner = $subscription->user;
+
+        Mail::to($owner->email)->queue(new \App\Mail\Control\Subscription\ReinstateSubscription($owner, $subscription));
         
         return response()->json([
             'success' => true,

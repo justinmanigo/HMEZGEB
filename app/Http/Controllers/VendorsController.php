@@ -9,6 +9,11 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\Log;
+use App\Mail\Vendors\MailVendorStatement;
+use Illuminate\Support\Facades\Mail;
+use App\Actions\Vendor\CalculateBalanceVendor;
+use PDF;
+
 
 
 class VendorsController extends Controller
@@ -22,8 +27,20 @@ class VendorsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
+
+        $total_balance = 0;
+        $total_balance_overdue = 0;
+        $count = 0;
+        $count_overdue = 0;
+        foreach($vendors as $vendor){
+            $vendor->balance = CalculateBalanceVendor::run($vendor->id);
+            $total_balance += $vendor->balance['total_balance'];
+            $count += $vendor->balance['count'];
+            $total_balance_overdue += $vendor->balance['total_balance_overdue'];
+            $count_overdue += $vendor->balance['count_overdue'];
+        }
         
-        return view('vendors.vendors.vendor',compact('vendors'));
+        return view('vendors.vendors.index',compact('vendors', 'total_balance', 'count', 'total_balance_overdue', 'count_overdue'));
     }
 
     /**
@@ -84,8 +101,8 @@ class VendorsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)->get();
-        
-        return view('vendors.vendors.vendor',compact('vendors'));
+
+        return view('vendors.vendors.index',compact('vendors'));
     }
 
     /**
@@ -98,7 +115,7 @@ class VendorsController extends Controller
     {
         
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        //view edit customer info
+        //view edit vendor info
         $vendor = Vendors::where('id',$id)->first();
         if(!$vendor) return abort(404);
         if($vendor->accounting_system_id != $accounting_system_id) {
@@ -155,13 +172,88 @@ class VendorsController extends Controller
      */
     public function destroy($id)
     {
+        try{
         $vendor = Vendors::where('id',$id)->first();
         $vendor->delete();
+        }
+        catch(\Exception $e)
+        {
+            return back()->with('error', 'Make sure there are no related transactions with vendor.');
+        }
         return redirect('/vendors')->withSuccess('Successfully Deleted');;
     
     }
-    // Import Export
 
+    // Mail Statetment
+    public function mailVendorStatement($id)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
+        ->whereHas('PaymentReferences', function($query) {
+            $query->where('type', 'bill')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
+
+        if(!$vendors)
+            return redirect()->back()->with('error', "No pending statements found.");
+        
+        $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
+        ->where('type', 'bill')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
+
+        $bills = [];
+        
+        foreach($payment_reference as $payment)
+        {
+            $bills[] = $payment->toArray() + $payment->bills->toArray();
+        }
+
+        Mail::to($vendors->email)->queue(new MailVendorStatement ($vendors, $bills));
+
+
+        return redirect()->back()->with('success', "Successfully sent vendor statement.");     
+    }
+
+    // Print Statement
+    public function printVendorStatement($id)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
+        ->whereHas('PaymentReferences', function($query) {
+            $query->where('type', 'bill')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
+
+
+        if(!$vendors)
+            return redirect()->back()->with('error', "No pending statements found.");
+        
+        $payment_references = PaymentReferences::where('vendor_id', $vendors->id)
+        ->where('type', 'bill')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
+
+        $total_balance = 0;
+        foreach($payment_references as $payment_reference) {
+            $total_balance += $payment_reference->bills->grand_total - $payment_reference->bills->amount_received;
+        }
+
+        $pdf = PDF::loadView('vendors.vendors.print', compact('payment_references','total_balance'));
+        return $pdf->stream('vendor_statement_'.$id.'_'.date('Y-m-d').'.pdf');
+    }
+
+    // Import Export
     public function import(Request $request)
     {
         if (!$request->file('file'))

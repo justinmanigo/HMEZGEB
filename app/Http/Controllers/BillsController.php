@@ -7,6 +7,7 @@ use App\Actions\CreateJournalPostings;
 use App\Actions\UpdateInventoryItemQuantity;
 use App\Actions\Vendor\Bill\StoreBillItems;
 use App\Actions\Vendor\Bill\UpdateBillStatus;
+use App\Actions\Vendor\CalculateBalanceVendor;
 use App\Http\Requests\Vendor\Bill\StoreBillRequest;
 use App\Http\Requests\Vendor\Bill\StorePurchaseOrderRequest;
 use App\Models\Bills;
@@ -16,8 +17,10 @@ use App\Models\BillItem;
 use App\Models\PurchaseOrders;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
-use App\Mail\MailVendorBill;
+use App\Mail\Vendors\MailVendorBill;
+use App\Mail\Vendors\MailVendorPurchaseOrder;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 
 class BillsController extends Controller
@@ -45,14 +48,33 @@ class BillsController extends Controller
                 'payment_references.type',
                 'payment_references.date',
                 'payment_references.status',
-                // 'payment_references.is_void',
-                'bills.grand_total as bill_amount',
+                'payment_references.is_void',
+                'bills.amount_received as bill_amount',
                 'purchase_orders.grand_total as purchase_order_amount',
             )
             ->get();
-       
+
+        // count advance revenues
+        $vendors = Vendors::where('accounting_system_id', session('accounting_system_id'))->get();
+
+        $total_balance = 0;
+        $total_balance_overdue = 0;
+        $count = 0;
+        $count_overdue = 0;
+
+        foreach($vendors as $vendor){
+            $total_balance += CalculateBalanceVendor::run($vendor->id)['total_balance'];
+            $total_balance_overdue += CalculateBalanceVendor::run($vendor->id)['total_balance_overdue'];
+            $count += CalculateBalanceVendor::run($vendor->id)['count'];
+            $count_overdue += CalculateBalanceVendor::run($vendor->id)['count_overdue'];
+        } 
+
         return view('vendors.bills.index', [
             'transactions' => $transactions,
+            'total_balance' => $total_balance,
+            'total_balance_overdue' => $total_balance_overdue,
+            'count' => $count,
+            'count_overdue' => $count_overdue,
         ]);
     }
 
@@ -197,15 +219,91 @@ class BillsController extends Controller
         ]);
     }
 
+    // Void
+    public function voidBill($id)
+    {
+        $bill = Bills::find($id);
+        // if($bill->paymentReference->is_deposited == "yes")
+        // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        // TODO: Deactivate connected modules (Add inventory, adjust Journal entry/postings).
+        $bill->paymentReference->is_void = "yes";
+        $bill->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided bill.");
+    }
+
+    public function voidPurchaseOrder($id)
+    {
+        $purchaseOrder = PurchaseOrders::find($id);
+        // if($purchaseOrder->paymentReference->is_deposited == "yes")
+        // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        $purchaseOrder->paymentReference->is_void = "yes";
+        $purchaseOrder->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided purchase order.");
+    }
+
+    // Void
+    public function reactivateBill($id)
+    {
+        $bill = Bills::find($id);
+        // TODO: Reactivate connected modules (Deduct inventory, adjust Journal entry/postings).
+        $bill->paymentReference->is_void = "no";
+        $bill->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated bill.");
+    }
+
+    public function reactivatePurchaseOrder($id)
+    {
+        $purchase_order = PurchaseOrders::find($id);
+        $purchase_order->paymentReference->is_void = "no";
+        $purchase_order->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully reactivated purchase order.");
+    }
+
     // send Email
     public function sendMailBill($id)
     {
-        $bills = Bills::find($id);
-        $emailAddress = $bills->paymentReference->vendor->email;
-        Mail::to($emailAddress)->queue(new MailVendorBill);
+        $bill = Bills::find($id);
+        $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
+        $emailAddress = $bill->paymentReference->vendor->email;
+
+        Mail::to($emailAddress)->queue(new MailVendorBill ($bill_items));
         
-        return redirect()->route('bills.bill.index')->with('success', 'Email has been sent!');
+        return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
+
+    public function sendMailPurchaseOrder($id)
+    {
+        $purchaseOrder = PurchaseOrders::find($id);
+        $emailAddress = $purchaseOrder->paymentReference->vendor->email;
+        
+        Mail::to($emailAddress)->queue(new MailVendorPurchaseOrder ($purchaseOrder));
+        
+        return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
+    }
+
+    // Print
+    public function printBill($id)
+    {
+        $bill = Bills::find($id);
+        $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
+
+        $pdf = PDF::loadView('vendors.bills.print', compact('bill_items'));
+        return $pdf->stream('bill_'.date('Y-m-d').'.pdf');
+    }
+
+    public function printPurchaseOrder($id)
+    {
+        $purchase_order = PurchaseOrders::find($id);
+
+        $pdf = PDF::loadView('vendors.bills.purchase_order.print', compact('purchase_order'));
+        return $pdf->stream('purchase_order_'.date('Y-m-d').'.pdf');
+    }
+
 
     /**
      * Display the specified resource.
@@ -215,7 +313,13 @@ class BillsController extends Controller
      */
     public function show(Bills $bills)
     {
-        return view('vendors.bills.individualBill');
+        return view('vendors.bills.show');
+    }
+
+    public function showPurchaseOrder($id)
+    {
+        $purchaseOrders = PurchaseOrders::find($id);
+        return view('vendors.bills.purchase_order.show', compact('purchaseOrders'));
     }
 
     /**
@@ -251,4 +355,6 @@ class BillsController extends Controller
     {
         //
     }
+
+    
 }

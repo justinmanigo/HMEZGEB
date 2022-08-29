@@ -267,22 +267,40 @@ Route::group([
                 'as'=>'receipts.',
                 'middleware' => 'acctsys.permission:2', 
             ], function(){
-                Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
-                
+                // Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
+                Route::resource('/customers/receipts', ReceiptController::class);
                 // Store
                 Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
                 Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
+                Route::get('/advance-receipt/{receipt}',[ReceiptController::class,'showAdvanceRevenue'])->name('advanceReceipt.show');
                 Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
+                Route::get('/credit-receipt/{receipt}',[ReceiptController::class,'showCreditReceipt'])->name('creditReceipt.show');
                 Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
-        
+                Route::get('/proforma/{receipt}',[ReceiptController::class,'showProforma'])->name('proforma.show');
                 Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
-                Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
-                Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
-                Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
-                
+                // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
+                // Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
+                // Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
+                // Void
+                Route::get('/receipt/void/{id}', [ReceiptController::class, 'voidReceipt'])->name('receipt.void');
+                Route::get('/advance-revenue/void/{id}', [ReceiptController::class, 'voidAdvanceRevenue'])->name('advanceRevenue.void');
+                Route::get('/credit-receipt/void/{id}', [ReceiptController::class, 'voidCreditReceipt'])->name('creditReceipt.void');
+                Route::get('/proforma/void/{id}', [ReceiptController::class, 'voidproforma'])->name('proforma.void');
+                // Reactivate void
+                Route::get('/receipt/reactivate/{id}', [ReceiptController::class, 'reactivateReceipt'])->name('receipt.reactivate');
+                Route::get('/advance-revenue/reactivate/{id}', [ReceiptController::class, 'reactivateAdvanceRevenue'])->name('advanceRevenue.reactivate');
+                Route::get('/credit-receipt/reactivate/{id}', [ReceiptController::class, 'reactivateCreditReceipt'])->name('creditReceipt.reactivate');
+                Route::get('/proforma/reactivate/{id}', [ReceiptController::class, 'reactivateproforma'])->name('proforma.reactivate');
                 // Mail
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
-
+                Route::get('/advance-revenue/mail/{id}', [ReceiptController::class, 'sendMailAdvanceRevenue'])->name('advanceRevenue.mail');
+                Route::get('/credit-receipt/mail/{id}', [ReceiptController::class, 'sendMailCreditReceipt'])->name('creditReceipt.mail');
+                Route::get('/proforma/mail/{id}', [ReceiptController::class, 'sendMailProforma'])->name('proforma.mail');
+                // Print
+                Route::get('/receipt/print/{id}', [ReceiptController::class, 'printReceipt'])->name('receipt.print');
+                Route::get('/advance-revenue/print/{id}', [ReceiptController::class, 'printAdvanceRevenue'])->name('advanceRevenue.print');
+                Route::get('/credit-receipt/print/{id}', [ReceiptController::class, 'printCreditReceipt'])->name('creditReceipt.print');
+                Route::get('/proforma/print/{id}', [ReceiptController::class, 'printProforma'])->name('proforma.print');
                 /** AJAX Calls */
                 Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
                 Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);
@@ -297,7 +315,12 @@ Route::group([
                 'middleware' => 'acctsys.permission:1', 
             ], function(){ 
                 // Resource
-                Route::resource('/customers', CustomerController::class);
+                Route::resource('/customers/customers', CustomerController::class);
+                // Mail
+                // Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');             
+                Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');             
+                // Print
+                Route::get('/customers/print/statement/{id}', [CustomerController::class, 'print'])->name('statement.print');
                 // Import Export
                 Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
                 Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');
@@ -313,11 +336,13 @@ Route::group([
                 'as'=>'deposits.',
                 'middleware' => 'acctsys.permission:3', 
             ], function(){ 
-                Route::get('/customers/deposits/', [DepositsController::class, 'index']);
                 Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
                 // RESOURCE
-                Route::resource('/deposits', DepositsController::class);
-                
+                Route::resource('customers/deposits', DepositsController::class);
+                // Mail
+                Route::get('/customers/deposits/mail/{id}', [DepositsController::class, 'mailDeposit'])->name('deposit.mail');
+                // Print
+                Route::get('/customers/deposits/print/{id}', [DepositsController::class, 'printDeposit'])->name('deposit.print');
             });
         });
 
@@ -336,14 +361,24 @@ Route::group([
                 'middleware' => 'acctsys.permission:5', 
             ], function(){ 
                 // HTML
-                Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
+                Route::resource('/vendors/bills', BillsController::class);
+                // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
                 Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
-                Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
+                // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
                 Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
-
+                Route::get('/purchaseorder/{id}',[BillsController::class,'showPurchaseOrder'])->name('purchaseOrder.show');
                 // Mail
                 Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
-
+                Route::get('/purchaseOrder/mail/{id}', [BillsController::class, 'sendMailPurchaseOrder'])->name('purchaseOrder.mail');
+                // Print
+                Route::get('/bill/print/{id}', [BillsController::class, 'printBill'])->name('bill.print');
+                Route::get('/purchaseOrder/print/{id}', [BillsController::class, 'printPurchaseOrder'])->name('purchaseOrder.print');
+                // Void
+                Route::get('/bill/void/{id}', [BillsController::class, 'voidBill'])->name('bill.void');
+                Route::get('/purchaseOrder/void/{id}', [BillsController::class, 'voidPurchaseOrder'])->name('purchaseOrder.void');               
+                // Reactivate
+                Route::get('/bill/reactivate/{id}', [BillsController::class, 'reactivateBill'])->name('bill.reactivate');
+                Route::get('/purchaseOrder/reactivate/{id}', [BillsController::class, 'reactivatePurchaseOrder'])->name('purchaseOrder.reactivate');               
                 // AJAX
                 Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);
                 Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [VendorsController::class, 'ajaxGetPurchaseOrder']);
@@ -378,7 +413,11 @@ Route::group([
                 'middleware' => 'acctsys.permission:4',
             ], function(){ 
                 // Resource
-                Route::resource('/vendors', VendorsController::class);
+                Route::resource('/vendors/vendors', VendorsController::class);
+                // Mail
+                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mailVendorStatement'])->name('statement.mail');
+                // Print
+                Route::get('/vendors/print/statement/{id}', [VendorsController::class, 'printVendorStatement'])->name('statement.print');
                 // Import Export
                 Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
                 Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');
@@ -401,11 +440,15 @@ Route::group([
                 'as'=>'accounts.',
                 'middleware' => 'acctsys.permission:7',
             ], function(){ 
+                // RESOURCE
+                Route::resource('/banking/accounts', BankAccountsController::class);
                 // Import Export
                 Route::post('/banking/accounts/import', [BankAccountsController::class, 'import'])->name('accounts.import');
                 Route::post('/banking/accounts/export', [BankAccountsController::class, 'export'])->name('accounts.export');
-                // RESOURCE
-                Route::resource('/banking/accounts', BankAccountsController::class);
+                // Mail
+                Route::get('/banking/accounts/mail/{id}', [BankAccountsController::class, 'mail'])->name('accounts.mail');
+                // Print
+                Route::get('/banking/accounts/print/{id}', [BankAccountsController::class, 'print'])->name('accounts.print');
             });
         
             /**
@@ -415,14 +458,18 @@ Route::group([
                 'as'=>'transfers.',
                 'middleware' => 'acctsys.permission:8',
             ], function(){ 
+                // RESOURCE
+                Route::resource('/banking/transfer', TransfersController::class);
                 // HTML
                 Route::post('/banking/transfer/{id}/void', [TransfersController::class, 'void'])->name('transfer.void');
                 Route::get('/ajax/search/bank/{query}', [TransfersController::class, 'queryBank']);
+                // Mail
+                Route::get('/banking/transfer/mail/{id}', [TransfersController::class, 'mail'])->name('transfer.mail');
+                // Print
+                Route::get('/banking/transfer/print/{id}', [TransfersController::class, 'print'])->name('transfer.print');
                 // Import Export
                 Route::post('/banking/transfers/import', [TransfersController::class, 'import'])->name('transfers.import');
                 Route::post('/banking/transfers/export', [TransfersController::class, 'export'])->name('transfers.export');
-                // RESOURCE
-                Route::resource('/banking/transfer', TransfersController::class);
             });
         
             /**
@@ -482,12 +529,16 @@ Route::group([
             'middleware' => 'acctsys.permission:19',
         ], function(){ 
             // HTML
-            Route::get('/inventory/', [InventoryController::class, 'index']);
-            Route::post('/inventory', [InventoryController::class, 'store']);
-            Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
-            Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
-            Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
-            Route::delete('/inventory/{inventory}', [InventoryController::class, 'destroy']);
+            Route::resource('/inventory', InventoryController::class);
+            // import export
+            Route::post('/inventory/import', [InventoryController::class, 'import'])->name('import');
+            Route::post('/inventory/export', [InventoryController::class, 'export'])->name('export');
+            // Route::get('/inventory', [InventoryController::class, 'index']);
+            // Route::post('/inventory', [InventoryController::class, 'store']);
+            // Route::get('/inventory/{inventory}', [InventoryController::class, 'show']);
+            // Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
+            // Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
+            // Route::delete('/inventory/{inventory}', [InventoryController::class, 'destroy']);
         
             // AJAX
             Route::get('/select/search/inventory/{query}', [InventoryController::class, 'ajaxSearchInventory']);

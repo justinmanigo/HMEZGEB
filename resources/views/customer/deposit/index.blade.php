@@ -145,11 +145,35 @@
                             <td><span class="badge badge-primary">Self</span></td>
                             <td>{{$deposit->total_amount}}</td>
                             <td>
-                                <a href="" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
+                                {{-- <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
+                                    <!-- edit -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-pen"></i>
+                                    </span>
+                                </a> --}}
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})">
+                                    <!-- email -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})">
+                                    <!-- print -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-print"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                    <!-- void -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-ban"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                    <!-- delete -->
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-trash"></i>
+                                    </span>
                                 </button>
                             </td>
                         </tr>            
@@ -250,7 +274,63 @@
     </div>
 </div>
 
+{{-- confirmation mail modal --}}
+
+<div class="modal fade" id="modal-mail-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-mail-confirmation-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-mail-confirmation-label">Confirm Mail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to send this deposit receipt to customer?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-primary" id="btn-send-mail">Send</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Print confirmation Modal --}}
+<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-print-label">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to print deposit?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" id="print-deposit" class="btn btn-primary">Print</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+        // Get id of transaction to mail confirmation modal
+        function mailModal(id){
+        // set attribute href of btn-send-mail
+            $('#btn-send-mail').attr('href', '{{ route("deposits.deposit.mail", ":id") }}'.replace(':id', id));
+        }
+
+        // Get id of transaction to print confirmation modal
+        function printModal(id){
+        // set attribute href of print-deposit
+            $('#print-deposit').attr('href', '{{ route("deposits.deposit.print", ":id") }}'.replace(':id', id));
+        }
+
+
         $(document).ready(function () {
             $('#dataTables').DataTable();
             $('#dataTables2').DataTable();

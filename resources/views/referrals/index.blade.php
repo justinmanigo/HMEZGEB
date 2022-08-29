@@ -89,11 +89,10 @@
                             <td>{{ $referral->name }}</td>
                             <td>{{ $referral->email }}</td>
                             <td>
-                                <button type="button" class="btn btn-small btn-icon btn-primary" onclick="javascript:void(0)" disabled>
+                                <button type="button" class="btn btn-small btn-icon btn-primary" onclick="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Resend Email" disabled>
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    Resend Email
                                 </button>
                             </td>
                         </tr>

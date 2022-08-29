@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Kaiopiola\Keygen\Key;
 
 class SuperAdminController extends Controller
@@ -37,19 +38,28 @@ class SuperAdminController extends Controller
         $username = strtolower((string)$exampleKey->generate());
         $password = strtolower((string)$exampleKey->generate());
 
-        $user = User::firstOrCreate([
-            'email' => $request->email,
-        ], [
-            'username' => $username,
-            'password' => Hash::make($password),
-        ]);
+        $user = User::where('email', $request->email)->first();
+        if(!$user) {
+            $user = new User();
+            $user->email = $request->email;
+            $user->username = $username;
+            $user->password = Hash::make($password);
+            $user->control_panel_role = $request->control_panel_role;
+            $user->save();
+            $newUser = true;
+        }
+        else {
+            if($user->is_control_panel_access_accepted)
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User already has access to the control panel.'
+                ]);
+            }
 
-        if($user->is_control_panel_access_accepted)
-        {
-            return response()->json([
-                'success' => false,
-                'message' => 'User already has access to the control panel.'
-            ]);
+            $user->control_panel_role = $request->control_panel_role;
+            $user->save();
+            $newUser = false;
         }
 
         $subscription = Subscription::updateOrCreate([
@@ -70,8 +80,13 @@ class SuperAdminController extends Controller
             'is_accepted' => false,
         ]);
 
-        $user->control_panel_role = $request->control_panel_role;
-        $user->save();
+        // TODO: Send email invitation to be a super admin.
+        if($newUser) {
+            Mail::to($user->email)->queue(new \App\Mail\Control\SuperAdmin\NewSuperAdmin($user, $password));
+        }
+        else {
+            Mail::to($user->email)->queue(new \App\Mail\Control\SuperAdmin\ExistingSuperAdmin($user));
+        }
 
         return response()->json([
             'success' => true,
@@ -149,6 +164,8 @@ class SuperAdminController extends Controller
 
         $subscription->date_to = now()->addDays(7);
         $subscription->save();
+
+        Mail::to($user->email)->queue(new \App\Mail\Control\SuperAdmin\RemoveSuperAdmin($user));
 
         return response()->json([
             'success' => true,

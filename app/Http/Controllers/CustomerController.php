@@ -6,7 +6,14 @@ use App\Imports\ImportCustomersCustomer;
 use App\Exports\ExportCustomersCustomer;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ReceiptReferences;
+use App\Models\Receipts;
 use Illuminate\Http\Request;
+use App\Mail\Customers\MailCustomerStatement;
+use Illuminate\Support\Facades\Mail;
+use App\Exceptions;
+use App\Actions\Customer\CalculateBalanceCustomer;
+
+
 
 class CustomerController extends Controller
 {
@@ -19,8 +26,20 @@ class CustomerController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
-
-        return view('customer.customer.index',compact('customers'));
+        
+        $total_balance = 0;
+        $total_balance_overdue = 0;
+        $count = 0;
+        $count_overdue = 0;
+        foreach($customers as $customer){
+            $customer->balance = CalculateBalanceCustomer::run($customer->id);
+            $total_balance += $customer->balance['total_balance'];
+            $count += $customer->balance['count'];
+            $total_balance_overdue += $customer->balance['total_balance_overdue'];
+            $count_overdue += $customer->balance['count_overdue'];
+        }
+        
+        return view('customer.customer.index',compact('customers', 'total_balance', 'count', 'total_balance_overdue', 'count_overdue'));
     }
     /**
      * Show the form for creating a new resource.
@@ -124,14 +143,75 @@ class CustomerController extends Controller
      */
     public function destroy( $id)
     {
-        
+        try{
         $customers = Customers::find($id);
         $customers->delete();
-        
+        }
+        catch(\Exception $e){
+            return redirect()->back()->with('danger', "You are not authorized to delete this customer.");
+        }
         return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
 
     }
+    // Mail
+    // public function mailCustomerStatements()
+    // {
+    //     $accounting_system_id = $this->request->session()->get('accounting_system_id');
+    //     $customers = Customers::where('accounting_system_id', $accounting_system_id)
+    //     ->whereHas('receiptReference', function($query) {
+    //         $query->Where('status', 'unpaid')
+    //         ->orWhere('status', 'partially_paid')
+    //         ->where('type', 'receipt');
+    //     })->get();
 
+    //     if($customers->isEmpty())
+    //         return redirect()->back()->with('danger', "No pending statements found.");
+    //     foreach($customers as $customer) {
+    //         $data = $customer->toArray();
+    //         // add receipt reference in data
+    //         $receipts = $customer->receiptReference->toArray();
+    //         $receipts += $customer->receiptReference->receipt->toArray();
+
+    //         Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
+    //     }
+
+    //     return redirect()->back()->with('success', "Successfully sent customer statements.");     
+    // }
+
+    // Specific customer mail
+    public function mailCustomerStatement($id)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $customer = Customers::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
+        ->whereHas('receiptReference', function($query) {
+            $query->where('type', 'receipt')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
+            
+        if(!$customer)
+            return redirect()->back()->with('danger', "No pending statements found.");
+
+        $receipt_references = ReceiptReferences::where('customer_id', $id)
+        ->where('type', 'receipt')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
+
+        $receipts = [];
+        foreach($receipt_references as $receipt) {
+            $receipts[] = $receipt->toArray() + $receipt->receipt->toArray();  
+        }
+
+        Mail::to($customer->email)->queue(new MailCustomerStatement ($customer, $receipts));
+
+        return redirect()->back()->with('success', "Successfully sent customer statement.");     
+    }
+
+    
     // Import Export
     public function import(Request $request)
     {
@@ -147,7 +227,7 @@ class CustomerController extends Controller
             return back()->with('error', $message[0].' Please check the file format');
         }    
         catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error importing bank account');
+            return redirect()->back()->with('error', 'Error importing customer records.');
         }  
         return redirect()->back()->with('success', 'Successfully imported customer records.');
 
@@ -161,6 +241,37 @@ class CustomerController extends Controller
         $customers = Customers::all();
         $pdf = \PDF::loadView('customer.customer.pdf', compact('customers'));
         return $pdf->download('customersCustomer_'.date('Y_m_d').'.pdf');
+    }
+
+    // print
+    public function print($id)
+    {
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        $customer = Customers::where('accounting_system_id', $accounting_system_id)
+        ->where('id', $id)
+        ->whereHas('receiptReference', function($query) {
+            $query->where('type', 'receipt')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                  ->orWhere('status', 'partially_paid');
+              });})->first();
+
+        if(!$customer)
+            return redirect()->back()->with('danger', "No pending statements found.");
+
+        $receipt_references = ReceiptReferences::where('customer_id', $id)
+        ->where('type', 'receipt')
+        ->where(function ($query) {
+            $query->where('status', 'unpaid')
+              ->orWhere('status', 'partially_paid');
+          })->get(); 
+        
+        $total_balance = 0;
+        foreach($receipt_references as $receipt_reference) {
+            $total_balance += $receipt_reference->receipt->grand_total - $receipt_reference->receipt->total_amount_received;
+        }
+        $pdf = \PDF::loadView('customer.customer.print', compact('receipt_references', 'total_balance'));
+        return $pdf->stream('customer_statement_'.date('Y_m_d').'.pdf');
     }
 
     /*=================================*/

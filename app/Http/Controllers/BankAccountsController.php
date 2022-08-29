@@ -9,8 +9,9 @@ use App\Exports\ExportBankAccount;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Mail\MailBankAccount;
+use App\Mail\Banking\MailBankAccount;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 class BankAccountsController extends Controller
 {
@@ -72,11 +73,6 @@ class BankAccountsController extends Controller
         $account->bank_account_type = $request->bank_account_type;
         $account->save();
 
-        // Mail
-        // TODO : Confirm where to send the mail to.
-        // $emailAddress = 'test@example.com';
-        // Mail::to($emailAddress)->queue(new MailBankAccount);
-
         return redirect()->back()->with('success', 'Bank Account Created Successfully');
     }
 
@@ -135,18 +131,36 @@ class BankAccountsController extends Controller
      */
     public function destroy($id)
     {
-        //
         try{
-
             $accounts = BankAccounts::find($id);
             $coa = ChartOfAccounts::find($accounts->chart_of_account_id);       
             $accounts->delete();
             $coa->delete();
         }
         catch(\Exception $e){
-            return redirect('/banking/accounts')->with('error', 'Error deleting bank account');
+            return redirect()->back()->with('error', 'Error deleting bank account. Make sure no related transactions exist.');
         }
-        return redirect('/banking/accounts')->with('success', 'Bank Account Deleted Successfully');
+        return redirect()->route('accounts.accounts.index')->with('success', 'Bank Account Deleted Successfully');
+    }
+
+    // Mail
+    public function mail($id)
+    {
+        $bank_account = BankAccounts::where('id', $id)->first();
+        // TODO: Add email to user
+        $email = "bank@email.com";
+        Mail::to($email)->queue(new MailBankAccount($bank_account));
+
+        return redirect()->back()->with('success', 'Email Sent Successfully!');
+    }
+
+    // Print
+    public function print($id)
+    {
+        $account = BankAccounts::find($id);
+        
+        $pdf = PDF::loadView('banking.accounts.print', compact('account'));
+        return $pdf->stream('accounts'.date('Y-m-d').'.pdf');
     }
 
     // Import Export

@@ -110,7 +110,6 @@
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
-                    {{-- <th id="thead-actions">Actions</th>     --}}
                     <th>Period</th>
                     <th>Employee Name</th>
                     <th>Status</th>
@@ -123,23 +122,12 @@
                     <th>Pension 7%</th>
                     <th>Pension 11%</th>
                     <th>Net Pay</th>
+                    <th id="thead-actions">Actions</th>    
                 </thead>
                 <tbody>
                     @foreach($payrolls as $payroll)
 
-                    <tr onclick="window.location='{{ route('payrolls.payrolls.show', $payroll->id) }}'">
-                        {{-- <td>
-                            <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="View">
-                                <span class="icon text-white-50">
-                                    <i class='fa fa-eye text-white'></i>
-                                </span>
-                            </button> --}}
-                            {{-- <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="modal" data-target="#modal-payment">
-                                <span class="icon text-white-50">
-                                    <i class='fa fa-money text-white'></i>
-                                </span>
-                            </button>
-                        </td> --}}
+                    <tr>
                         <td class="table-item-content">{{$payroll->payrollPeriod->period->period_number}}</td>
                         <td class="table-item-content">{{$payroll->employee->first_name}}</td>
                         <td class="table-item-content"><span class="badge badge-secondary">{{$payroll->status}}</span></td>
@@ -152,6 +140,18 @@
                         <td class="table-item-content">{{$payroll->total_pension_7}} Birr</td>
                         <td class="table-item-content">{{$payroll->total_pension_11}} Birr</td>
                         <td class="table-item-content">{{$payroll->net_pay}} Birr</td>
+                        <td>
+                            <a href="{{ route('payrolls.payrolls.show', $payroll->id) }}" role="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="View">
+                                <span class="icon text-white-50">
+                                    <i class='fa fa-eye'></i>
+                                </span>
+                            </a>
+                            <button type="button" class="btn btn-small btn-icon btn-danger" disabled>
+                                <span class="icon text-white-50">
+                                    <i class='fa fa-trash'></i>
+                                </span>
+                            </button>
+                        </td>
 
                     </tr>
                     @endforeach

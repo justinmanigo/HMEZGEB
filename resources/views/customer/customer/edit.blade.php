@@ -15,9 +15,9 @@
             </button>
         </div>
     @endif
-    @if(session()->has('error'))
+    @if(session()->has('danger'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session()->get('error') }}
+            {{ session()->get('danger') }}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>

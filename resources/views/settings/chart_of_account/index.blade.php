@@ -197,16 +197,16 @@
                                         @endif
                                     </td>
                                     <td>
-                                        {{-- <button type="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                                        <button type="button" class="btn btn-sm btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit" disabled>
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
                                             </span>
                                         </button>
-                                        <button type="button" class="btn btn-small btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                                        <button type="button" class="btn btn-sm btn-icon btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete" disabled>
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-trash"></i>
                                             </span>
-                                        </button> --}}
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach
