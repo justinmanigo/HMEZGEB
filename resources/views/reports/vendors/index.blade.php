@@ -32,7 +32,7 @@
         <div class="card-body tab-content">
 
             <div class="tab-pane fade show active aged_payables">
-                <form action="{{route('reports.aged_payables.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.aged_payables.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -62,7 +62,7 @@
             </div>
 
             <div class="tab-pane fade cash_disbursements_journal">
-                <form action="{{route('reports.cash_disbursements_journal.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.cash_disbursements_journal.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -92,7 +92,7 @@
             </div>
 
             <div class="tab-pane fade vendor_ledgers">
-                <form action="{{route('reports.vendor_ledgers.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.vendor_ledgers.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -122,7 +122,7 @@
             </div>
             
             <div class="tab-pane fade cash_requirements">
-                <form action="{{route('reports.cash_requirements.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.cash_requirements.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">

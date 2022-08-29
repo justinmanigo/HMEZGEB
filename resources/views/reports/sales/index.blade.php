@@ -19,7 +19,7 @@
         <div class="card-body tab-content">
 
             <div class="tab-pane fade show active sales">
-                <form action="{{route('reports.sales.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.sales.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">

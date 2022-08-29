@@ -30,7 +30,7 @@
             <!--Bill Payment content--->
             <div class="tab-pane fade show active aged_receivable">
 
-                <form action="{{route('reports.aged_receivable.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.aged_receivable.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-xl-6">
@@ -63,7 +63,7 @@
             <!--Other Payment content--->
             <div class="tab-pane fade cash_receipts_journal">
                 
-                <form action="{{route('reports.cash_receipts_journal.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.cash_receipts_journal.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -94,7 +94,7 @@
             </div>
             <div class="tab-pane fade customer_ledgers">
                 
-                <form action="{{route('reports.customer_ledgers.pdf')}}" method="POST">
+                <form target="_blank" action="{{route('reports.customer_ledgers.pdf')}}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
