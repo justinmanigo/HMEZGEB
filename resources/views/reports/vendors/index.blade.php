@@ -39,7 +39,7 @@
                             <div class="form-group">
                                 <label for="date_from">Date From</label>
                                 <input type="date" class="form-control" id="date_from" name="date_from"
-                                    value="{{ date('Y-m-d') }}">
+                                    value="{{ date('Y-m-d') }}" required>
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,19 @@
                             <div class="form-group">
                                 <label for="date_to">Date To</label>
                                 <input type="date" class="form-control" id="date_to" name="date_to"
-                                    value="{{ date('Y-m-d') }}">
+                                    value="{{ date('Y-m-d') }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <select class="form-control form-control-select" id="type" name="type" required>
+                                    <option value="" hidden selected>Select Report Type ...</option>
+                                    <option value="summary">Summary</option>
+                                    <option value="detailed">Detailed</option>
+                                </select>
                             </div>
                         </div>
                     </div>

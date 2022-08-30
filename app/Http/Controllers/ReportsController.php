@@ -110,7 +110,55 @@ class ReportsController extends Controller
     // Vendors
     public function agedPayablesPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.vendors.pdf.aged_payables', compact('request'));
+        // Subquery
+        $r = DB::table('payment_references')
+                ->select(
+                    'payment_references.date',
+                    'bills.due_date',
+                    'vendors.id as vendor_id', // needed for grouping
+                    'payment_references.id as payment_reference_id',
+                    'vendors.name as vendor_name',
+                    DB::raw("CASE WHEN CURRENT_DATE() < bills.due_date THEN bills.grand_total - bills.amount_received ELSE 0 END AS 'current'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > bills.due_date AND CURRENT_DATE() < DATE_ADD(bills.due_date, INTERVAL 30 DAY) THEN bills.grand_total - bills.amount_received ELSE 0 END AS 'thirty_days'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > DATE_ADD(bills.due_date, INTERVAL 30 DAY) AND CURRENT_DATE() < DATE_ADD(bills.due_date, INTERVAL 60 DAY) THEN bills.grand_total - bills.amount_received ELSE 0 END AS 'sixty_days'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > DATE_ADD(bills.due_date, INTERVAL 60 DAY) AND CURRENT_DATE() < DATE_ADD(bills.due_date, INTERVAL 90 DAY) THEN bills.grand_total - bills.amount_received ELSE 0 END AS 'ninety_days'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > DATE_ADD(bills.due_date, INTERVAL 90 DAY) THEN bills.grand_total - bills.amount_received ELSE 0 END AS 'over_ninety_days'"),
+                )
+                ->leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
+                ->leftJoin('bills', 'payment_references.id', '=', 'bills.payment_reference_id')
+                ->where('is_void', '=', 'no')
+                ->where('type', '=', 'bill')
+                ->where('payment_references.accounting_system_id', '=', session('accounting_system_id'))
+                ->where('status', '!=', 'paid')
+                ->whereBetween('date', [$request->date_from, $request->date_to]);
+
+        if($request->type == 'summary') {
+            $results = DB::table('vendors')
+                ->select(
+                    'vendors.id as id',
+                    'vendors.name as name',
+                    DB::raw('coalesce(SUM(current), 0) as current'),
+                    DB::raw('coalesce(SUM(thirty_days), 0) as thirty_days'),
+                    DB::raw('coalesce(SUM(sixty_days), 0) as sixty_days'),
+                    DB::raw('coalesce(SUM(ninety_days), 0) as ninety_days'),
+                    DB::raw('coalesce(SUM(over_ninety_days), 0) as over_ninety_days'),
+                    DB::raw('coalesce(SUM(current), 0) + coalesce(SUM(thirty_days), 0) + coalesce(SUM(sixty_days), 0) + coalesce(SUM(ninety_days), 0) + coalesce(SUM(over_ninety_days), 0) as total'),
+                )
+                ->leftJoinSub($r, 'r', function($join){
+                    $join->on('r.vendor_id', '=', 'vendors.id');
+                })
+                ->groupBy('vendors.id', 'vendors.name')
+                ->orderBy('vendors.name', 'asc')
+                ->get();
+
+            $pdf = \PDF::loadView('reports.vendors.pdf.aged_payables.summary', compact('request'), compact('results'));
+        }
+        else if($request->type == 'detailed') {
+            $results = $r->orderBy('vendors.id', 'asc')->orderBy('payment_references.id', 'asc')->get();
+
+            $pdf = \PDF::loadView('reports.vendors.pdf.aged_payables.detailed', compact('request'), compact('results'));
+        }
+
         return $pdf->stream('aged_payables.pdf');
     }
 
