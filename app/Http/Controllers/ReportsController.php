@@ -84,8 +84,6 @@ class ReportsController extends Controller
                 ->orderBy('customers.name', 'asc')
                 ->get();
 
-            // return $results;
-
             $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable.summary', compact('request'), compact('results'));
         }
         else if($request->type == 'detailed') {
