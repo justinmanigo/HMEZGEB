@@ -29,7 +29,7 @@
             <td class="text-end">{{ number_format($customer->sixty_days, 2) }}</td>
             <td class="text-end">{{ number_format($customer->ninety_days, 2) }}</td>
             <td class="text-end">{{ number_format($customer->over_ninety_days, 2) }}</td>
-            <td class="text-end">{{ number_format($customer->total, 2) }}</td>
+            <td class="text-end"><strong>{{ number_format($customer->total, 2) }}</strong></td>
         </tr>
         @php
             $total_current += $customer->current;
@@ -48,7 +48,7 @@
         <th class="text-end">{{ number_format($total_sixty_days, 2) }}</th>
         <th class="text-end">{{ number_format($total_ninety_days, 2) }}</th>
         <th class="text-end">{{ number_format($total_over_ninety_days, 2) }}</th>
-        <th class="text-end">{{ number_format($total_grand, 2) }}</th>
+        <th class="text-end" style="color:darkred">{{ number_format($total_grand, 2) }}</th>
     </tfoot>
 </table>
 @endsection
