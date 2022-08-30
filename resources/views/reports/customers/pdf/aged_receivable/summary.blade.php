@@ -13,26 +13,42 @@
         <th class="text-end">Total</th>
     </thead>
     <tbody>
-        {{-- @foreach ($customers as $customer) --}}
+        @php
+            $total_current = floatval(0);
+            $total_thirty_days = floatval(0);
+            $total_sixty_days = floatval(0);    
+            $total_ninety_days = floatval(0);
+            $total_over_ninety_days = floatval(0);
+            $total_grand = floatval(0);
+        @endphp
+        @foreach ($results as $customer)
         <tr>
-            <td class="text-start">Test Customer{{-- $customer->name --}}</td>
-            <td class="text-end">0.00{{-- $customer->balance --}}</td>
-            <td class="text-end">0.00{{-- $customer->thirty_days --}}</td>
-            <td class="text-end">0.00{{-- $customer->sixty_days --}}</td>
-            <td class="text-end">0.00{{-- $customer->ninety_days --}}</td>
-            <td class="text-end">0.00{{-- $customer->over_ninety_days --}}</td>
-            <td class="text-end">0.00{{-- $customer->total --}}</td>
+            <td class="text-start">{{ $customer->name }}</td>
+            <td class="text-end">{{ number_format($customer->current, 2) }}</td>
+            <td class="text-end">{{ number_format($customer->thirty_days, 2) }}</td>
+            <td class="text-end">{{ number_format($customer->sixty_days, 2) }}</td>
+            <td class="text-end">{{ number_format($customer->ninety_days, 2) }}</td>
+            <td class="text-end">{{ number_format($customer->over_ninety_days, 2) }}</td>
+            <td class="text-end">{{ number_format($customer->total, 2) }}</td>
         </tr>
-        {{-- @endforeach --}}
+        @php
+            $total_current += $customer->current;
+            $total_thirty_days += $customer->thirty_days;
+            $total_sixty_days += $customer->sixty_days;    
+            $total_ninety_days += $customer->ninety_days;
+            $total_over_ninety_days += $customer->over_ninety_days;
+            $total_grand += $customer->total;
+        @endphp
+        @endforeach
     </tbody>
     <tfoot>
         <th class="text-start">Total</th>
-        <th class="text-end">0.00{{-- $total_balance --}}</th>
-        <th class="text-end">0.00{{-- $total_thirty_days --}}</th>
-        <th class="text-end">0.00{{-- $total_sixty_days --}}</th>
-        <th class="text-end">0.00{{-- $total_ninety_days --}}</th>
-        <th class="text-end">0.00{{-- $total_over_ninety_days --}}</th>
-        <th class="text-end">0.00{{-- $total_total --}}</th>
+        <th class="text-end">{{ number_format($total_current, 2) }}</th>
+        <th class="text-end">{{ number_format($total_thirty_days, 2) }}</th>
+        <th class="text-end">{{ number_format($total_sixty_days, 2) }}</th>
+        <th class="text-end">{{ number_format($total_ninety_days, 2) }}</th>
+        <th class="text-end">{{ number_format($total_over_ninety_days, 2) }}</th>
+        <th class="text-end">{{ number_format($total_grand, 2) }}</th>
     </tfoot>
 </table>
 @endsection

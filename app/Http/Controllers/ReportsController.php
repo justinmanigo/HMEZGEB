@@ -42,11 +42,8 @@ class ReportsController extends Controller
     // Customers
     public function agedReceivablePDF(Request $request)
     {
-        if($request->type == 'summary') {
-            $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable.summary', compact('request'));
-        }
-        else if($request->type == 'detailed') {
-            $results = DB::table('receipt_references')
+        // Subquery
+        $r = DB::table('receipt_references')
                 ->select(
                     'receipt_references.date',
                     'receipts.due_date',
@@ -65,11 +62,34 @@ class ReportsController extends Controller
                 ->where('type', '=', 'receipt')
                 ->where('receipt_references.accounting_system_id', '=', session('accounting_system_id'))
                 ->where('status', '!=', 'paid')
-                ->whereBetween('date', [$request->date_from, $request->date_to])
-                ->orderBy('customers.id', 'asc')
+                ->whereBetween('date', [$request->date_from, $request->date_to]);
+                
+
+        if($request->type == 'summary') {
+            $results = DB::table('customers')
+                ->select(
+                    'customers.id as id',
+                    'customers.name as name',
+                    DB::raw('coalesce(SUM(current), 0) as current'),
+                    DB::raw('coalesce(SUM(thirty_days), 0) as thirty_days'),
+                    DB::raw('coalesce(SUM(sixty_days), 0) as sixty_days'),
+                    DB::raw('coalesce(SUM(ninety_days), 0) as ninety_days'),
+                    DB::raw('coalesce(SUM(over_ninety_days), 0) as over_ninety_days'),
+                    DB::raw('coalesce(SUM(current), 0) + coalesce(SUM(thirty_days), 0) + coalesce(SUM(sixty_days), 0) + coalesce(SUM(ninety_days), 0) + coalesce(SUM(over_ninety_days), 0) as total'),
+                )
+                ->leftJoinSub($r, 'r', function($join){
+                    $join->on('r.customer_id', '=', 'customers.id');
+                })
+                ->groupBy('customers.id', 'customers.name')
+                ->orderBy('customers.name', 'asc')
                 ->get();
 
             // return $results;
+
+            $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable.summary', compact('request'), compact('results'));
+        }
+        else if($request->type == 'detailed') {
+            $results = $r->orderBy('customers.id', 'asc')->orderBy('receipt_references.id', 'asc')->get();
 
             $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable.detailed', compact('request'), compact('results'));
         }
