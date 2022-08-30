@@ -6,6 +6,7 @@ use App\Models\Reports;
 use Illuminate\Http\Request;
 use App\Models\JournalVouchers;
 use App\Models\Settings\ChartOfAccounts\JournalPostings;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class ReportsController extends Controller
@@ -41,7 +42,56 @@ class ReportsController extends Controller
     // Customers
     public function agedReceivablePDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable', compact('request'));
+        // Subquery
+        $r = DB::table('receipt_references')
+                ->select(
+                    'receipt_references.date',
+                    'receipts.due_date',
+                    'customers.id as customer_id', // needed for grouping
+                    'receipt_references.id as receipt_reference_id',
+                    'customers.name as customer_name',
+                    DB::raw("CASE WHEN CURRENT_DATE() < receipts.due_date THEN receipts.grand_total - receipts.total_amount_received ELSE 0 END AS 'current'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > receipts.due_date AND CURRENT_DATE() < DATE_ADD(receipts.due_date, INTERVAL 30 DAY) THEN receipts.grand_total - receipts.total_amount_received ELSE 0 END AS 'thirty_days'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > DATE_ADD(receipts.due_date, INTERVAL 30 DAY) AND CURRENT_DATE() < DATE_ADD(receipts.due_date, INTERVAL 60 DAY) THEN receipts.grand_total - receipts.total_amount_received ELSE 0 END AS 'sixty_days'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > DATE_ADD(receipts.due_date, INTERVAL 60 DAY) AND CURRENT_DATE() < DATE_ADD(receipts.due_date, INTERVAL 90 DAY) THEN receipts.grand_total - receipts.total_amount_received ELSE 0 END AS 'ninety_days'"),
+                    DB::raw("CASE WHEN CURRENT_DATE() > DATE_ADD(receipts.due_date, INTERVAL 90 DAY) THEN receipts.grand_total - receipts.total_amount_received ELSE 0 END AS 'over_ninety_days'"),
+                )
+                ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+                ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+                ->where('is_void', '=', 'no')
+                ->where('type', '=', 'receipt')
+                ->where('receipt_references.accounting_system_id', '=', session('accounting_system_id'))
+                ->where('status', '!=', 'paid')
+                ->whereBetween('date', [$request->date_from, $request->date_to]);
+                
+
+        if($request->type == 'summary') {
+            $results = DB::table('customers')
+                ->select(
+                    'customers.id as id',
+                    'customers.name as name',
+                    DB::raw('coalesce(SUM(current), 0) as current'),
+                    DB::raw('coalesce(SUM(thirty_days), 0) as thirty_days'),
+                    DB::raw('coalesce(SUM(sixty_days), 0) as sixty_days'),
+                    DB::raw('coalesce(SUM(ninety_days), 0) as ninety_days'),
+                    DB::raw('coalesce(SUM(over_ninety_days), 0) as over_ninety_days'),
+                    DB::raw('coalesce(SUM(current), 0) + coalesce(SUM(thirty_days), 0) + coalesce(SUM(sixty_days), 0) + coalesce(SUM(ninety_days), 0) + coalesce(SUM(over_ninety_days), 0) as total'),
+                )
+                ->leftJoinSub($r, 'r', function($join){
+                    $join->on('r.customer_id', '=', 'customers.id');
+                })
+                ->groupBy('customers.id', 'customers.name')
+                ->orderBy('customers.name', 'asc')
+                ->get();
+
+            $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable.summary', compact('request'), compact('results'));
+        }
+        else if($request->type == 'detailed') {
+            $results = $r->orderBy('customers.id', 'asc')->orderBy('receipt_references.id', 'asc')->get();
+
+            $pdf = \PDF::loadView('reports.customers.pdf.aged_receivable.detailed', compact('request'), compact('results'));
+        }
+
         return $pdf->stream('aged_receivable.pdf');
     }
     
