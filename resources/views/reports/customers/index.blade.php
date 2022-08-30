@@ -37,7 +37,7 @@
                             <div class="form-group">
                                 <label for="date_from">Date From</label>
                                 <input type="date" class="form-control" id="date_from" name="date_from"
-                                    value="{{ date('Y-m-d') }}" required>
+                                    value="{{ now()->subDays(30)->format('Y-m-d') }}" required>
                             </div>
                         </div>
                     </div>
