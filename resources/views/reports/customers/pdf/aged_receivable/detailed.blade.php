@@ -5,11 +5,16 @@
 
 @php
     $customer_id = 0;
+    $total_grand = 0;
 @endphp
 
 @foreach($results as $result)
 
     @if($customer_id != $result->customer_id && $customer_id != 0)
+        @php
+            $total_sub = $total_current + $total_thirty_days + $total_sixty_days + $total_ninety_days + $total_over_ninety_days;
+            $total_grand += $total_sub;
+        @endphp
             </tbody>
             <tfoot>
                 <th class="text-start" colspan="3">Total</th>
@@ -18,6 +23,10 @@
                 <th class="text-end">{{ number_format($total_sixty_days, 2) }}</th>
                 <th class="text-end">{{ number_format($total_ninety_days, 2) }}</th>
                 <th class="text-end">{{ number_format($total_over_ninety_days, 2) }}</th>
+            </tfoot>
+            <tfoot>
+                <th class="text-start" colspan="7">Sub Total</th>
+                <th class="text-end" style="color:darkred"><strong>{{ number_format($total_sub, 2) }}</strong></th>
             </tfoot>
         </table>
     @endif
@@ -66,6 +75,10 @@
     @endphp
 
     @if($loop->last)
+        @php
+            $total_sub = $total_current + $total_thirty_days + $total_sixty_days + $total_ninety_days + $total_over_ninety_days;
+            $total_grand += $total_sub;
+        @endphp
         </tbody>
         <tfoot>
             <th class="text-start" colspan="3">Total</th>
@@ -75,9 +88,21 @@
             <th class="text-end">{{ number_format($total_ninety_days, 2) }}</th>
             <th class="text-end">{{ number_format($total_over_ninety_days, 2) }}</th>
         </tfoot>
+        <tfoot>
+            <th class="text-start" colspan="7">Sub Total</th>
+            <th class="text-end" style="color:darkred"><strong>{{ number_format($total_sub, 2) }}</strong></th>
+        </tfoot>
         </table>
     @endif
 
 
 @endforeach
+
+<table class="table table-bordered">
+    <thead style="font-size:20px">
+        <th class="text-start" colspan="7">Grand Total</th>
+        <th class="text-end" style="color:darkred">{{ number_format($total_grand, 2) }}</th>
+    </thead>
+</table>
+
 @endsection
