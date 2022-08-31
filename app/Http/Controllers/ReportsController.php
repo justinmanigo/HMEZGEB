@@ -80,6 +80,7 @@ class ReportsController extends Controller
                 ->leftJoinSub($r, 'r', function($join){
                     $join->on('r.customer_id', '=', 'customers.id');
                 })
+                ->where('customers.accounting_system_id', '=', session('accounting_system_id'))
                 ->groupBy('customers.id', 'customers.name')
                 ->orderBy('customers.name', 'asc')
                 ->get();
@@ -147,6 +148,7 @@ class ReportsController extends Controller
                 ->leftJoinSub($r, 'r', function($join){
                     $join->on('r.vendor_id', '=', 'vendors.id');
                 })
+                ->where('vendors.accounting_system_id', '=', session('accounting_system_id'))
                 ->groupBy('vendors.id', 'vendors.name')
                 ->orderBy('vendors.name', 'asc')
                 ->get();
