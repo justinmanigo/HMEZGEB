@@ -220,12 +220,25 @@ class ReportsController extends Controller
 
     public function journalVoucherPDF(Request $request)
     {
-        $journalVouchers = JournalVouchers::all();
-        // sum debit credit amount
-        $totalDebit = JournalPostings::where('type', '=', 'debit')->sum('amount');
-        $totalCredit = JournalPostings::where('type', '=', 'credit')->sum('amount'); 
+        $results = DB::table('journal_vouchers')
+            ->select(
+                'journal_entries.date as date',
+                'journal_vouchers.id as id',
+                'chart_of_accounts.chart_of_account_no as account_no',
+                'chart_of_accounts.account_name as account_name',
+                'journal_entries.notes as description', // TODO: Fix this.
+                DB::raw("CASE WHEN journal_postings.type = 'debit' THEN journal_postings.amount ELSE 0 END AS 'debit'"),
+                DB::raw("CASE WHEN journal_postings.type = 'credit' THEN journal_postings.amount ELSE 0 END AS 'credit'"),
+            )
+            ->leftJoin('journal_entries', 'journal_vouchers.journal_entry_id', '=', 'journal_entries.id')
+            ->leftJoin('journal_postings', 'journal_postings.journal_entry_id', '=', 'journal_entries.id')
+            ->leftJoin('chart_of_accounts', 'chart_of_accounts.id', '=', 'journal_postings.chart_of_account_id')
+            ->whereBetween('date', [$request->date_from, $request->date_to])
+            ->where('journal_entries.accounting_system_id', session('accounting_system_id'))
+            ->orderBy('journal_vouchers.id')
+            ->get();
 
-        $pdf = \PDF::loadView('reports.entries.pdf.journal_voucher', compact('request','journalVouchers','totalDebit','totalCredit'));
+        $pdf = \PDF::loadView('reports.entries.pdf.journal_voucher', compact('request','results'));
         return $pdf->stream('journal_voucher.pdf');
     }
     
