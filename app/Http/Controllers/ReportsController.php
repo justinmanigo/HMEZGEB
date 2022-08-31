@@ -204,13 +204,53 @@ class ReportsController extends Controller
 
     public function receiptPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.entries.pdf.receipt', compact('request'));
+        $results = DB::table('receipt_references')
+            ->select(
+                'receipt_references.date',
+                'receipt_references.id',
+                'customers.name as customer_name',
+                'receipts.remark',
+                'receipts.tax',
+                'receipts.discount',
+                'receipts.withholding',
+                'receipts.grand_total',
+                'receipts.total_amount_received',
+            )
+            ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+            ->leftJoin('customers', 'receipt_references.customer_id', '=', 'customers.id')
+            ->where('receipt_references.type', '=', 'receipt')
+            ->where('receipt_references.is_void', '=', 'no')
+            ->whereBetween('receipt_references.date', [$request->date_from, $request->date_to])
+            ->where('receipt_references.accounting_system_id', '=', session('accounting_system_id'))
+            ->get();
+
+        $pdf = \PDF::setPaper('a4', 'landscape')->loadView('reports.entries.pdf.receipt', compact('request', 'results'));
         return $pdf->stream('receipt.pdf');
     }
 
     public function billPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.entries.pdf.bill', compact('request'));
+        $results = DB::table('payment_references')
+            ->select(
+                'payment_references.date',
+                'payment_references.id',
+                'vendors.name as vendor_name',
+                'payment_references.remark',
+                'bills.tax',
+                'bills.discount',
+                'bills.withholding',
+                'bills.grand_total',
+                'bills.amount_received',
+            )
+            ->leftJoin('bills', 'payment_references.id', '=', 'bills.payment_reference_id')
+            ->leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
+            ->where('payment_references.type', '=', 'bill')
+            ->where('payment_references.is_void', '=', 'no')
+            ->whereBetween('payment_references.date', [$request->date_from, $request->date_to])
+            ->where('payment_references.accounting_system_id', '=', session('accounting_system_id'))
+            ->get();
+
+        $pdf = \PDF::setPaper('a4', 'landscape')->loadView('reports.entries.pdf.bill', compact('request', 'results'));
         return $pdf->stream('bill.pdf');
     }
     
