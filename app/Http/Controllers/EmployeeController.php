@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -58,6 +59,15 @@ class EmployeeController extends Controller
     {
         // TODO: Restrictions if any
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Get range of current accounting period
+        $min = AccountingPeriods::where('accounting_system_id', $accounting_system_id)
+        ->min('date_from');
+        $max = AccountingPeriods::where('accounting_system_id', $accounting_system_id)
+        ->max('date_to');
+
+        // Disable edit if date hired is not within range
+        if($request->date_started_working < $min || $request->date_started_working > $max)
+        return back()->with('error', 'Error Updating! Start of working date should be within accounting period range.');
 
         $employee->update([
             'accounting_system_id' => $accounting_system_id,
