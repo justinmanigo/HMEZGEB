@@ -28,6 +28,7 @@ class CreateReceiptsTable extends Migration
             $table->longText('remark')->nullable();
             $table->string('attachment')->nullable();
             $table->enum('payment_method',['credit','cash']);
+            $table->foreignId('employee_id')->nullable(); // Commission Agent
             $table->timestamps();
             $table->foreign('receipt_reference_id')->references('id')->on('receipt_references');
         });
