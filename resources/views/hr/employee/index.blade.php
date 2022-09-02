@@ -191,6 +191,7 @@
                                 class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
                             <select class="form-control" id="e_type" name="type" required>
+                                <option value="" selected hidden disabled>Select Type</option>
                                 <option value='employee'>Employee</option>
                                 <option value='commission_agent'>Commission Agent</option>
                             </select>
