@@ -214,6 +214,7 @@ class ReportsController extends Controller
             $results = DB::table('receipt_items')
                 ->select(
                     'customers.name as customer',
+                    DB::raw('COUNT(receipt_items.id) as total_transactions'),
                     DB::raw('SUM(receipt_items.total_price) as total_amount'),
                 )
                 ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_items.receipt_reference_id')
