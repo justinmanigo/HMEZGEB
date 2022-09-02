@@ -198,7 +198,23 @@ class ReportsController extends Controller
 
     public function generalJournalPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.entries.pdf.general_journal', compact('request'));
+        $results = DB::table('journal_entries')
+            ->select(
+                'journal_entries.id as id',
+                'journal_entries.date as date',
+                'chart_of_accounts.chart_of_account_no as account_no',
+                'chart_of_accounts.account_name as account_name',
+                DB::raw("CASE WHEN journal_postings.type = 'debit' THEN journal_postings.amount ELSE 0 END AS 'debit'"),
+                DB::raw("CASE WHEN journal_postings.type = 'credit' THEN journal_postings.amount ELSE 0 END AS 'credit'"),
+            )
+            ->whereBetween('date', [$request->date_from, $request->date_to])
+            ->where('journal_entries.accounting_system_id', '=', session('accounting_system_id'))
+            ->leftJoin('journal_postings', 'journal_entries.id', '=', 'journal_postings.journal_entry_id')
+            ->leftJoin('chart_of_accounts', 'journal_postings.chart_of_account_id', '=', 'chart_of_accounts.id')
+            ->orderBy('journal_entries.date', 'asc')
+            ->get();
+
+        $pdf = \PDF::loadView('reports.entries.pdf.general_journal', compact('request', 'results'));
         return $pdf->stream('general_journal.pdf');
     }
 
