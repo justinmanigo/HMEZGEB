@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -22,9 +23,14 @@ class EmployeeController extends Controller
     {
 
         // return $request;
-        // TODO: Restrictions if any
-             
+        // TODO: Restrictions if any    
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
+        // Disable creation of new employees if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return back()->with('error', 'Payroll already created! Unable to generate new employee in current accounting period.');
+        
         // Create Employee
         Employee::create([
             'accounting_system_id' => $accounting_system_id,
