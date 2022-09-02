@@ -192,7 +192,54 @@ class ReportsController extends Controller
     // Entries
     public function generalLedgerPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.entries.pdf.general_ledger', compact('request'));
+        $r = DB::table('chart_of_accounts')
+            ->select(
+                'chart_of_accounts.id as coa_id',
+                'chart_of_accounts.chart_of_account_no as coa_no',
+                'chart_of_accounts.account_name as coa_name',
+            )
+            // ->whereBetween('date', [$request->date_from, $request->date_to])
+            ->where('accounting_system_id', '=', session('accounting_system_id'))
+            ->get();
+
+        for($i = 0; $i < count($r); $i++)
+        {
+            $jp_d[$i] = DB::table('journal_entries')
+                ->select(
+                    'journal_entries.id as id',
+                    'journal_entries.date as date',
+                    'journal_postings.amount',
+                )
+                ->leftJoin('journal_postings', 'journal_entries.id', '=', 'journal_postings.journal_entry_id')
+                ->leftJoin('chart_of_accounts', 'journal_postings.chart_of_account_id', '=', 'chart_of_accounts.id')
+                ->orderBy('journal_entries.date', 'asc')
+                ->whereBetween('date', [$request->date_from, $request->date_to])
+                ->where('chart_of_accounts.id', '=', $r[$i]->coa_id)
+                ->where('journal_postings.type', 'debit')
+                ->get();
+
+            $jp_c[$i] = DB::table('journal_entries')
+                ->select(
+                    'journal_entries.id as id',
+                    'journal_entries.date as date',
+                    'journal_postings.amount',
+                )
+                ->leftJoin('journal_postings', 'journal_entries.id', '=', 'journal_postings.journal_entry_id')
+                ->leftJoin('chart_of_accounts', 'journal_postings.chart_of_account_id', '=', 'chart_of_accounts.id')
+                ->orderBy('journal_entries.date', 'asc')
+                ->whereBetween('date', [$request->date_from, $request->date_to])
+                ->where('chart_of_accounts.id', '=', $r[$i]->coa_id)
+                ->where('journal_postings.type', 'credit')
+                ->get();
+        }
+
+        // return [
+        //     $r,
+        //     $jp_d,
+        //     $jp_c,
+        // ];
+
+        $pdf = \PDF::loadView('reports.entries.pdf.general_ledger', compact('request', 'r', 'jp_d', 'jp_c'));
         return $pdf->stream('general_ledger.pdf');
     }
 
