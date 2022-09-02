@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Deduction;
 use App\Models\Employee;
-
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Http\Requests\HumanResource\StoreDeductionRequest;
 
@@ -54,6 +54,12 @@ class DeductionController extends Controller
     {
         //
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to generate new deduction in current accounting period.');
+            
+        
         for($i = 0; $i < count($request->employee); $i++)
         {        
             // Store
