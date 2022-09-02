@@ -22,7 +22,7 @@
             <td class="text-start">{{ $row->date }}</td>
             <td class="text-start">{{ $row->reference }}</td>
             <td class="text-start">{{ $row->customer }}</td>
-            <td class="text-start"></td> {{-- TODO: To add commission agent --}}
+            <td class="text-start">{{ $row->commission_agent }}</td>
             <td class="text-start">{{ $row->inventory_id . ' - ' . $row->item_name }}</td>
             <td class="text-end">{{ $row->quantity }}</td>
             <td class="text-end">{{ number_format($row->total_price, 2) }}</td>

@@ -194,18 +194,21 @@ class ReportsController extends Controller
                     'receipt_references.id as reference',
                     'customers.name as customer',
                     'inventories.item_name',
-                    // '', // TODO: add commission agent
+                    DB::raw("CONCAT(employees.first_name, ' ', employees.father_name, ' ' , employees.grandfather_name) as commission_agent"),
                     'receipt_items.quantity',
                     'receipt_items.total_price',
                 )
                 ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_items.receipt_reference_id')
+                ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
+                ->leftJoin('employees', 'employees.id', '=', 'receipts.employee_id')
                 ->leftJoin('inventories', 'inventories.id', 'receipt_items.inventory_id')
                 ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
                 ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
                 ->whereBetween('date', [$request->date_from, $request->date_to])
                 ->get();
 
-            $pdf = \PDF::loadView('reports.sales.pdf.all', compact('request', 'results'));
+            $pdf = \PDF::setPaper('a4', 'landscape')
+                ->loadView('reports.sales.pdf.all', compact('request', 'results'));
         }
         else if($request->group_by == 'customer') {
             $results = DB::table('receipt_items')
