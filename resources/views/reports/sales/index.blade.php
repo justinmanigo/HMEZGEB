@@ -47,7 +47,7 @@
                                     <option value="all">All</option>
                                     <option value="customer">Customer</option>
                                     <option value="item">Item</option>
-                                    <option value="sales_person">Sales Person</option>
+                                    <option value="commission_agent">Commission Agent</option>
                                 </select>
                             </div>
                         </div>
