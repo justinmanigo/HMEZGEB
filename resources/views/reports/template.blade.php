@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PDF</title>
     <style>
+        .page-break {
+            page-break-after: always;
+        }
+
         table{
             width: 100%;
             margin-top: 25px;
