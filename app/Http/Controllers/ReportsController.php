@@ -245,7 +245,23 @@ class ReportsController extends Controller
             $pdf = \PDF::loadView('reports.sales.pdf.by-item', compact('request', 'results'));
         }
         else if($request->group_by == 'commission_agent') {
-            
+            $results = DB::table('receipt_items')
+                ->select(
+                    DB::raw("CONCAT(employees.first_name, ' ', employees.father_name, ' ' , employees.grandfather_name) as commission_agent"),
+                    DB::raw('COUNT(receipt_items.id) as total_transactions'),
+                    DB::raw('SUM(receipt_items.total_price) as total_amount'),
+                )
+                ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_items.receipt_reference_id')
+                ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
+                ->leftJoin('employees', 'employees.id', '=', 'receipts.employee_id')
+                ->leftJoin('inventories', 'inventories.id', 'receipt_items.inventory_id')
+                ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+                ->groupBy('employees.id', 'employees.first_name', 'employees.father_name', 'employees.grandfather_name')
+                ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+                ->whereBetween('date', [$request->date_from, $request->date_to])
+                ->get();
+
+            $pdf = \PDF::loadView('reports.sales.pdf.by-commission-agent', compact('request', 'results'));
         }
 
         // $pdf = \PDF::loadView('reports.sales.pdf.sales', compact('request'));
