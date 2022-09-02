@@ -185,7 +185,66 @@ class ReportsController extends Controller
     // Sales
     public function salesPDF(Request $request)
     {
-        $pdf = \PDF::loadView('reports.sales.pdf.sales', compact('request'));
+        if($request->group_by == 'all') 
+        {
+            $results = DB::table('receipt_items')
+                ->select(
+                    'receipt_references.date',
+                    'receipt_items.inventory_id',
+                    'receipt_references.id as reference',
+                    'customers.name as customer',
+                    'inventories.item_name',
+                    // '', // TODO: add commission agent
+                    'receipt_items.quantity',
+                    'receipt_items.total_price',
+                )
+                ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_items.receipt_reference_id')
+                ->leftJoin('inventories', 'inventories.id', 'receipt_items.inventory_id')
+                ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+                ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+                ->whereBetween('date', [$request->date_from, $request->date_to])
+                ->get();
+
+            $pdf = \PDF::loadView('reports.sales.pdf.all', compact('request', 'results'));
+        }
+        else if($request->group_by == 'customer') {
+            $results = DB::table('receipt_items')
+                ->select(
+                    'customers.name as customer',
+                    DB::raw('SUM(receipt_items.total_price) as total_amount'),
+                )
+                ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_items.receipt_reference_id')
+                ->leftJoin('inventories', 'inventories.id', 'receipt_items.inventory_id')
+                ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+                ->groupBy('customers.id', 'customers.name')
+                ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+                ->whereBetween('date', [$request->date_from, $request->date_to])
+                ->get();
+
+            $pdf = \PDF::loadView('reports.sales.pdf.by-customer', compact('request', 'results'));
+        }
+        else if($request->group_by == 'item') {
+            $results = DB::table('receipt_items')
+                ->select(
+                    'receipt_items.inventory_id',
+                    'inventories.item_name',
+                    DB::raw('SUM(receipt_items.quantity) as quantity_sold'),
+                    DB::raw('SUM(receipt_items.total_price) as total_amount'),
+                )
+                ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_items.receipt_reference_id')
+                ->leftJoin('inventories', 'inventories.id', 'receipt_items.inventory_id')
+                ->groupBy('receipt_items.inventory_id', 'inventories.item_name')
+                ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+                ->whereBetween('date', [$request->date_from, $request->date_to])
+                ->get();
+
+            $pdf = \PDF::loadView('reports.sales.pdf.by-item', compact('request', 'results'));
+        }
+        else if($request->group_by == 'commission_agent') {
+            
+        }
+
+        // $pdf = \PDF::loadView('reports.sales.pdf.sales', compact('request'));
         return $pdf->stream('sales.pdf');
     }
 
