@@ -21,6 +21,10 @@
             border-collapse: collapse;
             padding: 2px;
         }
+        
+        .table-padding-5 th, .table-padding-5 td{
+            padding: 5px;
+        }
 
         /* th,td{
             
@@ -28,6 +32,13 @@
         .border-bottom{
             border-bottom: 1px solid black;
         }
+        .border-bottom-3{
+            border-bottom: 3px solid black;
+        }
+        .border-right-3 {
+            border-right: 3px solid black;
+        }
+
         .blank_row
         {
             height: 15px ;
