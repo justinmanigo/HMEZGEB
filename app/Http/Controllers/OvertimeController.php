@@ -159,6 +159,12 @@ class OvertimeController extends Controller
     public function update(Request $request, Overtime $overtime)
     {
         //
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to generate new overtime in current accounting period.');
+          
     }
 
     /**
@@ -170,6 +176,12 @@ class OvertimeController extends Controller
     public function destroy(Overtime $overtime)
     {
         //
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to delete overtime in current accounting period.');
+          
         if(isset($overtime->payroll_id))
         {
             return redirect()->back()->with('danger', 'Overtime already pending in payroll.');

@@ -107,6 +107,12 @@ class AdditionController extends Controller
     public function update(Request $request, Addition $addition)
     {
         //
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to update addition in current accounting period.');
+          
     }
 
     /**
@@ -118,6 +124,12 @@ class AdditionController extends Controller
     public function destroy(Addition $addition)
     {
         //
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to delete addition in current accounting period.');
+          
         if(isset($addition->payroll_id))
         {
             return redirect()->back()->with('danger', 'Addition already pending in payroll.');

@@ -106,6 +106,12 @@ class DeductionController extends Controller
     public function update(Request $request, Deduction $deduction)
     {
         //
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to update deduction in current accounting period.');
+          
     }
 
     /**
@@ -117,6 +123,12 @@ class DeductionController extends Controller
     public function destroy(Deduction $deduction)
     {
           //
+          $accounting_system_id = $this->request->session()->get('accounting_system_id');
+          // Disable create if payroll is generated for current accounting period.
+          $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+          if(!$payroll->isEmpty())
+          return redirect()->back()->with('danger', 'Payroll already created! Unable to delete deduction in current accounting period.');
+            
           if(isset($deduction->payroll_id))
           {
               return redirect()->back()->with('danger', 'Deduction already pending in payroll.');

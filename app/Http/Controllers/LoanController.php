@@ -77,9 +77,26 @@ class LoanController extends Controller
         return redirect()->back()->with('success', 'Loan has been added.');
     }
 
+    public function update(Request $request, Loan $loan)
+    {
+        //
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to update loan in current accounting period.');
+          
+    }
+
     public function destroy(Loan $loan)
     {
         //
+        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Disable create if payroll is generated for current accounting period.
+        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
+        if(!$payroll->isEmpty())
+        return redirect()->back()->with('danger', 'Payroll already created! Unable to delete loan in current accounting period.');
+          
         if(isset($loan->payroll_id))
         {
             return redirect()->back()->with('danger', 'Loan already pending in payroll.');
