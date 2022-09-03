@@ -182,11 +182,15 @@
                                     <td class="table-item-content">{{ $coa->account_name }}</td> 
                                     <td class="table-item-content">{{ $coa->type }}</td>
                                     <td class="table-item-content">{{ $coa->category }}</td>
-                                    <td class="table-item-content">
+                                    <td class="table-item-content text-right">
                                         @if($coa->normal_balance == 'Debit')
-                                            {{ $coa->balance_if_debit }}
+                                            <span class="@if($coa->balance_if_debit < 0) text-danger @else text-success @endif">
+                                                {{ number_format($coa->balance_if_debit, 2) }}
+                                            </span>
                                         @elseif($coa->normal_balance == 'Credit')
-                                            {{ $coa->balance_if_credit }}
+                                        <span class="@if($coa->balance_if_credit < 0) text-danger @else text-success @endif">
+                                            {{ number_format($coa->balance_if_credit, 2) }}
+                                        </span>
                                         @endif
                                     </td>
                                     <td class="table-item-content h6">
