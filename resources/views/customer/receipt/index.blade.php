@@ -247,95 +247,95 @@
                                     <td>
                                         {{-- TODO: Implement hover action bar --}}
                                         @if($transaction->type == 'receipt')
-                                        <a href="{{route('receipts.receipts.show', $transaction->receipt->id)}}" class="btn btn-primary btn-sm edit">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </a>
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->receipt->id}}, 'receipt')" >
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-envelope"></i>
-                                            </span>
-                                        </button>
-                                        <!-- print/pdf -->
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->receipt->id}}, 'receipt')" >
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-print"></i>
-                                            </span>
-                                        </button>                                        
-                                        @if($transaction->receipt->receiptReference->is_void == 'no')
-                                        <!-- void -->
-                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->receipt->id}}, 'receipt')" >
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-ban"></i>
-                                            </span>
-                                        </button>
-                                        @else
-                                        <!-- make it active -->
-                                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->receipt->id}}, 'receipt')" >
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                        </button>
-                                        @endif
-                                        @elseif($transaction->type == 'advance_receipt')
-                                        <a href="{{route('receipts.advanceReceipt.show', $transaction->advanceRevenue->id)}}" class="btn btn-primary btn-sm edit ">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </a>
-                                        <a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-envelope"></i>
-                                            </span>
-                                        </a>
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')" >
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-print"></i>
-                                            </span>
-                                        </button>
-                                        @if($transaction->advanceRevenue->receiptReference->is_void == 'no')
-                                        <!-- void -->
-                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-ban"></i>
-                                            </span>
-                                        </button>
-                                        <!-- make it active -->
-                                        @else
-                                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->advanceRevenue->id}}, 'advanceRevenue')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                        </button>
-                                        @endif
-                                        @elseif($transaction->type == 'credit_receipt')
-                                            <a href="{{route('receipts.creditReceipt.show', $transaction->creditReceipt->id)}}" class="btn btn-primary btn-sm edit">
+                                            <a href="{{route('receipts.receipts.show', $transaction->id)}}" class="btn btn-primary btn-sm edit">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                             </a>
-                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->id}}, 'receipt')" >
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-envelope"></i>
                                                 </span>
                                             </button>
                                             <!-- print/pdf -->
-                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->id}}, 'receipt')" >
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>                                        
+                                            @if($transaction->is_void == 'no')
+                                            <!-- void -->
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'receipt')" >
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-ban"></i>
+                                                </span>
+                                            </button>
+                                            @else
+                                            <!-- make it active -->
+                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->id}}, 'receipt')" >
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-check"></i>
+                                                </span>
+                                            </button>
+                                            @endif
+                                        @elseif($transaction->type == 'advance_receipt')
+                                            <a href="{{route('receipts.advanceReceipt.show', $transaction->id)}}" class="btn btn-primary btn-sm edit ">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->id}}, 'advanceRevenue')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                            </a>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->id}}, 'advanceRevenue')" >
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-print"></i>
                                                 </span>
                                             </button>
-                                            @if($transaction->creditReceipt->receiptReference->is_void == 'no')
+                                            @if($transaction->is_void == 'no')
                                             <!-- void -->
-                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'advanceRevenue')">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-ban"></i>
                                                 </span>
                                             </button>
                                             <!-- make it active -->
                                             @else
-                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->creditReceipt->id}}, 'creditReceipt')">
+                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->id}}, 'advanceRevenue')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-check"></i>
+                                                </span>
+                                            </button>
+                                            @endif
+                                        @elseif($transaction->type == 'credit_receipt')
+                                            <a href="{{route('receipts.creditReceipt.show', $transaction->id)}}" class="btn btn-primary btn-sm edit">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->id}}, 'creditReceipt')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                            </button>
+                                            <!-- print/pdf -->
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->id}}, 'creditReceipt')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>
+                                            @if($transaction->creditReceipt->receiptReference->is_void == 'no')
+                                            <!-- void -->
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'creditReceipt')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-ban"></i>
+                                                </span>
+                                            </button>
+                                            <!-- make it active -->
+                                            @else
+                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->id}}, 'creditReceipt')">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-check"></i>
                                                 </span>
