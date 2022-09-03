@@ -162,7 +162,7 @@
                                         </span>
                                     </button> --}}
                                 </td>
-                                <td class="table-item-content">{{ $journalVouchers[$i]['reference_number'] }}</td>
+                                <td class="table-item-content">{{ $journalVouchers[$i]->id }}</td>
                                 <td class="table-item-content">{{ $journalVouchers[$i]->journalEntry['date'] }}</td>
                                 <td class="table-item-content text-right">{{ number_format($totalAmount[$i], 2) }}</td>
                             </tr>

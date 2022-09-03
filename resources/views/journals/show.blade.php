@@ -35,15 +35,15 @@
         <table class="table table-borderless table-sm">
             <tr>
                 <td style="width:200px">Date</td>
-                <td><strong>{{ $journalVoucher->journalEntry['date'] }}</strong></td>
+                <td><strong>{{ $journalVoucher->journalEntry->date }}</strong></td>
             </tr>
             <tr>
                 <td>Reference Number</td>
-                <td><strong>{{ $journalVoucher['reference_number'] }}</strong></td>
+                <td><strong>{{ $journalVoucher->id }}</strong></td>
             </tr>
             <tr>
                 <td>Notes</td>
-                <td><strong>{{ $journalVoucher->journalEntry['notes'] }}</strong></td>
+                <td><strong>{{ $journalVoucher->journalEntry->notes }}</strong></td>
             </tr>
         </table>
 
@@ -62,10 +62,10 @@
                     @foreach($journalVoucher->journalEntry->journalPostings as $posting)
                     <tr>
                         <td>
-                            {{ $posting->chartOfAccount['chart_of_account_no'] . ' - ' . $posting->chartOfAccount['name']}}
+                            {{ $posting->chartOfAccount->chart_of_account_no . ' - ' . $posting->chartOfAccount->account_name }}
                         </td>
                         <td>
-                            
+                            {{ $posting->description }}
                         </td>
                         {{-- debit --}}
                         @if($posting->type == 'debit')
