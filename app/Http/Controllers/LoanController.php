@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Hr\IsAccountingPeriodLocked;
 use App\Models\Loan;
 use App\Models\Employee;
 use App\Models\Payroll;
@@ -52,21 +53,13 @@ class LoanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreLoanRequest $request)
-    {
-        //
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        // Disable create if payroll is generated for current accounting period.
-        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
-        if(!$payroll->isEmpty())
-        return redirect()->back()->with('danger', 'Payroll already created! Unable to generate new loan in current accounting period.');
-            
-        
+    {       
         for($i = 0; $i < count($request->employee); $i++)
         {
 
             // Store
                $loan = new Loan;
-               $loan->accounting_system_id = $accounting_system_id;
+               $loan->accounting_system_id = session('accounting_system_id');
                $loan->employee_id = $request->employee[$i]->value;
                $loan->date = $request->date;
                $loan->loan = $request->loan[$i];
@@ -79,23 +72,18 @@ class LoanController extends Controller
 
     public function update(Request $request, Loan $loan)
     {
-        //
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         // Disable create if payroll is generated for current accounting period.
-        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
-        if(!$payroll->isEmpty())
-        return redirect()->back()->with('danger', 'Payroll already created! Unable to update loan in current accounting period.');
+        if(IsAccountingPeriodLocked::run($loan->date))
+            return redirect()->back()->with('danger', 'Payroll already created! Unable to update loan in current accounting period.');
           
+        // TODO: Implement update loan.
     }
 
     public function destroy(Loan $loan)
     {
-        //
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         // Disable create if payroll is generated for current accounting period.
-        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
-        if(!$payroll->isEmpty())
-        return redirect()->back()->with('danger', 'Payroll already created! Unable to delete loan in current accounting period.');
+        if(IsAccountingPeriodLocked::run($loan->date))
+            return redirect()->back()->with('danger', 'Payroll already created! Unable to delete loan in current accounting period.');
           
         if(isset($loan->payroll_id))
         {
