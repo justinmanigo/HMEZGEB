@@ -41,3 +41,10 @@ Password: **test**
 ### For HMEZGEB Staff
 Email: **staff@email.com**<br>
 Password: **test**
+
+---
+
+### For the users to receive emails (for testing in Mailtrap.io), kindly run this command. It works similarly as `php artisan serve`.
+```
+php artisan queue:work
+```
