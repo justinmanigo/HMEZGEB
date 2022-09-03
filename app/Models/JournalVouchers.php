@@ -12,10 +12,16 @@ class JournalVouchers extends Model
 
     protected $fillable = [
         'journal_entry_id',
+        'accounting_system_id',
     ];
 
     public function journalEntry()
     {
         return $this->belongsTo(JournalEntries::class, 'journal_entry_id');
     }   
+
+    public function accountingSystem()
+    {
+        return $this->belongsTo(AccountingSystem::class, 'accounting_system_id');
+    }
 }
