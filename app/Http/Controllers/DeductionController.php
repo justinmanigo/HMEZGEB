@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Hr\IsAccountingPeriodLocked;
 use App\Models\Deduction;
 use App\Models\Employee;
-
+use App\Models\Payroll;
 use Illuminate\Http\Request;
 use App\Http\Requests\HumanResource\StoreDeductionRequest;
 
@@ -51,14 +52,12 @@ class DeductionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreDeductionRequest $request)
-    {
-        //
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+    {            
         for($i = 0; $i < count($request->employee); $i++)
         {        
             // Store
                $deduction = new Deduction;
-               $deduction->accounting_system_id = $accounting_system_id;
+               $deduction->accounting_system_id = session('accounting_system_id');
                $deduction->employee_id = $request->employee[$i]->value;
                $deduction->date = $request->date;
                $deduction->price = $request->price[$i];
@@ -99,7 +98,11 @@ class DeductionController extends Controller
      */
     public function update(Request $request, Deduction $deduction)
     {
-        //
+        // Disable create if payroll is generated for current accounting period.
+        if(IsAccountingPeriodLocked::run($deduction->date))
+            return redirect()->back()->with('danger', 'Payroll already created! Unable to update deduction in current accounting period.');
+        
+        // TODO: Update Deduction
     }
 
     /**
@@ -110,15 +113,18 @@ class DeductionController extends Controller
      */
     public function destroy(Deduction $deduction)
     {
-          //
-          if(isset($deduction->payroll_id))
-          {
-              return redirect()->back()->with('danger', 'Deduction already pending in payroll.');
-          }
-          else
-          {
-              $deduction->delete();
-              return redirect()->back()->with('success', 'Deduction has been deleted.');
-          }           
+        // Disable create if payroll is generated for current accounting period.
+        if(IsAccountingPeriodLocked::run($deduction->date))
+            return redirect()->back()->with('danger', 'Payroll already created! Unable to delete deduction in current accounting period.');
+        
+        if(isset($deduction->payroll_id))
+        {
+            return redirect()->back()->with('danger', 'Deduction already pending in payroll.');
+        }
+        else
+        {
+            $deduction->delete();
+            return redirect()->back()->with('success', 'Deduction has been deleted.');
+        }           
     }
 }

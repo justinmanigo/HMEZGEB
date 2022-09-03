@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Hr\IsAccountingPeriodLocked;
 use App\Models\Employee;
 use App\Models\Overtime;
+use App\Models\Payroll;
 use App\Actions\Hr\Payroll\CalculateHourRate;
 use App\Actions\Hr\Payroll\DayRate;
 use App\Actions\Hr\Payroll\NightRate;
@@ -58,14 +60,12 @@ class OvertimeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreOvertimeRequest $request)
-    {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        
+    {            
         for($i = 0; $i < count($request->employee); $i++)
         {
             // Store
             $overtime = new Overtime;
-            $overtime->accounting_system_id = $accounting_system_id;
+            $overtime->accounting_system_id = session('accounting_system_id');
             $overtime->employee_id =  $request->employee[$i]->value;
             $overtime->date = $request->date;
             $overtime->from = $request->from[$i];
@@ -81,8 +81,8 @@ class OvertimeController extends Controller
             {
                 $overtime->is_weekend_holiday = 'yes';
                 $holiday_hours = ($from->diffInMinutes($to)) / 60;
-                $computeTotal = CalculateHourRate::run($request->employee[$i]->value,$accounting_system_id)*$holiday_hours;
-                $overtime->price = HolidayWeekendRate::run($computeTotal,$accounting_system_id);
+                $computeTotal = CalculateHourRate::run($request->employee[$i]->value, session('accounting_system_id'))*$holiday_hours;
+                $overtime->price = HolidayWeekendRate::run($computeTotal, session('accounting_system_id'));
             }
             else
             {
@@ -100,7 +100,7 @@ class OvertimeController extends Controller
                     $to = Carbon::parse('17:59');
                     // convert to hours
                     $day_hours = ($from->diffInMinutes($to)) / 60;
-                    $overtime->price =  CalculateHourRate::run($request->employee[$i]->value, $accounting_system_id)*(NightRate::run($night_hours,$accounting_system_id)+DayRate::run($day_hours,$accounting_system_id));
+                    $overtime->price =  CalculateHourRate::run($request->employee[$i]->value, session('accounting_system_id'))*(NightRate::run($night_hours, session('accounting_system_id'))+DayRate::run($day_hours, session('accounting_system_id')));
                 }
 
                 else
@@ -108,11 +108,11 @@ class OvertimeController extends Controller
                     if($from_24_hour >= '18:00' && $to_24_hour < '6:00')
                     {
                         $night_hours = ($from->diffInMinutes($to)) / 60;
-                        $overtime->price =  CalculateHourRate::run($request->employee[$i]->value,$accounting_system_id)*(NightRate::run($night_hours,$accounting_system_id));
+                        $overtime->price =  CalculateHourRate::run($request->employee[$i]->value, session('accounting_system_id'))*(NightRate::run($night_hours, session('accounting_system_id')));
                     }
                     else{
                         $day_hours = ($from->diffInMinutes($to)) / 60;
-                        $overtime->price = CalculateHourRate::run($request->employee[$i]->value,$accounting_system_id)*(DayRate::run($day_hours,$accounting_system_id));
+                        $overtime->price = CalculateHourRate::run($request->employee[$i]->value, session('accounting_system_id'))*(DayRate::run($day_hours, session('accounting_system_id')));
                     }
                 }
             }
@@ -153,7 +153,11 @@ class OvertimeController extends Controller
      */
     public function update(Request $request, Overtime $overtime)
     {
-        //
+        // Disable create if payroll is generated for current accounting period.
+        if(IsAccountingPeriodLocked::run($overtime->date))
+            return redirect()->back()->with('danger', 'Payroll already created! Unable to update overtime in current accounting period.');
+          
+        // TODO: Implement edit overtime.
     }
 
     /**
@@ -164,7 +168,10 @@ class OvertimeController extends Controller
      */
     public function destroy(Overtime $overtime)
     {
-        //
+        // Disable create if payroll is generated for current accounting period.
+        if(IsAccountingPeriodLocked::run($overtime->date))
+            return redirect()->back()->with('danger', 'Payroll already created! Unable to delete overtime in current accounting period.');
+          
         if(isset($overtime->payroll_id))
         {
             return redirect()->back()->with('danger', 'Overtime already pending in payroll.');

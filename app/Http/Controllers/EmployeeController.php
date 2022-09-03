@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Hr\IsAccountingPeriodLocked;
 use App\Models\Employee;
+use App\Models\Payroll;
+use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -22,9 +25,13 @@ class EmployeeController extends Controller
     {
 
         // return $request;
-        // TODO: Restrictions if any
-             
+        // TODO: Restrictions if any    
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        
+        // Disable creation of new employees if payroll is generated for current accounting period.
+        if(IsAccountingPeriodLocked::run($request->date_started_working))
+            return back()->with('error', 'Payroll already created! Unable to generate new employee in current accounting period.');
+        
         // Create Employee
         Employee::create([
             'accounting_system_id' => $accounting_system_id,
@@ -52,6 +59,9 @@ class EmployeeController extends Controller
     {
         // TODO: Restrictions if any
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // Get range of current accounting period
+        if(IsAccountingPeriodLocked::run($request->date_started_working))
+            return back()->with('error', 'Start of working date should be within accounting period range.');
 
         $employee->update([
             'accounting_system_id' => $accounting_system_id,
@@ -75,7 +85,8 @@ class EmployeeController extends Controller
 
     public function destroy(Employee $employee)
     {
-        // TODO: Restrictions if any
+        if(IsAccountingPeriodLocked::run($employee->date_started_working))
+            return back()->with('error', "Can't delete employee. Employee is already included in payroll.");
 
         $employee->delete();
         return back()->with('success', 'Successfully deleted an employee record.');
