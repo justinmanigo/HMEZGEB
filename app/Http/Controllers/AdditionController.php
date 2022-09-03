@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Hr\IsAccountingPeriodLocked;
 use App\Models\Addition;
 use App\Models\Employee;
 use App\Models\Payroll;
@@ -51,20 +52,13 @@ class AdditionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAdditionRequest $request)
-    {
-        //
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        // Disable create if payroll is generated for current accounting period.
-        $payroll = Payroll::where('accounting_system_id', $accounting_system_id)->get();
-        if(!$payroll->isEmpty())
-        return redirect()->back()->with('danger', 'Payroll already created! Unable to generate new addition in current accounting period.');
-          
+    {        
         for($i = 0; $i < count($request->employee); $i++)
          {
 
              // Store
                 $addition = new Addition;
-                $addition->accounting_system_id = $accounting_system_id;
+                $addition->accounting_system_id = session('accounting_system_id');
                 $addition->employee_id = $request->employee[$i]->value;
                 $addition->date = $request->date;
                 $addition->price = $request->price[$i];
