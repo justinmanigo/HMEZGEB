@@ -18,16 +18,14 @@ class JournalVouchersController extends Controller
      */
     public function index()
     {
-        $journalVouchers = JournalVouchers::get();
+        $journalVouchers = JournalVouchers::where('accounting_system_id', session('accounting_system_id'))
+            ->get();
         
         for($i = 0; $i < count($journalVouchers); $i++)
         {
             $journalVouchers[$i]->journalEntry->journalPostings;
             $totalAmount[$i] = $journalVouchers[$i]->journalEntry->journalPostings->where('type', '=', 'debit')->sum('amount');
         }
-        // return $journalVouchers;
-
-
 
         return view('journals.index', [
             'journalVouchers' => $journalVouchers,
