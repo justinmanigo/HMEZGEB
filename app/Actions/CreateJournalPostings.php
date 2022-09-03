@@ -11,7 +11,7 @@ class CreateJournalPostings
 {
     use AsAction;
 
-    public function handle($journal_entry, $debit_accounts, $debit_amount, $credit_accounts, $credit_amount, $accounting_system_id)
+    public function handle($journal_entry, $debit_accounts, $debit_amount, $credit_accounts, $credit_amount, $accounting_system_id, $debit_description = null, $credit_description = null)
     {
         for($i = 0; $i < count($debit_accounts); $i++)
         {
@@ -20,7 +20,7 @@ class CreateJournalPostings
 
             // $updated_balance = $this->computeCOAUpdatedBalance('debit', $debit_accounts[$i], $coa, $debit_amount[$i]);
             // $this->updateCOABalance($coa, $updated_balance);
-            $this->createJournalPosting('debit', $journal_entry->id, $debit_accounts[$i]->value, $debit_amount[$i], $accounting_system_id);
+            $this->createJournalPosting('debit', $journal_entry->id, $debit_accounts[$i]->value, $debit_amount[$i], (isset($debit_description[$i]) ? $debit_description[$i] : null));
         }
 
         // Credits
@@ -31,7 +31,7 @@ class CreateJournalPostings
 
             // $updated_balance = $this->computeCOAUpdatedBalance('credit', $credit_accounts[$i], $coa, $credit_amount[$i]);
             // $this->updateCOABalance($coa, $updated_balance);
-            $this->createJournalPosting('credit', $journal_entry->id, $credit_accounts[$i]->value, $credit_amount[$i], $accounting_system_id);
+            $this->createJournalPosting('credit', $journal_entry->id, $credit_accounts[$i]->value, $credit_amount[$i], (isset($credit_description[$i]) ? $credit_description[$i] : null));
         }
     }
 
@@ -83,10 +83,11 @@ class CreateJournalPostings
         ]);
     }
 
-    public function createJournalPosting($type, $id, $coa_id, $amount, $accounting_system_id)
+    public function createJournalPosting($type, $id, $coa_id, $amount, $description = null)
     {
         JournalPostings::create([
-            'accounting_system_id' => $accounting_system_id,
+            'accounting_system_id' => session('accounting_system_id'),
+            'description' => $description,
             'type' => $type,
             'journal_entry_id' => $id,
             'chart_of_account_id' => $coa_id,

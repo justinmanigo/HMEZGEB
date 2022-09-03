@@ -50,14 +50,11 @@ class JournalVouchersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreJournalVoucherRequest $request)
-    {
-        // return $request;
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        
-        $journal_entry = CreateJournalEntry::run($request->date, $request->notes, $accounting_system_id);
+    {     
+        $journal_entry = CreateJournalEntry::run($request->date, $request->notes, session('accounting_system_id'));
         $journal_voucher = CreateJournalVoucher::run($journal_entry->id);
 
-        CreateJournalPostings::run($journal_entry, $request->debit_accounts, $request->debit_amount, $request->credit_accounts, $request->credit_amount, $accounting_system_id);
+        CreateJournalPostings::run($journal_entry, $request->debit_accounts, $request->debit_amount, $request->credit_accounts, $request->credit_amount, session('accounting_system_id'), $request->debit_description, $request->credit_description);
 
         return $journal_voucher;
     }
