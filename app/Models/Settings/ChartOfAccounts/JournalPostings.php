@@ -15,6 +15,7 @@ class JournalPostings extends Model
         'journal_entry_id',
         'accounting_system_id',
         'chart_of_account_id',
+        'description',
         'type',
         'amount',
     ];
