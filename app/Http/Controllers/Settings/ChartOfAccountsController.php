@@ -306,11 +306,11 @@ class ChartOfAccountsController extends Controller
     public function ajaxSearchCategories($query = null)
     {
         $categories = ChartOfAccountCategory::select(
-            'category as value'); 
-            // 'category',
-            // 'type',
-            // 'normal_balance');
-            
+            'category as value',
+            'type', 
+            'normal_balance',
+        );
+
         if(isset($query))
             $categories->where('category', 'LIKE', '%' . $query . '%');
     

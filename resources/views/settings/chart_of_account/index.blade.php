@@ -248,7 +248,7 @@
                         <label for="coa_category" class="col-sm-3 col-lg-2 col-form-label">Category<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
                             {{-- <input type="text" class="form-control" id="coa_category" name="coa_category"> --}}
-                            <input id="coa_category" name='coa_category' required>
+                            <input id="coa_category" name='coa_category' class="form-control" required>
                             <div class="form-check mr-3 mt-1">
                                 <input class="form-check-input" id="coa_is_bank" type="checkbox" value="yes" name="coa_is_bank" disabled>
                                 <label class="form-check-label" for="coa_is_bank">Is this a Bank account?</label>

@@ -24,7 +24,7 @@ request.done(function(response, textStatus, jqXHR){
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: 'customer-list',
+            // classname: 'customers-list',
             searchKeys: ['value']  // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
