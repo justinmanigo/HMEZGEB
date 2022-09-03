@@ -12,6 +12,7 @@ class ReceiptReferences extends Model
 
     protected $fillable = [
         'accounting_system_id',
+        'journal_entry_id',
         'reference_number',
         'date',
         'type',
@@ -51,7 +52,7 @@ class ReceiptReferences extends Model
     }
     public function journalEntry()
     {
-        return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
+        return $this->hasOne(JournalEntries::class, 'id', 'journal_entry_id');
     }
     public function receiptItems()
     {

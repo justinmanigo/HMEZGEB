@@ -295,6 +295,7 @@ class ReportsController extends Controller
                 ->whereBetween('date', [$request->date_from, $request->date_to])
                 ->where('chart_of_accounts.id', '=', $r[$i]->coa_id)
                 ->where('journal_postings.type', 'debit')
+                ->where('journal_entries.is_void', false)
                 ->get();
 
             $jp_c[$i] = DB::table('journal_entries')
@@ -305,10 +306,11 @@ class ReportsController extends Controller
                 )
                 ->leftJoin('journal_postings', 'journal_entries.id', '=', 'journal_postings.journal_entry_id')
                 ->leftJoin('chart_of_accounts', 'journal_postings.chart_of_account_id', '=', 'chart_of_accounts.id')
-                ->orderBy('journal_entries.date', 'asc')
                 ->whereBetween('date', [$request->date_from, $request->date_to])
                 ->where('chart_of_accounts.id', '=', $r[$i]->coa_id)
                 ->where('journal_postings.type', 'credit')
+                ->where('journal_entries.is_void', false)
+                ->orderBy('journal_entries.date', 'asc')
                 ->get();
         }
 
@@ -333,10 +335,11 @@ class ReportsController extends Controller
                 DB::raw("CASE WHEN journal_postings.type = 'debit' THEN journal_postings.amount ELSE 0 END AS 'debit'"),
                 DB::raw("CASE WHEN journal_postings.type = 'credit' THEN journal_postings.amount ELSE 0 END AS 'credit'"),
             )
-            ->whereBetween('date', [$request->date_from, $request->date_to])
-            ->where('journal_entries.accounting_system_id', '=', session('accounting_system_id'))
             ->leftJoin('journal_postings', 'journal_entries.id', '=', 'journal_postings.journal_entry_id')
             ->leftJoin('chart_of_accounts', 'journal_postings.chart_of_account_id', '=', 'chart_of_accounts.id')
+            ->whereBetween('date', [$request->date_from, $request->date_to])
+            ->where('journal_entries.accounting_system_id', '=', session('accounting_system_id'))
+            ->where('journal_entries.is_void', false)
             ->orderBy('journal_entries.date', 'asc')
             ->get();
 
@@ -419,6 +422,7 @@ class ReportsController extends Controller
             ->leftJoin('chart_of_accounts', 'chart_of_accounts.id', '=', 'journal_postings.chart_of_account_id')
             ->whereBetween('date', [$request->date_from, $request->date_to])
             ->where('journal_entries.accounting_system_id', session('accounting_system_id'))
+            ->where('journal_entries.is_void', false)
             ->orderBy('journal_vouchers.id')
             ->get();
 

@@ -28,17 +28,23 @@ class ChartOfAccountsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        $sum_debits = JournalPostings::select(
-                'chart_of_account_id',
-                DB::raw('SUM(amount) as total_debit'),
+        $sum_debits = DB::table('journal_postings')
+            ->select(
+                'journal_postings.chart_of_account_id',
+                DB::raw('SUM(journal_postings.amount) as total_debit'),
             )
+            ->leftJoin('journal_entries', 'journal_postings.journal_entry_id', '=', 'journal_entries.id')
+            ->where('journal_entries.is_void', false)
             ->where('type', 'debit')
             ->groupBy('chart_of_account_id');
 
-        $sum_credits = JournalPostings::select(
-                'chart_of_account_id',
-                DB::raw('SUM(amount) as total_credit'),
+        $sum_credits = DB::table('journal_postings')
+            ->select(
+                'journal_postings.chart_of_account_id',
+                DB::raw('SUM(journal_postings.amount) as total_credit'),
             )
+            ->leftJoin('journal_entries', 'journal_postings.journal_entry_id', '=', 'journal_entries.id')
+            ->where('journal_entries.is_void', false)
             ->where('type', 'credit')
             ->groupBy('chart_of_account_id');
 

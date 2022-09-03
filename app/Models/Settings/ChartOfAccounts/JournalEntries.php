@@ -17,6 +17,7 @@ class JournalEntries extends Model
         'accounting_system_id',
         'date',
         'notes',
+        'is_void',
     ];
 
     public function journalPostings()

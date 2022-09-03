@@ -172,6 +172,8 @@ class ReceiptController extends Controller
 
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+        $reference->journal_entry_id = $je->id;
+        $reference->save();
 
         // Create Debit Postings
         // This determines which is which to include in debit postings
@@ -259,6 +261,8 @@ class ReceiptController extends Controller
 
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+        $reference->journal_entry_id = $je->id;
+        $reference->save();
 
         // Create Debit Postings
         $debit_accounts[] = CreateJournalPostings::encodeAccount($request->advance_receipt_cash_on_hand);
@@ -319,6 +323,8 @@ class ReceiptController extends Controller
 
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+        $reference->journal_entry_id = $je->id;
+        $reference->save();
 
         // Create Debit Postings
         $debit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_cash_on_hand);
@@ -327,6 +333,11 @@ class ReceiptController extends Controller
         // Create Credit Postings
         $credit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_account_receivable);
         $credit_amount[] = $request->total_received;
+
+        CreateJournalPostings::run($je, 
+            $debit_accounts, $debit_amount,
+            $credit_accounts, $credit_amount,
+            $accounting_system_id);
 
         CreditReceipts::create([
             'receipt_reference_id' => $reference->id,
@@ -474,52 +485,64 @@ class ReceiptController extends Controller
     // VOID
     public function voidReceipt($id)
     {
-        $receipt = Receipts::find($id);
-        if($receipt->receiptReference->is_deposited == "yes")
-        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        $rr = ReceiptReferences::find($id);
+        $rr->journalEntry;
 
-        $receipt->receiptReference->is_void = "yes";
-        $receipt->receiptReference->save();
+        if($rr->is_deposited == "yes")
+            return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $rr->is_void = "yes";
+        $rr->journalEntry->is_void = true;
+        $rr->push();
 
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
     public function voidAdvanceRevenue($id)
     {
-        $advance_revenue = AdvanceRevenues::find($id);
-        if($advance_revenue->receiptReference->is_deposited == "yes")
-        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        $rr = ReceiptReferences::find($id);
+        $rr->journalEntry;
 
-        $advance_revenue->receiptReference->is_void = "yes";
-        $advance_revenue->receiptReference->save();
+        if($rr->is_deposited == "yes")
+            return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $rr->is_void = "yes";
+        $rr->journalEntry->is_void = true;
+        $rr->push();
 
         return redirect()->back()->with('success', "Successfully voided advance revenue.");
     }
 
     public function voidCreditReceipt($id)
     {
-        $credit_receipt = CreditReceipts::find($id);
-        if($credit_receipt->receiptReference->is_deposited == "yes")
-        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        $rr = ReceiptReferences::find($id);
+        $rr->journalEntry;
 
-        $credit_receipt->receiptReference->is_void = "yes";
-        $credit_receipt->receiptReference->save();
+        if($rr->is_deposited == "yes")
+            return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        $rr->is_void = "yes";
+        $rr->journalEntry->is_void = true;
+        $rr->push();
       
         // Add the amount of credit receipt to the receipt it was added
-        foreach($credit_receipt->receiptReference->ReceiptCashTransactions as $receiptCashTransaction)
+        foreach($rr->receiptCashTransactions as $receiptCashTransaction)
         {
             $receiptCashTransaction->forReceiptReference->receipt->total_amount_received -= $receiptCashTransaction->amount_received;
             $receiptCashTransaction->forReceiptReference->receipt->save();
             if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
-            $receiptCashTransaction->forReceiptReference->status = 'paid';
+                $receiptCashTransaction->forReceiptReference->status = 'paid';
             else
-            $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
+                $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
             $receiptCashTransaction->forReceiptReference->save();
         }
 
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
+    /**
+     * TODO: To be deprecated.
+     */
     public function voidProforma($id)
     {
         $proforma = Proformas::find($id);
@@ -535,45 +558,55 @@ class ReceiptController extends Controller
     // REACTIVATE VOID
     public function reactivateReceipt($id)
     {
-        $receipt = Receipts::find($id);
-        $receipt->receiptReference->is_void = "no";
+        $rr = ReceiptReferences::find($id);
+        $rr->journalEntry;
 
-        $receipt->receiptReference->save();
+        $rr->is_void = "no";
+        $rr->journalEntry->is_void = false;
+        $rr->push();
 
         return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }
 
     public function reactivateAdvanceRevenue($id)
     {
-        $advance_revenue = AdvanceRevenues::find($id);
-        $advance_revenue->receiptReference->is_void = "no";
+        $rr = ReceiptReferences::find($id);
+        $rr->journalEntry;
 
-        $advance_revenue->receiptReference->save();
+        $rr->is_void = "no";
+        $rr->journalEntry->is_void = false;
+        $rr->push();
 
         return redirect()->back()->with('success', "Successfully reactivated advance revenue.");
     }
 
     public function reactivateCreditReceipt($id)
     {
-        $credit_receipt = CreditReceipts::find($id);
-        $credit_receipt->receiptReference->is_void = "no";
-        $credit_receipt->receiptReference->save();
+        $rr = ReceiptReferences::find($id);
+        $rr->journalEntry;
+
+        $rr->is_void = "no";
+        $rr->journalEntry->is_void = false;
+        $rr->push();
 
         // Add the amount of credit receipt to the receipt it was added
-        foreach($credit_receipt->receiptReference->ReceiptCashTransactions as $receiptCashTransaction)
+        foreach($rr->receiptCashTransactions as $receiptCashTransaction)
         {
-           $receiptCashTransaction->forReceiptReference->receipt->total_amount_received += $receiptCashTransaction->amount_received;
-           $receiptCashTransaction->forReceiptReference->receipt->save();
-           if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
-           $receiptCashTransaction->forReceiptReference->status = 'paid';
-           else
-           $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
-           $receiptCashTransaction->forReceiptReference->save();
+            $receiptCashTransaction->forReceiptReference->receipt->total_amount_received += $receiptCashTransaction->amount_received;
+            $receiptCashTransaction->forReceiptReference->receipt->save();
+            if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
+                $receiptCashTransaction->forReceiptReference->status = 'paid';
+            else
+                $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
+            $receiptCashTransaction->forReceiptReference->save();
         }
 
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
+    /**
+     * TODO: To be deprecated.
+     */
     public function reactivateProforma($id)
     {
         $proforma = Proformas::find($id);
