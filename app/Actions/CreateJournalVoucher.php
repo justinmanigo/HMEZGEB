@@ -13,6 +13,7 @@ class CreateJournalVoucher
     {
         $journal_voucher = JournalVouchers::create([
             'journal_entry_id' => $id,
+            'accounting_system_id' => session('accounting_system_id'),
         ]);
 
         return $journal_voucher;
