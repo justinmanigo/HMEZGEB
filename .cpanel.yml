@@ -6,7 +6,7 @@ deployment:
     # access to change owner. So this folder must stay as-is to keep the nobody
     # group, which is critical to the site working. A new folder won't work.
     - export DEPLOYPATH=/home/USER/public_html
-    - export REPOPATH=/home/USER/repositories/PROJECT
+    - export REPOPATH=/home/adsmmtcom/repositories/HMEZGEB
     # Remove previous old files, if any.
     - /bin/rm -Rf ${DEPLOYPATH}_old
     # Copy old site files to another directory.
