@@ -1,4 +1,4 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/adsmmtcom/public_html/
+    - export DEPLOYPATH=/home2/hmezgebcom/public_html/
     - /bin/cp -r * $DEPLOYPATH 
