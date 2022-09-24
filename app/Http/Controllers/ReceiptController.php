@@ -485,9 +485,14 @@ class ReceiptController extends Controller
         if($rr->is_deposited == "yes")
             return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
-        $rr->is_void = "yes";
-        $rr->journalEntry->is_void = true;
-        $rr->push();
+        // Voiding a source receipt will also affect the credit receipts that are linked to it.
+        $receipts = ReceiptCashTransactions::where('for_receipt_reference_id', $id)->get();
+        foreach($receipts as $receipt)
+        {
+            $receipt->receiptReference->is_void = "yes";
+            $receipt->receiptReference->journalEntry->is_void = true;
+            $receipt->push();
+        }
 
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
@@ -518,18 +523,6 @@ class ReceiptController extends Controller
         $rr->is_void = "yes";
         $rr->journalEntry->is_void = true;
         $rr->push();
-      
-        // Add the amount of credit receipt to the receipt it was added
-        foreach($rr->receiptCashTransactions as $receiptCashTransaction)
-        {
-            $receiptCashTransaction->forReceiptReference->receipt->total_amount_received -= $receiptCashTransaction->amount_received;
-            $receiptCashTransaction->forReceiptReference->receipt->save();
-            if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
-                $receiptCashTransaction->forReceiptReference->status = 'paid';
-            else
-                $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
-            $receiptCashTransaction->forReceiptReference->save();
-        }
 
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
@@ -579,21 +572,17 @@ class ReceiptController extends Controller
         $rr = ReceiptReferences::find($id);
         $rr->journalEntry;
 
+        // Check if source receipt is voided, then return error
+        $credit_receipt = ReceiptCashTransactions::where('receipt_reference_id', $id)->first();
+        $source_receipt = ReceiptReferences::where('id', $credit_receipt->for_receipt_reference_id)->first();
+        if($source_receipt->is_void == 'yes') {
+            return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$source_receipt->id} is currently voided.");
+        }
+
+        // If source receipt is not voided, then proceed
         $rr->is_void = "no";
         $rr->journalEntry->is_void = false;
         $rr->push();
-
-        // Add the amount of credit receipt to the receipt it was added
-        foreach($rr->receiptCashTransactions as $receiptCashTransaction)
-        {
-            $receiptCashTransaction->forReceiptReference->receipt->total_amount_received += $receiptCashTransaction->amount_received;
-            $receiptCashTransaction->forReceiptReference->receipt->save();
-            if($receiptCashTransaction->forReceiptReference->receipt->total_amount_received >= $receiptCashTransaction->forReceiptReference->receipt->grand_total) 
-                $receiptCashTransaction->forReceiptReference->status = 'paid';
-            else
-                $receiptCashTransaction->forReceiptReference->status = 'partially_paid';
-            $receiptCashTransaction->forReceiptReference->save();
-        }
 
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
