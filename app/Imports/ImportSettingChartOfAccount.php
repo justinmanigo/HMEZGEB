@@ -44,4 +44,30 @@ class ImportSettingChartOfAccount implements ToModel, WithHeadingRow, WithValida
 
           return $jp;
     }
+
+    public function rules(): array
+    {
+        return [
+            'accounting_system_id' => 'required|numeric|exists:accounting_systems,id',
+            'chart_of_account_category_id' => 'required|numeric|exists:chart_of_accounts,id',
+            'chart_of_account_no' => 'required|numeric',
+            'account_name' => 'required|string|max:255',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            'accounting_system_id.required' => 'The accounting system id is required.',
+            'accounting_system_id.numeric' => 'The accounting system id must be numeric.',
+            'accounting_system_id.exists' => 'The accounting system id must exist.',
+            'chart_of_account_category_id.required' => 'The chart of account id is required.',
+            'chart_of_account_category_id.numeric' => 'The chart of account id must be numeric.',
+            'chart_of_account_category_id.exists' => 'The chart of account id must exist.',
+            'chart_of_account_no.required' => 'The to account id is required.',
+            'chart_of_account_no.numeric' => 'The to account id must be numeric.',
+            'account_name.required' => 'The account name is required.',
+            'account_name.max' => 'The name may not be greater than 255 characters.',
+        ];
+    }
 }
