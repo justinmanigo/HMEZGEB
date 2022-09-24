@@ -203,6 +203,7 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
+                                <th>ID</th>
                                 <th>Date</th>
                                 <th>Type</th>
                                 <th>Customer Name</th>
@@ -214,6 +215,7 @@
                                 @foreach($transactions as $transaction)
                       
                                 <tr>
+                                    <td class="table-item-content">{{$transaction->id}}</td>
                                     <td class="table-item-content">{{$transaction->date}}</td>
                                     <td class="table-item-content">
                                         @if($transaction->type == 'receipt')
@@ -355,6 +357,7 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                             <thead>
+                                <th>ID</th>
                                 <th>Date</th>
                                 <th>Customer Name</th>
                                 <th>Amount</th>
@@ -363,6 +366,7 @@
                             <tbody>
                                 @foreach($proformas as $proforma)
                                 <tr>
+                                    <td class="table-item-content">{{$proforma->id}}</td>
                                     <td class="table-item-content">{{$proforma->date}}</td>
                                     <td class="table-item-content">{{$proforma->name}}</td>
                                     <td class="table-item-content text-right">Birr {{ number_format($proforma->proforma_amount, 2) }}</td>

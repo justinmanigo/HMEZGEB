@@ -169,8 +169,8 @@
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Date</th>
-                                <th>Reference#</th>
                                 <th>Type</th>
                                 <th>Vendor Name</th>
                                 <th>Remark</th>
@@ -183,8 +183,8 @@
                             <!-- foreach bills -->
                             @foreach($transactions as $transaction)
                             <tr>
-                                <td>{{$transaction->date}}</td>
                                 <td>{{$transaction->id}}</td>
+                                <td>{{$transaction->date}}</td>
                                 <!-- Select type -->
                                 <td class="h6">
                                     @if($transaction->type == 'bill')<span class="badge badge-primary">Bill</span>

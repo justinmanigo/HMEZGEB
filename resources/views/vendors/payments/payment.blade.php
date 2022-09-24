@@ -384,7 +384,7 @@
                     <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Reference #</th>
+                                <th>ID</th>
                                 <th>Date</th>
                                 <th>Vendor Name</th>
                                 <th>Type</th>
