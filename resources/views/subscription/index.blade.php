@@ -109,7 +109,7 @@
                             </div>
                             @if($subscription->is_accepted == 0 && $subscription->account_type == 'super admin' && $subscription->subscription_user_role == 'super admin')
                                 To gain access to this subscription, you must accept the invitation as HMEZGEB Admin/Staff.
-                            @elseif($subscription->is_accepted == 0 && $subscription->status != 'suspended' && $subscription->date_to > now()->format('Y-m-d'))
+                            @elseif($subscription->is_accepted == 0 && $subscription->status != 'suspended' && ($subscription->date_to > now()->format('Y-m-d') || $subscription->date_to == null))
                                 You are invited to this subscription.
                                 <!-- Add button group with accept and reject buttons -->
                                 <div class="btn-group">
