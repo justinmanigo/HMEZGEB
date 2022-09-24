@@ -12,8 +12,7 @@ use App\Mail\Customers\MailCustomerStatement;
 use Illuminate\Support\Facades\Mail;
 use App\Exceptions;
 use App\Actions\Customer\CalculateBalanceCustomer;
-
-
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -288,7 +287,12 @@ class CustomerController extends Controller
 
     public function ajaxGetReceiptsToPay(Customers $customer)
     {
-        return ReceiptReferences::select('*')
+        return ReceiptReferences::select(
+                'receipt_references.id as value',
+                'receipt_references.date',
+                'receipts.due_date',
+                DB::raw('receipts.grand_total - receipts.total_amount_received as amount_to_pay')    
+            )
             ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
             ->where('receipt_references.type', '=', 'receipt')
             ->where('receipt_references.customer_id', '=', $customer->id)

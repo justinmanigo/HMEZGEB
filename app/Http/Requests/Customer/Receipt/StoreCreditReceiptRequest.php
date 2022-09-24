@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Customer\Receipt;
 
+use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
 use App\Models\AccountingSystem;
 
@@ -27,19 +28,21 @@ class StoreCreditReceiptRequest extends FormRequest
         return [
             'customer' => ['required'],
             'date' => ['required', 'date'],
-            'receipt_reference_id' => ['required', 'array'],
-            'receipt_reference_id.*' => ['required'],
+            'receipt' => ['required'],
+            'amount_paid' => ['required', 'numeric', 'min:1'],
+            // 'receipt_reference_id' => ['required', 'array'],
+            // 'receipt_reference_id.*' => ['required'],
             // 'date_due' => ['required', 'array'],
             // 'date_due.*' => ['required', 'date'],
-            'amount_due' => ['required', 'array'],
-            'amount_due.*' => ['required', 'numeric', 'min:1'],
+            // 'amount_due' => ['required', 'array'],
+            // 'amount_due.*' => ['required', 'numeric', 'min:1'],
             // 'description' => ['sometimes', 'array'],
             // 'description.*' => ['sometimes'],
-            'discount' => ['sometimes', 'array'],
-            'discount.*' => ['nullable', 'numeric'],
-            'amount_paid' => ['sometimes', 'array'],
-            'amount_paid.*' => ['nullable', 'numeric'],
-            'is_paid' => ['required', 'array'],
+            // 'discount' => ['sometimes', 'array'],
+            // 'discount.*' => ['nullable', 'numeric'],
+            // 'amount_paid' => ['sometimes', 'array'],
+            // 'amount_paid.*' => ['nullable', 'numeric'],
+            // 'is_paid' => ['required', 'array'],
             // 'account' => ['required'],
             // 'item' => ['required', 'array'],
             // 'item.*' => ['required'],
@@ -47,7 +50,7 @@ class StoreCreditReceiptRequest extends FormRequest
             // 'quantity.*' => ['required', 'numeric', 'min:1'],
             // 'tax' => ['required', 'array'],
             // 'tax.*' => ['required'],
-            'total_received' => ['required', 'numeric', 'min:1'],
+            // 'total_received' => ['required', 'numeric', 'min:1'],
             // 'discount' => ['required', 'numeric'],
             // 'withholding' => ['required', 'numeric'],
             // 'taxable' => ['required', 'numeric'],
@@ -70,39 +73,20 @@ class StoreCreditReceiptRequest extends FormRequest
             'credit_receipt_cash_on_hand' => $accounting_system->credit_receipt_cash_on_hand,
             'credit_receipt_account_receivable' => $accounting_system->credit_receipt_account_receivable,
         ]);
+
+        $this->merge([
+            'customer' => DecodeTagifyField::run($this->customer),
+            'receipt' => DecodeTagifyField::run($this->receipt),
+            'amount_paid' => floatval($this->amount_paid),
+        ]);
     }
 
     public function withValidator($validator)
     {
         $validator->after(function ($validator){
-            $c = 0;
-            // dd($this->get('is_paid'));
-            $is_paid = $this->get('is_paid');
-            $receipt_reference_id = $this->get('receipt_reference_id');
-            $amount_paid = $this->get('amount_paid');
-
-            if(isset($receipt_reference_id))
-            {
-                for($i = 0; $i < count($receipt_reference_id); $i++)
-                {
-                    // See if the iterated receipt's checkmark is checked.
-                    if(isset($is_paid) && !in_array($receipt_reference_id[$i], $is_paid)) continue;
-    
-                    // If it is checked, is the amount paid less than 0?
-                    if(isset($is_paid) &&  in_array($receipt_reference_id[$i], $is_paid) && $amount_paid[$i] <= 0) {
-                        $validator->errors()->add("amount_paid.{$i}", 'Amount paid must be greater than 0.');
-                        continue;
-                    }
-    
-                    $c++;
-                }
-    
-                if($c == 0)
-                {
-                    $validator->errors()->add('total_received', 'Please select at least one item and place an amount to be paid.');
-                }
+            if($this->amount_paid > $this->receipt->amount_to_pay) {
+                $validator->errors()->add('amount_paid', 'Amount paid cannot be greater than the amount to pay.');
             }
-
             if(!$this->get('credit_receipt_cash_on_hand')) {
                 $validator->errors()->add('customer', 'You haven\'t set the default COA for Cash on Hand. Please make sure that everything is set at `Settings > Defaults`');
             }

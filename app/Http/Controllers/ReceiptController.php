@@ -295,53 +295,47 @@ class ReceiptController extends Controller
 
     public function storeCreditReceipt(StoreCreditReceiptRequest $request)
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', $accounting_system_id);
+        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', session('accounting_system_id'));
         
-        for($i = 0; $i < count($request->is_paid); $i++)
-        {
-            if(!in_array($request->receipt_reference_id[$i], $request->is_paid) || $request->amount_paid[$i] <= 0) continue;
+        $receipt = Receipts::where('receipt_reference_id', $request->receipt->value)->first();
+        $receipt->total_amount_received += $request->amount_paid;
+        $receipt->save();
 
-            $receipt = Receipts::where('receipt_reference_id', $request->receipt_reference_id[$i])->first();
-            $receipt->total_amount_received += $request->amount_paid[$i];
-            $receipt->save();
+        ReceiptCashTransactions::create([
+            'accounting_system_id' => session('accounting_system_id'),
+            'receipt_reference_id' => $reference->id,
+            'for_receipt_reference_id' => $request->receipt->value,
+            'amount_received' => $request->amount_paid,
+        ]);
 
-            ReceiptCashTransactions::create([
-                'accounting_system_id' => $accounting_system_id,
-                'receipt_reference_id' => $reference->id,
-                'for_receipt_reference_id' => $request->receipt_reference_id[$i],
-                'amount_received' => $request->amount_paid[$i],
-            ]);
-
-            if($receipt->total_amount_received >= $receipt->grand_total) {
-                UpdateReceiptStatus::run($request->receipt_reference_id[$i], 'paid');
-            }
-            else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0) {
-                UpdateReceiptStatus::run($request->receipt_reference_id[$i], 'partially_paid');
-            }
+        if($receipt->total_amount_received >= $receipt->grand_total) {
+            UpdateReceiptStatus::run($request->receipt->value, 'paid');
+        }
+        else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0) {
+            UpdateReceiptStatus::run($request->receipt->value, 'partially_paid');
         }
 
         // Create Journal Entry
-        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+        $je = CreateJournalEntry::run($request->date, $request->remark, session('accounting_system_id'));
         $reference->journal_entry_id = $je->id;
         $reference->save();
 
         // Create Debit Postings
         $debit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_cash_on_hand);
-        $debit_amount[] = $request->total_received;
+        $debit_amount[] = $request->amount_paid;
 
         // Create Credit Postings
         $credit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_account_receivable);
-        $credit_amount[] = $request->total_received;
+        $credit_amount[] = $request->amount_paid;
 
         CreateJournalPostings::run($je, 
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
-            $accounting_system_id);
+            session('accounting_system_id'));
 
         CreditReceipts::create([
             'receipt_reference_id' => $reference->id,
-            'total_amount_received' => floatval($request->total_received),
+            'total_amount_received' => $request->amount_paid,
             'description' => $request->description,
             'remark' => $request->remark,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,

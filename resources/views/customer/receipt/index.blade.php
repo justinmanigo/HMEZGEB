@@ -537,7 +537,7 @@ POTENTIAL SOLUTIONS:
     @csrf
     <div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog"
         aria-labelledby="modal-credit-receipt-label" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modal-credit-receipt-label">New Credit Receipt</h5>
@@ -546,7 +546,7 @@ POTENTIAL SOLUTIONS:
                     </button>
                 </div>
                 <div class="modal-body">
-                    @include('customer.receipt.forms.credit_receipt')
+                    @include('customer.receipt.forms.credit_receipt_updated')
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -804,12 +804,13 @@ POTENTIAL SOLUTIONS:
 
     </script>
     <script src="/js/customer/receipt/template_select_customer.js"></script>
+    <script src="/js/customer/receipt/template_select_receipt.js"></script>
     <script src="/js/customer/receipt/template_select_tax.js"></script>
  
     <script src="/js/customer/receipt/select_customer_receipt.js"></script>
     <script src="/js/customer/receipt/select_customer_proforma.js"></script>
     <script src="/js/customer/receipt/select_customer_advancerevenue.js"></script>
-    <script src="/js/customer/receipt/select_customer_creditreceipt.js"></script>
+    <script src="/js/customer/receipt/select_customer_creditreceipt_updated.js"></script>
 
     <script src="/js/customer/receipt/template_select_item.js"></script>
     <script src="/js/customer/receipt/select_item_receipt.js"></script>
