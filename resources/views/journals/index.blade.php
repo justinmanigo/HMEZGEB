@@ -142,14 +142,17 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
-                            <th id="thead-actions">Actions</th>
-                            <th>Reference Number</th>
+                            <th>ID</th>
                             <th>Date</th>
                             <th class="text-right">Amount</th>
+                            <th id="thead-actions">Actions</th>
                         </thead>
                         <tbody>
                             @for($i = 0; $i < count($journalVouchers); $i++)
                             <tr>
+                                <td class="table-item-content">{{ $journalVouchers[$i]->id }}</td>
+                                <td class="table-item-content">{{ $journalVouchers[$i]->journalEntry['date'] }}</td>
+                                <td class="table-item-content text-right">{{ number_format($totalAmount[$i], 2) }}</td>
                                 <td>
                                     <a href="{{ route('journals.show', $journalVouchers[$i]['id']) }}" role="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="Edit">
                                         <span class="icon text-white-50">
@@ -162,9 +165,6 @@
                                         </span>
                                     </button> --}}
                                 </td>
-                                <td class="table-item-content">{{ $journalVouchers[$i]->id }}</td>
-                                <td class="table-item-content">{{ $journalVouchers[$i]->journalEntry['date'] }}</td>
-                                <td class="table-item-content text-right">{{ number_format($totalAmount[$i], 2) }}</td>
                             </tr>
                             @endfor
                         </tbody>
