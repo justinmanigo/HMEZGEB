@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\requests\Api\FormRequest;
+use App\Http\Requests\Api\FormRequest;
 use App\Actions\DecodeTagifyField;
 
 class StoreJournalVoucherRequest extends FormRequest
