@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Customer\Deposit;
 
-use App\Http\requests\Api\FormRequest;
+use App\Http\Requests\Api\FormRequest;
 use App\Actions\DecodeTagifyField;
 
 class StoreDepositRequest extends FormRequest
