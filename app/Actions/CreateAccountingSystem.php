@@ -20,6 +20,7 @@ class CreateAccountingSystem
         
         GenerateAccountingPeriods::run($accounting_system->id, $request->calendar_type, $request->accounting_year, $as_user->id);
 
+        $this->initTaxes($accounting_system->id);
         $this->initWithholding($accounting_system->id);
         $this->initOvertimePayrollRules($accounting_system->id);
         $this->initIncomeTaxPayrollRules($accounting_system->id);
@@ -100,7 +101,28 @@ class CreateAccountingSystem
      */
     private function initTaxes($id)
     {
-
+        DB::table('taxes')->insert([
+            [
+                'accounting_system_id' => $id,
+                'name' => 'Non-TAX',
+                'percentage' => 0,
+            ],
+            [
+                'accounting_system_id' => $id,
+                'name' => 'TOT 2%',
+                'percentage' => 2,
+            ],
+            [
+                'accounting_system_id' => $id,
+                'name' => 'TOT 10%',
+                'percentage' => 10,
+            ],
+            [
+                'accounting_system_id' => $id,
+                'name' => 'VAT',
+                'percentage' => 15,
+            ],
+        ]);
     }
 
     /**
