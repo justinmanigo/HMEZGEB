@@ -24,6 +24,7 @@ class CreateAccountingSystem
         $this->initWithholding($accounting_system->id);
         $this->initOvertimePayrollRules($accounting_system->id);
         $this->initIncomeTaxPayrollRules($accounting_system->id);
+        $this->initChartOfAccounts($accounting_system->id);
         $this->initJournalEntry($accounting_system->id);
 
         return [
@@ -202,11 +203,439 @@ class CreateAccountingSystem
     }    
 
     /**
-     * TODO: Chart of Accounts
+     * Chart of Accounts
      */
     private function initChartOfAccounts($id)
     {
-
+        DB::table('chart_of_accounts')->insert([
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '1',
+                'chart_of_account_no' => '1010',
+                'account_name' => 'Cash on Hand'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '1',
+                'chart_of_account_no' => '1020',
+                'account_name' => 'Petty Cash'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '2',
+                'chart_of_account_no' => '1110',
+                'account_name' => 'Accounts Receivable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '1',
+                'chart_of_account_no' => '1111',
+                'account_name' => 'Allowance for Uncollectable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '6',
+                'chart_of_account_no' => '1120',
+                'account_name' => 'Employees Advance'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '6',
+                'chart_of_account_no' => '1200',
+                'account_name' => 'Owner\'s Receivable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '6',
+                'chart_of_account_no' => '1201',
+                'account_name' => 'Debtor\'s Staff'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '6',
+                'chart_of_account_no' => '1202',
+                'account_name' => 'CPO Receivable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '6',
+                'chart_of_account_no' => '1204',
+                'account_name' => 'VAT Receivable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '6',
+                'chart_of_account_no' => '1300',
+                'account_name' => 'Prepaid Rent'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '6',
+                'chart_of_account_no' => '1400',
+                'account_name' => 'Prepaid Tax'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '5',
+                'chart_of_account_no' => '1420',
+                'account_name' => 'Merchandise Inventory'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '4',
+                'chart_of_account_no' => '1510',
+                'account_name' => 'Office Furniture'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '3',
+                'chart_of_account_no' => '1511',
+                'account_name' => 'Accumulated Dep. of Office Furniture'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '4',
+                'chart_of_account_no' => '1520',
+                'account_name' => 'Computer'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '3',
+                'chart_of_account_no' => '1521',
+                'account_name' => 'Accumulated Dep. of Computer'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '4',
+                'chart_of_account_no' => '1530',
+                'account_name' => 'Automobile'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '3',
+                'chart_of_account_no' => '1531',
+                'account_name' => 'Accumulated Dep. of Automobile'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '4',
+                'chart_of_account_no' => '1540',
+                'account_name' => 'Land'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '12',
+                'chart_of_account_no' => '2000',
+                'account_name' => 'Accounts Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2101',
+                'account_name' => 'Salary Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2102',
+                'account_name' => 'Income Tax Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2103',
+                'account_name' => 'Pension Fund Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2104',
+                'account_name' => 'VAT Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2105',
+                'account_name' => 'Withholding Tax Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2106',
+                'account_name' => 'Cost Sharing Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2107',
+                'account_name' => 'Profit Tax Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2108',
+                'account_name' => 'Payable to Owner'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2109',
+                'account_name' => 'Other Current Liability'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '13',
+                'chart_of_account_no' => '2200',
+                'account_name' => 'Loan Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2300',
+                'account_name' => 'Accrued Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2400',
+                'account_name' => 'Dividend Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '14',
+                'chart_of_account_no' => '2500',
+                'account_name' => 'Dividend Tax Payable'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '7',
+                'chart_of_account_no' => '3100',
+                'account_name' => 'Equity Doesn\'t Closed'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '8',
+                'chart_of_account_no' => '3101',
+                'account_name' => 'Equity Retained Earning'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '7',
+                'chart_of_account_no' => '3102',
+                'account_name' => 'Dividend'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '15',
+                'chart_of_account_no' => '4100',
+                'account_name' => 'Sales'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '17',
+                'chart_of_account_no' => '4101',
+                'account_name' => 'Sales Return'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '17',
+                'chart_of_account_no' => '4102',
+                'account_name' => 'Sales Discount'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '16',
+                'chart_of_account_no' => '4103',
+                'account_name' => 'Other Income'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '10',
+                'chart_of_account_no' => '5100',
+                'account_name' => 'Cost of Goods Sold'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '10',
+                'chart_of_account_no' => '5110',
+                'account_name' => 'Freight Charge'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6101',
+                'account_name' => 'Salary Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6102',
+                'account_name' => 'Transportation Allowance'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6103',
+                'account_name' => 'Medical and Related Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6104',
+                'account_name' => 'Representation Allowance'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6105',
+                'account_name' => 'Over Time Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6106',
+                'account_name' => 'Per Dime Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6107',
+                'account_name' => 'Commission Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6108',
+                'account_name' => 'Audit Fee Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6109',
+                'account_name' => 'Rent Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6110',
+                'account_name' => 'Bank Service Charge'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6111',
+                'account_name' => 'Office Cleaning Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6112',
+                'account_name' => 'Office Supplies Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6113',
+                'account_name' => 'Fuel Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6114',
+                'account_name' => 'Loading Unloading Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6115',
+                'account_name' => 'Miscellaneous Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6116',
+                'account_name' => 'Advertising Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6117',
+                'account_name' => 'Telephone Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6118',
+                'account_name' => 'Water and Electric Expense (Utility)'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6119',
+                'account_name' => 'Insurance Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6120',
+                'account_name' => 'Training Education Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6121',
+                'account_name' => 'Car Running Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6122',
+                'account_name' => 'Uniform Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6123',
+                'account_name' => 'Entertainment Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6124',
+                'account_name' => 'Interest Expenses'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6125',
+                'account_name' => 'Repair and Maintenance Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6126',
+                'account_name' => 'Pension Fund Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6127',
+                'account_name' => 'License Renewal'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6128',
+                'account_name' => 'Depreciation Expense'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '11',
+                'chart_of_account_no' => '6129',
+                'account_name' => 'Amortization Expense'
+            ],
+            
+        ]);
     }
 
     /**
