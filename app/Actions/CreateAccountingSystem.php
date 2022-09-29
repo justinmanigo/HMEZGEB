@@ -217,6 +217,12 @@ class CreateAccountingSystem
             [
                 'accounting_system_id' => $id,
                 'chart_of_account_category_id' => '1',
+                'chart_of_account_no' => '1011',
+                'account_name' => 'Advance Payment'
+            ],
+            [
+                'accounting_system_id' => $id,
+                'chart_of_account_category_id' => '1',
                 'chart_of_account_no' => '1020',
                 'account_name' => 'Petty Cash'
             ],
@@ -661,5 +667,13 @@ class CreateAccountingSystem
     private function initDefaults($id)
     {
 
+                // Payments
+                'payment_cash_on_hand' => $cash_on_hand,
+                'payment_vat_receivable' => $vat_receivable,
+                'payment_account_payable' => $account_payable,
+                'payment_withholding' => $withholding,
+                'payment_salary_payable' => $salary_payable,
+                'payment_commission_payment' => $commission_payment,
+            ]);
     }
 }
