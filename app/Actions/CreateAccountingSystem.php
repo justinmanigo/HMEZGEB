@@ -666,6 +666,98 @@ class CreateAccountingSystem
      */
     private function initDefaults($id)
     {
+        // Query Cash on Hand
+        $cash_on_hand = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '1010')->first();
+
+        // Query VAT Payable
+        $vat_payable = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '2104')->first();
+
+        // Query Sales
+        $sales = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '4100')->first();
+
+        // Query Account Receivable
+        $account_receivable = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '1110')->first();
+
+        // Query Sales Discount
+        $sales_discount = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '4102')->first();
+
+        // Query Withholding
+        $withholding = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '2105')->first();
+
+        // Query Advance Payment
+        $advance_payment = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '1011')->first();
+
+        // Query Items for Sale
+        $items_for_sale = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '4100')->first();
+
+        // Query Freight Charge Expense
+        $freight_charge = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '5110')->first();
+
+        // Query VAT Receivable
+        $vat_receivable = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '1204')->first();
+
+        // Query Account Payable
+        $account_payable = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '2000')->first();
+
+        // Query Salary Payable
+        $salary_payable = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '2101')->first();
+
+        // Query Commission Payment
+        $commission_payment = DB::table('chart_of_accounts')
+            ->where('accounting_system_id', $id)
+            ->where('chart_of_account_no', '6107')->first();
+
+        // Preset Defaults
+        DB::table('accounting_systems')
+            ->where('id', $id)
+            ->update([
+                // Receipts
+                'receipt_cash_on_hand' => $cash_on_hand->id,
+                'receipt_vat_payable' => $vat_payable->id,
+                'receipt_sales' => $sales->id,
+                'receipt_account_receivable' => $account_receivable->id,
+                'receipt_sales_discount' => $sales_discount->id,
+                'receipt_withholding' => $withholding->id,
+
+                // Advance Revenue
+                'advance_receipt_cash_on_hand' => $cash_on_hand->id,
+                'advance_receipt_advance_payment' => $advance_payment->id,
+
+                // Credit Receipts
+                'credit_receipt_cash_on_hand' => $cash_on_hand,
+                'credit_receipt_account_receivable' => $account_receivable,
+
+                // Bills
+                'bill_cash_on_hand' => $cash_on_hand,
+                'bill_items_for_sale' => $items_for_sale,
+                'bill_freight_charge_expense' => $freight_charge,
+                'bill_vat_receivable' => $vat_receivable,
+                'bill_account_payable' => $account_payable,
+                'bill_withholding' => $withholding,
 
                 // Payments
                 'payment_cash_on_hand' => $cash_on_hand,
