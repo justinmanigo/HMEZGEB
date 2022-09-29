@@ -26,6 +26,7 @@ class CreateAccountingSystem
         $this->initIncomeTaxPayrollRules($accounting_system->id);
         $this->initChartOfAccounts($accounting_system->id);
         $this->initJournalEntry($accounting_system->id);
+        $this->initDefaults($accounting_system->id);
 
         return [
             'accounting_system' => $accounting_system,
@@ -732,40 +733,34 @@ class CreateAccountingSystem
             ->where('chart_of_account_no', '6107')->first();
 
         // Preset Defaults
-        DB::table('accounting_systems')
-            ->where('id', $id)
-            ->update([
-                // Receipts
-                'receipt_cash_on_hand' => $cash_on_hand->id,
-                'receipt_vat_payable' => $vat_payable->id,
-                'receipt_sales' => $sales->id,
-                'receipt_account_receivable' => $account_receivable->id,
-                'receipt_sales_discount' => $sales_discount->id,
-                'receipt_withholding' => $withholding->id,
+        $accounting_system = AccountingSystem::find($id);
+        $accounting_system->receipt_cash_on_hand = $cash_on_hand->id;
+        $accounting_system->receipt_vat_payable = $vat_payable->id;
+        $accounting_system->receipt_sales = $sales->id;
+        $accounting_system->receipt_account_receivable = $account_receivable->id;
+        $accounting_system->receipt_sales_discount = $sales_discount->id;
+        $accounting_system->receipt_withholding = $withholding->id;
 
-                // Advance Revenue
-                'advance_receipt_cash_on_hand' => $cash_on_hand->id,
-                'advance_receipt_advance_payment' => $advance_payment->id,
+        $accounting_system->advance_receipt_cash_on_hand = $cash_on_hand->id;
+        $accounting_system->advance_receipt_advance_payment = $advance_payment->id;
+        
+        $accounting_system->credit_receipt_cash_on_hand = $cash_on_hand->id;
+        $accounting_system->credit_receipt_account_receivable = $account_receivable->id;
 
-                // Credit Receipts
-                'credit_receipt_cash_on_hand' => $cash_on_hand,
-                'credit_receipt_account_receivable' => $account_receivable,
+        $accounting_system->bill_cash_on_hand = $cash_on_hand->id;
+        $accounting_system->bill_items_for_sale = $items_for_sale->id;
+        $accounting_system->bill_freight_charge_expense = $freight_charge->id;
+        $accounting_system->bill_vat_receivable = $vat_receivable->id;
+        $accounting_system->bill_account_payable = $account_payable->id;
+        $accounting_system->bill_withholding = $withholding->id;
 
-                // Bills
-                'bill_cash_on_hand' => $cash_on_hand,
-                'bill_items_for_sale' => $items_for_sale,
-                'bill_freight_charge_expense' => $freight_charge,
-                'bill_vat_receivable' => $vat_receivable,
-                'bill_account_payable' => $account_payable,
-                'bill_withholding' => $withholding,
+        $accounting_system->payment_cash_on_hand = $cash_on_hand->id;
+        $accounting_system->payment_vat_receivable = $vat_receivable->id;
+        $accounting_system->payment_account_payable = $account_payable->id;
+        $accounting_system->payment_withholding = $withholding->id;
+        $accounting_system->payment_salary_payable = $salary_payable->id;
+        $accounting_system->payment_commission_payment = $commission_payment->id;
 
-                // Payments
-                'payment_cash_on_hand' => $cash_on_hand,
-                'payment_vat_receivable' => $vat_receivable,
-                'payment_account_payable' => $account_payable,
-                'payment_withholding' => $withholding,
-                'payment_salary_payable' => $salary_payable,
-                'payment_commission_payment' => $commission_payment,
-            ]);
+        $accounting_system->save();
     }
 }
