@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\HumanResource;
 
-use App\Http\requests\Api\FormRequest;
+use App\Http\Requests\Api\FormRequest;
 use App\Actions\DecodeTagifyField;
 use App\Actions\Hr\IsAccountingPeriodLocked;
 use App\Models\Addition;
