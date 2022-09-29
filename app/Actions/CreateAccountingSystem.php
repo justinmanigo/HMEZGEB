@@ -17,13 +17,13 @@ class CreateAccountingSystem
         $accounting_system = $this->create($request, $subscription);
         
         $as_user = $this->addUserAndPermission($accounting_system->id, $subscription_user->id);
-
+        
         GenerateAccountingPeriods::run($accounting_system->id, $request->calendar_type, $request->accounting_year, $as_user->id);
 
-        $this->initJournalEntry($accounting_system->id);
         $this->initWithholding($accounting_system->id);
         $this->initOvertimePayrollRules($accounting_system->id);
         $this->initIncomeTaxPayrollRules($accounting_system->id);
+        $this->initJournalEntry($accounting_system->id);
 
         return [
             'accounting_system' => $accounting_system,
@@ -57,6 +57,20 @@ class CreateAccountingSystem
         ]);
     }
 
+    /**
+     * Company Info
+     * - Details are updated directly within the Accounting System Info
+     */
+
+    /**
+     * Accounting Periods
+     * - An action class is dedicated for this purprose.
+     *   See: GenerateAccountingPeriods Action Class.
+     */
+
+    /**
+     * Users
+     */
     private function addUserAndPermission($id, $subscription_user_id)
     {
         $user = AccountingSystemUser::create([
@@ -81,20 +95,17 @@ class CreateAccountingSystem
         return $user;
     }
 
-    private function initJournalEntry($id)
+    /**
+     * Taxes
+     */
+    private function initTaxes($id)
     {
-        // Get first date of accounting year
-        $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', $id)->get();
 
-        $firstDate = $accounting_periods[0]->date_from;
-
-        JournalEntries::create([
-            'date' => $firstDate,
-            'accounting_system_id' => $id,
-            'notes' => 'Beginning Balance',
-        ]);
     }
 
+    /**
+     * DEPRECATED: Withholding
+     */
     private function initWithholding($id)
     {
         DB::table('withholdings')->insert([
@@ -106,6 +117,9 @@ class CreateAccountingSystem
         ]);
     }
 
+    /**
+     * Overtime Payroll Rules
+     */
     private function initOvertimePayrollRules($id)
     {
         $overtime_payroll_rules[] = [
@@ -120,6 +134,9 @@ class CreateAccountingSystem
         DB::table('overtime_payroll_rules')->insert($overtime_payroll_rules);
     }
 
+    /**
+     * Income Tax Payroll Rules
+     */
     private function initIncomeTaxPayrollRules($id)
     {
         DB::table('income_tax_payroll_rules')->insert([
@@ -160,5 +177,38 @@ class CreateAccountingSystem
                 'deduction' => 60
             ],
         ]);
+    }    
+
+    /**
+     * TODO: Chart of Accounts
+     */
+    private function initChartOfAccounts($id)
+    {
+
+    }
+
+    /**
+     * Journal Entries
+     */
+    private function initJournalEntry($id)
+    {
+        // Get first date of accounting year
+        $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', $id)->get();
+
+        $firstDate = $accounting_periods[0]->date_from;
+
+        JournalEntries::create([
+            'date' => $firstDate,
+            'accounting_system_id' => $id,
+            'notes' => 'Beginning Balance',
+        ]);
+    }
+
+    /**
+     * Defaults
+     */
+    private function initDefaults($id)
+    {
+
     }
 }
