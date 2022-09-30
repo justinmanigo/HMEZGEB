@@ -97,7 +97,7 @@ class DepositsController extends Controller
             ]);
 
             // Deduct balance from COA for transfer
-            $coa_id = $cash_transaction->receiptReference->receipt->chart_of_account_id;
+            $coa_id = $cash_transaction->forReceiptReference->receipt->chart_of_account_id;
             $amount_received = $cash_transaction->amount_received;
             
             $idx = -1;
