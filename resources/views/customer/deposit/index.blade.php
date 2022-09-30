@@ -201,7 +201,7 @@
                     <div class="form-group row">
                         <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
-                            <input id="d_bank_account" name='bank_account'>
+                            <input id="d_bank_account" class="form-control" name='bank_account'>
                             <p class="text-danger error-message error-message-bank_account" style="display:none"></p>
                         </div>
 
