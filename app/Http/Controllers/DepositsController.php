@@ -57,6 +57,7 @@ class DepositsController extends Controller
             'deposit_ticket_date' => $request->deposit_ticket_date,
             'total_amount' => $request->total_amount,
             'remark' => $request->remark,
+            'reference_number' => $request->reference_number,
         ]);
 
         // create transaction

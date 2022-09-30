@@ -198,17 +198,31 @@
             <div class="modal-body">
                 <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.deposits.store')}}" data-message="Successfully deposited receipts.">
                     @csrf
-                    <div class="form-group row">
-                        <label for="d_bank_account" class="col-sm-3 col-lg-2 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input id="d_bank_account" class="form-control" name='bank_account'>
-                            <p class="text-danger error-message error-message-bank_account" style="display:none"></p>
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group row">
+                                <label for="d_bank_account" class="col-4 col-form-label">Select Bank Acct.<span class="text-danger ml-1">*</span></label>
+                                <div class="col-sm-8">
+                                    <input id="d_bank_account" class="form-control" name='bank_account'>
+                                    <p class="text-danger error-message error-message-bank_account" style="display:none"></p>
+                                </div>
+                            </div>
                         </div>
-
-                        <label for="d_deposit_date" class="col-sm-3 col-lg-2 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date" value="{{date('Y-m-d')}}"  required>
-                            <p class="text-danger error-message error-message-deposit_ticket_date" style="display:none"></p>
+                        <div class="col-12 col-lg-6">
+                            <div class="form-group row">
+                                <label for="d_deposit_date" class="col-4 col-form-label">Deposit Ticket Date<span class="text-danger ml-1">*</span></label>
+                                <div class="col-8">
+                                    <input type="date" class="form-control" id="d_deposit_ticket_date" name="deposit_ticket_date" value="{{date('Y-m-d')}}"  required>
+                                    <p class="text-danger error-message error-message-deposit_ticket_date" style="display:none"></p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="d_reference_number" class="col-4 col-form-label">Reference Number</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="d_reference_number" name="reference_number">
+                                    <p class="text-danger error-message error-message-reference_number" style="display:none"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr>

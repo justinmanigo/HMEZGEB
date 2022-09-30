@@ -28,6 +28,7 @@ class StoreDepositRequest extends FormRequest
             'deposit_ticket_date' => ['required', 'date'],
             'bank_account' => ['required'],
             'is_deposited' => ['required', 'array'],
+            'reference_number' => ['sometimes'],
             'remark' => ['nullable'],
         ];
     }

@@ -17,6 +17,7 @@ class Deposits extends Model
         'total_amount',
         'status',
         'remark',
+        'reference_number',
     ];
 
     public function depositItems()

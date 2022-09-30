@@ -22,6 +22,7 @@ class CreateDepositsTable extends Migration
             $table->double('total_amount',8,2)->nullable();
             $table->string('remark')->nullable();
             $table->timestamps();
+            $table->string('reference_number')->nullable();
 
             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
         });
