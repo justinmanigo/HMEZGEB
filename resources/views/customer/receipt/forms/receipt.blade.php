@@ -91,8 +91,8 @@
                 <tr>
                     <td colspan="3" class="text-right">
                         <div class="form-check">
-                            <label class="form-check-label mr-5" for="c_is_active">Include Withholding 2%</label>
-                            <input class="form-check-input" id="c_is_active" type="checkbox" value="on" name="withholding_check" @if(\App\Models\AccountingSystem::where('id', session('accounting_system_id'))->first()->business_type == 'PLC') checked @endif>
+                            <label class="form-check-label mr-5" for="r_withholding_toggle">Withholding</label>
+                            <input class="form-check-input" id="r_withholding_toggle" type="checkbox" value="on" name="withholding_check">
                         </div>
                     </td>
                     <td class="text-right table-item-content"><strong>Withholding: </strong></td>

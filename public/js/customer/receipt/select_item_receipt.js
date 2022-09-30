@@ -290,8 +290,9 @@ function calculateReceiptGrandTotal()
 
     $(`#r_grand_total`).val(parseFloat(grandtotal).toFixed(2))
 
-    withholding_total = calculateReceiptWithholding(grandtotal);
-    $(`#r_withholding`).val(parseFloat(withholding_total).toFixed(2));
+    // TEMP. DISABLED AS OF OCT 1 2022 in lieu of manual input
+    // withholding_total = calculateReceiptWithholding(grandtotal);
+    // $(`#r_withholding`).val(parseFloat(withholding_total).toFixed(2));
 }
 
 function calculateReceiptWithholding(grandTotal)
@@ -434,3 +435,12 @@ function setTaxReceiptWhitelist(item, id)
     
     console.log(tax);
 }
+
+$(document).on('click', '#r_withholding_toggle', function(){
+    console.log($(this).is(':checked'));
+    if($(this).is(':checked')) {
+        $('#r_withholding').removeAttr('readonly');
+    } else {
+        $('#r_withholding').attr('readonly', 'true');
+    }
+})
