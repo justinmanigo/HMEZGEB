@@ -299,6 +299,13 @@ class ReceiptController extends Controller
         
         $receipt = Receipts::where('receipt_reference_id', $request->receipt->value)->first();
         $receipt->total_amount_received += $request->amount_paid;
+
+        if($receipt->total_amount_received >= $receipt->grand_total) {
+            UpdateReceiptStatus::run($request->receipt->value, 'paid');
+        }
+        else if($receipt->receiptReference->status == 'unpaid' && $receipt->total_amount_received > 0) {
+            UpdateReceiptStatus::run($request->receipt->value, 'partially_paid');
+        }
         $receipt->save();
 
         ReceiptCashTransactions::create([
@@ -306,14 +313,7 @@ class ReceiptController extends Controller
             'receipt_reference_id' => $reference->id,
             'for_receipt_reference_id' => $request->receipt->value,
             'amount_received' => $request->amount_paid,
-        ]);
-
-        if($receipt->total_amount_received >= $receipt->grand_total) {
-            UpdateReceiptStatus::run($request->receipt->value, 'paid');
-        }
-        else if($receipt->status == 'unpaid' && $receipt->total_amount_received > 0) {
-            UpdateReceiptStatus::run($request->receipt->value, 'partially_paid');
-        }
+        ]);        
 
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->date, $request->remark, session('accounting_system_id'));
@@ -481,19 +481,44 @@ class ReceiptController extends Controller
     {
         $rr = ReceiptReferences::find($id);
         $rr->journalEntry;
+        $rr->receipt;
 
         if($rr->is_deposited == "yes")
             return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
         // Voiding a source receipt will also affect the credit receipts that are linked to it.
-        $receipts = ReceiptCashTransactions::where('for_receipt_reference_id', $id)->get();
-        foreach($receipts as $receipt)
+        $rct_list = ReceiptCashTransactions::where('for_receipt_reference_id', '=', $id)
+            ->where('receipt_reference_id', '!=', $id)
+            ->get();
+
+        if(!empty($rct_list))
         {
-            $receipt->receiptReference->is_void = "yes";
-            $receipt->receiptReference->journalEntry->is_void = true;
-            $receipt->push();
+            foreach($rct_list as $rrl)
+            {
+                if($rrl->receiptReference->is_void != "yes") {
+                    $rr->receipt->total_amount_received -= $rrl->amount_received;
+    
+                    $rrl->receiptReference->is_void = "yes";
+                    $rrl->receiptReference->journalEntry->is_void = true;
+                    $rrl->push();
+                }
+            }
+
+            if($rr->receipt->total_amount_received >= $rr->receipt->grand_total) {
+                UpdateReceiptStatus::run($rr->id, 'paid');
+            }
+            else if($rr->receipt->total_amount_received > 0) {
+                UpdateReceiptStatus::run($rr->id, 'partially_paid');
+            }
+            else if($rr->receipt->total_amount_received <= 0) {
+                UpdateReceiptStatus::run($rr->id, 'unpaid');
+            }
         }
 
+        $rr->is_void = "yes";
+        $rr->journalEntry->is_void = true;
+        $rr->push();
+            
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
@@ -516,9 +541,29 @@ class ReceiptController extends Controller
     {
         $rr = ReceiptReferences::find($id);
         $rr->journalEntry;
-
+        
         if($rr->is_deposited == "yes")
             return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        
+        // Get Receipt Cash Transaction & Source Receipt
+        $rct = ReceiptCashTransactions::where('receipt_reference_id', $id)->first();
+        $rct->forReceiptReference->receipt;
+            
+        // Deduct Source Receipt's Total Amount Received
+        $rct->forReceiptReference->receipt->total_amount_received -= $rct->amount_received;
+
+        // Check Status
+        if($rct->forReceiptReference->receipt->total_amount_received >= $rct->forReceiptReference->receipt->grand_total) {
+            UpdateReceiptStatus::run($rct->forReceiptReference->id, 'paid');
+        }
+        else if($rct->forReceiptReference->status == 'unpaid' && 
+            $rct->forReceiptReference->receipt->total_amount_received > 0) {
+            UpdateReceiptStatus::run($rct->forReceiptReference->id, 'partially_paid');
+        }
+        else if($rct->forReceiptReference->receipt->total_amount_received <= 0) {
+            UpdateReceiptStatus::run($rct->forReceiptReference->id, 'unpaid');
+        }
+        $rct->push();
 
         $rr->is_void = "yes";
         $rr->journalEntry->is_void = true;
@@ -572,12 +617,30 @@ class ReceiptController extends Controller
         $rr = ReceiptReferences::find($id);
         $rr->journalEntry;
 
-        // Check if source receipt is voided, then return error
-        $credit_receipt = ReceiptCashTransactions::where('receipt_reference_id', $id)->first();
-        $source_receipt = ReceiptReferences::where('id', $credit_receipt->for_receipt_reference_id)->first();
-        if($source_receipt->is_void == 'yes') {
-            return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$source_receipt->id} is currently voided.");
+        // Get Receipt Cash Transaction & Source Receipt
+        $rct = ReceiptCashTransactions::where('receipt_reference_id', $id)->first();
+        $rct->forReceiptReference->receipt;
+
+        // Check if source receipt is voided, then return error.
+        if($rct->forReceiptReference->is_void == 'yes') {
+            return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$rct->forReceiptReference->id} is currently voided.");
         }
+            
+        // Add Source Receipt's Total Amount Received
+        $rct->forReceiptReference->receipt->total_amount_received += $rct->amount_received;
+
+        // Check Status
+        if($rct->forReceiptReference->receipt->total_amount_received >= $rct->forReceiptReference->receipt->grand_total) {
+            UpdateReceiptStatus::run($rct->forReceiptReference->id, 'paid');
+        }
+        else if($rct->forReceiptReference->status == 'unpaid' && 
+            $rct->forReceiptReference->receipt->total_amount_received > 0) {
+            UpdateReceiptStatus::run($rct->forReceiptReference->id, 'partially_paid');
+        }
+        else if($rct->forReceiptReference->receipt->total_amount_received <= 0) {
+            UpdateReceiptStatus::run($rct->forReceiptReference->id, 'unpaid');
+        }
+        $rct->push();
 
         // If source receipt is not voided, then proceed
         $rr->is_void = "no";
@@ -801,7 +864,7 @@ class ReceiptController extends Controller
                 'receipts.payment_method',
                 'customers.name as customer_name',
             )
-            ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_cash_transactions.for_receipt_reference_id')
+            ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_cash_transactions.receipt_reference_id')
             ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
             ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
             ->where('receipt_cash_transactions.is_deposited', 'no')
