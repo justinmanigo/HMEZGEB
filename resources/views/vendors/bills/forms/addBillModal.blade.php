@@ -122,15 +122,20 @@
                     </td>
                     <td></td>
                 </tr> --}}
-                {{-- <tr>
-                    <td colspan="3" class="text-right"><span class="text-muted">Add toggle here</span></td>
+                <tr>
+                    <td colspan="3" class="text-right">
+                        <div class="form-check">
+                            <label class="form-check-label mr-5" for="b_withholding_toggle">Withholding</label>
+                            <input class="form-check-input" id="b_withholding_toggle" type="checkbox" value="on" name="withholding_check">
+                        </div>
+                    </td>
                     <td class="text-right table-item-content"><strong>Withholding: </strong></td>
                     <td>
-                        <input type="text" class="form-control text-right" name="withholding" placeholder="0.00">
+                        <input type="text" class="form-control text-right" name="withholding" id="b_withholding" value="0.00" readonly>
                         <p class="text-danger error-message error-message-withholding" style="display:none"></p>
                     </td>
                     <td></td>
-                </tr> --}}
+                </tr>
                 {{-- <tr>
                     <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
                     <td>

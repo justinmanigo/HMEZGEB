@@ -422,3 +422,12 @@ function setTaxBillWhitelist(item, id)
     
     console.log(tax);
 }
+
+$(document).on('click', '#b_withholding_toggle', function(){
+    console.log($(this).is(':checked'));
+    if($(this).is(':checked')) {
+        $('#b_withholding').removeAttr('readonly');
+    } else {
+        $('#b_withholding').attr('readonly', 'true');
+    }
+})

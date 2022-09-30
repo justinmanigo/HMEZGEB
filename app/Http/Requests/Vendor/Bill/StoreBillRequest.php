@@ -41,7 +41,8 @@ class StoreBillRequest extends FormRequest
             // 'tax.*' => ['required'],
             'sub_total' => ['required', 'numeric', 'min:0'],
             // 'discount' => ['required', 'numeric'],
-            // 'withholding' => ['required', 'numeric'],
+            'withholding' => ['sometimes', 'numeric', 'min:0'],
+            'withholding_check' => ['sometimes'],
             // 'taxable' => ['required', 'numeric'],
             'remark' => ['sometimes'],
             'attachment' => ['sometimes', 'file', 'mimes:pdf,jpg,png,jpeg,doc,docx,xls,xlsx,txt,csv'],
@@ -104,6 +105,11 @@ class StoreBillRequest extends FormRequest
             else if($this->get('bill_withholding') == null)
             {
                 $validator->errors()->add('vendor', 'You haven\'t set the default COA for Withholding. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            
+            // Check in case of withholding more than sub_total
+            if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('sub_total')) {
+                $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the sub total.');
             }
         });
     }
