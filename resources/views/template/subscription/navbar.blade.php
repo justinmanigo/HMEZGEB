@@ -41,27 +41,6 @@ $route_name = $route_name[0];
                 <div class="sidebar-brand-text mx-3">HMEZGEB</div>
             </a>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#control"
-                    aria-expanded="true" aria-controls="control">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>{{ auth()->user()->firstName }}</span>
-                </a>
-                <div id="control" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        @if(session('acct_system_count') > 1 && auth()->user()->must_update_password == false && !(auth()->user()->firstName == 'New' && auth()->user()->lastName == 'User'))
-                            <a class="collapse-item" href="{{ url('/switch') }}">Switch Acct. Systems</a>
-                            <hr class="collapse-divider mx-4 my-2">
-                        @endif
-                        <a class="collapse-item" href="javascript:void(0)" data-toggle="modal" data-target="#logoutModal">Log Out</a>
-                    </div>
-                </div>
-            </li>
-
             @if(auth()->user()->must_update_password == false && !(auth()->user()->firstName == 'New' && auth()->user()->lastName == 'User'))
 
                 <!-- Divider -->
@@ -224,7 +203,7 @@ $route_name = $route_name[0];
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
+                        {{-- <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
@@ -244,6 +223,54 @@ $route_name = $route_name[0];
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+                        </li> --}}
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">  
+                                    <span>{{ auth()->user()->firstName }} ▼</span>
+                                </span>
+                                {{-- <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg"> --}}
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                @if(Auth::user()->control_panel_role != null)
+                                    <a class="dropdown-item" href="{{ url('/control') }}">
+                                        <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Control Panel
+                                    </a>
+                                @endif
+                                <a class="dropdown-item" href="{{ url('/subscription') }}">
+                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Subscription Panel
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ url('/account') }}">
+                                    <i class="fas fa-fw fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Account Settings
+                                </a>
+                                <a class="dropdown-item" href="{{ url('/referrals') }}">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Referrals
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                @if(session('acct_system_count') > 1)
+                                    <a class="dropdown-item" href="{{ url('/switch') }}">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Switch Accounting Systems
+                                    </a>
+                                @endif
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
                             </div>
                         </li>
 
