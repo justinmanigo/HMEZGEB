@@ -140,23 +140,48 @@ class BillsController extends Controller
 
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->date, $request->remark, session('accounting_system_id'));
+        // TODO: Link Bills to Journal Entry (later for Void)
+        // $reference->journal_entry_id = $je->id;
+        // $reference->save();
+
+        $cash_on_hand = $request->total_amount_received;
+        $account_payable = $request->grand_total - $request->total_amount_received;
+        $sales = $request->sub_total;
 
         // Create Debit Postings
         $debit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_items_for_sale);
-        $debit_amount[] = $request->sub_total;
+        $debit_amount[] = $sales;
+
+        // This checks whether to add debit_amount tax posting
+        if($request->tax_total > 0) {
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_vat_receivable);
+            $debit_amount[] = $request->tax_total;
+        }
 
         // Create Credit Postings
-        // This determines which is which to include in debit postings
-        if($status == 'paid' || $status == 'partially_paid') {
-            $cash_on_hand = $request->total_amount_received;
-            
+
+        // Check if there is withholding
+        if($request->withholding_check != null) {
+            $cash_on_hand -= $request->withholding;
+
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_withholding);
+            $credit_amount[] = $request->withholding;
+
+            if($cash_on_hand < 0) {
+                $account_payable += $cash_on_hand;
+            }
+        }
+
+        // This determines which is which to include in credit postings
+        if($status == 'paid' || $status == 'partially_paid') {           
             $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_cash_on_hand);
             $credit_amount[] = $cash_on_hand;
         }
         if($status == 'partially_paid' || $status == 'unpaid') {
             $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_account_payable);
-            $credit_amount[] = $request->grand_total - $request->total_amount_received;
+            $credit_amount[] = $account_payable;
         }
+
 
         CreateJournalPostings::run($je,
             $debit_accounts, $debit_amount,
