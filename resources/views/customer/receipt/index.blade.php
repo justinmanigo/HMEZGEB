@@ -328,7 +328,7 @@
                                                     <i class="fas fa-print"></i>
                                                 </span>
                                             </button>
-                                            @if($transaction->creditReceipt->receiptReference->is_void == 'no')
+                                            @if($transaction->is_void == 'no')
                                             <!-- void -->
                                             <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'creditReceipt')">
                                                 <span class="icon text-white-50">
