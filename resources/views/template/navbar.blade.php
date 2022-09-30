@@ -142,7 +142,117 @@
                     </button>
 
                     <!-- Topbar Accounting System Name & Year -->
-                    <div>
+                    <div class="dropdown">
+                        <button class="btn btn-primary mr-3 dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-fw fa-pen"></i>
+                            <span class="text">Quick New</span>
+                        </button>
+                            <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-quick-new dropdown-menu-left shadow animated--grow-in"
+                            aria-labelledby="new_transactions">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <h6>Customers</h6>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Customer
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Deposit
+                                        </a>
+                                        <p class="my-2"><strong>Receipt</strong></p>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Receipt
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Advance Revenue
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Credit Receipt
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Proforma
+                                        </a>
+                                        
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <h6>Vendors</h6>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Vendor
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Bill
+                                        </a>
+                                        <p class="my-2"><strong>Payment</strong></p>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Bill Payment
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            VAT Payment
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Withholding Payment
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Payroll Payment
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Income Payment
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Pension Payment
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Commission Payment
+                                        </a>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <h6>Journal Vouchers</h6>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Journal Voucher
+                                        </a>
+                                        <h6 class="mt-2">Human Resource</h6>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Addition
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Deduction
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Loan
+                                        </a>
+                                        <a class="dropdown-item rounded px-2" href="#">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Overtime
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="d-none d-lg-block">
                         <strong>
                             {{ $accounting_system->accounting_year}}
                              - 

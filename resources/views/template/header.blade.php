@@ -26,6 +26,28 @@
         <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> 
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+    <style>
+      .dropdown-menu-quick-new {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000000!important;
+        display: none;
+        float: left;
+        min-width: 40rem!important;
+        padding: 1rem 0;
+        margin: 0.125rem 0.125rem 0 0!important;
+        font-size: 0.85rem;
+        color: #858796;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #e3e6f0;
+        border-radius: 0.35rem;
+      }
+    </style>
+
     @stack('styles')
     
 </head>
