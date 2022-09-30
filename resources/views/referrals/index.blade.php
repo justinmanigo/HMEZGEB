@@ -113,6 +113,11 @@
                                 @endif
                             </td>
                             <td>
+                                <a href="{{ url("/referrals/{$referral->id}") }}" role="button" class="btn btn-small btn-icon btn-dark" data-toggle="tooltip" data-placement="top" title="View Referral">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </a>
                                 <button type="button" class="btn btn-small btn-icon btn-primary" onclick="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Resend Email" disabled>
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
