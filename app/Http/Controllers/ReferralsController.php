@@ -38,6 +38,21 @@ class ReferralsController extends Controller
         ]);
     }
 
+    public function show(Referral $referral)
+    {
+        // Check if Referral's User ID == Authenticated User ID
+        if($referral->user_id != Auth::id()) {
+            abort(404);
+        }
+
+        $referral->subscription;
+        if($referral->subscription) $referral->subscription->user;
+
+        return view('referrals.show', [
+            'referral' => $referral,
+        ]);
+    }
+
     public function storeNormalReferral(StoreReferralRequest $request)
     {
         $validated = $request->validated();
