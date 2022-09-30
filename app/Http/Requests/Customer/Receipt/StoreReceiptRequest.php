@@ -141,9 +141,13 @@ class StoreReceiptRequest extends FormRequest
             //     $validator->errors()->add('total_amount_received', 'You have enabled withholding for this receipt. Please pay at least the withholding amount to proceed.');
             // }
 
-            // Check in case of withholding more than grand_total
-            if($this->get('withholding_check') != null && $this->get('grand_total') < $this->get('withholding')) {
-                $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the grand total.');
+            // Check in case of withholding more than sub_total
+            if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('sub_total')) {
+                $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the sub total.');
+            }
+            // Check in case of withholding more than total_amount_received
+            if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('total_amount_received')) {
+                $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the total amount received.');
             }
         });
     }
