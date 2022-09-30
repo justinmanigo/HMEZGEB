@@ -41,7 +41,8 @@ class StoreReceiptRequest extends FormRequest
             // 'tax.*' => ['required'],
             'sub_total' => ['required', 'numeric', 'min:0'],
             // 'discount' => ['required', 'numeric'],
-            // 'withholding' => ['required', 'numeric'],
+            'withholding' => ['sometimes', 'numeric', 'min:0'],
+            'withholding_check' => ['sometimes'],
             // 'taxable' => ['required', 'numeric'],
             'tax_total' => ['required', 'numeric', 'min:0'],
             'grand_total' => ['required', 'numeric', 'min:0'],
@@ -131,13 +132,18 @@ class StoreReceiptRequest extends FormRequest
                 $validator->errors()->add('customer', 'You haven\'t set the default COA for Withholding. Please make sure that everything is set at `Settings > Defaults`');
             }
 
-            if($this->get('as_business_type') == 'PLC' && $this->get('withholding_check') == null) {
-                $validator->errors()->add('total_amount_received', 'Withholding is required for a Private Limited Company. Kindly check to proceed.');
-            }
+            // if($this->get('as_business_type') == 'PLC' && $this->get('withholding_check') == null) {
+            //     $validator->errors()->add('total_amount_received', 'Withholding is required for a Private Limited Company. Kindly check to proceed.');
+            // }
 
             // Check if total amount received is more than or equal to withholding
-            if($this->get('withholding_check') != null && $this->get('total_amount_received') < $this->get('withholding')) {
-                $validator->errors()->add('total_amount_received', 'You have enabled withholding for this receipt. Please pay at least the withholding amount to proceed.');
+            // if($this->get('withholding_check') != null && $this->get('total_amount_received') < $this->get('withholding')) {
+            //     $validator->errors()->add('total_amount_received', 'You have enabled withholding for this receipt. Please pay at least the withholding amount to proceed.');
+            // }
+
+            // Check in case of withholding more than grand_total
+            if($this->get('withholding_check') != null && $this->get('grand_total') < $this->get('withholding')) {
+                $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the grand total.');
             }
         });
     }

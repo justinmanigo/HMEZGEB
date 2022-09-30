@@ -175,25 +175,30 @@ class ReceiptController extends Controller
         $reference->journal_entry_id = $je->id;
         $reference->save();
 
+        $cash_on_hand = $request->total_amount_received;
+        $account_receivable = $request->grand_total - $request->total_amount_received;
+
+        // Check if there is withholding
+        if($request->withholding_check != null) {
+            $cash_on_hand -= $request->withholding;
+
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_withholding);
+            $debit_amount[] = $request->withholding;
+
+            if($cash_on_hand < 0) {
+                $account_receivable += $cash_on_hand;
+            }
+        }
+
         // Create Debit Postings
         // This determines which is which to include in debit postings
         if($status == 'paid' || $status == 'partially_paid') {
-            
-            $cash_on_hand = $request->total_amount_received;
-
-            if($request->withholding_check != null) {
-                $cash_on_hand -= $request->withholding;
-
-                $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_withholding);
-                $debit_amount[] = $request->withholding;
-            }
-        
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_cash_on_hand);
             $debit_amount[] = $cash_on_hand;
         }
         if($status == 'partially_paid' || $status == 'unpaid') {
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_account_receivable);
-            $debit_amount[] = $request->grand_total - $request->total_amount_received;
+            $debit_amount[] = $account_receivable;
         }
 
         // Create Credit Postings

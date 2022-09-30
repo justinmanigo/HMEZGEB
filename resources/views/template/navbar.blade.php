@@ -100,7 +100,7 @@
                             <a class="collapse-item" href="/settings/users">Users</a>
                             {{-- <a class="collapse-item" href="/settings/themes">Theme</a> --}}
                             <a class="collapse-item" href="/settings/taxes">Taxes</a>
-                            <a class="collapse-item" href="/settings/withholding">Withholding</a>
+                            {{-- <a class="collapse-item" href="/settings/withholding">Withholding</a> --}}
                             <a class="collapse-item" href="/settings/payroll">Payroll Rules</a>
                             <a class="collapse-item" href="/settings/coa">Chart of Account</a>
                             <a class="collapse-item" href="/settings/inventory">Inventory</a>
