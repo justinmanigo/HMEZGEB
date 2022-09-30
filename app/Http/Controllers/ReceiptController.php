@@ -864,7 +864,7 @@ class ReceiptController extends Controller
                 'receipts.payment_method',
                 'customers.name as customer_name',
             )
-            ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_cash_transactions.for_receipt_reference_id')
+            ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_cash_transactions.receipt_reference_id')
             ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
             ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
             ->where('receipt_cash_transactions.is_deposited', 'no')
