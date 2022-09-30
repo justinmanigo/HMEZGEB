@@ -10,13 +10,28 @@ use App\Mail\Referral\InviteUser;
 use App\Models\Referral;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ReferralsController extends Controller
 {
     public function index()
     {
-        $referrals = Referral::where('user_id', Auth::id())->get();
+        $referrals = Referral::select(
+                'referrals.id as id',
+                'referrals.code as code',
+                'referrals.type as type',
+                'referrals.name as referred_owner', // use only in case code is never used.
+                DB::raw('CONCAT(users.firstName, " ", users.lastName) as subscription_owner'),
+                DB::raw('IFNULL(subscriptions.status, "unused") as status'),
+                'referrals.email as email',
+                'referrals.created_at',
+                'referrals.updated_at',
+            )
+            ->leftJoin('subscriptions', 'subscriptions.referral_id', '=', 'referrals.id')
+            ->leftJoin('users', 'users.id', '=', 'subscriptions.user_id')
+            ->where('referrals.user_id', Auth::id())
+            ->get();
 
         return view('referrals.index', [
             'referrals' => $referrals,

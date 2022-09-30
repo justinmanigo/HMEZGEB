@@ -67,7 +67,7 @@
                     <th>Referral Code</th>
                     <th>Date Created</th>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </thead>
                 <tbody>
@@ -86,8 +86,32 @@
                                 @endif
                             </td>
                             <td>{{ \Carbon\Carbon::parse($referral->created_at)->format('Y-m-d') }}</td>
-                            <td>{{ $referral->name }}</td>
-                            <td>{{ $referral->email }}</td>
+                            <td>
+                                @if(!$referral->subscription_owner)
+                                    {{ $referral->referred_owner }}
+                                @else
+                                    {{ $referral->subscription_owner }}
+                                @endif
+                            </td>
+                            <td>
+                                @if($referral->status == 'unused')
+                                    <span class="badge badge-danger">
+                                        {{ ucwords($referral->status) }}
+                                    </span>
+                                @elseif($referral->status == 'trial')
+                                    <span class="badge badge-warning">
+                                        {{ ucwords($referral->status) }}
+                                    </span>
+                                @elseif($referral->status == 'active')
+                                    <span class="badge badge-success">
+                                        {{ ucwords($referral->status) }}
+                                    </span>
+                                @elseif($referral->status == 'suspended')
+                                    <span class="badge badge-secondary">
+                                        {{ ucwords($referral->status) }}
+                                    </span>
+                                @endif
+                            </td>
                             <td>
                                 <button type="button" class="btn btn-small btn-icon btn-primary" onclick="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Resend Email" disabled>
                                     <span class="icon text-white-50">

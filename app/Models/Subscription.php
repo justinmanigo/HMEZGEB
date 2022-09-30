@@ -24,6 +24,11 @@ class Subscription extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function referral()
+    {
+        return $this->belongsTo(Referral::class);
+    }
+
     public function referrer()
     {
         return $this->belongsTo(User::class, 'referral_user_id', 'user_id');
