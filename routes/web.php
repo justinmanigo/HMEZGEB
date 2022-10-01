@@ -565,6 +565,7 @@ Route::group([
 
                 Route::get('/hr/payrolls', [PayrollController::class, 'index'])->name('index');
                 Route::post('/hr/payrolls', [PayrollController::class, 'store'])->name('store');
+                Route::get('/hr/payrolls/{payroll_period}', [PayrollController::class, 'show'])->name('show');
                 
             });
         

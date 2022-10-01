@@ -18,7 +18,6 @@ use App\Models\Settings\PayrollRules\IncomeTaxPayrollRules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use DB;
 
 class PayrollController extends Controller
 {
@@ -249,37 +248,72 @@ class PayrollController extends Controller
      * @param  \App\Models\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(PayrollPeriod $payroll_period)
     {
+        if($payroll_period->accounting_system_id != session('accounting_system_id'))
+            abort(404);
+
+        $payroll_period->period;
+
+        $payrolls = DB::table('payrolls')
+            ->select(
+                'employees.id as employee_id',
+                'employees.first_name',
+                'employees.father_name',
+                'employees.grandfather_name',
+                'payrolls.total_salary',
+                'payrolls.total_addition',
+                'payrolls.total_deduction',
+                'payrolls.total_overtime',
+                'payrolls.total_loan',
+                'payrolls.total_tax',
+                'payrolls.total_pension_7',
+                'payrolls.total_pension_11',
+                'payrolls.net_pay',
+            )
+            ->leftJoin('employees', 'employees.id', 'payrolls.employee_id')
+            ->where('payrolls.payroll_period_id', $payroll_period->id)
+            ->where('payrolls.accounting_system_id', session('accounting_system_id'))
+            ->get();
+
+        // return [
+        //     'payroll_period' => $payroll_period,
+        //     'payrolls' => $payrolls,
+        // ];
+        
+        // TODO: Show breakdown by user (in a separate page)
         // get all related basic salary, additions, deductions, overtimes, loans, pensions, tax related to payroll
-        $payroll_items = DB::table('basic_salaries')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id)
-        ->union(DB::table('additions')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('deductions')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('overtimes')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('loans')
-        ->select('id','employee_id','payroll_id','loan as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('pensions')
-        ->select('id','employee_id','payroll_id','pension_07_amount as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('pensions')
-        ->select('id','employee_id','payroll_id','pension_11_amount as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('tax_payrolls')
-        ->select('id','employee_id','payroll_id','tax_amount as amount','type')
-        ->where('payroll_id',$id))
-        ->get();
+        // $payroll_items = DB::table('basic_salaries')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id)
+        // ->union(DB::table('additions')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('deductions')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('overtimes')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('loans')
+        // ->select('id','employee_id','payroll_id','loan as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('pensions')
+        // ->select('id','employee_id','payroll_id','pension_07_amount as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('pensions')
+        // ->select('id','employee_id','payroll_id','pension_11_amount as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('tax_payrolls')
+        // ->select('id','employee_id','payroll_id','tax_amount as amount','type')
+        // ->where('payroll_id',$id))
+        // ->get();
 
 
-        return view('hr.payroll.show',compact('payroll_items','id'));
+        return view('hr.payroll.show', compact(
+            'payroll_period',
+            'payrolls',
+        ));
     }
 
     /**
