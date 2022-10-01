@@ -236,7 +236,9 @@ class PayrollController extends Controller
                     }
                 }
                 // Net Pay
-                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax_amount;
+                // ? total_pension_11 was removed as per #190
+                // $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax_amount;
+                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_deduction - $total_loan - $tax_amount;
                 $payroll->net_pay = $net_pay;
                 $payroll->save();
         }
