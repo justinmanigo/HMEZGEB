@@ -129,8 +129,8 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Receipt</a>
-                    <a role="button" class="dropdown-item" data-toggle="modal"
-                        data-target="#modal-advance-revenue">Advance Revenue</a>
+                    <a role="button" class="dropdown-item disabled" data-toggle="modal"
+                        {{-- data-target="#modal-advance-revenue" --}}>Advance Revenue <span class="text-danger">(Coming Soon)</span></a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target="#modal-credit-receipt">Credit Receipt</a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
@@ -526,7 +526,8 @@ POTENTIAL SOLUTIONS:
                     </button>
                 </div>
                 <div class="modal-body">
-                    @include('customer.receipt.forms.advance_revenue')
+                    Coming Soon ...
+                    {{-- @include('customer.receipt.forms.advance_revenue') --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -22,9 +22,9 @@
         <div class="card col-12 col-lg-6">
             <div class="card-body">
                 <p class="alert alert-danger">
-                    This feature is not yet available at the moment. This is only a static page for demonstration purposes.
+                    Coming Soon.
                 </p>
-                <p>To proceed with the bank reconciliation process, kindly select a Bank Account and import its bank statement in the form below.</p>
+                {{-- <p>To proceed with the bank reconciliation process, kindly select a Bank Account and import its bank statement in the form below.</p>
                 <form id="form-getting-started" action="" method="POST">
                     <div class="form-group">
                         <label for="bank-account">Bank Account</label>
@@ -35,11 +35,11 @@
                         <input type="file" class="form-control-file" id="gs_bank_statement" name="bank_statement">
                     </div>
                     <button type="submit" class="btn btn-primary" disabled>Import</button>
-                </form>
+                </form> --}}
             </div>
         </div>        
     </div>
-    <div class="row mb-4">
+    {{-- <div class="row mb-4">
         <div class="card col-12">
             <div class="card-body">
                 <h4 class="mb-0">Bank Account Name</h4>
@@ -201,7 +201,6 @@
                                     <th>Credit</th>
                                     <th>Balance</th>
                                     <th>Actions</th>
-                                    {{-- <th>OK?</th> --}}
                                 </thead>
                                 <tbody>
                                     @for($i = 0; $i < 50; $i++)
@@ -215,9 +214,6 @@
                                             <button data-id="1" data-type="bank-statement" class="btn btn-sm btn-primary btn-correct-and-match" data-toggle="modal" data-target="#correctAndMatch">Correct and Match</button>
                                             <button data-id="1" data-type="bank-statement" class="btn btn-sm btn-info btn-create-and-match" data-toggle="modal" data-target="#createAndMatch">Create Transaction</button>
                                         </td>
-                                        {{-- <td>
-                                            <a href="#" class="btn btn-sm btn-success">OK</a>
-                                        </td> --}}
                                     </tr>
                                     <tr>
                                         <td>August 31, 2022</td>
@@ -229,9 +225,6 @@
                                             <button data-id="2" data-type="bank-statement" class="btn btn-sm btn-primary btn-correct-and-match" data-toggle="modal" data-target="#correctAndMatch">Correct and Match</button>
                                             <button data-id="2" data-type="bank-statement" class="btn btn-sm btn-info btn-create-and-match" data-toggle="modal" data-target="#createAndMatch">Create Transaction</button>
                                         </td>
-                                        {{-- <td>
-                                            <a href="#" class="btn btn-sm btn-success">OK</a>
-                                        </td> --}}
                                     </tr>
                                     @endfor
                                 </tbody>
@@ -248,7 +241,6 @@
                                     <th>Credit</th>
                                     <th>Balance</th>
                                     <th>Actions</th>
-                                    {{-- <th>OK?</th> --}}
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -261,9 +253,6 @@
                                             <button data-id="1" data-type="cash-book" class="btn btn-sm btn-primary btn-correct-and-match" data-toggle="modal" data-target="#correctAndMatch">Correct and Match</button>
                                             <button data-id="1" data-type="cash-book" class="btn btn-sm btn-info btn-create-and-match" data-toggle="modal" data-target="#createAndMatch">Create Transaction</button>
                                         </td>
-                                        {{-- <td>
-                                            <a href="#" class="btn btn-sm btn-success">OK</a>
-                                        </td> --}}
                                     </tr>
                                 </tbody>
                             </table>
@@ -327,7 +316,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 
 <!-- Modals -->

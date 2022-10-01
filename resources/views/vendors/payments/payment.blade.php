@@ -96,17 +96,17 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a role="button" class="dropdown-item" data-toggle="modal" data-target=".bill-payment-modal">Bill</a>
-                <a role="button" class="dropdown-item" data-toggle="modal" data-target=".VAT-payment-modal">VAT</a>
-                <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target=".Withholding-payment-modal">Withholding</a>
-                <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target=".payroll-payment-modal">Payroll</a>
-                <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target=".income-tax-payment-modal">Income Tax</a>
-                <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target=".pension-payment-modal">Pension</a>
-                <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target=".commission-payment-modal">Commision</a>
+                <a role="button" class="dropdown-item disabled" data-toggle="modal" {{-- data-target=".VAT-payment-modal" --}}>VAT <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item disabled" data-toggle="modal"
+                    {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item disabled" data-toggle="modal"
+                    {{-- data-target=".payroll-payment-modal" --}}>Payroll <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item disabled" data-toggle="modal"
+                    {{-- data-target=".income-tax-payment-modal" --}}>Income Tax <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item disabled" data-toggle="modal"
+                    {{-- data-target=".pension-payment-modal" --}}>Pension <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item disabled" data-toggle="modal"
+                    {{-- data-target=".commission-payment-modal" --}}>Commision <span class="text-danger">(Coming Soon)</span></a>
             </div>
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                 <span class="icon text-white-50">
@@ -171,10 +171,11 @@
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
-                        @include('vendors.payments.forms.VATPaymentModal')
+                        Coming Soon.
+                        {{-- @include('vendors.payments.forms.VATPaymentModal') --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
+                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
                         </div>
                     </form>
                 </div>
@@ -196,10 +197,11 @@
                     <form id="contactForm" action="{{route('payments.withholdingPayment.store')}}" method="post"
                         role="form">
                         @csrf
-                        @include('vendors.payments.forms.withholdingPaymentModal')
+                        Coming Soon.
+                        {{-- @include('vendors.payments.forms.withholdingPaymentModal') --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
+                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
                         </div>
                     </form>
                 </div>
@@ -219,10 +221,11 @@
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" name="contact" role="form">
-                        @include('vendors.payments.forms.payrollPaymentModal')
+                        Coming Soon.
+                        {{-- @include('vendors.payments.forms.payrollPaymentModal') --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
+                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
                         </div>
                     </form>
                 </div>
@@ -244,10 +247,11 @@
                     <form action="{{route('payments.incomeTax.store')}}" id="contactForm" method="post" name="contact"
                         role="form">
                         @csrf
-                        @include('vendors.payments.forms.incomeTaxPaymentModal')
+                        Coming Soon.
+                        {{-- @include('vendors.payments.forms.incomeTaxPaymentModal') --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
+                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
                         </div>
                     </form>
                 </div>
@@ -269,10 +273,11 @@
                     <form action="{{route('payments.pension.store')}}" method="post" id="contactForm" name="contact"
                         role="form">
                         @csrf
-                        @include('vendors.payments.forms.pensionPaymentModal')
+                        Coming Soon.
+                        {{-- @include('vendors.payments.forms.pensionPaymentModal') --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
+                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
                         </div>
                     </form>
                 </div>
@@ -292,10 +297,11 @@
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" name="contact" role="form">
-                        @include('vendors.payments.forms.commissionPaymentModal')
+                        Coming Soon.
+                        {{-- @include('vendors.payments.forms.commissionPaymentModal') --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
+                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
                         </div>
                     </form>
                 </div>
