@@ -561,7 +561,11 @@ Route::group([
                 'middleware' => 'acctsys.permission:14',
             ], function(){
                 // HTML
-                Route::resource('/hr/payrolls', PayrollController::class);
+                // Route::resource('/hr/payrolls', PayrollController::class);
+
+                Route::get('/hr/payrolls', [PayrollController::class, 'index'])->name('index');
+                Route::post('/hr/payrolls', [PayrollController::class, 'store'])->name('store');
+                
             });
         
             /**

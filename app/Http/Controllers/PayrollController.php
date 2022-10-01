@@ -16,6 +16,7 @@ use App\Models\Loan;
 use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
 use App\Models\Settings\PayrollRules\IncomeTaxPayrollRules;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use DB;
 
@@ -29,16 +30,45 @@ class PayrollController extends Controller
     public function index()
     {
         //
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $payrolls = Payroll::where('accounting_system_id', $accounting_system_id)
-            ->orderBy('created_at', 'desc')->get();
+        // $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // $payrolls = Payroll::where('accounting_system_id', $accounting_system_id)
+        //     ->orderBy('created_at', 'desc')->get();
         
-        // get accounting_periods with no payrolls for select menu
-        $accounting_periods_with_no_payroll = AccountingPeriods::where('accounting_system_id', $accounting_system_id)
+        // // get accounting_periods with no payrolls for select menu
+        $accounting_periods_with_no_payroll = AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))
             ->whereDoesntHave('payrollPeriod')
             ->get();
-        
-        return view('hr.payroll.index', compact('payrolls', 'accounting_periods_with_no_payroll'));
+
+        $subQuery = DB::table('payrolls')
+            ->select('payroll_period_id as id', DB::raw('COUNT(payroll_period_id) as employee_count'))
+            ->groupBy('payroll_period_id');
+
+        $payroll_periods = DB::table('accounting_periods')
+            ->select(
+                'accounting_periods.period_number',
+                'accounting_periods.date_from',
+                'accounting_periods.date_to',
+                'payroll_periods.id as payroll_period_id',
+                'payroll_periods.is_paid',
+                DB::raw('IFNULL(p.employee_count, 0) as employee_count'),
+                'payroll_periods.created_at',
+                'payroll_periods.updated_at',
+            )
+            ->leftJoin('payroll_periods', 'payroll_periods.period_id', 'accounting_periods.id')
+            ->leftJoinSub($subQuery, 'p', function($join){
+                $join->on('p.id', '=', 'payroll_periods.id');
+            })
+            ->where('accounting_periods.accounting_system_id', session('accounting_system_id'))
+            ->get();
+
+        // return $payroll_periods;
+
+        return view('hr.payroll.index', compact(
+            'accounting_periods_with_no_payroll',
+            'payroll_periods',
+        ));
+    
+        // return view('hr.payroll.index', compact('payrolls', 'accounting_periods_with_no_payroll'));
     }
 
     /**
