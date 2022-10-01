@@ -16,8 +16,8 @@ use App\Models\Loan;
 use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
 use App\Models\Settings\PayrollRules\IncomeTaxPayrollRules;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use DB;
 
 class PayrollController extends Controller
 {
@@ -29,16 +29,46 @@ class PayrollController extends Controller
     public function index()
     {
         //
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $payrolls = Payroll::where('accounting_system_id', $accounting_system_id)
-            ->orderBy('created_at', 'desc')->get();
+        // $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // $payrolls = Payroll::where('accounting_system_id', $accounting_system_id)
+        //     ->orderBy('created_at', 'desc')->get();
         
-        // get accounting_periods with no payrolls for select menu
-        $accounting_periods_with_no_payroll = AccountingPeriods::where('accounting_system_id', $accounting_system_id)
+        // // get accounting_periods with no payrolls for select menu
+        $accounting_periods_with_no_payroll = AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))
             ->whereDoesntHave('payrollPeriod')
             ->get();
-        
-        return view('hr.payroll.index', compact('payrolls', 'accounting_periods_with_no_payroll'));
+
+        $subQuery = DB::table('payrolls')
+            ->select('payroll_period_id as id', DB::raw('COUNT(payroll_period_id) as employee_count'))
+            ->groupBy('payroll_period_id');
+
+        $payroll_periods = DB::table('accounting_periods')
+            ->select(
+                'accounting_periods.period_number',
+                'accounting_periods.date_from',
+                'accounting_periods.date_to',
+                'payroll_periods.id as payroll_period_id',
+                'payroll_periods.is_paid',
+                DB::raw('IFNULL(p.employee_count, 0) as employee_count'),
+                'payroll_periods.created_at',
+                'payroll_periods.updated_at',
+            )
+            ->leftJoin('payroll_periods', 'payroll_periods.period_id', 'accounting_periods.id')
+            ->leftJoinSub($subQuery, 'p', function($join){
+                $join->on('p.id', '=', 'payroll_periods.id');
+            })
+            ->where('accounting_periods.accounting_system_id', session('accounting_system_id'))
+            ->orderBy('accounting_periods.period_number', 'asc')
+            ->get();
+
+        // return $payroll_periods;
+
+        return view('hr.payroll.index', compact(
+            'accounting_periods_with_no_payroll',
+            'payroll_periods',
+        ));
+    
+        // return view('hr.payroll.index', compact('payrolls', 'accounting_periods_with_no_payroll'));
     }
 
     /**
@@ -74,6 +104,12 @@ class PayrollController extends Controller
             if($employees->isEmpty())
                 return redirect()->route('payrolls.payrolls.index')->with('error','No records to create Payroll');
 
+            // Create Payroll Period
+            $payroll_period = new PayrollPeriod;
+            $payroll_period->period_id = $accounting_period->id;
+            $payroll_period->accounting_system_id = $accounting_system_id;
+            $payroll_period->save();
+
             foreach($employees as $employee){
                 $additions = Addition::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
                 ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
@@ -88,11 +124,7 @@ class PayrollController extends Controller
                 ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
                 ->get();            
                 
-                // Create Payroll Period
-                $payroll_period = new PayrollPeriod;
-                $payroll_period->period_id = $accounting_period->id;
-                $payroll_period->accounting_system_id = $accounting_system_id;
-                $payroll_period->save();
+                
                 // Create Payroll
                 $payroll = new Payroll;
                 $payroll->payroll_period_id = $payroll_period->id;
@@ -205,12 +237,14 @@ class PayrollController extends Controller
                     }
                 }
                 // Net Pay
-                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax_amount;
+                // ? total_pension_11 was removed as per #190
+                // $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax_amount;
+                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_deduction - $total_loan - $tax_amount;
                 $payroll->net_pay = $net_pay;
                 $payroll->save();
         }
         }
-        return redirect()->route('payrolls.payrolls.index')->with('success','Payroll Created Successfully');
+        return redirect()->route('payrolls.index')->with('success','Payroll Created Successfully');
     }
 
     /**
@@ -219,37 +253,72 @@ class PayrollController extends Controller
      * @param  \App\Models\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(PayrollPeriod $payroll_period)
     {
+        if($payroll_period->accounting_system_id != session('accounting_system_id'))
+            abort(404);
+
+        $payroll_period->period;
+
+        $payrolls = DB::table('payrolls')
+            ->select(
+                'employees.id as employee_id',
+                'employees.first_name',
+                'employees.father_name',
+                'employees.grandfather_name',
+                'payrolls.total_salary',
+                'payrolls.total_addition',
+                'payrolls.total_deduction',
+                'payrolls.total_overtime',
+                'payrolls.total_loan',
+                'payrolls.total_tax',
+                'payrolls.total_pension_7',
+                'payrolls.total_pension_11',
+                'payrolls.net_pay',
+            )
+            ->leftJoin('employees', 'employees.id', 'payrolls.employee_id')
+            ->where('payrolls.payroll_period_id', $payroll_period->id)
+            ->where('payrolls.accounting_system_id', session('accounting_system_id'))
+            ->get();
+
+        // return [
+        //     'payroll_period' => $payroll_period,
+        //     'payrolls' => $payrolls,
+        // ];
+        
+        // TODO: Show breakdown by user (in a separate page)
         // get all related basic salary, additions, deductions, overtimes, loans, pensions, tax related to payroll
-        $payroll_items = DB::table('basic_salaries')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id)
-        ->union(DB::table('additions')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('deductions')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('overtimes')
-        ->select('id','employee_id','payroll_id','price as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('loans')
-        ->select('id','employee_id','payroll_id','loan as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('pensions')
-        ->select('id','employee_id','payroll_id','pension_07_amount as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('pensions')
-        ->select('id','employee_id','payroll_id','pension_11_amount as amount','type')
-        ->where('payroll_id',$id))
-        ->union(DB::table('tax_payrolls')
-        ->select('id','employee_id','payroll_id','tax_amount as amount','type')
-        ->where('payroll_id',$id))
-        ->get();
+        // $payroll_items = DB::table('basic_salaries')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id)
+        // ->union(DB::table('additions')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('deductions')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('overtimes')
+        // ->select('id','employee_id','payroll_id','price as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('loans')
+        // ->select('id','employee_id','payroll_id','loan as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('pensions')
+        // ->select('id','employee_id','payroll_id','pension_07_amount as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('pensions')
+        // ->select('id','employee_id','payroll_id','pension_11_amount as amount','type')
+        // ->where('payroll_id',$id))
+        // ->union(DB::table('tax_payrolls')
+        // ->select('id','employee_id','payroll_id','tax_amount as amount','type')
+        // ->where('payroll_id',$id))
+        // ->get();
 
 
-        return view('hr.payroll.show',compact('payroll_items','id'));
+        return view('hr.payroll.show', compact(
+            'payroll_period',
+            'payrolls',
+        ));
     }
 
     /**
@@ -281,27 +350,28 @@ class PayrollController extends Controller
      * @param  \App\Models\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(PayrollPeriod $payroll_period)
     {
-        $payroll = Payroll::find($id);
-        if($payroll->status == 'paid')
-        {
-            return redirect()->route('payrolls.payrolls.index')->with('error','Error Deleting Payroll. Payroll Already Paid');
+        $payroll_period->payrolls;
+
+        if($payroll_period->is_paid) {
+            return redirect()->route('payrolls.index')->with('error','Error Deleting Payroll. Payroll Already Paid');
         }
-        else
+
+        foreach($payroll_period->payrolls as $payroll)
         {
-            // change all related records payroll_id to null
-            $basic_salaries = BasicSalary::where('payroll_id',$id)->delete();
-            $addition = Addition::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $deduction = Deduction::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $overtime = Overtime::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $loan = Loan::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $pension = Pension::where('payroll_id',$id)->delete();
-            $tax = TaxPayroll::where('payroll_id',$id)->delete();            
+            BasicSalary::where('payroll_id',$payroll->id)->delete();
+            Addition::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Deduction::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Overtime::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Loan::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Pension::where('payroll_id',$payroll->id)->delete();
+            TaxPayroll::where('payroll_id',$payroll->id)->delete();
             $payroll->delete();
-            $payroll_period = PayrollPeriod::where('id', $payroll->payroll_period_id)->delete();
-           
-            return redirect()->route('payrolls.payrolls.index')->with('success','Payroll Deleted Successfully');
-        }       
+        }
+
+        $payroll_period->delete();   
+
+        return redirect()->route('payrolls.index')->with('success','Payroll Deleted Successfully');
     }
 }

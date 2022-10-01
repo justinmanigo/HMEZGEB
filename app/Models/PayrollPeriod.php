@@ -25,5 +25,10 @@ class PayrollPeriod extends Model
         return $this->hasOne(Payroll::class, 'payroll_period_id','id');
     }
 
+    public function payrolls()
+    {
+        return $this->hasMany(Payroll::class, 'payroll_period_id','id');
+    }
+
 
 }

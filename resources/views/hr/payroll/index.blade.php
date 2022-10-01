@@ -111,6 +111,11 @@
             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                 <thead>
                     <th>Period</th>
+                    <th>Date From</th>
+                    <th>Date To</th>
+                    <th>Number of Employees</th>
+                    <th>Status</th>
+                    {{-- <th>Period</th>
                     <th>Employee Name</th>
                     <th>Status</th>
                     <th>Basic Salary</th>
@@ -121,14 +126,34 @@
                     <th>Tax</th>
                     <th>Pension 7%</th>
                     <th>Pension 11%</th>
-                    <th>Net Pay</th>
+                    <th>Net Pay</th> --}}
                     <th id="thead-actions">Actions</th>    
                 </thead>
                 <tbody>
-                    @foreach($payrolls as $payroll)
+                    @foreach($payroll_periods as $period)
 
                     <tr>
-                        <td class="table-item-content">{{$payroll->payrollPeriod->period->period_number}}</td>
+                        <td>
+                            # 
+                            @if($period->period_number < 10) 
+                                {{ '0' . $period->period_number }} 
+                            @else
+                                {{ $period->period_number }}
+                            @endif
+                        </td>
+                        <td>{{ $period->date_from }}</td>
+                        <td>{{ $period->date_to }}</td>
+                        <td>{{ $period->employee_count }}</td>
+                        <td>
+                            @if(!$period->payroll_period_id)
+                                <span class="badge badge-secondary">Ungenerated</span>
+                            @elseif(!$period->is_paid)
+                                <span class="badge badge-warning">Unpaid</span>
+                            @else
+                                <span class="badge badge-success">Paid</span>
+                            @endif
+                        </td>
+                        {{-- <td class="table-item-content">{{$payroll->payrollPeriod->period->period_number}}</td>
                         <td class="table-item-content">{{$payroll->employee->first_name}}</td>
                         <td class="table-item-content"><span class="badge badge-secondary">{{$payroll->status}}</span></td>
                         <td class="table-item-content">{{$payroll->total_salary}} Birr</td>
@@ -139,18 +164,29 @@
                         <td class="table-item-content">{{$payroll->total_tax}} Birr</td>
                         <td class="table-item-content">{{$payroll->total_pension_7}} Birr</td>
                         <td class="table-item-content">{{$payroll->total_pension_11}} Birr</td>
-                        <td class="table-item-content">{{$payroll->net_pay}} Birr</td>
+                        <td class="table-item-content">{{$payroll->net_pay}} Birr</td> --}}
                         <td>
-                            <a href="{{ route('payrolls.payrolls.show', $payroll->id) }}" role="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="View">
+                            {{-- <a href="{{ route('payrolls.payrolls.show', $payroll->id) }}" role="button" class="btn btn-small btn-icon btn-primary" data-toggle="tooltip" data-placement="bottom" title="View">
+                                <span class="icon text-white-50">
+                                    <i class='fa fa-eye'></i>
+                                </span>
+                            </a> --}}
+                            <a href="
+                                @if(!$period->payroll_period_id)
+                                    {{ 'javascript:void(0)' }}
+                                @else
+                                    {{ '/hr/payrolls/' . $period->payroll_period_id }}
+                                @endif
+                                " role="button" class="btn btn-small btn-icon btn-primary @if(!$period->payroll_period_id) disabled @endif" data-toggle="tooltip" data-placement="bottom" title="View">
                                 <span class="icon text-white-50">
                                     <i class='fa fa-eye'></i>
                                 </span>
                             </a>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" disabled>
+                            {{-- <button type="button" class="btn btn-small btn-icon btn-danger" @if(!$period->payroll_period_id || $period->is_paid) disabled @endif>
                                 <span class="icon text-white-50">
                                     <i class='fa fa-trash'></i>
                                 </span>
-                            </button>
+                            </button> --}}
                         </td>
 
                     </tr>
@@ -172,7 +208,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{route('payrolls.payrolls.store')}}" method="post">
+                <form action="{{ url('/hr/payrolls/') }}" method="post">
                     @csrf
                     {{-- <div class="form-group row">
                         <label for="employee" class="col-12 col-md-3">Employee</label>
@@ -189,7 +225,15 @@
                         <div class="col-12 col-lg-8">
                             <select class="form-control" id="period" name="period">
                                 @foreach($accounting_periods_with_no_payroll as $period)
-                                    <option value="{{$period->id}}">{{$period->period_number}}</option>
+                                    <option value="{{$period->id}}">
+                                        # 
+                                        @if($period->period_number < 10) 
+                                            {{ '0' . $period->period_number }} 
+                                        @else
+                                            {{ $period->period_number }}
+                                        @endif
+                                        | 
+                                        {{ $period->date_from }} to {{ $period->date_to }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -280,9 +324,9 @@
 
 
 <script>
-    $(document).ready(function () {
-    $('#dataTables').DataTable();
-    $('.dataTables_filter').addClass('pull-right');
-    });
+    // $(document).ready(function () {
+    // $('#dataTables').DataTable();
+    // $('.dataTables_filter').addClass('pull-right');
+    // });
 </script>
 @endsection

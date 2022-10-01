@@ -16,6 +16,7 @@ class CreatePayrollPeriodsTable extends Migration
         Schema::create('payroll_periods', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('period_id')->constrained('accounting_periods');
+            $table->boolean('is_paid')->default(false);
             $table->unsignedBigInteger('accounting_system_id')->constrained();
             $table->timestamps();
         });
