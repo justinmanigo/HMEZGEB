@@ -19,7 +19,7 @@ class CreatePensionPaymentsTable extends Migration
             $table->unsignedBigInteger('accounting_period_id')->nullable();
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
             $table->unsignedBigInteger('cheque_number')->nullable();
-            $table->float('amount_received');
+            $table->decimal('amount_received', 18, 8);
             $table->timestamps();
             $table->foreign('payment_reference_id')->references('id')->on('payment_references');
             $table->foreign('accounting_period_id')->references('id')->on('accounting_periods');

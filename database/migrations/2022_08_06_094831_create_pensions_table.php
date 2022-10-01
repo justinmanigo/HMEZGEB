@@ -18,8 +18,8 @@ class CreatePensionsTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('payroll_id')->nullable();
-            $table->float('pension_07_amount', 10,2)->default(0);
-            $table->float('pension_11_amount',10,2)->default(0);
+            $table->decimal('pension_07_amount', 18, 6)->default(0);
+            $table->decimal('pension_11_amount', 18, 6)->default(0);
             $table->string('type')->default('pension');
             $table->enum('status',['pending','paid','cancelled'])->default('pending');
             $table->foreign('payroll_id')->references('id')->on('payrolls');

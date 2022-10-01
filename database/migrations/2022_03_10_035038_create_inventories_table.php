@@ -18,8 +18,8 @@ class CreateInventoriesTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->string('item_code');
             $table->string('item_name'); 
-            $table->float('sale_price')->nullable();
-            $table->float('purchase_price')->nullable();
+            $table->decimal('sale_price', 18, 8)->nullable();
+            $table->decimal('purchase_price', 18, 8)->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('critical_quantity')->nullable();
             // $table->float('sold_quantity')->nullable();

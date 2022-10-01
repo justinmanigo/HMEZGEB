@@ -17,8 +17,8 @@ class CreatePeriodOfAccountsTable extends Migration
             $table->id();
             $table->foreignId('chart_of_account_id')->constrained(); 
             $table->foreignId('accounting_period_id')->constrained();
-            $table->float('beginning_balance')->nullable();
-            $table->float('closing_balance')->nullable();
+            $table->decimal('beginning_balance', 18, 8)->nullable();
+            $table->decimal('closing_balance', 18, 8)->nullable();
             $table->timestamps();
         });
     }

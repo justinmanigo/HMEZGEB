@@ -19,12 +19,12 @@ class CreateReceiptsTable extends Migration
             $table->unsignedBigInteger('proforma_id')->nullable();
             $table->foreignid('chart_of_account_id')->nullable()->constrained();
             $table->date('due_date');
-            $table->float('sub_total');
-            $table->float('discount')->nullable();
-            $table->float('tax')->nullable();
-            $table->float('grand_total');
-            $table->float('total_amount_received');
-            $table->float('withholding')->nullable();
+            $table->decimal('sub_total', 18, 8);
+            $table->decimal('discount', 18, 8)->nullable();
+            $table->decimal('tax', 18, 8)->nullable();
+            $table->decimal('grand_total', 18, 8);
+            $table->decimal('total_amount_received', 18, 8);
+            $table->decimal('withholding', 18, 8)->nullable();
             $table->longText('remark')->nullable();
             $table->string('attachment')->nullable();
             $table->enum('payment_method',['credit','cash']);

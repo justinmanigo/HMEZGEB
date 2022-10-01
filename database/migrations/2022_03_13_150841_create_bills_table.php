@@ -20,18 +20,18 @@ class CreateBillsTable extends Migration
             $table->unsignedBigInteger('withholding_payment_id')->nullable();
             $table->date('due_date');
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
-            $table->float('sub_total');
-            $table->float('discount')->nullable();
-            $table->float('tax')->nullable();
-            $table->float('grand_total');
-            $table->float('withholding')->nullable();
+            $table->decimal('sub_total', 18, 8);
+            $table->decimal('discount', 18, 8)->nullable();
+            $table->decimal('tax', 18, 8)->nullable();
+            $table->decimal('grand_total', 18, 8);
+            $table->decimal('withholding', 18, 8)->nullable();
             $table->enum('withholding_status', [
                 'paid',
                 'unpaid',
                 'partially_paid',
             ]);
             $table->string('payment_method');            
-            $table->float('amount_received');        
+            $table->decimal('amount_received', 18, 8);        
             $table->timestamps();    
             $table->foreign('payment_reference_id')->references('id')->on('payment_references');         
             $table->foreign('chart_of_account_id')->nullable()->references('id')->on('chart_of_accounts');

@@ -19,7 +19,7 @@ class CreateDepositsTable extends Migration
             $table->unsignedBigInteger('chart_of_account_id');
             $table->enum('status',['Deposited','Void'])->default('Deposited');
             $table->date('deposit_ticket_date');
-            $table->double('total_amount',8,2)->nullable();
+            $table->decimal('total_amount', 18, 8)->nullable();
             $table->string('remark')->nullable();
             $table->timestamps();
             $table->string('reference_number')->nullable();

@@ -16,7 +16,7 @@ class CreateCreditReceiptsTable extends Migration
         Schema::create('credit_receipts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
-            $table->float('total_amount_received');
+            $table->decimal('total_amount_received', 18, 8);
             $table->longText('description')->nullable();
             $table->longText('remark')->nullable();
             $table->string('attachment')->nullable();

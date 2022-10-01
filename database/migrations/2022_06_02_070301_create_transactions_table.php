@@ -19,7 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('chart_of_account_id');
             $table->string('type');
             $table->string('description')->nullable();
-            $table->float('amount');
+            $table->decimal('amount', 18, 8);
             $table->timestamps();
 
             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');

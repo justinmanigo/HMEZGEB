@@ -17,9 +17,9 @@ class CreatePurchaseOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('payment_reference_id');
             $table->date('due_date');
-            $table->float('sub_total');
-            $table->float('tax')->nullable();
-            $table->float('grand_total');
+            $table->decimal('sub_total', 18, 8);
+            $table->decimal('tax', 18, 8)->nullable();
+            $table->decimal('grand_total', 18, 8);
             $table->timestamps();
             $table->foreign('payment_reference_id')->references('id')->on('payment_references'); 
         });

@@ -19,7 +19,7 @@ class CreateChartOfAccountsTable extends Migration
             $table->string('chart_of_account_category_id');
             $table->string('chart_of_account_no');
             $table->string('account_name');
-            $table->float('current_balance')->default(0.00); 
+            $table->decimal('current_balance', 18, 8)->default(0.00); 
             $table->enum('status',['Active','Closed'])->default('Active');
             $table->timestamps();
         });

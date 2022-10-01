@@ -17,10 +17,10 @@ class CreateProformasTable extends Migration
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
             $table->date('due_date');
-            $table->float('amount');
-            $table->float('tax');
-            $table->float('sub_total');
-            $table->float('grand_total');
+            $table->decimal('amount', 18, 8);
+            $table->decimal('tax', 18, 8);
+            $table->decimal('sub_total', 18, 8);
+            $table->decimal('grand_total', 18, 8);
             $table->longText('terms_and_conditions')->nullable();
             $table->string('attachment')->nullable();
             $table->timestamps();

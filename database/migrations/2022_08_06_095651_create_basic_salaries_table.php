@@ -18,7 +18,7 @@ class CreateBasicSalariesTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('payroll_id')->nullable();
-            $table->float('price', 10,2)->default(0);
+            $table->decimal('price', 18, 2)->default(0);
             $table->string('type')->default('basic salary');
             $table->enum('status',['pending','paid','cancelled'])->default('pending');
             $table->foreign('payroll_id')->references('id')->on('payrolls');  

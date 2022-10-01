@@ -18,9 +18,9 @@ class CreateOvertimePayrollRulesTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->integer('working_days');
             $table->integer('working_hours');
-            $table->float('day_rate');
-            $table->float('night_rate');
-            $table->float('holiday_weekend_rate');
+            $table->decimal('day_rate', 5, 2);
+            $table->decimal('night_rate', 5, 2);
+            $table->decimal('holiday_weekend_rate', 5, 2);
             $table->timestamps();
         });
     }
