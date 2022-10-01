@@ -182,11 +182,11 @@
                                     <i class='fa fa-eye'></i>
                                 </span>
                             </a>
-                            <button type="button" class="btn btn-small btn-icon btn-danger" @if(!$period->payroll_period_id || !$period->is_paid) disabled @else disabled @endif>
+                            {{-- <button type="button" class="btn btn-small btn-icon btn-danger" @if(!$period->payroll_period_id || $period->is_paid) disabled @endif>
                                 <span class="icon text-white-50">
                                     <i class='fa fa-trash'></i>
                                 </span>
-                            </button>
+                            </button> --}}
                         </td>
 
                     </tr>
