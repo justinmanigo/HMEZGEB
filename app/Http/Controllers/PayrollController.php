@@ -345,27 +345,28 @@ class PayrollController extends Controller
      * @param  \App\Models\Payroll  $payroll
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(PayrollPeriod $payroll_period)
     {
-        $payroll = Payroll::find($id);
-        if($payroll->status == 'paid')
-        {
-            return redirect()->route('payrolls.payrolls.index')->with('error','Error Deleting Payroll. Payroll Already Paid');
+        $payroll_period->payrolls;
+
+        if($payroll_period->is_paid) {
+            return redirect()->route('payrolls.index')->with('error','Error Deleting Payroll. Payroll Already Paid');
         }
-        else
+
+        foreach($payroll_period->payrolls as $payroll)
         {
-            // change all related records payroll_id to null
-            $basic_salaries = BasicSalary::where('payroll_id',$id)->delete();
-            $addition = Addition::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $deduction = Deduction::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $overtime = Overtime::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $loan = Loan::where('payroll_id',$id)->update(['payroll_id'=>null]);
-            $pension = Pension::where('payroll_id',$id)->delete();
-            $tax = TaxPayroll::where('payroll_id',$id)->delete();            
+            BasicSalary::where('payroll_id',$payroll->id)->delete();
+            Addition::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Deduction::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Overtime::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Loan::where('payroll_id',$payroll->id)->update(['payroll_id'=>null]);
+            Pension::where('payroll_id',$payroll->id)->delete();
+            TaxPayroll::where('payroll_id',$payroll->id)->delete();
             $payroll->delete();
-            $payroll_period = PayrollPeriod::where('id', $payroll->payroll_period_id)->delete();
-           
-            return redirect()->route('payrolls.payrolls.index')->with('success','Payroll Deleted Successfully');
-        }       
+        }
+
+        $payroll_period->delete();   
+
+        return redirect()->route('payrolls.index')->with('success','Payroll Deleted Successfully');
     }
 }

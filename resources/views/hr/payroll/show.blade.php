@@ -35,7 +35,7 @@
 </a>
 
 <button type="button" class="btn btn-danger btn-icon mb-3" data-toggle="modal" data-target="#DeleteModal"
-    @if(!$payroll_period->is_paid) disabled @else disabled @endif>
+    @if($payroll_period->is_paid) disabled @endif>
     <span class="icon text-white-50">
         <i class="fas fa-trash"></i>
     </span>
@@ -134,15 +134,22 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this payroll?
+                @if(!$payroll_period->period->is_paid)
+                    Are you sure you want to delete this payroll?
+                @else
+                    This payroll has already been paid. No further action is required.
+                @endif 
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                {{-- <form action="{{ route('payrolls.payrolls.destroy', $id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form> --}}
+                @if(!$payroll_period->period->is_paid)
+                    <form action="{{ route('payrolls.destroy', $payroll_period->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>
