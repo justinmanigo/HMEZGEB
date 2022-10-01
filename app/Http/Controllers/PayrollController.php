@@ -103,6 +103,12 @@ class PayrollController extends Controller
             if($employees->isEmpty())
                 return redirect()->route('payrolls.payrolls.index')->with('error','No records to create Payroll');
 
+            // Create Payroll Period
+            $payroll_period = new PayrollPeriod;
+            $payroll_period->period_id = $accounting_period->id;
+            $payroll_period->accounting_system_id = $accounting_system_id;
+            $payroll_period->save();
+
             foreach($employees as $employee){
                 $additions = Addition::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
                 ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
@@ -117,11 +123,7 @@ class PayrollController extends Controller
                 ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
                 ->get();            
                 
-                // Create Payroll Period
-                $payroll_period = new PayrollPeriod;
-                $payroll_period->period_id = $accounting_period->id;
-                $payroll_period->accounting_system_id = $accounting_system_id;
-                $payroll_period->save();
+                
                 // Create Payroll
                 $payroll = new Payroll;
                 $payroll->payroll_period_id = $payroll_period->id;
