@@ -23,7 +23,8 @@
                 {{-- <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div> --}}
-                <div class="sidebar-brand-text mx-3">HMEZGEB</div>
+                {{-- <div class="sidebar-brand-text mx-3">HMEZGEB</div> --}}
+                <img src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg" style="height:48px!important;width:auto">
             </a>
 
             <!-- Divider -->
@@ -168,9 +169,9 @@
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Receipt
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-advance-revenue') }}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/customers/receipts?new=modal-advance-revenue') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Advance Revenue
+                                            Advance Revenue <span class="text-danger">(Soon)</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-credit-receipt') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -199,31 +200,31 @@
                                         <p class="my-2"><strong>Payment</strong></p>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-bill-payment') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Bill Payment
+                                            Bill
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-vat-payment') }}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-vat-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            VAT Payment
+                                            VAT <span class="text-danger">(Soon)</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-withholding-payment') }}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-withholding-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Withholding Payment
+                                            Withholding <span class="text-danger">(Soon)</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-payroll-payment') }}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-payroll-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Payroll Payment
+                                            Payroll <span class="text-danger">(Soon)</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-income-tax-payment') }}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-income-tax-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Income Tax Payment
+                                            Income Tax <span class="text-danger">(Soon)</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-pension-payment') }}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-pension-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Pension Payment
+                                            Pension <span class="text-danger">(Soon)</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-commission-payment') }}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-commission-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Commission Payment
+                                            Commission <span class="text-danger">(Soon)</span>
                                         </a>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-4">
