@@ -239,7 +239,7 @@ class PayrollController extends Controller
                 $payroll->save();
         }
         }
-        return redirect()->route('payrolls.payrolls.index')->with('success','Payroll Created Successfully');
+        return redirect()->route('payrolls.index')->with('success','Payroll Created Successfully');
     }
 
     /**
