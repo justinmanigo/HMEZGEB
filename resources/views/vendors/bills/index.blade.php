@@ -333,7 +333,7 @@
 
 {{-- Modal Contents --}}
 <!--------For add bill--->
-<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade bd-example-modal-xl" id="modal-bill" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -352,7 +352,7 @@
     </div>
 </div>
 <!--------For purchase order--->
-<div class="modal fade bd-purchaseOrder-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade bd-purchaseOrder-modal-xl" id="modal-purchase-order" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">

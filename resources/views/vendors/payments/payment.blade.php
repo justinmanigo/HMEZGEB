@@ -135,7 +135,7 @@
 
     {{-- Modals --}}
     {{-- BillPayment --}}
-    <div class="modal fade bill-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade bill-payment-modal" id="modal-bill-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -159,7 +159,7 @@
         </div>
     </div>
     {{-- VAT --}}
-    <div class="modal fade VAT-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade VAT-payment-modal" id="modal-vat-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -182,7 +182,7 @@
         </div>
     </div>
     {{-- Withholding --}}
-    <div class="modal fade Withholding-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade Withholding-payment-modal" id="modal-withholding-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -207,7 +207,7 @@
         </div>
     </div>
     {{-- Payroll --}}
-    <div class="modal fade payroll-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade payroll-payment-modal" id="modal-payroll-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -230,7 +230,7 @@
         </div>
     </div>
     {{-- Income TAX --}}
-    <div class="modal fade income-tax-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade income-tax-payment-modal" id="modal-income-tax-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -255,7 +255,7 @@
         </div>
     </div>
     {{-- Pension --}}
-    <div class="modal fade pension-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade pension-payment-modal" id="modal-pension-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -280,7 +280,7 @@
         </div>
     </div>
     {{-- Commission --}}
-    <div class="modal fade commission-payment-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade commission-payment-modal" id="modal-commission-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
