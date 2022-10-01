@@ -19,10 +19,10 @@ class CreateVatPaymentsTable extends Migration
             $table->unsignedBigInteger('accounting_period_id')->nullable();
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
             $table->string('type');
-            $table->float('previous_period_vat_receivable')->nullable();
-            $table->float('current_period_vat_receivable')->nullable();
-            $table->float('current_period_vat_payment')->nullable();
-            $table->float('current_receivable')->nullable();
+            $table->decimal('previous_period_vat_receivable', 18, 8)->nullable();
+            $table->decimal('current_period_vat_receivable', 18, 8)->nullable();
+            $table->decimal('current_period_vat_payment', 18, 8)->nullable();
+            $table->decimal('current_receivable', 18, 8)->nullable();
             $table->foreign('payment_reference_id')->references('id')->on('payment_references'); 
             $table->foreign('accounting_period_id')->nullable()->references('id')->on('accounting_periods'); 
             $table->foreign('chart_of_account_id')->nullable()->references('id')->on('chart_of_accounts'); 

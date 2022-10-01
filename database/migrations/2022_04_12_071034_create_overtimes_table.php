@@ -22,7 +22,7 @@ class CreateOvertimesTable extends Migration
             $table->enum('is_weekend_holiday', ['yes', 'no'])->nullable();
             $table->time('from');
             $table->time('to');
-            $table->float('price', 10, 2)->default(0);
+            $table->decimal('price', 18, 8)->default(0);
             $table->string('description')->nullable();
             $table->string('type')->default('overtime');
             $table->enum('status',['pending','paid','cancelled'])->default('pending');

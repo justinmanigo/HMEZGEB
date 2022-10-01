@@ -18,10 +18,10 @@ class CreateTaxPayrollsTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('payroll_id')->nullable();
-            $table->decimal('taxable_income', 10, 2)->default(0);
-            $table->decimal('tax_rate', 10, 2)->default(0);
-            $table->decimal('tax_deduction', 10, 2)->default(0);
-            $table->decimal('tax_amount', 10, 2)->default(0);
+            $table->decimal('taxable_income', 18, 6)->default(0);
+            $table->decimal('tax_rate', 18, 6)->default(0);
+            $table->decimal('tax_deduction', 18, 6)->default(0);
+            $table->decimal('tax_amount', 18, 6)->default(0);
             $table->string('type')->default('tax');
             $table->enum('status',['pending','paid','cancelled'])->default('pending');
             $table->foreign('payroll_id')->references('id')->on('payrolls');

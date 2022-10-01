@@ -19,7 +19,7 @@ class CreateLoansTable extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('payroll_id')->nullable();
             $table->date('date');
-            $table->float('loan')->default(0);
+            $table->decimal('loan', 18, 8)->default(0);
             $table->string('paid_in');
             $table->string('description')->nullable();
             $table->string('type')->default('loan');

@@ -16,7 +16,7 @@ class CreateAdvanceRevenuesTable extends Migration
         Schema::create('advance_revenues', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
-            $table->float('total_amount_received');
+            $table->decimal('total_amount_received', 18, 8);
             $table->longText('reason')->nullable();
             $table->longText('remark')->nullable();
             $table->string('attachment')->nullable();

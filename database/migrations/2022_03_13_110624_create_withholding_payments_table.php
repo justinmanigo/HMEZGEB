@@ -19,7 +19,7 @@ class CreateWithholdingPaymentsTable extends Migration
             $table->unsignedBigInteger('payment_reference_id');
             $table->unsignedBigInteger('accounting_period_id')->nullable();
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
-            $table->float('amount_paid');
+            $table->decimal('amount_paid', 18, 8);
             $table->timestamps();
             $table->foreign('payment_reference_id')->nullable()->references('id')->on('payment_references');
             $table->foreign('accounting_period_id')->nullable()->references('id')->on('accounting_periods');

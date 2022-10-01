@@ -19,9 +19,8 @@ class CreateJournalPostingsTable extends Migration
             $table->unsignedBigInteger('journal_entry_id');     
             $table->unsignedBigInteger('chart_of_account_id');     
             $table->enum('type',['credit','debit']);
-            $table->float('amount');
+            $table->decimal('amount', 18, 8);
             $table->timestamps();
-
             $table->foreign('journal_entry_id')->references('id')->on('journal_entries')->onDelete('cascade');
             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
         });

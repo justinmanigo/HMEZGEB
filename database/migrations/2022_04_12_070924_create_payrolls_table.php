@@ -20,15 +20,15 @@ class CreatePayrollsTable extends Migration
             $table->unsignedBigInteger('accounting_system_id')->constrained();
             $table->enum('status', ['pending', 'partially_paid','paid', 'cancelled'])->default('pending');
             $table->string('paid_by')->nullable();
-            $table->float('total_salary', 10, 2)->default(0);
-            $table->float('total_addition', 10, 2)->default(0);
-            $table->float('total_deduction', 10, 2)->default(0);
-            $table->float('total_overtime', 10, 2)->default(0);
-            $table->float('total_loan', 10, 2)->default(0);
-            $table->float('total_tax', 10, 2)->default(0);
-            $table->float('total_pension_7', 10, 2)->default(0);
-            $table->float('total_pension_11', 10, 2)->default(0);
-            $table->float('net_pay', 10, 2)->default(0);
+            $table->decimal('total_salary', 18, 8)->default(0);
+            $table->decimal('total_addition', 18, 8)->default(0);
+            $table->decimal('total_deduction', 18, 8)->default(0);
+            $table->decimal('total_overtime', 18, 8)->default(0);
+            $table->decimal('total_loan', 18, 8)->default(0);
+            $table->decimal('total_tax', 18, 8)->default(0);
+            $table->decimal('total_pension_7', 18, 8)->default(0);
+            $table->decimal('total_pension_11', 18, 8)->default(0);
+            $table->decimal('net_pay', 18, 8)->default(0);
             $table->foreign('employee_id')->references('id')->on('employees');
 
             $table->timestamps();

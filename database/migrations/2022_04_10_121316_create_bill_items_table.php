@@ -18,8 +18,8 @@ class CreateBillItemsTable extends Migration
             $table->unsignedBigInteger('inventory_id');
             $table->unsignedBigInteger('payment_reference_id'); 
             $table->integer('quantity'); 
-            $table->float('price')->nullable();
-            $table->float('total_price')->nullable();
+            $table->decimal('price', 18, 8)->nullable();
+            $table->decimal('total_price', 18, 8)->nullable();
             
             $table->timestamps();
             $table->foreign('inventory_id')->references('id')->on('inventories');

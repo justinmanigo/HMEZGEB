@@ -17,7 +17,7 @@ class CreateTaxesTable extends Migration
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
             $table->string('name');
-            $table->float('percentage');
+            $table->decimal('percentage', 18, 8);
             $table->timestamps();
         });
     }

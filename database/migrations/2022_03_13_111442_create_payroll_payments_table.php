@@ -17,7 +17,7 @@ class CreatePayrollPaymentsTable extends Migration
             $table->id();
             $table->foreign('payment_reference_id')->references('id')->on('payment_references');  
             $table->date('date');
-            $table->float('total_paid');
+            $table->decimal('total_paid', 18, 8);
             $table->unsignedBigInteger('payment_reference_id');
             $table->timestamps();
         });

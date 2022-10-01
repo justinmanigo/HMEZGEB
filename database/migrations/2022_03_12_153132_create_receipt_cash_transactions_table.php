@@ -18,7 +18,7 @@ class CreateReceiptCashTransactionsTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->foreignId('receipt_reference_id')->constrained();
             $table->unsignedBigInteger('for_receipt_reference_id')->nullable();
-            $table->float('amount_received');
+            $table->decimal('amount_received', 18, 8);
             $table->enum('is_deposited',['yes','no'])->default('no');
             $table->timestamps();
 
