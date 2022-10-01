@@ -58,6 +58,7 @@ class PayrollController extends Controller
                 $join->on('p.id', '=', 'payroll_periods.id');
             })
             ->where('accounting_periods.accounting_system_id', session('accounting_system_id'))
+            ->orderBy('accounting_periods.period_number', 'asc')
             ->get();
 
         // return $payroll_periods;
