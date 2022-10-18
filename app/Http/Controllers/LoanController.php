@@ -75,7 +75,7 @@ class LoanController extends Controller
             $loan->save();
 
             // Create Journal Entry and Link to Loan
-            $je = CreateJournalEntry::run($request->date, $request->descsription, session('accounting_system_id'));
+            $je = CreateJournalEntry::run($request->date, $request->description, session('accounting_system_id'));
             $loan->journal_entry_id = $je->id;
             $loan->save();
             
