@@ -88,7 +88,7 @@ class PayrollController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePayrollRequest $request)
     {
         //Get Accounting Period
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
