@@ -74,9 +74,10 @@ class LoanController extends Controller
             $loan->description = $request->description;
             $loan->save();
 
-            // Create Journal Entry
+            // Create Journal Entry and Link to Loan
             $je = CreateJournalEntry::run($request->date, $request->descsription, session('accounting_system_id'));
-            // TODO: Link Loan to JE
+            $loan->journal_entry_id = $je->id;
+            $loan->save();
             
             // Debit 1120 - Employees Advance
             // TODO: Make this feature dynamic (allow changing of accounts, or set default)      
@@ -119,6 +120,7 @@ class LoanController extends Controller
         else
         {
             $loan->delete();
+            $loan->journalEntry->delete();
             return redirect()->back()->with('success', 'Loan has been deleted.');
         }          
     }

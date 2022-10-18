@@ -25,6 +25,7 @@ class CreateLoansTable extends Migration
             $table->string('type')->default('loan');
             $table->enum('status',['pending','paid','cancelled'])->default('pending');
             $table->foreign('payroll_id')->references('id')->on('payrolls');
+            $table->foreignId('journal_entry_id')->nullable()->constrained();
 
             $table->timestamps();
         });

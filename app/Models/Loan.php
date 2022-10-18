@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Settings\ChartOfAccounts\JournalEntries;
 
 class Loan extends Model
 {
@@ -16,5 +17,11 @@ class Loan extends Model
         'price',
         'paid_in',
         'description',
+        'journal_entry_id',
     ];
+
+    public function journalEntry()
+    {
+        return $this->belongsTo(JournalEntries::class);
+    }
 }
