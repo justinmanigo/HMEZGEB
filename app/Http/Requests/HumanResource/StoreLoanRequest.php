@@ -7,6 +7,7 @@ use App\Actions\DecodeTagifyField;
 use App\Actions\Hr\IsAccountingPeriodLocked;
 use App\Models\Loan;
 use App\Models\AccountingSystem;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use Illuminate\Support\Facades\Log;
 class StoreLoanRequest extends FormRequest
 {
@@ -47,8 +48,17 @@ class StoreLoanRequest extends FormRequest
             }
         }
 
+        // Query for the account
+        $employees_advance = ChartOfAccounts::where('chart_of_account_no', '1120')
+            ->where('accounting_system_id', session('accounting_system_id'))->first();
+
+        $salary_expense = ChartOfAccounts::where('chart_of_account_no', '6101')
+            ->where('accounting_system_id', session('accounting_system_id'))->first();
+
         $this->merge([
             'employee' => isset($employee) ? $employee : [],
+            'employees_advance' => $employees_advance->id,
+            'salary_expense' => $salary_expense->id,
         ]);
     }
 
