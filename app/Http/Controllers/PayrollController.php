@@ -242,7 +242,54 @@ class PayrollController extends Controller
                 $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_deduction - $total_loan - $tax_amount;
                 $payroll->net_pay = $net_pay;
                 $payroll->save();
-        }
+
+                // Add totals to grand totals
+                $grand_total_income += $sub_tl_income;
+                $grand_total_tax += $tax_amount;
+                $grand_total_pension += ($total_pension_7 + $total_pension_11);
+                $grand_total_deduction += $total_deduction;
+                $grand_total_net_pay += $net_pay;
+                $grand_total_loan += $total_loan;
+            }
+
+            // Create Journal Entry and Link to Payroll
+            $je = CreateJournalEntry::run(now()->format('Y-m-d'), "Payroll for ".$employee->name, session('accounting_system_id'));
+            $payroll_period->journal_entry_id = $je->id;
+            $payroll_period->save();
+
+            // Debit 6101 - Salary Expense
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->salary_expense);
+            $debit_amount[] = $grand_total_income;
+
+            // Credit 2101 - Salary Payable
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->salary_payable);
+            $credit_amount[] = $grand_total_net_pay;
+
+            // Credit 2102 - Income Tax Payable
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->income_tax_payable);
+            $credit_amount[] = $grand_total_tax;
+
+            // Credit 2103 - Pension Fund Payable
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->pension_fund_payable);
+            $credit_amount[] = $grand_total_pension;
+
+            // Credit 1120 - Employees Advance (if loan is present)
+            if($grand_total_loan > 0){
+                $credit_accounts[] = CreateJournalPostings::encodeAccount($request->employees_advance);
+                $credit_amount[] = $grand_total_loan;
+            }
+
+            // Credit 4103 - Other Income (if there is deduction)
+            if($grand_total_deduction > 0){
+                $credit_accounts[] = CreateJournalPostings::encodeAccount($request->other_income);
+                $credit_amount[] = $grand_total_deduction;
+            }
+
+            // Create Journal Postings
+            CreateJournalPostings::run($je, 
+                $debit_accounts, $debit_amount, 
+                $credit_accounts, $credit_amount,
+                session('accounting_system_id'));
         }
         return redirect()->route('payrolls.index')->with('success','Payroll Created Successfully');
     }
@@ -371,6 +418,7 @@ class PayrollController extends Controller
         }
 
         $payroll_period->delete();   
+        $payroll_period->journalEntry->delete();
 
         return redirect()->route('payrolls.index')->with('success','Payroll Deleted Successfully');
     }
