@@ -33,14 +33,6 @@ Just in case your database server's configuration is different from the default 
 ```
 php artisan migrate --seed
 ```
-## Default Username and Password
-### For HMEZGEB Admin
-Email: **admin@email.com**<br>
-Password: **test**
-
-### For HMEZGEB Staff
-Email: **staff@email.com**<br>
-Password: **test**
 
 ---
 
