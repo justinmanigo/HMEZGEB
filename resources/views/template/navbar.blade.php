@@ -210,9 +210,9 @@
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Withholding <span class="text-danger">(Soon)</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-payroll-payment') --}}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-payroll-payment') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Payroll <span class="text-danger">(Soon)</span>
+                                            Payroll</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-income-tax-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>

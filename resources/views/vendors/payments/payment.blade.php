@@ -99,8 +99,8 @@
                 <a role="button" class="dropdown-item disabled" data-toggle="modal" {{-- data-target=".VAT-payment-modal" --}}>VAT <span class="text-danger">(Coming Soon)</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
                     {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="text-danger">(Coming Soon)</span></a>
-                <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".payroll-payment-modal" --}}>Payroll <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item" data-toggle="modal"
+                    data-target=".payroll-payment-modal">Payroll</a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
                     {{-- data-target=".income-tax-payment-modal" --}}>Income Tax <span class="text-danger">(Coming Soon)</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
@@ -221,8 +221,8 @@
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
                     <form id="contactForm" name="contact" role="form">
-                        Coming Soon.
-                        {{-- @include('vendors.payments.forms.payrollPaymentModal') --}}
+                        {{-- Coming Soon. --}}
+                        @include('vendors.payments.forms.payrollPaymentModal')
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
