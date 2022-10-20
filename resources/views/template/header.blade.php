@@ -21,10 +21,11 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="{{URL::asset('css/sb-admin-2.min.css')}}">  
+    <link rel="stylesheet" href="{{URL::asset('css/custom-template.css')}}">  
 
       <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
-        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> 
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+      <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> 
+      <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
     <style>
       .dropdown-menu-quick-new {
