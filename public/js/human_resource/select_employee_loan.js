@@ -42,14 +42,7 @@ function createEmployeeEntry() {
             <select data-id="${loan_count}" id="l_paid_in_${loan_count}" class="form-control" name="paid_in[]" >
                 <option value="">-Select Paid In-</option>
                 <option value="1 Month">1 Month</option>
-                <option value="3 Months">3 Months</option>
-                <option value="6 Months">6 Months</option>
-                <option value="9 Months">9 Months</option>
-                <option value="12 Months">12 Months</option>
-                <option value="18 Months">18 Months</option>
-                <option value="24 Months">24 Months</option>
-                <option value="30 Months">30 Months</option>
-                <option value="36 Months">36 Months</option>
+                
             </select>
             <p class="error-message error-message-paid_in text-danger" style="display:none"></p>
         </td>
@@ -67,6 +60,18 @@ function createEmployeeEntry() {
         </td>
     </tr>
     `;
+
+    /**
+     * temporarily removed
+     * <option value="3 Months">3 Months</option>
+        <option value="6 Months">6 Months</option>
+        <option value="9 Months">9 Months</option>
+        <option value="12 Months">12 Months</option>
+        <option value="18 Months">18 Months</option>
+        <option value="24 Months">24 Months</option>
+        <option value="30 Months">30 Months</option>
+        <option value="36 Months">36 Months</option>
+     */
 
     // Append template to the table.
     $("#l_entries").append(inner);
