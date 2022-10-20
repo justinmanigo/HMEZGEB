@@ -270,7 +270,8 @@ class PayrollController extends Controller
 
             // Create Journal Entry and Link to Payroll
             $je = CreateJournalEntry::run(now()->format('Y-m-d'), "Payroll for ".$employee->name, session('accounting_system_id'));
-            // $payroll->journal_entry_id = $je->id;
+            $payroll_period->journal_entry_id = $je->id;
+            $payroll_period->save();
 
             // Debit 6101 - Salary Expense
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->salary_expense);
@@ -305,6 +306,8 @@ class PayrollController extends Controller
                 $debit_accounts, $debit_amount, 
                 $credit_accounts, $credit_amount,
                 session('accounting_system_id'));
+
+
         }
         return redirect()->route('payrolls.index')->with('success','Payroll Created Successfully');
     }
@@ -433,6 +436,7 @@ class PayrollController extends Controller
         }
 
         $payroll_period->delete();   
+        $payroll_period->journalEntry->delete();
 
         return redirect()->route('payrolls.index')->with('success','Payroll Deleted Successfully');
     }
