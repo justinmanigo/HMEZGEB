@@ -13,8 +13,7 @@ class PayrollPeriod extends Model
 
     protected $fillable = [
         'period_id',
-        'accounting_system_id',
-        'journal_entry_id',
+        'accounting_system_id'
     ];
     
     public function period()
@@ -36,6 +35,4 @@ class PayrollPeriod extends Model
     {
         return $this->belongsTo(JournalEntries::class, 'journal_entry_id');
     }
-
-
 }
