@@ -39,7 +39,7 @@ $route_name = $route_name[0];
                     <i class="fas fa-laugh-wink"></i>
                 </div> --}}
                 {{-- <div class="sidebar-brand-text mx-3">HMEZGEB</div> --}}
-                <img src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg" style="height:48px!important;width:auto">
+                <img src="{{URL::asset('img/logo_png.png')}}" id="brand_logo">
             </a>
 
             @if(auth()->user()->must_update_password == false && !(auth()->user()->firstName == 'New' && auth()->user()->lastName == 'User'))
