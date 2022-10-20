@@ -1,7 +1,7 @@
 # HMEZGEB
 
 ## Requirements
-- PHP Version >= 8.0
+- PHP Version >= 8.0.2
 
 ## Setup Guide
 ### 1. Clone GitHub repo for this project locally
