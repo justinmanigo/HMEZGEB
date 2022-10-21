@@ -567,6 +567,9 @@ Route::group([
                 Route::post('/hr/payrolls', [PayrollController::class, 'store'])->name('store');
                 Route::get('/hr/payrolls/{payroll_period}', [PayrollController::class, 'show'])->name('show');
                 Route::delete('/hr/payrolls/{payroll_period}', [PayrollController::class, 'destroy'])->name('destroy');
+
+                // AJAX
+                Route::get('/ajax/hr/payrolls/unpaid/search/{query?}', [PayrollController::class, 'ajaxGetUnpaidPayrollPeriods']);
                 
             });
         
