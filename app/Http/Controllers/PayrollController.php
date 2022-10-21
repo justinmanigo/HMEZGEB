@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
+use App\Http\Requests\HumanResource\StorePayrollRequest;
 use App\Models\Payroll;
 use App\Models\PayrollPeriod;
 use App\Models\AccountingSystem;
@@ -88,7 +91,7 @@ class PayrollController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePayrollRequest $request)
     {
         //Get Accounting Period
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
@@ -109,6 +112,13 @@ class PayrollController extends Controller
             $payroll_period->period_id = $accounting_period->id;
             $payroll_period->accounting_system_id = $accounting_system_id;
             $payroll_period->save();
+
+            $grand_total_income = 0;    // salary expense
+            $grand_total_tax = 0;       // income tax payment
+            $grand_total_pension = 0;   // pension fund payable
+            $grand_total_deduction = 0; // other income
+            $grand_total_net_pay = 0;   // salary payable
+            $grand_total_loan = 0;      // employee advance
 
             foreach($employees as $employee){
                 $additions = Addition::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
@@ -239,7 +249,11 @@ class PayrollController extends Controller
                 // Net Pay
                 // ? total_pension_11 was removed as per #190
                 // $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax_amount;
-                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_deduction - $total_loan - $tax_amount;
+                // $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_deduction - $total_loan - $tax_amount;
+
+                $sub_tl_income = $total_salary + $total_overtime + $total_addition + $total_pension_11;
+                $sub_tl_deduction = $tax_amount + $total_pension_7 + $total_pension_11 + $total_loan + $total_deduction;
+                $net_pay = $sub_tl_income - $sub_tl_deduction;
                 $payroll->net_pay = $net_pay;
                 $payroll->save();
 

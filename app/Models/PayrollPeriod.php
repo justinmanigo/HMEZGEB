@@ -13,7 +13,8 @@ class PayrollPeriod extends Model
 
     protected $fillable = [
         'period_id',
-        'accounting_system_id'
+        'accounting_system_id',
+        'journal_entry_id',
     ];
     
     public function period()
