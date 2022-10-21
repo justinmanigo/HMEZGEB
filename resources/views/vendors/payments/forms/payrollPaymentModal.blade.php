@@ -12,7 +12,7 @@
     <div class="row form-group">
         <div class="col-lg-6"></div>
         <label for="email" class="col-md-4 col-lg-2 col-form-label">Account:</label>
-        <input type="text" name="phone1" class="form-control col-lg-4">
+        <input class="form-control col-lg-4" id="pp_cash_account" name='cash_account'>
     </div>
 
     <div class="table-responsive mb-3">
