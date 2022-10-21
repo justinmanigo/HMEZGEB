@@ -289,6 +289,32 @@ class ChartOfAccountsController extends Controller
         return $coa->get();
     }
 
+    function ajaxSearchCashCOA($query = null)
+    {
+        $coa = ChartOfAccounts::select(
+                'chart_of_accounts.id as value',
+                'chart_of_accounts.chart_of_account_no',
+                DB::raw('CONCAT(chart_of_accounts.chart_of_account_no, " - ", chart_of_accounts.account_name) as label'),
+                'chart_of_accounts.account_name',
+                // 'chart_of_account_categories.id',
+                'chart_of_account_categories.category',
+                'chart_of_account_categories.type',
+                'chart_of_account_categories.normal_balance',
+            )
+            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id')
+            ->where('chart_of_account_categories.category', 'Cash');
+            ;
+
+        if($query) {
+            $coa->where(function($q) use($query) {
+                $q->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
+                    ->orWhere('chart_of_accounts.account_name', 'LIKE', '%' . $query . '%');
+            });
+        }
+
+        return $coa->get();
+    }
+
     function ajaxGetCOAForBeginningBalance()
     {
         // return $this->request->session()->get('accounting_period_id');
