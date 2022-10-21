@@ -44,8 +44,28 @@
             {{-- Contact Details --}}
             <div class="form-group row mb-0">
                 <label for="p_tin_number" class="col-4 col-form-label text-lg-right">Tin # :</label>
+                <div class="col-sm-9 col-lg-4">
                 <input type="text" id="p_tin_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="tin_number" disabled readonly>
+                </div>
+
+
             </div>
+
+{{--
+            <div class="form-group row">
+
+                <label for="jv_reference_number" class="col-sm-3 col-lg-2"></label>
+                <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0"></div>
+
+
+                <label for="jv_date" class="col-sm-3 col-lg-2 col-form-label">Date</label>
+                <div class="col-sm-9 col-lg-4">
+                    <input type="date" class="form-control" id="jv_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
+                    <p class="col-8 col-lg-5 text-danger error-message error-message-date" style="display:none"></p>
+                </div>
+            </div> --}}
+
+
             <div class="form-group row mb-0">
                 <label for="p_contact_person" class="col-4 col-form-label text-lg-right">Contact Person :</label>
                 <input type="text" id="p_contact_person" class="form-control-plaintext col-8 pl-3" placeholder="" name="contact_person" disabled readonly>
@@ -69,6 +89,14 @@
                 <label for="p_due_date" class="col-4 col-form-label text-lg-right">Due Date :</label>
                 <div class="col-8">
                     <input type="date" class="form-control" id="p_due_date" name="due_date" placeholder="" value="{{date('Y-m-d', strtotime('+7 days'))}}" required>
+                    <p class="text-danger error-message error-message-due_date" style="display:none"></p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="p_due_date" class="col-4 col-form-label text-lg-right">Reference #:</label>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="p_reference_no" name="p_reference_no" placeholder="" value="">
                     <p class="text-danger error-message error-message-due_date" style="display:none"></p>
                 </div>
             </div>
