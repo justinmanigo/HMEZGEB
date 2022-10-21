@@ -1,4 +1,4 @@
-function cashAccountTagTemplate(tagData){
+function payrollPeriodTagTemplate(tagData){
     return `
         <tag title="${tagData.email}"
                 contenteditable='false'
@@ -17,13 +17,13 @@ function cashAccountTagTemplate(tagData){
     `
 }
 
-function cashAccountSuggestionItemTemplate(tagData){
+function payrollPeriodSuggestionItemTemplate(tagData){
     const formatter = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
     });
 
-    var balance = formatter.format(tagData.balance_if_debit)
+    var balance = formatter.format(tagData.balance)
 
     return `
         <div ${this.getAttributes(tagData)}
