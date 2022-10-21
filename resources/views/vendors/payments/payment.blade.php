@@ -506,12 +506,15 @@
 <!-- Employee -->
 <script src="/js/human_resource/template_select_employee.js"></script>
 <script src="/js/vendors/payment/select_employee_commission.js"></script>
-<!-- Cash Account -->
-<script src="/js/vendors/template_select_cash_account.js"></script>
-<script src="/js/vendors/payment/select_payment_cash_account.js"></script>
+
 <!-- Select bill -->
 <script src="/js/vendors/payment/select_payment_bill.js"></script>
 <script src="/js/vendors/payment/select_payment_withholding.js"></script>
+
+<!-- Payroll Payment -->
+<script src="/js/vendors/template_select_cash_account.js"></script>
+<script src="/js/vendors/template_select_payroll_period.js"></script>
+<script src="/js/vendors/payment/select_payroll_payment.js"></script>
 
 
 <!-- Items -->
