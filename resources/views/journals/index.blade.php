@@ -234,7 +234,7 @@
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0"></div>
 
                         {{-- Date --}}
-                        <label for="jv_date" class="col-sm-3 col-lg-2 col-form-label">Date</label>
+                        <label for="jv_date" class="col-sm-3 col-lg-2 col-form-label">Date <span class="text-danger ml-1">*</span> :</label>
                         <div class="col-sm-9 col-lg-4">
                             <input type="date" class="form-control" id="jv_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
                             <p class="col-8 col-lg-5 text-danger error-message error-message-date" style="display:none"></p>
