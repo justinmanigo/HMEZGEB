@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendors\Payments\StorePayrollPaymentRequest;
 use App\Models\PaymentReferences;
 use App\Models\PayrollPayments;
+use App\Models\PayrollPeriod;
 use Illuminate\Http\Request;
 
 class PayrollPaymentController extends Controller
@@ -37,6 +38,11 @@ class PayrollPaymentController extends Controller
         $payment->cheque_number = $request->cheque_number;
         $payment->total_paid = $request->payroll_period->balance;
         $payment->save();
+
+        // Mark Payroll Period as Paid
+        $period = PayrollPeriod::find($request->payroll_period->value);
+        $period->is_paid = true;
+        $period->save();
 
         // Debit 2101 - Salary Payable
         $debit_accounts[] = CreateJournalPostings::encodeAccount($request->salary_payable->id);
