@@ -220,12 +220,12 @@
                         <p class="h3 pl-4 m-auto">New Payroll Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
-                        {{-- Coming Soon. --}}
+                    <form id="contactForm" name="contact" role="form" action="{{ url('/payment/payroll') }}" method="POST">
+                        @csrf
                         @include('vendors.payments.forms.payrollPaymentModal')
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
+                            <input type="submit" class="btn btn-primary" id="submit">
                         </div>
                     </form>
                 </div>

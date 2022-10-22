@@ -22,6 +22,7 @@ use App\Http\Controllers\Banking\BankReconciliationController;
 use App\Http\Controllers\BillsController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\PaymentsController; 
+use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 // Journal module
 use App\Http\Controllers\JournalVouchersController; 
 // Human Resource module
@@ -404,6 +405,13 @@ Route::group([
                 Route::get('/ajax/vendor/payments/topay/{vendor}', [VendorsController::class, 'ajaxGetPaymentsToPay']);
                 Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
                 
+
+                Route::group([
+                    'as' => 'payroll.',
+                ], function() {
+                    // HTML
+                    Route::post('/payment/payroll', [PayrollPaymentController::class, 'store'])->name('store');
+                });
 
             });
         
