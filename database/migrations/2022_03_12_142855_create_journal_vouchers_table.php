@@ -16,6 +16,7 @@ class CreateJournalVouchersTable extends Migration
         Schema::create('journal_vouchers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('journal_entry_id');
+            $table->string('reference_number')->nullable();
             $table->timestamps();
 
             $table->foreign('journal_entry_id')->references('id')->on('journal_entries');
