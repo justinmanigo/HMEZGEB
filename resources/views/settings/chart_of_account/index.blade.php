@@ -454,14 +454,22 @@
 
             console.log("Request successful.");
             console.log(res);
+
+            var sum_debits = 0.00;
+            var sum_credits = 0.00;
             
             res.debits.forEach(function(d){
                 createBeginningBalanceRow(d, 'debit');
+                sum_debits += parseFloat(d.amount);
             });
 
             res.credits.forEach(function(c){
                 createBeginningBalanceRow(c, 'credit');
+                sum_credits += parseFloat(c.amount);
             });
+
+            $("#bb_debit_total").html(sum_debits.toFixed(2));
+            $("#bb_credit_total").html(sum_credits.toFixed(2));
         });
         
         request.fail(function(jqXHR, status, error) {
@@ -471,6 +479,8 @@
 
     function createBeginningBalanceRow(coa, type)
     {
+        amount = parseFloat(coa.amount).toFixed(2);
+
         let inner = `
             <tr>
                 <td>
@@ -481,13 +491,13 @@
                 <td>${coa.category}</td>
                 <td>
                     ${type == 'debit'
-                        ? `<input name="debit_amount[]" class="bb_debit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" required>`
+                        ? `<input name="debit_amount[]" class="bb_debit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" value="${amount}" required>`
                         : ''
                     }
                 </td>
                 <td>
                     ${type == 'credit'
-                        ? `<input name="credit_amount[]" class="bb_credit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" required>`
+                        ? `<input name="credit_amount[]" class="bb_credit_amount form-control form-control-sm inputPrice text-right" type="number" step="0.01" min="0" placeholder="0.00" value="${amount}" required>`
                         : ''
                     }
                 </td>
