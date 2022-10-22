@@ -57,18 +57,24 @@ class PaymentsController extends Controller
                 'pension_payments.amount_received as pension_amount',
                 'income_tax_payments.amount_received as income_tax_amount',
                 'withholding_payments.amount_paid as withholding_amount',
-                // TODO: implement payroll and commission
+                'payroll_payments.total_paid as payroll_amount',
+                'accounting_periods.period_number',
+                'accounting_periods.date_from',
+                'accounting_periods.date_to',
+                // TODO: implement commission
             )
             ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
             ->leftJoin('vat_payments', 'payment_references.id', '=', 'vat_payments.payment_reference_id')
             ->leftJoin('pension_payments', 'payment_references.id', '=', 'pension_payments.payment_reference_id')
             ->leftJoin('income_tax_payments', 'payment_references.id', '=', 'income_tax_payments.payment_reference_id')
             ->leftJoin('withholding_payments', 'payment_references.id', '=', 'withholding_payments.payment_reference_id')
+            ->leftJoin('payroll_payments', 'payment_references.id', '=', 'payroll_payments.payment_reference_id')
+            ->leftJoin('payroll_periods', 'payroll_payments.payroll_period_id', '=', 'payroll_periods.id')
+            ->leftJoin('accounting_periods', 'payroll_periods.period_id', '=', 'accounting_periods.id')
             ->where('payment_references.accounting_system_id', session('accounting_system_id'))
             ->where('payment_references.type', '!=', 'bill_payment')
             ->where('payment_references.type', '!=', 'bill')
             ->where('payment_references.type', '!=', 'purchase_order')
-            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
             ->get();
 
         // return $otherPayments;

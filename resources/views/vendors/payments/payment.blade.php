@@ -392,7 +392,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Date</th>
-                                <th>Vendor Name</th>
+                                <th>Paid To</th>
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th>Amount</th>
@@ -404,14 +404,20 @@
                                 <tr>
                                     <td>{{ $payment->id }}</td>
                                     <td>{{ $payment->date }}</td>
-                                    <td>{{ $payment->name }}</td>
+                                    <td>
+                                        @if($payment->type == 'payroll_payment')
+                                            {{ "For Period # " . $payment->period_number . " (" . $payment->date_from . " - " . $payment->date_to . ")" }}
+                                        @else
+                                            {{ $payment->name }}
+                                        @endif
+                                    </td>
                                     <td>
                                         @if($payment->type == 'vat_payment')
                                             <span class="badge badge-info">VAT Payment</span>
                                         @elseif($payment->type == 'withholding_payment')
                                             <span class="badge badge-warning">Withholding Payment</span>
-                                        {{-- @elseif($payment->type == 'payroll_payment') --}}
-                                            {{-- <span class="badge badge-success">Payroll Payment</span> --}}
+                                        @elseif($payment->type == 'payroll_payment')
+                                            <span class="badge badge-success">Payroll Payment</span>
                                         @elseif($payment->type == 'income_tax_payment')
                                             <span class="badge badge-danger">Income Tax Payment</span>
                                         @elseif($payment->type == 'pension_payment')
@@ -429,17 +435,17 @@
                                             <span class="badge badge-success">Paid</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-right">
                                         @if($payment->type == 'vat_payment')
-                                            {{ number_format($payment->vat_amount) }}
+                                            {{ number_format($payment->vat_amount, 2) }}
                                         @elseif($payment->type == 'withholding_payment')
-                                            {{ number_format($payment->withholding_amount) }}
-                                        {{-- @elseif($payment->type == 'payroll_payment') --}}
-                                            {{-- {{ number_format($payment->payroll_amount) }} --}}
+                                            {{ number_format($payment->withholding_amount, 2) }}
+                                        @elseif($payment->type == 'payroll_payment')
+                                            {{ number_format($payment->payroll_amount, 2) }}
                                         @elseif($payment->type == 'income_tax_payment')
-                                            {{ number_format($payment->income_tax_amount) }}
+                                            {{ number_format($payment->income_tax_amount, 2) }}
                                         @elseif($payment->type == 'pension_payment')
-                                            {{ number_format($payment->pension_amount) }}
+                                            {{ number_format($payment->pension_amount, 2) }}
                                         {{-- @elseif($payment->type == 'commission_payment') --}}
                                             {{-- {{ number_format($payment->commission_amount) }} --}}
                                         @endif
