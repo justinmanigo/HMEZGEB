@@ -187,6 +187,7 @@ class PaymentsController extends Controller
         return redirect()->back()->with($messageType, $messageContent);
 
     }
+    
     public function storeIncomeTaxPayment(Request $request)
     {
         $status = 'paid';
@@ -330,50 +331,5 @@ class PaymentsController extends Controller
   
         return redirect()->back()->with($messageType, $messageContent);
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Payments  $payments
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Payments $payments)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Payments  $payments
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Payments $payments)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Payments  $payments
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Payments $payments)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Payments  $payments
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Payments $payments)
-    {
-        //
     }
 }
