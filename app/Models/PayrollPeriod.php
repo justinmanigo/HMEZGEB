@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Settings\ChartOfAccounts\AccountingPeriods;
 use App\Models\Settings\ChartOfAccounts\JournalEntries;
+use App\Models\PayrollPayments;
 
 class PayrollPeriod extends Model
 {
@@ -35,5 +36,10 @@ class PayrollPeriod extends Model
     public function journalEntry()
     {
         return $this->belongsTo(JournalEntries::class, 'journal_entry_id');
+    }
+
+    public function payrollPayment()
+    {
+        return $this->hasOne(PayrollPayments::class, 'payroll_period_id','id');
     }
 }

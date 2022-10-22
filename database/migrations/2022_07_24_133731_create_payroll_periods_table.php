@@ -18,7 +18,7 @@ class CreatePayrollPeriodsTable extends Migration
             $table->unsignedBigInteger('period_id')->constrained('accounting_periods');
             $table->boolean('is_paid')->default(false);
             $table->unsignedBigInteger('accounting_system_id')->constrained();
-            $table->foreignId('journal_entry_id')->nullable()->constrained();
+            $table->foreignId('journal_entry_id')->nullable()->constrained(); // for generating payroll journal entry
             $table->timestamps();
         });
     }
