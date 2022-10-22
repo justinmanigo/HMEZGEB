@@ -346,13 +346,20 @@ class ChartOfAccountsController extends Controller
     {
         // return $this->request->session()->get('accounting_period_id');
 
+        // Get the Beginning Balance Journal Entry
+        $je = JournalEntries::where('accounting_system_id', session('accounting_system_id'))
+            ->first();
+
         $debits = ChartOfAccounts::select(
             'chart_of_accounts.id',
             'chart_of_accounts.chart_of_account_no',
             'chart_of_accounts.account_name',
             'chart_of_account_categories.category',
+            'journal_postings.amount',
         )
-        ->leftJoin('chart_of_account_categories', 'chart_of_accounts.chart_of_account_category_id', 'chart_of_account_categories.id');
+        ->leftJoin('chart_of_account_categories', 'chart_of_accounts.chart_of_account_category_id', 'chart_of_account_categories.id')
+        ->leftJoin('journal_postings', 'chart_of_accounts.id', 'journal_postings.chart_of_account_id')
+        ->where('journal_postings.journal_entry_id', $je->id);
 
         $credits = clone $debits;
 
