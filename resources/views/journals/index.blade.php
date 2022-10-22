@@ -246,9 +246,9 @@
                         <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0"></div>
 
                         {{-- Reference --}}
-                        <label for="jv_reference_number" class="col-sm-3 col-lg-2 col-form-label">Reference</label>
+                        <label for="jv_reference_number" class="col-sm-3 col-lg-2 col-form-label">Reference # :</label>
                         <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="jv_reference_number" name="jv_reference_number" placeholder="" value="" >
+                            <input type="text" class="form-control" id="jv_reference_number" name="reference_number" placeholder="" value="" >
                             <p class="col-8 col-lg-5 text-danger error-message error-message-date" style="display:none"></p>
                         </div>
                     </div>

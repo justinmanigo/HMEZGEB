@@ -39,6 +39,7 @@ class StoreJournalVoucherRequest extends FormRequest
             'credit_amount' => ['required', 'array'],
             'credit_amount.*' => ['required', 'numeric', 'min:1'],
             'notes' => ['nullable'],
+            'reference_number' => ['sometimes'],
         ];
     }
 

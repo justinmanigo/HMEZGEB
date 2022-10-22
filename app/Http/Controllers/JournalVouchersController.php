@@ -52,7 +52,7 @@ class JournalVouchersController extends Controller
     public function store(StoreJournalVoucherRequest $request)
     {     
         $journal_entry = CreateJournalEntry::run($request->date, $request->notes, session('accounting_system_id'));
-        $journal_voucher = CreateJournalVoucher::run($journal_entry->id);
+        $journal_voucher = CreateJournalVoucher::run($journal_entry->id, $request->reference_number);
 
         CreateJournalPostings::run($journal_entry, $request->debit_accounts, $request->debit_amount, $request->credit_accounts, $request->credit_amount, session('accounting_system_id'), $request->debit_description, $request->credit_description);
 
