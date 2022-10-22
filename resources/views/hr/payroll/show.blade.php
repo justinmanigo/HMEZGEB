@@ -77,7 +77,7 @@
             <tr>
                 <td>Status</td>
                 <td>
-                    @if(!$payroll_period->period->is_paid)
+                    @if(!$payroll_period->is_paid)
                         <span class="badge badge-warning">Unpaid</span>
                     @else
                         <span class="badge badge-success">Paid</span>
@@ -134,7 +134,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                @if(!$payroll_period->period->is_paid)
+                @if(!$payroll_period->is_paid)
                     Are you sure you want to delete this payroll?
                 @else
                     This payroll has already been paid. No further action is required.
@@ -143,7 +143,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                @if(!$payroll_period->period->is_paid)
+                @if(!$payroll_period->is_paid)
                     <form action="{{ route('payrolls.destroy', $payroll_period->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
