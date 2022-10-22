@@ -46,6 +46,7 @@ class StoreProformaRequest extends FormRequest
             // 'payment_type' => ['required'],
             'grand_total' => ['required', 'numeric', 'min:0'],
             // 'total_amount_received' => ['required', 'numeric', 'min:0'],
+            'reference_number' => ['sometimes'],
         ];
     }
 

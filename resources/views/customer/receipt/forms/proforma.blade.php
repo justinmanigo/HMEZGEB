@@ -75,7 +75,7 @@
         <div class="form-group row">
             <label for="p_reference_no" class="col-4 col-form-label text-lg-right">Reference #:</label>
             <div class="col-8">
-                <input type="text" class="form-control" id="p_reference_no" name="p_reference_no" placeholder="" value="">
+                <input type="text" class="form-control" id="p_reference_number" name="reference_number" placeholder="" value="">
                 <p class="text-danger error-message error-message-due_date" style="display:none"></p>
             </div>
         </div>
