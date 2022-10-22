@@ -12,6 +12,7 @@ class JournalVouchers extends Model
 
     protected $fillable = [
         'journal_entry_id',
+        'reference_number',
         'accounting_system_id',
     ];
 
