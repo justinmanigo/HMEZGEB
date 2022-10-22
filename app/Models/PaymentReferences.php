@@ -19,6 +19,7 @@ class PaymentReferences extends Model
         'remark',
         'status',
         'is_void',
+        'journal_entry_id',
     ];
 
     public function vendor()
@@ -71,9 +72,14 @@ class PaymentReferences extends Model
         return $this->hasOne(PayrollPayments::class, 'payment_reference_id','id');
     }
 
+    // public function journalEntry()
+    // {
+    //     return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
+    // }
+
     public function journalEntry()
     {
-        return $this->hasOne(JournalEntries::class, 'model_reference_id','id');
+        return $this->belongsTo(JournalEntries::class, 'journal_entry_id');
     }
 
     public function billItems()

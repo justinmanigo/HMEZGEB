@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
+use App\Http\Requests\HumanResource\StorePayrollRequest;
 use App\Models\Payroll;
 use App\Models\PayrollPeriod;
 use App\Models\AccountingSystem;
@@ -88,7 +91,7 @@ class PayrollController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePayrollRequest $request)
     {
         //Get Accounting Period
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
@@ -109,6 +112,13 @@ class PayrollController extends Controller
             $payroll_period->period_id = $accounting_period->id;
             $payroll_period->accounting_system_id = $accounting_system_id;
             $payroll_period->save();
+
+            $grand_total_income = 0;    // salary expense
+            $grand_total_tax = 0;       // income tax payment
+            $grand_total_pension = 0;   // pension fund payable
+            $grand_total_deduction = 0; // other income
+            $grand_total_net_pay = 0;   // salary payable
+            $grand_total_loan = 0;      // employee advance
 
             foreach($employees as $employee){
                 $additions = Addition::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
@@ -239,7 +249,11 @@ class PayrollController extends Controller
                 // Net Pay
                 // ? total_pension_11 was removed as per #190
                 // $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_pension_11 - $total_deduction - $total_loan - $tax_amount;
-                $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_deduction - $total_loan - $tax_amount;
+                // $net_pay = $total_salary + $total_addition + $total_overtime - $total_pension_7 - $total_deduction - $total_loan - $tax_amount;
+
+                $sub_tl_income = $total_salary + $total_overtime + $total_addition + $total_pension_11;
+                $sub_tl_deduction = $tax_amount + $total_pension_7 + $total_pension_11 + $total_loan + $total_deduction;
+                $net_pay = $sub_tl_income - $sub_tl_deduction;
                 $payroll->net_pay = $net_pay;
                 $payroll->save();
 
@@ -421,5 +435,40 @@ class PayrollController extends Controller
         $payroll_period->journalEntry->delete();
 
         return redirect()->route('payrolls.index')->with('success','Payroll Deleted Successfully');
+    }
+
+    /**
+     * AJAX Calls
+     */
+    
+    
+    public function ajaxGetUnpaidPayrollPeriods()
+    {
+        $journal_postings = DB::table('journal_postings')
+            ->select('journal_postings.*')
+            ->leftJoin('journal_entries', 'journal_entries.id', 'journal_postings.journal_entry_id')
+            ->leftJoin('chart_of_accounts', 'chart_of_accounts.id', 'journal_postings.chart_of_account_id')
+            ->where('chart_of_accounts.chart_of_account_no', '2101')
+            ->where('journal_postings.type', 'credit');
+
+        $payroll_periods = DB::table('payroll_periods')
+            ->select(
+                'payroll_periods.id as value',
+                DB::raw('CONCAT("#", accounting_periods.period_number, ": ", DATE_FORMAT(accounting_periods.date_from, "%Y-%m-%d"), " - ", DATE_FORMAT(accounting_periods.date_to, "%Y-%m-%d")) as label'),
+                'accounting_periods.period_number',
+                'accounting_periods.date_from',
+                'accounting_periods.date_to',
+                'journal_postings.amount as balance'
+            )
+            ->leftJoin('accounting_periods', 'accounting_periods.id', 'payroll_periods.period_id')
+            ->leftJoin('journal_entries', 'journal_entries.id', 'payroll_periods.journal_entry_id')
+            ->leftJoinSub($journal_postings, 'journal_postings', function ($join) {
+                $join->on('journal_postings.journal_entry_id', 'journal_entries.id');
+            })
+            ->where('payroll_periods.accounting_system_id', session('accounting_system_id'))
+            ->where('is_paid', false)
+            ->get();
+
+        return response()->json($payroll_periods);
     }
 }

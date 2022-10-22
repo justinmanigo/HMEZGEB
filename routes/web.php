@@ -22,6 +22,7 @@ use App\Http\Controllers\Banking\BankReconciliationController;
 use App\Http\Controllers\BillsController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\PaymentsController; 
+use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 // Journal module
 use App\Http\Controllers\JournalVouchersController; 
 // Human Resource module
@@ -405,6 +406,13 @@ Route::group([
                 Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
                 
 
+                Route::group([
+                    'as' => 'payroll.',
+                ], function() {
+                    // HTML
+                    Route::post('/payment/payroll', [PayrollPaymentController::class, 'store'])->name('store');
+                });
+
             });
         
             /**
@@ -567,6 +575,9 @@ Route::group([
                 Route::post('/hr/payrolls', [PayrollController::class, 'store'])->name('store');
                 Route::get('/hr/payrolls/{payroll_period}', [PayrollController::class, 'show'])->name('show');
                 Route::delete('/hr/payrolls/{payroll_period}', [PayrollController::class, 'destroy'])->name('destroy');
+
+                // AJAX
+                Route::get('/ajax/hr/payrolls/unpaid/search/{query?}', [PayrollController::class, 'ajaxGetUnpaidPayrollPeriods']);
                 
             });
         
@@ -857,6 +868,7 @@ Route::group([
                 Route::post('/settings/coa/export', [ChartOfAccountsController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/ajax/settings/coa/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
+                Route::get('/ajax/settings/coa/cash/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCashCOA']);
                 Route::get('/ajax/settings/coa_categories/search', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa_categories/search/{query}', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa/beginning-balance', [ChartOfAccountsController::class, 'ajaxGetCOAForBeginningBalance']);

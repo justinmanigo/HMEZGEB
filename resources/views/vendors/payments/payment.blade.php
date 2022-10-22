@@ -99,8 +99,8 @@
                 <a role="button" class="dropdown-item disabled" data-toggle="modal" {{-- data-target=".VAT-payment-modal" --}}>VAT <span class="text-danger">(Coming Soon)</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
                     {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="text-danger">(Coming Soon)</span></a>
-                <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".payroll-payment-modal" --}}>Payroll <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item" data-toggle="modal"
+                    data-target=".payroll-payment-modal">Payroll</a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
                     {{-- data-target=".income-tax-payment-modal" --}}>Income Tax <span class="text-danger">(Coming Soon)</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
@@ -220,12 +220,12 @@
                         <p class="h3 pl-4 m-auto">New Payroll Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form">
-                        Coming Soon.
-                        {{-- @include('vendors.payments.forms.payrollPaymentModal') --}}
+                    <form id="contactForm" name="contact" role="form" action="{{ url('/payment/payroll') }}" method="POST">
+                        @csrf
+                        @include('vendors.payments.forms.payrollPaymentModal')
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
+                            <input type="submit" class="btn btn-primary" id="submit">
                         </div>
                     </form>
                 </div>
@@ -392,7 +392,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Date</th>
-                                <th>Vendor Name</th>
+                                <th>Paid To</th>
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th>Amount</th>
@@ -404,14 +404,20 @@
                                 <tr>
                                     <td>{{ $payment->id }}</td>
                                     <td>{{ $payment->date }}</td>
-                                    <td>{{ $payment->name }}</td>
+                                    <td>
+                                        @if($payment->type == 'payroll_payment')
+                                            {{ "For Period # " . $payment->period_number . " (" . $payment->date_from . " - " . $payment->date_to . ")" }}
+                                        @else
+                                            {{ $payment->name }}
+                                        @endif
+                                    </td>
                                     <td>
                                         @if($payment->type == 'vat_payment')
                                             <span class="badge badge-info">VAT Payment</span>
                                         @elseif($payment->type == 'withholding_payment')
                                             <span class="badge badge-warning">Withholding Payment</span>
-                                        {{-- @elseif($payment->type == 'payroll_payment') --}}
-                                            {{-- <span class="badge badge-success">Payroll Payment</span> --}}
+                                        @elseif($payment->type == 'payroll_payment')
+                                            <span class="badge badge-success">Payroll Payment</span>
                                         @elseif($payment->type == 'income_tax_payment')
                                             <span class="badge badge-danger">Income Tax Payment</span>
                                         @elseif($payment->type == 'pension_payment')
@@ -429,17 +435,17 @@
                                             <span class="badge badge-success">Paid</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-right">
                                         @if($payment->type == 'vat_payment')
-                                            {{ number_format($payment->vat_amount) }}
+                                            {{ number_format($payment->vat_amount, 2) }}
                                         @elseif($payment->type == 'withholding_payment')
-                                            {{ number_format($payment->withholding_amount) }}
-                                        {{-- @elseif($payment->type == 'payroll_payment') --}}
-                                            {{-- {{ number_format($payment->payroll_amount) }} --}}
+                                            {{ number_format($payment->withholding_amount, 2) }}
+                                        @elseif($payment->type == 'payroll_payment')
+                                            {{ number_format($payment->payroll_amount, 2) }}
                                         @elseif($payment->type == 'income_tax_payment')
-                                            {{ number_format($payment->income_tax_amount) }}
+                                            {{ number_format($payment->income_tax_amount, 2) }}
                                         @elseif($payment->type == 'pension_payment')
-                                            {{ number_format($payment->pension_amount) }}
+                                            {{ number_format($payment->pension_amount, 2) }}
                                         {{-- @elseif($payment->type == 'commission_payment') --}}
                                             {{-- {{ number_format($payment->commission_amount) }} --}}
                                         @endif
@@ -506,9 +512,15 @@
 <!-- Employee -->
 <script src="/js/human_resource/template_select_employee.js"></script>
 <script src="/js/vendors/payment/select_employee_commission.js"></script>
+
 <!-- Select bill -->
 <script src="/js/vendors/payment/select_payment_bill.js"></script>
 <script src="/js/vendors/payment/select_payment_withholding.js"></script>
+
+<!-- Payroll Payment -->
+<script src="/js/vendors/template_select_cash_account.js"></script>
+<script src="/js/vendors/template_select_payroll_period.js"></script>
+<script src="/js/vendors/payment/select_payroll_payment.js"></script>
 
 
 <!-- Items -->

@@ -289,6 +289,58 @@ class ChartOfAccountsController extends Controller
         return $coa->get();
     }
 
+    function ajaxSearchCashCOA($query = null)
+    {
+        $sum_debits = DB::table('journal_postings')
+            ->select(
+                'journal_postings.chart_of_account_id',
+                DB::raw('SUM(journal_postings.amount) as total_debit'),
+            )
+            ->leftJoin('journal_entries', 'journal_postings.journal_entry_id', '=', 'journal_entries.id')
+            ->where('journal_entries.is_void', false)
+            ->where('type', 'debit')
+            ->groupBy('chart_of_account_id');
+
+        $sum_credits = DB::table('journal_postings')
+            ->select(
+                'journal_postings.chart_of_account_id',
+                DB::raw('SUM(journal_postings.amount) as total_credit'),
+            )
+            ->leftJoin('journal_entries', 'journal_postings.journal_entry_id', '=', 'journal_entries.id')
+            ->where('journal_entries.is_void', false)
+            ->where('type', 'credit')
+            ->groupBy('chart_of_account_id');
+
+        $coa = ChartOfAccounts::select(
+                'chart_of_accounts.id as value',
+                'chart_of_accounts.chart_of_account_no',
+                DB::raw('CONCAT(chart_of_accounts.chart_of_account_no, " - ", chart_of_accounts.account_name) as label'),
+                'chart_of_accounts.account_name',
+                // 'chart_of_account_categories.id',
+                'chart_of_account_categories.category',
+                'chart_of_account_categories.type',
+                'chart_of_account_categories.normal_balance',
+                DB::raw('IFNULL(sum_debits.total_debit, 0) as total_debit'),
+                DB::raw('IFNULL(sum_credits.total_credit, 0) as total_credit'),
+                DB::raw('IFNULL(sum_debits.total_debit, 0) - IFNULL(sum_credits.total_credit, 0) as balance_if_debit'),
+                DB::raw('IFNULL(sum_credits.total_credit, 0) - IFNULL(sum_debits.total_debit, 0) as balance_if_credit'),
+            )
+            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id')
+            ->leftJoinSub($sum_debits, 'sum_debits', 'chart_of_accounts.id', '=', 'sum_debits.chart_of_account_id')
+            ->leftJoinSub($sum_credits, 'sum_credits', 'chart_of_accounts.id', '=', 'sum_credits.chart_of_account_id')
+            ->where('chart_of_account_categories.category', 'Cash')
+            ->where('chart_of_accounts.accounting_system_id', session('accounting_system_id'));
+
+        if($query) {
+            $coa->where(function($q) use($query) {
+                $q->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
+                    ->orWhere('chart_of_accounts.account_name', 'LIKE', '%' . $query . '%');
+            });
+        }
+
+        return $coa->get();
+    }
+
     function ajaxGetCOAForBeginningBalance()
     {
         // return $this->request->session()->get('accounting_period_id');

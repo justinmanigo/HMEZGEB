@@ -15,10 +15,11 @@ class CreatePayrollPaymentsTable extends Migration
     {
         Schema::create('payroll_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreign('payment_reference_id')->references('id')->on('payment_references');  
-            $table->date('date');
+            $table->integer('payment_reference_id')->nullable(); // foreign  
+            $table->integer('payroll_period_id')->nullable(); // foreign
             $table->decimal('total_paid', 18, 8);
-            $table->unsignedBigInteger('payment_reference_id');
+            $table->string('cheque_number')->nullable();
+            // $table->unsignedBigInteger('payment_reference_id');
             $table->timestamps();
         });
     }
