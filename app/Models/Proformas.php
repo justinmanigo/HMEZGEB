@@ -11,7 +11,7 @@ class Proformas extends Model
 
     protected $fillable = [
         'receipt_reference_id',
-        'proforma_number',
+        'reference_number',
         'due_date',
         'amount',
         'tax',

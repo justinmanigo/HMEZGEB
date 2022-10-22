@@ -364,6 +364,7 @@ class ReceiptController extends Controller
         
         return Proformas::create([
             'receipt_reference_id' => $reference->id,
+            'reference_number' => $request->reference_number,
             'due_date' => $request->due_date,
             'amount' => $request->grand_total,
             'tax' => $request->tax_total,
