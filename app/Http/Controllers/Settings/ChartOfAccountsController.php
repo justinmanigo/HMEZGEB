@@ -151,12 +151,13 @@ class ChartOfAccountsController extends Controller
         $validated = $request->validated();
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        // Delete past beginning balances.
-        JournalPostings::where('accounting_system_id', $accounting_system_id)->delete();
-
-        // Get Beginning Balance Journal Entry.
         $je = JournalEntries::where('accounting_system_id', $accounting_system_id)
             ->first();
+
+        // Delete past beginning balances.
+        JournalPostings::where('accounting_system_id', $accounting_system_id)
+            ->where('journal_entry_id', $je->id)
+            ->delete();
 
         // Create insert rows for Debit.
         for($i = 0; $i < count($validated['debit_coa_id']); $i++)
