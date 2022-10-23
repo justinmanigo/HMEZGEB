@@ -30,6 +30,7 @@
             <th>Subscription Type</th>
             <th>Date From</th>
             <th>Date To</th>
+            <th>Referred By</th>
             <th>Status</th>
             @if(auth()->user()->control_panel_role == 'admin')
                 <th>Actions</th>
@@ -53,6 +54,13 @@
                     </td>
                     <td>{{ $subscription->date_from }}</td>
                     <td>{{ $subscription->date_to }}</td>
+                    <td>
+                        @if(is_null($subscription->referred_by))
+                            none
+                        @else
+                            {{ $subscription->referred_by }}
+                        @endif
+                    </td>
                     <td>
                         @if($subscription->status == 'active' && $subscription->date_to >= date('Y-m-d'))
                             <span class="badge badge-success">{{ ucwords($subscription->status) }}</span>

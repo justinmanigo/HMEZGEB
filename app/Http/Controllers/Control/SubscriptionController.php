@@ -7,6 +7,7 @@ use App\Http\Requests\Control\ActivateSubscriptionRequest;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class SubscriptionController extends Controller
 {
@@ -22,8 +23,11 @@ class SubscriptionController extends Controller
                 // 'subscriptions.user_id',
                 'users.firstName',
                 'users.lastName',
+                DB::raw('CONCAT(referrers.firstName, " ", referrers.lastName) as referred_by')
             )
             ->leftJoin('users', 'users.id', '=', 'subscriptions.user_id')
+            ->leftJoin('referrals', 'referrals.id', '=', 'subscriptions.referral_id')
+            ->leftJoin('users as referrers', 'users.id', '=', 'referrals.user_id')
             ->get();
 
         // return $subscriptions;
@@ -74,7 +78,7 @@ class SubscriptionController extends Controller
         $owner = $subscription->user;
 
         Mail::to($owner->email)->queue(new \App\Mail\Control\Subscription\ReinstateSubscription($owner, $subscription));
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Subscription reinstated successfully.',
