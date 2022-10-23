@@ -65,11 +65,16 @@
                         @elseif($subscription->status == 'trial')
                             <span class="badge badge-info">{{ ucwords($subscription->status) }}</span>
                         @elseif($subscription->status == 'suspended')
-                            <span class="badge badge-danger">{{ ucwords($subscription->status) }}</span>
+                            <span class="badge badge-danger">{{ ucwords($subscription->status) }}</span>    
                         @endif
                     </td>
                     @if(auth()->user()->control_panel_role == 'admin')
                         <td>
+                            <button type="button" class="btn btn-sm btn-info btn-view" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="View">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </button>
                             @if($subscription->status != 'suspended' && $subscription->account_type != 'super admin')
                                 <button type="button" class="btn btn-sm btn-primary btn-activate" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="Activate">
                                     <span class="icon text-white-50">
@@ -173,6 +178,26 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-labelledby="modal-view" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-view-label">User Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @endsection
@@ -181,6 +206,11 @@
     <script src="{{ url('/js/control/template_select_user.js') }}"></script>
     <script src="{{ url('/js/control/select_existing_user.js') }}"></script>
     <script>
+
+        $(document).on('click', '.btn-view', function(){
+            //$('#form-subscription-activate').attr('action', '/control/subscriptions/activate/' + $(this).data('id'));
+            $('#modal-view').modal('show');
+        });
 
         $(document).on('click', '.btn-activate', function(){
             $('#form-subscription-activate').attr('action', '/control/subscriptions/activate/' + $(this).data('id'));
