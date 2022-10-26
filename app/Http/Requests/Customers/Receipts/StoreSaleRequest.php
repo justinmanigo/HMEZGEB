@@ -108,14 +108,14 @@ class StoreSaleRequest extends FormRequest
             }
 
             // Check in case of withholding more than price_amount
-            if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('price_amount')) {
+            if($this->get('withholding_check') != null && $this->get('withholding_amount') > $this->get('price_amount')) {
                 $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the price amount.');
             }
             if($this->get('withholding_check') != null && $this->get('discount_amount') + $this->get('withholding') > $this->get('price_amount')) {
                 $validator->errors()->add('withholding', 'Total of Withholding and Discount should not be more than the price amount.');
             }
             // Check in case of withholding more than total_amount_received
-            if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('total_amount_received')) {
+            if($this->get('withholding_check') != null && $this->get('withholding_amount') > $this->get('total_amount_received')) {
                 $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the total amount received.');
             }
         });

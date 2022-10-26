@@ -164,6 +164,13 @@ function calculateSalesGrandTotal()
 
     $("#s_sub_total").val(sub_total.toFixed(2));
     $("#s_grand_total").val(grand_total.toFixed(2));
+
+    // Check if total_amount_received > grand_total
+    let total_amount_received = parseFloat($('#s_total_amount_received').val());
+    if(total_amount_received > grand_total)
+    {
+        $('#s_total_amount_received').val(grand_total.toFixed(2));
+    }
 }
 
 // If the s_price_amount is updated, then update the grand total
