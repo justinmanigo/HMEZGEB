@@ -336,6 +336,7 @@
                                 </th>
                             </tfoot>
                         </table>
+                        <p class="text-danger error-message error-message-sum text-right" style="display:none"></p>
                     </div>
                 </form>
             </div>
