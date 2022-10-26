@@ -277,12 +277,16 @@ class ChartOfAccountsController extends Controller
                 'chart_of_account_categories.type',
                 'chart_of_account_categories.normal_balance',
             )
-            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id');
+            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id')
+            ->where('chart_of_accounts.accounting_system_id', session('accounting_system_id'));
 
         if($query) {
-            $coa->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
-                ->orWhere('chart_of_account_categories.category', 'LIKE', '%' . $query . '%')
-                ->orWhere('chart_of_account_categories.type', 'LIKE', '%' . $query . '%');
+            // nested where
+            $coa->where(function($q) use ($query) {
+                $q->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
+                    ->orWhere('chart_of_account_categories.category', 'LIKE', '%' . $query . '%')
+                    ->orWhere('chart_of_account_categories.type', 'LIKE', '%' . $query . '%');
+            });
         }
 
         return $coa->get();
