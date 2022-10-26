@@ -438,6 +438,7 @@
     <script src="/js/customer/receipt/template_select_customer.js"></script>
     <script src="/js/customer/receipt/template_select_receipt.js"></script>
     <script src="/js/customer/receipt/template_select_tax.js"></script>
+    <script src="/js/customer/receipt/template_select_cash_account.js"></script>
     
     <script src="/js/customer/receipt/select_customer_receipt.js"></script>
     <script src="/js/customer/receipt/select_customer_proforma.js"></script>
@@ -451,4 +452,6 @@
     
     <script src="/js/customer/receipt/template_select_proforma.js"></script>
     <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
+
+    <script src="/js/customer/receipt/tagify_sales.js"></script>
 @endsection
