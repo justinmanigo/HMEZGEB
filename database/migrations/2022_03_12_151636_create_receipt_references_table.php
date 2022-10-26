@@ -18,7 +18,7 @@ class CreateReceiptReferencesTable extends Migration
             $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('customer_id');
             $table->date('date');
-            $table->enum('type',['receipt','credit_receipt','advance_receipt','proforma']);
+            $table->enum('type',['receipt','credit_receipt','advance_receipt','proforma','sale']);
             $table->enum('status',['unpaid','partially_paid','paid']);
             $table->enum('is_deposited',['no','yes'])->default('no');
             $table->enum('is_void',['yes','no'])->default('no');
