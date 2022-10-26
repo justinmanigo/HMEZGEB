@@ -157,8 +157,12 @@ function calculateSalesGrandTotal()
 {
     let price_amount = parseFloat($('#s_price_amount').val());
     let tax_amount = parseFloat($('#s_tax_amount').val());
-    let grand_total = price_amount + tax_amount;
+    let discount_amount = parseFloat($('#s_discount_amount').val());
 
+    let sub_total = price_amount + tax_amount;
+    let grand_total = sub_total - discount_amount;
+
+    $("#s_sub_total").val(sub_total.toFixed(2));
     $("#s_grand_total").val(grand_total.toFixed(2));
 }
 
@@ -168,6 +172,13 @@ $('#s_price_amount').on('change', function(){
     // console.log(sales_select_cash_account_tagify)
     let tax_amount = price_amount * sales_tax_percentage;
     $("#s_tax_amount").val(tax_amount.toFixed(2));
+    calculateSalesGrandTotal();
+});
+
+// If the s_discount_amount is updated, then update the grand total
+$('#s_discount_amount').on('change', function(){
+    let discount_amount = parseFloat($('#s_discount_amount').val());
+    // console.log(sales_select_cash_account_tagify)
     calculateSalesGrandTotal();
 });
 
@@ -196,7 +207,7 @@ $('#s_total_amount_received').on('change', function(){
     // If s_total_amount_received is changed, check if it is greater than s_grand_total
     let total_amount_received = parseFloat($('#s_total_amount_received').val());
     let grand_total = parseFloat($('#s_grand_total').val());
-    
+
     // If s_total_amount_received >= s_grand_total, auto set s_payment_type to 'cash'.
     // Also match total_amount_received to grand_total
     if(total_amount_received >= grand_total) {

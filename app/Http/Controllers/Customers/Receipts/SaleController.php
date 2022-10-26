@@ -70,6 +70,12 @@ class SaleController extends Controller
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_account_receivable);
             $debit_amount[] = $account_receivable;
         }
+        
+        if($request->discount_amount > 0) {
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_sales_discount);
+            $debit_amount[] = $request->discount_amount;
+        }
+
 
         // Create Credit Postings
         // This checks whether to add credit tax posting

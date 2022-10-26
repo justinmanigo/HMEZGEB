@@ -83,6 +83,22 @@
                                             </td>
                                         </tr>
                                     </tbody>
+                                    <tbody>
+                                        <th class="text-right table-item-content"><strong>Sub Total</strong></th>
+                                        <th>
+                                            <input class="form-control inputPrice text-right" type="text" id="s_sub_total" name="sub_total" value="0.00" readonly>
+                                            <p class="text-danger error-message error-message-sub_total" style="display:none"></p>
+                                        </th>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right table-item-content"><strong>Discount</strong></td>
+                                            <td>
+                                                <input class="form-control inputPrice text-right" type="text" id="s_discount_amount" name="discount_amount" placeholder="0.00">
+                                                <p class="text-danger error-message error-message-discount_amount" style="display:none"></p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                     <tfoot>
                                         <th class="text-right table-item-content"><strong>Grand Total</strong></th>
                                         <th>

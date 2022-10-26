@@ -36,6 +36,7 @@ class StoreSaleRequest extends FormRequest
             'price_amount' => ['required', 'numeric', 'min:0'],
             'tax' => ['sometimes'],
             'tax_amount' => ['sometimes', 'min:0'],
+            'discount_amount' => ['required', 'numeric', 'min:0'],
             'sub_total' => ['required', 'numeric', 'min:0'],
             'grand_total' => ['required', 'numeric', 'min:0'],
             // Payment
@@ -101,6 +102,10 @@ class StoreSaleRequest extends FormRequest
             // if($this->get('withholding_check') != null && $this->get('total_amount_received') < $this->get('withholding')) {
             //     $validator->errors()->add('total_amount_received', 'You have enabled withholding for this receipt. Please pay at least the withholding amount to proceed.');
             // }
+
+            if($this->get('discount_amount') > $this->get('price_amount')) {
+                $validator->errors()->add('discount_amount', 'Please enter a valid discount amount. It should not be more than the price amount.');
+            }
 
             // Check in case of withholding more than price_amount
             if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('price_amount')) {
