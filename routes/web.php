@@ -10,6 +10,7 @@ use App\Http\Controllers\ReferralsController;
 
 // Customer module
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\Customers\Receipts\SaleController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
 // Banking module
@@ -272,6 +273,14 @@ Route::group([
             ], function(){
                 // Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
                 Route::resource('/customers/receipts', ReceiptController::class);
+
+                Route::group([
+                    'as'=>'sales.',
+                ], function(){
+                    Route::post('/customers/receipts/sales', [SaleController::class, 'store'])->name('store');
+                });
+
+                // TODO: To be reorganized
                 // Store
                 Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
                 Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');

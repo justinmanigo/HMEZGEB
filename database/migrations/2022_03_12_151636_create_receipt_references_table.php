@@ -16,9 +16,9 @@ class CreateReceiptReferencesTable extends Migration
         Schema::create('receipt_references', function (Blueprint $table) {
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->date('date');
-            $table->enum('type',['receipt','credit_receipt','advance_receipt','proforma']);
+            $table->enum('type',['receipt','credit_receipt','advance_receipt','proforma','sale']);
             $table->enum('status',['unpaid','partially_paid','paid']);
             $table->enum('is_deposited',['no','yes'])->default('no');
             $table->enum('is_void',['yes','no'])->default('no');

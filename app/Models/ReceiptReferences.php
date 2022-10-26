@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Customers\Receipts\Sale;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Settings\ChartOfAccounts\JournalEntries;
@@ -22,6 +23,11 @@ class ReceiptReferences extends Model
         'customer_id',
     ];
         
+    public function sale()
+    {
+        return $this->hasOne(Sale::class, 'receipt_reference_id','id');
+    }
+
     public function receipt()
     {
         return $this->hasOne(Receipts::class, 'receipt_reference_id','id');
