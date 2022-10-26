@@ -17,6 +17,7 @@
                         <span class="text">New</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                        <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-sale">Sale</a>
                         <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Receipt</a>
                         <a role="button" class="dropdown-item disabled" data-toggle="modal"
                             {{-- data-target="#modal-advance-revenue" --}}>Advance Revenue <span class="text-danger">(Coming Soon)</span></a>
@@ -344,6 +345,7 @@
     @include('customer.receipt.modals.types.advance_revenue')
     @include('customer.receipt.modals.types.credit_receipt')
     @include('customer.receipt.modals.types.proforma')
+    @include('customer.receipt.modals.types.sale')
 
     {{-- Modals: Actions --}}
     @include('customer.receipt.modals.actions.delete')
