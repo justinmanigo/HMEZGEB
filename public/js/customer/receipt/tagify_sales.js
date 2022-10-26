@@ -143,7 +143,9 @@ function onTaxSalesInput(e) {
             tagify.whitelist = newWhitelist // update whitelist Array in-place
             tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
+}
 
+/** 
  * Auxilary Functions 
  */
 
@@ -156,3 +158,14 @@ function calculateSalesGrandTotal()
     $("#s_grand_total").val(grand_total.toFixed(2));
 }
 
+// If withholding_check is checked, enable withholding_amount
+$('#s_withholding_toggle').change(function() {
+    if($(this).is(":checked")) {
+        $('#s_withholding_amount').prop('disabled', false);
+        $('#s_withholding_required').removeClass('d-none');
+    } else {
+        $('#s_withholding_amount').prop('disabled', true);
+        $('#s_withholding_required').addClass('d-none');
+
+    }
+});
