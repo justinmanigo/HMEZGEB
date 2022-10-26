@@ -108,9 +108,17 @@
                                                 <span class="badge badge-primary">Advance Revenue</span>
                                             @elseif($transaction->type == 'credit_receipt')
                                                 <span class="badge badge-info">Credit Receipt</span>
+                                            @elseif($transaction->type == 'sale')
+                                                <span class="badge badge-success">Sale</span>
                                             @endif
                                         </td>
-                                        <td class="table-item-content">{{$transaction->name}}</td>
+                                        <td class="table-item-content">
+                                            @if(isset($transaction->name))
+                                                {{ $transaction->name }}
+                                            @else
+                                                {{ "Sales" }}
+                                            @endif
+                                        </td>
                                         <td class="table-item-content">
                                             @if($transaction->status == 'unpaid')
                                                 <span class="badge badge-danger">Unpaid</span>
@@ -128,6 +136,8 @@
                                                 {{ number_format($transaction->advance_revenue_amount, 2) }}
                                             @elseif($transaction->type == 'credit_receipt')
                                                 {{ number_format($transaction->credit_receipt_amount, 2) }}
+                                            @elseif($transaction->type == 'sale')
+                                                {{ number_format($transaction->sales_amount, 2) }}
                                             @endif
                                         </td>
                                         <td>
@@ -226,6 +236,38 @@
                                                         <i class="fas fa-check"></i>
                                                     </span>
                                                 </button>
+                                                @endif
+                                            @elseif($transaction->type == 'sale')
+                                                <a href="javascript:void(0)" class="btn btn-primary btn-sm edit disabled">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-edit"></i>
+                                                    </span>
+                                                </a>
+                                                <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" disabled>
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </span>
+                                                </button>
+                                                <!-- print/pdf -->
+                                                <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" disabled>
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-print"></i>
+                                                    </span>
+                                                </button>
+                                                @if($transaction->is_void == 'no')
+                                                    <!-- void -->
+                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" disabled>
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-ban"></i>
+                                                        </span>
+                                                    </button>
+                                                @else
+                                                    <!-- make it active -->
+                                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" disabled>
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-check"></i>
+                                                        </span>
+                                                    </button>
                                                 @endif
                                             @endif
                                         </td>

@@ -50,6 +50,7 @@ class ReceiptController extends Controller
             ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
             ->leftJoin('advance_revenues', 'receipt_references.id', '=', 'advance_revenues.receipt_reference_id')
             ->leftJoin('credit_receipts', 'receipt_references.id', '=', 'credit_receipts.receipt_reference_id')
+            ->leftJoin('sales', 'receipt_references.id', '=', 'sales.receipt_reference_id')
             ->select(
                 'customers.name',
                 'receipt_references.id',
@@ -61,6 +62,7 @@ class ReceiptController extends Controller
                 'receipts.total_amount_received as receipt_amount',
                 'advance_revenues.total_amount_received as advance_revenue_amount',
                 'credit_receipts.total_amount_received as credit_receipt_amount',
+                'sales.amount_received as sales_amount'
             )
             ->where('receipt_references.accounting_system_id', $accounting_system_id)
             ->where('receipt_references.type', '!=', 'proforma')
