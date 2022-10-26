@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="index.html" id="form-sale" method="post" enctype="multipart/form-data" data-message="Successfully created sale.">
+<form action="{{ url('/customers/receipts/sales') }}" id="form-sale" method="post" enctype="multipart/form-data" data-message="Successfully created sale.">
     @csrf
     <div class="modal fade" id="modal-sale" tabindex="-1" role="dialog" aria-labelledby="modal-sale-label"
         aria-hidden="true">
@@ -65,14 +65,14 @@
                                 <table class="table table-sm table-bordered">
                                     <tbody>
                                         <tr>
-                                            <td class="text-right table-item-content"><strong>Price</strong></td>
+                                            <td class="text-right table-item-content" width="150px"><strong>Price</strong><span class="text-danger ml-1">*</span></td>
                                             <td>
-                                                <input class="form-control inputPrice text-right" type="text" id="s_price" name="price" placeholder="0.00">
-                                                <p class="text-danger error-message error-message-price" style="display:none"></p>
+                                                <input class="form-control inputPrice text-right" type="text" id="s_price_amount" name="price_amount" placeholder="0.00" required>
+                                                <p class="text-danger error-message error-message-price_amount" style="display:none"></p>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-right table-item-content"><strong>Withholding</strong></td>
+                                            <td class="text-right table-item-content"><strong>Withholding</strong><span id="s_withholding_required" class="text-danger ml-1 d-none">*</span></td>
                                             <td>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -80,9 +80,9 @@
                                                             <input type="checkbox" id="s_withholding_toggle" name="withholding_check" value="on" aria-label="Enable/Disable withholding">
                                                         </div>
                                                     </div>
-                                                    <input class="form-control inputPrice text-right" type="text" id="s_withholding" name="withholding" placeholder="0.00" disabled>
+                                                    <input class="form-control inputPrice text-right" type="text" id="s_withholding_amount" name="withholding_amount" placeholder="0.00" disabled required>
                                                 </div>
-                                                <p class="text-danger error-message error-message-withholding" style="display:none"></p>
+                                                <p class="text-danger error-message error-message-withholding_amount" style="display:none"></p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -93,14 +93,14 @@
                                                     <input class="form-control" id="s_tax" name="tax">
                                                     <input class="form-control inputPrice text-right" type="text" id="s_tax_amount" name="tax_amount" value="0.00" readonly>
                                                 </div>
-                                                <p class="text-danger error-message error-message-tax" style="display:none"></p>
+                                                <p class="text-danger error-message error-message-tax_amount" style="display:none"></p>
                                             </td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <th class="text-right table-item-content"><strong>Grand Total</strong></th>
                                         <th>
-                                            <input class="form-control inputPrice text-right" type="text" id="s_grand_total" name="s_grand_total" value="0.00" readonly>
+                                            <input class="form-control inputPrice text-right" type="text" id="s_grand_total" name="grand_total" value="0.00" readonly>
                                             <p class="text-danger error-message error-message-grand_total" style="display:none"></p>
                                         </th>
                                     </tfoot>
@@ -111,7 +111,7 @@
 
                             <h5>Payment: </h5>
                             <div class="form-group row">
-                                <label for="s_total_amount_received" class="col-4 col-form-label">Amount Received :</label>
+                                <label for="s_total_amount_received" class="col-4 col-form-label">Amount Received <span class="text-danger ml-1">*</span> :</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control text-right" id="s_total_amount_received" name="total_amount_received" placeholder="0.00" required>
                                     <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
