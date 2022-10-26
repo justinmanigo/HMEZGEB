@@ -17,7 +17,7 @@ class CreateSalesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('receipt_reference_id');
             $table->string('reference_number')->nullable();
-            $table->decimal('price', 10, 8);
+            $table->decimal('price', 18, 8);
             $table->decimal('withholding', 18, 8);
             $table->decimal('tax', 18, 8);
             $table->decimal('grand_total', 18, 8);
