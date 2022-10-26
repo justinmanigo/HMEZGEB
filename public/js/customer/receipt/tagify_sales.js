@@ -100,14 +100,26 @@ function onTaxSalesSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     // $(`#r_item_tax_percentage_${id}`).val(e.detail.data.percentage);
 
-    calculateReceiptGrandTotal();
+    let price_amount = parseFloat($('#s_price_amount').val());
+    let tax_amount = price_amount * (parseFloat(e.detail.data.percentage) / 100);
+
+    console.log(price_amount);
+    console.log(tax_amount);
+
+    $("#s_tax_amount").val(tax_amount.toFixed(2));
+
+    calculateSalesGrandTotal()
 }
 
 function onTaxSalesRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     // $(`#r_item_tax_percentage_${id}`).val(0);
+    let price_amount = parseFloat($('#s_price_amount').val());
+    let tax_amount = 0.00;
 
-    calculateReceiptGrandTotal();
+    $("#s_tax_amount").val(tax_amount.toFixed(2));
+
+    calculateSalesGrandTotal()
 }
 
 function onTaxSalesInput(e) {    
@@ -131,4 +143,16 @@ function onTaxSalesInput(e) {
             tagify.whitelist = newWhitelist // update whitelist Array in-place
             tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
         })
+
+ * Auxilary Functions 
+ */
+
+function calculateSalesGrandTotal()
+{
+    let price_amount = parseFloat($('#s_price_amount').val());
+    let tax_amount = parseFloat($('#s_tax_amount').val());
+    let grand_total = price_amount + tax_amount;
+
+    $("#s_grand_total").val(grand_total.toFixed(2));
 }
+
