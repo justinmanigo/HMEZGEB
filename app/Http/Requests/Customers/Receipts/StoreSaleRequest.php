@@ -34,12 +34,14 @@ class StoreSaleRequest extends FormRequest
             'attachment' => ['sometimes', 'file', 'mimes:pdf,jpg,png,jpeg,doc,docx,xls,xlsx,txt,csv'],
             // Transaction
             'price_amount' => ['required', 'numeric', 'min:0'],
-            'withholding_check' => ['sometimes'],
-            'withholding_amount' => ['sometimes', 'numeric', 'min:0'],
             'tax' => ['sometimes'],
             'tax_amount' => ['sometimes', 'min:0'],
+            'sub_total' => ['required', 'numeric', 'min:0'],
             'grand_total' => ['required', 'numeric', 'min:0'],
+            // Payment
             'total_amount_received' => ['required', 'numeric', 'min:0'],
+            'withholding_check' => ['sometimes'],
+            'withholding_amount' => ['sometimes', 'numeric', 'min:0'],
         ];
     }
 
@@ -103,6 +105,9 @@ class StoreSaleRequest extends FormRequest
             // Check in case of withholding more than price_amount
             if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('price_amount')) {
                 $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the price amount.');
+            }
+            if($this->get('withholding_check') != null && $this->get('discount_amount') + $this->get('withholding') > $this->get('price_amount')) {
+                $validator->errors()->add('withholding', 'Total of Withholding and Discount should not be more than the price amount.');
             }
             // Check in case of withholding more than total_amount_received
             if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('total_amount_received')) {
