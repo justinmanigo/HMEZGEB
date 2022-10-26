@@ -72,20 +72,6 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-right table-item-content"><strong>Withholding</strong><span id="s_withholding_required" class="text-danger ml-1 d-none">*</span></td>
-                                            <td>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">
-                                                            <input type="checkbox" id="s_withholding_toggle" name="withholding_check" value="on" aria-label="Enable/Disable withholding">
-                                                        </div>
-                                                    </div>
-                                                    <input class="form-control inputPrice text-right" type="text" id="s_withholding_amount" name="withholding_amount" placeholder="0.00" disabled required>
-                                                </div>
-                                                <p class="text-danger error-message error-message-withholding_amount" style="display:none"></p>
-                                            </td>
-                                        </tr>
-                                        <tr>
                                             <td class="text-right table-item-content"><strong>Tax</strong></td>
                                             <td>
                                                 
@@ -115,6 +101,20 @@
                                 <div class="col-8">
                                     <input type="text" class="form-control text-right" id="s_total_amount_received" name="total_amount_received" placeholder="0.00" required>
                                     <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="s_withholding_amount" class="col-4 col-form-label">Withholding <span id="s_withholding_required" class="text-danger ml-1 d-none">*</span> :</label>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" id="s_withholding_toggle" name="withholding_check" value="on" aria-label="Enable/Disable withholding">
+                                            </div>
+                                        </div>
+                                        <input class="form-control inputPrice text-right" type="text" id="s_withholding_amount" name="withholding_amount" placeholder="0.00" disabled required>
+                                    </div>
+                                    <p class="text-danger error-message error-message-withholding_amount" style="display:none"></p>
                                 </div>
                             </div>
                         </div>
