@@ -296,6 +296,7 @@ class ReportsController extends Controller
                 ->where('chart_of_accounts.id', '=', $r[$i]->coa_id)
                 ->where('journal_postings.type', 'debit')
                 ->where('journal_entries.is_void', false)
+                ->where('chart_of_accounts.accounting_system_id', session('accounting_system_id'))
                 ->get();
 
             $jp_c[$i] = DB::table('journal_entries')
@@ -310,6 +311,7 @@ class ReportsController extends Controller
                 ->where('chart_of_accounts.id', '=', $r[$i]->coa_id)
                 ->where('journal_postings.type', 'credit')
                 ->where('journal_entries.is_void', false)
+                ->where('chart_of_accounts.accounting_system_id', session('accounting_system_id'))
                 ->orderBy('journal_entries.date', 'asc')
                 ->get();
         }
