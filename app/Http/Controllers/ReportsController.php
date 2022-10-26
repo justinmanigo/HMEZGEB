@@ -338,7 +338,7 @@ class ReportsController extends Controller
             ->leftJoin('journal_postings', 'journal_entries.id', '=', 'journal_postings.journal_entry_id')
             ->leftJoin('chart_of_accounts', 'journal_postings.chart_of_account_id', '=', 'chart_of_accounts.id')
             ->whereBetween('date', [$request->date_from, $request->date_to])
-            ->where('journal_entries.accounting_system_id', '=', session('accounting_system_id'))
+            ->where('chart_of_accounts.accounting_system_id', '=', session('accounting_system_id'))
             ->where('journal_entries.is_void', false)
             ->orderBy('journal_entries.date', 'asc')
             ->get();
