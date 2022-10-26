@@ -165,6 +165,10 @@
                                             Deposit
                                         </a>
                                         <p class="my-2"><strong>Receipt</strong></p>
+                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-sale') }}">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Sale
+                                        </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-receipt') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Receipt
