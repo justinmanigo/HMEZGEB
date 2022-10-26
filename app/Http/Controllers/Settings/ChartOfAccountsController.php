@@ -26,8 +26,6 @@ class ChartOfAccountsController extends Controller
      */
     public function index()
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-
         $sum_debits = DB::table('journal_postings')
             ->select(
                 'journal_postings.chart_of_account_id',
@@ -64,7 +62,7 @@ class ChartOfAccountsController extends Controller
             ->leftJoin('chart_of_account_categories', 'chart_of_account_category_id', '=', 'chart_of_account_categories.id')
             ->leftJoinSub($sum_debits, 'sum_debits', 'chart_of_accounts.id', '=', 'sum_debits.chart_of_account_id')
             ->leftJoinSub($sum_credits, 'sum_credits', 'chart_of_accounts.id', '=', 'sum_credits.chart_of_account_id')
-            ->where('chart_of_accounts.accounting_system_id', $accounting_system_id)
+            ->where('chart_of_accounts.accounting_system_id', session('accounting_system_id'))
             ->get();
 
         return view('settings.chart_of_account.index', compact('chart_of_accounts'));
@@ -279,12 +277,16 @@ class ChartOfAccountsController extends Controller
                 'chart_of_account_categories.type',
                 'chart_of_account_categories.normal_balance',
             )
-            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id');
+            ->leftJoin('chart_of_account_categories', 'chart_of_account_categories.id', '=', 'chart_of_accounts.chart_of_account_category_id')
+            ->where('chart_of_accounts.accounting_system_id', session('accounting_system_id'));
 
         if($query) {
-            $coa->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
-                ->orWhere('chart_of_account_categories.category', 'LIKE', '%' . $query . '%')
-                ->orWhere('chart_of_account_categories.type', 'LIKE', '%' . $query . '%');
+            // nested where
+            $coa->where(function($q) use ($query) {
+                $q->where('chart_of_accounts.chart_of_account_no', 'LIKE', '%' . $query . '%')
+                    ->orWhere('chart_of_account_categories.category', 'LIKE', '%' . $query . '%')
+                    ->orWhere('chart_of_account_categories.type', 'LIKE', '%' . $query . '%');
+            });
         }
 
         return $coa->get();
