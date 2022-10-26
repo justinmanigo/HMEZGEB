@@ -179,6 +179,32 @@ $('#s_withholding_toggle').change(function() {
     } else {
         $('#s_withholding_amount').prop('disabled', true);
         $('#s_withholding_required').addClass('d-none');
-
     }
+});
+
+// If s_payment_type is selected and the value is 'cash', then
+// match the s_grand_total with s_total_amount_received
+$('#s_payment_type').on('change', function(){
+    if($(this).val() == 'cash') {
+        $('#s_total_amount_received').val($('#s_grand_total').val());
+    } else {
+        $('#s_total_amount_received').val(0);
+    }
+});
+
+$('#s_total_amount_received').on('change', function(){
+    // If s_total_amount_received is changed, check if it is greater than s_grand_total
+    let total_amount_received = parseFloat($('#s_total_amount_received').val());
+    let grand_total = parseFloat($('#s_grand_total').val());
+    
+    // If s_total_amount_received >= s_grand_total, auto set s_payment_type to 'cash'.
+    // Also match total_amount_received to grand_total
+    if(total_amount_received >= grand_total) {
+        $('#s_total_amount_received').val(grand_total);
+        $('#s_payment_type').val('cash');
+    }
+    else {
+        $('#s_payment_type').val('credit');
+    }
+
 });

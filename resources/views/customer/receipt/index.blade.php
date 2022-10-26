@@ -495,5 +495,5 @@
     <script src="/js/customer/receipt/template_select_proforma.js"></script>
     <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
 
-    <script src="/js/customer/receipt/tagify_sales.js"></script>
+    <script src="/js/customer/receipt/modal_sales.js"></script>
 @endsection
