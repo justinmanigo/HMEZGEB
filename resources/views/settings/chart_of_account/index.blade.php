@@ -307,7 +307,7 @@
                 <div id="modal-beginning-balance-spinner" class="spinner-border text-center p-5" role="status" style="display:none">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <form id="form-beginning-balance" method="post" action="{{ url('/ajax/settings/coa/beginning-balance') }}" style="display:none">
+                <form class="ajax-submit-updated" id="form-beginning-balance" method="post" action="{{ url('/ajax/settings/coa/beginning-balance') }}" style="display:none" data-message="Successfully updated Beginning Balance.">
                     @csrf
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
