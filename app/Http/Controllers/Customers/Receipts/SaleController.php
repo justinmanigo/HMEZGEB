@@ -99,6 +99,8 @@ class SaleController extends Controller
             'price' => $request->price_amount,
             'tax' => $request->tax_amount,
             'withholding' => isset($request->withholding_amount) ? $request->withholding_amount : 0,
+            'discount' => $request->discount_amount,
+            'sub_total' => $request->sub_total,
             'grand_total' => $request->grand_total,
             'amount_received' => $request->total_amount_received,
             'terms_and_conditions' => $request->remarks,
