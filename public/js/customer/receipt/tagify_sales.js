@@ -69,6 +69,8 @@ function onSalesCashAccountInput(e) {
  * This is for the Sales - Tax Field
  */
 var sales_select_tax_elm = document.querySelector(`#s_tax`);
+var sales_tax_percentage = 0.00;
+
 var sales_select_tax_tagify = new Tagify(sales_select_tax_elm, {
     tagTextProp: 'label', // very important since a custom template is used with this property as text
     enforceWhitelist: true,
@@ -101,7 +103,8 @@ function onTaxSalesSelectSuggestion(e) {
     // $(`#r_item_tax_percentage_${id}`).val(e.detail.data.percentage);
 
     let price_amount = parseFloat($('#s_price_amount').val());
-    let tax_amount = price_amount * (parseFloat(e.detail.data.percentage) / 100);
+    sales_tax_percentage = parseFloat(e.detail.data.percentage) / 100;
+    let tax_amount = price_amount * sales_tax_percentage;
 
     console.log(price_amount);
     console.log(tax_amount);
@@ -115,6 +118,7 @@ function onTaxSalesRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
     // $(`#r_item_tax_percentage_${id}`).val(0);
     let price_amount = parseFloat($('#s_price_amount').val());
+    sales_tax_percentage = 0.00;
     let tax_amount = 0.00;
 
     $("#s_tax_amount").val(tax_amount.toFixed(2));
@@ -157,6 +161,15 @@ function calculateSalesGrandTotal()
 
     $("#s_grand_total").val(grand_total.toFixed(2));
 }
+
+// If the s_price_amount is updated, then update the grand total
+$('#s_price_amount').on('change', function(){
+    let price_amount = parseFloat($('#s_price_amount').val());
+    // console.log(sales_select_cash_account_tagify)
+    let tax_amount = price_amount * sales_tax_percentage;
+    $("#s_tax_amount").val(tax_amount.toFixed(2));
+    calculateSalesGrandTotal();
+});
 
 // If withholding_check is checked, enable withholding_amount
 $('#s_withholding_toggle').change(function() {
