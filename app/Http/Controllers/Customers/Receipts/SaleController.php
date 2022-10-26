@@ -50,10 +50,10 @@ class SaleController extends Controller
 
         // Check if there is withholding
         if($request->withholding_check != null) {
-            $cash -= $request->withholding;
+            $cash -= $request->withholding_amount;
 
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_withholding);
-            $debit_amount[] = $request->withholding;
+            $debit_amount[] = $request->withholding_amount;
 
             if($cash < 0) {
                 $account_receivable += $cash;
@@ -81,6 +81,7 @@ class SaleController extends Controller
         $credit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_sales);
         $credit_amount[] = $request->price_amount;
 
+
         CreateJournalPostings::run($je, 
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
@@ -91,7 +92,7 @@ class SaleController extends Controller
             'reference_number' => $request->reference_number,
             'price' => $request->price_amount,
             'tax' => $request->tax_amount,
-            'withholding' => isset($request->withholding) ? $request->withholding : 0,
+            'withholding' => isset($request->withholding_amount) ? $request->withholding_amount : 0,
             'grand_total' => $request->grand_total,
             'amount_received' => $request->total_amount_received,
             'terms_and_conditions' => $request->remarks,
