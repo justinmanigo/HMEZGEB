@@ -13,8 +13,10 @@ class Sale extends Model
     protected $fillable = [
         'receipt_reference_id',
         'reference_number',
-        'amount',
+        'price',
+        'amount_received',
         'tax',
+        'withholding',
         'sub_total',
         'grand_total',
         'terms_and_condition',
