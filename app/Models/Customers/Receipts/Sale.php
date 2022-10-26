@@ -17,6 +17,7 @@ class Sale extends Model
         'amount_received',
         'tax',
         'withholding',
+        'discount',
         'sub_total',
         'grand_total',
         'terms_and_condition',

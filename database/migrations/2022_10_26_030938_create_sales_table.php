@@ -20,6 +20,8 @@ class CreateSalesTable extends Migration
             $table->decimal('price', 18, 8);
             $table->decimal('withholding', 18, 8);
             $table->decimal('tax', 18, 8);
+            $table->decimal('discount', 18, 8);
+            $table->decimal('sub_total', 18, 8);
             $table->decimal('grand_total', 18, 8);
             $table->decimal('amount_received', 18, 8);
             $table->longText('terms_and_conditions')->nullable();
