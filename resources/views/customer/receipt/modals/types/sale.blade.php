@@ -99,7 +99,15 @@
                             <div class="form-group row">
                                 <label for="s_total_amount_received" class="col-4 col-form-label">Amount Received <span class="text-danger ml-1">*</span> :</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control text-right" id="s_total_amount_received" name="total_amount_received" placeholder="0.00" required>
+                                    <div class="input-group">
+                                        <select class="form-control" id="s_payment_type" name="payment_type">
+                                            <option value="" selected disabled hidden>Select...</option>
+                                            <option value="cash">Cash</option>
+                                            <option value="credit">Credit</option>
+                                        </select>
+                                        <input type="text" class="form-control text-right" id="s_total_amount_received" name="total_amount_received" placeholder="0.00" required>
+                                    </div>
+                                    
                                     <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
                                 </div>
                             </div>
