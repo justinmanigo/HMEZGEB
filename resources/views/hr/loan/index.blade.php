@@ -390,4 +390,6 @@ function showModel(id) {
 
 <script src="/js/human_resource/template_select_employee.js"></script>
 <script src="/js/human_resource/select_employee_loan.js"></script>
+<script src="/js/tagify_templates/template_select_cash_account.js"></script>
+<script src="/js/human_resource/modal_loan.js"></script>
 @endsection
