@@ -245,7 +245,7 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <label for="pp_cash_account" class="col-4 col-form-label text-left">
-                                    Cash Account
+                                    Cash Acct
                                     <span class="text-danger ml-1">*</span> :
                                 </label>
                                 <div class="col-8">
