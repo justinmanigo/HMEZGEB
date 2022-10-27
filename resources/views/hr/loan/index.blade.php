@@ -249,7 +249,7 @@
                                     <span class="text-danger ml-1">*</span> :
                                 </label>
                                 <div class="col-8">
-                                    <input class="form-control" id="pp_cash_account" name='cash_account'>
+                                    <input class="form-control" id="l_cash_account" name='cash_account'>
                                     <p class="text-danger error-message error-message-cash_account" style="display:none"></p>
                                 </div>
                             </div>
