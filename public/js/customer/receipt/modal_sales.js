@@ -167,9 +167,14 @@ function calculateSalesGrandTotal()
 
     // Check if total_amount_received > grand_total
     let total_amount_received = parseFloat($('#s_total_amount_received').val());
-    if(total_amount_received > grand_total)
+    if(total_amount_received >= grand_total)
     {
         $('#s_total_amount_received').val(grand_total.toFixed(2));
+        $('#s_payment_type').val('cash');
+    }
+    else if(grand_total > total_amount_received)
+    {
+        $('#s_payment_type').val('credit');
     }
 }
 
