@@ -31,6 +31,7 @@ class StoreLoanRequest extends FormRequest
 
         return [
             'date' => ['required', 'date'],
+            'cash_account' => ['required'],
             'employee' => ['required','array'],
             'employee.*' => ['required'],
             'loan' => ['required', 'array'],
@@ -52,13 +53,10 @@ class StoreLoanRequest extends FormRequest
         $employees_advance = ChartOfAccounts::where('chart_of_account_no', '1120')
             ->where('accounting_system_id', session('accounting_system_id'))->first();
 
-        $salary_expense = ChartOfAccounts::where('chart_of_account_no', '6101')
-            ->where('accounting_system_id', session('accounting_system_id'))->first();
-
         $this->merge([
             'employee' => isset($employee) ? $employee : [],
+            'cash_account' => DecodeTagifyField::run($this->cash_account),
             'employees_advance' => $employees_advance->id,
-            'salary_expense' => $salary_expense->id,
         ]);
     }
 

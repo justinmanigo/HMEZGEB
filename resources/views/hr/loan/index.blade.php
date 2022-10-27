@@ -242,12 +242,33 @@
                 <form action="{{route('loans.loan.store')}}" class="ajax-submit-updated" ata-message="Successfully added loan." enctype="multipart/form-data" id="form-loan" method="POST">
                     @csrf
                     <div class="form-group row">
-                        <label for="l_date" class="col-sm-3 col-lg-2 col-form-label">Date<span
-                                class="text-danger ml-1">*</span></label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="date" class="form-control" id="l_date" name="date" placeholder="" value="{{date('Y-m-d')}}">
-                            <p class="text-danger error-message error-message-date" style="display:none"></p>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="pp_cash_account" class="col-4 col-form-label text-left">
+                                    Cash Acct
+                                    <span class="text-danger ml-1">*</span> :
+                                </label>
+                                <div class="col-8">
+                                    <input class="form-control" id="l_cash_account" name='cash_account'>
+                                    <p class="text-danger error-message error-message-cash_account" style="display:none"></p>
+                                </div>
+                            </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label for="l_date" class="col-4 col-form-label text-right">
+                                    Date
+                                    <span class="text-danger ml-1">*</span> :
+                                </label>
+                                <div class="col-8">
+                                    <input type="date" class="form-control" id="l_date" name="date" placeholder="" value="{{date('Y-m-d')}}">
+                                    <p class="text-danger error-message error-message-date" style="display:none"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        
                     </div>
 
                     <div class="table-responsive">
@@ -369,4 +390,6 @@ function showModel(id) {
 
 <script src="/js/human_resource/template_select_employee.js"></script>
 <script src="/js/human_resource/select_employee_loan.js"></script>
+<script src="/js/tagify_templates/template_select_cash_account.js"></script>
+<script src="/js/human_resource/modal_loan.js"></script>
 @endsection

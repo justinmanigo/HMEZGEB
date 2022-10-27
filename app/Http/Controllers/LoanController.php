@@ -84,9 +84,8 @@ class LoanController extends Controller
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->employees_advance);
             $debit_amount[] = $request->loan[$i];
 
-            // Credit 6101 - Salary Expense
-            // TODO: Make this feature dynamic (allow changing of accounts, or set default)
-            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->salary_expense);
+            // Credit to Selected Cash Account
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->cash_account->value);
             $credit_amount[] = $request->loan[$i];
 
             // Create Journal Postings
@@ -95,7 +94,7 @@ class LoanController extends Controller
                 $credit_accounts, $credit_amount,
                 session('accounting_system_id'));
         }
-        return redirect()->back()->with('success', 'Loan has been added.');
+        return redirect()->back()->with('success', 'Loan has been successfully added.');
     }
 
     public function update(Request $request, Loan $loan)
