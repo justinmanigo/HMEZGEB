@@ -60,7 +60,7 @@
                     {{-- Transaction Contents --}}
                     <div class="tab-pane fade show active" id="transactions" role="tabpanel"
                         aria-labelledby="transactions-tab">
-    
+
                         @if(session()->has('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session()->get('success') }}
@@ -74,7 +74,7 @@
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
-                            </div> 
+                            </div>
                         @elseif(isset($_GET['success']))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ $_GET['success'] }}
@@ -82,7 +82,7 @@
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
-                            </div>     
+                            </div>
                         @endif
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -97,7 +97,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($transactions as $transaction)
-                        
+
                                     <tr>
                                         <td class="table-item-content">{{$transaction->id}}</td>
                                         <td class="table-item-content">{{$transaction->date}}</td>
@@ -158,7 +158,7 @@
                                                     <span class="icon text-white-50">
                                                         <i class="fas fa-print"></i>
                                                     </span>
-                                                </button>                                        
+                                                </button>
                                                 @if($transaction->is_void == 'no')
                                                 <!-- void -->
                                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'receipt')" >
@@ -273,7 +273,7 @@
                                         </td>
                                     </tr>
                                     @endforeach
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -413,7 +413,7 @@
             if(type=="proforma")
             $('#btn-send-mail').attr('href', '{{ route("receipts.proforma.mail", ":id") }}'.replace(':id', id));
         }
-    
+
         // Get id of transaction to print confirmation modal
         function printModal(id, type){
             // set attribute href of print-receipt
@@ -426,9 +426,9 @@
             if(type=="proforma")
             $('#print-receipt').attr('href', '{{ route("receipts.proforma.print", ":id") }}'.replace(':id', id));
         }
-    
+
         // Void record
-    
+
         function voidModal(id, type) {
             if(type=="receipt")
             $('#void-receipt').attr('href', '{{ route("receipts.receipt.void", ":id") }}'.replace(':id', id));
@@ -439,7 +439,7 @@
             if(type=="proforma")
             $('#void-receipt').attr('href', '{{ route("receipts.proforma.void", ":id") }}'.replace(':id', id));
         }
-    
+
         function reactivateModal(id, type)
         {
             if(type=="receipt")
@@ -451,14 +451,14 @@
             if(type=="proforma")
             $('#reactivate-receipt').attr('href', '{{ route("receipts.proforma.reactivate", ":id") }}'.replace(':id', id));
         }
-    
+
         $(document).ready(function () {
             $('#dataTables').DataTable();
             $('#dataTables2').DataTable();
             $('.dataTables_filter').addClass('pull-right');
         });
         // https://www.mockaroo.com/
-        
+
         var controller;
         function showModel(id) {
             var frmDelete = document.getElementById("delete-frm");
@@ -468,32 +468,34 @@
             confirmationModal.classList.remove('fade');
             confirmationModal.classList.add('show');
         }
-        
+
         function dismissModel() {
             var confirmationModal = document.getElementById("deleteConfirmationModel");
             confirmationModal.style.display = 'none';
             confirmationModal.classList.remove('show');
             confirmationModal.classList.add('fade');
         }
-    
+
     </script>
+
     <script src="/js/customer/receipt/template_select_customer.js"></script>
     <script src="/js/customer/receipt/template_select_receipt.js"></script>
     <script src="/js/customer/receipt/template_select_tax.js"></script>
     <script src="/js/customer/receipt/template_select_cash_account.js"></script>
-    
+
     <script src="/js/customer/receipt/select_customer_receipt.js"></script>
     <script src="/js/customer/receipt/select_customer_proforma.js"></script>
     <script src="/js/customer/receipt/select_customer_advancerevenue.js"></script>
     <script src="/js/customer/receipt/select_customer_creditreceipt_updated.js"></script>
-    
+
     <script src="/js/customer/receipt/template_select_item.js"></script>
     <script src="/js/customer/receipt/select_item_receipt.js"></script>
     <script src="/js/customer/receipt/select_item_proforma.js"></script>
     <script src="/js/customer/receipt/select_receipt_creditreceipt.js"></script>
-    
+
     <script src="/js/customer/receipt/template_select_proforma.js"></script>
     <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
 
     <script src="/js/customer/receipt/modal_sales.js"></script>
+    <script src="/js/customer/receipt/default_values.js"></script>
 @endsection

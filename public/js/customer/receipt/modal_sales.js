@@ -1,36 +1,7 @@
-/**
- * This is for Sales - Cash Account Field
- */
 
-var sales_select_cash_account_elm = document.querySelector('#s_cash_account');
-
-// initialize Tagify on the above input node reference
-
-var sales_select_cash_account_tagify = new Tagify(sales_select_cash_account_elm, {
-    tagTextProp: 'label', // very important since a custom template is used with this property as text
-    enforceWhitelist: true,
-    mode : "select",
-    skipInvalid: false, // do not remporarily add invalid tags
-    dropdown: {
-        closeOnSelect: true,
-        enabled: 0,
-        classname: 'customer-list',
-        searchKeys: ['label'] // very important to set by which keys to search for suggesttions when typing
-    },
-    templates: {
-        tag: cashAccountTagTemplate,
-        dropdownItem: cashAccountSuggestionItemTemplate
-    },
-    whitelist: [],
-})
-
-
-sales_select_cash_account_tagify.on('dropdown:show dropdown:updated', onSalesCashAccountDropdownShow)
-sales_select_cash_account_tagify.on('dropdown:select', onSalesCashAccountSelectSuggestion)
-sales_select_cash_account_tagify.on('input', onSalesCashAccountInput)
-sales_select_cash_account_tagify.on('remove', onSalesCashAccountRemove)
 
 var addAllSuggestionsElm;
+
 
 function onSalesCashAccountDropdownShow(e){
     var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
@@ -42,7 +13,7 @@ function onSalesCashAccountSelectSuggestion(e){
 }
 
 function onSalesCashAccountRemove(e){
-    
+
 }
 
 function onSalesCashAccountInput(e) {
@@ -126,7 +97,7 @@ function onTaxSalesRemove(e) {
     calculateSalesGrandTotal()
 }
 
-function onTaxSalesInput(e) {    
+function onTaxSalesInput(e) {
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -149,8 +120,8 @@ function onTaxSalesInput(e) {
         })
 }
 
-/** 
- * Auxilary Functions 
+/**
+ * Auxilary Functions
  */
 
 function calculateSalesGrandTotal()

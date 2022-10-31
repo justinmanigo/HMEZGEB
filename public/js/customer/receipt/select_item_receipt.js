@@ -1,9 +1,9 @@
 // This array lists down the items within the receipt.
-var receipt_items = []; 
+var receipt_items = [];
 
 // This variable counts how many instances of receipt items are made.
 // This ensures that there will be no conflict ids on receipt item elements.
-var receipt_count = 0; 
+var receipt_count = 0;
 
 // Create a receipt item entry when document is fully loaded or when add entry button is clicked.
 $(document).ready(createReceiptItemEntry());
@@ -29,7 +29,7 @@ $(document).on('change', '.r_item_quantity', function(event) {
     quantity = $(this)[0].value;
     sale_price = $(`#r_item_price_${id}`).val()
     console.log(sale_price)
-    
+
     // Update item total
     $(`#r_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
 
@@ -38,7 +38,7 @@ $(document).on('change', '.r_item_quantity', function(event) {
 });
 
 // Creates a Receipt Item Entry on the Table.
-function createReceiptItemEntry(item = undefined) 
+function createReceiptItemEntry(item = undefined)
 {
     // Increment receipt_count to avoid element conflicts.
     receipt_count++;
@@ -100,13 +100,13 @@ function createReceiptItemEntry(item = undefined)
                 "quantity": item.quantity,
             },
         ];
-        
-        
+
+
         $(`#r_item_${receipt_count}`).val(item.inventory.item_name);
         $(`#r_item_quantity_${receipt_count}`).val(item.quantity).removeAttr('disabled');
         $(`#r_item_price_${receipt_count}`).val(parseFloat(item.inventory.sale_price).toFixed(2))
         $(`#r_item_total_${receipt_count}`).val(parseFloat(item.inventory.sale_price * item.quantity).toFixed(2))
-        
+
     }
 
     // Create new tagify instance of item selector of newly created row.
@@ -199,12 +199,12 @@ function removeReceiptItemEntry(entry_id)
     for(let i = 0; i < receipt_items.length; i++)
     {
         if(receipt_items[i].entry_id == entry_id)
-        {   
+        {
             console.log("Removing entry " + entry_id);
             receipt_items.splice(i, 1);
             return true;
         }
-    }   
+    }
     return false;
 }
 
@@ -218,7 +218,7 @@ function getReceiptItemEntry(entry_id)
             console.log("Found entry.");
             return receipt_items[i];
         }
-    }   
+    }
     return undefined;
 }
 
@@ -232,7 +232,7 @@ function getReceiptItemIndex(entry_id)
             console.log("Found entry.");
             return i;
         }
-    }   
+    }
     return undefined;
 }
 
@@ -256,7 +256,7 @@ function calculateReceiptTaxTotal()
 {
     tax_total = 0;
     console.log(`Attempt to Calculate Tax Total`);
-    
+
     tax_percentages = document.querySelectorAll(".r_item_tax_percentage");
     item_prices = document.querySelectorAll(".r_item_price")
     item_quantities = document.querySelectorAll(".r_item_quantity")
@@ -309,17 +309,17 @@ function onReceiptItemDropdownShow(e) {
 
 function onReceiptItemSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
-    
+
     $(`#r_item_quantity_${id}`).val(1).removeAttr('disabled')
     $(`#r_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
     $(`#r_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
     // Remove the disabled attribute of nearby .tagify element
     $(`#r_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
-    
+
     if(e.detail.data.tax_id != null) setTaxReceiptWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
-    
+
     // Recalculate total
     calculateReceiptSubTotal();
     calculateReceiptGrandTotal();
@@ -327,7 +327,7 @@ function onReceiptItemSelectSuggestion(e) {
 
 function onReceiptItemRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
-    
+
     //Subtract total when x is clicked in tagify
     // $(`#r_sub_total`).val(parseFloat($(`#r_sub_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
     // $(`#r_grand_total`).val(parseFloat($(`#r_grand_total`).val() - $(`#r_item_total_${id}`).val()).toFixed(2))
@@ -336,7 +336,7 @@ function onReceiptItemRemove(e) {
     $(`#r_item_quantity_${id}`).val("0")
     $(`#r_item_price_${id}`).val("0.00")
     $(`#r_item_total_${id}`).val("0.00")
-    
+
     getReceiptItemEntry(id).tax.removeTag(e.detail.tag.value);
     calculateReceiptSubTotal();
     calculateReceiptGrandTotal();
@@ -345,7 +345,7 @@ function onReceiptItemRemove(e) {
 
 }
 
-function onReceiptItemInput(e) {    
+function onReceiptItemInput(e) {
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -388,7 +388,7 @@ function onTaxReceiptRemove(e) {
     calculateReceiptGrandTotal();
 }
 
-function onTaxReceiptInput(e) {    
+function onTaxReceiptInput(e) {
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -428,11 +428,11 @@ function setTaxReceiptWhitelist(item, id)
     tax = getReceiptItemEntry(id).tax
     tax.whitelist = whitelist;
     tax.addTags(whitelist[0].value);
-    
+
     $(`#r_item_tax_${id}`).parents('td').find('span').html(whitelist[0].label);
     $(`#r_item_tax_${id}`).parents('td').find('tag').attr('percentage', whitelist[0].percentage);
     $(`#r_item_tax_percentage_${id}`).val(whitelist[0].percentage);
-    
+
     console.log(tax);
 }
 

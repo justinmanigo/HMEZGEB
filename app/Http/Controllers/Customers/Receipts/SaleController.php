@@ -19,11 +19,11 @@ class SaleController extends Controller
         // return $request;
 
         // Determine Receipt Status
-        $status = DetermineReceiptStatus::run($request->grand_total, $request->total_amount_received);        
+        $status = DetermineReceiptStatus::run($request->grand_total, $request->total_amount_received);
 
         // If request has attachment, store it to file storage.
         if($request->attachment) {
-            $fileAttachment = time().'.'.$request->attachment->extension();  
+            $fileAttachment = time().'.'.$request->attachment->extension();
             $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
         }
 
@@ -70,7 +70,7 @@ class SaleController extends Controller
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_account_receivable);
             $debit_amount[] = $account_receivable;
         }
-        
+
         if($request->discount_amount > 0) {
             $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_sales_discount);
             $debit_amount[] = $request->discount_amount;
@@ -88,7 +88,7 @@ class SaleController extends Controller
         $credit_amount[] = $request->price_amount;
 
 
-        CreateJournalPostings::run($je, 
+        CreateJournalPostings::run($je,
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
             session('accounting_system_id'));
