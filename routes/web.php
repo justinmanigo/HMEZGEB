@@ -374,7 +374,16 @@ Route::group([
                 'middleware' => 'acctsys.permission:5',
             ], function(){
                 // HTML
-                Route::resource('/vendors/bills', BillsController::class);
+                Route::get('/vendors/bills', [BillsController::class, 'index'])->name('index');
+                Route::get('/vendors/bills/{bills}', [BillsController::class, 'show'])->name('show');
+
+                // COGS
+                Route::group([
+                    'as' => 'cogs.',
+                ], function(){
+                    Route::post('/vendors/bills/cogs', [CostOfGoodsSoldController::class, 'store'])->name('store');
+                });
+
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
                 Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
