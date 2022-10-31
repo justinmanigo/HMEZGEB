@@ -17,7 +17,7 @@
 
                             <div class="form-group row">
                                 <label for="s_cash_account" class="col-4 col-form-label text-left">Cash Acct:<span class="text-danger ml-1">*</span> :</label>
-                                
+
                                 <div class="col-8">
                                     <input class="form-control" id="s_cash_account" name='cash_account'>
                                     <p class="text-danger error-message error-message-cash_account" style="display:none"></p>
@@ -74,7 +74,7 @@
                                         <tr>
                                             <td class="text-right table-item-content"><strong>Tax</strong></td>
                                             <td>
-                                                
+
                                                 <div class="input-group">
                                                     <input class="form-control" id="s_tax" name="tax">
                                                     <input class="form-control inputPrice text-right" type="text" id="s_tax_amount" name="tax_amount" value="0.00" readonly>
@@ -123,7 +123,7 @@
                                         </select>
                                         <input type="text" class="form-control text-right" id="s_total_amount_received" name="total_amount_received" placeholder="0.00" required>
                                     </div>
-                                    
+
                                     <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
                                 </div>
                             </div>
