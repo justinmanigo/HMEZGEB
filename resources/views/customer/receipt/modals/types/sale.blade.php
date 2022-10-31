@@ -1,4 +1,4 @@
-<form action="{{ url('/customers/receipts/sales') }}" id="form-sale" method="post" enctype="multipart/form-data" data-message="Successfully created sale.">
+<form class="ajax-submit-updated" action="{{ url('/customers/receipts/sales') }}" id="form-sale" method="post" enctype="multipart/form-data" data-message="Successfully created sale.">
     @csrf
     <div class="modal fade" id="modal-sale" tabindex="-1" role="dialog" aria-labelledby="modal-sale-label"
         aria-hidden="true">
