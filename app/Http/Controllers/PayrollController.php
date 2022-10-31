@@ -35,7 +35,7 @@ class PayrollController extends Controller
         // $accounting_system_id = $this->request->session()->get('accounting_system_id');
         // $payrolls = Payroll::where('accounting_system_id', $accounting_system_id)
         //     ->orderBy('created_at', 'desc')->get();
-        
+
         // // get accounting_periods with no payrolls for select menu
         $accounting_periods_with_no_payroll = AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))
             ->whereDoesntHave('payrollPeriod')
@@ -70,7 +70,7 @@ class PayrollController extends Controller
             'accounting_periods_with_no_payroll',
             'payroll_periods',
         ));
-    
+
         // return view('hr.payroll.index', compact('payrolls', 'accounting_periods_with_no_payroll'));
     }
 
@@ -95,17 +95,17 @@ class PayrollController extends Controller
     {
         //Get Accounting Period
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $accounting_period = AccountingPeriods::where('id',$request->period)->first(); 
+        $accounting_period = AccountingPeriods::where('id',$request->period)->first();
         if($accounting_period){
             // get id from Accounting system related to the period
             $accounting_system = AccountingSystem::where('id', $accounting_period->accounting_system_id)->first();
-            
+
             //Get salary
             $employees = Employee::where('accounting_system_id',$accounting_system->id)->where('type','employee')
             ->get();
-                       
+
             if($employees->isEmpty())
-                return redirect()->route('payrolls.payrolls.index')->with('error','No records to create Payroll');
+                return redirect()->route('payrolls.index')->with('error',"You don't have employees to create payroll for.");
 
             // Create Payroll Period
             $payroll_period = new PayrollPeriod;
@@ -132,9 +132,9 @@ class PayrollController extends Controller
                 ->get();
                 $loans = Loan::where('accounting_system_id',$accounting_system->id)->where('employee_id',$employee->id)
                 ->whereBetween('date', [$accounting_period->date_from, $accounting_period->date_to])
-                ->get();            
-                
-                
+                ->get();
+
+
                 // Create Payroll
                 $payroll = new Payroll;
                 $payroll->payroll_period_id = $payroll_period->id;
@@ -146,18 +146,18 @@ class PayrollController extends Controller
                 // employee SALARY
                 $total_salary = 0;
                 $total_salary = $total_salary + $employee->basic_salary;
-                
+
                 $salary = new BasicSalary();
                 $salary->accounting_system_id = $accounting_system_id;
                 $salary->employee_id = $employee->id;
                 $salary->payroll_id = $payroll->id;
                 $salary->price = $employee->basic_salary;
                 $salary->save();
-              
+
                 // Update payroll total salary
                 $payroll->total_salary = $total_salary;
                 $payroll->save();
-            
+
                 // employee ADDITIONS
                 $total_addition = 0;
                 foreach($additions as $add){
@@ -205,7 +205,7 @@ class PayrollController extends Controller
                 // Update payroll total loan
                 $payroll->total_loan = $total_loan;
                 $payroll->save();
-                
+
                 // Pension
                 $pension = new Pension();
                 $pension->accounting_system_id = $accounting_system_id;
@@ -214,15 +214,15 @@ class PayrollController extends Controller
                 $pension->pension_07_amount = $employee->basic_salary * 0.07;
                 $pension->pension_11_amount = $employee->basic_salary * 0.11;
                 $pension->save();
-                
+
                 $total_pension_7 = $employee->basic_salary * 0.07;
                 $payroll->total_pension_7 = $total_pension_7;
                 $total_pension_11 = $employee->basic_salary * 0.11;
                 $payroll->total_pension_11= $total_pension_11;
                 $payroll->save();
-           
+
                 // Tax
-                // add all total_salary , total_addition , total_overtime 
+                // add all total_salary , total_addition , total_overtime
                 $taxable_income = $total_salary + $total_addition + $total_overtime;
 
                 // get tax settings
@@ -240,7 +240,7 @@ class PayrollController extends Controller
                         $tax->tax_deduction = $tax_setting->deduction;
                         $tax->tax_amount = $tax_amount;
                         $tax->save();
-                        
+
                         $payroll->total_tax = $tax_amount;
                         $payroll->save();
                         break;
@@ -300,8 +300,8 @@ class PayrollController extends Controller
             }
 
             // Create Journal Postings
-            CreateJournalPostings::run($je, 
-                $debit_accounts, $debit_amount, 
+            CreateJournalPostings::run($je,
+                $debit_accounts, $debit_amount,
                 $credit_accounts, $credit_amount,
                 session('accounting_system_id'));
         }
@@ -346,7 +346,7 @@ class PayrollController extends Controller
         //     'payroll_period' => $payroll_period,
         //     'payrolls' => $payrolls,
         // ];
-        
+
         // TODO: Show breakdown by user (in a separate page)
         // get all related basic salary, additions, deductions, overtimes, loans, pensions, tax related to payroll
         // $payroll_items = DB::table('basic_salaries')
@@ -431,7 +431,7 @@ class PayrollController extends Controller
             $payroll->delete();
         }
 
-        $payroll_period->delete();   
+        $payroll_period->delete();
         $payroll_period->journalEntry->delete();
 
         return redirect()->route('payrolls.index')->with('success','Payroll Deleted Successfully');
@@ -440,8 +440,8 @@ class PayrollController extends Controller
     /**
      * AJAX Calls
      */
-    
-    
+
+
     public function ajaxGetUnpaidPayrollPeriods()
     {
         $journal_postings = DB::table('journal_postings')
