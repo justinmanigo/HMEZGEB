@@ -17,24 +17,25 @@ use App\Http\Controllers\DepositController;
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\TransfersController;
 use App\Http\Controllers\DepositsController;
-use App\Http\Controllers\TransactionsController;  
+use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\Banking\BankReconciliationController;
 // Vendor module
-use App\Http\Controllers\BillsController;
 use App\Http\Controllers\VendorsController;
-use App\Http\Controllers\PaymentsController; 
+use App\Http\Controllers\BillsController;
+use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 // Journal module
-use App\Http\Controllers\JournalVouchersController; 
+use App\Http\Controllers\JournalVouchersController;
 // Human Resource module
 
 // Inventory module
-use App\Http\Controllers\InventoryController; 
+use App\Http\Controllers\InventoryController;
 // Settings module
 
 
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;   
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 // Human Resource Module
@@ -64,7 +65,7 @@ use App\Http\Controllers\Settings\CompanyInfoController;
 // Notifications
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Settings\DefaultsController;
- 
+
 //Register
 use App\Http\Controllers\RegisterController;
 
@@ -213,9 +214,9 @@ Route::group([
         ], function(){
             Route::get('/subscription/accounting-systems', [ManageAccountingSystemsController::class, 'index'])->name('subscription.accountingSystems.index');
             Route::post('/ajax/subscription/accounting-systems/select-subscription/', [ManageAccountingSystemsController::class, 'ajaxSelectSubscription']);
-    
+
             Route::get('/subscription/users', [ManageSubscriptionUsersController::class, 'index']);
-    
+
             // AJAX
             Route::group([
                 'as', 'ajax.',
@@ -225,25 +226,25 @@ Route::group([
                 Route::get('/u/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxGetSubscriptionUser']);
                 Route::get('/search/{query?}', [ManageSubscriptionUsersController::class, 'ajaxSearchUser']);
                 Route::get('/get/accounting-systems/{subscription}', [ManageSubscriptionUsersController::class, 'ajaxGetAccountingSystems']);
-    
+
                 // Part 1: When adding new user.
-                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']); 
-                // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']); 
+                Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxInviteUser']);
+                // Route::post('/add/new', [ManageSubscriptionUsersController::class, 'ajaxAddNewUser']);
                 // Route::post('/add/existing', [ManageSubscriptionUsersController::class, 'ajaxAddExistingUser']);
-    
+
                 // Part 2: Adding access after adding new user.
                 Route::post('/add/access/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxAddAccess']);
-    
+
                 // TODO: Editing a user. Both parts are merged since there is already an ID.
                 Route::get('/edit/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxEditUser']);
                 Route::put('/update/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxUpdateUser']);
-    
+
                 Route::delete('/remove/{subscriptionUser}', [ManageSubscriptionUsersController::class, 'ajaxRemoveUser']);
             });
         });
 
     });
-    
+
     /**
      * ========== Accounting System Routes ==========
      */
@@ -261,15 +262,15 @@ Route::group([
          * ========== Customers Module ==========
          */
         Route::group([
-            
+
         ], function(){
-        
+
             /**
              * Customers > Receipts
              */
             Route::group([
                 'as'=>'receipts.',
-                'middleware' => 'acctsys.permission:2', 
+                'middleware' => 'acctsys.permission:2',
             ], function(){
                 // Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
                 Route::resource('/customers/receipts', ReceiptController::class);
@@ -324,13 +325,13 @@ Route::group([
              */
             Route::group([
                 'as'=>'customers.',
-                'middleware' => 'acctsys.permission:1', 
-            ], function(){ 
+                'middleware' => 'acctsys.permission:1',
+            ], function(){
                 // Resource
                 Route::resource('/customers/customers', CustomerController::class);
                 // Mail
-                // Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');             
-                Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');             
+                // Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');
+                Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');
                 // Print
                 Route::get('/customers/print/statement/{id}', [CustomerController::class, 'print'])->name('statement.print');
                 // Import Export
@@ -340,14 +341,14 @@ Route::group([
                 Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
             });
-        
+
             /**
              * Customers > Deposits
              */
             Route::group([
                 'as'=>'deposits.',
-                'middleware' => 'acctsys.permission:3', 
-            ], function(){ 
+                'middleware' => 'acctsys.permission:3',
+            ], function(){
                 Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
                 // RESOURCE
                 Route::resource('customers/deposits', DepositsController::class);
@@ -362,16 +363,16 @@ Route::group([
          * ========== Vendors Module ==========
          */
         Route::group([
-            
+
         ], function(){
-            
+
             /**
              * Vendors > Bills
              */
             Route::group([
                 'as'=>'bills.',
-                'middleware' => 'acctsys.permission:5', 
-            ], function(){ 
+                'middleware' => 'acctsys.permission:5',
+            ], function(){
                 // HTML
                 Route::resource('/vendors/bills', BillsController::class);
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
@@ -387,33 +388,33 @@ Route::group([
                 Route::get('/purchaseOrder/print/{id}', [BillsController::class, 'printPurchaseOrder'])->name('purchaseOrder.print');
                 // Void
                 Route::get('/bill/void/{id}', [BillsController::class, 'voidBill'])->name('bill.void');
-                Route::get('/purchaseOrder/void/{id}', [BillsController::class, 'voidPurchaseOrder'])->name('purchaseOrder.void');               
+                Route::get('/purchaseOrder/void/{id}', [BillsController::class, 'voidPurchaseOrder'])->name('purchaseOrder.void');
                 // Reactivate
                 Route::get('/bill/reactivate/{id}', [BillsController::class, 'reactivateBill'])->name('bill.reactivate');
-                Route::get('/purchaseOrder/reactivate/{id}', [BillsController::class, 'reactivatePurchaseOrder'])->name('purchaseOrder.reactivate');               
+                Route::get('/purchaseOrder/reactivate/{id}', [BillsController::class, 'reactivatePurchaseOrder'])->name('purchaseOrder.reactivate');
                 // AJAX
                 Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);
                 Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [VendorsController::class, 'ajaxGetPurchaseOrder']);
             });
-        
+
             /**
              * Vendors > Payments
              */
             Route::group([
                 'as'=>'payments.',
                 'middleware' => 'acctsys.permission:6',
-            ], function(){ 
+            ], function(){
                 // HTML
                 Route::get('/vendors/payments',[PaymentsController::class,'index']);
                 Route::post('/payment/bill',[PaymentsController::class,'storeBillPayment'])->name('billPayment.store');
-                Route::post('/payment/income_tax',[PaymentsController::class,'storeIncomeTaxPayment'])->name('incomeTax.store');  
+                Route::post('/payment/income_tax',[PaymentsController::class,'storeIncomeTaxPayment'])->name('incomeTax.store');
                 Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
                 Route::post('/payment/withholding',[PaymentsController::class,'storeWithholdingPayment'])->name('withholdingPayment.store');
-        
+
                 // AJAX
                 Route::get('/ajax/vendor/payments/topay/{vendor}', [VendorsController::class, 'ajaxGetPaymentsToPay']);
                 Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
-                
+
 
                 Route::group([
                     'as' => 'payroll.',
@@ -423,14 +424,14 @@ Route::group([
                 });
 
             });
-        
+
             /**
              * Vendors > Vendors
              */
             Route::group([
                 'as'=>'vendors.',
                 'middleware' => 'acctsys.permission:4',
-            ], function(){ 
+            ], function(){
                 // Resource
                 Route::resource('/vendors/vendors', VendorsController::class);
                 // Mail
@@ -458,7 +459,7 @@ Route::group([
             Route::group([
                 'as'=>'accounts.',
                 'middleware' => 'acctsys.permission:7',
-            ], function(){ 
+            ], function(){
                 // RESOURCE
                 Route::resource('/banking/accounts', BankAccountsController::class);
                 // Import Export
@@ -469,14 +470,14 @@ Route::group([
                 // Print
                 Route::get('/banking/accounts/print/{id}', [BankAccountsController::class, 'print'])->name('accounts.print');
             });
-        
+
             /**
              * Banking > Transfer
              */
             Route::group([
                 'as'=>'transfers.',
                 'middleware' => 'acctsys.permission:8',
-            ], function(){ 
+            ], function(){
                 // RESOURCE
                 Route::resource('/banking/transfer', TransfersController::class);
                 // HTML
@@ -490,7 +491,7 @@ Route::group([
                 Route::post('/banking/transfers/import', [TransfersController::class, 'import'])->name('transfers.import');
                 Route::post('/banking/transfers/export', [TransfersController::class, 'export'])->name('transfers.export');
             });
-        
+
             /**
              * Banking > Deposits
              * Same content as Customer > Deposits
@@ -498,18 +499,18 @@ Route::group([
             Route::group([
                 'as'=>'deposits.',
                 'middleware' => 'acctsys.permission:3', // & 9 but duplicate
-            ], function(){ 
+            ], function(){
                 // HTML
-                Route::redirect('/banking/deposits', '/customers/deposits');    
+                Route::redirect('/banking/deposits', '/customers/deposits');
             });
-        
+
             /**
              * Banking > Transactions
              */
             Route::group([
                 'as'=>'transactions.',
                 'middleware' => 'acctsys.permission:10',
-            ], function(){ 
+            ], function(){
                 // HTML
                 Route::get('/banking/transactions', [TransactionsController::class, 'index']);
             });
@@ -524,7 +525,7 @@ Route::group([
                 // HTML
                 Route::get('/banking/reconciliation', [BankReconciliationController::class, 'index']);
             });
-            
+
         });
 
         /**
@@ -533,7 +534,7 @@ Route::group([
         Route::group([
             'as'=>'journals.',
             'middleware' => 'acctsys.permission:12',
-        ], function(){ 
+        ], function(){
             // HTML
             Route::get('/jv/', [JournalVouchersController::class, 'index'])->name('index');
             Route::get('/journals/{journalVoucher}', [JournalVouchersController::class, 'show'])->name('show');
@@ -546,7 +547,7 @@ Route::group([
         Route::group([
             'as'=>'inventory.',
             'middleware' => 'acctsys.permission:19',
-        ], function(){ 
+        ], function(){
             // HTML
             Route::resource('/inventory', InventoryController::class);
             // import export
@@ -558,7 +559,7 @@ Route::group([
             // Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit']);
             // Route::put('/inventory/{inventory}', [InventoryController::class, 'update']);
             // Route::delete('/inventory/{inventory}', [InventoryController::class, 'destroy']);
-        
+
             // AJAX
             Route::get('/select/search/inventory/{query}', [InventoryController::class, 'ajaxSearchInventory']);
         });
@@ -587,9 +588,9 @@ Route::group([
 
                 // AJAX
                 Route::get('/ajax/hr/payrolls/unpaid/search/{query?}', [PayrollController::class, 'ajaxGetUnpaidPayrollPeriods']);
-                
+
             });
-        
+
             /**
              * Human Resource > Employees
              */
@@ -609,7 +610,7 @@ Route::group([
                 Route::get('/ajax/hr/employees/get/{employee}', [EmployeeController::class, 'ajaxGetEmployee']);
                 Route::get('/ajax/employee/commission/topay/{employee}', [EmployeeController::class, 'ajaxSearchCommission']);
             });
-        
+
             /**
              * Human Resource > Overtime
              */
@@ -620,7 +621,7 @@ Route::group([
                 // HTML
                 Route::resource('/hr/overtime', OvertimeController::class);
             });
-        
+
             /**
              * Human Resource > Additions
              */
@@ -631,7 +632,7 @@ Route::group([
                 // HTML
                 Route::resource('/hr/addition', AdditionController::class);
             });
-        
+
             /**
              * Human Resource > Deductions
              */
@@ -642,7 +643,7 @@ Route::group([
                 // HTML
                 Route::resource('/hr/deduction', DeductionController::class);
             });
-        
+
             /**
              * Human Resource > Loans
              */
@@ -680,7 +681,7 @@ Route::group([
                 Route::post('/customers/ledgers/pdf', [ReportsController::class, 'customerLedgersPDF'])->name('customer_ledgers.pdf');
             });
 
-            
+
             /**
              * Reports > Vendors
              */
@@ -746,7 +747,7 @@ Route::group([
                 Route::post('/financial_statement/income_statement_multiple/pdf', [ReportsController::class, 'incomeStatementMultiplePDF'])->name('income_statement_multiple.pdf');
             });
         });
-            
+
         /**
          * ========== Settings Module ==========
          */
@@ -795,7 +796,7 @@ Route::group([
             ], function() {
                 // HTTP
                 Route::get('/settings/periods', [AccountingPeriodsController::class, 'index']);
-                
+
                 // AJAX
                 Route::put('/settings/periods', [AccountingPeriodsController::class, 'updateAjax']);
             });
@@ -845,7 +846,7 @@ Route::group([
             //     // Import Export
             //     Route::post('/settings/withholding/import', [WithholdingController::class, 'import'])->name('import');
             //     Route::post('/settings/withholding/export', [WithholdingController::class, 'export'])->name('export');
-                
+
             //     // AJAX
             //     Route::get('/ajax/settings/withholding/get/{withholding}', [WithholdingController::class, 'ajaxGetWithholding']);
             // });
@@ -892,7 +893,7 @@ Route::group([
             ], function(){
                 // HTTP
                 Route::get('/settings/inventory', [InventorySettingsController::class, 'index'])->name('index');
-                Route::put('/settings/inventory', [InventorySettingsController::class, 'store'])->name('store');            
+                Route::put('/settings/inventory', [InventorySettingsController::class, 'store'])->name('store');
             });
 
             /**
@@ -930,7 +931,7 @@ Route::group([
 });
 
 Route::post('/userlogin', function (Request $request){
-   
+
 
     $credentials = $request->only('email', 'password');
     Log::info($credentials);
@@ -944,12 +945,12 @@ Route::post('/userlogin', function (Request $request){
     //     Log::info("wa sod");
     // }
 
-    
+
     if (Auth::attempt($credentials)) {
         // if success login
         Log::info("sod");
         session(['adminauthenticated' => 'true']);
-        
+
 
         // return redirect()->intended('/dashboard');
         return redirect()->intended('/home');
@@ -967,7 +968,7 @@ Route::post('/userlogin', function (Request $request){
  */
 Route::group([
     'as' => 'register.'
-], function(){ 
+], function(){
 
     /**
      * Step 0 - 2b (UI)
@@ -992,7 +993,7 @@ Route::group([
     Route::post('/validate-account', [RegisterController::class, 'validateExistingAccount'])->name('validateAccount');
     // Step 2b
     Route::post('/create-account', [RegisterController::class, 'createAccount'])->name('createAccount');
-    
+
     /**
      * Step 3
      */
@@ -1008,7 +1009,7 @@ Route::group([
 
     /**
      * Deprecated Routes
-     */ 
+     */
     // Route::get('/create-company-info', [RegisterController::class, 'createCompanyInfoView'])->name('createCompanyInfoView');
     // Route::post('/create-account-post', [RegisterController::class, 'createAccount'])->name('submitEmail');
     // Route::post('/create-password-post', [RegisterController::class, 'createPassword'])->name('submitPassword');
