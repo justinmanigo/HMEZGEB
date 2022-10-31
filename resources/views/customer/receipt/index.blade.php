@@ -496,4 +496,5 @@
     <script src="/js/customer/receipt/select_proforma_receipt.js"></script>
 
     <script src="/js/customer/receipt/modal_sales.js"></script>
+    <script src="/js/customer/receipt/default_values.js"></script>
 @endsection
