@@ -111,6 +111,8 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <a role="button" class="dropdown-item" data-toggle="modal"
+                        data-target="#modal-cogs">COGS</a>
+                    <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target=".bd-example-modal-xl">Bill</a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target=".bd-purchaseOrder-modal-xl">Purchase Order</a>
@@ -155,7 +157,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
-                    </div> 
+                    </div>
                 @elseif(isset($_GET['success']))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ $_GET['success'] }}
@@ -163,7 +165,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>     
+                    </div>
                 @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -203,7 +205,7 @@
                                     @endif
                                 </td>
 
-                                <td>Birr 
+                                <td>Birr
                                     @if($transaction->type == 'bill')
                                         {{ number_format($transaction->bill_amount, 2) }}
                                     @elseif($transaction->type == 'purchase_order')
@@ -212,7 +214,7 @@
                                 </td>
                                 <td>
                                     {{-- TODO: Implement hover action bar --}}
-                                    
+
                                     <!-- edit -->
                                     @if($transaction->type == 'bill')
                                     <a href="{{route('bills.bills.show', $transaction->bills->id)}}" class="btn btn-primary btn-sm edit">
@@ -222,7 +224,7 @@
                                     </a>
                                     {{-- mail --}}
                                     {{-- button mail confirmation modal  --}}
-                                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}},'bill')"> 
+                                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}},'bill')">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-envelope"></i>
                                         </span>
@@ -330,6 +332,8 @@
         </div>
     </div>
 </div>
+
+@include('vendors.bills.modals.types.cogs')
 
 {{-- Modal Contents --}}
 <!--------For add bill--->
@@ -469,7 +473,7 @@
         $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.bill.mail", ":id") }}'.replace(':id', id));
         else if(type == 'purchaseOrder')
         $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.mail", ":id") }}'.replace(':id', id));
-        
+
     }
 
     // Get id of transaction to print confirmation modal
@@ -515,6 +519,7 @@ $(document).ready(function() {
 <script src="/js/vendors/template_select_tax.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
 <script src="/js/vendors/template_select_purchase_order.js"></script>
+<script src="/js/tagify_templates/template_select_cash_account.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
 <script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>
 <script src="/js/vendors/bill/select_purchase_order_bill.js"></script>
@@ -523,5 +528,8 @@ $(document).ready(function() {
 <script src="/js/vendors/template_select_item.js"></script>
 <script src="/js/vendors/bill/select_item_bill.js"></script>
 <script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
+
+<script src="/js/vendors/bill/modal_cogs.js"></script>
+<script src="/js/vendors/bill/default_values.js"></script>
 
 @endsection
