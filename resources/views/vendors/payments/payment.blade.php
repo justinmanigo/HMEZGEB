@@ -96,17 +96,17 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a role="button" class="dropdown-item" data-toggle="modal" data-target=".bill-payment-modal">Bill</a>
-                <a role="button" class="dropdown-item disabled" data-toggle="modal" {{-- data-target=".VAT-payment-modal" --}}>VAT <span class="text-danger">(Coming Soon)</span></a>
+                <a role="button" class="dropdown-item disabled" data-toggle="modal" {{-- data-target=".VAT-payment-modal" --}}>VAT <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="text-danger">(Coming Soon)</span></a>
+                    {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target=".payroll-payment-modal">Payroll</a>
+                    data-target=".payroll-payment-modal">Payroll <span class="badge badge-success">New</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".income-tax-payment-modal" --}}>Income Tax <span class="text-danger">(Coming Soon)</span></a>
+                    {{-- data-target=".income-tax-payment-modal" --}}>Income Tax <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".pension-payment-modal" --}}>Pension <span class="text-danger">(Coming Soon)</span></a>
+                    {{-- data-target=".pension-payment-modal" --}}>Pension <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".commission-payment-modal" --}}>Commision <span class="text-danger">(Coming Soon)</span></a>
+                    {{-- data-target=".commission-payment-modal" --}}>Commision <span class="badge badge-danger">Soon</span></a>
             </div>
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                 <span class="icon text-white-50">

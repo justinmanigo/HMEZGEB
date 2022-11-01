@@ -16,7 +16,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                     <a role="button" class="dropdown-item" data-toggle="modal"
-                        data-target="#modal-cogs">COGS</a>
+                        data-target="#modal-cogs">COGS <span class="badge badge-success">New</span></a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target=".bd-example-modal-xl">Bill</a>
                     <a role="button" class="dropdown-item" data-toggle="modal"

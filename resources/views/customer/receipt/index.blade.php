@@ -17,10 +17,10 @@
                         <span class="text">New</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-sale">Sale</a>
+                        <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-sale">Sale <span class="badge badge-success">New</span></a>
                         <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Receipt</a>
                         <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                            {{-- data-target="#modal-advance-revenue" --}}>Advance Revenue <span class="text-danger">(Coming Soon)</span></a>
+                            {{-- data-target="#modal-advance-revenue" --}}>Advance Revenue <span class="badge badge-danger">Soon</span></a>
                         <a role="button" class="dropdown-item" data-toggle="modal"
                             data-target="#modal-credit-receipt">Credit Receipt</a>
                         <a role="button" class="dropdown-item" data-toggle="modal"
