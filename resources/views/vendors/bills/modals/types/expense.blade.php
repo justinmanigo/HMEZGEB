@@ -88,7 +88,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td class="text-right table-item-content" colspan="4">
+                                    <td class="text-right table-item-content" colspan="3">
                                         <strong>Sub Total: </strong>
                                     </td>
                                     <td>
@@ -116,7 +116,7 @@
                                     <td></td>
                                 </tr> --}}
                                 <tr>
-                                    <td class="text-right table-item-content" colspan="4"><strong>Tax: </strong></td>
+                                    <td class="text-right table-item-content" colspan="3"><strong>Tax: </strong></td>
                                     <td>
                                         <input type="text" class="form-control text-right expense_tax_total" name="tax_total" value="0.00" readonly>
                                         <p class="text-danger error-message error-message-tax" style="display:none"></p>
@@ -124,7 +124,7 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-right table-item-content" colspan="4"><strong>Total: </strong></td>
+                                    <td class="text-right table-item-content" colspan="3"><strong>Total: </strong></td>
                                     <td>
                                         <input type="text" class="form-control text-right" name="grand_total" id="expense_grand_total"
                                             placeholder="0.00" value="0.00" readonly>
