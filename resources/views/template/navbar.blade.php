@@ -175,7 +175,7 @@
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/customers/receipts?new=modal-advance-revenue') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Advance Revenue <span class="text-danger">(Soon)</span>
+                                            Advance Revenue <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-credit-receipt') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -213,11 +213,11 @@
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-vat-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            VAT <span class="text-danger">(Soon)</span>
+                                            VAT <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-withholding-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Withholding <span class="text-danger">(Soon)</span>
+                                            Withholding <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-payroll-payment') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -225,15 +225,15 @@
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-income-tax-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Income Tax <span class="text-danger">(Soon)</span>
+                                            Income Tax <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-pension-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Pension <span class="text-danger">(Soon)</span>
+                                            Pension <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-commission-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Commission <span class="text-danger">(Soon)</span>
+                                            Commission <span class="badge badge-danger">Soon</span>
                                         </a>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-4">
