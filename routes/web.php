@@ -23,6 +23,7 @@ use App\Http\Controllers\Banking\BankReconciliationController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\BillsController;
 use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
+use App\Http\Controllers\Vendors\Bills\ExpenseController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 // Journal module
@@ -382,6 +383,13 @@ Route::group([
                     'as' => 'cogs.',
                 ], function(){
                     Route::post('/vendors/bills/cogs', [CostOfGoodsSoldController::class, 'store'])->name('store');
+                });
+
+                // Expense
+                Route::group([
+                    'as' => 'expense',
+                ], function(){
+                    Route::post('/vendors/bills/expense', [ExpenseController::class, 'store'])->name('store');
                 });
 
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
