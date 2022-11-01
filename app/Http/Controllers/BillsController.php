@@ -35,10 +35,14 @@ class BillsController extends Controller
         $transactions = PaymentReferences::leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
             ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
             ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+            ->leftJoin('cost_of_goods_sold', 'cost_of_goods_sold.payment_reference_id', '=', 'payment_references.id')
+            ->leftJoin('expenses', 'expenses.payment_reference_id', '=', 'payment_references.id')
             // where subquery
             ->where(function ($query) {
                 $query->where('payment_references.type', '=', 'bill')
-                    ->orWhere('payment_references.type', '=', 'purchase_order');
+                    ->orWhere('payment_references.type', '=', 'purchase_order')
+                    ->orWhere('payment_references.type', '=', 'cogs')
+                    ->orWhere('payment_references.type', '=', 'expense');
             })
             ->where('payment_references.accounting_system_id', session('accounting_system_id'))
             ->select(
@@ -51,6 +55,8 @@ class BillsController extends Controller
                 'payment_references.is_void',
                 'bills.amount_received as bill_amount',
                 'purchase_orders.grand_total as purchase_order_amount',
+                'cost_of_goods_sold.amount_received as cost_of_goods_sold_amount',
+                'expenses.total_amount_received as expenses_amount'
             )
             ->get();
 
@@ -67,7 +73,7 @@ class BillsController extends Controller
             $total_balance_overdue += CalculateBalanceVendor::run($vendor->id)['total_balance_overdue'];
             $count += CalculateBalanceVendor::run($vendor->id)['count'];
             $count_overdue += CalculateBalanceVendor::run($vendor->id)['count_overdue'];
-        } 
+        }
 
         return view('vendors.bills.index', [
             'transactions' => $transactions,
@@ -94,7 +100,7 @@ class BillsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
- 
+
     /** === STORE BILLS === */
 
     public function storeBill(StoreBillRequest $request)
@@ -125,16 +131,16 @@ class BillsController extends Controller
 
         // If request has attachment, store it to file storage.
         // if($request->attachment) {
-        //     $fileAttachment = time().'.'.$request->attachment->extension();  
+        //     $fileAttachment = time().'.'.$request->attachment->extension();
         //     $request->attachment->storeAs('public/bill-attachment'/'bill', $fileAttachment);
         // }
-        
+
         // Create child database entry
         if($request->grand_total == $request->total_amount_received)
             $payment_method = 'cash';
         else
             $payment_method = 'credit';
-        
+
         UpdateInventoryItemQuantity::run($request->item, $request->quantity, 'increase');
         StoreBillitems::run($request->item, $request->quantity, $reference->id);
 
@@ -173,7 +179,7 @@ class BillsController extends Controller
         }
 
         // This determines which is which to include in credit postings
-        if($status == 'paid' || $status == 'partially_paid') {           
+        if($status == 'paid' || $status == 'partially_paid') {
             $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_cash_on_hand);
             $credit_amount[] = $cash_on_hand;
         }
@@ -187,7 +193,7 @@ class BillsController extends Controller
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
             session('accounting_system_id'));
-            
+
         Bills::create([
             'payment_reference_id' => $reference->id,
             // 'withholding_payment_id' => '0', // temporary
@@ -203,7 +209,7 @@ class BillsController extends Controller
             'payment_method' => $payment_method,
             'amount_received' => $request->total_amount_received,
         ]);
-        
+
         return [
             'debit_accounts' => $debit_accounts,
             'debit_amount' => $debit_amount,
@@ -227,7 +233,7 @@ class BillsController extends Controller
 
         // Create Purchase Order Record
         //  if($request->attachment) {
-        //      $fileAttachment = time().'.'.$request->attachment->extension();  
+        //      $fileAttachment = time().'.'.$request->attachment->extension();
         //      $request->attachment->storeAs('public/bill-attachment', $fileAttachment);
         //  }
 
@@ -297,7 +303,7 @@ class BillsController extends Controller
         $emailAddress = $bill->paymentReference->vendor->email;
 
         Mail::to($emailAddress)->queue(new MailVendorBill ($bill_items));
-        
+
         return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
 
@@ -305,9 +311,9 @@ class BillsController extends Controller
     {
         $purchaseOrder = PurchaseOrders::find($id);
         $emailAddress = $purchaseOrder->paymentReference->vendor->email;
-        
+
         Mail::to($emailAddress)->queue(new MailVendorPurchaseOrder ($purchaseOrder));
-        
+
         return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
     }
 
@@ -381,5 +387,5 @@ class BillsController extends Controller
         //
     }
 
-    
+
 }

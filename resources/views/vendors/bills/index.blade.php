@@ -81,7 +81,7 @@
                                 <th>ID</th>
                                 <th>Date</th>
                                 <th>Type</th>
-                                <th>Vendor Name</th>
+                                <th>Vendor/Description</th>
                                 <th>Remark</th>
                                 <th>Amount</th>
                                 <th>Action</th>
@@ -91,107 +91,188 @@
                         <tbody>
                             <!-- foreach bills -->
                             @foreach($transactions as $transaction)
-                            <tr>
-                                <td>{{$transaction->id}}</td>
-                                <td>{{$transaction->date}}</td>
-                                <!-- Select type -->
-                                <td class="h6">
-                                    @if($transaction->type == 'bill')<span class="badge badge-primary">Bill</span>
-                                    @elseif($transaction->type == 'purchase_order')<span class="badge badge-primary">Purchase
-                                        Order</span>
-                                </td>
-                                @endif
-                                <td>{{$transaction->name}}</td>
-                                <!-- Select status -->
-                                <td class="h6">
-                                    @if($transaction->status == 'paid')<span class="badge badge-success">Paid</span>
-                                    @elseif($transaction->status == 'unpaid')<span class="badge badge-danger">Unpaid</span>
-                                    @elseif($transaction->status == 'partially_paid')<span
-                                        class="badge badge-warning">Partially
-                                        Paid</span>
-                                    @endif
-                                </td>
+                                <tr>
+                                    <td>{{$transaction->id}}</td>
+                                    <td>{{$transaction->date}}</td>
+                                    <!-- Select type -->
+                                    <td class="h6">
+                                        @if($transaction->type == 'bill')
+                                            <span class="badge badge-primary">Bill</span>
+                                        @elseif($transaction->type == 'purchase_order')
+                                            <span class="badge badge-secondary">Purchase Order</span>
+                                        @elseif($transaction->type == 'cogs')
+                                            <span class="badge badge-info">COGS</span>
+                                        @elseif($transaction->type == 'expense')
+                                            <span class="badge badge-warning">Expense</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($transaction->type == 'bill' || $transaction->type == 'purchase_order')
+                                            {{$transaction->name}}
+                                        @elseif($transaction->type == 'cogs')
+                                            {{ 'COGS' }}
+                                        @elseif($transaction->type == 'expense')
+                                            {{ 'Expense' }}
+                                        @endif
+                                    </td>
+                                    <!-- Select status -->
+                                    <td class="h6">
+                                        @if($transaction->status == 'paid')<span class="badge badge-success">Paid</span>
+                                        @elseif($transaction->status == 'unpaid')<span class="badge badge-danger">Unpaid</span>
+                                        @elseif($transaction->status == 'partially_paid')<span
+                                            class="badge badge-warning">Partially
+                                            Paid</span>
+                                        @endif
+                                    </td>
 
-                                <td>Birr
-                                    @if($transaction->type == 'bill')
-                                        {{ number_format($transaction->bill_amount, 2) }}
-                                    @elseif($transaction->type == 'purchase_order')
-                                        {{ number_format($transaction->purchase_order_amount, 2) }}
-                                    @endif
-                                </td>
-                                <td>
-                                    {{-- TODO: Implement hover action bar --}}
+                                    <td>Birr
+                                        @if($transaction->type == 'bill')
+                                            {{ number_format($transaction->bill_amount, 2) }}
+                                        @elseif($transaction->type == 'purchase_order')
+                                            {{ number_format($transaction->purchase_order_amount, 2) }}
+                                        @elseif($transaction->type == 'cogs')
+                                            {{ number_format($transaction->cost_of_goods_sold_amount, 2) }}
+                                        @elseif($transaction->type == 'expense')
+                                            {{ number_format($transaction->expenses_amount, 2) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{-- TODO: Implement hover action bar --}}
 
-                                    <!-- edit -->
-                                    @if($transaction->type == 'bill')
-                                    <a href="{{route('bills.bills.show', $transaction->bills->id)}}" class="btn btn-primary btn-sm edit">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-edit"></i>
-                                        </span>
-                                    </a>
-                                    {{-- mail --}}
-                                    {{-- button mail confirmation modal  --}}
-                                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}},'bill')">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                    </button>
-                                    <!-- print/pdf -->
-                                    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->bills->id}},'bill')">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-print"></i>
-                                        </span>
-                                    </button>
-                                    <!-- void -->
-                                    @if($transaction->is_void == 'no')
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->bills->id}},'bill')">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-ban"></i>
-                                        </span>
-                                    </button>
-                                    <!-- make it active -->
-                                    @else
-                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->bills->id}},'bill')">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-check"></i>
-                                        </span>
-                                    </button>
-                                    @endif
-                                    @else
-                                        <a href="{{route('bills.purchaseOrder.show', $transaction->purchaseOrders->id)}}" class="btn btn-primary btn-sm edit">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </a>
-                                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-envelope"></i>
-                                            </span>
-                                        </button>
-                                    <!-- print/pdf -->
-                                    <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-print"></i>
-                                        </span>
-                                    </button>
-                                    <!-- void -->
-                                    @if($transaction->is_void == 'no')
-                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-ban"></i>
-                                            </span>
-                                        </button>
-                                        <!-- make it active -->
-                                        @else
-                                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                        </button>
-                                    @endif
-                                    @endif
-                                </td>
-                            </tr>
+                                        <!-- edit -->
+                                        @if($transaction->type == 'bill')
+                                            <a href="{{route('bills.bills.show', $transaction->bills->id)}}" class="btn btn-primary btn-sm edit">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            {{-- mail --}}
+                                            {{-- button mail confirmation modal  --}}
+                                            <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}},'bill')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                            </button>
+                                            <!-- print/pdf -->
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->bills->id}},'bill')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>
+                                            <!-- void -->
+                                            @if($transaction->is_void == 'no')
+                                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->bills->id}},'bill')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-ban"></i>
+                                                </span>
+                                            </button>
+                                            <!-- make it active -->
+                                            @else
+                                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->bills->id}},'bill')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-check"></i>
+                                                </span>
+                                            </button>
+                                            @endif
+                                        @elseif($transaction->type == 'purchase_order')
+                                            <a href="{{route('bills.purchaseOrder.show', $transaction->purchaseOrders->id)}}" class="btn btn-primary btn-sm edit">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                </button>
+                                            <!-- print/pdf -->
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>
+                                            <!-- void -->
+                                            @if($transaction->is_void == 'no')
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-ban"></i>
+                                                    </span>
+                                                </button>
+                                                <!-- make it active -->
+                                            @else
+                                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->purchaseOrders->id}},'purchaseOrder')">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                </button>
+                                            @endif
+                                        @elseif($transaction->type == 'cogs')
+                                            <a href="#" class="btn btn-primary btn-sm edit disabled">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" disabled>
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                </button>
+                                            <!-- print/pdf -->
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" disabled>
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>
+                                            <!-- void -->
+                                            @if($transaction->is_void == 'no')
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" disabled>
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-ban"></i>
+                                                    </span>
+                                                </button>
+                                                <!-- make it active -->
+                                            @else
+                                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" disabled>
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                </button>
+                                            @endif
+                                        @elseif($transaction->type == 'expense')
+                                            <a href="#" class="btn btn-primary btn-sm edit disabled">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" disabled>
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-envelope"></i>
+                                                </span>
+                                                </button>
+                                            <!-- print/pdf -->
+                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" disabled>
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-print"></i>
+                                                </span>
+                                            </button>
+                                            <!-- void -->
+                                            @if($transaction->is_void == 'no')
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" disabled>
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-ban"></i>
+                                                    </span>
+                                                </button>
+                                                <!-- make it active -->
+                                            @else
+                                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" disabled>
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
