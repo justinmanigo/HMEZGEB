@@ -64,20 +64,6 @@ $(document).on('click', '.expense_item_delete', function (event) {
     calculateExpenseGrandTotal();
 });
 
-// Set events of quantity field.
-$(document).on('change', '.expense_item_quantity', function(event) {
-    id = $(this)[0].dataset.id;
-    quantity = $(this)[0].value;
-    sale_price = $(`#expense_item_price_${id}`).val()
-    console.log(sale_price)
-
-    // Update item total
-    $(`#expense_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
-
-    calculateExpenseSubTotal();
-    calculateExpenseGrandTotal();
-});
-
 // Creates a Expense Item Entry on the Table.
 function createExpenseItemEntry(item = undefined)
 {
@@ -87,19 +73,19 @@ function createExpenseItemEntry(item = undefined)
     // <tr> template
     let inner = `
     <tr data-id="${Expense_count}" id="expense_item_entry_${Expense_count}">
-        <td>
+        <td style="width:240px">
             <div class="input-group">
-                <input data-id="${Expense_count}" id="expense_item_${Expense_count}" class="expense_item" name='item[]'>
+                <input data-id="${Expense_count}" id="expense_item_${Expense_count}" class="expense_item form-control" name='item[]'>
                 <input type="hidden" name="item_id[]" value="">
                 <p class="error-message error-message-item text-danger" style="display:none"></p>
             </div>
         </td>
         <td>
-            <input type="text" id="expense_item_price_${Expense_count}" class="form-control inputPrice expense_item_price text-right" name="price[]" value="0.00" required>
+            <input data-id="${Expense_count}" type="text" id="expense_item_price_${Expense_count}" class="form-control inputPrice expense_item_price text-right" name="price[]" value="0.00" disabled required>
             <p class="error-message error-message-price text-danger" style="display:none"></p>
         </td>
         <td>
-            <input data-id="${Expense_count}" id="expense_item_tax_${Expense_count}" class="expense_tax" name='tax[]'>
+            <input data-id="${Expense_count}" id="expense_item_tax_${Expense_count}" class="expense_tax form-control" name='tax[]'>
             <input id="expense_item_tax_percentage_${Expense_count}" class="expense_item_tax_percentage" type="hidden" name="tax_percentage[]" value="0">
             <p class="error-message error-message-tax text-danger" style="display:none"></p>
         </td>
@@ -127,41 +113,22 @@ function createExpenseItemEntry(item = undefined)
 
     var whitelist = [];
 
-    // Set values if item exists.
-    if(item != undefined) {
-        whitelist = [
-            {
-                "value": item.inventory.id,
-                "name": item.inventory.item_name,
-                "sale_price": item.inventory.sale_price,
-                "quantity": item.quantity,
-            },
-        ];
-
-
-        $(`#expense_item_${Expense_count}`).val(item.inventory.item_name);
-        $(`#expense_item_quantity_${Expense_count}`).val(item.quantity).removeAttr('disabled');
-        $(`#expense_item_price_${Expense_count}`).val(parseFloat(item.inventory.sale_price).toFixed(2))
-        $(`#expense_item_total_${Expense_count}`).val(parseFloat(item.inventory.sale_price * item.quantity).toFixed(2))
-
-    }
-
     // Create new tagify instance of item selector of newly created row.
     let inventory_item_elm = document.querySelector(`#expense_item_${Expense_count}`);
     let inventory_item_tagify = new Tagify(inventory_item_elm, {
-        tagTextProp: 'name', // very important since a custom template is used with this property as text
+        tagTextProp: 'label', // very important since a custom template is used with this property as text
         enforceWhitelist: true,
         mode: "select",
         skipInvalid: false, // do not remporarily add invalid tags
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: 'item-list',
-            searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
+            classname: 'customer-list',
+            searchKeys: ['label'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
-            tag: ItemTagTemplate,
-            dropdownItem: ItemSuggestionItemTemplate
+            tag: expenseAccountTagTemplate,
+            dropdownItem: expenseAccountSuggestionItemTemplate
         },
         whitelist: whitelist,
     });
@@ -182,7 +149,7 @@ function createExpenseItemEntry(item = undefined)
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: 'tax-list',
+            classname: 'customer-list',
             searchKeys: ['name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
@@ -255,6 +222,35 @@ function getExpenseItemIndex(entry_id)
     return undefined;
 }
 
+/** === On Price Change === */
+$(document).on('change', '.expense_item_price', function(e) {
+    console.log("Price changed.");
+    console.log(e);
+    console.log($(this).data('id'));
+    // console.log(e.currentTarget.);
+    let entry_id = $(this).data('id');
+    let price = $(this).val();
+    let tax_percentage = $(`#expense_item_tax_percentage_${entry_id}`).val();
+
+    console.log('test tax percentage')
+    console.log(price);
+
+    if(tax_percentage != undefined || tax_percentage != null) {
+        tax_percentage = 0.00
+    }
+
+    let total = parseFloat(price);
+    let tax = (total * parseFloat(tax_percentage)) / 100;
+    let total_with_tax = total + tax;
+
+    $(`#expense_item_total_${entry_id}`).val(total_with_tax.toFixed(2));
+
+    // Recalculate total
+    calculateExpenseSubTotal();
+    calculateExpenseGrandTotal();
+});
+
+
 /** === Calculation Functions === */
 function calculateExpenseSubTotal()
 {
@@ -282,7 +278,7 @@ function calculateExpenseTaxTotal()
 
     for(i = 0; i < item_prices.length; i++)
     {
-        tax_total += (parseFloat(item_prices[i].value) * parseFloat(tax_percentages[i].value) / 100) * parseInt(item_quantities[i].value);
+        tax_total += (parseFloat(item_prices[i].value) * parseFloat(tax_percentages[i].value) / 100);
     }
 
     console.log("Tax Total: " + tax_total);
@@ -319,15 +315,10 @@ function onExpenseItemDropdownShow(e) {
 function onExpenseItemSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
 
-    $(`#expense_item_quantity_${id}`).val(1).removeAttr('disabled')
-    $(`#expense_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
-    $(`#expense_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
+    $(`#expense_item_price_${id}`).val(parseFloat(0.00).toFixed(2)).removeAttr('disabled')
+    $(`#expense_item_total_${id}`).val(parseFloat(0.00).toFixed(2))
     // Remove the disabled attribute of nearby .tagify element
     $(`#expense_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
-
-    if(e.detail.data.tax_id != null) setTaxExpenseWhitelist(e.detail.data, id);
-
-    item_total = e.detail.data.sale_price * e.detail.data.quantity;
 
     // Recalculate total
     calculateExpenseSubTotal();
@@ -340,13 +331,11 @@ function onExpenseItemRemove(e) {
     //Subtract total when x is clicked in tagify
     $(`#expense_sub_total`).val(parseFloat($(`#expense_sub_total`).val() - $(`#expense_item_total_${id}`).val()).toFixed(2))
     $(`#expense_grand_total`).val(parseFloat($(`#expense_grand_total`).val() - $(`#expense_item_total_${id}`).val()).toFixed(2))
-    $(`#expense_item_quantity_${id}`).attr('disabled', 'disabled')
     $(`#expense_item_tax_${id}`).attr('disabled', 'disabled').parents('td').find('.tagify').attr('disabled', 'disabled');
 
     getExpenseItemEntry(id).tax.removeTag(e.detail.tag.value);
 
-    $(`#expense_item_quantity_${id}`).val("0")
-    $(`#expense_item_price_${id}`).val("0.00")
+    $(`#expense_item_price_${id}`).val("0.00").attr('disabled', true)
     $(`#expense_item_total_${id}`).val("0.00")
 
 }
@@ -364,7 +353,7 @@ function onExpenseItemInput(e) {
     // show loading animation and hide the suggestions dropdown
     tagify.loading(true).dropdown.hide()
 
-    fetch('/select/search/inventory/' + value, {
+    fetch('/ajax/settings/coa/expense/search/' + value, {
             signal: controller.signal
         })
         .then(RES => RES.json())
