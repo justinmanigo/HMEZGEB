@@ -75,7 +75,7 @@ class ChartOfAccountsController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -88,7 +88,7 @@ class ChartOfAccountsController extends Controller
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $coa_category = json_decode($request->coa_category, true);
-        
+
         // return $request->coa_category;
         // To get the category_id of coa, use
         // $coa[0]['value'];
@@ -98,7 +98,7 @@ class ChartOfAccountsController extends Controller
 
         // Search category by value
         $category = ChartOfAccountCategory::where('category', $coa_category[0]['value'])->first();
-        
+
         // Validation
         // TODO: Check if specific COA number already exists.
 
@@ -110,7 +110,7 @@ class ChartOfAccountsController extends Controller
         $coa->account_name = $request->account_name;
         $coa->current_balance = 0.00;
         $coa->save();
-        
+
         // If COA is Cash (id:1) and checkbox is checked.
         if(isset($request->coa_is_bank) && $category['id'] == 1)
         {
@@ -121,11 +121,11 @@ class ChartOfAccountsController extends Controller
             $accounts->bank_account_type = $request->bank_account_type;
             $accounts->save();
         }
-       
+
         // Get Beginning Balance Journal Entry
         $je = JournalEntries::where('accounting_system_id', $accounting_system_id)
         ->first();
-        
+
         // Create Journal Posting linked to the Beginning Balance
         JournalPostings::create([
             'accounting_system_id' => $accounting_system_id,
@@ -140,7 +140,7 @@ class ChartOfAccountsController extends Controller
 
     /**
      * A method to store beginning balances using AJAX.
-     * 
+     *
      * @param \App\Http\Requests\StoreBeginningBalanceRequest $request
      * @return string
      */
@@ -235,7 +235,7 @@ class ChartOfAccountsController extends Controller
     {
         //
     }
-    
+
         // Import Export
     /**====================== */
     public function import(Request $request)
@@ -244,7 +244,7 @@ class ChartOfAccountsController extends Controller
             Excel::import(new ImportSettingChartOfAccount, $request->file('file'));
         } catch (\Exception $e) {
             return back()->with('error', 'Error: Cannot import chartOfAccount records. Make sure you have the correct format.');
-        }        
+        }
         return redirect()->back()->with('success', 'Successfully imported Chart Of Accounts record.');
     }
 
@@ -435,13 +435,13 @@ class ChartOfAccountsController extends Controller
     {
         $categories = ChartOfAccountCategory::select(
             'category as value',
-            'type', 
+            'type',
             'normal_balance',
         );
 
         if(isset($query))
             $categories->where('category', 'LIKE', '%' . $query . '%');
-    
+
         return $categories->get();
     }
 }
