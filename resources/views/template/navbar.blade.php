@@ -167,7 +167,7 @@
                                         <p class="my-2"><strong>Receipt</strong></p>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-sale') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Sale
+                                            Sale <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-receipt') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -196,7 +196,7 @@
                                         <p class="my-2"><strong>Bills</strong></p>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-cogs') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            COGS
+                                            COGS <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-bill') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -221,7 +221,7 @@
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-payroll-payment') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Payroll</span>
+                                            Payroll <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-income-tax-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
