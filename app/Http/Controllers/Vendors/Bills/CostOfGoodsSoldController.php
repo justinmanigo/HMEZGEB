@@ -6,7 +6,6 @@ use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\Customer\Receipt\DetermineReceiptStatus;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\Vendors\Bills\StoreCostOfGoodsSoldRequest;
 use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\DB;
