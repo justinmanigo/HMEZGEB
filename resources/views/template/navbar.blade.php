@@ -14,7 +14,7 @@
         ->where('resolved', 0)->count();
     $accounting_periods = \App\Models\Settings\ChartOfAccounts\AccountingPeriods::where('accounting_system_id', session('accounting_system_id'))->get();
 @endphp
- 
+
  <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -70,7 +70,7 @@
                     {{-- <a class="collapse-item" href="/receipt">Receipt</a>
                     <a class="collapse-item" href="/customer">Customer</a>
                     <a class="collapse-item" href="/deposit">Deposit</a> --}}
-              
+
 
                 {{-- If there is only one submodule --}}
                 @else
@@ -115,7 +115,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-        
+
 
             <!-- Divider -->
             {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
@@ -185,7 +185,7 @@
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Proforma
                                         </a>
-                                        
+
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-4">
                                         <h6>Vendors</h6>
@@ -269,14 +269,14 @@
                     <div class="d-none d-lg-block">
                         <strong>
                             {{ $accounting_system->accounting_year}}
-                             - 
+                             -
                             {{ $accounting_system->name }}</strong><br>
                         <small>
-                            
+
                             {{ \Carbon\Carbon::parse($accounting_periods[0]->date_from)->format('Y-m-d') }}
-                             - 
+                             -
                              {{ \Carbon\Carbon::parse($accounting_periods[11]->date_to)->format('Y-m-d') }}
-                            
+
                         </small>
                     </div>
 
@@ -314,7 +314,7 @@
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
                                 @if ($unreadNotifications > 0)
-                                <span class="badge badge-danger badge-counter">{{$unreadNotifications}}</span>  
+                                <span class="badge badge-danger badge-counter">{{$unreadNotifications}}</span>
                                 @endif
                             </a>
                             <!-- Dropdown - Alerts -->
@@ -352,15 +352,15 @@
                                             </a>
                                             @else
                                             <a class="dropdown-item" href="/{{$notification->link}}">
-                                                <div class="d-flex justify-content-between">   
+                                                <div class="d-flex justify-content-between">
                                                     <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }} </div>
                                                   <div class="small text-primary"> Resolved </div>
                                                 </div>
                                                     <span class="small">{{ $notification->title }}<br>
                                                         {{ $notification->message }}</span>
-                                
+
                                             </a>
-                                            
+
                                         @endif
                                     @endforeach
                                     {{-- See all notifications --}}
@@ -441,7 +441,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">  
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <span>{{ auth()->user()->firstName }} ▼</span>
                                 </span>
                                 {{-- <img class="img-profile rounded-circle"
@@ -491,7 +491,7 @@
                 <div class="container-fluid">
 
 
-               
+
 
                 <!-- content of the website -->
                 <main>
@@ -501,4 +501,4 @@
         <!-- End of Main Content -->
     </div>
     <!-- /.container-fluid -->
-           
+
