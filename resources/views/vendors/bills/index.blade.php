@@ -1,100 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    @media (max-width: 576px) {
-        .responsive-btn {
-            font-size: .5rem;
-        }
-    }
-
-    /*
-            TEMPORARY
-        */
-    /* Suggestions items */
-    .tagify__dropdown.vendors-list .tagify__dropdown__item {
-        padding: .5em .7em;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0 1em;
-        grid-template-areas: "avatar name"
-            "avatar email";
-    }
-
-    .tagify__dropdown.vendors-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
-        transform: scale(1.2);
-    }
-
-    .tagify__dropdown.vendors-list .tagify__dropdown__item__avatar-wrap {
-        grid-area: avatar;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        overflow: hidden;
-        background: #EEE;
-        transition: .1s ease-out;
-    }
-
-    .tagify__dropdown.vendors-list img {
-        width: 100%;
-        vertical-align: top;
-    }
-
-    .tagify__dropdown.vendors-list strong {
-        grid-area: name;
-        width: 100%;
-        align-self: center;
-    }
-
-    .tagify__dropdown.vendors-list span {
-        grid-area: email;
-        width: 100%;
-        font-size: .9em;
-        opacity: .6;
-    }
-
-    .tagify__dropdown.vendors-list .addAll {
-        border-bottom: 1px solid #DDD;
-        gap: 0;
-    }
-
-
-    /* Tags items */
-    .tagify__tag {
-        white-space: nowrap;
-    }
-
-    .tagify__tag:hover .tagify__tag__avatar-wrap {
-        transform: scale(1.6) translateX(-10%);
-    }
-
-    .tagify__tag .tagify__tag__avatar-wrap {
-        width: 16px;
-        height: 16px;
-        white-space: normal;
-        border-radius: 50%;
-        background: silver;
-        margin-right: 5px;
-        transition: .12s ease-out;
-    }
-
-    .tagify__tag img {
-        width: 100%;
-        vertical-align: top;
-        pointer-events: none;
-    }
-</style>
-
-<script src="https://unpkg.com/@yaireo/tagify"></script>
-<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-
-
-
-
-
-@endpush
-
 @section('content')
 <div class="row">
 
@@ -110,6 +15,8 @@
                     <span class="text">New</span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a role="button" class="dropdown-item" data-toggle="modal"
+                        data-target="#modal-cogs">COGS</a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target=".bd-example-modal-xl">Bill</a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
@@ -155,7 +62,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
-                    </div> 
+                    </div>
                 @elseif(isset($_GET['success']))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ $_GET['success'] }}
@@ -163,7 +70,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>     
+                    </div>
                 @endif
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
@@ -203,7 +110,7 @@
                                     @endif
                                 </td>
 
-                                <td>Birr 
+                                <td>Birr
                                     @if($transaction->type == 'bill')
                                         {{ number_format($transaction->bill_amount, 2) }}
                                     @elseif($transaction->type == 'purchase_order')
@@ -212,7 +119,7 @@
                                 </td>
                                 <td>
                                     {{-- TODO: Implement hover action bar --}}
-                                    
+
                                     <!-- edit -->
                                     @if($transaction->type == 'bill')
                                     <a href="{{route('bills.bills.show', $transaction->bills->id)}}" class="btn btn-primary btn-sm edit">
@@ -222,7 +129,7 @@
                                     </a>
                                     {{-- mail --}}
                                     {{-- button mail confirmation modal  --}}
-                                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}},'bill')"> 
+                                    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$transaction->bills->id}},'bill')">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-envelope"></i>
                                         </span>
@@ -330,6 +237,8 @@
         </div>
     </div>
 </div>
+
+@include('vendors.bills.modals.types.cogs')
 
 {{-- Modal Contents --}}
 <!--------For add bill--->
@@ -469,7 +378,7 @@
         $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.bill.mail", ":id") }}'.replace(':id', id));
         else if(type == 'purchaseOrder')
         $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.mail", ":id") }}'.replace(':id', id));
-        
+
     }
 
     // Get id of transaction to print confirmation modal
@@ -515,6 +424,7 @@ $(document).ready(function() {
 <script src="/js/vendors/template_select_tax.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
 <script src="/js/vendors/template_select_purchase_order.js"></script>
+<script src="/js/tagify_templates/template_select_cash_account.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
 <script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>
 <script src="/js/vendors/bill/select_purchase_order_bill.js"></script>
@@ -523,5 +433,8 @@ $(document).ready(function() {
 <script src="/js/vendors/template_select_item.js"></script>
 <script src="/js/vendors/bill/select_item_bill.js"></script>
 <script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
+
+<script src="/js/vendors/bill/modal_cogs.js"></script>
+<script src="/js/vendors/bill/default_values.js"></script>
 
 @endsection
