@@ -198,6 +198,10 @@
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             COGS <span class="badge badge-success">New</span>
                                         </a>
+                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-expense') }}">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Expense <span class="badge badge-success">New</span>
+                                        </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-bill') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Bill

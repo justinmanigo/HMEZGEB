@@ -23,6 +23,7 @@ use App\Http\Controllers\Banking\BankReconciliationController;
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\BillsController;
 use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
+use App\Http\Controllers\Vendors\Bills\ExpenseController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 // Journal module
@@ -382,6 +383,13 @@ Route::group([
                     'as' => 'cogs.',
                 ], function(){
                     Route::post('/vendors/bills/cogs', [CostOfGoodsSoldController::class, 'store'])->name('store');
+                });
+
+                // Expense
+                Route::group([
+                    'as' => 'expense',
+                ], function(){
+                    Route::post('/vendors/bills/expense', [ExpenseController::class, 'store'])->name('store');
                 });
 
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
@@ -888,6 +896,7 @@ Route::group([
                 // AJAX
                 Route::get('/ajax/settings/coa/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCOA']);
                 Route::get('/ajax/settings/coa/cash/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchCashCOA']);
+                Route::get('/ajax/settings/coa/expense/search/{query?}', [ChartOfAccountsController::class, 'ajaxSearchExpenseCOA']);
                 Route::get('/ajax/settings/coa_categories/search', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa_categories/search/{query}', [ChartOfAccountsController::class, 'ajaxSearchCategories']);
                 Route::get('/ajax/settings/coa/beginning-balance', [ChartOfAccountsController::class, 'ajaxGetCOAForBeginningBalance']);
