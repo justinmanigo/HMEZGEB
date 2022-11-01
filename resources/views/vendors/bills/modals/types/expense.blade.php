@@ -107,20 +107,6 @@
                                     </td>
                                     <td></td>
                                 </tr> --}}
-                                <tr>
-                                    <td colspan="3" class="text-right">
-                                        <div class="form-check">
-                                            <label class="form-check-label mr-5" for="expense_withholding_toggle">Withholding</label>
-                                            <input class="form-check-input" id="expense_withholding_toggle" type="checkbox" value="on" name="withholding_check">
-                                        </div>
-                                    </td>
-                                    <td class="text-right table-item-content"><strong>Withholding: </strong></td>
-                                    <td>
-                                        <input type="text" class="form-control text-right" name="withholding" id="expense_withholding" value="0.00" readonly>
-                                        <p class="text-danger error-message error-message-withholding" style="display:none"></p>
-                                    </td>
-                                    <td></td>
-                                </tr>
                                 {{-- <tr>
                                     <td class="text-right table-item-content" colspan="4"><strong>Non-Taxable: </strong></td>
                                     <td>
@@ -151,27 +137,49 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-lg-7 row">
-                            <label for="expense_remark" class="col-form-label col-lg-2">Remark:</label>
-                            <textarea class="form-control col-lg-10" id="expense_remark" name="remark"></textarea>
-                            <p class="text-danger error-message error-message-remark" style="display:none"></p>
-                        </div>
-                        <div class="form-group col-lg-5 row">
-                            <label for="payment" class="col-form-label col-lg-3">Payment<span class="text-danger ml-1">*</span></label>
-                            <input type="text" class="form-control text-right  col-lg-9" id="total_amount_received"
-                            name="total_amount_received" placeholder="0.00" required>
-                            <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="attachment" class="col-form-label col-lg-2">Attachment:</label>
-                        <div class="input-group col-md-2 col-lg-5">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="inputGroupFile03">
-                                <label class="custom-file-label" for="inputGroupFile03" name="attachment">Choose file</label>
+                        <div class="col-lg-7">
+                            <div class="form-group row">
+                                <label for="expense_remark" class="col-form-label col-lg-2">Remark:</label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control" name="remark" id="expense_remark" rows="3"></textarea>
+                                    <p class="text-danger error-message error-message-remark" style="display:none"></p>
+                                </div>
                             </div>
-                            <p class="text-danger error-message error-message-attachment" style="display:none"></p>
+
+                            <div class="form-group row">
+                                <label for="attachment" class="col-form-label col-lg-2">Attachment:</label>
+                                <div class="input-group col-md-2 col-lg-5">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="inputGroupFile03">
+                                        <label class="custom-file-label" for="inputGroupFile03" name="attachment">Choose file</label>
+                                    </div>
+                                    <p class="text-danger error-message error-message-attachment" style="display:none"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group row">
+                                <label for="payment" class="col-form-label col-4">Payment<span class="text-danger ml-1">*</span></label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control text-right" id="total_amount_received" name="total_amount_received" placeholder="0.00" required>
+                                    <p class="text-danger error-message error-message-total_amount_received" style="display:none"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="expense_withholding_amount" class="col-4 col-form-label">Withholding <span id="expense_withholding_required" class="text-danger ml-1 d-none">*</span> :</label>
+                                <div class="col-8">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <input type="checkbox" id="expense_withholding_toggle" name="withholding_check" value="on" aria-label="Enable/Disable withholding">
+                                            </div>
+                                        </div>
+                                        <input class="form-control inputPrice text-right" type="text" id="expense_withholding" name="withholding" placeholder="0.00" disabled required>
+                                    </div>
+                                    <p class="text-danger error-message error-message-withholding" style="display:none"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

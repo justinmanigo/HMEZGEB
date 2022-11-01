@@ -430,3 +430,17 @@ function setTaxExpenseWhitelist(item, id)
 
     console.log(tax);
 }
+
+
+/** Auxilary Functions */
+
+// If withholding_check is checked, enable withholding_amount
+$('#expense_withholding_toggle').change(function() {
+    if($(this).is(":checked")) {
+        $('#expense_withholding').prop('disabled', false);
+        $('#expense_withholding_required').removeClass('d-none');
+    } else {
+        $('#expense_withholding').prop('disabled', true);
+        $('#expense_withholding_required').addClass('d-none');
+    }
+});
