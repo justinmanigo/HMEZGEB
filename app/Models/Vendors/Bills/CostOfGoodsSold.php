@@ -14,7 +14,7 @@ class CostOfGoodsSold extends Model
         'payment_reference_id',
         'reference_number',
         'price',
-        'amount',
+        'amount_received',
         'tax',
         'withholding',
         'discount',
