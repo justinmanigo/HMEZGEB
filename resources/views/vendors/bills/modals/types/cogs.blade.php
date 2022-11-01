@@ -1,4 +1,4 @@
-<form action="{{ url('/vendors/bills/cogs') }}" id="form-cogs" method="post" enctype="multipart/form-data" data-message="Successfully created cogs.">
+<form class="ajax-submit-updated" action="{{ url('/vendors/bills/cogs') }}" id="form-cogs" method="post" enctype="multipart/form-data" data-message="Successfully created COGS.">
     @csrf
     <div class="modal fade" id="modal-cogs" tabindex="-1" role="dialog" aria-labelledby="modal-cogs-label"
         aria-hidden="true">

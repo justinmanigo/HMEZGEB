@@ -4,6 +4,7 @@ namespace App\Http\Requests\Vendors\Bills;
 
 use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\AccountingSystem;
 
 class StoreCostOfGoodsSoldRequest extends FormRequest
@@ -52,6 +53,11 @@ class StoreCostOfGoodsSoldRequest extends FormRequest
     {
         $accounting_system = AccountingSystem::find(session('accounting_system_id'));
 
+        // Query 5110 - Cost of Goods Sold [Temporary]
+        $cost_of_goods_sold = ChartOfAccounts::where('chart_of_account_no', '5100')
+            ->where('accounting_system_id', session('accounting_system_id'))
+            ->first();
+
         $this->merge([
             'cash_account' => DecodeTagifyField::run($this->cash_account),
             'tax' => DecodeTagifyField::run($this->tax),
@@ -64,8 +70,12 @@ class StoreCostOfGoodsSoldRequest extends FormRequest
             'bill_account_payable' => $accounting_system->bill_account_payable,
             'bill_withholding' => $accounting_system->bill_withholding,
 
-            // TODO: Temporarily query COGS account from COA
-            
+            // Temporarily query COGS account from COA
+            'bill_cost_of_goods_sold' => $cost_of_goods_sold,
+
+            // Temporarily borrow sales discount from receipts
+            'receipt_sales_discount' => $accounting_system->receipt_sales_discount,
+
         ]);
     }
 
@@ -96,6 +106,10 @@ class StoreCostOfGoodsSoldRequest extends FormRequest
             else if($this->get('bill_withholding') == null)
             {
                 $validator->errors()->add('vendor', 'You haven\'t set the default COA for Withholding. Please make sure that everything is set at `Settings > Defaults`');
+            }
+            else if($this->get('receipt_sales_discount') == null)
+            {
+                $validator->errors()->add('vendor', 'You haven\'t set the default COA for Sales Discount. Please make sure that everything is set at `Settings > Defaults` [Receipts]');
             }
 
             if($this->get('discount_amount') > $this->get('price_amount')) {
