@@ -193,6 +193,11 @@
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Vendor
                                         </a>
+                                        <p class="my-2"><strong>Bills</strong></p>
+                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-cogs') }}">
+                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            COGS
+                                        </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-bill') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Bill
