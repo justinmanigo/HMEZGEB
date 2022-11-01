@@ -22,6 +22,7 @@ class Expense extends Model
 
         // Fields
         'reference_number',
+        'total_amount_received',
 
         // Auto-generated Fields
         'sub_total',
@@ -31,7 +32,6 @@ class Expense extends Model
         'withholding',
         'withholding_status',
         'payment_method',
-        'amount_received',
     ];
 
     public function paymentReference()

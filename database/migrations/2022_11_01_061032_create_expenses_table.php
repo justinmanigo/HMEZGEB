@@ -22,6 +22,7 @@ class CreateExpensesTable extends Migration
 
             // Fields
             $table->string('reference_number')->nullable();
+            $table->decimal('total_amount_received', 18, 8);
 
             // Auto generated fields
             $table->decimal('sub_total', 18, 8);
@@ -38,7 +39,6 @@ class CreateExpensesTable extends Migration
                 'cash',
                 'credit',
             ]);
-            $table->decimal('amount_received', 18, 8);
             $table->timestamps();
         });
     }

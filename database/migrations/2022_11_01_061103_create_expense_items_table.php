@@ -15,6 +15,9 @@ class CreateExpenseItemsTable extends Migration
     {
         Schema::create('expense_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('expense_id')->constrained('expenses')->onDelete('cascade');
+            $table->foreignId('chart_of_account_id')->constrained('chart_of_accounts');
+            $table->decimal('price_amount', 18, 8);
             $table->timestamps();
         });
     }
