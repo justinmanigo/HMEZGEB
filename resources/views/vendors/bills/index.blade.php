@@ -18,6 +18,8 @@
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target="#modal-cogs">COGS <span class="badge badge-success">New</span></a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
+                        data-target="#modal-expense">Expense <span class="badge badge-success">New</span></a>
+                    <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target=".bd-example-modal-xl">Bill</a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target=".bd-purchaseOrder-modal-xl">Purchase Order</a>
@@ -239,6 +241,7 @@
 </div>
 
 @include('vendors.bills.modals.types.cogs')
+@include('vendors.bills.modals.types.expense')
 
 {{-- Modal Contents --}}
 <!--------For add bill--->
@@ -435,6 +438,7 @@ $(document).ready(function() {
 <script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
 
 <script src="/js/vendors/bill/modal_cogs.js"></script>
+<script src="/js/vendors/bill/modal_expense.js"></script>
 <script src="/js/vendors/bill/default_values.js"></script>
 
 @endsection
