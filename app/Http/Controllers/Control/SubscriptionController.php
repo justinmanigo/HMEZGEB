@@ -74,10 +74,26 @@ class SubscriptionController extends Controller
         $owner = $subscription->user;
 
         Mail::to($owner->email)->queue(new \App\Mail\Control\Subscription\ReinstateSubscription($owner, $subscription));
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Subscription reinstated successfully.',
+        ]);
+    }
+
+    public function showAjax(Subscription $subscription)
+    {
+        // Load relationships
+        $subscription->load('user');
+        $subscription->load('referral');
+
+        if($subscription->referral) {
+            $subscription->referral->load('user');
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $subscription,
         ]);
     }
 }

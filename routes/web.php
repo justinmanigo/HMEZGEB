@@ -182,6 +182,7 @@ Route::group([
 
         /** Subscriptions */
         Route::get('/control/subscriptions', [SubscriptionController::class, 'index'])->name('index');
+        Route::get('/control/subscriptions/view/{subscription}', [SubscriptionController::class, 'showAjax'])->name('show');
         Route::post('/control/subscriptions/activate/{subscription}', [SubscriptionController::class, 'activate'])->name('activate');
         Route::post('/control/subscriptions/suspend/{subscription}', [SubscriptionController::class, 'suspend'])->name('suspend');
         Route::post('/control/subscriptions/reinstate/{subscription}', [SubscriptionController::class, 'reinstate'])->name('reinstate');
