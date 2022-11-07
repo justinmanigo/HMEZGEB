@@ -20,17 +20,15 @@ class SubscriptionController extends Controller
                 'subscriptions.date_from',
                 'subscriptions.date_to',
                 'subscriptions.status',
-                // 'subscriptions.user_id',
-                'users.firstName',
-                'users.lastName',
-                DB::raw('CONCAT(referrers.firstName, " ", referrers.lastName) as referred_by')
+                'subscriptions.user_id',
+                'u.firstName',
+                'u.lastName',
+                DB::raw('CONCAT(r.firstName, " ", r.lastName) as referred_by'),
             )
-            ->leftJoin('users', 'users.id', '=', 'subscriptions.user_id')
+            ->leftJoin('users as u', 'u.id', '=', 'subscriptions.user_id')
             ->leftJoin('referrals', 'referrals.id', '=', 'subscriptions.referral_id')
-            ->leftJoin('users as referrers', 'users.id', '=', 'referrals.user_id')
+            ->leftJoin('users as r', 'r.id', '=', 'referrals.user_id')
             ->get();
-
-        // return $subscriptions;
 
         return view('control_panel.subscriptions.index', [
             'subscriptions' => $subscriptions
