@@ -82,4 +82,20 @@ class SubscriptionController extends Controller
             'message' => 'Subscription reinstated successfully.',
         ]);
     }
+
+    public function showAjax(Subscription $subscription)
+    {
+        // Load relationships
+        $subscription->load('user');
+        $subscription->load('referral');
+
+        if($subscription->referral) {
+            $subscription->referral->load('user');
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $subscription,
+        ]);
+    }
 }

@@ -82,7 +82,7 @@
                                 <td>
                                     <button type="button" class="btn btn-sm btn-info btn-view" data-id="{{ $subscription->id }}" data-toggle="tooltip" title="View">
                                         <span class="icon text-white-50">
-                                            <i class="fas fa-eye"></i>
+                                            <i class="fas fa-eye" data-id="{{$subscription->id}}"></i>
                                         </span>
                                     </button>
                                     @if($subscription->status != 'suspended' && $subscription->account_type != 'super admin')
@@ -200,7 +200,54 @@
                 </button>
             </div>
             <div class="modal-body">
-
+                <div id="view-loading">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="view-error" style="display:none">
+                    <p>This subscription does not exist.</p>
+                </div>
+                <div id="view-content" style="display:none">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Subscription ID</th>
+                                <td id="view-id"></td>
+                            </tr>
+                            <tr>
+                                <th>Owner Name</th>
+                                <td id="view-name"></td>
+                            </tr>
+                            <tr>
+                                <th>Owner Email</th>
+                                <td id="view-email"></td>
+                            </tr>
+                            <tr>
+                                <th>Subscription Type</th>
+                                <td id="view-type"></td>
+                            </tr>
+                            <tr>
+                                <th>Subscription Status</th>
+                                <td id="view-status"></td>
+                            </tr>
+                            <tr>
+                                <th>Subscription Expiration</th>
+                                <td id="view-expiration"></td>
+                            </tr>
+                            <tr>
+                                <th>Subscription Created</th>
+                                <td id="view-created"></td>
+                            </tr>
+                            <tr>
+                                <th>Referred By</th>
+                                <td id="view-referred"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -251,17 +298,17 @@
                 data: $(this).serialize(),
                 success: function(data){
                     console.log(data);
-                    if(data.success){
+                    if(data.data.success){
                         window.location.href = '{{ url("/control/subscriptions?success=") }}' + data.message;
                     }else{
                         $('button[form="form-subscription-activate"]').prop('disabled', false);
-                        $('#error-sa').show().text(data.message);
+                        $('#error-sa').show().text(data.data.message);
                     }
                 },
                 error: function(data){
                     console.log(data);
                     $('button[form="form-subscription-activate"]').prop('disabled', false);
-                    $('#error-sa').show().text(data.responseJSON.errors.expiration_date);
+                    $('#error-sa').show().text(data.data.responseJSON.errors.expiration_date);
                 }
             });
         });
@@ -277,17 +324,17 @@
                 data: $(this).serialize(),
                 success: function(data){
                     console.log(data);
-                    if(data.success){
+                    if(data.data.success){
                         window.location.href = '{{ url("/control/subscriptions?success=") }}' + data.message;
                     }else{
                         $('button[form="form-subscription-suspend"]').prop('disabled', false);
-                        $('#error-ss').show().text(data.responseJSON.message);
+                        $('#error-ss').show().text(data.data.responseJSON.message);
                     }
                 },
                 error: function(data){
                     console.log(data);
                     $('button[form="form-subscription-suspend"]').prop('disabled', false);
-                    $('#error-ss').show().text(data.responseJSON.message);
+                    $('#error-ss').show().text(data.data.responseJSON.message);
                 }
             });
         });
@@ -303,17 +350,17 @@
                 data: $(this).serialize(),
                 success: function(data){
                     console.log(data);
-                    if(data.success){
+                    if(data.data.success){
                         window.location.href = '{{ url("/control/subscriptions?success=") }}' + data.message;
                     }else{
                         $('button[form="form-subscription-reinstate"]').prop('disabled', false);
-                        $('#error-sr').show().text(data.responseJSON.message);
+                        $('#error-sr').show().text(data.data.responseJSON.message);
                     }
                 },
                 error: function(data){
                     console.log(data);
                     $('button[form="form-subscription-reinstate"]').prop('disabled', false);
-                    $('#error-sr').show().text(data.responseJSON.message);
+                    $('#error-sr').show().text(data.data.responseJSON.message);
                 }
             });
         });
@@ -323,5 +370,45 @@
             $('.dataTables_filter').addClass('pull-right');
         });
 
+    </script>
+    <script src="cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).on('click', '.btn-view', function(e){
+            //$('#form-subscription-activate').attr('action', '/control/subscriptions/activate/' + $(this).data('id'));
+            $('#modal-view').modal('show');
+            // console.log(e);
+            console.log(e.target.dataset.id)
+            $("#view-error").hide();
+            $("#view-content").hide();
+            $("#view-loading").show();
+
+            $.ajax({
+                url: '/control/subscriptions/view/' + e.target.dataset.id,
+                type: "GET",
+                success: function(data){
+                    // console.log(data);
+                    if(data.success){
+                        $("#view-content").show();
+                        $("#view-id").text(data.data.id);
+                        $("#view-name").text(`${data.data.user.firstName} ${data.data.user.lastName}`);
+                        $("#view-email").text(data.data.user.email);
+                        $("#view-type").text(data.data.account_type);
+                        $("#view-status").text(data.data.status);
+                        $("#view-expiration").text(data.data.date_to);
+                        $("#view-created").text(data.data.created_at);
+                        $("#view-referred").text(`${data.data.referral != undefined ? data.data.referral.user.firstName : ''} ${data.data.referral != undefined ? data.data.referral.user.lastName : ''}`);
+                    }else{
+                        $("#view-error").show();
+                    }
+                    $("#view-loading").hide();
+                },
+                error: function(data){
+                    console.log(data);
+                    // $('#modal-view .modal-body').html(data.data.responseJSON.message);
+                    $("#view-error").show();
+                    $("#view-loading").hide();
+                }
+            });
+        });
     </script>
 @endpush
