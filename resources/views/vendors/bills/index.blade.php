@@ -141,7 +141,7 @@
 
                                         <!-- edit -->
                                         @if($transaction->type == 'bill')
-                                            <a href="{{route('bills.bills.show', $transaction->bills->id)}}" class="btn btn-primary btn-sm edit">
+                                            <a href="#{{--route('bills.bills.show', $transaction->bills->id)--}}" class="btn btn-primary btn-sm edit disabled">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
