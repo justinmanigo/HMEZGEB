@@ -134,8 +134,11 @@
         </ul>
 
     {{-- Modals --}}
+
     {{-- BillPayment --}}
-    <div class="modal fade bill-payment-modal" id="modal-bill-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    @include('vendors.payments.modals.types.bill_payment')
+
+    {{-- <div class="modal fade bill-payment-modal" id="modal-bill-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -157,7 +160,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- VAT --}}
     <div class="modal fade VAT-payment-modal" id="modal-vat-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
@@ -503,8 +506,9 @@
 </script>
 
 <!-- Vendors -->
+<script src="/js/tagify_templates/template_select_bill.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
-<script src="/js/vendors/payment/select_vendor_bill.js"></script>
+<script src="/js/vendors/payment/select_vendor_billpayment_updated.js"></script>
 <script src="/js/vendors/payment/select_vendor_payroll.js"></script>
 <script src="/js/vendors/payment/select_vendor_vat.js"></script>
 <script src="/js/vendors/payment/select_vendor_withholding.js"></script>
