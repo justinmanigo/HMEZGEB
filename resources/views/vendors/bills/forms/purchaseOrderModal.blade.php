@@ -1,5 +1,5 @@
-<div class="modal-body h6">	
-    <div class="row form-group">	
+<div class="modal-body h6">
+    <div class="row form-group">
         <div class="col-12 col-lg-6 mb-3 mb-lg-0">
             <h5>Vendor Details:</h5>
             <div class="form-group row">
@@ -22,7 +22,7 @@
                 <input type="text" id="po_telephone_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="telephone_number" disabled readonly>
             </div>
         </div>
-        
+
         <div class="col-12 col-lg-6">
             <div class="form-group row">
                 <label for="po_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
@@ -141,7 +141,7 @@
             </tfoot>
         </table>
     </div>
-    
+
 <div class="row form-group">
     <label for="remark" class="col-form-label col-lg-2">Terms & Conditions:</label>
     <textarea name="remark" class="form-control col-lg-4"></textarea>
@@ -157,7 +157,7 @@
 </div>
 
 </div>
-<div class="modal-footer">					
+<div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
     <button type="submit" class="btn btn-primary" form="form-purchase-order">Save & Close</button>
     <button type="submit" class="btn btn-primary" form="form-purchase-order" data-new="modal-purchase-order">Save & New</button>

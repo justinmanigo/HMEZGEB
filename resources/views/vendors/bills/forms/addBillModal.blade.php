@@ -187,7 +187,7 @@
                 <label class="custom-file-label" for="inputGroupFile03" name="attachment">Choose file</label>
             </div>
             <p class="text-danger error-message error-message-attachment" style="display:none"></p>
-        </div>  
+        </div>
     </div>
 
     <hr>
