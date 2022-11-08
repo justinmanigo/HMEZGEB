@@ -138,29 +138,6 @@
     {{-- BillPayment --}}
     @include('vendors.payments.modals.types.bill_payment')
 
-    {{-- <div class="modal fade bill-payment-modal" id="modal-bill-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <img class="mr-5"
-                            src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">New Bill Payment</p>
-                        <a class="close" data-dismiss="modal">×</a>
-                    </div>
-                    <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
-                        @csrf
-                        @include('vendors.payments.forms.billPaymentModal')
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     {{-- VAT --}}
     <div class="modal fade VAT-payment-modal" id="modal-vat-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">

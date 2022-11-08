@@ -106,94 +106,6 @@ class PaymentsController extends Controller
         //
     }
 
-    public function storeBillPayment(Request $request)
-    {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        // Update Bills to Pay
-        $b = 0;
-        if(isset($request->is_paid))
-        {
-            
-            for($i = 0; $i < count($request->payment_reference_id); $i++)
-            {
-                // If to pay wasn't checked for certain id, skip.
-                if(!in_array($request->payment_reference_id[$i], $request->is_paid))
-                    continue;
-
-                // Get bill
-                $bill = Bills::leftJoin('payment_references', 'payment_references.id', '=', 'bills.payment_reference_id')
-                    ->where('bills.payment_reference_id', '=', $request->payment_reference_id[$i])->first();
-                
-                // If amount paid wasn't even set, skip.
-                if($request->amount_paid[$i] <= 0) continue;
-                
-                $bill->amount_received += $request->amount_paid[$i];
-                if($bill->amount_received >= $bill->grand_total)
-                {
-                    PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
-                        ->update(['status' => 'paid']);
-                }
-                else if($bill->status == 'unpaid' && $bill->amount_received > 0)
-                {
-                    PaymentReferences::where('id', '=', $request->payment_reference_id[$i])
-                        ->update(['status' => 'partially_paid']);
-                }
-                else if($bill->status == 'paid')
-                {
-                    continue;
-                }
-
-                Bills::where('payment_reference_id', $request->payment_reference_id[$i])
-                    ->update([
-                        'amount_received' => $bill->amount_received
-                    ]);
-
-                $b++;
-            }
-        }
-
-        if($b > 0) {
-            // Create PaymentReference Record
-            $reference = PaymentReferences::create([
-                'accounting_system_id' => $accounting_system_id,
-                'vendor_id' => $request->vendor_id,
-                'date' => $request->date,
-                'type' => 'bill_payment',
-                'is_void' => 'no',
-                'status' => 'paid', // Bill Payment status is always paid.
-            ]);
-    
-            // Create child database entry
-            // if($request->attachment) {
-            //     $fileAttachment = time().'.'.$request->attachment->extension();  
-            //     $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
-            // }
-
-            $billPayment = BillPayments::create([
-                'payment_reference_id' => $reference->id,
-                'chart_of_account_id' => $request->chart_of_account_id,
-                'cheque_number' => $request->cheque_number,
-                'amount_paid' => floatval($request->total_received),
-                'discount_account_number' => $request->discount_account_number,        
-            ]);
-
-            $messageType = 'success';
-            $messageContent = 'Bill Payment has been added successfully.';
-        }
-        else {
-            $messageType = 'warning';
-            $messageContent = 'There are no bills to pay.';
-        }
-
-        // TODO : Refactor this into action button.
-        // // Mail;
-        // $emailAddress = $reference->vendor->email;
-        // Mail::to($emailAddress)->send(new MailVendorPayment);
-  
-        return redirect()->back()->with($messageType, $messageContent);
-
-    }
-    
     public function storeIncomeTaxPayment(Request $request)
     {
         $status = 'paid';
@@ -208,7 +120,7 @@ class PaymentsController extends Controller
             'remark' => $request->remark,
             'status' => $status
         ]);
-        
+
         // store income tax payment
         $incomeTaxPayment = IncomeTaxPayments::create([
             'payment_reference_id' => $reference->id,
@@ -217,7 +129,7 @@ class PaymentsController extends Controller
             'cheque_number' => $request->cheque_number,
             'amount_received' => $request->amount_received,
         ]);
-        
+
         return redirect()->back()->with('success', 'Income Tax Payment has been added successfully.');
     }
 
@@ -258,10 +170,10 @@ class PaymentsController extends Controller
         $w = 0;
         if(isset($request->is_paid))
         {
-            
+
             for($i = 0; $i < count($request->payment_reference_id); $i++)
             {
-                
+
                 // If to pay wasn't checked for certain id, skip.
                 if(!in_array($request->payment_reference_id[$i], $request->is_paid))
                     continue;
@@ -269,18 +181,18 @@ class PaymentsController extends Controller
                 // Get bill
                 $bill = Bills::leftJoin('payment_references', 'payment_references.id', '=', 'bills.payment_reference_id')
                     ->where('bills.payment_reference_id', '=', $request->payment_reference_id[$i])->first();
-    
+
                 // return $bill;
-                
+
                 // If amount paid wasn't even set, skip.
                 if($request->amount_paid[$i] <= 0) continue;
-                
+
                 $bill->withholding -= $request->amount_paid[$i];
                 if($bill->withholding < 0)
                 {
                     $bill->withholding = 0;
                 }
-                
+
                 if($bill->withholding <= 0)
                 {
                     $withholding_status = 'paid';
@@ -293,7 +205,7 @@ class PaymentsController extends Controller
                 {
                     continue;
                 }
-    
+
                 Bills::where('payment_reference_id', $request->payment_reference_id[$i])
                     ->update([
                         'withholding' => $bill->withholding,
@@ -313,18 +225,18 @@ class PaymentsController extends Controller
                 'is_void' => 'no',
                 'status' => 'paid', // Withholding Payment status is always paid.
             ]);
-    
+
             // Create child database entry
             if($request->attachment) {
-                $fileAttachment = time().'.'.$request->attachment->extension();  
+                $fileAttachment = time().'.'.$request->attachment->extension();
                 $request->attachment->storeAs('public/bill-attachment/credit-bills', $fileAttachment);
             }
-            
+
             $withholdingPayment = WithholdingPayments::create([
                 'payment_reference_id' => $reference->id,
                 'accounting_period_id' => $request->accounting_period_id,
                 'chart_of_account_id' => $request->chart_of_account_id,
-                'amount_paid' => floatval($request->total_amount_received),       
+                'amount_paid' => floatval($request->total_amount_received),
             ]);
 
             $messageType = 'success';
@@ -334,7 +246,7 @@ class PaymentsController extends Controller
             $messageType = 'warning';
             $messageContent = 'There are no withholdings to pay.';
         }
-  
+
         return redirect()->back()->with($messageType, $messageContent);
 
     }
