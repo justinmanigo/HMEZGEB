@@ -38,8 +38,11 @@ $(".ajax-submit-updated").submit(function(e){
         {
             $(`#${e.target.id}`).prepend(generateAlert(e.target.dataset.message, "success"));
         }
-        else
+        else if(e.originalEvent.submitter.dataset.new != undefined)
         {
+            window.location.href = `${currentLink[0]}?success=${e.target.dataset.message}&new=${e.originalEvent.submitter.dataset.new}`;
+        }
+        else {
             window.location.href = `${currentLink[0]}?success=${e.target.dataset.message}`;
         }
 
@@ -93,7 +96,7 @@ function showFormErrorsUpdated(errors, formName)
                 errElm[parseInt(err[1])].style = "display: flex";
             }
             else {
-                let errElm = $(`#${formName} .error-message-${err[0]}`);      
+                let errElm = $(`#${formName} .error-message-${err[0]}`);
                 errElm.show().html(errors[e]);
             }
         }
