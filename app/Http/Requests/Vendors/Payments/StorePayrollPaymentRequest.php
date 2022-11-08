@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Vendors\Payments;
 
 use App\Actions\DecodeTagifyField;
+use App\Http\Requests\Api\FormRequest;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
-use Illuminate\Foundation\Http\FormRequest;
 
 class StorePayrollPaymentRequest extends FormRequest
 {
