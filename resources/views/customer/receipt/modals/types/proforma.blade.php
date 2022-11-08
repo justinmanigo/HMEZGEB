@@ -1,5 +1,5 @@
 <form class="ajax-submit-updated" action="{{route('receipts.proforma.store') }}" id="form-proforma" method="post" enctype="multipart/form-data" data-message="Successfully created proforma.">
-    @csrf   
+    @csrf
     <div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -9,7 +9,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">                
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                             <h5>Customer Details:</h5>
@@ -148,7 +148,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            
+
                         </div>
                     </div>
 

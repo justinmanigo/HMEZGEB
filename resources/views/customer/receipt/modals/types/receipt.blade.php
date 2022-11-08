@@ -11,7 +11,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    
+
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                             <h5>Customer Details:</h5>

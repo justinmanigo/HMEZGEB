@@ -41,7 +41,7 @@
                             <input type="hidden" id="cr_customer_id" name="customer_id" value="">
                         </div>
                     </div>
-                
+
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group row mb-0">
@@ -72,8 +72,8 @@
                                     </div>
                                 </div>
                             </div>
-                
-                
+
+
                             <div class="form-group row">
                                 <label for="cr_date" class="col-4 col-form-label">Amount To Pay<span class="text-danger ml-1">*</span> :</label>
                                 <div class="col-8">
@@ -81,7 +81,7 @@
                                     <p class="text-danger error-message error-message-amount_paid" style="display:none"></p>
                                 </div>
                             </div>
-                
+
                             <div class="form-group row">
                                 <label for="cr_remark" class="col-4 col-form-label">Remark</label>
                                 <div class="col-8">

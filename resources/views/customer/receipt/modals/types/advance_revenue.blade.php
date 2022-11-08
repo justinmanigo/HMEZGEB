@@ -1,5 +1,5 @@
 <form class="ajax-submit-updated" action="{{route('receipts.advanceReceipt.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data" data-message="Successfully created advance revenue.">
-    @csrf   
+    @csrf
     <div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog"
         aria-labelledby="modal-advance-revenue-label" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -34,7 +34,7 @@
                                 <input type="text" id="ar_mobile_number" class="form-control-plaintext col-8 pl-3" placeholder="" name="mobile_number" disabled readonly>
                             </div>
                         </div>
-                    
+
                         <div class="col-12 col-lg-6">
                             <div class="form-group row">
                                 <label for="ar_date" class="col-4 col-form-label text-lg-right">Date<span class="text-danger ml-1">*</span> :</label>
@@ -43,7 +43,7 @@
                                     <p class="text-danger error-message error-message-date" style="display:none"></p>
                                 </div>
                             </div>
-                
+
                             <div class="form-group row">
                                 <label for="ar_account" class="col-4 col-form-label text-lg-right">Account :</label>
                                 <div class="col-8">
@@ -52,8 +52,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>     
-                    
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -122,7 +122,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
