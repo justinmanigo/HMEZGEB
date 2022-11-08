@@ -295,7 +295,7 @@ class VendorsController extends Controller
         return $vendors;
     }
 
-    public function ajaxGetPaymentsToPay(Vendors $vendor)
+    public function ajaxGetBillPaymentsToPay(Vendors $vendor)
     {
         return PaymentReferences::select(
             'payment_references.id as value',
