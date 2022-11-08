@@ -220,12 +220,13 @@
                         <p class="h3 pl-4 m-auto">New Payroll Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" name="contact" role="form" action="{{ url('/payment/payroll') }}" method="POST">
+                    <form class="ajax-submit-updated" id="form-payroll-payment" name="contact" role="form" action="{{ url('/payment/payroll') }}" method="POST" data-message="Succesfully saved payroll payment.">
                         @csrf
                         @include('vendors.payments.forms.payrollPaymentModal')
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
+                            <button type="submit" class="btn btn-primary" form="form-payroll-payment">Save & Close</button>
+                            <button type="submit" class="btn btn-primary" form="form-payroll-payment" data-new="modal-payroll-payment">Save & New</button>
                         </div>
                     </form>
                 </div>
