@@ -155,7 +155,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" form="form-proforma">Save Proforma</button>
+                    <button type="submit" class="btn btn-primary" form="form-proforma">Save & Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-proforma" data-new="modal-proforma">Save & New</button>
                 </div>
             </div>
         </div>

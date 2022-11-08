@@ -146,7 +146,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" form="form-sale">Save Sale</button>
+                    <button type="submit" class="btn btn-primary" form="form-sale">Save & Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-sale" data-new="modal-sale">Save & New</button>
                 </div>
             </div>
         </div>

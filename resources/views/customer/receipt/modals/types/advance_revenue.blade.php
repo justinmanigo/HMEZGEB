@@ -126,7 +126,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" form="form-advance-revenue">Save Advance Revenue</button>
+                    <button type="submit" class="btn btn-primary" form="form-advance-revenue">Save & Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-advance-revenue" data-new="modal-advance-revenue">Save & New</button>
                 </div>
             </div>
         </div>

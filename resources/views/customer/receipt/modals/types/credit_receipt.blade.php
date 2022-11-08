@@ -94,7 +94,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" form="form-credit-receipt">Save Credit Receipt</button>
+                    <button type="submit" class="btn btn-primary" form="form-credit-receipt">Save & Close</button>
+                    <button type="submit" class="btn btn-primary" form="form-credit-receipt" data-new="modal-credit-receipt">Save & New</button>
                 </div>
             </div>
         </div>
