@@ -25,6 +25,7 @@ use App\Http\Controllers\BillsController;
 use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
 use App\Http\Controllers\Vendors\Bills\ExpenseController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\Vendors\Payments\BillPaymentController;
 use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 // Journal module
 use App\Http\Controllers\JournalVouchersController;
@@ -433,6 +434,13 @@ Route::group([
                 Route::get('/ajax/vendor/bills/topay/{vendor}', [VendorsController::class, 'ajaxGetBillPaymentsToPay']);
                 Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
 
+
+                Route::group([
+                    'as' => 'bill.',
+                ], function(){
+                    // HTML
+                    Route::post('/vendors/payments/bill', [BillPaymentController::class, 'store'])->name('store');
+                });
 
                 Route::group([
                     'as' => 'payroll.',
