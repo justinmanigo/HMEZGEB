@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\Vendors\MailVendorStatement;
 use Illuminate\Support\Facades\Mail;
 use App\Actions\Vendor\CalculateBalanceVendor;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 
@@ -39,7 +40,7 @@ class VendorsController extends Controller
             $total_balance_overdue += $vendor->balance['total_balance_overdue'];
             $count_overdue += $vendor->balance['count_overdue'];
         }
-        
+
         return view('vendors.vendors.index',compact('vendors', 'total_balance', 'count', 'total_balance_overdue', 'count_overdue'));
     }
 
@@ -67,7 +68,7 @@ class VendorsController extends Controller
 
         if($request->image)
         {
-            $imageName = time().'.'.$request->image->extension();  
+            $imageName = time().'.'.$request->image->extension();
             $request->image->storeAs('public/vendors/vendor', $imageName);
         }
         $vendor->accounting_system_id = $accounting_system_id;
@@ -113,7 +114,7 @@ class VendorsController extends Controller
      */
     public function edit($id)
     {
-        
+
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         //view edit vendor info
         $vendor = Vendors::where('id',$id)->first();
@@ -121,7 +122,7 @@ class VendorsController extends Controller
         if($vendor->accounting_system_id != $accounting_system_id) {
             return redirect()->route('vendors.vendors.index')->with('danger', "You are not authorized to edit this vendor.");
         }
-        
+
         return view('vendors.vendors.individualVendor', compact('vendor'));
     }
 
@@ -135,12 +136,12 @@ class VendorsController extends Controller
     public function update(Request $request, $id)
     {
         // Update the form
-      
+
         $vendor = Vendors::where('id',$id)->first();
         // if not null then update the image
         if($request->image)
         {
-            $imageName = time().'.'.$request->image->extension();  
+            $imageName = time().'.'.$request->image->extension();
             $request->image->storeAs('public/vendors/vendor', $imageName);
             $vendor->image = $imageName;
         }
@@ -161,7 +162,7 @@ class VendorsController extends Controller
         $vendor->is_active =  $request->is_active;
 
         $vendor->save();
-        return back()->withSuccess('Successfully Updated');    
+        return back()->withSuccess('Successfully Updated');
     }
 
     /**
@@ -181,7 +182,7 @@ class VendorsController extends Controller
             return back()->with('error', 'Make sure there are no related transactions with vendor.');
         }
         return redirect('/vendors')->withSuccess('Successfully Deleted');;
-    
+
     }
 
     // Mail Statetment
@@ -199,16 +200,16 @@ class VendorsController extends Controller
 
         if(!$vendors)
             return redirect()->back()->with('error', "No pending statements found.");
-        
+
         $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
         ->where('type', 'bill')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
               ->orWhere('status', 'partially_paid');
-          })->get(); 
+          })->get();
 
         $bills = [];
-        
+
         foreach($payment_reference as $payment)
         {
             $bills[] = $payment->toArray() + $payment->bills->toArray();
@@ -217,7 +218,7 @@ class VendorsController extends Controller
         Mail::to($vendors->email)->queue(new MailVendorStatement ($vendors, $bills));
 
 
-        return redirect()->back()->with('success', "Successfully sent vendor statement.");     
+        return redirect()->back()->with('success', "Successfully sent vendor statement.");
     }
 
     // Print Statement
@@ -236,13 +237,13 @@ class VendorsController extends Controller
 
         if(!$vendors)
             return redirect()->back()->with('error', "No pending statements found.");
-        
+
         $payment_references = PaymentReferences::where('vendor_id', $vendors->id)
         ->where('type', 'bill')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
               ->orWhere('status', 'partially_paid');
-          })->get(); 
+          })->get();
 
         $total_balance = 0;
         foreach($payment_references as $payment_reference) {
@@ -269,7 +270,7 @@ class VendorsController extends Controller
         }
         catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error importing bank account');
-        }  
+        }
         return redirect()->back()->with('success', 'Successfully imported vendor records.');
 
     }
@@ -283,21 +284,25 @@ class VendorsController extends Controller
         $vendors = Vendors::all();
         $pdf = \PDF::loadView('vendors.vendors.pdf', compact('vendors'));
         return $pdf->download('vendorsVendor_'.date('Y_m_d').'.pdf');
- 
+
     }
 
     public function queryVendors($query)
-    {   
+    {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one')
+        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one', 'tin_number', 'mobile_number')
             ->where('accounting_system_id', $accounting_system_id)
             ->where('name', 'LIKE', '%' . $query . '%')->get();
         return $vendors;
     }
 
-    public function ajaxGetPaymentsToPay(Vendors $vendor)
+    public function ajaxGetBillPaymentsToPay(Vendors $vendor)
     {
-        return PaymentReferences::select('*')
+        return PaymentReferences::select(
+            'payment_references.id as value',
+            'bills.due_date',
+            DB::raw('bills.grand_total - bills.amount_received as balance'),
+        )
             ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
             ->where('payment_references.type', '=', 'bill')
             ->where('payment_references.vendor_id', '=', $vendor->id)
