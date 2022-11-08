@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\Vendors\MailVendorStatement;
 use Illuminate\Support\Facades\Mail;
 use App\Actions\Vendor\CalculateBalanceVendor;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 
