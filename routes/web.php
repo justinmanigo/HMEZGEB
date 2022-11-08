@@ -430,7 +430,7 @@ Route::group([
                 Route::post('/payment/withholding',[PaymentsController::class,'storeWithholdingPayment'])->name('withholdingPayment.store');
 
                 // AJAX
-                Route::get('/ajax/vendor/payments/topay/{vendor}', [VendorsController::class, 'ajaxGetPaymentsToPay']);
+                Route::get('/ajax/vendor/bills/topay/{vendor}', [VendorsController::class, 'ajaxGetBillPaymentsToPay']);
                 Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
 
 

@@ -297,7 +297,11 @@ class VendorsController extends Controller
 
     public function ajaxGetPaymentsToPay(Vendors $vendor)
     {
-        return PaymentReferences::select('*')
+        return PaymentReferences::select(
+            'payment_references.id as value',
+            'bills.due_date',
+            DB::raw('bills.grand_total - bills.amount_received as balance'),
+        )
             ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
             ->where('payment_references.type', '=', 'bill')
             ->where('payment_references.vendor_id', '=', $vendor->id)
