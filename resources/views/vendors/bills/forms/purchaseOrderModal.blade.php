@@ -159,5 +159,6 @@
 </div>
 <div class="modal-footer">					
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary" form="form-purchase-order">Submit</button>
+    <button type="submit" class="btn btn-primary" form="form-purchase-order">Save & Close</button>
+    <button type="submit" class="btn btn-primary" form="form-purchase-order" data-new="modal-purchase-order">Save & New</button>
 </div>
