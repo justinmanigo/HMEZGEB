@@ -290,7 +290,7 @@ class VendorsController extends Controller
     public function queryVendors($query)
     {   
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one')
+        $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one', 'tin_number', 'mobile_number')
             ->where('accounting_system_id', $accounting_system_id)
             ->where('name', 'LIKE', '%' . $query . '%')->get();
         return $vendors;
