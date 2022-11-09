@@ -40,7 +40,7 @@
             @foreach($result as $info)
                 <div class="tab-pane fade show @if($loop->first) active @endif" id="nav-{{ $info['subscription']->id }}" role="tabpanel" aria-labelledby="nav-{{ $info['subscription']->id }}-tab">
                     <div class="btn-group mt-4 mb-1" role="group">
-                        <form class="cas-select-subscription" 
+                        <form class="cas-select-subscription"
                             @if($info['subscription']->account_limit - count($info['accounting_systems']) > 0 && auth()->id() == $info['subscription']->user_id)
                                 action="{{ url('/ajax/subscription/accounting-systems/select-subscription/') }}"
                                 method="POST"
@@ -48,24 +48,26 @@
                             @endif
                         >
                             @csrf
-                            <button type="submit" class="btn btn-primary" 
-                                @if($info['subscription']->account_limit - count($info['accounting_systems']) <= 0 || 
+                            <button id="btn-create-accounting-system" type="submit" class="btn btn-primary"
+                                @if($info['subscription']->account_limit - count($info['accounting_systems']) <= 0 ||
                                     $info['subscription']->user_id != auth()->id() ||
                                     (isset($info['subscription']->date_to) && $info['subscription']->date_to < now()->format('Y-m-d'))
-                                ) 
-                                    disabled 
-                                @endif>
+                                )
+                                    data-disabled='true'
+                                @endif
+                                disabled >
                                 <span class="icon text-white-50">
                                     <i class="fas fa-file-import"></i>
                                 </span>
                                 <span class="text">Create Accounting System</span>
+                                <span id="btn-create-accounting-system-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
                         </form>
-                    </div>  
+                    </div>
                     <p>
                         Accounts: {{ count($info['accounting_systems']) }} / {{ $info['subscription']->account_limit }}
                         @if($info['subscription']->account_limit - count($info['accounting_systems']) <= 0)
-                            <span class="text-danger">(Account limit reached. Please upgrade your account.)</span> 
+                            <span class="text-danger">(Account limit reached. Please upgrade your account.)</span>
                         @elseif($info['subscription']->user_id != auth()->id())
                             <span class="text-warning">(Only the owner can add accounting systems to this subscription.)</span>
                         @endif
@@ -98,7 +100,7 @@
                                         </td>
                                         {{-- <td>
                                             @if(!$accounting_system->hasAccess)
-                                            
+
                                             @else
 
                                             @endif
@@ -119,6 +121,19 @@
 
 @push('scripts')
 <script>
+    $(document).ready(function(){
+        // Enable 'Create Accounting System' button, except if
+        // the 'data-disabled' attribute is present.
+        $('#btn-create-accounting-system').each(function(){
+            if($(this).attr('data-disabled') == 'true'){
+                $(this).attr('disabled', true);
+            }else{
+                $(this).attr('disabled', false);
+            }
+            $("#btn-create-accounting-system-spinner").hide();
+        });
+    })
+
     $(document).on('submit', '.cas-select-subscription', function(e){
         e.preventDefault();
 
