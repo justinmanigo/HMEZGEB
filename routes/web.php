@@ -97,6 +97,8 @@ Route::get('/check-authentication', function() {
     return Auth::check();
 });
 
+Route::get('/reject-invitation/{encrypted}', [ReferralsController::class, 'rejectInvitation']);
+
 Route::group([
     'middleware' => 'auth',
 ], function()
@@ -145,6 +147,9 @@ Route::group([
         Route::patch('/referrals', [ReferralsController::class, 'generateReferrals'])->name('generate');
 
         Route::get('/referrals/{referral}', [ReferralsController::class, 'show'])->name('show');
+
+        // AJAX
+        Route::post('/ajax/referrals/resend/{referral}', [ReferralsController::class, 'resendEmail'])->name('resend');
     });
 
     /**

@@ -2,7 +2,7 @@
 
 @push('styles')
 <style>
-    .table-item-content { 
+    .table-item-content {
         /** Equivalent to pt-3 */
         padding-top:1rem!important;
     }
@@ -15,7 +15,7 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 @endpush
 
 @section('content')
@@ -35,7 +35,7 @@
             </span>
             <span class="text">New Normal Referral</span>
         </button>
-        
+
         @if(Auth::user()->control_panel_role == 'admin')
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-advanced-referral">
             <span class="icon text-white-50">
@@ -44,10 +44,10 @@
             <span class="text">New Advanced Referral</span>
         </button>
         @endif
-    </div>  
+    </div>
 </div>
 <div id="alert-container">
-    
+
 </div>
 @if(isset($_GET['success']))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -118,7 +118,7 @@
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </a>
-                                <button type="button" class="btn btn-small btn-icon btn-primary" onclick="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Resend Email" disabled>
+                                <button type="button" class="btn btn-small btn-icon btn-primary btn-resend-invitation" data-id="{{ $referral->id }}" data-toggle="tooltip" data-placement="top" title="Resend Email">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
                                     </span>
@@ -398,5 +398,8 @@
             $('#g_trial_duration_type').val('week');
         }
     });
+
+
 </script>
+<script src="{{ url('/js/referrals/resend.js') }}"></script>
 @endsection

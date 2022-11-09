@@ -73,9 +73,9 @@ class ReferralsController extends Controller
         Subscription::create([
             'referral_id' => $referral->id,
             'account_type' => $validated['account_type'],
-            'account_limit' => $validated['account_type'] == 'admin' 
+            'account_limit' => $validated['account_type'] == 'admin'
                 || $validated['account_type'] == 'super admin'
-                    ? $validated['number_of_accounts'] 
+                    ? $validated['number_of_accounts']
                     : 1,
         ]);
 
@@ -88,16 +88,16 @@ class ReferralsController extends Controller
     {
         $validated = $request->validated();
 
-        for($i = 0; $i < $validated['number_of_codes']; $i++) 
+        for($i = 0; $i < $validated['number_of_codes']; $i++)
         {
             $referral = Referral::create([
                 'user_id' => Auth::id(),
                 'type' => $validated['referral_type'],
-                'trial_duration' => $validated['referral_type'] == 'normal' 
-                    ? 1 
+                'trial_duration' => $validated['referral_type'] == 'normal'
+                    ? 1
                     : $validated['trial_duration'],
-                'trial_duration_type' => $validated['referral_type'] == 'normal' 
-                    ? 'week' 
+                'trial_duration_type' => $validated['referral_type'] == 'normal'
+                    ? 'week'
                     : $validated['trial_duration_type'],
             ]);
 
@@ -105,14 +105,62 @@ class ReferralsController extends Controller
                 Subscription::create([
                     'referral_id' => $referral->id,
                     'account_type' => $validated['account_type'],
-                    'account_limit' => $validated['account_type'] == 'admin' 
+                    'account_limit' => $validated['account_type'] == 'admin'
                         || $validated['account_type'] == 'super admin'
-                            ? $validated['number_of_accounts'] 
+                            ? $validated['number_of_accounts']
                             : 1,
                 ]);
             }
         }
 
         return true;
+    }
+
+    public function resendEmail(Referral $referral)
+    {
+        // Check if Referral's User ID == Authenticated User ID
+        if($referral->user_id != Auth::id()) {
+            abort(404);
+        }
+        // Check if difference between now and referral updated_at is less than 1 week
+        if(now()->diffInDays($referral->updated_at) < 7) {
+            return [
+                'success' => false,
+                'message' => 'You recently sent an email to this user. Send again by ' . $referral->updated_at->addWeek()->format('F j, Y' . '.'),
+            ];
+        }
+
+        $referral->updated_to = now();
+        $referral->save();
+
+        Mail::to($referral->email)->queue(new InviteUser(auth()->user(), $referral->code));
+
+        return [
+            'success' => true,
+            'message' => 'Email sent successfully.',
+        ];
+    }
+
+    /**
+     * Removes the code from the database as the code is no longer valid.
+     */
+    public function rejectInvitation($encrypted)
+    {
+        $key = config('app.key');
+
+        $encrypted = str_replace(['-', '_', ''], ['+', '/', '='], $encrypted);
+
+        $method = 'AES-256-CBC';
+        $iv = substr(hash('sha256', $key), 0, 16);
+        $code = openssl_decrypt($encrypted, $method, $key, 0, $iv);
+
+        $referral = Referral::where('code', $code)->first();
+
+        if($referral) {
+            $referral->delete();
+            return view('referrals.reject');
+        } else {
+            abort(404);
+        }
     }
 }

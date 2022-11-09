@@ -2,7 +2,7 @@
 
 @push('styles')
 <style>
-    .table-item-content { 
+    .table-item-content {
         /** Equivalent to pt-3 */
         padding-top:1rem!important;
     }
@@ -15,7 +15,7 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 @endpush
 
 @section('content')
@@ -26,9 +26,9 @@
                 <span class="icon text-white-50">
                     <i class="fas fa-arrow-left"></i>
                 </span>
-                
+
                 <span class="text">Back</span>
-            </a> 
+            </a>
         </div>
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             <button type="button" class="btn btn-primary" disabled>
@@ -37,7 +37,7 @@
                 </span>
                 <span class="text">Update Referral Details</span>
             </button>
-            <button type="button" class="btn btn-secondary" disabled>
+            <button type="button" class="btn btn-secondary btn-resend-invitation" data-id="{{ $referral->id }}">
                 <span class="icon text-white-50">
                     <i class="fas fa-envelope"></i>
                 </span>
@@ -102,10 +102,14 @@
                             <span class="badge badge-danger">
                                 {{ ucwords('Unused') }}
                             </span>
-                        @endif   
+                        @endif
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script src="{{ url('/js/referrals/resend.js') }}"></script>
+@endpush
