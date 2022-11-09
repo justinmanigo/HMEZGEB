@@ -97,6 +97,8 @@ Route::get('/check-authentication', function() {
     return Auth::check();
 });
 
+Route::get('/reject-invitation/{encrypted}', [ReferralsController::class, 'rejectInvitation']);
+
 Route::group([
     'middleware' => 'auth',
 ], function()

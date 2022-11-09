@@ -13,4 +13,6 @@ Greetings!
 
 Thanks,<br>
 {{ config('app.name') }}
+
+<small><a href="{{ $rejectLink }}">Reject Invitation</a></small>
 @endcomponent

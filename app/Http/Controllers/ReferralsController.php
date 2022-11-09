@@ -115,4 +115,27 @@ class ReferralsController extends Controller
 
         return true;
     }
+
+    /**
+     * Removes the code from the database as the code is no longer valid.
+     */
+    public function rejectInvitation($encrypted)
+    {
+        $key = config('app.key');
+
+        $encrypted = str_replace(['-', '_', ''], ['+', '/', '='], $encrypted);
+
+        $method = 'AES-256-CBC';
+        $iv = substr(hash('sha256', $key), 0, 16);
+        $code = openssl_decrypt($encrypted, $method, $key, 0, $iv);
+
+        $referral = Referral::where('code', $code)->first();
+
+        if($referral) {
+            $referral->delete();
+            return view('referrals.reject');
+        } else {
+            abort(404);
+        }
+    }
 }
