@@ -93,6 +93,10 @@ use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
 |
 */
 
+Route::get('/check-authentication', function() {
+    return Auth::check();
+});
+
 Route::group([
     'middleware' => 'auth',
 ], function()
