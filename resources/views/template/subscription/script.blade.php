@@ -1,15 +1,15 @@
     <div id="toast-container" class="toast-container position-fixed bottom-0 start-0 p-3"></div>
-    
+
     <!-- Bootstrap core JavaScript-->
-    <script src="{{URL::asset('vendor/jquery/jquery.min.js')}}"></script> 
-    <script src="{{URL::asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script> 
+    <script src="{{URL::asset('vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{URL::asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 	{{-- <script src="{{URL::asset(' ')}}"></script>  --}}
     <!-- Core plugin JavaScript-->
-    <script src="{{URL::asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script> 
+    <script src="{{URL::asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script>
-     
+
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
     <!-- Page level plugins -->
@@ -37,10 +37,13 @@
     <script src="{{ url('/js/form-submit-ajax.js') }}"></script>
     <script src="{{ url('/js/ajax-submit-updated.js') }}"></script>
 
+    {{-- The following script will allow auto-reload of page after page's inactivity. --}}
+    <script src="{{ url('/js/periodic-auth-check.js') }}"></script>
+
        <!-- Dump all dynamic scripts into template -->
         @stack('scripts')
- 
-    
+
+
 
 
 </body>
