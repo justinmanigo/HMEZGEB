@@ -118,7 +118,7 @@
                                         <i class="fas fa-eye"></i>
                                     </span>
                                 </a>
-                                <button type="button" class="btn btn-small btn-icon btn-primary" onclick="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Resend Email" disabled>
+                                <button type="button" class="btn btn-small btn-icon btn-primary btn-resend-invitation" data-id="{{ $referral->id }}" data-toggle="tooltip" data-placement="top" title="Resend Email">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
                                     </span>
@@ -398,5 +398,8 @@
             $('#g_trial_duration_type').val('week');
         }
     });
+
+
 </script>
+<script src="{{ url('/js/referrals/resend.js') }}"></script>
 @endsection

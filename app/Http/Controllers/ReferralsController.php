@@ -116,6 +116,31 @@ class ReferralsController extends Controller
         return true;
     }
 
+    public function resendEmail(Referral $referral)
+    {
+        // Check if Referral's User ID == Authenticated User ID
+        if($referral->user_id != Auth::id()) {
+            abort(404);
+        }
+        // Check if difference between now and referral updated_at is less than 1 week
+        if(now()->diffInDays($referral->updated_at) < 7) {
+            return [
+                'success' => false,
+                'message' => 'You recently sent an email to this user. Send again by ' . $referral->updated_at->addWeek()->format('F j, Y' . '.'),
+            ];
+        }
+
+        $referral->updated_to = now();
+        $referral->save();
+
+        Mail::to($referral->email)->queue(new InviteUser(auth()->user(), $referral->code));
+
+        return [
+            'success' => true,
+            'message' => 'Email sent successfully.',
+        ];
+    }
+
     /**
      * Removes the code from the database as the code is no longer valid.
      */

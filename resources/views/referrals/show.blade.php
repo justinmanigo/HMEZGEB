@@ -37,7 +37,7 @@
                 </span>
                 <span class="text">Update Referral Details</span>
             </button>
-            <button type="button" class="btn btn-secondary" disabled>
+            <button type="button" class="btn btn-secondary btn-resend-invitation" data-id="{{ $referral->id }}">
                 <span class="icon text-white-50">
                     <i class="fas fa-envelope"></i>
                 </span>
@@ -109,3 +109,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script src="{{ url('/js/referrals/resend.js') }}"></script>
+@endpush
