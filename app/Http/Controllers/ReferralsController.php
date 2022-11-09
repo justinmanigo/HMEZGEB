@@ -73,9 +73,9 @@ class ReferralsController extends Controller
         Subscription::create([
             'referral_id' => $referral->id,
             'account_type' => $validated['account_type'],
-            'account_limit' => $validated['account_type'] == 'admin' 
+            'account_limit' => $validated['account_type'] == 'admin'
                 || $validated['account_type'] == 'super admin'
-                    ? $validated['number_of_accounts'] 
+                    ? $validated['number_of_accounts']
                     : 1,
         ]);
 
@@ -88,16 +88,16 @@ class ReferralsController extends Controller
     {
         $validated = $request->validated();
 
-        for($i = 0; $i < $validated['number_of_codes']; $i++) 
+        for($i = 0; $i < $validated['number_of_codes']; $i++)
         {
             $referral = Referral::create([
                 'user_id' => Auth::id(),
                 'type' => $validated['referral_type'],
-                'trial_duration' => $validated['referral_type'] == 'normal' 
-                    ? 1 
+                'trial_duration' => $validated['referral_type'] == 'normal'
+                    ? 1
                     : $validated['trial_duration'],
-                'trial_duration_type' => $validated['referral_type'] == 'normal' 
-                    ? 'week' 
+                'trial_duration_type' => $validated['referral_type'] == 'normal'
+                    ? 'week'
                     : $validated['trial_duration_type'],
             ]);
 
@@ -105,9 +105,9 @@ class ReferralsController extends Controller
                 Subscription::create([
                     'referral_id' => $referral->id,
                     'account_type' => $validated['account_type'],
-                    'account_limit' => $validated['account_type'] == 'admin' 
+                    'account_limit' => $validated['account_type'] == 'admin'
                         || $validated['account_type'] == 'super admin'
-                            ? $validated['number_of_accounts'] 
+                            ? $validated['number_of_accounts']
                             : 1,
                 ]);
             }
