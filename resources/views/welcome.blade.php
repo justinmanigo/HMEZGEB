@@ -22,7 +22,6 @@
         .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active
         {
             color: #000000;
-            /* background-color: #2653d4; */
             border-color: #dddfeb #dddfeb #fff;
         }
 
@@ -34,21 +33,11 @@
         .nav-pills .nav-item .active
         {
             border: 1px solid #dddfeb;
-            background-color: #1cc88a!important;
-
         }
 
         .nav-pills .nav-item:hover {
             border:1px solid #1cc88a;
             border-radius:6px;
-        }
-
-        a {
-            color: #1cc88a;
-        }
-
-        a:hover {
-            color: #1cc88a;
         }
 
         #card-login {
@@ -91,49 +80,49 @@
                         </div>
                         <div class="carousel-item active px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>See Everything in One Place</strong></h1>
+                                <h1 class="text-primary"><strong>See Everything in One Place</strong></h1>
                                 <p>Get a more complete picture of your financial life. We bring together everything from account balances and spending to your free credit score, net worth and more.</p>
                             </div>
                         </div>
                         <div class="carousel-item px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>Save Time & Money</strong></h1>
+                                <h1 class="text-primary"><strong>Save Time & Money</strong></h1>
                                 <p>With one place to record from multiple users you will keep track of your finances, there is no need to visit or contact multiple departments. Plus, an internal auditor can follow up and check remotely without having to come to your office.</p>
                             </div>
                         </div>
                         <div class="carousel-item px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>Manage Customers</strong></h1>
+                                <h1 class="text-primary"><strong>Manage Customers</strong></h1>
                                 <p>Track customer's balance & receipts along with account receivables. You will know what is due when it is due, and the cash you have to receive from your customers.</p>
                             </div>
                         </div>
                         <div class="carousel-item px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>Manage Vendors</strong></h1>
+                                <h1 class="text-primary"><strong>Manage Vendors</strong></h1>
                                 <p>Track vendor's balance & bills along with account payable. You will know what is due when it is due, and the payment you have to pay to your vendors.</p>
                             </div>
                         </div>
                         <div class="carousel-item px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>Manage Bank Accounts</strong></h1>
+                                <h1 class="text-primary"><strong>Manage Bank Accounts</strong></h1>
                                 <p>Track deposits and payments that are made through multiple banks. Check bank balance before preparing cheques and the system will deduct the cheque that is already prepared but not yet withdraw so that you will get exactly how much money actually you/company own.</p>
                             </div>
                         </div>
                         <div class="carousel-item px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>Manage Human Resources</strong></h1>
+                                <h1 class="text-primary"><strong>Manage Human Resources</strong></h1>
                                 <p>While keeping employees and commission agents list, HMezgeb will handle Payroll, Income Tax, Pension Tax, Loan repayment and more. All you have to record daily activities like new employee/commission agent, over time, allowance, penalties & deductions, loans were taken and repayment plan, advance payment, HMezgeb will handle the rest calculation.</p>
                             </div>
                         </div>
                         <div class="carousel-item px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>Say "Goodbye to Late Fees & Rush"</strong></h1>
+                                <h1 class="text-primary"><strong>Say "Goodbye to Late Fees & Rush"</strong></h1>
                                 <p>Get bill pay reminders so you pay bills on time and avoid missed payments and most out of it as long as your record daily business activity no need to prepare VAT Declaration, Income & Pension Taxes, as easy as print & declare, that is all.</p>
                             </div>
                         </div>
                         <div class="carousel-item px-5">
                             <div class="px-5">
-                                <h1 class="text-success"><strong>Stay Secure & Safe on Cloud</strong></h1>
+                                <h1 class="text-primary"><strong>Stay Secure & Safe on Cloud</strong></h1>
                                 <p>We are serious about security that is designed to help you protect access to your account and that you will access anywhere, any time from the cloud server.</p>
                             </div>
                         </div>
@@ -206,7 +195,7 @@
                                                                         Me</label>
                                                                 </div>
                                                             </div>
-                                                            <input type="submit" class="btn btn-success btn-block" value="Login">
+                                                            <input type="submit" class="btn btn-primary btn-block" value="Login">
 
 
                                                         </form>
@@ -239,7 +228,7 @@
                                                                     id="referralCode" name="referralCode" placeholder="Enter Referral Code">
                                                             </div>
 
-                                                            <button type="submit" class="btn btn-success btn-block">
+                                                            <button type="submit" class="btn btn-primary btn-block">
                                                                 Get started
                                                             </button>
                                                         </form>
@@ -274,7 +263,7 @@
             request.done(function(response) {
                 console.log(response);
 
-                // If successful, redirect user to create-account view.
+                // If primaryful, redirect user to create-account view.
                 window.location.href = "/create-account";
             });
 
