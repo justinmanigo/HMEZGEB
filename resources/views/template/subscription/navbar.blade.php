@@ -9,7 +9,7 @@ if(session('accounting_system_id'))
     $curr_acct_sys = \App\Models\AccountingSystem::where('id', session('accounting_system_id'))->first();
 
 $acct_systems = \App\Models\SubscriptionUser::select(
-            'accounting_systems.id as accounting_system_id', 
+            'accounting_systems.id as accounting_system_id',
             'accounting_systems.name',
             'accounting_systems.accounting_year',
             'accounting_systems.calendar_type',
@@ -29,17 +29,30 @@ $route_name = Route::currentRouteName();
 $route_name = explode('.', $route_name);
 $route_name = $route_name[0];
 @endphp
- 
+
  <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" role="tablist">
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar" role="tablist">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                {{-- <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div> --}}
-                {{-- <div class="sidebar-brand-text mx-3">HMEZGEB</div> --}}
-                <img src="{{URL::asset('img/logo_png.png')}}" id="brand_logo">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
+                <div id="small-logo" class="d-flex d-md-none">
+                    <div id="logo-small" style="display: flex !important">
+                        <img src="{{URL::asset('img/logo-64x51.png')}}" id="brand_logo" style="width:auto;height:56px!important">
+                    </div>
+                </div>
+                <div id="full-logo" class="d-none d-md-flex">
+                    <div id="logo-toggled" style="display: flex !important">
+                        <img src="{{URL::asset('img/logo-64x51.png')}}" id="brand_logo" style="width:auto;height:56px!important">
+                    </div>
+                    <div id="logo" style="display: none !important">
+                        <div class="crop-logo-container">
+                            <img src="{{URL::asset('img/logo-64x51.png')}}">
+                        </div>
+                        <div class="crop-text-container">
+                            <img src="{{URL::asset('img/logo-64x51.png')}}">
+                        </div>
+                    </div>
+                </div>
             </a>
 
             @if(auth()->user()->must_update_password == false && !(auth()->user()->firstName == 'New' && auth()->user()->lastName == 'User'))
@@ -59,7 +72,7 @@ $route_name = $route_name[0];
                             <span>{{ $curr_acct_sys->name }}</span>
                         </a>
                     </li>
-                    
+
                     <!-- Divider -->
                     <hr class="sidebar-divider">
                 @endif
@@ -76,7 +89,7 @@ $route_name = $route_name[0];
                             <span>{{ $acct_systems[0]->name }}</span>
                         </a>
                     </li>
-                    
+
                     <!-- Divider -->
                     <hr class="sidebar-divider">
                 @endif
@@ -101,7 +114,7 @@ $route_name = $route_name[0];
                             <span>Manage Super Admins</span>
                         </a>
                     </li>
-                    
+
                     <li class="nav-item">
                         <a class="nav-link dynamic-nav" href="{{ url('/control/subscriptions') }}">
                             <i class="fas fa-fw fa-user"></i>
@@ -233,7 +246,7 @@ $route_name = $route_name[0];
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">  
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                                     <span>{{ auth()->user()->firstName }} ▼</span>
                                 </span>
                                 {{-- <img class="img-profile rounded-circle"
@@ -284,7 +297,7 @@ $route_name = $route_name[0];
                 <div class="container-fluid">
 
 
-               
+
 
                 <!-- content of the website -->
                 <main>
@@ -294,4 +307,4 @@ $route_name = $route_name[0];
         <!-- End of Main Content -->
     </div>
     <!-- /.container-fluid -->
-           
+

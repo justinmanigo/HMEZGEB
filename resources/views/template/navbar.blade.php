@@ -16,15 +16,28 @@
 @endphp
 
  <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
-                {{-- <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
-                </div> --}}
-                {{-- <div class="sidebar-brand-text mx-3">HMEZGEB</div> --}}
-                <img src="{{URL::asset('img/logo_png.png')}}" id="brand_logo">
+                <div id="small-logo" class="d-flex d-md-none">
+                    <div id="logo-small" style="display: flex !important">
+                        <img src="{{URL::asset('img/logo-64x51.png')}}" id="brand_logo" style="width:auto;height:56px!important">
+                    </div>
+                </div>
+                <div id="full-logo" class="d-none d-md-flex">
+                    <div id="logo-toggled" style="display: flex !important">
+                        <img src="{{URL::asset('img/logo-64x51.png')}}" id="brand_logo" style="width:auto;height:56px!important">
+                    </div>
+                    <div id="logo" style="display: none !important">
+                        <div class="crop-logo-container">
+                            <img src="{{URL::asset('img/logo-64x51.png')}}">
+                        </div>
+                        <div class="crop-text-container">
+                            <img src="{{URL::asset('img/logo-64x51.png')}}">
+                        </div>
+                    </div>
+                </div>
             </a>
 
             <!-- Divider -->
