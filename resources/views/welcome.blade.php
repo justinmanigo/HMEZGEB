@@ -292,6 +292,17 @@
             $('#email').focus();
         });
 
+        // When signup button is clicked
+        $(document).on('shown.bs.tab', '#signup-tab', function(){
+            // Focus on the first input field
+            $('#referralCode').focus();
+        });
+
+        // When login button is clicked
+        $(document).on('shown.bs.tab', '#login-tab', function(){
+            // Focus on the first input field
+            $('#email').focus();
+        });
     </script>
 
 </body>
