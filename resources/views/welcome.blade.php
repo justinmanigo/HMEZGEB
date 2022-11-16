@@ -170,7 +170,7 @@
                                                             @csrf
                                                             <div class="form-group">
                                                                 <input type="email" class="form-control"
-                                                                    id="exampleInputEmail" name="email" aria-describedby="emailHelp"
+                                                                    id="email" name="email" aria-describedby="emailHelp"
                                                                     placeholder="Enter Email Address...">
                                                                 @error('email')
                                                                     <span class="invalid-feedback" role="alert">
@@ -180,7 +180,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <input type="password" class="form-control"
-                                                                    id="exampleInputPassword" name="password" placeholder="Password">
+                                                                    id="password" name="password" placeholder="Password">
 
                                                                 @error('password')
                                                                     <span class="invalid-feedback" role="alert">
@@ -286,6 +286,13 @@
 
     <!-- Custom script for this page -->
     <script src="{{ url('/js/ajax-submit-updated.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Focus on the first input field
+            $('#email').focus();
+        });
+
+    </script>
 
 </body>
 
