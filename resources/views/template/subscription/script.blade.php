@@ -39,6 +39,7 @@
 
     {{-- The following script will allow auto-reload of page after page's inactivity. --}}
     <script src="{{ url('/js/periodic-auth-check.js') }}"></script>
+    <script src="{{ url('/js/dynamic-logo.js') }}"></script>
 
        <!-- Dump all dynamic scripts into template -->
         @stack('scripts')

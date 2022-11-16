@@ -16,11 +16,28 @@
 @endphp
 
  <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="app-sidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
-                <img src="{{URL::asset('img/logo-64x51.png')}}" id="brand_logo" style="width:auto;height:56px!important">
+                <div id="small-logo" class="d-flex d-md-none">
+                    <div id="logo-small" style="display: flex !important">
+                        <img src="{{URL::asset('img/logo-64x51.png')}}" id="brand_logo" style="width:auto;height:56px!important">
+                    </div>
+                </div>
+                <div id="full-logo" class="d-none d-md-flex">
+                    <div id="logo-toggled" style="display: flex !important">
+                        <img src="{{URL::asset('img/logo-64x51.png')}}" id="brand_logo" style="width:auto;height:56px!important">
+                    </div>
+                    <div id="logo" style="display: none !important">
+                        <div class="crop-logo-container">
+                            <img src="{{URL::asset('img/logo-64x51.png')}}">
+                        </div>
+                        <div class="crop-text-container">
+                            <img src="{{URL::asset('img/logo-64x51.png')}}">
+                        </div>
+                    </div>
+                </div>
             </a>
 
             <!-- Divider -->
