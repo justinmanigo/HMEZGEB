@@ -75,13 +75,23 @@
                 <td><strong>{{ $payroll_period->period->date_to }}</strong></td>
             </tr>
             <tr>
-                <td>Status</td>
+                <td>Payroll Payment Status</td>
                 <td>
                     @if(!$payroll_period->is_paid)
                         <span class="badge badge-warning">Unpaid</span>
                     @else
                         <span class="badge badge-success">Paid</span>
-                    @endif    
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td>Income Tax Payment Status</td>
+                <td>
+                    @if(!$payroll_period->incomeTaxPayment)
+                        <span class="badge badge-warning">Unpaid</span>
+                    @else
+                        <span class="badge badge-success">Paid</span>
+                    @endif
                 </td>
             </tr>
         </table>
