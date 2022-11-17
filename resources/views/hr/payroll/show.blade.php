@@ -2,7 +2,7 @@
 
 @push('styles')
 <style>
-    .table-item-content { 
+    .table-item-content {
         /** Equivalent to pt-3 */
         padding-top:1rem!important;
     }
@@ -24,7 +24,7 @@
             <i class="fas fa-pen"></i>
         </span>
         <span class="text">New</span>
-    </button>   
+    </button>
 </div> --}}
 
 <a href="{{ url('/hr/payrolls') }}" class="btn btn-primary mb-3">
@@ -35,7 +35,7 @@
 </a>
 
 <button type="button" class="btn btn-danger btn-icon mb-3" data-toggle="modal" data-target="#DeleteModal"
-    @if($payroll_period->is_paid) disabled @endif>
+    @if($payroll_period->is_paid || $payroll_period->incomeTaxPayment) disabled @endif>
     <span class="icon text-white-50">
         <i class="fas fa-trash"></i>
     </span>
@@ -59,8 +59,8 @@
             <tr>
                 <td style="width:200px">Period Number</td>
                 <td><strong>
-                    @if($payroll_period->period->period_number < 10) 
-                        {{ '0' . $payroll_period->period->period_number }} 
+                    @if($payroll_period->period->period_number < 10)
+                        {{ '0' . $payroll_period->period->period_number }}
                     @else
                         {{ $payroll_period->period->period_number }}
                     @endif
@@ -75,13 +75,23 @@
                 <td><strong>{{ $payroll_period->period->date_to }}</strong></td>
             </tr>
             <tr>
-                <td>Status</td>
+                <td>Payroll Payment Status</td>
                 <td>
                     @if(!$payroll_period->is_paid)
                         <span class="badge badge-warning">Unpaid</span>
                     @else
                         <span class="badge badge-success">Paid</span>
-                    @endif    
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td>Income Tax Payment Status</td>
+                <td>
+                    @if(!$payroll_period->incomeTaxPayment)
+                        <span class="badge badge-warning">Unpaid</span>
+                    @else
+                        <span class="badge badge-success">Paid</span>
+                    @endif
                 </td>
             </tr>
         </table>
@@ -138,8 +148,8 @@
                     Are you sure you want to delete this payroll?
                 @else
                     This payroll has already been paid. No further action is required.
-                @endif 
-                
+                @endif
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

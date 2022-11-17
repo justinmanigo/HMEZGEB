@@ -53,24 +53,53 @@ class PaymentsController extends Controller
                 'payment_references.date',
                 'payment_references.status',
                 // 'payment_references.is_void', // TODO: to implement
+                
+                // Vat Payments
                 'vat_payments.current_receivable as vat_amount',
+
+                // Pension Payments
                 'pension_payments.amount_received as pension_amount',
-                'income_tax_payments.amount_received as income_tax_amount',
+
+                // Withholding Payments
                 'withholding_payments.amount_paid as withholding_amount',
+
+                // Payroll Payments
                 'payroll_payments.total_paid as payroll_amount',
-                'accounting_periods.period_number',
-                'accounting_periods.date_from',
-                'accounting_periods.date_to',
+                'pp_accounting_periods.period_number',
+                'pp_accounting_periods.date_from',
+                'pp_accounting_periods.date_to',
+
+                // Income Tax Payments
+                'income_tax_payments.total_paid as income_tax_amount',
+                'itp_accounting_periods.period_number',
+                'itp_accounting_periods.date_from',
+                'itp_accounting_periods.date_to',
+                // 'itp_pp.date_from',
+                // 'itp_pp.date_to',
                 // TODO: implement commission
             )
             ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
+
+            // VAT Payments
             ->leftJoin('vat_payments', 'payment_references.id', '=', 'vat_payments.payment_reference_id')
+
+            // Pension Payments
             ->leftJoin('pension_payments', 'payment_references.id', '=', 'pension_payments.payment_reference_id')
-            ->leftJoin('income_tax_payments', 'payment_references.id', '=', 'income_tax_payments.payment_reference_id')
+
+            // Withholding Payments
             ->leftJoin('withholding_payments', 'payment_references.id', '=', 'withholding_payments.payment_reference_id')
+
+            // Payroll Payments
             ->leftJoin('payroll_payments', 'payment_references.id', '=', 'payroll_payments.payment_reference_id')
-            ->leftJoin('payroll_periods', 'payroll_payments.payroll_period_id', '=', 'payroll_periods.id')
-            ->leftJoin('accounting_periods', 'payroll_periods.period_id', '=', 'accounting_periods.id')
+            ->leftJoin('payroll_periods as pp_payroll_periods', 'payroll_payments.payroll_period_id', '=', 'pp_payroll_periods.id')
+            ->leftJoin('accounting_periods as pp_accounting_periods', 'pp_payroll_periods.period_id', '=', 'pp_accounting_periods.id')
+
+            // Income Tax Payments
+            ->leftJoin('income_tax_payments', 'payment_references.id', '=', 'income_tax_payments.payment_reference_id')
+            ->leftJoin('payroll_periods as itp_payroll_periods', 'income_tax_payments.payroll_period_id', '=', 'itp_payroll_periods.id')
+            ->leftJoin('accounting_periods as itp_accounting_periods', 'itp_payroll_periods.period_id', '=', 'itp_accounting_periods.id')
+
+
             ->where('payment_references.accounting_system_id', session('accounting_system_id'))
             ->where('payment_references.type', '!=', 'bill_payment')
             ->where('payment_references.type', '!=', 'bill')

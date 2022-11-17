@@ -101,8 +101,8 @@
                     {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item" data-toggle="modal"
                     data-target=".payroll-payment-modal">Payroll <span class="badge badge-success">New</span></a>
-                <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".income-tax-payment-modal" --}}>Income Tax <span class="badge badge-danger">Soon</span></a>
+                <a role="button" class="dropdown-item" data-toggle="modal"
+                    data-target="#modal-income-tax-payment">Income Tax <span class="badge badge-success">New</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
                     {{-- data-target=".pension-payment-modal" --}}>Pension <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
@@ -137,6 +137,7 @@
 
     {{-- BillPayment --}}
     @include('vendors.payments.modals.types.bill_payment')
+    @include('vendors.payments.modals.types.income_tax_payment')
 
     {{-- VAT --}}
     <div class="modal fade VAT-payment-modal" id="modal-vat-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -207,32 +208,6 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" form="form-payroll-payment">Save & Close</button>
                             <button type="submit" class="btn btn-primary" form="form-payroll-payment" data-new="modal-payroll-payment">Save & New</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- Income TAX --}}
-    <div class="modal fade income-tax-payment-modal" id="modal-income-tax-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <img class="mr-5"
-                            src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">New Income Tax Payment</p>
-                        <a class="close" data-dismiss="modal">×</a>
-                    </div>
-                    <form action="{{route('payments.incomeTax.store')}}" id="contactForm" method="post" name="contact"
-                        role="form">
-                        @csrf
-                        Coming Soon.
-                        {{-- @include('vendors.payments.forms.incomeTaxPaymentModal') --}}
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
                         </div>
                     </form>
                 </div>
@@ -386,7 +361,7 @@
                                     <td>{{ $payment->id }}</td>
                                     <td>{{ $payment->date }}</td>
                                     <td>
-                                        @if($payment->type == 'payroll_payment')
+                                        @if($payment->type == 'payroll_payment' || $payment->type == 'income_tax_payment')
                                             {{ "For Period # " . $payment->period_number . " (" . $payment->date_from . " - " . $payment->date_to . ")" }}
                                         @else
                                             {{ $payment->name }}
@@ -502,7 +477,8 @@
 <!-- Payroll Payment -->
 <script src="/js/vendors/template_select_cash_account.js"></script>
 <script src="/js/vendors/template_select_payroll_period.js"></script>
-<script src="/js/vendors/payment/select_payroll_payment.js"></script>
+<script src="/js/vendors/payment/modal_payroll_payment.js"></script>
+<script src="/js/vendors/payment/modal_income_tax_payment.js"></script>
 
 
 <!-- Items -->

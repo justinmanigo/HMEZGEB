@@ -55,11 +55,13 @@ class PayrollController extends Controller
                 DB::raw('IFNULL(p.employee_count, 0) as employee_count'),
                 'payroll_periods.created_at',
                 'payroll_periods.updated_at',
+                'income_tax_payments.id as income_tax_payment_id',
             )
             ->leftJoin('payroll_periods', 'payroll_periods.period_id', 'accounting_periods.id')
             ->leftJoinSub($subQuery, 'p', function($join){
                 $join->on('p.id', '=', 'payroll_periods.id');
             })
+            ->leftJoin('income_tax_payments', 'income_tax_payments.payroll_period_id', 'payroll_periods.id')
             ->where('accounting_periods.accounting_system_id', session('accounting_system_id'))
             ->orderBy('accounting_periods.period_number', 'asc')
             ->get();
@@ -320,6 +322,7 @@ class PayrollController extends Controller
             abort(404);
 
         $payroll_period->period;
+        $payroll_period->incomeTaxPayment;
 
         $payrolls = DB::table('payrolls')
             ->select(
@@ -414,9 +417,14 @@ class PayrollController extends Controller
     public function destroy(PayrollPeriod $payroll_period)
     {
         $payroll_period->payrolls;
+        $payroll_period->incomeTaxPayment;
+        // return $payroll_period;
 
         if($payroll_period->is_paid) {
-            return redirect()->route('payrolls.index')->with('error','Error Deleting Payroll. Payroll Already Paid');
+            return redirect()->route('payrolls.index')->with('error','Can\'t delete payroll. Payroll Payment has already been made.');
+        }
+        if($payroll_period->incomeTaxPayment) {
+            return redirect()->route('payrolls.index')->with('error','Can\'t delete payroll. Income Tax Payment has already been made.');
         }
 
         foreach($payroll_period->payrolls as $payroll)

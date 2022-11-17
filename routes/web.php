@@ -27,6 +27,7 @@ use App\Http\Controllers\Vendors\Bills\ExpenseController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Vendors\Payments\BillPaymentController;
 use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
+use App\Http\Controllers\Vendors\Payments\IncomeTaxPaymentController;
 // Journal module
 use App\Http\Controllers\JournalVouchersController;
 // Human Resource module
@@ -456,6 +457,16 @@ Route::group([
                 ], function() {
                     // HTML
                     Route::post('/payment/payroll', [PayrollPaymentController::class, 'store'])->name('store');
+                });
+
+                Route::group([
+                    'as' => 'incometax.',
+                ], function() {
+                    // HTML
+                    Route::post('/vendors/payments/incometax', [IncomeTaxPaymentController::class, 'store'])->name('store');
+
+                    // AJAX
+                    Route::get('/ajax/vendors/payments/incometax/unpaid/search/{query?}', [IncomeTaxPaymentController::class, 'ajaxGetUnpaid']);
                 });
 
             });

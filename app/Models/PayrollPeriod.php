@@ -17,7 +17,7 @@ class PayrollPeriod extends Model
         'accounting_system_id',
         'journal_entry_id',
     ];
-    
+
     public function period()
     {
         return $this->belongsTo(AccountingPeriods::class, 'period_id');
@@ -41,5 +41,10 @@ class PayrollPeriod extends Model
     public function payrollPayment()
     {
         return $this->hasOne(PayrollPayments::class, 'payroll_period_id','id');
+    }
+
+    public function incomeTaxPayment()
+    {
+        return $this->hasOne(IncomeTaxPayments::class, 'payroll_period_id','id');
     }
 }
