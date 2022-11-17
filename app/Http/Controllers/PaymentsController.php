@@ -65,17 +65,16 @@ class PaymentsController extends Controller
 
                 // Payroll Payments
                 'payroll_payments.total_paid as payroll_amount',
-                'pp_accounting_periods.period_number',
-                'pp_accounting_periods.date_from',
-                'pp_accounting_periods.date_to',
+                'pp_accounting_periods.period_number as pp_period_number',
+                'pp_accounting_periods.date_from as pp_date_from',
+                'pp_accounting_periods.date_to as pp_date_to',
 
                 // Income Tax Payments
                 'income_tax_payments.total_paid as income_tax_amount',
-                'itp_accounting_periods.period_number',
-                'itp_accounting_periods.date_from',
-                'itp_accounting_periods.date_to',
-                // 'itp_pp.date_from',
-                // 'itp_pp.date_to',
+                'itp_accounting_periods.period_number as itp_period_number',
+                'itp_accounting_periods.date_from as itp_date_from',
+                'itp_accounting_periods.date_to as itp_date_to',
+                
                 // TODO: implement commission
             )
             ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
