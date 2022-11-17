@@ -32,7 +32,7 @@
                                     </tr>
                                     <tr>
                                         <td>Income Tax Amount:</td>
-                                        <td width="150px" class="text-right" id="itp_payroll_amount">0.00</td>
+                                        <td width="150px" class="text-right" id="itp_income_tax_amount">0.00</td>
                                     </tr>
                                     <tr>
                                         <td>Balance After:</td>
