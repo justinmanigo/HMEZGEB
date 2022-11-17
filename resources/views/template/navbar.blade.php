@@ -240,9 +240,9 @@
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Payroll <span class="badge badge-success">New</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-income-tax-payment') --}}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-income-tax-payment') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Income Tax <span class="badge badge-danger">Soon</span>
+                                            Income Tax <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-pension-payment') --}}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
