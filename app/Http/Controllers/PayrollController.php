@@ -55,11 +55,13 @@ class PayrollController extends Controller
                 DB::raw('IFNULL(p.employee_count, 0) as employee_count'),
                 'payroll_periods.created_at',
                 'payroll_periods.updated_at',
+                'income_tax_payments.id as income_tax_payment_id',
             )
             ->leftJoin('payroll_periods', 'payroll_periods.period_id', 'accounting_periods.id')
             ->leftJoinSub($subQuery, 'p', function($join){
                 $join->on('p.id', '=', 'payroll_periods.id');
             })
+            ->leftJoin('income_tax_payments', 'income_tax_payments.payroll_period_id', 'payroll_periods.id')
             ->where('accounting_periods.accounting_system_id', session('accounting_system_id'))
             ->orderBy('accounting_periods.period_number', 'asc')
             ->get();
