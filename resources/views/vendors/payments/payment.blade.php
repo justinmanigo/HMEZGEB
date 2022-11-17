@@ -361,8 +361,10 @@
                                     <td>{{ $payment->id }}</td>
                                     <td>{{ $payment->date }}</td>
                                     <td>
-                                        @if($payment->type == 'payroll_payment' || $payment->type == 'income_tax_payment')
-                                            {{ "For Period # " . $payment->period_number . " (" . $payment->date_from . " - " . $payment->date_to . ")" }}
+                                        @if($payment->type == 'payroll_payment')
+                                            {{ "For Period # " . $payment->pp_period_number . " (" . $payment->pp_date_from . " - " . $payment->pp_date_to . ")" }}
+                                        @elseif($payment->type == 'income_tax_payment')
+                                            {{ "For Period # " . $payment->itp_period_number . " (" . $payment->itp_date_from . " - " . $payment->itp_date_to . ")" }}
                                         @else
                                             {{ $payment->name }}
                                         @endif
