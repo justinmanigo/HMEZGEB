@@ -230,10 +230,10 @@
                         role="form">
                         @csrf
                         Coming Soon.
-                        {{-- @include('vendors.payments.forms.incomeTaxPaymentModal') --}}
+                        @include('vendors.payments.forms.incomeTaxPaymentModal')
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
+                            <input type="submit" class="btn btn-primary" id="submit">
                         </div>
                     </form>
                 </div>
