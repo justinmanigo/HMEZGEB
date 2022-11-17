@@ -503,7 +503,7 @@
 <!-- Payroll Payment -->
 <script src="/js/vendors/template_select_cash_account.js"></script>
 <script src="/js/vendors/template_select_payroll_period.js"></script>
-<script src="/js/vendors/payment/select_payroll_payment.js"></script>
+<script src="/js/vendors/payment/modal_payroll_payment.js"></script>
 
 
 <!-- Items -->
