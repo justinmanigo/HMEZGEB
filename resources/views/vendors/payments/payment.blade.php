@@ -101,8 +101,8 @@
                     {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item" data-toggle="modal"
                     data-target=".payroll-payment-modal">Payroll <span class="badge badge-success">New</span></a>
-                <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".income-tax-payment-modal" --}}>Income Tax <span class="badge badge-danger">Soon</span></a>
+                <a role="button" class="dropdown-item" data-toggle="modal"
+                    data-target="#modal-income-tax-payment">Income Tax <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
                     {{-- data-target=".pension-payment-modal" --}}>Pension <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
@@ -137,6 +137,7 @@
 
     {{-- BillPayment --}}
     @include('vendors.payments.modals.types.bill_payment')
+    @include('vendors.payments.modals.types.income_tax_payment')
 
     {{-- VAT --}}
     <div class="modal fade VAT-payment-modal" id="modal-vat-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -214,7 +215,7 @@
         </div>
     </div>
     {{-- Income TAX --}}
-    <div class="modal fade income-tax-payment-modal" id="modal-income-tax-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    {{-- <div class="modal fade income-tax-payment-modal" id="modal-income-tax-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -238,7 +239,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- Pension --}}
     <div class="modal fade pension-payment-modal" id="modal-pension-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
