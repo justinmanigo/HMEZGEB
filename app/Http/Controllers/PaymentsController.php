@@ -55,7 +55,7 @@ class PaymentsController extends Controller
                 // 'payment_references.is_void', // TODO: to implement
                 'vat_payments.current_receivable as vat_amount',
                 'pension_payments.amount_received as pension_amount',
-                'income_tax_payments.amount_received as income_tax_amount',
+                'income_tax_payments.total_paid as income_tax_amount',
                 'withholding_payments.amount_paid as withholding_amount',
                 'payroll_payments.total_paid as payroll_amount',
                 'accounting_periods.period_number',
