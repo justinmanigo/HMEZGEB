@@ -15,16 +15,11 @@ class CreateIncomeTaxPaymentsTable extends Migration
     {
         Schema::create('income_tax_payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payment_reference_id');
-            $table->unsignedBigInteger('accounting_period_id')->nullable();
-            $table->unsignedBigInteger('chart_of_account_id')->nullable();
-            $table->unsignedBigInteger('cheque_number')->nullable();
-            $table->decimal('amount_received', 18, 8);
+            $table->integer('payment_reference_id')->nullable(); // foreign
+            $table->integer('payroll_period_id')->nullable(); // foreign
+            $table->decimal('total_paid', 18, 8);
+            $table->string('cheque_number')->nullable();
             $table->timestamps();
-            $table->foreign('payment_reference_id')->references('id')->on('payment_references');
-            $table->foreign('accounting_period_id')->references('id')->on('accounting_periods');
-            $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
-
         });
     }
 

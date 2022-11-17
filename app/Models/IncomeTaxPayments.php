@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PayrollPeriod;
 
 class IncomeTaxPayments extends Model
 {
@@ -11,10 +12,9 @@ class IncomeTaxPayments extends Model
 
     protected $fillable = [
         'payment_reference_id',
-        'accounting_period_id',
-        'chart_of_account_id',
+        'payroll_period_id',
+        'total_paid',
         'cheque_number',
-        'amount_received',
     ];
 
     public function payment_reference()
@@ -31,5 +31,10 @@ class IncomeTaxPayments extends Model
     {
         return $this->belongsTo(ChartOfAccount::class);
     }
-    
+
+    public function payrollPeriod()
+    {
+        return $this->belongsTo(PayrollPeriod::class, 'payroll_period_id');
+    }
+
 }
