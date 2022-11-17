@@ -2,7 +2,7 @@
 
 @push('styles')
 <style>
-    .table-item-content { 
+    .table-item-content {
         /** Equivalent to pt-3 */
         padding-top:1rem!important;
     }
@@ -24,7 +24,7 @@
             <i class="fas fa-pen"></i>
         </span>
         <span class="text">New</span>
-    </button>   
+    </button>
 </div> --}}
 
 <a href="{{ url('/hr/payrolls') }}" class="btn btn-primary mb-3">
@@ -59,8 +59,8 @@
             <tr>
                 <td style="width:200px">Period Number</td>
                 <td><strong>
-                    @if($payroll_period->period->period_number < 10) 
-                        {{ '0' . $payroll_period->period->period_number }} 
+                    @if($payroll_period->period->period_number < 10)
+                        {{ '0' . $payroll_period->period->period_number }}
                     @else
                         {{ $payroll_period->period->period_number }}
                     @endif
