@@ -322,6 +322,7 @@ class PayrollController extends Controller
             abort(404);
 
         $payroll_period->period;
+        $payroll_period->incomeTaxPayment;
 
         $payrolls = DB::table('payrolls')
             ->select(

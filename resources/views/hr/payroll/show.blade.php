@@ -35,7 +35,7 @@
 </a>
 
 <button type="button" class="btn btn-danger btn-icon mb-3" data-toggle="modal" data-target="#DeleteModal"
-    @if($payroll_period->is_paid) disabled @endif>
+    @if($payroll_period->is_paid || $payroll_period->incomeTaxPayment) disabled @endif>
     <span class="icon text-white-50">
         <i class="fas fa-trash"></i>
     </span>
@@ -138,8 +138,8 @@
                     Are you sure you want to delete this payroll?
                 @else
                     This payroll has already been paid. No further action is required.
-                @endif 
-                
+                @endif
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
