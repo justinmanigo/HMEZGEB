@@ -102,7 +102,7 @@
                 <a role="button" class="dropdown-item" data-toggle="modal"
                     data-target=".payroll-payment-modal">Payroll <span class="badge badge-success">New</span></a>
                 <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target="#modal-income-tax-payment">Income Tax <span class="badge badge-danger">Soon</span></a>
+                    data-target="#modal-income-tax-payment">Income Tax <span class="badge badge-success">New</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
                     {{-- data-target=".pension-payment-modal" --}}>Pension <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
