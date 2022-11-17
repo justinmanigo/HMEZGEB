@@ -75,7 +75,7 @@
                     <div class="carousel-inner">
                         <div class="px-5 mb-5">
                             <div class="px-5">
-                                <img src="http://127.0.0.1:8000/img/logo-128x102.png" height="128px" width="auto">
+                                <img src="{{URL::asset('/img/logo-128x102.png')}}" height="128px" width="auto">
                             </div>
                         </div>
                         <div class="carousel-item active px-5">
@@ -135,7 +135,7 @@
             <div class="login-container">
                 <div class="container">
                     <div class="row d-flex d-lg-none justify-content-center mb-4">
-                        <img src="http://127.0.0.1:8000/img/logo-128x102.png" height="96px" width="auto">
+                        <img src="{{URL::asset('/img/logo-128x102.png')}}" height="96px" width="auto">
                     </div>
                     <div class="row d-flex justify-content-center">
                         <div class="card o-hidden border-0 shadow-lg w-75">
