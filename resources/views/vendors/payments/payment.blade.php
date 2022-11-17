@@ -214,32 +214,6 @@
             </div>
         </div>
     </div>
-    {{-- Income TAX --}}
-    {{-- <div class="modal fade income-tax-payment-modal" id="modal-income-tax-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <img class="mr-5"
-                            src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">New Income Tax Payment</p>
-                        <a class="close" data-dismiss="modal">×</a>
-                    </div>
-                    <form action="{{route('payments.incomeTax.store')}}" id="contactForm" method="post" name="contact"
-                        role="form">
-                        @csrf
-                        Coming Soon.
-                        @include('vendors.payments.forms.incomeTaxPaymentModal')
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-primary" id="submit">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     {{-- Pension --}}
     <div class="modal fade pension-payment-modal" id="modal-pension-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
