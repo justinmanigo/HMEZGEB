@@ -414,9 +414,14 @@ class PayrollController extends Controller
     public function destroy(PayrollPeriod $payroll_period)
     {
         $payroll_period->payrolls;
+        $payroll_period->incomeTaxPayment;
+        // return $payroll_period;
 
         if($payroll_period->is_paid) {
-            return redirect()->route('payrolls.index')->with('error','Error Deleting Payroll. Payroll Already Paid');
+            return redirect()->route('payrolls.index')->with('error','Can\'t delete payroll. Payroll Payment has already been made.');
+        }
+        if($payroll_period->incomeTaxPayment) {
+            return redirect()->route('payrolls.index')->with('error','Can\'t delete payroll. Income Tax Payment has already been made.');
         }
 
         foreach($payroll_period->payrolls as $payroll)
