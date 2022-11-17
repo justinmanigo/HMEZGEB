@@ -463,6 +463,7 @@ Route::group([
                     'as' => 'incometax.',
                 ], function() {
                     // HTML
+                    Route::post('/vendors/payments/incometax', [IncomeTaxPaymentController::class, 'store'])->name('store');
 
                     // AJAX
                     Route::get('/ajax/vendors/payments/incometax/unpaid/search/{query?}', [IncomeTaxPaymentController::class, 'ajaxGetUnpaid']);

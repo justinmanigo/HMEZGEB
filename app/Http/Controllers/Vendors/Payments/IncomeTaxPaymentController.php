@@ -2,12 +2,65 @@
 
 namespace App\Http\Controllers\Vendors\Payments;
 
+use App\Actions\CreateJournalEntry;
+use App\Actions\CreateJournalPostings;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Vendors\Payments\StoreIncomeTaxPaymentRequest;
+use App\Models\PaymentReferences;
+use App\Models\PayrollPayments;
+use App\Models\PayrollPeriod;
+use App\Models\IncomeTaxPayments;
 
 class IncomeTaxPaymentController extends Controller
 {
+    public function store(StoreIncomeTaxPaymentRequest $request)
+    {
+        // return $request;
+
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->date, $request->remark, session('accounting_system_id'));
+
+        // Store Payment Reference
+        $reference = new PaymentReferences();
+        $reference->accounting_system_id = session('accounting_system_id');
+        $reference->type = 'income_tax_payment';
+        $reference->status = 'paid';
+        $reference->date = $request->date;
+        $reference->remark = $request->remark;
+        $reference->journal_entry_id = $je->id;
+        // $reference->attachment = isset($fileAttachment) ? $fileAttachment : null;
+        $reference->save();
+
+        // Store Income Tax Payment
+        $payment = new IncomeTaxPayments();
+        $payment->payment_reference_id = $reference->id;
+        $payment->payroll_period_id = $request->payroll_period->value;
+        $payment->cheque_number = $request->cheque_number;
+        $payment->total_paid = $request->payroll_period->balance;
+        $payment->save();
+
+        // Debit 2102 - Income Tax Payable
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->income_tax_payable->id);
+        $debit_amount[] = $request->payroll_period->balance;
+
+        // Credit Selected Cash Account
+        $credit_accounts[] = CreateJournalPostings::encodeAccount($request->cash_account->value);
+        $credit_amount[] = $request->payroll_period->balance;
+
+        // Create Journal Postings
+        CreateJournalPostings::run($je,
+            $debit_accounts, $debit_amount,
+            $credit_accounts, $credit_amount,
+            session('accounting_system_id'));
+
+        return [
+            'success' => true,
+            'message' => 'Income Tax Payment has been successfully recorded.',
+        ];
+    }
+
     public function ajaxGetUnpaid()
     {
         $journal_postings = DB::table('journal_postings')
