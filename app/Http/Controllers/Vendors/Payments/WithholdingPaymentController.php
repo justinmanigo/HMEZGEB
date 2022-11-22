@@ -72,7 +72,20 @@ class WithholdingPaymentController extends Controller
     public function ajaxGetAll()
     {
         $withholding_periods = GetAllWithholdingPeriods::run();
+        $withholding_periods_unpaid = GetAllWithholdingPeriods::run(true);
+        $total = 0;
 
-        return response()->json($withholding_periods);
+        // get array sum of withholding_periods_unpaid
+        for($i = 0; $i < count($withholding_periods_unpaid); $i++) {
+            $total += $withholding_periods_unpaid[$i]->total_withholdings;
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'withholding_periods' => $withholding_periods,
+                'total_selectable_withholding' => $total,
+            ]
+        ]);
     }
 }

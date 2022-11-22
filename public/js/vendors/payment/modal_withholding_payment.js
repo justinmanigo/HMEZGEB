@@ -72,6 +72,7 @@ function onWithholdingPaymentCashAccountInput(e) {
  */
 
 var wp_payable = 0;
+var wp_total_selectable = 0;
 var wp_periods = [];
 
 $(document).ready(function(){
@@ -89,26 +90,36 @@ $(document).ready(function(){
         });
 
         request.done(function(res, status, jqXHR ) {
-            console.log(res);
-            wp_periods = res;
+            console.log(res.data.withholding_periods);
+            wp_periods = res.data.withholding_periods;
+            wp_total_selectable = res.data.total_selectable_withholding;
 
             let inner = "";
 
-            if (res.length > 0) {
-                for (let i = 0; i < res.length; i++) {
+            if (wp_periods.length > 0) {
+                for (let i = 0; i < wp_periods.length; i++) {
                     inner += `
                         <tr>
                             <td>
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input wp_period_checkbox" id="wp_period_${res[i].id}" value="${res[i].period_number - 1}" data-period-number="${res[i].period_number}" name="accounting_period_ids[]">
-                                    <label class="custom-control-label" for="wp_period_${res[i].id}">Period # ${res[i].period_number}</label>
+                                    <input type="checkbox" class="custom-control-input wp_period_checkbox" id="wp_period_${wp_periods[i].id}" value="${wp_periods[i].period_number - 1}" data-period-number="${wp_periods[i].period_number}" name="accounting_period_ids[]" ${wp_periods[i].withholding_payment_id != null ?
+                                        "disabled='true'"
+                                        : parseFloat(wp_periods[i].total_withholdings) > 0
+                                            ? "data-enabled='true'"
+                                            : "disabled='true'"}>
+                                    <label class="custom-control-label" for="wp_period_${wp_periods[i].id}">Period # ${wp_periods[i].period_number}</label>
                                 </div>
                             </td>
-                            <td>${res[i].date_from} to ${res[i].date_to}</td>
+                            <td>${wp_periods[i].date_from} to ${wp_periods[i].date_to}</td>
                             <td>
-                                <span class='badge badge-secondary'>N/A</span>
+                                ${wp_periods[i].withholding_payment_id != null ?
+                                    "<span class='badge badge-success'>Paid</span>"
+                                    : parseFloat(wp_periods[i].total_withholdings) > 0
+                                        ? "<span class='badge badge-danger'>Unpaid</span>"
+                                        : "<span class='badge badge-secondary'>Empty</span>"}
+
                             </td>
-                            <td class="text-right">${parseFloat(res[i].total_withholdings).toFixed(2)}</td>
+                            <td class="text-right">${parseFloat(wp_periods[i].total_withholdings).toFixed(2)}</td>
                         </tr>
                     `;
                 }
@@ -139,14 +150,11 @@ $(document).ready(function(){
         console.log("Clicked wp_select_all");
 
         let checked = $(this).prop('checked');
-        $(".wp_period_checkbox").prop('checked', checked);
+        $(".wp_period_checkbox[data-enabled='true']").prop('checked', checked);
 
         // Get total withholding payables by iterating on wp_periods
         if (checked) {
-            wp_payable = 0;
-            for(i = 0; i < 12; i++) {
-                wp_payable += parseFloat(wp_periods[i].total_withholdings);
-            }
+            wp_payable = parseFloat(wp_total_selectable);
         } else {
             wp_payable = parseFloat(0);
         }

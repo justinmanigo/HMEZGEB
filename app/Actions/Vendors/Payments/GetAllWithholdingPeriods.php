@@ -9,7 +9,7 @@ class GetAllWithholdingPeriods
 {
     use AsAction;
 
-    public function handle()
+    public function handle($onlyUnpaid = false)
     {
         $ap = DB::table('accounting_periods')
             ->select(
@@ -89,9 +89,11 @@ class GetAllWithholdingPeriods
             // TODO: left join with withholding payments to indicate
             // if the withholding payment is already made for period
             ->leftJoin('withholding_payments', 'accounting_periods.id', 'withholding_payments.accounting_period_id')
-            ->where('accounting_periods.accounting_system_id', session('accounting_system_id'))
-            ->get();
+            ->where('accounting_periods.accounting_system_id', session('accounting_system_id'));
 
-        return $periods;
+        if($onlyUnpaid) {
+            $periods->where('withholding_payments.id', '=', null);
+        }
+        return $periods->get();
     }
 }
