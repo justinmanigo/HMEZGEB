@@ -103,10 +103,5 @@ class WithholdingPaymentController extends Controller
             ->get();
 
         return $periods;
-
-        return [
-            // $accounting_periods,
-            $periods,
-        ];
     }
 }
