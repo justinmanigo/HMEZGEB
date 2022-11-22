@@ -340,6 +340,8 @@
                                             {{ "For Period # " . $payment->pp_period_number . " (" . $payment->pp_date_from . " - " . $payment->pp_date_to . ")" }}
                                         @elseif($payment->type == 'income_tax_payment')
                                             {{ "For Period # " . $payment->itp_period_number . " (" . $payment->itp_date_from . " - " . $payment->itp_date_to . ")" }}
+                                        @elseif($payment->type == 'withholding_payment')
+                                            {{ "For Period # " . $payment->wp_period_number . " (" . $payment->wp_date_from . " - " . $payment->wp_date_to . ")" }}
                                         @else
                                             {{ $payment->name }}
                                         @endif
