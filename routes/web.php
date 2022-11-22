@@ -436,10 +436,7 @@ Route::group([
             ], function(){
                 // HTML
                 Route::get('/vendors/payments',[PaymentsController::class,'index']);
-                Route::post('/payment/bill',[PaymentsController::class,'storeBillPayment'])->name('billPayment.store');
-                Route::post('/payment/income_tax',[PaymentsController::class,'storeIncomeTaxPayment'])->name('incomeTax.store');
                 Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
-                Route::post('/payment/withholding',[PaymentsController::class,'storeWithholdingPayment'])->name('withholdingPayment.store');
 
                 // AJAX
                 Route::get('/ajax/vendor/bills/topay/{vendor}', [VendorsController::class, 'ajaxGetBillPaymentsToPay']);

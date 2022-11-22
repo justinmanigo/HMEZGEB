@@ -152,7 +152,7 @@
                         <p class="h3 pl-4 m-auto">New VAT Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
+                    <form id="contactForm" action="" method="post" role="form">
                         Coming Soon.
                         {{-- @include('vendors.payments.forms.VATPaymentModal') --}}
                         <div class="modal-footer">
