@@ -108,7 +108,7 @@ $(document).ready(function(){
                             <td>
                                 <span class='badge badge-secondary'>N/A</span>
                             </td>
-                            <td class="text-right">${res[i].total_withholdings}</td>
+                            <td class="text-right">${parseFloat(res[i].total_withholdings).toFixed(2)}</td>
                         </tr>
                     `;
                 }
