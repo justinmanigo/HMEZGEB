@@ -26,6 +26,7 @@ use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
 use App\Http\Controllers\Vendors\Bills\ExpenseController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Vendors\Payments\BillPaymentController;
+use App\Http\Controllers\Vendors\Payments\WithholdingPaymentController;
 use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 use App\Http\Controllers\Vendors\Payments\IncomeTaxPaymentController;
 // Journal module
@@ -450,6 +451,15 @@ Route::group([
                 ], function(){
                     // HTML
                     Route::post('/vendors/payments/bill', [BillPaymentController::class, 'store'])->name('store');
+                });
+
+                Route::group([
+                    'as' => 'withholding.',
+                ], function() {
+                    // HTML
+
+                    // AJAX
+                    Route::get('/ajax/vendors/payments/withholding/all/', [WithholdingPaymentController::class, 'ajaxGetAll']);
                 });
 
                 Route::group([
