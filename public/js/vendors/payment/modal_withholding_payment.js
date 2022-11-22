@@ -1,3 +1,76 @@
+/**
+ * This is for Withholding Payment - Cash Account Field
+ */
+
+var withholding_payment_select_cash_account_elm = document.querySelector('#wp_cash_account');
+
+// initialize Tagify on the above input node reference
+
+var withholding_payment_select_cash_account_tagify = new Tagify(withholding_payment_select_cash_account_elm, {
+    tagTextProp: 'label', // very important since a custom template is used with this property as text
+    enforceWhitelist: true,
+    mode : "select",
+    skipInvalid: false, // do not remporarily add invalid tags
+    dropdown: {
+        closeOnSelect: true,
+        enabled: 0,
+        classname: 'customer-list',
+        searchKeys: ['label'] // very important to set by which keys to search for suggesttions when typing
+    },
+    templates: {
+        tag: cashAccountTagTemplate,
+        dropdownItem: cashAccountSuggestionItemTemplate
+    },
+    whitelist: [],
+}
+)
+
+
+withholding_payment_select_cash_account_tagify.on('dropdown:show dropdown:updated', onWithholdingPaymentCashAccountDropdownShow)
+withholding_payment_select_cash_account_tagify.on('dropdown:select', onWithholdingPaymentCashAccountSelectSuggestion)
+withholding_payment_select_cash_account_tagify.on('input', onWithholdingPaymentCashAccountInput)
+withholding_payment_select_cash_account_tagify.on('remove', onWithholdingPaymentCashAccountRemove)
+
+var addAllSuggestionsElm;
+
+function onWithholdingPaymentCashAccountDropdownShow(e){
+    var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
+}
+
+function onWithholdingPaymentCashAccountSelectSuggestion(e){
+    // checks for data of selected employee
+    console.log(e.detail.data);
+}
+
+function onWithholdingPaymentCashAccountRemove(e){
+
+}
+
+function onWithholdingPaymentCashAccountInput(e) {
+    var value = e.detail.value;
+    var tagify = e.detail.tagify;
+    tagify.whitelist = null // reset the whitelist
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
+    controller && controller.abort()
+    controller = new AbortController()
+
+    // show loading animation and hide the suggestions dropdown
+    tagify.loading(true).dropdown.hide()
+
+    fetch('/ajax/settings/coa/cash/search/' + value, {signal:controller.signal})
+        .then(RES => RES.json())
+        .then(function(newWhitelist){
+            tagify.whitelist = newWhitelist // update whitelist Array in-place
+            tagify.loading(false).dropdown.show(value) // render the suggestions dropdown
+        })
+}
+
+
+/**
+ * This is for withholding payment -- period selection UX
+ */
+
 var wp_payable = 0;
 var wp_periods = [];
 
