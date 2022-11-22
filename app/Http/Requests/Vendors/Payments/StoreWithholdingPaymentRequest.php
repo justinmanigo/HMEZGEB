@@ -49,4 +49,11 @@ class StoreWithholdingPaymentRequest extends FormRequest
             'withholding_periods' => GetAllWithholdingPeriods::run(),
         ]);
     }
+
+    public function messages()
+    {
+        return [
+            'accounting_period_ids.required' => 'Select at least one accounting period to process.',
+        ];
+    }
 }

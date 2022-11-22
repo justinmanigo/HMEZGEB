@@ -89,11 +89,11 @@
                             <div class="custom-file">
                             <input type="file" class="custom-file-input" id="inputGroupFile03">
                             <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
-                            </div>
                         </div>
                     </div>
                 </div>
-                <div id="wp_body_loading" class="modal-body">
+            </div>
+            <div id="wp_body_loading" class="modal-body">
                     <div class="text-center">
                         <div class="spinner-border text-primary" role="status">
                             <span class="sr-only">Loading...</span>
@@ -101,6 +101,7 @@
                     </div>
                 </div>
                 <div id="wp_footer" class="modal-footer d-none">
+                    <p class="text-danger error-message error-message-accounting_period_ids" style="display:none"></p>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" form="form-withholding-payment">Save & Close</button>
                     <button type="submit" class="btn btn-primary" form="form-withholding-payment" data-new="modal-withholding-payment">Save & New</button>
