@@ -10,7 +10,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div id="wp_body_main" class="modal-body d-none">
                     <div class="row mb-3">
                         <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                             <div class="form-group row">
@@ -48,10 +48,9 @@
                                     <th>Status</th>
                                     <th class="text-right">Total Withholding</th>
                                 </thead>
-                                <tbody>
-                                    <tr>
+                                <tbody id="wp_periods">
+                                    {{-- <tr>
                                         <td>
-                                            {{--Checkbox--}}
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="wp_period_1" value="1">
                                                 <label class="custom-control-label" for="wp_period_1">Period # 1</label>
@@ -66,7 +65,7 @@
                                         <td class="text-right">
                                             1000.00
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                                 <tfoot>
                                     <th>
@@ -76,7 +75,7 @@
                                         </div>
                                     </th>
                                     <th colspan="2" class="text-right">Total Withholding to Pay</th>
-                                    <th class="text-right"><strong>0.00</strong></th>
+                                    <th class="text-right"><strong id="wp_total_withholding_payable">0.00</strong></th>
                                 </tfoot>
                             </table>
                         </div>
@@ -94,7 +93,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div id="wp_body_loading" class="modal-body">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="wp_footer" class="modal-footer d-none">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" form="form-withholding-payment">Save & Close</button>
                     <button type="submit" class="btn btn-primary" form="form-withholding-payment" data-new="modal-withholding-payment">Save & New</button>
