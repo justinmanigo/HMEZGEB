@@ -454,6 +454,7 @@ Route::group([
                     'as' => 'withholding.',
                 ], function() {
                     // HTML
+                    Route::post('/vendors/payments/withholding', [WithholdingPaymentController::class, 'store'])->name('store');
 
                     // AJAX
                     Route::get('/ajax/vendors/payments/withholding/all/', [WithholdingPaymentController::class, 'ajaxGetAll']);

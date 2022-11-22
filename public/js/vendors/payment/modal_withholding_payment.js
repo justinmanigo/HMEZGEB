@@ -100,7 +100,7 @@ $(document).ready(function(){
                         <tr>
                             <td>
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input wp_period_checkbox" id="wp_period_${res[i].id}" value="${res[i].id}" data-period-number="${res[i].period_number}">
+                                    <input type="checkbox" class="custom-control-input wp_period_checkbox" id="wp_period_${res[i].id}" value="${res[i].period_number - 1}" data-period-number="${res[i].period_number}" name="accounting_period_ids[]">
                                     <label class="custom-control-label" for="wp_period_${res[i].id}">Period # ${res[i].period_number}</label>
                                 </div>
                             </td>
