@@ -189,7 +189,7 @@ class BillsController extends Controller
 
         Mail::to($emailAddress)->queue(new MailVendorBill ($bill_items));
 
-        return redirect()->route('bills.bills.index')->with('success', 'Email has been sent!');
+        return redirect('/vendors/bills')->with('success', 'Email has been sent!');
     }
 
     public function sendMailPurchaseOrder($id)
