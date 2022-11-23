@@ -492,15 +492,14 @@ $(document).ready(function() {
 <script src="/js/vendors/template_select_purchase_order.js"></script>
 <script src="/js/tagify_templates/template_select_cash_account.js"></script>
 <script src="/js/tagify_templates/template_select_expense_account.js"></script>
+<script src="/js/vendors/template_select_item.js"></script>
+<script src="/js/vendors/bill/select_item_bill.js"></script>
+<script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
 <script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>
 <script src="/js/vendors/bill/select_purchase_order_bill.js"></script>
 
-<!-- Items -->
-<script src="/js/vendors/template_select_item.js"></script>
-<script src="/js/vendors/bill/select_item_bill.js"></script>
-<script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
-
+<script src="/js/vendors/bill/modal_bill.js"></script>
 <script src="/js/vendors/bill/modal_cogs.js"></script>
 <script src="/js/vendors/bill/modal_expense.js"></script>
 <script src="/js/vendors/bill/default_values.js"></script>
