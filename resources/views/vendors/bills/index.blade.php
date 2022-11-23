@@ -20,7 +20,7 @@
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target="#modal-expense">Expense <span class="badge badge-success">New</span></a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
-                        data-target=".bd-example-modal-xl">Bill</a>
+                        data-target="#modal-bill">Bill</a>
                     <a role="button" class="dropdown-item" data-toggle="modal"
                         data-target=".bd-purchaseOrder-modal-xl">Purchase Order</a>
                 </div>
@@ -323,27 +323,9 @@
 
 @include('vendors.bills.modals.types.cogs')
 @include('vendors.bills.modals.types.expense')
+@include('vendors.bills.modals.types.bill')
 
 {{-- Modal Contents --}}
-<!--------For add bill--->
-<div class="modal fade bd-example-modal-xl" id="modal-bill" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header d-flex justify-content-between align-items-center">
-                <img class="mr-5"
-                    src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                <p class="h3 pl-4 m-auto">New Bill</p>
-                <a class="close" data-dismiss="modal">×</a>
-            </div>
-            <form class="ajax-submit-updated" id="form-new-bill" action="{{route('bills.bill.store') }}" method="post"
-                enctype="multipart/form-data" data-message="Successfully created bill.">
-                @csrf
-                @include('vendors.bills.forms.addBillModal')
-            </form>
-        </div>
-    </div>
-</div>
 <!--------For purchase order--->
 <div class="modal fade bd-purchaseOrder-modal-xl" id="modal-purchase-order" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
@@ -510,15 +492,14 @@ $(document).ready(function() {
 <script src="/js/vendors/template_select_purchase_order.js"></script>
 <script src="/js/tagify_templates/template_select_cash_account.js"></script>
 <script src="/js/tagify_templates/template_select_expense_account.js"></script>
+<script src="/js/vendors/template_select_item.js"></script>
+<script src="/js/vendors/bill/select_item_bill.js"></script>
+<script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
 <script src="/js/vendors/bill/select_vendor_bill.js"></script>
 <script src="/js/vendors/bill/select_vendor_purchaseorder.js"></script>
 <script src="/js/vendors/bill/select_purchase_order_bill.js"></script>
 
-<!-- Items -->
-<script src="/js/vendors/template_select_item.js"></script>
-<script src="/js/vendors/bill/select_item_bill.js"></script>
-<script src="/js/vendors/bill/select_item_purchaseorder.js"></script>
-
+<script src="/js/vendors/bill/modal_bill.js"></script>
 <script src="/js/vendors/bill/modal_cogs.js"></script>
 <script src="/js/vendors/bill/modal_expense.js"></script>
 <script src="/js/vendors/bill/default_values.js"></script>

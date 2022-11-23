@@ -1,9 +1,9 @@
 // This array lists down the items within the bill.
-var bill_items = []; 
+var bill_items = [];
 
 // This variable counts how many instances of bill items are made.
 // This ensures that there will be no conflict ids on bill item elements.
-var bill_count = 0; 
+var bill_count = 0;
 
 // Create a bill item entry when document is fully loaded or when add entry button is clicked.
 $(document).ready(createBillItemEntry());
@@ -29,7 +29,7 @@ $(document).on('change', '.b_item_quantity', function(event) {
     quantity = $(this)[0].value;
     sale_price = $(`#b_item_price_${id}`).val();
     console.log(sale_price);
-    
+
     // Update item total
     $(`#b_item_total_${id}`).val(parseFloat(parseFloat(sale_price) * parseFloat(quantity)).toFixed(2))
 
@@ -38,7 +38,7 @@ $(document).on('change', '.b_item_quantity', function(event) {
 });
 
 // Creates a Bill Item Entry on the Table.
-function createBillItemEntry(item = undefined) 
+function createBillItemEntry(item = undefined)
 {
     // Increment bill_count to avoid element conflicts.
     bill_count++;
@@ -100,13 +100,13 @@ function createBillItemEntry(item = undefined)
                 "quantity": item.quantity,
             },
         ];
-        
-        
+
+
         $(`#b_item_${bill_count}`).val(item.inventory.item_name);
         $(`#b_item_quantity_${bill_count}`).val(item.quantity).removeAttr('disabled');
         $(`#b_item_price_${bill_count}`).val(parseFloat(item.inventory.sale_price).toFixed(2))
         $(`#b_item_total_${bill_count}`).val(parseFloat(item.inventory.sale_price * item.quantity).toFixed(2))
-        
+
     }
 
     // Create new tagify instance of item selector of newly created row.
@@ -170,9 +170,9 @@ function createBillItemEntry(item = undefined)
 
         tax_tagify.whitelist = tax_whitelist;
 
-        $(`#b_item_tax_${receipt_count}`).parents('td').find('span').html(tax_whitelist[0].label);
-        $(`#b_item_tax_${receipt_count}`).parents('td').find('tag').attr('percentage', tax_whitelist[0].percentage);
-        $(`#b_item_tax_percentage_${receipt_count}`).val(tax_whitelist[0].percentage);
+        $(`#b_item_tax_${bill_count}`).parents('td').find('span').html(tax_whitelist[0].label);
+        $(`#b_item_tax_${bill_count}`).parents('td').find('tag').attr('percentage', tax_whitelist[0].percentage);
+        $(`#b_item_tax_percentage_${bill_count}`).val(tax_whitelist[0].percentage);
     }
 
     // Set events of tagify instance.
@@ -199,12 +199,12 @@ function removeBillItemEntry(entry_id)
     for(let i = 0; i < bill_items.length; i++)
     {
         if(bill_items[i].entry_id == entry_id)
-        {   
+        {
             console.log("Removing entry " + entry_id);
             bill_items.splice(i, 1);
             return true;
         }
-    }   
+    }
     return false;
 }
 
@@ -218,7 +218,7 @@ function getBillItemEntry(entry_id)
             console.log("Found entry.");
             return bill_items[i];
         }
-    }   
+    }
     return undefined;
 }
 
@@ -232,7 +232,7 @@ function getBillItemIndex(entry_id)
             console.log("Found entry.");
             return i;
         }
-    }   
+    }
     return undefined;
 }
 
@@ -256,7 +256,7 @@ function calculateBillTaxTotal()
 {
     tax_total = 0;
     console.log(`Attempt to Calculate Tax Total`);
-    
+
     tax_percentages = document.querySelectorAll(".b_item_tax_percentage");
     item_prices = document.querySelectorAll(".b_item_price")
     item_quantities = document.querySelectorAll(".b_item_quantity")
@@ -299,17 +299,17 @@ function onBillItemDropdownShow(e) {
 
 function onBillItemSelectSuggestion(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
-    
+
     $(`#b_item_quantity_${id}`).val(1).removeAttr('disabled')
     $(`#b_item_price_${id}`).val(parseFloat(e.detail.data.sale_price).toFixed(2))
     $(`#b_item_total_${id}`).val(parseFloat(e.detail.data.sale_price * 1).toFixed(2))
     // Remove the disabled attribute of nearby .tagify element
     $(`#b_item_tax_${id}`).removeAttr('disabled').parents('td').find('.tagify').removeAttr('disabled');
-    
+
     if(e.detail.data.tax_id != null) setTaxBillWhitelist(e.detail.data, id);
 
     item_total = e.detail.data.sale_price * e.detail.data.quantity;
-    
+
     // Recalculate total
     calculateBillSubTotal();
     calculateBillGrandTotal();
@@ -317,7 +317,7 @@ function onBillItemSelectSuggestion(e) {
 
 function onBillItemRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
-    
+
     //Subtract total when x is clicked in tagify
     $(`#b_sub_total`).val(parseFloat($(`#b_sub_total`).val() - $(`#b_item_total_${id}`).val()).toFixed(2))
     $(`#b_grand_total`).val(parseFloat($(`#b_grand_total`).val() - $(`#b_item_total_${id}`).val()).toFixed(2))
@@ -332,7 +332,7 @@ function onBillItemRemove(e) {
 
 }
 
-function onBillItemInput(e) {    
+function onBillItemInput(e) {
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -375,7 +375,7 @@ function onTaxBillRemove(e) {
     calculateBillGrandTotal();
 }
 
-function onTaxBillInput(e) {    
+function onTaxBillInput(e) {
     var value = e.detail.value;
     var tagify = e.detail.tagify;
 
@@ -415,11 +415,11 @@ function setTaxBillWhitelist(item, id)
     tax = getBillItemEntry(id).tax
     tax.whitelist = whitelist;
     tax.addTags(whitelist[0].value);
-    
+
     $(`#b_item_tax_${id}`).parents('td').find('span').html(whitelist[0].label);
     $(`#b_item_tax_${id}`).parents('td').find('tag').attr('percentage', whitelist[0].percentage);
     $(`#b_item_tax_percentage_${id}`).val(whitelist[0].percentage);
-    
+
     console.log(tax);
 }
 

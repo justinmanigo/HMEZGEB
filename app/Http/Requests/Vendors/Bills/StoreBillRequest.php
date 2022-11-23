@@ -31,6 +31,7 @@ class StoreBillRequest extends FormRequest
     {
         return [
             'vendor' => ['required'],
+            'cash_account' => ['required'],
             'date' => ['required', 'date'],
             'due_date' => ['sometimes', 'date'],
             // 'purchase_order' => ['sometimes'],
@@ -65,8 +66,9 @@ class StoreBillRequest extends FormRequest
 
         $this->merge([
             'vendor' => DecodeTagifyField::run($this->vendor),
-            'item' => isset($item) ? $item : [],
             'purchase_order' => $this->purchase_order != null ? DecodeTagifyField::run($this->purchase_order) : null,
+            'cash_account' => DecodeTagifyField::run($this->cash_account),
+            'item' => isset($item) ? $item : [],
 
             // Merge COA defaults to request
             'bill_cash_on_hand' => $accounting_system->bill_cash_on_hand,
