@@ -39,6 +39,15 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label for="b_date" class="col-4 col-form-label text-lg-right">Due Date<span
+                                        class="text-danger ml-1">*</span> :</label>
+                                <div class="col-8">
+                                    <input type="date" class="form-control" id="b_due_date" name="due_date" placeholder=""
+                                        value="{{now()->addDays(7)->format('Y-m-d')}}" required>
+                                    <p class="text-danger error-message error-message-due_date" style="display:none"></p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="b_reference_number" class="col-4 col-form-label text-lg-right">Reference # :</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control" id="b_reference_number" name="reference_number" placeholder="">
