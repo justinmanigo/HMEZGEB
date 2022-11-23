@@ -19,6 +19,11 @@
                                 <input class="col-8 col-lg-7" id="b_vendor" name='vendor'>
                                 <p class="col-8 col-lg-5 text-danger error-message error-message-vendor" style="display:none"></p>
                             </div>
+                            <div class="form-group row">
+                                <label for="b_purchase_order" class="col-4 col-form-label text-left">Purchase Order :</label>
+                                <input class="col-8 col-lg-7" id="b_purchase_order" name='purchase_order'>
+                                <p class="col-8 col-lg-5 text-danger error-message error-message-purchase_order" style="display:none"></p>
+                            </div>
 
                             <div class="form-group row">
                                 <label for="b_cash_account" class="col-4 col-form-label text-left">Cash Acct.<span

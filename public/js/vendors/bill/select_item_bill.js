@@ -170,9 +170,9 @@ function createBillItemEntry(item = undefined)
 
         tax_tagify.whitelist = tax_whitelist;
 
-        $(`#b_item_tax_${receipt_count}`).parents('td').find('span').html(tax_whitelist[0].label);
-        $(`#b_item_tax_${receipt_count}`).parents('td').find('tag').attr('percentage', tax_whitelist[0].percentage);
-        $(`#b_item_tax_percentage_${receipt_count}`).val(tax_whitelist[0].percentage);
+        $(`#b_item_tax_${bill_count}`).parents('td').find('span').html(tax_whitelist[0].label);
+        $(`#b_item_tax_${bill_count}`).parents('td').find('tag').attr('percentage', tax_whitelist[0].percentage);
+        $(`#b_item_tax_percentage_${bill_count}`).val(tax_whitelist[0].percentage);
     }
 
     // Set events of tagify instance.
