@@ -22,10 +22,13 @@ use App\Http\Controllers\Banking\BankReconciliationController;
 // Vendor module
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\BillsController;
+use App\Http\Controllers\Vendors\Bills\BillController;
 use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
 use App\Http\Controllers\Vendors\Bills\ExpenseController;
+use App\Http\Controllers\Vendors\Bills\PurchaseOrderController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Vendors\Payments\BillPaymentController;
+use App\Http\Controllers\Vendors\Payments\WithholdingPaymentController;
 use App\Http\Controllers\Vendors\Payments\PayrollPaymentController;
 use App\Http\Controllers\Vendors\Payments\IncomeTaxPaymentController;
 // Journal module
@@ -93,6 +96,10 @@ use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/test', function () {
+    return var_dump(App\Actions\Vendors\Payments\Withholding\CheckIfWithholdingPeriodPaid::run('2022-10-20'));
+});
 
 Route::get('/check-authentication', function() {
     return Auth::check();
@@ -390,6 +397,20 @@ Route::group([
                 Route::get('/vendors/bills', [BillsController::class, 'index'])->name('index');
                 Route::get('/vendors/bills/{bills}', [BillsController::class, 'show'])->name('show');
 
+                // Bill
+                Route::group([
+                    'as' => 'bill.',
+                ], function() {
+                    Route::post('/vendors/bills/bill', [BillController::class, 'store'])->name('store');
+                });
+
+                // Purchase Order
+                Route::group([
+                    'as' => 'purchaseorder',
+                ], function() {
+                    Route::post('/vendors/bills/purchaseorder', [PurchaseOrderController::class, 'store'])->name('store');
+                });
+
                 // COGS
                 Route::group([
                     'as' => 'cogs.',
@@ -405,9 +426,8 @@ Route::group([
                 });
 
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
-                Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
+                // Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
-                Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
                 Route::get('/purchaseorder/{id}',[BillsController::class,'showPurchaseOrder'])->name('purchaseOrder.show');
                 // Mail
                 Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
@@ -435,10 +455,7 @@ Route::group([
             ], function(){
                 // HTML
                 Route::get('/vendors/payments',[PaymentsController::class,'index']);
-                Route::post('/payment/bill',[PaymentsController::class,'storeBillPayment'])->name('billPayment.store');
-                Route::post('/payment/income_tax',[PaymentsController::class,'storeIncomeTaxPayment'])->name('incomeTax.store');
                 Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
-                Route::post('/payment/withholding',[PaymentsController::class,'storeWithholdingPayment'])->name('withholdingPayment.store');
 
                 // AJAX
                 Route::get('/ajax/vendor/bills/topay/{vendor}', [VendorsController::class, 'ajaxGetBillPaymentsToPay']);
@@ -450,6 +467,16 @@ Route::group([
                 ], function(){
                     // HTML
                     Route::post('/vendors/payments/bill', [BillPaymentController::class, 'store'])->name('store');
+                });
+
+                Route::group([
+                    'as' => 'withholding.',
+                ], function() {
+                    // HTML
+                    Route::post('/vendors/payments/withholding', [WithholdingPaymentController::class, 'store'])->name('store');
+
+                    // AJAX
+                    Route::get('/ajax/vendors/payments/withholding/all/', [WithholdingPaymentController::class, 'ajaxGetAll']);
                 });
 
                 Route::group([

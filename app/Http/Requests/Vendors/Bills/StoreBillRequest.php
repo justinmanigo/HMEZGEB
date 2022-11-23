@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Vendor\Bill;
+namespace App\Http\Requests\Vendors\Bills;
 
 use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
+use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\AccountingSystem;
-use App\Models\Inventory;
+use App\Actions\Vendors\Payments\Withholding\CheckIfWithholdingPeriodPaid;
+
 
 class StoreBillRequest extends FormRequest
 {
@@ -50,7 +52,7 @@ class StoreBillRequest extends FormRequest
     }
 
     protected function prepareForValidation()
-    {        
+    {
         // dd($this->all());
 
         for($i = 0; $i < count($this->item); $i++) {
@@ -106,7 +108,7 @@ class StoreBillRequest extends FormRequest
             {
                 $validator->errors()->add('vendor', 'You haven\'t set the default COA for Withholding. Please make sure that everything is set at `Settings > Defaults`');
             }
-            
+
             // Check in case of withholding more than sub_total
             if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('sub_total')) {
                 $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the sub total.');
@@ -115,6 +117,12 @@ class StoreBillRequest extends FormRequest
             if($this->get('withholding_check') != null && $this->get('withholding') > $this->get('total_amount_received')) {
                 $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the total amount received.');
             }
+
+            // Check if withholding period of $request->date is already paid
+            if(CheckIfWithholdingPeriodPaid::run($this->get('date'))) {
+                $validator->errors()->add('date', 'The withholding payment for the date\'s period has already been made.');
+            }
+
         });
     }
 }

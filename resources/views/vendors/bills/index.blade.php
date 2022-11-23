@@ -175,7 +175,7 @@
                                             </button>
                                             @endif
                                         @elseif($transaction->type == 'purchase_order')
-                                            <a href="{{route('bills.purchaseOrder.show', $transaction->purchaseOrders->id)}}" class="btn btn-primary btn-sm edit">
+                                            <a href="javascript:void(0)" class="btn btn-primary btn-sm edit disabled">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
@@ -355,7 +355,7 @@
                 <p class="h3 pl-4 m-auto">Purchase Order</p>
                 <a class="close" data-dismiss="modal">×</a>
             </div>
-            <form class="ajax-submit-updated" id="form-purchase-order" action="{{route('bills.purchaseOrder.store') }}"
+            <form class="ajax-submit-updated" id="form-purchase-order" action="{{ url('/vendors/bills/purchaseorder') }}"
                 method="post" data-message="Successfully created a purchase order.">
                 @csrf
                 @include('vendors.bills.forms.purchaseOrderModal')

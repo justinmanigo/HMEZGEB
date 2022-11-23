@@ -12,10 +12,10 @@ class WithholdingPayments extends Model
     protected $fillable = [
         'payment_reference_id',
         'accounting_period_id',
-        'chart_of_account_id',
-        'amount_paid',
+        'total_paid',
+        'cheque_number',
     ];
-    
+
     public function paymentReference()
     {
         return $this->belongsTo(PaymentReferences::class, 'payment_reference_id');

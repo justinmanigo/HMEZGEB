@@ -232,9 +232,9 @@
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
                                             VAT <span class="badge badge-danger">Soon</span>
                                         </a>
-                                        <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-withholding-payment') --}}">
+                                        <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-withholding-payment') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Withholding <span class="badge badge-danger">Soon</span>
+                                            Withholding <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-payroll-payment') }}">
                                             <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>

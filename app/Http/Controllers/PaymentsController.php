@@ -53,7 +53,7 @@ class PaymentsController extends Controller
                 'payment_references.date',
                 'payment_references.status',
                 // 'payment_references.is_void', // TODO: to implement
-                
+
                 // Vat Payments
                 'vat_payments.current_receivable as vat_amount',
 
@@ -61,7 +61,10 @@ class PaymentsController extends Controller
                 'pension_payments.amount_received as pension_amount',
 
                 // Withholding Payments
-                'withholding_payments.amount_paid as withholding_amount',
+                'withholding_payments.total_paid as withholding_amount',
+                'wp_accounting_periods.period_number as wp_period_number',
+                'wp_accounting_periods.date_from as wp_date_from',
+                'wp_accounting_periods.date_to as wp_date_to',
 
                 // Payroll Payments
                 'payroll_payments.total_paid as payroll_amount',
@@ -74,7 +77,7 @@ class PaymentsController extends Controller
                 'itp_accounting_periods.period_number as itp_period_number',
                 'itp_accounting_periods.date_from as itp_date_from',
                 'itp_accounting_periods.date_to as itp_date_to',
-                
+
                 // TODO: implement commission
             )
             ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
@@ -87,6 +90,7 @@ class PaymentsController extends Controller
 
             // Withholding Payments
             ->leftJoin('withholding_payments', 'payment_references.id', '=', 'withholding_payments.payment_reference_id')
+            ->leftJoin('accounting_periods as wp_accounting_periods', 'withholding_payments.accounting_period_id', '=', 'wp_accounting_periods.id')
 
             // Payroll Payments
             ->leftJoin('payroll_payments', 'payment_references.id', '=', 'payroll_payments.payment_reference_id')

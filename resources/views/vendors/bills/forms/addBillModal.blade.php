@@ -45,13 +45,13 @@
                     <p class="text-danger error-message error-message-due_date" style="display:none"></p>
                 </div>
             </div>
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <label for="b_purchase_order" class="col-4 col-form-label text-lg-right">Purchase Order # :</label>
                 <div class="col-8">
                     <input type="text" id="b_purchase_order" name="purchase_order">
                     <p class="text-danger error-message error-message-purchase_order" style="display:none"></p>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>

@@ -97,10 +97,10 @@
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 <a role="button" class="dropdown-item" data-toggle="modal" data-target=".bill-payment-modal">Bill</a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal" {{-- data-target=".VAT-payment-modal" --}}>VAT <span class="badge badge-danger">Soon</span></a>
-                <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                    {{-- data-target=".Withholding-payment-modal" --}}>Withholding <span class="badge badge-danger">Soon</span></a>
                 <a role="button" class="dropdown-item" data-toggle="modal"
-                    data-target=".payroll-payment-modal">Payroll <span class="badge badge-success">New</span></a>
+                    data-target="#modal-withholding-payment">Withholding <span class="badge badge-success">New</span></a>
+                <a role="button" class="dropdown-item" data-toggle="modal"
+                    data-target="#modal-payroll-payment">Payroll <span class="badge badge-success">New</span></a>
                 <a role="button" class="dropdown-item" data-toggle="modal"
                     data-target="#modal-income-tax-payment">Income Tax <span class="badge badge-success">New</span></a>
                 <a role="button" class="dropdown-item disabled" data-toggle="modal"
@@ -137,6 +137,7 @@
 
     {{-- BillPayment --}}
     @include('vendors.payments.modals.types.bill_payment')
+    @include('vendors.payments.modals.types.withholding_payment')
     @include('vendors.payments.modals.types.income_tax_payment')
 
     {{-- VAT --}}
@@ -151,35 +152,9 @@
                         <p class="h3 pl-4 m-auto">New VAT Payment</p>
                         <a class="close" data-dismiss="modal">×</a>
                     </div>
-                    <form id="contactForm" action="{{route('payments.billPayment.store')}}" method="post" role="form">
+                    <form id="contactForm" action="" method="post" role="form">
                         Coming Soon.
                         {{-- @include('vendors.payments.forms.VATPaymentModal') --}}
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- Withholding --}}
-    <div class="modal fade Withholding-payment-modal" id="modal-withholding-payment" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <img class="mr-5"
-                            src="https://user-images.githubusercontent.com/75387615/156304203-f98fe8db-d7a4-409f-a83c-8221c88e6e80.jpg">
-                        <p class="h3 pl-4 m-auto">New Withholding Payment</p>
-                        <a class="close" data-dismiss="modal">×</a>
-                    </div>
-                    <form id="contactForm" action="{{route('payments.withholdingPayment.store')}}" method="post"
-                        role="form">
-                        @csrf
-                        Coming Soon.
-                        {{-- @include('vendors.payments.forms.withholdingPaymentModal') --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             {{-- <input type="submit" class="btn btn-primary" id="submit"> --}}
@@ -365,6 +340,8 @@
                                             {{ "For Period # " . $payment->pp_period_number . " (" . $payment->pp_date_from . " - " . $payment->pp_date_to . ")" }}
                                         @elseif($payment->type == 'income_tax_payment')
                                             {{ "For Period # " . $payment->itp_period_number . " (" . $payment->itp_date_from . " - " . $payment->itp_date_to . ")" }}
+                                        @elseif($payment->type == 'withholding_payment')
+                                            {{ "For Period # " . $payment->wp_period_number . " (" . $payment->wp_date_from . " - " . $payment->wp_date_to . ")" }}
                                         @else
                                             {{ $payment->name }}
                                         @endif
@@ -479,6 +456,7 @@
 <!-- Payroll Payment -->
 <script src="/js/vendors/template_select_cash_account.js"></script>
 <script src="/js/vendors/template_select_payroll_period.js"></script>
+<script src="/js/vendors/payment/modal_withholding_payment.js"></script>
 <script src="/js/vendors/payment/modal_payroll_payment.js"></script>
 <script src="/js/vendors/payment/modal_income_tax_payment.js"></script>
 
