@@ -61,7 +61,7 @@ class BillPaymentController extends Controller
         ]);
 
         // create credit postings
-        $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_cash_on_hand);
+        $credit_accounts[] = CreateJournalPostings::encodeAccount($request->cash_account->value);
         $credit_amount[] = $request->amount_paid;
 
         // create debit postings

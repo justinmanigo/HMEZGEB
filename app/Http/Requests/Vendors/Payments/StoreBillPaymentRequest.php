@@ -26,6 +26,7 @@ class StoreBillPaymentRequest extends FormRequest
     public function rules()
     {
         return [
+            'cash_account' => ['required'],
             'vendor' => ['required'],
             'date' => ['required'],
             'bill' => ['required'],
@@ -43,6 +44,7 @@ class StoreBillPaymentRequest extends FormRequest
             'bill_cash_on_hand' => $accounting_system->bill_cash_on_hand,
             'bill_account_payable' => $accounting_system->bill_account_payable,
 
+            'cash_account' => DecodeTagifyField::run($this->cash_account),
             'vendor' => DecodeTagifyField::run($this->vendor),
             'bill' => DecodeTagifyField::run($this->bill),
             'amount_paid' => floatval($this->amount_paid),

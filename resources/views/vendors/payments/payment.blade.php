@@ -437,8 +437,14 @@
 </script>
 
 <!-- Vendors -->
+<script src="/js/tagify_templates/template_select_cash_account.js"></script>
+<script src="/js/vendors/template_select_payroll_period.js"></script>
 <script src="/js/tagify_templates/template_select_bill.js"></script>
+<script src="/js/human_resource/template_select_employee.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
+
+<script src="/js/vendors/payment/modal_bill_payment.js"></script>
+<script src="/js/vendors/payment/default_values.js"></script>
 <script src="/js/vendors/payment/select_vendor_billpayment_updated.js"></script>
 <script src="/js/vendors/payment/select_vendor_payroll.js"></script>
 <script src="/js/vendors/payment/select_vendor_vat.js"></script>
@@ -446,7 +452,6 @@
 <script src="/js/vendors/payment/select_vendor_pension.js"></script>
 <script src="/js/vendors/payment/select_vendor_income_tax.js"></script>
 <!-- Employee -->
-<script src="/js/human_resource/template_select_employee.js"></script>
 <script src="/js/vendors/payment/select_employee_commission.js"></script>
 
 <!-- Select bill -->
@@ -454,8 +459,6 @@
 <script src="/js/vendors/payment/select_payment_withholding.js"></script>
 
 <!-- Payroll Payment -->
-<script src="/js/vendors/template_select_cash_account.js"></script>
-<script src="/js/vendors/template_select_payroll_period.js"></script>
 <script src="/js/vendors/payment/modal_withholding_payment.js"></script>
 <script src="/js/vendors/payment/modal_payroll_payment.js"></script>
 <script src="/js/vendors/payment/modal_income_tax_payment.js"></script>
