@@ -45,7 +45,14 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group row mb-0">
-                                <h5 class="col-12">Select Bill to Pay</h5>
+                                <h5 class="col-12">Payment Details</h5>
+                            </div>
+                            <div class="form-group row">
+                                <label for="b_cash_account" class="col-4 col-form-label">Cash Account<span class="text-danger ml-1">*</span> :</label>
+                                <div class="col-8">
+                                    <input class="form-control" id="b_cash_account" name='cash_account'>
+                                    <p class="text-danger error-message error-message-cash_account" style="display:none"></p>
+                                </div>
                             </div>
                             <div class="form-group row">
                                 <label for="b_date" class="col-4 col-form-label">Date<span class="text-danger ml-1">*</span> :</label>
