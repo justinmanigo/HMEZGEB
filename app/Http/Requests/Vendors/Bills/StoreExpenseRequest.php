@@ -6,6 +6,7 @@ use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
 use App\Models\Settings\ChartOfAccounts\ChartOfAccounts;
 use App\Models\AccountingSystem;
+use App\Actions\Vendors\Payments\Withholding\CheckIfWithholdingPeriodPaid;
 
 class StoreExpenseRequest extends FormRequest
 {
@@ -127,6 +128,11 @@ class StoreExpenseRequest extends FormRequest
             // Check in case of withholding more than total_amount_received
             if($this->get('withholding_check') != null && $this->get('withholding_amount') > $this->get('total_amount_received')) {
                 $validator->errors()->add('withholding', 'Please enter a valid withholding amount. It should not be more than the total amount received.');
+            }
+
+            // Check if withholding period of $request->date is already paid
+            if(CheckIfWithholdingPeriodPaid::run($this->get('date'))) {
+                $validator->errors()->add('date', 'The withholding payment for the date\'s period has already been made.');
             }
         });
     }
