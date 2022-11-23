@@ -22,6 +22,7 @@ use App\Http\Controllers\Banking\BankReconciliationController;
 // Vendor module
 use App\Http\Controllers\VendorsController;
 use App\Http\Controllers\BillsController;
+use App\Http\Controllers\Vendors\Bills\BillController;
 use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
 use App\Http\Controllers\Vendors\Bills\ExpenseController;
 use App\Http\Controllers\PaymentsController;
@@ -94,6 +95,10 @@ use App\Http\Controllers\Subscription\ManageSubscriptionUsersController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/test', function () {
+    return var_dump(App\Actions\Vendors\Payments\Withholding\CheckIfWithholdingPeriodPaid::run('2022-10-20'));
+});
 
 Route::get('/check-authentication', function() {
     return Auth::check();
@@ -391,6 +396,12 @@ Route::group([
                 Route::get('/vendors/bills', [BillsController::class, 'index'])->name('index');
                 Route::get('/vendors/bills/{bills}', [BillsController::class, 'show'])->name('show');
 
+                Route::group([
+                    'as' => 'bill.',
+                ], function() {
+                    Route::post('/vendors/bills/bill', [BillController::class, 'store'])->name('store');
+                });
+
                 // COGS
                 Route::group([
                     'as' => 'cogs.',
@@ -406,7 +417,7 @@ Route::group([
                 });
 
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
-                Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
+                // Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
                 Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
                 Route::get('/purchaseorder/{id}',[BillsController::class,'showPurchaseOrder'])->name('purchaseOrder.show');
