@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Vendor\Bill;
+namespace App\Http\Requests\Vendors\Bills;
 
 use App\Actions\DecodeTagifyField;
 use App\Http\Requests\Api\FormRequest;
@@ -47,7 +47,7 @@ class StorePurchaseOrderRequest extends FormRequest
     }
 
     protected function prepareForValidation()
-    {        
+    {
         for($i = 0; $i < count($this->item); $i++) {
             if($this->item[$i] != null) {
                 $item[] = DecodeTagifyField::run($this->item[$i]);
@@ -60,3 +60,4 @@ class StorePurchaseOrderRequest extends FormRequest
         ]);
     }
 }
+

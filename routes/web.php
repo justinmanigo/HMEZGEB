@@ -25,6 +25,7 @@ use App\Http\Controllers\BillsController;
 use App\Http\Controllers\Vendors\Bills\BillController;
 use App\Http\Controllers\Vendors\Bills\CostOfGoodsSoldController;
 use App\Http\Controllers\Vendors\Bills\ExpenseController;
+use App\Http\Controllers\Vendors\Bills\PurchaseOrderController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\Vendors\Payments\BillPaymentController;
 use App\Http\Controllers\Vendors\Payments\WithholdingPaymentController;
@@ -396,10 +397,18 @@ Route::group([
                 Route::get('/vendors/bills', [BillsController::class, 'index'])->name('index');
                 Route::get('/vendors/bills/{bills}', [BillsController::class, 'show'])->name('show');
 
+                // Bill
                 Route::group([
                     'as' => 'bill.',
                 ], function() {
                     Route::post('/vendors/bills/bill', [BillController::class, 'store'])->name('store');
+                });
+
+                // Purchase Order
+                Route::group([
+                    'as' => 'purchaseorder',
+                ], function() {
+                    Route::post('/vendors/bills/purchaseorder', [PurchaseOrderController::class, 'store'])->name('store');
                 });
 
                 // COGS
@@ -419,7 +428,6 @@ Route::group([
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
                 // Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
-                Route::post('/purchaseorder',[BillsController::class,'storePurchaseOrder'])->name('purchaseOrder.store');
                 Route::get('/purchaseorder/{id}',[BillsController::class,'showPurchaseOrder'])->name('purchaseOrder.show');
                 // Mail
                 Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
