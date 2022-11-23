@@ -175,7 +175,7 @@
                                             </button>
                                             @endif
                                         @elseif($transaction->type == 'purchase_order')
-                                            <a href="{{route('bills.purchaseOrder.show', $transaction->purchaseOrders->id)}}" class="btn btn-primary btn-sm edit">
+                                            <a href="javascript:void(0)" class="btn btn-primary btn-sm edit disabled">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
