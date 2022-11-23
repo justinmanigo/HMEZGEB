@@ -93,7 +93,7 @@ class BillController extends Controller
 
         // This determines which is which to include in credit postings
         if($status == 'paid' || $status == 'partially_paid') {
-            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->bill_cash_on_hand);
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($request->cash_account->value);
             $credit_amount[] = $cash_on_hand;
         }
         if($status == 'partially_paid' || $status == 'unpaid') {
