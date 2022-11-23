@@ -22,7 +22,7 @@
                                     <input class="form-control" id="b_vendor" name='vendor'>
                                     <p class="text-danger error-message error-message-vendor" style="display:none"></p>
                                     {{-- Contact Details --}}
-                                    <div class="alert alert-info mt-3">
+                                    {{-- <div class="alert alert-info mt-3">
                                         <div class="form-group row m-0">
                                             <label for="b_tin_number" class="col-6 m-0 p-0 col-form-label text-lg-right">Tin # :</label>
                                             <p id="b_tin_number" class="m-0 p-0 col-6"></p>
@@ -35,7 +35,7 @@
                                             <label for="b_mobile_number" class="col-6 m-0 p-0 col-form-label text-lg-right">Contact # :</label>
                                             <p id="b_mobile_number" class="m-0 p-0 col-6"></p>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <input type="hidden" id="b_vendor_id" name="vendor_id" value="">
