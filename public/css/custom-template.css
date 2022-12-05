@@ -1,4 +1,85 @@
+/* Table */
+.table-item-content {
+    /** Equivalent to pt-3 */
+    padding-top: 1rem !important;
+}
+
+.thead-actions {
+    /** Fixed width, increase if adding addt. buttons **/
+    width: 120px;
+}
+
+/* Content Card */
+.content-card {
+    border-radius: 0px 0px 5px 5px;
+}
+
+/* Disable up and down mini buttons for price-related inputs */
+.inputPrice::-webkit-inner-spin-button,
+.inputTax::-webkit-inner-spin-button,
+.inputPrice::-webkit-outer-spin-button,
+.inputTax::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hovering to checkbox shall not trigger link pointer */
+input[type="checkbox"],
+label {
+    cursor: pointer;
+}
+
+/* Quick New Dropdown */
+.dropdown-menu-quick-new {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000000!important;
+    display: none;
+    float: left;
+    min-width: 40rem!important;
+    padding: 1rem 0;
+    margin: 0.125rem 0.125rem 0 0!important;
+    font-size: 0.85rem;
+    color: #858796;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+}
+
+/**
+  * Wide/Short Logo Dynamic Layout
+  */
+
 #brand_logo {
     height: 100px !important;
     width: auto;
+}
+
+.crop-logo-container {
+    width: 56px;
+    height: 41px;
+    overflow: hidden;
+}
+
+.crop-text-container {
+    margin-top:8px;
+    width: 140px;
+    height: 32px;
+    overflow: hidden;
+}
+
+.crop-logo-container img {
+    margin: 0px 0px 0px -8px;
+    width:auto;
+    height:56px!important
+}
+
+.crop-text-container img {
+    margin: -70px 0px 0px 0px;
+    width:auto;
+    height:96px!important
 }
