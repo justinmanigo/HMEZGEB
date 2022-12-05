@@ -1,23 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    .table-item-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width:120px;
-    }
-
-    input[type="checkbox"], label {
-        cursor: pointer;
-    }
-</style>
-@endpush
-
 @section('content')
 {{-- Button Group Navigation --}}
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
@@ -26,7 +8,7 @@
             <i class="fas fa-pen"></i>
         </span>
         <span class="text">Back</span>
-    </a> 
+    </a>
 </div>
 
 {{-- Page Content --}}
@@ -47,9 +29,9 @@
             </tr>
         </table>
 
-        
-        
-        
+
+
+
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
