@@ -3,16 +3,6 @@
 
 @push('styles')
 <style>
-    .table-item-content {
-        /** Equivalent to pt-3 */
-        padding-top: 1rem !important;
-    }
-
-    .thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width: 120px;
-    }
-
     .content-card {
         border-radius: 0px 0px 5px 5px;
     }
@@ -29,87 +19,7 @@
     label {
         cursor: pointer;
     }
-
-    /*
-            TEMPORARY
-        */
-    /* Suggestions items */
-    .tagify__dropdown.banks-list .tagify__dropdown__item {
-        padding: .5em .7em;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0 1em;
-        grid-template-areas: "avatar name"
-            "avatar email";
-    }
-
-    .tagify__dropdown.banks-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
-        transform: scale(1.2);
-    }
-
-    .tagify__dropdown.banks-list .tagify__dropdown__item__avatar-wrap {
-        grid-area: avatar;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        overflow: hidden;
-        background: #EEE;
-        transition: .1s ease-out;
-    }
-
-    .tagify__dropdown.banks-list img {
-        width: 100%;
-        vertical-align: top;
-    }
-
-    .tagify__dropdown.banks-list strong {
-        grid-area: name;
-        width: 100%;
-        align-self: center;
-    }
-
-    .tagify__dropdown.banks-list span {
-        grid-area: email;
-        width: 100%;
-        font-size: .9em;
-        opacity: .6;
-    }
-
-    .tagify__dropdown.banks-list .addAll {
-        border-bottom: 1px solid #DDD;
-        gap: 0;
-    }
-
-
-    /* Tags items */
-    .tagify__tag {
-        white-space: nowrap;
-    }
-
-    .tagify__tag:hover .tagify__tag__avatar-wrap {
-        transform: scale(1.6) translateX(-10%);
-    }
-
-    .tagify__tag .tagify__tag__avatar-wrap {
-        width: 16px;
-        height: 16px;
-        white-space: normal;
-        border-radius: 50%;
-        background: silver;
-        margin-right: 5px;
-        transition: .12s ease-out;
-    }
-
-    .tagify__tag img {
-        width: 100%;
-        vertical-align: top;
-        pointer-events: none;
-    }
 </style>
-
-<script src="https://unpkg.com/@yaireo/tagify"></script>
-<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -172,7 +82,7 @@
                     <i class="fas fa-download"></i>
                 </span>
                 <span class="text">Download Excel Format</span>
-            </button>    
+            </button>
         </div> --}}
 
         {{-- Tab Navigation --}}
@@ -181,7 +91,7 @@
                 <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab" aria-controls="transactions" aria-selected="true">Transfer History</a>
             </li>
         </ul>
-        
+
         {{-- Tab Contents --}}
         <div class="card" class="content-card">
             <div class="card-body tab-content" id="myTabContent">
@@ -196,7 +106,7 @@
                 @endif
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">                        
+                        <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
                                 <th>Date</th>
                                 <th>Reference</th>
@@ -255,7 +165,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </span>
                                         </button>
-                                    </td>        
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -374,7 +284,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 {{-- Mail confirmation modal --}}
 <div class="modal fade" id="mail-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

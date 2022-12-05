@@ -1,23 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    .table-item-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width:120px;
-    }
-</style>
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
-@endpush
-
 @section('content')
 
 <div class="row">
@@ -25,7 +7,7 @@
     {{-- Main Content Section --}}
     <div class="col-xl-10 col-lg-9 col-12">
         {{-- Button Group Navigation --}}
-        <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">         
+        <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
                 <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="icon text-white-50">
                         <i class="fas fa-download"></i>
@@ -51,7 +33,7 @@
                             <th>Description</th>
                             <th>Amount</th>
                         </thead>
-                        <tbody> 
+                        <tbody>
                                 {{-- get all transactions	 	 	  --}}
                                 @foreach($transactions as $transaction)
                                 <tr>
@@ -62,7 +44,7 @@
                                     <td>{{ $transaction->description }}</td>
                                     <td>{{ $transaction->amount }}</td>
                                 </tr>
-                                @endforeach                          
+                                @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -109,7 +91,7 @@
             </div>
         </div>
     </div>
-</div>          
+</div>
 <script>
     $(document).ready(function () {
         $('#dataTables').DataTable();

@@ -1,18 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    .thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width: 120px;
-    }
-</style>
-
-<script src="https://unpkg.com/@yaireo/tagify"></script>
-<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-@endpush
-
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -37,7 +24,7 @@
                     <button type="submit" class="btn btn-primary" disabled>Import</button>
                 </form> --}}
             </div>
-        </div>        
+        </div>
     </div>
     {{-- <div class="row mb-4">
         <div class="card col-12">
@@ -55,9 +42,9 @@
                     </div>
                 </nav>
                 <hr>
-                
+
                 <div class="tab-content" id="nav-tabContent">
-                    
+
                     <div class="tab-pane fade show active" id="nav-status" role="tabpanel" aria-labelledby="nav-contact-tab">
                         <div class="row">
                             <div class="col-12 col-lg-6">
@@ -169,7 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-12 col-lg-6">
                                 <div class="table">
@@ -259,7 +246,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-reconciled-entries" role="tabpanel" aria-labelledby="nav-reconciled-entries-tab">
-                        
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h5>Bank Statement</h5>
