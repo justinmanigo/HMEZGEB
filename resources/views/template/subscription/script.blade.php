@@ -1,7 +1,11 @@
     <div id="toast-container" class="toast-container position-fixed bottom-0 start-0 p-3"></div>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script>
+    @if (App::environment(['local']))
+        <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script>
+    @else
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/js/sb-admin-2.min.js"></script>
+    @endif
 
     <!-- Page level custom scripts -->
     <script src="{{URL::asset('js/demo/datatables-demo.js')}}"></script>
