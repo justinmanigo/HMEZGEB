@@ -1,107 +1,5 @@
 @extends('template.subscription')
 
-@push('styles')
-<style>
-    .table-employee-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width:120px;
-    }
-
-    #account-header-grid {
-        display:grid;
-        gap:16px;
-        grid-template-columns:128px auto;
-        margin-bottom:24px;
-    }
-
-    #account-picture-128 {
-        width:128px;
-        border-radius:100%;
-    }
-
-    #account-name-header {
-        margin-top:16px;
-        margin-bottom:0px;
-        font-size:36px;
-    }
-
-    .account-h2 {
-        font-size:20px;
-        font-weight: 700;
-    }
-
-    .card-content-grid-header-2 {
-        display:grid;
-        gap:16px;
-        grid-template-columns:auto 128px;
-    }
-
-    .card-content-grid-header-3 {
-        display:grid;
-        gap:16px;
-        grid-template-columns:144px auto 128px;
-        grid-template-areas:
-            "header content btn";
-    }
-
-    .card-content-header {
-        grid-area: header;
-    }
-
-    .card-content-value {
-        grid-area: content;
-    }
-
-    .card-content-btn {
-        grid-area: btn;
-    }
-
-    @media (max-width:991px) {
-        #account-header-grid {
-            grid-template-columns:auto;
-        }
-
-        #account-picture-128 {
-            margin:0 auto;
-            display:block;
-        }
-
-        #account-name-header {
-            margin-top:0px;
-            text-align:center;
-        }
-
-        #account-edit-photo-btn {
-            display:block;
-            margin:0 auto;
-        }
-
-        .card-content-grid-header-3 {
-            display:grid;
-            gap:16px;
-            grid-template-columns:auto 128px;
-            grid-template-areas:
-                "header btn"
-                "content content";
-        }
-    }
-</style>
-
-<script src="https://unpkg.com/@yaireo/tagify"></script>
-<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
-@endpush
-
 @section('content')
 
 <div class="container">
@@ -132,7 +30,7 @@
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary" id="btn_submit_form_name" form="form_name" data-submit="1">Update Name</button>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
@@ -146,7 +44,7 @@
 $(".account-update").submit(function(e){
     console.log(e);
     e.preventDefault();
-    
+
     // Initialize and get input elements, submit button, and close button.
     // error ids must match ff format: err_{form_name}_{input_field}
     // for submit btns: btn_submit_{form_name}, include data-submit='1' attr
@@ -219,7 +117,7 @@ function showErrors(elm_errors, errors)
         if(errorInArray(error_list, err)) {
             e.show().html(errors[err][0]);
         }
-    });   
+    });
 }
 
 function errorInArray(error_list, err)
