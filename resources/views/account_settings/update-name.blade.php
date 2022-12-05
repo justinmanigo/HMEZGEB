@@ -8,7 +8,7 @@
             <div class="card-body">
                 <h4>Update Your Profile Name</h4>
                 <p>Before you continue on your next task, we humbly ask you to update your profile name.</p>
-                <p>Your profile name currently uses the default `New User` which makes your collaborators unable to identify you./p>
+                <p>Your profile name currently uses the default `New User` which makes your collaborators unable to identify you.</p>
                 <p class="alert alert-warning"><strong>Note: </strong>You cannot update your name again.</p>
                 <form id="form_name" data-update="name" data-issensitive="0" class="account-update" method="post">
                     @csrf
