@@ -2,98 +2,10 @@
 
 @push('styles')
     <style>
-        .table-item-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-        }
-
-        .thead-actions {
-            /** Fixed width, increase if adding addt. buttons **/
-            width:120px;
-        }
         .content-card {
             border-radius:0px 0px 5px 5px;
         }
-
-        .inputPrice::-webkit-inner-spin-button, .inputChart Of Account::-webkit-inner-spin-button,
-        .inputPrice::-webkit-outer-spin-button, .inputChart Of Account::-webkit-outer-spin-button {
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-
-        input[type="checkbox"], label {
-            cursor: pointer;
-        }
-        
-        /*
-            TEMPORARY
-        */
-        /* Suggestions items */
-        .tagify__dropdown.customers-list .tagify__dropdown__item{
-            padding: .5em .7em;
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 0 1em;
-            grid-template-areas: "avatar name"
-                                "avatar email";
-        }
-        .tagify__dropdown.customers-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap{
-            transform: scale(1.2);
-        }
-        .tagify__dropdown.customers-list .tagify__dropdown__item__avatar-wrap{
-            grid-area: avatar;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: #EEE;
-            transition: .1s ease-out;
-        }
-        .tagify__dropdown.customers-list img{
-            width: 100%;
-            vertical-align: top;
-        }
-        .tagify__dropdown.customers-list strong{
-            grid-area: name;
-            width: 100%;
-            align-self: center;
-        }
-        .tagify__dropdown.customers-list span{
-            grid-area: email;
-            width: 100%;
-            font-size: .9em;
-            opacity: .6;
-        }
-        .tagify__dropdown.customers-list .addAll{
-            border-bottom: 1px solid #DDD;
-            gap: 0;
-        }
-        /* Tags items */
-         .tagify__tag{
-            white-space: nowrap;
-        }
-         .tagify__tag:hover .tagify__tag__avatar-wrap{
-            transform: scale(1.6) translateX(-10%);
-        }
-         .tagify__tag .tagify__tag__avatar-wrap{
-            width: 16px;
-            height: 16px;
-            white-space: normal;
-            border-radius: 50%;
-            background: silver;
-            margin-right: 5px;
-            transition: .12s ease-out;
-        }
-         .tagify__tag img{
-            width: 100%;
-            vertical-align: top;
-            pointer-events: none;
-        }
     </style>
-
-    <script src="https://unpkg.com/@yaireo/tagify"></script>
-    <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('content')
@@ -109,7 +21,7 @@
                     <i class="fas fa-pen"></i>
                 </span>
                 <span class="text">New</span>
-            </button> 
+            </button>
         </div>
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
             <button id="btn-modal-beginning-balance" role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-beginning-balance">
@@ -117,7 +29,7 @@
                     <i class="fas fa-pen"></i>
                 </span>
                 <span class="text">Beginning balance</span>
-            </button> 
+            </button>
         </div>
         <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
@@ -167,14 +79,14 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
-                </div>     
+                </div>
             @endif
                 {{-- Transaction Contents --}}
                 <div class="tab-pane fade show active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
                     <div class="table-responsive">
                          <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                             <thead>
-                                
+
                                 <th>Chart of Acct#</th>
                                 <th>Account Name</th>
                                 <th>Account Type</th>
@@ -182,13 +94,13 @@
                                 <th>Balance</th>
                                 <th>Status</th>
                                 <th class="thead-actions">Actions</th>
-                                
+
                             </thead>
                             <tbody>
                                 @foreach($chart_of_accounts as $coa)
                                 <tr>
                                     <td class="table-item-content">{{ $coa->chart_of_account_no }}</td>
-                                    <td class="table-item-content">{{ $coa->account_name }}</td> 
+                                    <td class="table-item-content">{{ $coa->account_name }}</td>
                                     <td class="table-item-content">{{ $coa->type }}</td>
                                     <td class="table-item-content">{{ $coa->category }}</td>
                                     <td class="table-item-content text-right">
@@ -263,7 +175,7 @@
                                 <label class="form-check-label" for="coa_is_bank">Is this a Bank account?</label>
                             </div>
                         </div>
-                    </div>   
+                    </div>
                     <div class="form-group row">
                         <label for="coa_name" class="col-sm-3 col-lg-2 col-form-label">Account Name<span class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-6">
@@ -456,7 +368,7 @@
             url: `/ajax/settings/coa/beginning-balance`,
             method: "GET",
         });
-            
+
         request.done(function(res, status, jqXHR ) {
             $("#form-beginning-balance").show();
             $("#modal-beginning-balance-spinner").hide();
@@ -467,7 +379,7 @@
 
             var sum_debits = 0.00;
             var sum_credits = 0.00;
-            
+
             res.debits.forEach(function(d){
                 createBeginningBalanceRow(d, 'debit');
                 sum_debits += parseFloat(d.amount);
@@ -481,7 +393,7 @@
             $("#bb_debit_total").html(sum_debits.toFixed(2));
             $("#bb_credit_total").html(sum_credits.toFixed(2));
         });
-        
+
         request.fail(function(jqXHR, status, error) {
             console.log("Request failed.");
         });
@@ -494,8 +406,8 @@
         let inner = `
             <tr>
                 <td>
-                    <input name="${ type=='debit' ? 'debit' : 'credit' }_coa_id[]" class="form-control-plaintext" type="text" value="${coa.id}" hidden readonly>   
-                    ${coa.chart_of_account_no}    
+                    <input name="${ type=='debit' ? 'debit' : 'credit' }_coa_id[]" class="form-control-plaintext" type="text" value="${coa.id}" hidden readonly>
+                    ${coa.chart_of_account_no}
                 </td>
                 <td>${coa.account_name}</td>
                 <td>${coa.category}</td>
@@ -525,7 +437,7 @@
     $(document).on('change', '.bb_debit_amount', function(event){
         calculateTotalBeginningBalance('bb_debit_total', 'bb_debit');
     });
-    
+
     $(document).on('change', '.bb_credit_amount', function(event){
         calculateTotalBeginningBalance('bb_credit_total', 'bb_credit');
     });

@@ -1,13 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-@endpush
-
 @section('content')
 <div class="d-sm-flex align-items-start justify-content-between mb-2">
     <h1>Withholding</h1>
@@ -36,7 +28,7 @@
             </span>
             <span class="text">Download Excel Format</span>
         </button> --}}
-    </div>  
+    </div>
 </div>
 <div class="card">
     {{-- success error --}}
@@ -229,7 +221,7 @@
     //     $('#dataTables').DataTable();
     //     $('.dataTables_filter').addClass('pull-right');
     // });
-   
+
     // add the file name only in file input field
     $('.custom-file-input').on('change', function() {
         var fileName = $(this).val().split('\\').pop();
@@ -244,13 +236,13 @@
         $("#form-withholding").attr("action", "/settings/withholding/" + id)
         $("#t_submit_btn").html("Update Withholding").attr("disabled", 'disabled');
         $("#modal-withholding-label").html("Edit Withholding");
-        
+
         // Get data from server.
         var request = $.ajax({
             url: "/ajax/settings/withholding/get/" + id,
             method: "GET",
         });
-            
+
         request.done(function(res, status, jqXHR ) {
             $("#form-withholding").show();
             $("#modal-withholding-spinner").hide();
@@ -261,7 +253,7 @@
             $("#t_name").val(res.name);
             $("#t_percentage").val(res.percentage);
         });
-        
+
         request.fail(function(jqXHR, status, error) {
             console.log("Request failed.");
         });
