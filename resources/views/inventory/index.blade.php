@@ -5,14 +5,6 @@
     .w-15 {
         width: 15%;
     }
-
-    .inputPrice::-webkit-inner-spin-button,
-    .inputTax::-webkit-inner-spin-button,
-    .inputPrice::-webkit-outer-spin-button,
-    .inputTax::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
 </style>
 @endpush
 
@@ -229,7 +221,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 
 
