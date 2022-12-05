@@ -114,8 +114,8 @@
                         <div class="col-12 col-lg-6">
                             <select class="form-control form-control-select select-subscription" id="anu_subscription_id" name="subscription_id" required>
                                 @foreach($result as $output)
-                                    @if($output['subscription']->status != 'suspended' && 
-                                        (   
+                                    @if($output['subscription']->status != 'suspended' &&
+                                        (
                                             !isset($output['subscription']->date_to) ||
                                             $output['subscription']->date_to > now()->format('Y-m-d')
                                         )
@@ -242,7 +242,7 @@
                                     <p class="text-success m-0 p-0">Successfully added a subscription user.</p>
                                 </div>
                             </div>
-                            
+
                             <p>Assign this user access to certain accounting systems of this subscription.</p>
                             <div class="table-responsive">
                                 <table class="table table-sm table-bordered">
@@ -313,7 +313,7 @@
                                 <strong id="eu_subscription_id">0</strong>
                             </p>
                         </div>
-                        <div class="col-xs-12 col-lg-9 col-xl-10">            
+                        <div class="col-xs-12 col-lg-9 col-xl-10">
                             <p>Select what role this user posess.</p>
                             <div class="form-group row">
                                 <label for="eu_role" class="col-sm-4 col-lg-2 col-form-label">Role</label>
@@ -324,8 +324,8 @@
                                         <option value="moderator">Moderator</option>
                                         <option value="member">Member</option>
                                     </select>
-                                </div>    
-                            </div>                
+                                </div>
+                            </div>
                             <p>Assign this user access to certain accounting systems of this subscription.</p>
                             <div class="table-responsive">
                                 <table class="table table-sm table-bordered">
@@ -382,7 +382,7 @@
                     </div>
                 </div>
                 <p>
-                    Are you sure to remove <strong id="du_name"></strong> access to this subscription? 
+                    Are you sure to remove <strong id="du_name"></strong> access to this subscription?
                     This will also remove his/her permissions and access to accounting systems.
                 </p>
                 <form id="form-remove-user" class="" action="" method="POST">
@@ -447,7 +447,7 @@
 
                 $('#form-add-access-user').attr('action', `/ajax/subscription/user/add/access/${res.subscription_user.id}`);
 
-                printAccountingSystems(res.subscription_id, '#aau_accounting_systems');   
+                printAccountingSystems(res.subscription_id, '#aau_accounting_systems');
             });
 
             request.fail(function(res){
@@ -498,7 +498,7 @@
 
                 $('#form-add-access-user').attr('action', `/ajax/subscription/user/add/access/${res.subscription_user.id}`);
 
-                printAccountingSystems(res.subscription_id, '#aau_accounting_systems');     
+                printAccountingSystems(res.subscription_id, '#aau_accounting_systems');
             });
 
             request.fail(function(res){
@@ -753,5 +753,5 @@
             })
         });
     </script>
-    
+
 @endpush
