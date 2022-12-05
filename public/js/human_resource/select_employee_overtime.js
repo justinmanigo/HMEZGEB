@@ -1,9 +1,9 @@
 // This array lists down the employee within the overtime.
-var overtime_employee = []; 
+var overtime_employee = [];
 
 // This variable counts how many instances of overtime employee are made.
 // This ensures that there will be no conflict ids on overtime employee elements.
-var overtime_count = 0; 
+var overtime_count = 0;
 
 // Create a overtime employee entry when document is fully loaded or when add entry button is clicked.
 $(document).ready(createEmployeeEntry());
@@ -21,7 +21,7 @@ $(document).on('click', '.ot_employee_delete', function (event) {
 });
 
 // Creates a overtime  Entry on the Table.
-function createEmployeeEntry() 
+function createEmployeeEntry()
 {
     // Increment overtime_count to avoid element conflicts.
     overtime_count++;
@@ -70,7 +70,7 @@ function createEmployeeEntry()
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: 'employees-list',
+            classname: 'customers-list',
             searchKeys: ['first_name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
@@ -100,16 +100,16 @@ function createEmployeeEntry()
 // Removes a overtime  Entry from the Table.
 function removeEmployeeEntry(entry_id)
 {
-    
+
     for(let i = 0; i < overtime_employee.length; i++)
     {
         if(overtime_employee[i].entry_id == entry_id)
-        {   
+        {
             console.log("Removing entry " + entry_id);
             overtime_employee.splice(i, 1);
             return true;
         }
-    }   
+    }
     return false;
 }
 
@@ -123,7 +123,7 @@ function getOvertimeEntry(entry_id)
             console.log("Found entry.");
             return overtime_employee[i];
         }
-    }   
+    }
     return undefined;
 }
 
@@ -137,7 +137,7 @@ function getOvertimeIndex(entry_id)
             console.log("Found entry.");
             return i;
         }
-    }   
+    }
     return undefined;
 }
 /** === Tagify Related Functions === */
@@ -154,13 +154,13 @@ function onOvertimeSelectSuggestion(e) {
 
 function onOvertimeRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
- 
+
 }
 
 function onOvertimeInput(e) {
     console.log(e.detail);
     console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
+
     var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
     var value = e.detail.value;
     var tagify;
@@ -170,7 +170,7 @@ function onOvertimeInput(e) {
 
     console.log("Obtained value from array");
     console.log(tagify);
-    
+
     entry_obj.tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort

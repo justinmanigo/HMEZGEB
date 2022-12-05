@@ -29,6 +29,10 @@ label {
     cursor: pointer;
 }
 
+.tagify.tagify--select.form-control {
+    padding:0!important;
+}
+
 /* Quick New Dropdown */
 .dropdown-menu-quick-new {
     position: absolute;
@@ -82,4 +86,12 @@ label {
     margin: -70px 0px 0px 0px;
     width:auto;
     height:96px!important
+}
+
+/**
+ * Human Resource
+ */
+ .table-employee-content {
+    /** Equivalent to pt-3 */
+    padding-top:1rem!important;
 }

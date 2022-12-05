@@ -1,9 +1,9 @@
 // This array lists down the employee within the deduction.
-var deduction_employee = []; 
+var deduction_employee = [];
 
 // This variable counts how many instances of deduction employee are made.
 // This ensures that there will be no conflict ids on deduction employee elements.
-var deduction_count = 0; 
+var deduction_count = 0;
 
 // Create a deduction employee entry when document is fully loaded or when add entry button is clicked.
 $(document).ready(createEmployeeEntry());
@@ -21,7 +21,7 @@ $(document).on('click', '.d_employee_delete', function (event) {
 });
 
 // Creates a deduction  Entry on the Table.
-function createEmployeeEntry() 
+function createEmployeeEntry()
 {
     // Increment deduction_count to avoid element conflicts.
     deduction_count++;
@@ -66,7 +66,7 @@ function createEmployeeEntry()
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: 'employees-list',
+            classname: 'customers-list',
             searchKeys: ['first_name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
@@ -96,16 +96,16 @@ function createEmployeeEntry()
 // Removes a deduction  Entry from the Table.
 function removeEmployeeEntry(entry_id)
 {
-    
+
     for(let i = 0; i < deduction_employee.length; i++)
     {
         if(deduction_employee[i].entry_id == entry_id)
-        {   
+        {
             console.log("Removing entry " + entry_id);
             deduction_employee.splice(i, 1);
             return true;
         }
-    }   
+    }
     return false;
 }
 
@@ -119,7 +119,7 @@ function getDeductionEntry(entry_id)
             console.log("Found entry.");
             return deduction_employee[i];
         }
-    }   
+    }
     return undefined;
 }
 
@@ -133,7 +133,7 @@ function getDeductionIndex(entry_id)
             console.log("Found entry.");
             return i;
         }
-    }   
+    }
     return undefined;
 }
 /** === Tagify Related Functions === */
@@ -150,13 +150,13 @@ function onDeductionSelectSuggestion(e) {
 
 function onDeductionRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
- 
+
 }
 
 function onDeductionInput(e) {
     console.log(e.detail);
     console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
+
     var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
     var value = e.detail.value;
     var tagify;
@@ -166,7 +166,7 @@ function onDeductionInput(e) {
 
     console.log("Obtained value from array");
     console.log(tagify);
-    
+
     entry_obj.tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort

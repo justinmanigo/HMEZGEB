@@ -1,9 +1,9 @@
 // This array lists down the employee within the addition.
-var addition_employee = []; 
+var addition_employee = [];
 
 // This variable counts how many instances of addition employee are made.
 // This ensures that there will be no conflict ids on addition employee elements.
-var addition_count = 0; 
+var addition_count = 0;
 
 // Create a addition employee entry when document is fully loaded or when add entry button is clicked.
 $(document).ready(createEmployeeEntry());
@@ -21,7 +21,7 @@ $(document).on('click', '.a_employee_delete', function (event) {
 });
 
 // Creates a addition  Entry on the Table.
-function createEmployeeEntry() 
+function createEmployeeEntry()
 {
     // Increment addition_count to avoid element conflicts.
     addition_count++;
@@ -66,7 +66,7 @@ function createEmployeeEntry()
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: 'employees-list',
+            classname: 'customers-list',
             searchKeys: ['first_name'] // very important to set by which keys to search for suggesttions when typing
         },
         templates: {
@@ -96,16 +96,16 @@ function createEmployeeEntry()
 // Removes a addition  Entry from the Table.
 function removeEmployeeEntry(entry_id)
 {
-    
+
     for(let i = 0; i < addition_employee.length; i++)
     {
         if(addition_employee[i].entry_id == entry_id)
-        {   
+        {
             console.log("Removing entry " + entry_id);
             addition_employee.splice(i, 1);
             return true;
         }
-    }   
+    }
     return false;
 }
 
@@ -119,7 +119,7 @@ function getAdditionEntry(entry_id)
             console.log("Found entry.");
             return addition_employee[i];
         }
-    }   
+    }
     return undefined;
 }
 
@@ -133,7 +133,7 @@ function getAdditionIndex(entry_id)
             console.log("Found entry.");
             return i;
         }
-    }   
+    }
     return undefined;
 }
 /** === Tagify Related Functions === */
@@ -150,13 +150,13 @@ function onAdditionSelectSuggestion(e) {
 
 function onAdditionRemove(e) {
     id = e.detail.tagify.DOM.originalInput.dataset.id;
- 
+
 }
 
 function onAdditionInput(e) {
     console.log(e.detail);
     console.log(e.detail.tagify.DOM.originalInput.dataset.id)
-    
+
     var entry_id = e.detail.tagify.DOM.originalInput.dataset.id
     var value = e.detail.value;
     var tagify;
@@ -166,7 +166,7 @@ function onAdditionInput(e) {
 
     console.log("Obtained value from array");
     console.log(tagify);
-    
+
     entry_obj.tagify.whitelist = null // reset the whitelist
 
     // https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
