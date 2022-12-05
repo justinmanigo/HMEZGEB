@@ -1,23 +1,5 @@
 @extends('template.subscription')
 
-@push('styles')
-<style>
-    .table-item-content {
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width:120px;
-    }
-</style>
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-@endpush
-
 @section('content')
 
 <div class="d-sm-flex align-items-start justify-content-between mb-2">
