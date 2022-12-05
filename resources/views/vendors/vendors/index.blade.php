@@ -1,9 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-
-@endpush
-
 @section('content')
 
 <div class="row">
@@ -353,10 +349,10 @@
             $('#print-deposit').attr('href', '{{ route("vendors.statement.print", ":id") }}'.replace(':id', id));
         }
 
-        
+
 
         function deleteVendor(id) {
-            
+
             $('#delete-frm').attr('action', "/vendors/vendors/" + id);
         }
 
