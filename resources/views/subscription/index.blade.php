@@ -1,13 +1,5 @@
 @extends('template.subscription')
 
-@push('styles')
-
-@endpush
-
-@push('scripts')
-
-@endpush
-
 @section('content')
 
 <div class="container">

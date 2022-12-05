@@ -1,10 +1,5 @@
 @extends('template.subscription')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ url('/css/tagify-template.css') }}">
-    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-@endpush
-
 @section('content')
 
 <h3>Manage Subscription Users</h3>
