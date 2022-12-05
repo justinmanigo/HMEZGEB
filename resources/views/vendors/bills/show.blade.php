@@ -1,9 +1,5 @@
 @extends('template.index')
 
-@push('styles')
- {{-- <link rel="stylesheet" href="{{asset('css/.css')}}" /> --}}
-@endpush
-
 @section('content')
 
 <div class="container">

@@ -1,9 +1,5 @@
 @extends('template.index')
 
-@push('styles')
- {{-- <link rel="stylesheet" href="{{asset('css/.css')}}" /> --}}
-@endpush
-
 @section('content')
 
 <div class="container">
@@ -14,7 +10,7 @@
             <div class="card border-left-primary shadow h-100 pt-2">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 text-center">
-                    Account Payable 
+                    Account Payable
                     </div>
                 </div>
                 <div class="card-body">
@@ -31,7 +27,7 @@
                 </div>
             </div>
         </div>
-    
+
     </div>
     <div class="container card shadow px-4 py-3">
         {{-- success error --}}
@@ -53,7 +49,7 @@
         @endif
         {{-- end success error --}}
         <form action="{{ route('vendors.vendors.update', $vendor->id) }}" method="POST" enctype="multipart/form-data">
-        @CSRF    
+        @CSRF
         @method('PUT')
         <div class="row my-2">
                 <div class="col">
@@ -85,7 +81,7 @@
                     <label for="#">Email</label>
                     <input type="email" class="form-control" name="email" value="{{$vendor->email}}">
                 </div>
-               
+
                 <div class="col-3">
                     <label for="#">Phone one</label>
                     <input type="text" class="form-control" name="telephone_one" value="{{$vendor->telephone_one}}">
@@ -106,7 +102,7 @@
                 </div>
             </div>
             <h5 class="my-3">Contact Person</h5>
-            <div class="row my-2">  
+            <div class="row my-2">
                 <div class="col">
                     <label for="#">Name</label>
                     <input type="text" class="form-control" name="contact_person" value="{{$vendor->contact_person}}">
@@ -115,7 +111,7 @@
                     <label for="#">Mobile number</label>
                     <input type="text" value="{{$vendor->mobile_number}}" name="mobile_number" class="form-control">
                 </div>
-            </div>    
+            </div>
             <div class="row form-group mt-4">
                 <label for="label" class="col-md-4 col-lg-2 col-form-label">Label:</label>
                 <select name="label" class="form-control col-md-2 col-lg-2">
@@ -161,7 +157,7 @@
 <form action="{{route('vendors.vendors.destroy' , $vendor->id) }}" method="post" enctype="multipart/form-data">
 <div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
 @method('delete')
-@CSRF  
+@CSRF
 <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">

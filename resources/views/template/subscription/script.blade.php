@@ -1,23 +1,16 @@
     <div id="toast-container" class="toast-container position-fixed bottom-0 start-0 p-3"></div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{URL::asset('vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{URL::asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-	{{-- <script src="{{URL::asset(' ')}}"></script>  --}}
-    <!-- Core plugin JavaScript-->
-    <script src="{{URL::asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-
     <!-- Custom scripts for all pages-->
-    <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script>
+    @if (App::environment(['local']))
+        <script src="{{URL::asset('js/sb-admin-2.min.js')}}"></script>
+    @else
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/js/sb-admin-2.min.js"></script>
+    @endif
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
-    <!-- Page level plugins -->
-    <script src="{{URL::asset('vendor/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{URL::asset('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{URL::asset('js/demo/datatables-demo.js')}}"></script>
 
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- Page level plugins -->
 
     {{-- The following script allows nested modals. --}}
     <script>
@@ -33,7 +26,6 @@
         var controller;
     </script>
 
-    <script src="{{ url('/js/toast.js') }}"></script>
     <script src="{{ url('/js/form-submit-ajax.js') }}"></script>
     <script src="{{ url('/js/ajax-submit-updated.js') }}"></script>
 
@@ -41,8 +33,8 @@
     <script src="{{ url('/js/periodic-auth-check.js') }}"></script>
     <script src="{{ url('/js/dynamic-logo.js') }}"></script>
 
-       <!-- Dump all dynamic scripts into template -->
-        @stack('scripts')
+    <!-- Dump all dynamic scripts into template -->
+    @stack('scripts')
 
 
 

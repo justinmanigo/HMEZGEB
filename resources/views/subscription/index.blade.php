@@ -1,20 +1,12 @@
 @extends('template.subscription')
 
-@push('styles')
-
-@endpush
-
-@push('scripts')
-
-@endpush
-
 @section('content')
 
 <div class="container">
     <div class="row">
         <h3>Subscription Summary</h3>
     </div>
-    
+
     @if (isset($subscriptions) && count($subscriptions) > 0)
         <div class="row">
             <div class="card-columns">
@@ -41,7 +33,7 @@
                                         <tr>
                                             <td>Account Usage / Limit</td>
                                             <td class="text-right">
-                                                <span class="badge 
+                                                <span class="badge
                                                     @if($subscription->account_limit - $subscription->count < 2)
                                                         badge-danger
                                                     @else
@@ -151,7 +143,7 @@
                 if(response.success) {
                     location.reload();
                 }
-            }, 
+            },
             error: function(response) {
                 console.log(response);
             }

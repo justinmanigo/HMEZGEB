@@ -5,14 +5,6 @@
 .w-15 {
     width: 15%;
 }
-
-.inputPrice::-webkit-inner-spin-button,
-.inputTax::-webkit-inner-spin-button,
-.inputPrice::-webkit-outer-spin-button,
-.inputTax::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
 </style>
 @endpush
 
@@ -29,7 +21,7 @@
 
     <div class="card mt-3">
         <div class="card-body">
-            
+
             <div class="row">
                 <div class="col-12 col-lg-8">
 
@@ -77,7 +69,7 @@
                         <label for="email" class="col-form-label col-4">Photo</label>
                         <img src="@if($inventory->picture != null || $inventory->picture != '') {{ asset('public/inventories/'.$inventory->picture) }} @else {{ asset('img/blank.jpg') }} @endif" alt="{{ $inventory->item_name }}" style="width:100px">
                     </div>
-                    
+
                 </div>
                 <div class="col-12 col-lg-4">
 
@@ -103,7 +95,7 @@
                             <input readonly class="form-control-plaintext" id="" name="tax_id" value="@if(isset($inventory->tax)) {{ "{$inventory->tax->name} ({$inventory->tax->percentage}%)" }} @endif">
                         </div>
                     </div>
-                    
+
                     <div class="form-group row">
                         <label for="#" class="col-4 col-form-label">Critical Quantity</label>
                         <div class="col-8">

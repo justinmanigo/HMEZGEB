@@ -32,7 +32,7 @@ function createEmployeeEntry() {
 
                 <input data-id="${loan_count}" id="l_employee_${loan_count}" class="l_employee form-control" name='employee[]'>
                 <input type="hidden" name="employee_id[]" value="">
-                <p class="error-message error-message-employee text-danger" style="display:none"></p> 
+                <p class="error-message error-message-employee text-danger" style="display:none"></p>
         </td>
         <td>
             <input type="number" min="0" data-id="${loan_count}" id="l_loan_${loan_count}" class="form-control" name="loan[]" >
@@ -42,7 +42,7 @@ function createEmployeeEntry() {
             <select data-id="${loan_count}" id="l_paid_in_${loan_count}" class="form-control" name="paid_in[]" >
                 <option value="">-Select Paid In-</option>
                 <option value="1 Month">1 Month</option>
-                
+
             </select>
             <p class="error-message error-message-paid_in text-danger" style="display:none"></p>
         </td>
@@ -86,7 +86,7 @@ function createEmployeeEntry() {
         dropdown: {
             closeOnSelect: true,
             enabled: 0,
-            classname: "employees-list",
+            classname: "customers-list",
             searchKeys: ["first_name"], // very important to set by which keys to search for suggesttions when typing
         },
         templates: {

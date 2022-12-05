@@ -5,14 +5,6 @@
 .w-15 {
     width: 15%;
 }
-
-.inputPrice::-webkit-inner-spin-button,
-.inputTax::-webkit-inner-spin-button,
-.inputPrice::-webkit-outer-spin-button,
-.inputTax::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
 </style>
 @endpush
 
@@ -29,7 +21,7 @@
 
     <div class="card mt-3">
         <div class="card-body">
-            
+
             <form action="{{ url('/inventory/'.$inventory->id) }}"  method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('put')
@@ -85,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="col-12 col-lg-4">
 
@@ -117,7 +109,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row">
                             <label for="#" class="col-4 col-form-label">Critical Quantity</label>
                             <div class="col-8">

@@ -1,23 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    .table-item-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width:120px;
-    }
-</style>
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
-@endpush
-
 @section('content')
 
 <div class="row">
@@ -51,7 +33,7 @@
                 <span class="text">Mail Statements</span>
             </button> --}}
         </div>
-        
+
             {{-- Page Content --}}
             <div class="card shadow mb-4">
                 <div class="card-body">
@@ -187,7 +169,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            
+
                 <form id="form-customer" action="{{route('customers.customers.store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                 <div class="modal-body">
@@ -249,7 +231,7 @@
                         <div class="col-sm-9 col-lg-4">
                             <input type="text" class="form-control" id="c_label" name="label" required>
                         </div>
-                    </div> 
+                    </div>
 
                     <div class="form-group row">
                         <label for="c_email" class="col-sm-3 col-lg-2 col-form-label">E-mail :</label>
@@ -346,7 +328,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 {{-- statement confirmation modal
 
@@ -452,7 +434,7 @@
         }
 
         function deleteCustomer(id) {
-            
+
             $('#delete-frm').attr('action', "/customers/customers/" + id);
         }
         // add <span class="text-danger ml-1">*</span> after the label of required input
@@ -468,7 +450,7 @@
         var fileName = $(this).val().split('\\').pop();
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
-    
+
 
       $(document).ready(function () {
             $('#dataTables').DataTable();

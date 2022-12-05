@@ -1,31 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    .table-item-content {
-        /** Equivalent to pt-3 */
-        padding-top: 1rem !important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width: 120px;
-    }
-
-    .inputPrice::-webkit-inner-spin-button,
-    .inputTax::-webkit-inner-spin-button,
-    .inputPrice::-webkit-outer-spin-button,
-    .inputTax::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-</style>
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-@endpush
-
 @section('content')
 
 {{-- Button Group Navigation --}}
@@ -178,7 +152,7 @@
                             <input type="text" class="form-control" id="e_father_name" name="father_name" placeholder=""
                                 required>
                         </div>
-                        
+
                         <label for="e_grandfather_name" class="col-sm-3 col-lg-2 col-form-label">Grandfather Name<span
                                 class="text-danger ml-1">*</span></label>
                         <div class="col-sm-9 col-lg-4">
@@ -317,13 +291,13 @@
         $("#form-employee").attr("action", "/employee/" + id)
         $("#e_submit_btn").html("Update Employee").attr("disabled", 'disabled');
         $("#modal-employee-label").html("Edit Employee");
-        
+
         // Get data from server.
         var request = $.ajax({
             url: "/ajax/hr/employees/get/" + id,
             method: "GET",
         });
-            
+
         request.done(function(res, status, jqXHR ) {
             $("#form-employee").show();
             $("#modal-employee-spinner").hide();
@@ -353,7 +327,7 @@
 
             $("#e_emergency_contact_person").val(res.emergency_contact_person);
             $("#e_contact_number").val(res.emergency_contact_number);
-            
+
             // If Date Ended Working is null
             if(res.date_ended_working == undefined)
                 $('#e_is_still_working').click();
@@ -361,7 +335,7 @@
             // $("#e_name").val(res.name);
             // $("#e_percentage").val(res.percentage);
         });
-        
+
         request.fail(function(jqXHR, status, error) {
             console.log("Request failed.");
         });
@@ -373,7 +347,7 @@
         $("#e_submit_btn").html("Save Employee");
         $("#modal-employee-label").html("New Employee");
         $("#e_submit_btn").removeAttr("disabled");
-        
+
         // Fields
         $("#e_first_name").val('');
         $("#e_father_name").val('');
@@ -424,7 +398,7 @@
         confirmationModal.classList.remove('fade');
         confirmationModal.classList.add('show');
     }
-    
+
     function dismissModel() {
         var confirmationModal = document.getElementById("deleteConfirmationModel");
         confirmationModal.style.display = 'none';

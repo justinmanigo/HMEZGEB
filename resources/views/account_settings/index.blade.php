@@ -2,16 +2,6 @@
 
 @push('styles')
 <style>
-    .table-employee-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width:120px;
-    }
-
     #account-header-grid {
         display:grid;
         gap:16px;
@@ -92,14 +82,6 @@
     }
 </style>
 
-<script src="https://unpkg.com/@yaireo/tagify"></script>
-<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> 
 @endpush
 
 @section('content')
@@ -124,9 +106,9 @@
                 <button id="account-edit-photo-btn" type="button" class="btn btn-sm btn-primary">Edit Photo</button>
             </div>
         </div>
-        
+
         <hr>
-        
+
         <div class="row">
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
                 <div class="card mb-3">
@@ -144,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="card-content-grid-header-3">
@@ -160,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card">
                     <div class="card-body">
                         <div class="card-content-grid-header-3">
@@ -178,8 +160,8 @@
                 </div>
             </div>
             <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-                
-                
+
+
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="card-content-grid-header-2">
@@ -218,12 +200,12 @@
                                 Two Factor Authentication adds an additional layer of protection to your account by asking for your password and a verification code from your authentication app of your choice.
                             </p>
                         @endif
-                        
+
                     </div>
                 </div>
             </div>
         </div>
-        
+
         {{-- Modals --}}
 
         {{-- Confirm Password then Show Recovery Codes --}}
@@ -250,7 +232,7 @@
                                 </div>
                                 <p id="err-form_password-confirm_password" class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                             </div>
-                            
+
                         </form>
                     </div>
                     <div id="modal-form_recovery_codes-footer" class="modal-footer">
@@ -308,7 +290,7 @@
                 </div>
             </div>
         </div>
-        
+
         {{-- Update Email --}}
         <div class="modal fade" id="modal-email" tabindex="-1" role="dialog" aria-labelledby="modal-email-label" aria-hidden="true">
             <div class="modal-dialog modal-md" role="document">
@@ -356,7 +338,7 @@
                 </div>
             </div>
         </div>
-        
+
         {{-- Update Password --}}
         <div class="modal fade" id="modal-password" tabindex="-1" role="dialog" aria-labelledby="modal-password-label" aria-hidden="true">
             <div class="modal-dialog modal-md" role="document">
@@ -395,7 +377,7 @@
                                 </div>
                                 <p id="err_form_password_confirm_new_password" data-field="confirm_new_password"  class="text-danger col-12 mt-1 mb-0" style="display:none"></p>
                             </div>
-                            
+
                         </form>
                     </div>
                     <div class="modal-footer">

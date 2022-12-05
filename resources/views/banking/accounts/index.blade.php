@@ -2,27 +2,8 @@
 
 @push('styles')
     <style>
-        .table-item-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-        }
-
-        .thead-actions {
-            /** Fixed width, increase if adding addt. buttons **/
-            width:120px;
-        }
         .content-card {
             border-radius:0px 0px 5px 5px;
-        }
-
-        .inputPrice::-webkit-inner-spin-button, .inputTax::-webkit-inner-spin-button,
-        .inputPrice::-webkit-outer-spin-button, .inputTax::-webkit-outer-spin-button {
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-
-        input[type="checkbox"], label {
-            cursor: pointer;
         }
     </style>
 @endpush
@@ -40,7 +21,7 @@
                     <i class="fas fa-pen"></i>
                 </span>
                 <span class="text">New</span>
-            </button> 
+            </button>
             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                 <span class="icon text-white-50">
                     <i class="fas fa-file-import"></i>
@@ -74,7 +55,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
-        
+
                     </div>
                 @endif
                 {{-- error message --}}
@@ -143,7 +124,7 @@
         </div>
     </div>
 
-   
+
 
 </div>
 
@@ -352,7 +333,7 @@
         var fileName = $(this).val().split('\\').pop();
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
-    
+
         $(document).ready(function () {
             $('#dataTables').DataTable();
             $('.dataTables_filter').addClass('pull-right');
