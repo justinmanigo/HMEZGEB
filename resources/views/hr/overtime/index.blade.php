@@ -1,94 +1,5 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    .table-employee-content {
-        /** Equivalent to pt-3 */
-        padding-top: 1rem !important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width: 120px;
-    }
-
-
-    /*
-            TEMPORARY
-        */
-    /* Suggestions items */
-    .tagify__dropdown.employees-list .tagify__dropdown__item {
-        padding: .5em .7em;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0 1em;
-        grid-template-areas: "avatar name"
-            "avatar email";
-    }
-
-    .tagify__dropdown.employees-list .tagify__dropdown__item:hover .tagify__dropdown__item__avatar-wrap {
-        transform: scale(1.2);
-    }
-
-    .tagify__dropdown.employees-list .tagify__dropdown__item__avatar-wrap {
-        grid-area: avatar;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        overflow: hidden;
-        background: #EEE;
-        transition: .1s ease-out;
-    }
-
-    .tagify__dropdown.employees-list strong {
-        grid-area: name;
-        width: 100%;
-        align-self: center;
-    }
-
-    .tagify__dropdown.employees-list span {
-        grid-area: email;
-        width: 100%;
-        font-size: .9em;
-        opacity: .6;
-    }
-
-    .tagify__dropdown.employees-list .addAll {
-        border-bottom: 1px solid #DDD;
-        gap: 0;
-    }
-
-
-    /* Tags items */
-    .tagify__tag {
-        white-space: nowrap;
-    }
-
-    .tagify__tag:hover .tagify__tag__avatar-wrap {
-        transform: scale(1.6) translateX(-10%);
-    }
-
-    .tagify__tag .tagify__tag__avatar-wrap {
-        width: 16px;
-        height: 16px;
-        white-space: normal;
-        border-radius: 50%;
-        background: silver;
-        margin-right: 5px;
-        transition: .12s ease-out;
-    }
-</style>
-
-<script src="https://unpkg.com/@yaireo/tagify"></script>
-<script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-@endpush
-
 @section('content')
 
 {{-- Button Group Navigation --}}
@@ -158,7 +69,7 @@
                         </td>
                     </tr>
                     @endforeach
-                    </tr> 
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -292,7 +203,7 @@
         confirmationModal.classList.remove('fade');
         confirmationModal.classList.add('show');
     }
-    
+
     function dismissModel() {
         var confirmationModal = document.getElementById("deleteConfirmationModel");
         confirmationModal.style.display = 'none';

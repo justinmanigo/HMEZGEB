@@ -1,88 +1,6 @@
 @extends('template.index')
 
-@push('styles')
-<style>
-    .table-item-content { 
-        /** Equivalent to pt-3 */
-        padding-top:1rem!important;
-    }
-
-    #thead-actions {
-        /** Fixed width, increase if adding addt. buttons **/
-        width:120px;
-    }
-</style>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-@endpush
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-
-<script>
-    // Commented AJAX can be used to fetch select2 entries from server.
-    // Guide: https://www.nicesnippets.com/blog/laravel-select2-ajax-autocomplete-example
-    $('#employee').select2({
-        placeholder: 'Select Employee',
-        // ajax: {
-        //     url: '/select2-autocomplete-ajax',
-        //     dataType: 'json',
-        //     delay: 250,
-        //     processResults: function (data) {
-        //     return {
-        //         results:  $.map(data, function (item) {
-        //             return {
-        //                 text: item.name,
-        //                 id: item.id
-        //             }
-        //         })
-        //     };
-        //     },
-        //     cache: true
-        // }
-    });
-
-    $(document).on('select2:open', () => {
-        document.querySelector('.select2-search__field').focus();
-    });
-</script>
-@endpush
-
 @section('content')
-
-{{-- <div class="card col-12 col-lg-6 mb-3">
-    <div class="card-body">
-        <p>Filter</p>
-        <hr>
-        <form>
-            <div class="form-group row">
-                <label for="employee" class="col-12 col-md-3">Employee</label>
-                <div class="col-12 col-lg-6">
-                    <select class="form-control select2" id="employee" name="employee">
-                        <option>Graeme Xyber Pastoril</option>
-                        <option>Justin Manigo</option>
-                        <option>Lester Fong</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="month" class="col-12 col-md-3">Select Month</label>
-                <div class="col-12 col-lg-6">
-                    <input type="month" class="form-control "id="month" name="month">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-12 col-md-3"></div>
-                <div class="col-8 col-lg-3">
-                    <button type="submit" class="form-control btn btn-primary">Search</button>
-                </div>
-                <div class="col-4 col-lg-3">
-                    <button type="button" class="form-control btn btn-secondary">Reset</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div> --}}
 
 {{-- Button Group Navigation --}}
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
@@ -91,7 +9,7 @@
             <i class="fas fa-pen"></i>
         </span>
         <span class="text">New</span>
-    </button>   
+    </button>
 </div>
 
 {{-- Page Content --}}
@@ -127,16 +45,16 @@
                     <th>Pension 7%</th>
                     <th>Pension 11%</th>
                     <th>Net Pay</th> --}}
-                    <th id="thead-actions">Actions</th>    
+                    <th id="thead-actions">Actions</th>
                 </thead>
                 <tbody>
                     @foreach($payroll_periods as $period)
 
                     <tr>
                         <td>
-                            # 
-                            @if($period->period_number < 10) 
-                                {{ '0' . $period->period_number }} 
+                            #
+                            @if($period->period_number < 10)
+                                {{ '0' . $period->period_number }}
                             @else
                                 {{ $period->period_number }}
                             @endif
@@ -226,13 +144,13 @@
                             <select class="form-control" id="period" name="period">
                                 @foreach($accounting_periods_with_no_payroll as $period)
                                     <option value="{{$period->id}}">
-                                        # 
-                                        @if($period->period_number < 10) 
-                                            {{ '0' . $period->period_number }} 
+                                        #
+                                        @if($period->period_number < 10)
+                                            {{ '0' . $period->period_number }}
                                         @else
                                             {{ $period->period_number }}
                                         @endif
-                                        | 
+                                        |
                                         {{ $period->date_from }} to {{ $period->date_to }}</option>
                                 @endforeach
                             </select>
