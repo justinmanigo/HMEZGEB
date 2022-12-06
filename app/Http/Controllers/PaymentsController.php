@@ -117,33 +117,6 @@ class PaymentsController extends Controller
         ]);
     }
 
-    public function storeIncomeTaxPayment(Request $request)
-    {
-        $status = 'paid';
-
-        // Store payment reference
-        $reference = PaymentReferences::create([
-            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
-            'vendor_id' => $request->vendor_id,
-            'date' => $request->date,
-            'type' => 'income_tax_payment',
-            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            'remark' => $request->remark,
-            'status' => $status
-        ]);
-
-        // store income tax payment
-        $incomeTaxPayment = IncomeTaxPayments::create([
-            'payment_reference_id' => $reference->id,
-            'accounting_period_id' => $request->accounting_period_id,
-            'chart_of_account_id' => $request->chart_of_account_id,
-            'cheque_number' => $request->cheque_number,
-            'amount_received' => $request->amount_received,
-        ]);
-
-        return redirect()->back()->with('success', 'Income Tax Payment has been added successfully.');
-    }
-
     // Store pension
     public function storePensionPayment(Request $request)
     {
