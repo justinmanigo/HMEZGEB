@@ -415,7 +415,7 @@ Route::group([
 
                 // Purchase Order
                 Route::group([
-                    'as' => 'purchaseorder',
+                    'as' => 'purchaseOrder.',
                 ], function() {
                     // HTML
                     Route::post('/vendors/bills/purchaseorder', [PurchaseOrderController::class, 'store'])->name('store');
