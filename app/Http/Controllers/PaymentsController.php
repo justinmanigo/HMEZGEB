@@ -116,35 +116,6 @@ class PaymentsController extends Controller
             'otherPayments' => $otherPayments,
         ]);
     }
-
-    // Store pension
-    public function storePensionPayment(Request $request)
-    {
-        $status = 'paid';
-
-        // Store payment reference
-        $reference = PaymentReferences::create([
-            'accounting_system_id' => $this->request->session()->get('accounting_system_id'),
-            'vendor_id' => $request->vendor_id,
-            'date' => $request->date,
-            'type' => 'pension_payment',
-            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-            'remark' => $request->remark,
-            'status' => $status
-        ]);
-
-        // store pension payment
-        $pensionPayment = PensionPayments::create([
-            'payment_reference_id' => $reference->id,
-            'accounting_period_id' => $request->accounting_period_id,
-            'chart_of_account_id' => $request->chart_of_account_id,
-            'cheque_number' => $request->cheque_number,
-            'amount_received' => $request->amount_received,
-        ]);
-
-        return redirect()->back()->with('success', 'Pension Payment has been added successfully.');
-
-    }
     // Store withholding
     public function storeWithholdingPayment(Request $request)
     {
