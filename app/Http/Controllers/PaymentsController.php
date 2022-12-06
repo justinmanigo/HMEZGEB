@@ -2,22 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payments;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-
 use App\Models\PaymentReferences;
-use App\Models\AccountingPeriods;
-use App\Models\ChartOfAccounts;
-use App\Models\IncomeTaxPayments;
-use App\Models\PensionPayments;
-use App\Models\BillPayments;
-use App\Models\Bills;
-use App\Models\WithholdingPayments;
-use App\Mail\Vendors\MailVendorPayment;
-use Illuminate\Support\Facades\Mail;
-
-
 
 class PaymentsController extends Controller
 {
