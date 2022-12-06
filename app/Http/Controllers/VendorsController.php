@@ -186,7 +186,7 @@ class VendorsController extends Controller
     }
 
     // Mail Statetment
-    public function mailVendorStatement($id)
+    public function mail($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
@@ -222,7 +222,7 @@ class VendorsController extends Controller
     }
 
     // Print Statement
-    public function printVendorStatement($id)
+    public function print($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)

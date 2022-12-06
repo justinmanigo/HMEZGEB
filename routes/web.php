@@ -513,9 +513,9 @@ Route::group([
                 // Resource
                 Route::resource('/vendors/vendors', VendorsController::class);
                 // Mail
-                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mailVendorStatement'])->name('statement.mail');
+                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mail'])->name('statement.mail');
                 // Print
-                Route::get('/vendors/print/statement/{id}', [VendorsController::class, 'printVendorStatement'])->name('statement.print');
+                Route::get('/vendors/print/statement/{id}', [VendorsController::class, 'print'])->name('statement.print');
                 // Import Export
                 Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
                 Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');
