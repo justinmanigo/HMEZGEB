@@ -403,6 +403,11 @@ Route::group([
                 ], function() {
                     // HTML
                     Route::post('/vendors/bills/bill', [BillController::class, 'store'])->name('store');
+                    // TODO: Convert to POST
+                    Route::get('/bill/void/{id}', [BillController::class, 'void'])->name('void');
+                    Route::get('/bill/reactivate/{id}', [BillController::class, 'revalidate'])->name('revalidate');
+                    Route::get('/bill/mail/{id}', [BillController::class, 'mail'])->name('mail');
+                    Route::get('/bill/print/{id}', [BillController::class, 'print'])->name('print');
 
                     // AJAX
                     Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [BillController::class, 'ajaxGetVendorPurchaseOrders']);
@@ -414,6 +419,12 @@ Route::group([
                 ], function() {
                     // HTML
                     Route::post('/vendors/bills/purchaseorder', [PurchaseOrderController::class, 'store'])->name('store');
+                    Route::get('/purchaseorder/{id}',[PurchaseOrderController::class,'show'])->name('show');
+                    // TODO: Convert to POST
+                    Route::get('/purchaseOrder/void/{id}', [PurchaseOrderController::class, 'void'])->name('void');
+                    Route::get('/purchaseOrder/reactivate/{id}', [PurchaseOrderController::class, 'revalidate'])->name('revalidate');
+                    Route::get('/purchaseOrder/mail/{id}', [PurchaseOrderController::class, 'mail'])->name('mail');
+                    Route::get('/purchaseOrder/print/{id}', [PurchaseOrderController::class, 'print'])->name('print');
 
                     // AJAX
                     Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [PurchaseOrderController::class, 'ajaxGet']);
@@ -436,20 +447,21 @@ Route::group([
 
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
                 // Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
+
+                /**
+                 * TODO: Update bill.show route
+                 */
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
-                Route::get('/purchaseorder/{id}',[BillsController::class,'showPurchaseOrder'])->name('purchaseOrder.show');
+
                 // Mail
-                Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
-                Route::get('/purchaseOrder/mail/{id}', [BillsController::class, 'sendMailPurchaseOrder'])->name('purchaseOrder.mail');
+
+
                 // Print
-                Route::get('/bill/print/{id}', [BillsController::class, 'printBill'])->name('bill.print');
-                Route::get('/purchaseOrder/print/{id}', [BillsController::class, 'printPurchaseOrder'])->name('purchaseOrder.print');
+
                 // Void
-                Route::get('/bill/void/{id}', [BillsController::class, 'voidBill'])->name('bill.void');
-                Route::get('/purchaseOrder/void/{id}', [BillsController::class, 'voidPurchaseOrder'])->name('purchaseOrder.void');
+
                 // Reactivate
-                Route::get('/bill/reactivate/{id}', [BillsController::class, 'reactivateBill'])->name('bill.reactivate');
-                Route::get('/purchaseOrder/reactivate/{id}', [BillsController::class, 'reactivatePurchaseOrder'])->name('purchaseOrder.reactivate');
+
             });
 
             /**
