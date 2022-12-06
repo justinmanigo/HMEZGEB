@@ -42,4 +42,18 @@ class PurchaseOrderController extends Controller
             'attachment' => isset($fileAttachment) ? $fileAttachment : null,
         ]);
     }
+
+    public function ajaxGet(PaymentReferences $purchaseOrder)
+    {
+        // Load relationships.
+        $purchaseOrder->purchaseOrders;
+        $purchaseOrder->billItems;
+        for($i = 0; $i < count($purchaseOrder->billItems); $i++){
+            $purchaseOrder->billItems[$i]->inventory;
+            $purchaseOrder->billItems[$i]->inventory->tax;
+        }
+
+        // Return response
+        return $purchaseOrder;
+    }
 }

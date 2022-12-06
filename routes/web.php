@@ -401,14 +401,23 @@ Route::group([
                 Route::group([
                     'as' => 'bill.',
                 ], function() {
+                    // HTML
                     Route::post('/vendors/bills/bill', [BillController::class, 'store'])->name('store');
+
+                    // AJAX
+                    Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [BillController::class, 'ajaxGetVendorPurchaseOrders']);
                 });
 
                 // Purchase Order
                 Route::group([
                     'as' => 'purchaseorder',
                 ], function() {
+                    // HTML
                     Route::post('/vendors/bills/purchaseorder', [PurchaseOrderController::class, 'store'])->name('store');
+
+                    // AJAX
+                    Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [PurchaseOrderController::class, 'ajaxGet']);
+
                 });
 
                 // COGS
@@ -441,9 +450,6 @@ Route::group([
                 // Reactivate
                 Route::get('/bill/reactivate/{id}', [BillsController::class, 'reactivateBill'])->name('bill.reactivate');
                 Route::get('/purchaseOrder/reactivate/{id}', [BillsController::class, 'reactivatePurchaseOrder'])->name('purchaseOrder.reactivate');
-                // AJAX
-                Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);
-                Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [VendorsController::class, 'ajaxGetPurchaseOrder']);
             });
 
             /**
@@ -457,16 +463,14 @@ Route::group([
                 Route::get('/vendors/payments',[PaymentsController::class,'index']);
                 Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
 
-                // AJAX
-                Route::get('/ajax/vendor/bills/topay/{vendor}', [VendorsController::class, 'ajaxGetBillPaymentsToPay']);
-                Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
-
-
                 Route::group([
                     'as' => 'bill.',
                 ], function(){
                     // HTML
                     Route::post('/vendors/payments/bill', [BillPaymentController::class, 'store'])->name('store');
+
+                    // AJAX
+                    Route::get('/ajax/vendor/bills/topay/{vendor}', [BillPaymentController::class, 'ajaxGetEntriesToPay']);
                 });
 
                 Route::group([
@@ -477,6 +481,7 @@ Route::group([
 
                     // AJAX
                     Route::get('/ajax/vendors/payments/withholding/all/', [WithholdingPaymentController::class, 'ajaxGetAll']);
+                    Route::get('/ajax/vendor/withholding/topay/{vendor}', [WithholdingPaymentController::class, 'ajaxGetEntriesToPay']);
                 });
 
                 Route::group([
@@ -515,7 +520,7 @@ Route::group([
                 Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
                 Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');
                 // AJAX
-                Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
+                Route::get('/select/search/vendor/{query}', [VendorsController::class, 'ajaxSearch']);
             });
         });
 

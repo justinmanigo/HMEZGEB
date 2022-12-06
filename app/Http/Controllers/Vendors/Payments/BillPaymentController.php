@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Vendors\Payments;
 use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\Vendors\Payments\StoreBillPaymentRequest;
+use App\Models\BillPayments;
 use App\Models\Bills;
 use App\Models\PaymentReferences;
-use App\Models\BillPayments;
+use App\Models\Vendors;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BillPaymentController extends Controller
 {
@@ -80,5 +82,18 @@ class BillPaymentController extends Controller
             'credit_accounts' => $credit_accounts,
             'credit_amount' => $credit_amount,
         ];
+    }
+
+    public function ajaxGetEntriesToPay(Vendors $vendor)
+    {
+        return PaymentReferences::select(
+            'payment_references.id as value',
+            'bills.due_date',
+            DB::raw('bills.grand_total - bills.amount_received as balance'),
+        )
+            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->where('payment_references.type', '=', 'bill')
+            ->where('payment_references.vendor_id', '=', $vendor->id)
+            ->where('payment_references.status', '!=', 'paid')->get();
     }
 }

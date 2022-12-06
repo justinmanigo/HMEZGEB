@@ -10,6 +10,7 @@ use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Models\WithholdingPayments;
 use App\Models\PaymentReferences;
+use App\Models\Vendors;
 
 class WithholdingPaymentController extends Controller
 {
@@ -87,5 +88,17 @@ class WithholdingPaymentController extends Controller
                 'total_selectable_withholding' => $total,
             ]
         ]);
+    }
+
+    /**
+     * DEPRECATED: Probably unused in lieu of `ajaxGetAll()`.
+     */
+    public function ajaxGetEntriesToPay(Vendors $vendor)
+    {
+        return PaymentReferences::select('*')
+            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->where('payment_references.type', '=', 'bill')
+            ->where('payment_references.vendor_id', '=', $vendor->id)
+            ->where('bills.withholding', '>', '0')->get();
     }
 }

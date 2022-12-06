@@ -15,6 +15,7 @@ use App\Models\Bills;
 use App\Models\BillItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Vendors;
 
 class BillController extends Controller
 {
@@ -129,5 +130,22 @@ class BillController extends Controller
             'credit_accounts' => $credit_accounts,
             'credit_amount' => $credit_amount,
         ];
+    }
+
+    public function ajaxGetVendorPurchaseOrders(Vendors $vendor, $value)
+    {
+        $purchase_orders = PaymentReferences::select(
+            'payment_references.id as value',
+            'payment_references.date',
+            'purchase_orders.grand_total as amount',
+            'purchase_orders.due_date',
+        )
+        ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+        ->where('vendor_id', $vendor->id)
+        ->where('type', 'purchase_order')
+        ->where('status', 'unpaid')
+        ->get();
+
+        return $purchase_orders;
     }
 }
