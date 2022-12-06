@@ -186,7 +186,7 @@ class VendorsController extends Controller
     }
 
     // Mail Statetment
-    public function mailVendorStatement($id)
+    public function mail($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
@@ -222,7 +222,7 @@ class VendorsController extends Controller
     }
 
     // Print Statement
-    public function printVendorStatement($id)
+    public function print($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
@@ -287,68 +287,13 @@ class VendorsController extends Controller
 
     }
 
-    public function queryVendors($query)
+    public function ajaxSearch($query)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $vendors = Vendors::select('id as value', 'name', 'address', 'contact_person','telephone_one', 'tin_number', 'mobile_number')
             ->where('accounting_system_id', $accounting_system_id)
             ->where('name', 'LIKE', '%' . $query . '%')->get();
         return $vendors;
-    }
-
-    public function ajaxGetBillPaymentsToPay(Vendors $vendor)
-    {
-        return PaymentReferences::select(
-            'payment_references.id as value',
-            'bills.due_date',
-            DB::raw('bills.grand_total - bills.amount_received as balance'),
-        )
-            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
-            ->where('payment_references.type', '=', 'bill')
-            ->where('payment_references.vendor_id', '=', $vendor->id)
-            ->where('payment_references.status', '!=', 'paid')->get();
-    }
-
-    public function ajaxGetWithholdingToPay(Vendors $vendor)
-    {
-
-        return PaymentReferences::select('*')
-            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
-            ->where('payment_references.type', '=', 'bill')
-            ->where('payment_references.vendor_id', '=', $vendor->id)
-            ->where('bills.withholding', '>', '0')->get();
-
-    }
-
-    public function ajaxSearchVendorPurchaseOrder(Vendors $vendor, $value)
-    {
-        $purchase_orders = PaymentReferences::select(
-            'payment_references.id as value',
-            'payment_references.date',
-            'purchase_orders.grand_total as amount',
-            'purchase_orders.due_date',
-        )
-        ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
-        ->where('vendor_id', $vendor->id)
-        ->where('type', 'purchase_order')
-        ->where('status', 'unpaid')
-        ->get();
-
-        return $purchase_orders;
-    }
-
-    public function ajaxGetPurchaseOrder(PaymentReferences $purchaseOrder)
-    {
-        // Load relationships.
-        $purchaseOrder->purchaseOrders;
-        $purchaseOrder->billItems;
-        for($i = 0; $i < count($purchaseOrder->billItems); $i++){
-            $purchaseOrder->billItems[$i]->inventory;
-            $purchaseOrder->billItems[$i]->inventory->tax;
-        }
-
-        // Return response
-        return $purchaseOrder;
     }
 }
 

@@ -9,15 +9,26 @@ use App\Actions\Vendor\Bill\UpdateBillStatus;
 use App\Actions\Vendor\Bill\StoreBillItems;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendors\Bills\StoreBillRequest;
+use App\Mail\Vendors\MailVendorBill;
 use App\Models\Inventory;
 use App\Models\PaymentReferences;
 use App\Models\Bills;
 use App\Models\BillItem;
+use App\Models\Vendors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use PDF;
+
 
 class BillController extends Controller
 {
+
+    /** MAIN FUNCTIONS */
+
+    /**
+     * Stores a new entry.
+     */
     public function store(StoreBillRequest $request)
     {
         // If this transaction is linked to Proforma
@@ -129,5 +140,94 @@ class BillController extends Controller
             'credit_accounts' => $credit_accounts,
             'credit_amount' => $credit_amount,
         ];
+    }
+
+    /**
+     * Shows a specific entry.
+     */
+    public function show(Bills $bills)
+    {
+        return view('vendors.bills.show');
+    }
+
+    /**
+     * TODO: Test this function.
+     * Marks an entry as void.
+     */
+    public function void($id)
+    {
+        $bill = Bills::find($id);
+        // if($bill->paymentReference->is_deposited == "yes")
+        // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+
+        // TODO: Deactivate connected modules (Add inventory, adjust Journal entry/postings).
+        $bill->paymentReference->is_void = "yes";
+        $bill->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully voided bill.");
+    }
+
+    /**
+     * TODO: Test this function.
+     * Reverses a voided entry.
+     */
+    public function revalidate($id)
+    {
+        $bill = Bills::find($id);
+        // TODO: Revalidate connected modules (Deduct inventory, adjust Journal entry/postings).
+        $bill->paymentReference->is_void = "no";
+        $bill->paymentReference->save();
+
+        return redirect()->back()->with('success', "Successfully revalidated bill.");
+    }
+
+    /**
+     * TODO: Test this function.
+     * Sends an email of the entry.
+     */
+    public function mail($id)
+    {
+        $bill = Bills::find($id);
+        $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
+        $emailAddress = $bill->paymentReference->vendor->email;
+
+        Mail::to($emailAddress)->queue(new MailVendorBill ($bill_items));
+
+        return redirect('/vendors/bills')->with('success', 'Email has been sent!');
+    }
+
+    /**
+     * TODO: Test this function.
+     * Prints the entry.
+     */
+    public function print($id)
+    {
+        $bill = Bills::find($id);
+        $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
+
+        $pdf = PDF::loadView('vendors.bills.print', compact('bill_items'));
+        return $pdf->stream('bill_'.date('Y-m-d').'.pdf');
+    }
+
+    /** AJAX CALLS */
+
+    /**
+     * Returns JSON of vendor's purchase orders
+     */
+    public function ajaxGetVendorPurchaseOrders(Vendors $vendor, $value)
+    {
+        $purchase_orders = PaymentReferences::select(
+            'payment_references.id as value',
+            'payment_references.date',
+            'purchase_orders.grand_total as amount',
+            'purchase_orders.due_date',
+        )
+        ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+        ->where('vendor_id', $vendor->id)
+        ->where('type', 'purchase_order')
+        ->where('status', 'unpaid')
+        ->get();
+
+        return $purchase_orders;
     }
 }

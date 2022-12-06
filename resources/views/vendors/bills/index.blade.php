@@ -469,9 +469,9 @@
     function reactivateModal(id,type){
         // set attribute href of btn-send-mail
         if(type == 'bill')
-        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.bill.reactivate", ":id") }}'.replace(':id', id));
+        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.bill.revalidate", ":id") }}'.replace(':id', id));
         else if(type == 'purchaseOrder')
-        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.reactivate", ":id") }}'.replace(':id', id));
+        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.revalidate", ":id") }}'.replace(':id', id));
     }
 
 

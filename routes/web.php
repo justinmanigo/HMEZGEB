@@ -401,14 +401,34 @@ Route::group([
                 Route::group([
                     'as' => 'bill.',
                 ], function() {
+                    // HTML
                     Route::post('/vendors/bills/bill', [BillController::class, 'store'])->name('store');
+                    // TODO: Convert to POST
+                    Route::get('/bill/void/{id}', [BillController::class, 'void'])->name('void');
+                    Route::get('/bill/reactivate/{id}', [BillController::class, 'revalidate'])->name('revalidate');
+                    Route::get('/bill/mail/{id}', [BillController::class, 'mail'])->name('mail');
+                    Route::get('/bill/print/{id}', [BillController::class, 'print'])->name('print');
+
+                    // AJAX
+                    Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [BillController::class, 'ajaxGetVendorPurchaseOrders']);
                 });
 
                 // Purchase Order
                 Route::group([
-                    'as' => 'purchaseorder',
+                    'as' => 'purchaseOrder.',
                 ], function() {
+                    // HTML
                     Route::post('/vendors/bills/purchaseorder', [PurchaseOrderController::class, 'store'])->name('store');
+                    Route::get('/purchaseorder/{id}',[PurchaseOrderController::class,'show'])->name('show');
+                    // TODO: Convert to POST
+                    Route::get('/purchaseOrder/void/{id}', [PurchaseOrderController::class, 'void'])->name('void');
+                    Route::get('/purchaseOrder/reactivate/{id}', [PurchaseOrderController::class, 'revalidate'])->name('revalidate');
+                    Route::get('/purchaseOrder/mail/{id}', [PurchaseOrderController::class, 'mail'])->name('mail');
+                    Route::get('/purchaseOrder/print/{id}', [PurchaseOrderController::class, 'print'])->name('print');
+
+                    // AJAX
+                    Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [PurchaseOrderController::class, 'ajaxGet']);
+
                 });
 
                 // COGS
@@ -427,23 +447,21 @@ Route::group([
 
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');
                 // Route::post('/bill',[BillsController::class,'storeBill'])->name('bill.store');
+
+                /**
+                 * TODO: Update bill.show route
+                 */
                 // Route::get('/individual-bill',[BillsController::class,'show'])->name('bill.show');
-                Route::get('/purchaseorder/{id}',[BillsController::class,'showPurchaseOrder'])->name('purchaseOrder.show');
+
                 // Mail
-                Route::get('/bill/mail/{id}', [BillsController::class, 'sendMailBill'])->name('bill.mail');
-                Route::get('/purchaseOrder/mail/{id}', [BillsController::class, 'sendMailPurchaseOrder'])->name('purchaseOrder.mail');
+
+
                 // Print
-                Route::get('/bill/print/{id}', [BillsController::class, 'printBill'])->name('bill.print');
-                Route::get('/purchaseOrder/print/{id}', [BillsController::class, 'printPurchaseOrder'])->name('purchaseOrder.print');
+
                 // Void
-                Route::get('/bill/void/{id}', [BillsController::class, 'voidBill'])->name('bill.void');
-                Route::get('/purchaseOrder/void/{id}', [BillsController::class, 'voidPurchaseOrder'])->name('purchaseOrder.void');
+
                 // Reactivate
-                Route::get('/bill/reactivate/{id}', [BillsController::class, 'reactivateBill'])->name('bill.reactivate');
-                Route::get('/purchaseOrder/reactivate/{id}', [BillsController::class, 'reactivatePurchaseOrder'])->name('purchaseOrder.reactivate');
-                // AJAX
-                Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [VendorsController::class, 'ajaxSearchVendorPurchaseOrder']);
-                Route::get('/ajax/vendor/bill/purchase-order/get/{purchaseOrder}', [VendorsController::class, 'ajaxGetPurchaseOrder']);
+
             });
 
             /**
@@ -457,16 +475,14 @@ Route::group([
                 Route::get('/vendors/payments',[PaymentsController::class,'index']);
                 Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
 
-                // AJAX
-                Route::get('/ajax/vendor/bills/topay/{vendor}', [VendorsController::class, 'ajaxGetBillPaymentsToPay']);
-                Route::get('/ajax/vendor/withholding/topay/{vendor}', [VendorsController::class, 'ajaxGetWithholdingToPay']);
-
-
                 Route::group([
                     'as' => 'bill.',
                 ], function(){
                     // HTML
                     Route::post('/vendors/payments/bill', [BillPaymentController::class, 'store'])->name('store');
+
+                    // AJAX
+                    Route::get('/ajax/vendor/bills/topay/{vendor}', [BillPaymentController::class, 'ajaxGetEntriesToPay']);
                 });
 
                 Route::group([
@@ -477,6 +493,7 @@ Route::group([
 
                     // AJAX
                     Route::get('/ajax/vendors/payments/withholding/all/', [WithholdingPaymentController::class, 'ajaxGetAll']);
+                    Route::get('/ajax/vendor/withholding/topay/{vendor}', [WithholdingPaymentController::class, 'ajaxGetEntriesToPay']);
                 });
 
                 Route::group([
@@ -508,14 +525,14 @@ Route::group([
                 // Resource
                 Route::resource('/vendors/vendors', VendorsController::class);
                 // Mail
-                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mailVendorStatement'])->name('statement.mail');
+                Route::get('/vendors/mail/statement/{id}', [VendorsController::class, 'mail'])->name('statement.mail');
                 // Print
-                Route::get('/vendors/print/statement/{id}', [VendorsController::class, 'printVendorStatement'])->name('statement.print');
+                Route::get('/vendors/print/statement/{id}', [VendorsController::class, 'print'])->name('statement.print');
                 // Import Export
                 Route::post('/vendors/import', [VendorsController::class, 'import'])->name('import');
                 Route::post('/vendors/export', [VendorsController::class, 'export'])->name('export');
                 // AJAX
-                Route::get('/select/search/vendor/{query}', [VendorsController::class, 'queryVendors']);
+                Route::get('/select/search/vendor/{query}', [VendorsController::class, 'ajaxSearch']);
             });
         });
 
