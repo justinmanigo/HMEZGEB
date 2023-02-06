@@ -126,51 +126,6 @@ class DepositsController extends Controller
         ];
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Deposits  $deposits
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Deposits $deposits)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Deposits  $deposits
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Deposits $deposits)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Deposits  $deposits
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Deposits $deposits)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Deposits  $deposits
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Deposits $deposits)
-    {
-        //
-    }
-
     // Mail
     public function mailDeposit($id)
     {
