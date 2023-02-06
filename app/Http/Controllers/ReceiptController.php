@@ -326,12 +326,6 @@ class ReceiptController extends Controller
         return view('customer.receipt.edit',compact('receipt'));
     }
 
-    public function showAdvanceRevenue($id)
-    {   
-        $advance_revenue = AdvanceRevenues::find($id);
-        return view('customer.receipt.advance_revenue.edit',compact('advance_revenue'));
-    } 
-
     public function destroy($id)
     {
         $receipt = ReceiptReferences::find($id);
