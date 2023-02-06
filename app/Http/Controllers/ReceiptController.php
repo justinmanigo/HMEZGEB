@@ -18,7 +18,10 @@ use App\Models\ReceiptReferences;
 use App\Models\Receipts;
 use App\Models\ReceiptItem;
 use App\Models\Customers;
+use App\Models\Transactions;
+use App\Models\Deposits;
 use App\Models\Inventory;
+use App\Models\BankAccounts;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
@@ -164,12 +167,40 @@ class ReceiptController extends Controller
 
         // Create Receipt Cash Transaction
         if($request->total_amount_received > 0) {
-            ReceiptCashTransactions::create([
+            // Check if cash_account->value is a bank account
+            $bank_account = BankAccounts::where('chart_of_account_id', $request->cash_account->value)->first();
+            $deposit = null;
+
+            if($bank_account) {
+                $deposit = Deposits::create([
+                    'accounting_system_id' => session()->get('accounting_system_id'),
+                    'chart_of_account_id' => $request->cash_account->value,
+                    'status' => 'Deposited',
+                    'deposit_ticket_date' => date('Y-m-d'),
+                    'total_amount' => $request->total_amount_received,
+                    'remark' => $request->remark,
+                    'reference_number' => $request->reference_number,
+                ]);
+        
+                // create transaction
+                Transactions::create([
+                    'accounting_system_id' => session()->get('accounting_system_id'),
+                    'chart_of_account_id' => $request->cash_account->value,
+                    'type' => 'Deposit',
+                    'description' => $request->remark,
+                    'amount' => $request->total_amount_received,
+                ]);
+            }
+            
+            $rct = ReceiptCashTransactions::create([
                 'accounting_system_id' => $accounting_system_id,
                 'receipt_reference_id' => $reference->id,
                 'for_receipt_reference_id' => $reference->id,
                 'amount_received' => $request->total_amount_received,
+                'deposit_id' => $deposit ? $deposit->id : null,
             ]);
+
+            
         }
 
         // Create Journal Entry
@@ -195,7 +226,7 @@ class ReceiptController extends Controller
         // Create Debit Postings
         // This determines which is which to include in debit postings
         if($status == 'paid' || $status == 'partially_paid') {
-            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_cash_on_hand);
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->cash_account->value);
             $debit_amount[] = $cash_on_hand;
         }
         if($status == 'partially_paid' || $status == 'unpaid') {
@@ -861,25 +892,5 @@ class ReceiptController extends Controller
             ->where('receipt_references.is_deposited', 'no')
             ->get();
         return $receipts;
-    }
-
-    public function ajaxGetReceiptCashTransactions()
-    {
-        $cash_transactions = ReceiptCashTransactions::select(
-                'receipt_cash_transactions.id as value',
-                'receipt_references.date',
-                'receipt_cash_transactions.amount_received as total_amount_received',
-                'receipts.payment_method',
-                'customers.name as customer_name',
-            )
-            ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_cash_transactions.receipt_reference_id')
-            ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
-            ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
-            ->where('receipt_cash_transactions.is_deposited', 'no')
-            ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
-            ->where('receipt_references.is_void', 'no')
-            ->get();
-
-        return $cash_transactions;
     }
 }

@@ -14,9 +14,13 @@ class ReceiptCashTransactions extends Model
         'receipt_reference_id',
         'for_receipt_reference_id',
         'amount_received',
-        'is_deposited',
+        'deposit_id',
     ];
 
+    public function deposit()
+    {
+        return $this->belongsTo(Deposits::class, 'deposit_id');
+    }
     
     public function receiptReference()
     {

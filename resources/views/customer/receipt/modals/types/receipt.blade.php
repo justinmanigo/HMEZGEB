@@ -17,7 +17,7 @@
                             <h5>Customer Details:</h5>
                             <div class="form-group row">
                                 <label for="r_customer" class="col-4 col-form-label text-left">Customer<span class="text-danger ml-1">*</span> :</label>
-                                <input class="col-8 col-lg-7" id="r_customer" name='customer'>
+                                <input class="col-8 col-lg-7 form-control" id="r_customer" name='customer'>
                                 <input type="hidden" id="r_customer_id" name="customer_id" value="">
                                 <p class="col-8 col-lg-5 text-danger error-message error-message-customer" style="display:none"></p>
                             </div>
@@ -48,7 +48,7 @@
                             <div class="form-group row">
                                 <label for="r_proforma" class="col-4 col-form-label text-lg-right">Proforma # :</label>
                                 <div class="col-8">
-                                    <input type="text" id="r_proforma" name="proforma">
+                                    <input type="text" id="r_proforma" class="col-12 form-control" name="proforma">
                                     <p class="text-danger error-message error-message-proforma" style="display:none"></p>
                                 </div>
                             </div>
@@ -60,11 +60,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="r_account" class="col-4 col-form-label text-lg-right">Account :</label>
+                                <label for="r_cash_account" class="col-4 col-form-label text-lg-right">Cash Acct.<span class="text-danger ml-1">*</span> :</label>
                                 <div class="col-8">
-                                    <input class="col-md-4 col-lg-4" id="r_account" name='account'>
-                                    <p class="text-danger error-message error-message-account" style="display:none"></p>
+                                    <input id="r_cash_account" class="col-12 form-control" name='cash_account'>
+                                    <p class="text-danger error-message error-message-cash_account" style="display:none"></p>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

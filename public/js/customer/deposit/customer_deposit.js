@@ -64,7 +64,7 @@ function getReceipts() {
     $("#deposit-list").empty();
     // Get data from server.
     var request = $.ajax({
-        url: "/ajax/get/receipts",
+        url: "/ajax/customer/deposit/receipts/undeposited/get",
         method: "GET",
     });
 

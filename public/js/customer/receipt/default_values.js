@@ -6,6 +6,9 @@ var defaultsWhitelist;
 var sales_select_cash_account_elm = document.querySelector('#s_cash_account');
 var sales_select_cash_account_tagify;
 
+var receipt_select_cash_account_elm = document.querySelector('#r_cash_account');
+var receipt_select_cash_account_tagify;
+
 // Fetch the defaults for Customer
 fetch('/ajax/settings/defaults')
 .then(RES => RES.json())
@@ -28,6 +31,9 @@ fetch('/ajax/settings/defaults')
 
     // sales_select_cash_account_tagify.whitelist = newWhitelist // update whitelist Array in-place
     $(`#s_cash_account`).val(defaultsWhitelist[0].label);
+    $(`#r_cash_account`).val(defaultsWhitelist[0].label);
+
+    // Sales
 
     sales_select_cash_account_tagify = new Tagify(sales_select_cash_account_elm, {
         tagTextProp: 'label', // very important since a custom template is used with this property as text
@@ -51,4 +57,29 @@ fetch('/ajax/settings/defaults')
     sales_select_cash_account_tagify.on('dropdown:select', onSalesCashAccountSelectSuggestion)
     sales_select_cash_account_tagify.on('input', onSalesCashAccountInput)
     sales_select_cash_account_tagify.on('remove', onSalesCashAccountRemove)
+
+    // Receipt
+
+    receipt_select_cash_account_tagify = new Tagify(receipt_select_cash_account_elm, {
+        tagTextProp: 'label', // very important since a custom template is used with this property as text
+        enforceWhitelist: true,
+        mode : "select",
+        skipInvalid: false, // do not remporarily add invalid tags
+        dropdown: {
+            closeOnSelect: true,
+            enabled: 0,
+            classname: 'customer-list',
+            searchKeys: ['label'] // very important to set by which keys to search for suggesttions when typing
+        },
+        templates: {
+            tag: cashAccountTagTemplate,
+            dropdownItem: cashAccountSuggestionItemTemplate
+        },
+        whitelist: defaultsWhitelist, // require `default_values.js`
+    })
+
+    receipt_select_cash_account_tagify.on('dropdown:show dropdown:updated', onReceiptCashAccountDropdownShow)
+    receipt_select_cash_account_tagify.on('dropdown:select', onReceiptCashAccountSelectSuggestion)
+    receipt_select_cash_account_tagify.on('input', onReceiptCashAccountInput)
+    receipt_select_cash_account_tagify.on('remove', onReceiptCashAccountRemove)
 });
