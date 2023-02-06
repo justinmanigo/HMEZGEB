@@ -11,8 +11,10 @@ use App\Http\Controllers\ReferralsController;
 // Customer module
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\Customers\Receipts\SaleController;
-use App\Http\Controllers\Customers\Receipts\ProformaController;
+// use App\Http\Controllers\Customers\Receipts\ReceiptController;
+use App\Http\Controllers\Customers\Receipts\AdvanceRevenueController;
 use App\Http\Controllers\Customers\Receipts\CreditReceiptController;
+use App\Http\Controllers\Customers\Receipts\ProformaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
 // Banking module
@@ -309,7 +311,12 @@ Route::group([
                 Route::group([
                     'as'=>'advance_revenues.',
                 ], function(){
-
+                    Route::post('/advance-receipt',[AdvanceRevenueController::class,'store'])->name('store');
+                    Route::get('/advance-receipt/{receipt}',[AdvanceRevenueController::class,'show'])->name('show');
+                    Route::get('/advance-revenue/void/{id}', [AdvanceRevenueController::class, 'void'])->name('void');
+                    Route::get('/advance-revenue/reactivate/{id}', [AdvanceRevenueController::class, 'reactivate'])->name('reactivate');
+                    Route::get('/advance-revenue/mail/{id}', [AdvanceRevenueController::class, 'mail'])->name('mail');
+                    Route::get('/advance-revenue/print/{id}', [AdvanceRevenueController::class, 'print'])->name('print');
                 });
 
                 Route::group([
@@ -342,8 +349,7 @@ Route::group([
                 // TODO: To be reorganized
                 // Store
                 Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
-                Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
-                Route::get('/advance-receipt/{receipt}',[ReceiptController::class,'showAdvanceRevenue'])->name('advanceReceipt.show');
+                
                 
                 Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
                 // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
@@ -351,22 +357,21 @@ Route::group([
                 // Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
                 // Void
                 Route::get('/receipt/void/{id}', [ReceiptController::class, 'voidReceipt'])->name('receipt.void');
-                Route::get('/advance-revenue/void/{id}', [ReceiptController::class, 'voidAdvanceRevenue'])->name('advanceRevenue.void');
+                
                 
                 
                 // Reactivate void
                 Route::get('/receipt/reactivate/{id}', [ReceiptController::class, 'reactivateReceipt'])->name('receipt.reactivate');
-                Route::get('/advance-revenue/reactivate/{id}', [ReceiptController::class, 'reactivateAdvanceRevenue'])->name('advanceRevenue.reactivate');
+                
                 
                 
                 // Mail
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
-                Route::get('/advance-revenue/mail/{id}', [ReceiptController::class, 'sendMailAdvanceRevenue'])->name('advanceRevenue.mail');
                 
                 
                 // Print
                 Route::get('/receipt/print/{id}', [ReceiptController::class, 'printReceipt'])->name('receipt.print');
-                Route::get('/advance-revenue/print/{id}', [ReceiptController::class, 'printAdvanceRevenue'])->name('advanceRevenue.print');
+                
                 
             });
 

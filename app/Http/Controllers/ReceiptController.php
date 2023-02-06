@@ -286,51 +286,6 @@ class ReceiptController extends Controller
         ];
     }
 
-    public function storeAdvanceRevenue(StoreAdvanceRevenueRequest $request)
-    {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'advance_receipt', 'paid', $accounting_system_id);
-
-        // Create child database entry
-        if($request->attachment) {
-            $fileAttachment = time().'.'.$request->attachment->extension();  
-            $request->attachment->storeAs('public/receipt-attachment'/'advance-revenues', $fileAttachment);
-        }
-
-        // Create Journal Entry
-        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
-        $reference->journal_entry_id = $je->id;
-        $reference->save();
-
-        // Create Debit Postings
-        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->advance_receipt_cash_on_hand);
-        $debit_amount[] = $request->amount_received;
-
-        // Create Credit Postings
-        $credit_accounts[] = CreateJournalPostings::encodeAccount($request->advance_receipt_advance_payment);
-        $credit_amount[] = $request->amount_received;
-
-        CreateJournalPostings::run($je, 
-            $debit_accounts, $debit_amount,
-            $credit_accounts, $credit_amount,
-            $accounting_system_id);
-
-        AdvanceRevenues::create([
-            'receipt_reference_id' => $reference->id,
-            'total_amount_received' => $request->amount_received,
-            'reason' => $request->reason,
-            'remark' => $request->remark,
-            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-        ]);
-
-        return [
-            'debit_accounts' => $debit_accounts,
-            'debit_amount' => $debit_amount,
-            'credit_accounts' => $credit_accounts,
-            'credit_amount' => $credit_amount,
-        ];
-    }
-
     public function edit($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
@@ -469,20 +424,7 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
-    public function voidAdvanceRevenue($id)
-    {
-        $rr = ReceiptReferences::find($id);
-        $rr->journalEntry;
-
-        if($rr->is_deposited == "yes")
-            return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
-
-        $rr->is_void = "yes";
-        $rr->journalEntry->is_void = true;
-        $rr->push();
-
-        return redirect()->back()->with('success', "Successfully voided advance revenue.");
-    }    
+     
 
     // REACTIVATE VOID
     public function reactivateReceipt($id)
@@ -495,19 +437,7 @@ class ReceiptController extends Controller
         $rr->push();
 
         return redirect()->back()->with('success', "Successfully reactivated receipt.");
-    }
-
-    public function reactivateAdvanceRevenue($id)
-    {
-        $rr = ReceiptReferences::find($id);
-        $rr->journalEntry;
-
-        $rr->is_void = "no";
-        $rr->journalEntry->is_void = false;
-        $rr->push();
-
-        return redirect()->back()->with('success', "Successfully reactivated advance revenue.");
-    }
+    }    
 
     // Mail
     public function sendMailReceipt($id)
@@ -521,17 +451,6 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
-    public function sendMailAdvanceRevenue($id)
-    {
-        // Mail
-        $advance_revenue = AdvanceRevenues::find($id);
-        $emailAddress = $advance_revenue->receiptReference->customer->email; 
-        
-        Mail::to($emailAddress)->queue(new MailCustomerAdvanceRevenue($advance_revenue));
-        
-        return redirect()->back()->with('success', "Successfully sent email to customer.");
-    }
-
     // Print
     public function printReceipt($id)
     {
@@ -541,14 +460,6 @@ class ReceiptController extends Controller
         $pdf = PDF::loadView('customer.receipt.print', compact('receipt_items'));
 
         return $pdf->stream('receipt_'.$id.'_'.date('Y-m-d').'.pdf');
-    }
-
-    public function printAdvanceRevenue($id)
-    {
-        $advance_revenue = AdvanceRevenues::find($id);
-        $pdf = PDF::loadView('customer.receipt.advance_revenue.print', compact('advance_revenue'));
-
-        return $pdf->stream('advance_revenue_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     // export
