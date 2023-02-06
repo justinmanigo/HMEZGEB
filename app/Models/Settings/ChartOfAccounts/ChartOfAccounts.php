@@ -4,6 +4,7 @@ namespace App\Models\Settings\ChartOfAccounts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BankAccounts;
 
 class ChartOfAccounts extends Model
 {
@@ -30,7 +31,7 @@ class ChartOfAccounts extends Model
 
     public function bankAccount()
     {
-        return $this->hasOne(BankAccounts::class, 'chart_of_accounts_id','id');
+        return $this->hasOne(BankAccounts::class, 'id','chart_of_accounts_id');
     }
 
     public function category()
