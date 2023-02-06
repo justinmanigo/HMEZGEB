@@ -226,4 +226,21 @@ class DepositsController extends Controller
              })
              ->get();
      }
+
+    public function ajaxGetUndepositedReceipts()
+    {
+        return ReceiptCashTransactions::select(
+                'receipt_cash_transactions.id as value',
+                'receipt_references.date',
+                'receipt_cash_transactions.amount_received as total_amount_received',
+                'receipts.payment_method',
+                'customers.name as customer_name',
+            )
+            ->where('receipt_cash_transactions.accounting_system_id', session('accounting_system_id'))
+            ->leftJoin('receipt_references', 'receipt_cash_transactions.receipt_reference_id', '=', 'receipt_references.id')
+            ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+            ->leftJoin('customers', 'receipt_references.customer_id', '=', 'customers.id')
+            ->where('receipt_cash_transactions.deposit_id', '=', NULL)
+            ->get();
+    }
 }

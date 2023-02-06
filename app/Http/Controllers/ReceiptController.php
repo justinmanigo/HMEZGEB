@@ -862,24 +862,4 @@ class ReceiptController extends Controller
             ->get();
         return $receipts;
     }
-
-    public function ajaxGetReceiptCashTransactions()
-    {
-        $cash_transactions = ReceiptCashTransactions::select(
-                'receipt_cash_transactions.id as value',
-                'receipt_references.date',
-                'receipt_cash_transactions.amount_received as total_amount_received',
-                'receipts.payment_method',
-                'customers.name as customer_name',
-            )
-            ->leftJoin('receipt_references', 'receipt_references.id', '=', 'receipt_cash_transactions.receipt_reference_id')
-            ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
-            ->leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
-            ->where('receipt_cash_transactions.is_deposited', 'no')
-            ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
-            ->where('receipt_references.is_void', 'no')
-            ->get();
-
-        return $cash_transactions;
-    }
 }
