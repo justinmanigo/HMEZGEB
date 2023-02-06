@@ -462,13 +462,6 @@ class ReceiptController extends Controller
         return view('customer.receipt.credit_receipt.edit',compact('credit_receipt'));
     }
 
-    public function showProforma($id)
-    {
-        $proforma = Proformas::find($id);
-
-        return view('customer.receipt.proforma.edit',compact('proforma'));
-    }
-
     public function destroy($id)
     {
         $receipt = ReceiptReferences::find($id);
@@ -614,17 +607,7 @@ class ReceiptController extends Controller
     /**
      * TODO: To be deprecated.
      */
-    public function voidProforma($id)
-    {
-        $proforma = Proformas::find($id);
-        if($proforma->receiptReference->is_deposited == "yes")
-        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
-
-        $proforma->receiptReference->is_void = "yes";
-        $proforma->receiptReference->save();
-
-        return redirect()->back()->with('success', "Successfully voided proforma.");
-    }
+    
 
     // REACTIVATE VOID
     public function reactivateReceipt($id)
@@ -687,20 +670,7 @@ class ReceiptController extends Controller
         $rr->push();
 
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
-    }
-
-    /**
-     * TODO: To be deprecated.
-     */
-    public function reactivateProforma($id)
-    {
-        $proforma = Proformas::find($id);
-        $proforma->receiptReference->is_void = "no";
-
-        $proforma->receiptReference->save();
-
-        return redirect()->back()->with('success', "Successfully reactivated proforma.");
-    }
+    }    
 
     // Mail
     public function sendMailReceipt($id)
@@ -736,18 +706,6 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
-    public function sendMailProforma($id)
-    {
-        // Mail
-        $proforma = Proformas::find($id);
-        $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
-        $emailAddress = $proforma->receiptReference->customer->email;
-         
-        Mail::to($emailAddress)->queue(new MailCustomerProforma($proforma_items , $proforma));
-        
-        return redirect()->back()->with('success', "Successfully sent email to customer.");
-    }
-
     // Print
     public function printReceipt($id)
     {
@@ -773,16 +731,6 @@ class ReceiptController extends Controller
         $pdf = PDF::loadView('customer.receipt.credit_receipt.print', compact('credit_receipt'));
 
         return $pdf->stream('credit_receipt_'.$id.'_'.date('Y-m-d').'.pdf');
-    }
-
-    public function printProforma($id)
-    {
-        $proforma = Proformas::find($id);
-        $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
-
-        $pdf = PDF::loadView('customer.receipt.proforma.print', compact('proforma_items','proforma'));
-
-        return $pdf->stream('proforma_'.$id.'_'.date('Y-m-d').'.pdf');
     }
 
     // export
@@ -841,37 +789,6 @@ class ReceiptController extends Controller
 
 
     /*********** AJAX *************/
-
-    public function ajaxSearchCustomerProforma(Customers $customer, $value)
-    {
-        $proformas = ReceiptReferences::select(
-                'receipt_references.id as value',
-                'receipt_references.date',
-                'proformas.amount',
-                'proformas.due_date',
-            )
-            ->leftJoin('proformas', 'proformas.receipt_reference_id', '=', 'receipt_references.id')
-            ->where('customer_id', $customer->id)
-            ->where('type', 'proforma')
-            ->where('status', 'unpaid')
-            ->get();
-
-        return $proformas;
-    }
-
-    public function ajaxGetProforma(ReceiptReferences $proforma)
-    {
-        // Load relationships.
-        $proforma->proforma;
-        $proforma->receiptItems;
-        for($i = 0; $i < count($proforma->receiptItems); $i++){
-            $proforma->receiptItems[$i]->inventory;
-            $proforma->receiptItems[$i]->inventory->tax;
-        }
-
-        // Return response
-        return $proforma;
-    }
 
     /**
      * Deprecated function.

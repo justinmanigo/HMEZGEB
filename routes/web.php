@@ -11,6 +11,7 @@ use App\Http\Controllers\ReferralsController;
 // Customer module
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\Customers\Receipts\SaleController;
+use App\Http\Controllers\Customers\Receipts\ProformaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
 // Banking module
@@ -301,6 +302,23 @@ Route::group([
                     Route::post('/customers/receipts/sales', [SaleController::class, 'store'])->name('store');
                 });
 
+
+                Route::group([
+                    'as'=>'proformas.',
+                ], function(){
+                    Route::post('/proforma',[ProformaController::class,'store'])->name('store');
+                    Route::get('/proforma/{receipt}',[ProformaController::class,'show'])->name('show');
+                    Route::get('/proforma/void/{id}', [ProformaController::class, 'void'])->name('void');
+                    Route::get('/proforma/reactivate/{id}', [ProformaController::class, 'reactivate'])->name('reactivate');
+                    Route::get('/proforma/mail/{id}', [ProformaController::class, 'mail'])->name('mail');
+                    Route::get('/proforma/print/{id}', [ProformaController::class, 'print'])->name('print');
+
+                    /** AJAX Calls */
+                    Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ProformaController::class, 'ajaxSearchCustomer']);
+                    Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ProformaController::class, 'ajaxGet']);
+                });
+
+
                 // TODO: To be reorganized
                 // Store
                 Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
@@ -308,8 +326,6 @@ Route::group([
                 Route::get('/advance-receipt/{receipt}',[ReceiptController::class,'showAdvanceRevenue'])->name('advanceReceipt.show');
                 Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
                 Route::get('/credit-receipt/{receipt}',[ReceiptController::class,'showCreditReceipt'])->name('creditReceipt.show');
-                Route::post('/proforma',[ReceiptController::class,'storeProforma'])->name('proforma.store');
-                Route::get('/proforma/{receipt}',[ReceiptController::class,'showProforma'])->name('proforma.show');
                 Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
                 // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
                 // Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
@@ -318,25 +334,21 @@ Route::group([
                 Route::get('/receipt/void/{id}', [ReceiptController::class, 'voidReceipt'])->name('receipt.void');
                 Route::get('/advance-revenue/void/{id}', [ReceiptController::class, 'voidAdvanceRevenue'])->name('advanceRevenue.void');
                 Route::get('/credit-receipt/void/{id}', [ReceiptController::class, 'voidCreditReceipt'])->name('creditReceipt.void');
-                Route::get('/proforma/void/{id}', [ReceiptController::class, 'voidproforma'])->name('proforma.void');
+                
                 // Reactivate void
                 Route::get('/receipt/reactivate/{id}', [ReceiptController::class, 'reactivateReceipt'])->name('receipt.reactivate');
                 Route::get('/advance-revenue/reactivate/{id}', [ReceiptController::class, 'reactivateAdvanceRevenue'])->name('advanceRevenue.reactivate');
                 Route::get('/credit-receipt/reactivate/{id}', [ReceiptController::class, 'reactivateCreditReceipt'])->name('creditReceipt.reactivate');
-                Route::get('/proforma/reactivate/{id}', [ReceiptController::class, 'reactivateproforma'])->name('proforma.reactivate');
+                
                 // Mail
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
                 Route::get('/advance-revenue/mail/{id}', [ReceiptController::class, 'sendMailAdvanceRevenue'])->name('advanceRevenue.mail');
                 Route::get('/credit-receipt/mail/{id}', [ReceiptController::class, 'sendMailCreditReceipt'])->name('creditReceipt.mail');
-                Route::get('/proforma/mail/{id}', [ReceiptController::class, 'sendMailProforma'])->name('proforma.mail');
+                
                 // Print
                 Route::get('/receipt/print/{id}', [ReceiptController::class, 'printReceipt'])->name('receipt.print');
                 Route::get('/advance-revenue/print/{id}', [ReceiptController::class, 'printAdvanceRevenue'])->name('advanceRevenue.print');
                 Route::get('/credit-receipt/print/{id}', [ReceiptController::class, 'printCreditReceipt'])->name('creditReceipt.print');
-                Route::get('/proforma/print/{id}', [ReceiptController::class, 'printProforma'])->name('proforma.print');
-                /** AJAX Calls */
-                Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ReceiptController::class, 'ajaxSearchCustomerProforma']);
-                Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ReceiptController::class, 'ajaxGetProforma']);
             });
 
             /**

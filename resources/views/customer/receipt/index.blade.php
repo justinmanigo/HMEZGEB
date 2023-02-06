@@ -297,7 +297,7 @@
                                         <td class="table-item-content">{{$proforma->name}}</td>
                                         <td class="table-item-content text-right">Birr {{ number_format($proforma->proforma_amount, 2) }}</td>
                                         <td>
-                                            <a href="{{route('receipts.proforma.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
+                                            <a href="{{route('receipts.proformas.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
@@ -411,7 +411,7 @@
             if(type=="creditReceipt")
             $('#btn-send-mail').attr('href', '{{ route("receipts.creditReceipt.mail", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.proforma.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("receipts.proformas.mail", ":id") }}'.replace(':id', id));
         }
 
         // Get id of transaction to print confirmation modal
@@ -424,7 +424,7 @@
             if(type=="creditReceipt")
             $('#print-receipt').attr('href', '{{ route("receipts.creditReceipt.print", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#print-receipt').attr('href', '{{ route("receipts.proforma.print", ":id") }}'.replace(':id', id));
+            $('#print-receipt').attr('href', '{{ route("receipts.proformas.print", ":id") }}'.replace(':id', id));
         }
 
         // Void record
@@ -437,7 +437,7 @@
             if(type=="creditReceipt")
             $('#void-receipt').attr('href', '{{ route("receipts.creditReceipt.void", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#void-receipt').attr('href', '{{ route("receipts.proforma.void", ":id") }}'.replace(':id', id));
+            $('#void-receipt').attr('href', '{{ route("receipts.proformas.void", ":id") }}'.replace(':id', id));
         }
 
         function reactivateModal(id, type)
@@ -449,7 +449,7 @@
             if(type=="creditReceipt")
             $('#reactivate-receipt').attr('href', '{{ route("receipts.creditReceipt.reactivate", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.proforma.reactivate", ":id") }}'.replace(':id', id));
+            $('#reactivate-receipt').attr('href', '{{ route("receipts.proformas.reactivate", ":id") }}'.replace(':id', id));
         }
 
         $(document).ready(function () {

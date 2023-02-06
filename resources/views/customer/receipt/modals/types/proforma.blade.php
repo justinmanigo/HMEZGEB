@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{route('receipts.proforma.store') }}" id="form-proforma" method="post" enctype="multipart/form-data" data-message="Successfully created proforma.">
+<form class="ajax-submit-updated" action="{{route('receipts.proformas.store') }}" id="form-proforma" method="post" enctype="multipart/form-data" data-message="Successfully created proforma.">
     @csrf
     <div class="modal fade" id="modal-proforma" tabindex="-1" role="dialog" aria-labelledby="modal-proforma-label" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
