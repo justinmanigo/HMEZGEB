@@ -12,6 +12,7 @@ use App\Http\Controllers\ReferralsController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\Customers\Receipts\SaleController;
 use App\Http\Controllers\Customers\Receipts\ProformaController;
+use App\Http\Controllers\Customers\Receipts\CreditReceiptController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
 // Banking module
@@ -313,6 +314,14 @@ Route::group([
 
                 Route::group([
                     'as'=>'credit_receipts.',
+                ], function(){
+                    Route::post('/credit-receipt',[CreditReceiptController::class,'store'])->name('store');
+                    Route::get('/credit-receipt/{cr}',[CreditReceiptController::class,'show'])->name('show');
+                    Route::get('/credit-receipt/void/{rr}', [CreditReceiptController::class, 'void'])->name('void');
+                    Route::get('/credit-receipt/reactivate/{rr}', [CreditReceiptController::class, 'reactivate'])->name('reactivate');
+                    Route::get('/credit-receipt/mail/{cr}', [CreditReceiptController::class, 'mail'])->name('mail');
+                    Route::get('/credit-receipt/print/{cr}', [CreditReceiptController::class, 'print'])->name('print');
+                });
 
                 Route::group([
                     'as'=>'proformas.',
@@ -336,8 +345,6 @@ Route::group([
                 Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
                 Route::post('/advance-receipt',[ReceiptController::class,'storeAdvanceRevenue'])->name('advanceReceipt.store');
                 Route::get('/advance-receipt/{receipt}',[ReceiptController::class,'showAdvanceRevenue'])->name('advanceReceipt.show');
-                Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
-                Route::get('/credit-receipt/{receipt}',[ReceiptController::class,'showCreditReceipt'])->name('creditReceipt.show');
                 
                 Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
                 // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
@@ -346,22 +353,22 @@ Route::group([
                 // Void
                 Route::get('/receipt/void/{id}', [ReceiptController::class, 'voidReceipt'])->name('receipt.void');
                 Route::get('/advance-revenue/void/{id}', [ReceiptController::class, 'voidAdvanceRevenue'])->name('advanceRevenue.void');
-                Route::get('/credit-receipt/void/{id}', [ReceiptController::class, 'voidCreditReceipt'])->name('creditReceipt.void');
+                
                 
                 // Reactivate void
                 Route::get('/receipt/reactivate/{id}', [ReceiptController::class, 'reactivateReceipt'])->name('receipt.reactivate');
                 Route::get('/advance-revenue/reactivate/{id}', [ReceiptController::class, 'reactivateAdvanceRevenue'])->name('advanceRevenue.reactivate');
-                Route::get('/credit-receipt/reactivate/{id}', [ReceiptController::class, 'reactivateCreditReceipt'])->name('creditReceipt.reactivate');
+                
                 
                 // Mail
                 Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
                 Route::get('/advance-revenue/mail/{id}', [ReceiptController::class, 'sendMailAdvanceRevenue'])->name('advanceRevenue.mail');
-                Route::get('/credit-receipt/mail/{id}', [ReceiptController::class, 'sendMailCreditReceipt'])->name('creditReceipt.mail');
+                
                 
                 // Print
                 Route::get('/receipt/print/{id}', [ReceiptController::class, 'printReceipt'])->name('receipt.print');
                 Route::get('/advance-revenue/print/{id}', [ReceiptController::class, 'printAdvanceRevenue'])->name('advanceRevenue.print');
-                Route::get('/credit-receipt/print/{id}', [ReceiptController::class, 'printCreditReceipt'])->name('creditReceipt.print');
+                
             });
 
             /**
