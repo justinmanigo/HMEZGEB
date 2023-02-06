@@ -303,6 +303,17 @@ Route::group([
                 });
 
 
+                });
+
+                Route::group([
+                    'as'=>'advance_revenues.',
+                ], function(){
+
+                });
+
+                Route::group([
+                    'as'=>'credit_receipts.',
+
                 Route::group([
                     'as'=>'proformas.',
                 ], function(){
@@ -312,6 +323,7 @@ Route::group([
                     Route::get('/proforma/reactivate/{id}', [ProformaController::class, 'reactivate'])->name('reactivate');
                     Route::get('/proforma/mail/{id}', [ProformaController::class, 'mail'])->name('mail');
                     Route::get('/proforma/print/{id}', [ProformaController::class, 'print'])->name('print');
+                    Route::get('/proforma/print/{proforma}', [ProformaController::class, 'print'])->name('print');
 
                     /** AJAX Calls */
                     Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ProformaController::class, 'ajaxSearchCustomer']);
@@ -326,6 +338,7 @@ Route::group([
                 Route::get('/advance-receipt/{receipt}',[ReceiptController::class,'showAdvanceRevenue'])->name('advanceReceipt.show');
                 Route::post('/credit-receipt',[ReceiptController::class,'storeCreditReceipt'])->name('creditReceipt.store');
                 Route::get('/credit-receipt/{receipt}',[ReceiptController::class,'showCreditReceipt'])->name('creditReceipt.show');
+                
                 Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
                 // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
                 // Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
