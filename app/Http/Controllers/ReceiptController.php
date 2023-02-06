@@ -286,6 +286,9 @@ class ReceiptController extends Controller
         ];
     }
 
+    /**
+     * TODO: Need to refactor this
+     */
     public function edit($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
@@ -298,6 +301,9 @@ class ReceiptController extends Controller
         return view('customer.receipt.edit',compact('receipts'));
     }
 
+    /**
+     * TODO: Need to refactor this
+     */
     public function update(Request $request, $id)
     { 
         $receipts = Receipts::find($id);
@@ -326,6 +332,10 @@ class ReceiptController extends Controller
         return view('customer.receipt.edit',compact('receipt'));
     }
 
+    
+    /**
+     * TODO: Need to refactor this
+     */
     public function destroy($id)
     {
         $receipt = ReceiptReferences::find($id);
