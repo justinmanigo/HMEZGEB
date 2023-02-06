@@ -60,11 +60,12 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="r_account" class="col-4 col-form-label text-lg-right">Account :</label>
+                                <label for="r_cash_account" class="col-4 col-form-label text-lg-right">Cash Acct.<span class="text-danger ml-1">*</span> :</label>
                                 <div class="col-8">
-                                    <input class="col-md-4 col-lg-4" id="r_account" name='account'>
-                                    <p class="text-danger error-message error-message-account" style="display:none"></p>
+                                    <input id="r_cash_account" class="col-12 form-control" name='cash_account'>
+                                    <p class="text-danger error-message error-message-cash_account" style="display:none"></p>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
