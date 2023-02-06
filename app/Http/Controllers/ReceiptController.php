@@ -331,36 +331,6 @@ class ReceiptController extends Controller
         ];
     }
 
-    public function storeProforma(StoreProformaRequest $request)
-    {        
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid', $accounting_system_id);
-
-        // if($reference)        
-        // {
-        //     if($request->attachment) {
-        //         $fileAttachment = time().'.'.$request->attachment->extension();  
-        //         $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
-        //     }
-        // }
-
-        StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
-        
-        return Proformas::create([
-            'receipt_reference_id' => $reference->id,
-            'reference_number' => $request->reference_number,
-            'due_date' => $request->due_date,
-            'amount' => $request->grand_total,
-            'tax' => $request->tax_total,
-            'sub_total' => $request->sub_total,
-            'grand_total' => $request->grand_total,
-            'terms_and_conditions' => $request->terms_and_conditions,
-            'attachment' => isset($fileAttachment) ? $fileAttachment : null,
-        ]);
-
-    }
-
-
     public function edit($id)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
