@@ -165,6 +165,7 @@ class ReceiptController extends Controller
         // Create Receipt Cash Transaction
         if($request->total_amount_received > 0) {
             ReceiptCashTransactions::create([
+            $rct = ReceiptCashTransactions::create([
                 'accounting_system_id' => $accounting_system_id,
                 'receipt_reference_id' => $reference->id,
                 'for_receipt_reference_id' => $reference->id,
@@ -195,7 +196,7 @@ class ReceiptController extends Controller
         // Create Debit Postings
         // This determines which is which to include in debit postings
         if($status == 'paid' || $status == 'partially_paid') {
-            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_cash_on_hand);
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->cash_account->value);
             $debit_amount[] = $cash_on_hand;
         }
         if($status == 'partially_paid' || $status == 'unpaid') {

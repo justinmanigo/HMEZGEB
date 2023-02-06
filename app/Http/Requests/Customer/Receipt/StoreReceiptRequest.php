@@ -29,6 +29,7 @@ class StoreReceiptRequest extends FormRequest
     {
         return [
             'customer' => ['required'],
+            'cash_account' => ['required'],
             'date' => ['required', 'date'],
             'proforma' => ['sometimes'],
             'due_date' => ['sometimes'],
@@ -74,6 +75,7 @@ class StoreReceiptRequest extends FormRequest
 
         $this->merge([
             'customer' => DecodeTagifyField::run($this->customer),
+            'cash_account' => DecodeTagifyField::run($this->cash_account),
             'item' => isset($item) ? $item : [],
             'proforma' => $this->proforma != null ? DecodeTagifyField::run($this->proforma) : null,
             'tax' => isset($tax) ? $tax : [],
@@ -106,12 +108,13 @@ class StoreReceiptRequest extends FormRequest
                 }
             }
 
-            // Check if either of the COA defaults is blank.
-            if($this->get('receipt_cash_on_hand') == null)
+            if($this->get('cash_account') == null)
             {
-                $validator->errors()->add('customer', 'You haven\'t set the default COA for Cash on Hand. Please make sure that everything is set at `Settings > Defaults`');
+                $validator->errors()->add('cash_account', 'Please select a cash account.');
             }
-            else if($this->get('receipt_vat_payable') == null)
+
+            // Check if either of the COA defaults (except cash_on_hand) is blank.
+            if($this->get('receipt_vat_payable') == null)
             {
                 $validator->errors()->add('customer', 'You haven\'t set the default COA for VAT Payable. Please make sure that everything is set at `Settings > Defaults`');
             }
