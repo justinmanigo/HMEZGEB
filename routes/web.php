@@ -9,7 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReferralsController;
 
 // Customer module
-use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\Customers\ReceiptsController;
 use App\Http\Controllers\Customers\Receipts\SaleController;
 // use App\Http\Controllers\Customers\Receipts\ReceiptController;
 use App\Http\Controllers\Customers\Receipts\AdvanceRevenueController;
@@ -296,8 +296,8 @@ Route::group([
                 'as'=>'receipts.',
                 'middleware' => 'acctsys.permission:2',
             ], function(){
-                // Route::get('/customers/receipts/', [ReceiptController::class, 'index'])->name('receipt.index');
-                Route::resource('/customers/receipts', ReceiptController::class);
+                // Route::get('/customers/receipts/', [ReceiptsController::class, 'index'])->name('receipt.index');
+                Route::resource('/customers/receipts', ReceiptsController::class);
 
                 Route::group([
                     'as'=>'sales.',
@@ -348,29 +348,29 @@ Route::group([
 
                 // TODO: To be reorganized
                 // Store
-                Route::post('/receipt',[ReceiptController::class,'storeReceipt'])->name('receipt.store');
+                Route::post('/receipt',[ReceiptsController::class,'storeReceipt'])->name('receipt.store');
                 
                 
-                Route::get('/receipt/csv',[ReceiptController::class,'exportReceipts'])->name('export.csv');
-                // Route::delete('/receipt/{id}', [ReceiptController::class, 'destroy']);
-                // Route::get('/receipt/{id}', [ReceiptController::class, 'edit']);
-                // Route::put('/receipt/{id}', [ReceiptController::class, 'update']);
+                Route::get('/receipt/csv',[ReceiptsController::class,'exportReceipts'])->name('export.csv');
+                // Route::delete('/receipt/{id}', [ReceiptsController::class, 'destroy']);
+                // Route::get('/receipt/{id}', [ReceiptsController::class, 'edit']);
+                // Route::put('/receipt/{id}', [ReceiptsController::class, 'update']);
                 // Void
-                Route::get('/receipt/void/{id}', [ReceiptController::class, 'voidReceipt'])->name('receipt.void');
+                Route::get('/receipt/void/{id}', [ReceiptsController::class, 'voidReceipt'])->name('receipt.void');
                 
                 
                 
                 // Reactivate void
-                Route::get('/receipt/reactivate/{id}', [ReceiptController::class, 'reactivateReceipt'])->name('receipt.reactivate');
+                Route::get('/receipt/reactivate/{id}', [ReceiptsController::class, 'reactivateReceipt'])->name('receipt.reactivate');
                 
                 
                 
                 // Mail
-                Route::get('/receipt/mail/{id}', [ReceiptController::class, 'sendMailReceipt'])->name('receipt.mail');
+                Route::get('/receipt/mail/{id}', [ReceiptsController::class, 'sendMailReceipt'])->name('receipt.mail');
                 
                 
                 // Print
-                Route::get('/receipt/print/{id}', [ReceiptController::class, 'printReceipt'])->name('receipt.print');
+                Route::get('/receipt/print/{id}', [ReceiptsController::class, 'printReceipt'])->name('receipt.print');
                 
                 
             });

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Customers;
 
+use App\Http\Controllers\Controller;
 use App\Actions\CreateJournalEntry;
 use App\Actions\CreateJournalPostings;
 use App\Actions\UpdateInventoryItemQuantity;
@@ -38,7 +39,7 @@ use Illuminate\Support\Facades\Mail;
 use PDF;
 
 
-class ReceiptController extends Controller
+class ReceiptsController extends Controller
 {
     /**
      * Show the receipts page of customers menu.
