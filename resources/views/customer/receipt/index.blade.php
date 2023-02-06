@@ -405,7 +405,7 @@
         function mailModal(id, type){
             // set attribute href of btn-send-mail
             if(type=="receipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.receipt.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("receipts.receipts.mail", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
             $('#btn-send-mail').attr('href', '{{ route("receipts.advance_revenues.mail", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
@@ -418,7 +418,7 @@
         function printModal(id, type){
             // set attribute href of print-receipt
             if(type=="receipt")
-            $('#print-receipt').attr('href', '{{ route("receipts.receipt.print", ":id") }}'.replace(':id', id));
+            $('#print-receipt').attr('href', '{{ route("receipts.receipts.print", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
             $('#print-receipt').attr('href', '{{ route("receipts.advance_revenues.print", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
@@ -431,7 +431,7 @@
 
         function voidModal(id, type) {
             if(type=="receipt")
-            $('#void-receipt').attr('href', '{{ route("receipts.receipt.void", ":id") }}'.replace(':id', id));
+            $('#void-receipt').attr('href', '{{ route("receipts.receipts.void", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
             $('#void-receipt').attr('href', '{{ route("receipts.advance_revenues.void", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
@@ -443,7 +443,7 @@
         function reactivateModal(id, type)
         {
             if(type=="receipt")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.receipt.reactivate", ":id") }}'.replace(':id', id));
+            $('#reactivate-receipt').attr('href', '{{ route("receipts.receipts.reactivate", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
             $('#reactivate-receipt').attr('href', '{{ route("receipts.advance_revenues.reactivate", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
