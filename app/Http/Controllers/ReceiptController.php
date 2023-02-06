@@ -18,7 +18,10 @@ use App\Models\ReceiptReferences;
 use App\Models\Receipts;
 use App\Models\ReceiptItem;
 use App\Models\Customers;
+use App\Models\Transactions;
+use App\Models\Deposits;
 use App\Models\Inventory;
+use App\Models\BankAccounts;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
@@ -164,13 +167,40 @@ class ReceiptController extends Controller
 
         // Create Receipt Cash Transaction
         if($request->total_amount_received > 0) {
-            ReceiptCashTransactions::create([
+            // Check if cash_account->value is a bank account
+            $bank_account = BankAccounts::where('chart_of_account_id', $request->cash_account->value)->first();
+            $deposit = null;
+
+            if($bank_account) {
+                $deposit = Deposits::create([
+                    'accounting_system_id' => session()->get('accounting_system_id'),
+                    'chart_of_account_id' => $request->cash_account->value,
+                    'status' => 'Deposited',
+                    'deposit_ticket_date' => date('Y-m-d'),
+                    'total_amount' => $request->total_amount_received,
+                    'remark' => $request->remark,
+                    'reference_number' => $request->reference_number,
+                ]);
+        
+                // create transaction
+                Transactions::create([
+                    'accounting_system_id' => session()->get('accounting_system_id'),
+                    'chart_of_account_id' => $request->cash_account->value,
+                    'type' => 'Deposit',
+                    'description' => $request->remark,
+                    'amount' => $request->total_amount_received,
+                ]);
+            }
+            
             $rct = ReceiptCashTransactions::create([
                 'accounting_system_id' => $accounting_system_id,
                 'receipt_reference_id' => $reference->id,
                 'for_receipt_reference_id' => $reference->id,
                 'amount_received' => $request->total_amount_received,
+                'deposit_id' => $deposit ? $deposit->id : null,
             ]);
+
+            
         }
 
         // Create Journal Entry
