@@ -89,13 +89,8 @@ class DepositsController extends Controller
             $cash_transaction->receiptReference->receipt;
             $cash_transaction->receiptReference->is_deposited = 'yes';
             $cash_transaction->receiptReference->save();
-            $cash_transaction->is_deposited = 'yes';
+            $cash_transaction->deposit_id = $deposits->id;
             $cash_transaction->save();
-            
-            $deposit_item = DepositItems::create([
-                'deposit_id' => $deposits->id,
-                'receipt_cash_transaction_id' => $request->is_deposited[$i],
-            ]);
 
             // Deduct balance from COA for transfer
             $coa_id = $cash_transaction->forReceiptReference->receipt->chart_of_account_id;
