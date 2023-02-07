@@ -175,7 +175,7 @@
                                                 </button>
                                                 @endif
                                             @elseif($transaction->type == 'advance_receipt')
-                                                <a href="{{route('receipts.advanceReceipt.show', $transaction->id)}}" class="btn btn-primary btn-sm edit ">
+                                                <a href="{{route('receipts.advance_revenues.show', $transaction->id)}}" class="btn btn-primary btn-sm edit ">
                                                     <span class="icon text-white-50">
                                                         <i class="fas fa-edit"></i>
                                                     </span>
@@ -206,7 +206,7 @@
                                                 </button>
                                                 @endif
                                             @elseif($transaction->type == 'credit_receipt')
-                                                <a href="{{route('receipts.creditReceipt.show', $transaction->id)}}" class="btn btn-primary btn-sm edit">
+                                                <a href="{{route('receipts.credit_receipts.show', $transaction->id)}}" class="btn btn-primary btn-sm edit">
                                                     <span class="icon text-white-50">
                                                         <i class="fas fa-edit"></i>
                                                     </span>
@@ -297,7 +297,7 @@
                                         <td class="table-item-content">{{$proforma->name}}</td>
                                         <td class="table-item-content text-right">Birr {{ number_format($proforma->proforma_amount, 2) }}</td>
                                         <td>
-                                            <a href="{{route('receipts.proforma.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
+                                            <a href="{{route('receipts.proformas.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
@@ -405,51 +405,51 @@
         function mailModal(id, type){
             // set attribute href of btn-send-mail
             if(type=="receipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.receipt.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("receipts.receipts.mail", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.advanceRevenue.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("receipts.advance_revenues.mail", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.creditReceipt.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("receipts.credit_receipts.mail", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.proforma.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("receipts.proformas.mail", ":id") }}'.replace(':id', id));
         }
 
         // Get id of transaction to print confirmation modal
         function printModal(id, type){
             // set attribute href of print-receipt
             if(type=="receipt")
-            $('#print-receipt').attr('href', '{{ route("receipts.receipt.print", ":id") }}'.replace(':id', id));
+            $('#print-receipt').attr('href', '{{ route("receipts.receipts.print", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
-            $('#print-receipt').attr('href', '{{ route("receipts.advanceRevenue.print", ":id") }}'.replace(':id', id));
+            $('#print-receipt').attr('href', '{{ route("receipts.advance_revenues.print", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
-            $('#print-receipt').attr('href', '{{ route("receipts.creditReceipt.print", ":id") }}'.replace(':id', id));
+            $('#print-receipt').attr('href', '{{ route("receipts.credit_receipts.print", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#print-receipt').attr('href', '{{ route("receipts.proforma.print", ":id") }}'.replace(':id', id));
+            $('#print-receipt').attr('href', '{{ route("receipts.proformas.print", ":id") }}'.replace(':id', id));
         }
 
         // Void record
 
         function voidModal(id, type) {
             if(type=="receipt")
-            $('#void-receipt').attr('href', '{{ route("receipts.receipt.void", ":id") }}'.replace(':id', id));
+            $('#void-receipt').attr('href', '{{ route("receipts.receipts.void", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
-            $('#void-receipt').attr('href', '{{ route("receipts.advanceRevenue.void", ":id") }}'.replace(':id', id));
+            $('#void-receipt').attr('href', '{{ route("receipts.advance_revenues.void", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
-            $('#void-receipt').attr('href', '{{ route("receipts.creditReceipt.void", ":id") }}'.replace(':id', id));
+            $('#void-receipt').attr('href', '{{ route("receipts.credit_receipts.void", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#void-receipt').attr('href', '{{ route("receipts.proforma.void", ":id") }}'.replace(':id', id));
+            $('#void-receipt').attr('href', '{{ route("receipts.proformas.void", ":id") }}'.replace(':id', id));
         }
 
         function reactivateModal(id, type)
         {
             if(type=="receipt")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.receipt.reactivate", ":id") }}'.replace(':id', id));
+            $('#reactivate-receipt').attr('href', '{{ route("receipts.receipts.reactivate", ":id") }}'.replace(':id', id));
             if(type=="advanceRevenue")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.advanceRevenue.reactivate", ":id") }}'.replace(':id', id));
+            $('#reactivate-receipt').attr('href', '{{ route("receipts.advance_revenues.reactivate", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.creditReceipt.reactivate", ":id") }}'.replace(':id', id));
+            $('#reactivate-receipt').attr('href', '{{ route("receipts.credit_receipts.reactivate", ":id") }}'.replace(':id', id));
             if(type=="proforma")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.proforma.reactivate", ":id") }}'.replace(':id', id));
+            $('#reactivate-receipt').attr('href', '{{ route("receipts.proformas.reactivate", ":id") }}'.replace(':id', id));
         }
 
         $(document).ready(function () {

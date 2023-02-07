@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{route('receipts.creditReceipt.store')}} "id="form-credit-receipt" method="post" enctype="multipart/form-data" data-message="Successfully added credit receipt.">
+<form class="ajax-submit-updated" action="{{route('receipts.credit_receipts.store')}} "id="form-credit-receipt" method="post" enctype="multipart/form-data" data-message="Successfully added credit receipt.">
     @csrf
     <div class="modal fade" id="modal-credit-receipt" tabindex="-1" role="dialog"
         aria-labelledby="modal-credit-receipt-label" aria-hidden="true">
