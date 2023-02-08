@@ -248,14 +248,14 @@
                                                 </button>
                                                 @if(!$transaction->is_void)
                                                     <!-- void -->
-                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" disabled>
+                                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'sale')">
                                                         <span class="icon text-white-50">
                                                             <i class="fas fa-ban"></i>
                                                         </span>
                                                     </button>
                                                 @else
                                                     <!-- make it active -->
-                                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" disabled>
+                                                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$transaction->id}}, 'sale')">
                                                         <span class="icon text-white-50">
                                                             <i class="fas fa-check"></i>
                                                         </span>
@@ -430,6 +430,8 @@
             $('#void-receipt').attr('href', '{{ route("receipts.credit_receipts.void", ":id") }}'.replace(':id', id));
             if(type=="proforma")
             $('#void-receipt').attr('href', '{{ route("receipts.proformas.void", ":id") }}'.replace(':id', id));
+            if(type=="sale")
+            $('#void-receipt').attr('href', '{{ route("receipts.sales.void", ":id") }}'.replace(':id', id));
         }
 
         function reactivateModal(id, type)
@@ -442,6 +444,8 @@
             $('#reactivate-receipt').attr('href', '{{ route("receipts.credit_receipts.reactivate", ":id") }}'.replace(':id', id));
             if(type=="proforma")
             $('#reactivate-receipt').attr('href', '{{ route("receipts.proformas.reactivate", ":id") }}'.replace(':id', id));
+            if(type=="sale")
+            $('#reactivate-receipt').attr('href', '{{ route("receipts.sales.reactivate", ":id") }}'.replace(':id', id));
         }
 
         $(document).ready(function () {

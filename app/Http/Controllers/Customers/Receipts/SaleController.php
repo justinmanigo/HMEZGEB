@@ -13,6 +13,7 @@ use App\Models\ReceiptCashTransactions;
 use App\Models\Customers\Receipts\Sale;
 use App\Models\DepositItems;
 use App\Models\Deposits;
+use App\Models\ReceiptReferences;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -138,5 +139,47 @@ class SaleController extends Controller
             'credit_amount' => $credit_amount,
             'sale' => $sale,
         ];
+    }
+
+    /**
+     * TODO: To implement
+     */
+    public function show()
+    {
+        //
+    }
+
+    public function void(ReceiptReferences $rr)
+    {
+        $rr->journalEntry;
+        $rr->sale;
+
+        // Source Receipt Cash Transaction
+        $rr->receiptCashTransactions[0]->depositItem;
+
+        // If the source receipt is already deposited, void the deposit item entry
+        if($rr->receiptCashTransactions[0]->depositItem) {
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = true;
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+        }
+
+        // TODO: Voiding a source receipt will also affect the credit sales that are linked to it.
+
+        $rr->is_void = true;
+        $rr->journalEntry->is_void = true;
+        $rr->push();
+
+        return redirect()->back()->with('success', "Successfully voided sale.");
+    }
+
+    public function reactivate(ReceiptReferences $rr)
+    {
+        $rr->journalEntry;
+
+        $rr->is_void = false;
+        $rr->journalEntry->is_void = false;
+        $rr->push();
+
+        return redirect()->back()->with('success', "Successfully reactivated sale.");
     }
 }
