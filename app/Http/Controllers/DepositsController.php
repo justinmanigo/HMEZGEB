@@ -49,77 +49,53 @@ class DepositsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreDepositRequest $request)
-    {         
+    {
         $deposit = Deposits::create([
             'accounting_system_id' => session('accounting_system_id'),
             'chart_of_account_id' => $request->bank_account->value,
             'deposit_ticket_date' => $request->deposit_ticket_date,
             'remark' => $request->remark,
             'reference_number' => $request->reference_number,
-        ]);
+        ]);        
 
-        // Create Journal Entry
-        $je = CreateJournalEntry::run($request->deposit_ticket_date, $request->remark, session('accounting_system_id'));
-
-        // Initialize the COAs and Amount from different cash accounts
-        $credit_accounts = [];
-        $credit_amount = [];
-
-        $coa = [];
-        $total_transferred_amount = 0;
-
+        // Deposit Item = Journal Entry. It makes marking deposits as void flexible later on.
         for($i = 0; $i < count($request->is_deposited); $i++)
         {
+            // Initialize the COAs and Amount from different cash accounts
+            $credit_accounts = [];
+            $credit_amount = [];
+            $debit_accounts = [];
+            $debit_amount = [];
+
+            // Create Journal Entry for specific deposit item
+            $je = CreateJournalEntry::run($request->deposit_ticket_date, $request->remark, session('accounting_system_id'));
+
             // Get the receipt cash transaction entry and load its receipt reference and linked receipt.
             $cash_transaction = ReceiptCashTransactions::find($request->is_deposited[$i]);
-            $cash_transaction->receiptReference->receipt;
 
             // Create deposit item
             DepositItems::create([
                 'deposit_id' => $deposit->id,
                 'receipt_cash_transaction_id' => $cash_transaction->id,
+                'journal_entry_id' => $je->id,
             ]);
+           
+            // Deduct the balance of Source COA
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($cash_transaction->chart_of_account_id);
+            $credit_amount[] = $cash_transaction->amount_received;
 
-            // Deduct balance from Source's COA for transfer
-            $coa_id = $cash_transaction->chart_of_account_id;
-            $total_transferred_amount += $cash_transaction->amount_received;
-            
-            // Find if the Destination's COA is already in the array, then accumulate the amount to it.
-            // If not yet, then add the Destination's COA and its amount to the array.
-            $idx = -1;
-            for($j = 0; $j < count($credit_accounts); $j++)
-            {
-                if($credit_accounts[$j] == $coa_id) {
-                    $credit_amount[$j] += $cash_transaction->amount_received;
-                    $idx = $j;
-                }
-            }
-            if($idx == -1) {
-                $credit_accounts[] = $coa_id;
-                $credit_amount[] = $cash_transaction->amount_received;
-            }
+            // Add the balance of Destination COA
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->bank_account->value);
+            $debit_amount[] = $cash_transaction->amount_received;
+
+            // Create Journal Postings of the deposit item
+            CreateJournalPostings::run($je,
+                $debit_accounts, $debit_amount,
+                $credit_accounts, $credit_amount,
+                session('accounting_system_id'));
         }
-
-        // Stores the COA of Bank
-        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->bank_account->value);
-        $debit_amount[] = $total_transferred_amount;
-
-        // Encode the COA of the Source COAs
-        for($i = 0; $i < count($credit_accounts); $i++)
-            $credit_accounts[$i] = CreateJournalPostings::encodeAccount($credit_accounts[$i]);
-
-        // Create Journal Postings
-        CreateJournalPostings::run($je,
-            $debit_accounts, $debit_amount,
-            $credit_accounts, $credit_amount,
-            session('accounting_system_id'));
         
-        return [
-            'debit_accounts' => $debit_accounts,
-            'debit_amount' => $debit_amount,
-            'credit_accounts' => $credit_accounts,
-            'credit_amount' => $credit_amount,
-        ];
+        return $deposit;
     }
 
     // Mail
