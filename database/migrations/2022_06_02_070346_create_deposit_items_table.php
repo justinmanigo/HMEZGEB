@@ -17,10 +17,10 @@ class CreateDepositItemsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('deposit_id');
             $table->unsignedBigInteger('receipt_cash_transaction_id');
+            $table->boolean('is_void')->default(false);
             $table->timestamps();
 
             $table->foreign('deposit_id')->references('id')->on('deposits');
-            $table->foreign('receipt_cash_transaction_id')->references('id')->on('receipt_cash_transactions');
         });
     }
 

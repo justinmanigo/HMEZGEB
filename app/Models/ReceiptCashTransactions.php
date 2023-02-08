@@ -11,10 +11,10 @@ class ReceiptCashTransactions extends Model
 
     protected $fillable = [
         'accounting_system_id',
+        'chart_of_account_id', // where the cash is headed to
         'receipt_reference_id',
         'for_receipt_reference_id',
         'amount_received',
-        'deposit_id',
     ];
 
     public function deposit()

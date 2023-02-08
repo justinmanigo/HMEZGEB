@@ -17,12 +17,11 @@ class CreateDepositsTable extends Migration
             $table->id();
             $table->foreignId('accounting_system_id')->constrained();
             $table->unsignedBigInteger('chart_of_account_id');
-            $table->enum('status',['Deposited','Void'])->default('Deposited');
             $table->date('deposit_ticket_date');
-            $table->decimal('total_amount', 18, 8)->nullable();
             $table->string('remark')->nullable();
             $table->timestamps();
             $table->string('reference_number')->nullable();
+            $table->boolean('is_direct_deposit')->default(false);
 
             $table->foreign('chart_of_account_id')->references('id')->on('chart_of_accounts');
         });

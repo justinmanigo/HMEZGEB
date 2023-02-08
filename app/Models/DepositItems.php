@@ -10,8 +10,10 @@ class DepositItems extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'deposit_id',
         'receipt_cash_transaction_id',
+        'is_void',
     ];
 
     public function deposit()
