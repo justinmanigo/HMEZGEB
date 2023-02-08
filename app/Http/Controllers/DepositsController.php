@@ -49,14 +49,11 @@ class DepositsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreDepositRequest $request)
-    {
-        $coa = ChartOfAccounts::find($request->bank_account->value);
-        $deposits = Deposits::create([
-            'accounting_system_id' => session()->get('accounting_system_id'),
-            'chart_of_account_id' => $coa->id,
-            'status' => 'Deposited',
+    {         
+        $deposit = Deposits::create([
+            'accounting_system_id' => session('accounting_system_id'),
+            'chart_of_account_id' => $request->bank_account->value,
             'deposit_ticket_date' => $request->deposit_ticket_date,
-            'total_amount' => $request->total_amount,
             'remark' => $request->remark,
             'reference_number' => $request->reference_number,
         ]);
@@ -64,29 +61,31 @@ class DepositsController extends Controller
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->deposit_ticket_date, $request->remark, session('accounting_system_id'));
 
-        // Initialize the COAs and Amount from different cash on hand
+        // Initialize the COAs and Amount from different cash accounts
         $credit_accounts = [];
         $credit_amount = [];
 
-        // Stores the COA of Bank
-        $debit_accounts[] = CreateJournalPostings::encodeAccount($coa->id);
-        $debit_amount[] = $request->total_amount;
-
         $coa = [];
+        $total_transferred_amount = 0;
 
         for($i = 0; $i < count($request->is_deposited); $i++)
         {
+            // Get the receipt cash transaction entry and load its receipt reference and linked receipt.
             $cash_transaction = ReceiptCashTransactions::find($request->is_deposited[$i]);
-
             $cash_transaction->receiptReference->receipt;
-            $cash_transaction->receiptReference->save();
-            $cash_transaction->deposit_id = $deposits->id;
-            $cash_transaction->save();
 
-            // Deduct balance from COA for transfer
-            $coa_id = $cash_transaction->forReceiptReference->receipt->chart_of_account_id;
-            $amount_received = $cash_transaction->amount_received;
+            // Create deposit item
+            DepositItems::create([
+                'deposit_id' => $deposit->id,
+                'receipt_cash_transaction_id' => $cash_transaction->id,
+            ]);
+
+            // Deduct balance from Source's COA for transfer
+            $coa_id = $cash_transaction->chart_of_account_id;
+            $total_transferred_amount += $cash_transaction->amount_received;
             
+            // Find if the Destination's COA is already in the array, then accumulate the amount to it.
+            // If not yet, then add the Destination's COA and its amount to the array.
             $idx = -1;
             for($j = 0; $j < count($credit_accounts); $j++)
             {
@@ -101,9 +100,15 @@ class DepositsController extends Controller
             }
         }
 
+        // Stores the COA of Bank
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->bank_account->value);
+        $debit_amount[] = $total_transferred_amount;
+
+        // Encode the COA of the Source COAs
         for($i = 0; $i < count($credit_accounts); $i++)
             $credit_accounts[$i] = CreateJournalPostings::encodeAccount($credit_accounts[$i]);
 
+        // Create Journal Postings
         CreateJournalPostings::run($je,
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
@@ -182,7 +187,8 @@ class DepositsController extends Controller
             ->leftJoin('receipt_references', 'receipt_cash_transactions.receipt_reference_id', '=', 'receipt_references.id')
             ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
             ->leftJoin('customers', 'receipt_references.customer_id', '=', 'customers.id')
-            ->where('receipt_cash_transactions.deposit_id', '=', NULL)
+            ->leftJoin('deposit_items', 'receipt_cash_transactions.id', '=', 'deposit_items.receipt_cash_transaction_id')
+            ->where('deposit_items.id', '=', NULL)
             ->get();
     }
 }
