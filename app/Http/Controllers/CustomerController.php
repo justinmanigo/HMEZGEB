@@ -239,25 +239,24 @@ class CustomerController extends Controller
     // print
     public function print($id)
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customer = Customers::where('accounting_system_id', $accounting_system_id)
-        ->where('id', $id)
-        ->whereHas('receiptReference', function($query) {
-            $query->where('type', 'receipt')
-            ->where(function ($query) {
-                $query->where('status', 'unpaid')
-                  ->orWhere('status', 'partially_paid');
-              });})->first();
+        $customer = Customers::where('accounting_system_id', session('accounting_system_id'))
+            ->where('id', $id)
+            ->whereHas('receiptReference', function($query) {
+                $query->where('type', 'receipt')
+                ->where(function ($query) {
+                    $query->where('status', 'unpaid')
+                    ->orWhere('status', 'partially_paid');
+                });})->first();
 
         if(!$customer)
             return redirect()->back()->with('danger', "No pending statements found.");
 
         $receipt_references = ReceiptReferences::where('customer_id', $id)
-        ->where('type', 'receipt')
-        ->where(function ($query) {
-            $query->where('status', 'unpaid')
-              ->orWhere('status', 'partially_paid');
-          })->get(); 
+            ->where('type', 'receipt')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                ->orWhere('status', 'partially_paid');
+            })->get(); 
         
         $total_balance = 0;
         foreach($receipt_references as $receipt_reference) {
