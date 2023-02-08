@@ -23,7 +23,6 @@ class Receipts extends Model
         'attachment',
         'payment_method',
         'total_amount_received',
-        'chart_of_account_id',
         'employee_id', // commission agent
     ];
     public function receiptReference()

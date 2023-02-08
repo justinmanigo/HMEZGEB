@@ -50,81 +50,52 @@ class DepositsController extends Controller
      */
     public function store(StoreDepositRequest $request)
     {
-        $coa = ChartOfAccounts::find($request->bank_account->value);
-        $deposits = Deposits::create([
-            'accounting_system_id' => session()->get('accounting_system_id'),
-            'chart_of_account_id' => $coa->id,
-            'status' => 'Deposited',
+        $deposit = Deposits::create([
+            'accounting_system_id' => session('accounting_system_id'),
+            'chart_of_account_id' => $request->bank_account->value,
             'deposit_ticket_date' => $request->deposit_ticket_date,
-            'total_amount' => $request->total_amount,
             'remark' => $request->remark,
             'reference_number' => $request->reference_number,
-        ]);
+        ]);        
 
-        // create transaction
-        Transactions::create([
-            'accounting_system_id' => session()->get('accounting_system_id'),
-            'chart_of_account_id' => $coa->id,
-            'type' => 'Deposit',
-            'description' => $request->remark,
-            'amount' => $request->total_amount,
-        ]);
-
-        // Create Journal Entry
-        $je = CreateJournalEntry::run($request->deposit_ticket_date, $request->remark, session('accounting_system_id'));
-
-        // Initialize the COAs and Amount from different cash on hand
-        $credit_accounts = [];
-        $credit_amount = [];
-
-        // Stores the COA of Bank
-        $debit_accounts[] = CreateJournalPostings::encodeAccount($coa->id);
-        $debit_amount[] = $request->total_amount;
-
-        $coa = [];
-
+        // Deposit Item = Journal Entry. It makes marking deposits as void flexible later on.
         for($i = 0; $i < count($request->is_deposited); $i++)
         {
+            // Initialize the COAs and Amount from different cash accounts
+            $credit_accounts = [];
+            $credit_amount = [];
+            $debit_accounts = [];
+            $debit_amount = [];
+
+            // Create Journal Entry for specific deposit item
+            $je = CreateJournalEntry::run($request->deposit_ticket_date, $request->remark, session('accounting_system_id'));
+
+            // Get the receipt cash transaction entry and load its receipt reference and linked receipt.
             $cash_transaction = ReceiptCashTransactions::find($request->is_deposited[$i]);
 
-            $cash_transaction->receiptReference->receipt;
-            $cash_transaction->receiptReference->is_deposited = 'yes';
-            $cash_transaction->receiptReference->save();
-            $cash_transaction->deposit_id = $deposits->id;
-            $cash_transaction->save();
+            // Create deposit item
+            DepositItems::create([
+                'deposit_id' => $deposit->id,
+                'receipt_cash_transaction_id' => $cash_transaction->id,
+                'journal_entry_id' => $je->id,
+            ]);
+           
+            // Deduct the balance of Source COA
+            $credit_accounts[] = CreateJournalPostings::encodeAccount($cash_transaction->chart_of_account_id);
+            $credit_amount[] = $cash_transaction->amount_received;
 
-            // Deduct balance from COA for transfer
-            $coa_id = $cash_transaction->forReceiptReference->receipt->chart_of_account_id;
-            $amount_received = $cash_transaction->amount_received;
-            
-            $idx = -1;
-            for($j = 0; $j < count($credit_accounts); $j++)
-            {
-                if($credit_accounts[$j] == $coa_id) {
-                    $credit_amount[$j] += $cash_transaction->amount_received;
-                    $idx = $j;
-                }
-            }
-            if($idx == -1) {
-                $credit_accounts[] = $coa_id;
-                $credit_amount[] = $cash_transaction->amount_received;
-            }
+            // Add the balance of Destination COA
+            $debit_accounts[] = CreateJournalPostings::encodeAccount($request->bank_account->value);
+            $debit_amount[] = $cash_transaction->amount_received;
+
+            // Create Journal Postings of the deposit item
+            CreateJournalPostings::run($je,
+                $debit_accounts, $debit_amount,
+                $credit_accounts, $credit_amount,
+                session('accounting_system_id'));
         }
-
-        for($i = 0; $i < count($credit_accounts); $i++)
-            $credit_accounts[$i] = CreateJournalPostings::encodeAccount($credit_accounts[$i]);
-
-        CreateJournalPostings::run($je,
-            $debit_accounts, $debit_amount,
-            $credit_accounts, $credit_amount,
-            session('accounting_system_id'));
         
-        return [
-            'debit_accounts' => $debit_accounts,
-            'debit_amount' => $debit_amount,
-            'credit_accounts' => $credit_accounts,
-            'credit_amount' => $credit_amount,
-        ];
+        return $deposit;
     }
 
     // Mail
@@ -192,7 +163,8 @@ class DepositsController extends Controller
             ->leftJoin('receipt_references', 'receipt_cash_transactions.receipt_reference_id', '=', 'receipt_references.id')
             ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
             ->leftJoin('customers', 'receipt_references.customer_id', '=', 'customers.id')
-            ->where('receipt_cash_transactions.deposit_id', '=', NULL)
+            ->leftJoin('deposit_items', 'receipt_cash_transactions.id', '=', 'deposit_items.receipt_cash_transaction_id')
+            ->where('deposit_items.id', '=', NULL)
             ->get();
     }
 }

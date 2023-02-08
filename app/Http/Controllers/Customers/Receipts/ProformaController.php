@@ -56,8 +56,11 @@ class ProformaController extends Controller
 
     public function void(Proformas $proforma)
     {
-        if($proforma->receiptReference->is_deposited == "yes")
-        return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        // TODO: This function must be voided right away since its a proforma, however, voided proformas, regardless
+        // of its due date shall not be displayed in the proforma selection UI of a customer when issuing a receipt.
+
+        // if($proforma->receiptReference->is_deposited == "yes")
+        // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
         $proforma->receiptReference->is_void = "yes";
         $proforma->receiptReference->save();

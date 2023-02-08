@@ -31,6 +31,7 @@ use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Mail\Customers\MailCustomerAdvanceRevenue;
 use App\Mail\Customers\MailCustomerReceipt;
 use App\Models\BankAccounts;
+use App\Models\DepositItems;
 use App\Models\Deposits;
 use App\Models\Inventory;
 use App\Models\Notification;
@@ -89,46 +90,42 @@ class ReceiptController extends Controller
             }
         }
 
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+
         // Create Receipt Cash Transaction
         if($request->total_amount_received > 0) {
             // Check if cash_account->value is a bank account
             $bank_account = BankAccounts::where('chart_of_account_id', $request->cash_account->value)->first();
             $deposit = null;
 
-            if($bank_account) {
-                $deposit = Deposits::create([
-                    'accounting_system_id' => session()->get('accounting_system_id'),
-                    'chart_of_account_id' => $request->cash_account->value,
-                    'status' => 'Deposited',
-                    'deposit_ticket_date' => date('Y-m-d'),
-                    'total_amount' => $request->total_amount_received,
-                    'remark' => $request->remark,
-                    'reference_number' => $request->reference_number,
-                ]);
-        
-                // create transaction
-                Transactions::create([
-                    'accounting_system_id' => session()->get('accounting_system_id'),
-                    'chart_of_account_id' => $request->cash_account->value,
-                    'type' => 'Deposit',
-                    'description' => $request->remark,
-                    'amount' => $request->total_amount_received,
-                ]);
-            }
-            
             $rct = ReceiptCashTransactions::create([
                 'accounting_system_id' => $accounting_system_id,
+                'chart_of_account_id' => $request->cash_account->value,
                 'receipt_reference_id' => $reference->id,
                 'for_receipt_reference_id' => $reference->id,
                 'amount_received' => $request->total_amount_received,
-                'deposit_id' => $deposit ? $deposit->id : null,
             ]);
 
-            
-        }
+            if($bank_account) {
+                $deposit = Deposits::create([
+                    'accounting_system_id' => session('accounting_system_id'),
+                    'chart_of_account_id' => $request->cash_account->value,
+                    'deposit_ticket_date' => date('Y-m-d'),
+                    'remark' => $request->remark,
+                    'reference_number' => $request->reference_number,
+                    'is_direct_deposit' => true,
+                ]);
 
-        // Create Journal Entry
-        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+                $deposit_item = DepositItems::create([
+                    'deposit_id' => $deposit->id,
+                    'receipt_cash_transaction_id' => $rct->id,
+                    'journal_entry_id' => $je->id,
+                ]);
+            }
+        }
+        
+        // Link Journal Entry to Receipt Reference
         $reference->journal_entry_id = $je->id;
         $reference->save();
 
@@ -199,7 +196,6 @@ class ReceiptController extends Controller
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received,
-            'chart_of_account_id' => $request->receipt_cash_on_hand,
         ]);
 
         return [
@@ -223,8 +219,14 @@ class ReceiptController extends Controller
         $rr->journalEntry;
         $rr->receipt;
 
-        if($rr->is_deposited == "yes")
-            return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        // Source Receipt Cash Transaction
+        $rr->receiptCashTransactions[0]->depositItem;
+
+        // If the source receipt is already deposited, void the deposit item entry
+        if($rr->receiptCashTransactions[0]->depositItem) {
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = true;
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+        }
 
         // Voiding a source receipt will also affect the credit receipts that are linked to it.
         $rct_list = ReceiptCashTransactions::where('for_receipt_reference_id', '=', $rr->id)
@@ -235,10 +237,13 @@ class ReceiptController extends Controller
         {
             foreach($rct_list as $rrl)
             {
-                if($rrl->receiptReference->is_void != "yes") {
+                if($rrl->receiptReference->is_void != true) {
+                    $rrl->depositItem->journalEntry->is_void = true;
+                    $rrl->depositItem->journalEntry->save();
+
                     $rr->receipt->total_amount_received -= $rrl->amount_received;
     
-                    $rrl->receiptReference->is_void = "yes";
+                    $rrl->receiptReference->is_void = true;
                     $rrl->receiptReference->journalEntry->is_void = true;
                     $rrl->push();
                 }
@@ -255,7 +260,7 @@ class ReceiptController extends Controller
             }
         }
 
-        $rr->is_void = "yes";
+        $rr->is_void = true;
         $rr->journalEntry->is_void = true;
         $rr->push();
             
@@ -266,7 +271,7 @@ class ReceiptController extends Controller
     {
         $rr->journalEntry;
 
-        $rr->is_void = "no";
+        $rr->is_void = false;
         $rr->journalEntry->is_void = false;
         $rr->push();
 

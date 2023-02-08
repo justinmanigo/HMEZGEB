@@ -14,10 +14,9 @@ class Deposits extends Model
         'accounting_system_id',
         'chart_of_account_id',
         'deposit_ticket_date',
-        'total_amount',
-        'status',
         'remark',
         'reference_number',
+        'is_direct_deposit',
     ];
 
     public function depositItems()
