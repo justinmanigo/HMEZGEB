@@ -14,6 +14,7 @@ use App\Models\ReceiptReferences;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Mail\Customers\MailCustomerDeposit;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use PDF;
 
@@ -185,6 +186,7 @@ class DepositsController extends Controller
                 'receipt_cash_transactions.amount_received as total_amount_received',
                 'receipts.payment_method',
                 'customers.name as customer_name',
+                'receipt_references.type as receipt_type',
             )
             ->where('receipt_cash_transactions.accounting_system_id', session('accounting_system_id'))
             ->leftJoin('receipt_references', 'receipt_cash_transactions.receipt_reference_id', '=', 'receipt_references.id')

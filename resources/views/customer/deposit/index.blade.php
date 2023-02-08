@@ -46,7 +46,7 @@
                             <td>{{$deposit->id}}</td>
                             <td>{{$deposit->chartOfAccount->account_name}}</td>
                             <td><span class="badge badge-primary">Self</span></td>
-                            <td>{{$deposit->total_amount}}</td>
+                            <td>Birr {{ number_format($deposit->total_amount, 2) }}</td>
                             <td>
                                 {{-- <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
                                     <!-- edit -->
@@ -131,10 +131,10 @@
                     <hr>
                     <h2>Undeposited Sales</h2>
                     <div class="table-responsive mb-3">
-                        <table class="table table-bordered"  width="100%" cellspacing="0">
+                        <table class="table table-sm table-bordered"  width="100%" cellspacing="0">
                             <thead>
                                 <th>Date</th>
-                                <th>Customer Name</th>
+                                <th>Description</th>
                                 <th>Payment Method</th>
                                 <th>Cheque/Reference #</th>
                                 <th>Amount</th>
@@ -150,19 +150,19 @@
                             <tfoot>
                                 <th class="text-center">
                                     Total Cash<br>
-                                        <input type="text" class="form-control-plaintext text-center" id="d_total_cash" value="0.00" disabled>
+                                        <input type="text" class="form-control-plaintext text-center" id="d_total_cash" value="Birr 0.00" disabled>
                                 </th>
                                 <th class="text-center">
                                     Total Cheque<br>
-                                    <input type="text" class="form-control-plaintext text-center" id="d_total_cheque" value="0.00" disabled>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_cheque" value="Birr 0.00" disabled>
                                 </th>
                                 <th class="text-center">
                                     Total Other<br>
-                                    <input type="text" class="form-control-plaintext text-center" id="d_total_other" value="0.00" disabled>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_other" value="Birr 0.00" disabled>
                                 </th>
                                 <th class="text-center">
                                     Total Deposit<br>
-                                    <input type="text" class="form-control-plaintext text-center" id="d_total_deposit" name="total_amount" value="0.00" readonly>
+                                    <input type="text" class="form-control-plaintext text-center" id="d_total_deposit" name="total_amount" value="Birr 0.00" readonly>
                                 </th>
                             </tfoot>
                         </table>

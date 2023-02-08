@@ -44,14 +44,16 @@ function createRecordsToDeposit(f) {
     // tr template
     let inner = `
      <tr data-id="${counter}" id="b_item_entry_${counter}">
-        <td class="table-item-content">${f.date}</td>
-        <td class="table-item-content">${f.customer_name}</td>
-        <td class="table-item-content">${f.payment_method}</td>
-        <td class="table-item-content">${f.value}</td>
-        <td class="table-item-content">${f.total_amount_received}</td>
-        <td class="table-item-content">
+        <td>${f.date}</td>
+        <td>
+            ${f.receipt_type == "receipt" ? `Receipt for <b>${f.customer_name}</b>` : `Sale`}
+        </td>
+        <td>${f.receipt_type == "receipt" ? f.payment_method : "cash"}</td>
+        <td>${f.value}</td>
+        <td class="text-right">Birr ${parseFloat(f.total_amount_received).toFixed(2)}</td>
+        <td>
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" onchange="handleCheck(this,'${f.payment_method}',${f.total_amount_received})" id="${f.value}" name="is_deposited[]" value="${f.value}">
+                <input type="checkbox" class="form-check-input" onchange="handleCheck(this,'${f.receipt_type == "receipt" ? f.payment_method : "cash"}',${f.total_amount_received})" id="${f.value}" name="is_deposited[]" value="${f.value}">
             </div>
         </td>
     </tr>
@@ -106,32 +108,32 @@ function handleCheck(checkbox, paymentMethod, totalAmountReceived) {
     if (checkbox.checked) {
         if (paymentMethod == "cash") {
             totalAmount += totalAmountReceived;
-            $("#d_total_cash").val(totalAmount);
+            $("#d_total_cash").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else if (paymentMethod == "cheque") {
             totalAmount += totalAmountReceived;
-            $("#d_total_cheque").val(totalAmount);
+            $("#d_total_cheque").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else{
             totalAmount += totalAmountReceived;
-            $("#d_total_other").val(totalAmount);
+            $("#d_total_other").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
-        $("#d_total_deposit").val(totalAmount);
+        $("#d_total_deposit").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
     } 
     else {
         if (paymentMethod == "cash") {
             totalAmount -= totalAmountReceived;
-            $("#d_total_cash").val(totalAmount);
+            $("#d_total_cash").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else if (paymentMethod == "cheque") {
             totalAmount -= totalAmountReceived;
-            $("#d_total_cheque").val(totalAmount);
+            $("#d_total_cheque").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else{
             totalAmount -= totalAmountReceived;
-            $("#d_total_other").val(totalAmount);
+            $("#d_total_other").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
-        $("#d_total_deposit").val(totalAmount);
+        $("#d_total_deposit").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
     }
 }
 
