@@ -268,11 +268,19 @@ class CustomerController extends Controller
 
     /*=================================*/
 
-    public function queryCustomers($query)
+    public function ajaxSearchActiveCustomers($query)
     {   
-        $customers = Customers::select('id as value', 'name', 'tin_number', 'contact_person','mobile_number')
+        $customers = Customers::select(
+                'id as value',
+                'name', 
+                'tin_number', 
+                'contact_person',
+                'mobile_number'
+            )
             ->where('accounting_system_id', session('accounting_system_id'))
-            ->where('name', 'LIKE', '%' . $query . '%')->get();
+            ->where('name', 'LIKE', '%' . $query . '%')
+            ->where('is_active', '=', true)
+            ->get();
             
         return $customers;
     }
