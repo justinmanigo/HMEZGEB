@@ -20,7 +20,6 @@ class CreateReceiptReferencesTable extends Migration
             $table->date('date');
             $table->enum('type',['receipt','credit_receipt','advance_receipt','proforma','sale']);
             $table->enum('status',['unpaid','partially_paid','paid']);
-            $table->enum('is_deposited',['no','yes'])->default('no');
             $table->enum('is_void',['yes','no'])->default('no');
             $table->timestamps();
 

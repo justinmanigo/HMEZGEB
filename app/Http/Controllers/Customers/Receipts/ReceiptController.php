@@ -223,8 +223,11 @@ class ReceiptController extends Controller
         $rr->journalEntry;
         $rr->receipt;
 
-        if($rr->is_deposited == "yes")
-            return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
+        // TODO: Iterate through all receipt cash transactions and check if it is already deposited.
+        // If it is already deposited, void the deposit first before voiding the receipt.
+
+        // if($rr->is_deposited == "yes")
+        //     return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
         // Voiding a source receipt will also affect the credit receipts that are linked to it.
         $rct_list = ReceiptCashTransactions::where('for_receipt_reference_id', '=', $rr->id)
