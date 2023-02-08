@@ -153,13 +153,13 @@
                                     <p class="text-danger error-message error-message-remark" style="display:none"></p>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <label for="r_attachment" class="col-sm-3 col-form-label">Attachment</label>
                                 <div class="col-sm-9">
                                     <input type="file" id="r_attachment" name="attachment">
                                     <p class="text-danger error-message error-message-attachment" style="display:none"></p>
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- <div class="form-group row">
                                 <label for="r_commission" class="col-sm-3 col-form-label">Commission</label>
                                 <div class="input-group col-sm-9">

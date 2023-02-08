@@ -48,13 +48,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <label for="s_attachment" class="col-4 col-form-label">Attachment :</label>
                                 <div class="col-8">
                                     <input type="file" id="sattachment" name="attachment">
                                     <p class="text-danger error-message error-message-attachment" style="display:none"></p>
                                 </div>
-                            </div>
+                            </div> --}}
 
                         </div>
 

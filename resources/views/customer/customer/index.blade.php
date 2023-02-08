@@ -219,13 +219,13 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
+                        {{-- <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
                         <div class="col-sm-9 col-lg-4">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="file" name="image">
                                 <label class="custom-file-label" for="file">Choose file</label>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
                         <div class="col-sm-9 col-lg-4">

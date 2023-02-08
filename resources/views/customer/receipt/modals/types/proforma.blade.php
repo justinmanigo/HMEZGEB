@@ -139,13 +139,13 @@
                                     <p class="text-danger error-message error-message-terms_and_condition" style="display:none"></p>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <label for="p_attachment" class="col-sm-3 col-form-label">Attachment</label>
                                 <div class="col-sm-9">
                                     <input type="file" id="p_attachment" name="attachment">
                                     <p class="text-danger error-message error-message-attachment" style="display:none"></p>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="col-md-6">
 
