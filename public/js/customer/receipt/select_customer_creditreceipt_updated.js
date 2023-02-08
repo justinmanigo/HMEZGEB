@@ -138,7 +138,7 @@ function onCreditReceiptCustomerInput(e) {
     // show loading animation and hide the suggestions dropdown
     creditreceipt_select_customer_tagify.loading(true).dropdown.hide()
 
-    fetch('/select/search/customer/' + value, {signal:controller.signal})
+    fetch('/ajax/customer/customer/search/active/' + value, {signal:controller.signal})
         .then(RES => RES.json())
         .then(function(newWhitelist){
             creditreceipt_select_customer_tagify.whitelist = newWhitelist // update whitelist Array in-place
