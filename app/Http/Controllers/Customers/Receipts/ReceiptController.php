@@ -31,6 +31,7 @@ use App\Http\Requests\Customer\Receipt\StoreReceiptRequest;
 use App\Mail\Customers\MailCustomerAdvanceRevenue;
 use App\Mail\Customers\MailCustomerReceipt;
 use App\Models\BankAccounts;
+use App\Models\DepositItems;
 use App\Models\Deposits;
 use App\Models\Inventory;
 use App\Models\Notification;
@@ -95,28 +96,29 @@ class ReceiptController extends Controller
             $bank_account = BankAccounts::where('chart_of_account_id', $request->cash_account->value)->first();
             $deposit = null;
 
-            if($bank_account) {
-                $deposit = Deposits::create([
-                    'accounting_system_id' => session()->get('accounting_system_id'),
-                    'chart_of_account_id' => $request->cash_account->value,
-                    'status' => 'Deposited',
-                    'deposit_ticket_date' => date('Y-m-d'),
-                    'total_amount' => $request->total_amount_received,
-                    'remark' => $request->remark,
-                    'reference_number' => $request->reference_number,
-                ]);
-                ]);
-            }
-            
             $rct = ReceiptCashTransactions::create([
                 'accounting_system_id' => $accounting_system_id,
+                'chart_of_account_id' => $request->cash_account->value,
                 'receipt_reference_id' => $reference->id,
                 'for_receipt_reference_id' => $reference->id,
                 'amount_received' => $request->total_amount_received,
-                'deposit_id' => $deposit ? $deposit->id : null,
             ]);
 
-            
+            if($bank_account) {
+                $deposit = Deposits::create([
+                    'accounting_system_id' => session('accounting_system_id'),
+                    'chart_of_account_id' => $request->cash_account->value,
+                    'deposit_ticket_date' => date('Y-m-d'),
+                    'remark' => $request->remark,
+                    'reference_number' => $request->reference_number,
+                    'is_direct_deposit' => true,
+                ]);
+
+                $deposit_item = DepositItems::create([
+                    'deposit_id' => $deposit->id,
+                    'receipt_cash_transaction_id' => $rct->id,
+                ]);
+            }
         }
 
         // Create Journal Entry
@@ -191,7 +193,6 @@ class ReceiptController extends Controller
             'proforma_id' => isset($request->proforma) ? $request->proforma->value : null, // Test
             'payment_method' => DeterminePaymentMethod::run($request->grand_total, $request->total_amount_received),
             'total_amount_received' => $request->total_amount_received,
-            'chart_of_account_id' => $request->receipt_cash_on_hand,
         ]);
 
         return [
