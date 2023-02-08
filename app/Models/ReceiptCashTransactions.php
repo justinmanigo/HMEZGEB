@@ -17,9 +17,9 @@ class ReceiptCashTransactions extends Model
         'amount_received',
     ];
 
-    public function deposit()
+    public function depositItem()
     {
-        return $this->belongsTo(Deposits::class, 'deposit_id');
+        return $this->hasOne(DepositItems::class, 'receipt_cash_transaction_id');
     }
     
     public function receiptReference()
