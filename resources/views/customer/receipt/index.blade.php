@@ -89,7 +89,7 @@
                                 <thead>
                                     <th>ID</th>
                                     <th>Date</th>
-                                    <th>Customer/Description</th>
+                                    <th>Description</th>
                                     <th>Status</th>
                                     <th>Amount</th>
                                     <th>Actions</th>
@@ -101,17 +101,14 @@
                                         <td class="table-item-content">{{$transaction->id}}</td>
                                         <td class="table-item-content">{{$transaction->date}}</td>
                                         <td class="table-item-content">
-                                            @if(isset($transaction->name))
-                                                <span class="mr-2">{{ $transaction->name }}</span>
-                                            @endif
                                             @if($transaction->type == 'receipt')
-                                                <span class="badge badge-success">Receipt</span>
+                                                <span>Receipt for <b>{{ $transaction->name }}</b></span>
                                             @elseif($transaction->type == 'advance_receipt')
-                                                <span class="badge badge-primary">Advance Revenue</span>
+                                                <span>Advance Revenue for <b>{{ $transaction->name }}</b></span>
                                             @elseif($transaction->type == 'credit_receipt')
-                                                <span class="badge badge-info">Credit Receipt</span>
+                                                <span>Credit Receipt for <b>{{ $transaction->name }}</b></span>
                                             @elseif($transaction->type == 'sale')
-                                                <span class="badge badge-success">Sale</span>
+                                                <span>Sale</span>
                                             @endif
                                         </td>
                                         <td class="table-item-content">
