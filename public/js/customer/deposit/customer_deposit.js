@@ -53,7 +53,7 @@ function createRecordsToDeposit(f) {
         <td class="text-right">Birr ${parseFloat(f.total_amount_received).toFixed(2)}</td>
         <td>
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" onchange="handleCheck(this,'${f.payment_method}',${f.total_amount_received})" id="${f.value}" name="is_deposited[]" value="${f.value}">
+                <input type="checkbox" class="form-check-input" onchange="handleCheck(this,'${f.receipt_type == "receipt" ? f.payment_method : "cash"}',${f.total_amount_received})" id="${f.value}" name="is_deposited[]" value="${f.value}">
             </div>
         </td>
     </tr>
