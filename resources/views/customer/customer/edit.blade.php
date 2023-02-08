@@ -125,7 +125,7 @@
             <div class="form-group row d-flex justify-content-end">
                 <div class="form-check mr-3">
                     {{-- check if is_active is checked --}}
-                    @if ($customers->is_active == "Yes")
+                    @if ($customers->is_active == true)
                     <input class="form-check-input" type="checkbox" name="is_active" id="c_is_active" checked>
                     @else
                     <input class="form-check-input" type="checkbox" name="is_active" id="c_is_active">
