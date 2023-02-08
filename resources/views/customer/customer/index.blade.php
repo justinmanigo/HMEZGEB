@@ -258,7 +258,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-check mr-3">
-                        <input class="form-check-input" id="c_is_active" type="checkbox" value="" name="is_active">
+                        <input class="form-check-input" id="c_is_active" type="checkbox" name="is_active">
                         <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

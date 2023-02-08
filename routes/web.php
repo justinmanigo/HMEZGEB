@@ -378,7 +378,7 @@ Route::group([
                 Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
                 Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');
                 // AJAX
-                Route::get('/select/search/customer/{query}', [CustomerController::class, 'queryCustomers']);
+                Route::get('/ajax/customer/customer/search/active/{query}', [CustomerController::class, 'ajaxSearchActiveCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
             });
 

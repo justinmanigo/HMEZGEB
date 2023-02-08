@@ -23,8 +23,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
+        $customers = Customers::where('accounting_system_id', session('accounting_system_id'))->get();
         
         $total_balance = 0;
         $total_balance_overdue = 0;
@@ -58,15 +57,13 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {   
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-
         if($request->image) {
             $imageName = time().'.'.$request->image->extension();  
             $request->image->storeAs('customers', $imageName);
         }
         
         $customers = new Customers();
-        $customers->accounting_system_id = $accounting_system_id;
+        $customers->accounting_system_id = session('accounting_system_id');
         $customers->name =  $request->name;
         $customers->tin_number =  $request->tin_number;
         $customers->address =  $request->address;
@@ -81,7 +78,7 @@ class CustomerController extends Controller
         $customers->contact_person = $request->contact_person;
         $customers->label = $request->label;
         $customers->image =  isset($imageName) ? $imageName : null;
-        $customers->is_active ='Yes';
+        $customers->is_active = $request->is_active ? true : false;
         $customers->save();
         return redirect()->back()->with('success', "Successfully added new customer.");
 
@@ -95,16 +92,14 @@ class CustomerController extends Controller
      */
     public function show(Customers $customers)
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
+        $customers = Customers::where('accounting_system_id', session('accounting_system_id'))->get();
 
         return view('customer.customer.index',compact('customers'));
     }
     public function edit($id)
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
         $customers = Customers::find($id);
-        if($customers->accounting_system_id != $accounting_system_id)
+        if($customers->accounting_system_id != session('accounting_system_id'))
             return redirect()->route('cutomer.cutomer.index')->with('danger', "You are not authorized to edit this customer.");
 
         return view('customer.customer.edit', compact('customers'));
@@ -127,7 +122,7 @@ class CustomerController extends Controller
         $customers->email = $request->input('email');
         $customers->contact_person = $request->input('contact_person');
         $customers->label = $request->input('label');
-        $customers->is_active ='Yes';
+        $customers->is_active = $request->is_active ? true : false;
         $customers->update();
 
         return redirect()->back()->with('success', "Successfully edited customer.");
@@ -180,8 +175,7 @@ class CustomerController extends Controller
     // Specific customer mail
     public function mailCustomerStatement($id)
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customer = Customers::where('accounting_system_id', $accounting_system_id)
+        $customer = Customers::where('accounting_system_id', session('accounting_system_id'))
         ->where('id', $id)
         ->whereHas('receiptReference', function($query) {
             $query->where('type', 'receipt')
@@ -245,25 +239,24 @@ class CustomerController extends Controller
     // print
     public function print($id)
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customer = Customers::where('accounting_system_id', $accounting_system_id)
-        ->where('id', $id)
-        ->whereHas('receiptReference', function($query) {
-            $query->where('type', 'receipt')
-            ->where(function ($query) {
-                $query->where('status', 'unpaid')
-                  ->orWhere('status', 'partially_paid');
-              });})->first();
+        $customer = Customers::where('accounting_system_id', session('accounting_system_id'))
+            ->where('id', $id)
+            ->whereHas('receiptReference', function($query) {
+                $query->where('type', 'receipt')
+                ->where(function ($query) {
+                    $query->where('status', 'unpaid')
+                    ->orWhere('status', 'partially_paid');
+                });})->first();
 
         if(!$customer)
             return redirect()->back()->with('danger', "No pending statements found.");
 
         $receipt_references = ReceiptReferences::where('customer_id', $id)
-        ->where('type', 'receipt')
-        ->where(function ($query) {
-            $query->where('status', 'unpaid')
-              ->orWhere('status', 'partially_paid');
-          })->get(); 
+            ->where('type', 'receipt')
+            ->where(function ($query) {
+                $query->where('status', 'unpaid')
+                ->orWhere('status', 'partially_paid');
+            })->get(); 
         
         $total_balance = 0;
         foreach($receipt_references as $receipt_reference) {
@@ -275,12 +268,19 @@ class CustomerController extends Controller
 
     /*=================================*/
 
-    public function queryCustomers($query)
+    public function ajaxSearchActiveCustomers($query)
     {   
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $customers = Customers::select('id as value', 'name', 'tin_number', 'contact_person','mobile_number')
-            ->where('accounting_system_id', $accounting_system_id)
-            ->where('name', 'LIKE', '%' . $query . '%')->get();
+        $customers = Customers::select(
+                'id as value',
+                'name', 
+                'tin_number', 
+                'contact_person',
+                'mobile_number'
+            )
+            ->where('accounting_system_id', session('accounting_system_id'))
+            ->where('name', 'LIKE', '%' . $query . '%')
+            ->where('is_active', '=', true)
+            ->get();
             
         return $customers;
     }

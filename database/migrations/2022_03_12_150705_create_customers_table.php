@@ -30,7 +30,7 @@ class CreateCustomersTable extends Migration
             $table->string('contact_person');
             $table->string('image')->nullable();
             $table->string('label');
-            $table->enum('is_active',['Yes','No'])->default('Yes');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

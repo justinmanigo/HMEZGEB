@@ -80,7 +80,7 @@ function onReceiptCustomerInput(e) {
     // show loading animation and hide the suggestions dropdown
     receipt_select_customer_tagify.loading(true).dropdown.hide()
 
-    fetch('/select/search/customer/' + value, {signal:controller.signal})
+    fetch('/ajax/customer/customer/search/active/' + value, {signal:controller.signal})
         .then(RES => RES.json())
         .then(function(newWhitelist){
             receipt_select_customer_tagify.whitelist = newWhitelist // update whitelist Array in-place
