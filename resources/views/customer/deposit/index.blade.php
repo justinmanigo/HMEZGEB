@@ -134,7 +134,7 @@
                         <table class="table table-bordered"  width="100%" cellspacing="0">
                             <thead>
                                 <th>Date</th>
-                                <th>Customer Name</th>
+                                <th>Description</th>
                                 <th>Payment Method</th>
                                 <th>Cheque/Reference #</th>
                                 <th>Amount</th>
