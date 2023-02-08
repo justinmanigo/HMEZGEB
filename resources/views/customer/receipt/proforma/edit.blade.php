@@ -63,7 +63,7 @@
                         <option value="#">Credit Paid Bill</option>
                     <select>
                 </div>
-                <div class="col">
+                {{-- <div class="col">
                     <label for="email">Attachment:</label>
                     <div class="input-group mb-3">
                         <div class="custom-file">
@@ -71,7 +71,7 @@
                             <label class="custom-file-label" for="inputGroupFile03">Choose file</label>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="row mb-2">
                 <div class="form-group col">
