@@ -17,6 +17,7 @@ class CreateDepositItemsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('deposit_id');
             $table->unsignedBigInteger('receipt_cash_transaction_id');
+            $table->unsignedBigInteger('journal_entry_id');
             $table->boolean('is_void')->default(false);
             $table->timestamps();
 

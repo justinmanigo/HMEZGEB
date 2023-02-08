@@ -13,6 +13,7 @@ class DepositItems extends Model
         'id',
         'deposit_id',
         'receipt_cash_transaction_id',
+        'journal_entry_id',
         'is_void',
     ];
 
