@@ -89,8 +89,7 @@
                                 <thead>
                                     <th>ID</th>
                                     <th>Date</th>
-                                    <th>Type</th>
-                                    <th>Customer Name</th>
+                                    <th>Customer/Description</th>
                                     <th>Status</th>
                                     <th>Amount</th>
                                     <th>Actions</th>
@@ -102,6 +101,9 @@
                                         <td class="table-item-content">{{$transaction->id}}</td>
                                         <td class="table-item-content">{{$transaction->date}}</td>
                                         <td class="table-item-content">
+                                            @if(isset($transaction->name))
+                                                <span class="mr-2">{{ $transaction->name }}</span>
+                                            @endif
                                             @if($transaction->type == 'receipt')
                                                 <span class="badge badge-success">Receipt</span>
                                             @elseif($transaction->type == 'advance_receipt')
@@ -110,13 +112,6 @@
                                                 <span class="badge badge-info">Credit Receipt</span>
                                             @elseif($transaction->type == 'sale')
                                                 <span class="badge badge-success">Sale</span>
-                                            @endif
-                                        </td>
-                                        <td class="table-item-content">
-                                            @if(isset($transaction->name))
-                                                {{ $transaction->name }}
-                                            @else
-                                                {{ "Sales" }}
                                             @endif
                                         </td>
                                         <td class="table-item-content">
