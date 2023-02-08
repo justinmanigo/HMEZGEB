@@ -61,15 +61,6 @@ class DepositsController extends Controller
             'reference_number' => $request->reference_number,
         ]);
 
-        // create transaction
-        Transactions::create([
-            'accounting_system_id' => session()->get('accounting_system_id'),
-            'chart_of_account_id' => $coa->id,
-            'type' => 'Deposit',
-            'description' => $request->remark,
-            'amount' => $request->total_amount,
-        ]);
-
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->deposit_ticket_date, $request->remark, session('accounting_system_id'));
 

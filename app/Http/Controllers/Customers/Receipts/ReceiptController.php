@@ -105,14 +105,6 @@ class ReceiptController extends Controller
                     'remark' => $request->remark,
                     'reference_number' => $request->reference_number,
                 ]);
-        
-                // create transaction
-                Transactions::create([
-                    'accounting_system_id' => session()->get('accounting_system_id'),
-                    'chart_of_account_id' => $request->cash_account->value,
-                    'type' => 'Deposit',
-                    'description' => $request->remark,
-                    'amount' => $request->total_amount_received,
                 ]);
             }
             
