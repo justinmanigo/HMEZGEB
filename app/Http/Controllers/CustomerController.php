@@ -81,7 +81,7 @@ class CustomerController extends Controller
         $customers->contact_person = $request->contact_person;
         $customers->label = $request->label;
         $customers->image =  isset($imageName) ? $imageName : null;
-        $customers->is_active ='Yes';
+        $customers->is_active = $request->is_active ? true : false;
         $customers->save();
         return redirect()->back()->with('success', "Successfully added new customer.");
 
@@ -127,7 +127,7 @@ class CustomerController extends Controller
         $customers->email = $request->input('email');
         $customers->contact_person = $request->input('contact_person');
         $customers->label = $request->input('label');
-        $customers->is_active ='Yes';
+        $customers->is_active = $request->is_active ? true : false;
         $customers->update();
 
         return redirect()->back()->with('success', "Successfully edited customer.");
