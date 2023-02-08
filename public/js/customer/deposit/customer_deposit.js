@@ -106,32 +106,32 @@ function handleCheck(checkbox, paymentMethod, totalAmountReceived) {
     if (checkbox.checked) {
         if (paymentMethod == "cash") {
             totalAmount += totalAmountReceived;
-            $("#d_total_cash").val(totalAmount);
+            $("#d_total_cash").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else if (paymentMethod == "cheque") {
             totalAmount += totalAmountReceived;
-            $("#d_total_cheque").val(totalAmount);
+            $("#d_total_cheque").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else{
             totalAmount += totalAmountReceived;
-            $("#d_total_other").val(totalAmount);
+            $("#d_total_other").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
-        $("#d_total_deposit").val(totalAmount);
+        $("#d_total_deposit").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
     } 
     else {
         if (paymentMethod == "cash") {
             totalAmount -= totalAmountReceived;
-            $("#d_total_cash").val(totalAmount);
+            $("#d_total_cash").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else if (paymentMethod == "cheque") {
             totalAmount -= totalAmountReceived;
-            $("#d_total_cheque").val(totalAmount);
+            $("#d_total_cheque").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
         else{
             totalAmount -= totalAmountReceived;
-            $("#d_total_other").val(totalAmount);
+            $("#d_total_other").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
         }
-        $("#d_total_deposit").val(totalAmount);
+        $("#d_total_deposit").val(`Birr ${parseFloat(totalAmount).toFixed(2)}`);
     }
 }
 
