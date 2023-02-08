@@ -234,10 +234,10 @@ class ReceiptController extends Controller
         {
             foreach($rct_list as $rrl)
             {
-                if($rrl->receiptReference->is_void != "yes") {
+                if($rrl->receiptReference->is_void != true) {
                     $rr->receipt->total_amount_received -= $rrl->amount_received;
     
-                    $rrl->receiptReference->is_void = "yes";
+                    $rrl->receiptReference->is_void = true;
                     $rrl->receiptReference->journalEntry->is_void = true;
                     $rrl->push();
                 }
@@ -254,7 +254,7 @@ class ReceiptController extends Controller
             }
         }
 
-        $rr->is_void = "yes";
+        $rr->is_void = true;
         $rr->journalEntry->is_void = true;
         $rr->push();
             
@@ -265,7 +265,7 @@ class ReceiptController extends Controller
     {
         $rr->journalEntry;
 
-        $rr->is_void = "no";
+        $rr->is_void = false;
         $rr->journalEntry->is_void = false;
         $rr->push();
 

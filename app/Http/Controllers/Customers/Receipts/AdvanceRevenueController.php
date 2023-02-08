@@ -93,7 +93,7 @@ class AdvanceRevenueController extends Controller
         // if($rr->is_deposited == "yes")
         //     return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
-        $rr->is_void = "yes";
+        $rr->is_void = true;
         $rr->journalEntry->is_void = true;
         $rr->push();
 
@@ -104,7 +104,7 @@ class AdvanceRevenueController extends Controller
     {
         $rr->journalEntry;
 
-        $rr->is_void = "no";
+        $rr->is_void = false;
         $rr->journalEntry->is_void = false;
         $rr->push();
 

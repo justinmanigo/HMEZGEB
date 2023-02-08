@@ -47,6 +47,7 @@ class CreditReceiptController extends Controller
             'receipt_reference_id' => $reference->id,
             'for_receipt_reference_id' => $request->receipt->value,
             'amount_received' => $request->amount_paid,
+            'chart_of_account_id' => $request->credit_receipt_cash_on_hand,
         ]);        
 
         // Create Journal Entry
@@ -113,7 +114,7 @@ class CreditReceiptController extends Controller
         }
         $rct->push();
 
-        $rr->is_void = "yes";
+        $rr->is_void = true;
         $rr->journalEntry->is_void = true;
         $rr->push();
 
@@ -129,7 +130,7 @@ class CreditReceiptController extends Controller
         $rct->forReceiptReference->receipt;
 
         // Check if source receipt is voided, then return error.
-        if($rct->forReceiptReference->is_void == 'yes') {
+        if($rct->forReceiptReference->is_void == true) {
             return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$rct->forReceiptReference->id} is currently voided.");
         }
             
@@ -150,7 +151,7 @@ class CreditReceiptController extends Controller
         $rct->push();
 
         // If source receipt is not voided, then proceed
-        $rr->is_void = "no";
+        $rr->is_void = false;
         $rr->journalEntry->is_void = false;
         $rr->push();
 
