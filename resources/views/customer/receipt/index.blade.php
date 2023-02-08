@@ -151,7 +151,7 @@
                                                         <i class="fas fa-print"></i>
                                                     </span>
                                                 </button>
-                                                @if($transaction->is_void == 'no')
+                                                @if(!$transaction->is_void)
                                                 <!-- void -->
                                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'receipt')" >
                                                     <span class="icon text-white-50">
@@ -182,7 +182,7 @@
                                                         <i class="fas fa-print"></i>
                                                     </span>
                                                 </button>
-                                                @if($transaction->is_void == 'no')
+                                                @if(!$transaction->is_void)
                                                 <!-- void -->
                                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'advanceRevenue')">
                                                     <span class="icon text-white-50">
@@ -214,7 +214,7 @@
                                                         <i class="fas fa-print"></i>
                                                     </span>
                                                 </button>
-                                                @if($transaction->is_void == 'no')
+                                                @if(!$transaction->is_void)
                                                 <!-- void -->
                                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$transaction->id}}, 'creditReceipt')">
                                                     <span class="icon text-white-50">
@@ -246,7 +246,7 @@
                                                         <i class="fas fa-print"></i>
                                                     </span>
                                                 </button>
-                                                @if($transaction->is_void == 'no')
+                                                @if(!$transaction->is_void)
                                                     <!-- void -->
                                                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" disabled>
                                                         <span class="icon text-white-50">
@@ -306,7 +306,7 @@
                                                 </span>
                                             </button>
                                         <!-- void -->
-                                        @if($proforma->proforma->receiptReference->is_void == 'no')
+                                        @if(!$proforma->proforma->receiptReference->is_void)
                                         <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$proforma->proforma->id}}, 'proforma')">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-ban"></i>
