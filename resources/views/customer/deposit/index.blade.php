@@ -131,7 +131,7 @@
                     <hr>
                     <h2>Undeposited Sales</h2>
                     <div class="table-responsive mb-3">
-                        <table class="table table-bordered"  width="100%" cellspacing="0">
+                        <table class="table table-sm table-bordered"  width="100%" cellspacing="0">
                             <thead>
                                 <th>Date</th>
                                 <th>Description</th>
