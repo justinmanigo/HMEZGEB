@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->enum('activated',['Yes','No'])->default('Yes');
             $table->rememberToken();
             $table->timestamp('password_updated_at')->nullable();
+            $table->timestamp('last_login_at')->nullable();
             $table->timestamps();
         });
     }
