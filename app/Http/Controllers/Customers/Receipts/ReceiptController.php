@@ -90,6 +90,9 @@ class ReceiptController extends Controller
             }
         }
 
+        // Create Journal Entry
+        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+
         // Create Receipt Cash Transaction
         if($request->total_amount_received > 0) {
             // Check if cash_account->value is a bank account
@@ -117,12 +120,12 @@ class ReceiptController extends Controller
                 $deposit_item = DepositItems::create([
                     'deposit_id' => $deposit->id,
                     'receipt_cash_transaction_id' => $rct->id,
+                    'journal_entry_id' => $je->id,
                 ]);
             }
         }
-
-        // Create Journal Entry
-        $je = CreateJournalEntry::run($request->date, $request->remark, $accounting_system_id);
+        
+        // Link Journal Entry to Receipt Reference
         $reference->journal_entry_id = $je->id;
         $reference->save();
 

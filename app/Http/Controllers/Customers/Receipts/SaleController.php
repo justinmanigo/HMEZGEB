@@ -64,6 +64,7 @@ class SaleController extends Controller
                 $deposit_item = DepositItems::create([
                     'deposit_id' => $deposit->id,
                     'receipt_cash_transaction_id' => $rct->id,
+                    'journal_entry_id' => $je->id,
                 ]);
             }
         }
