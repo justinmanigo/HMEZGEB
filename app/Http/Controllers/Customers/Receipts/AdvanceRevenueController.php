@@ -86,8 +86,9 @@ class AdvanceRevenueController extends Controller
     {
         $rr->journalEntry;
 
-        // TODO: Iterate through all receipt cash transactions and check if it is already deposited.
-        // If it is already deposited, void the deposit first before voiding the receipt.
+        // TODO: Since advance revenue is added before the receipt is created, so we have
+        // to check whether the receipt is created or not. If the receipt is created,
+        // then it shall check for the deposit status of the receipt through receipt cash transactions model.
 
         // if($rr->is_deposited == "yes")
         //     return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
