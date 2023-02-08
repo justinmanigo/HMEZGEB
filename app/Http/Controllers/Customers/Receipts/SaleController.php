@@ -8,8 +8,11 @@ use App\Actions\Customer\Receipt\CreateReceiptReference;
 use App\Actions\Customer\Receipt\DetermineReceiptStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customers\Receipts\StoreSaleRequest;
+use App\Models\BankAccounts;
 use App\Models\ReceiptCashTransactions;
 use App\Models\Customers\Receipts\Sale;
+use App\Models\DepositItems;
+use App\Models\Deposits;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
@@ -37,12 +40,32 @@ class SaleController extends Controller
 
         // Create Receipt Cash Transaction
         if($request->total_amount_received > 0) {
-            ReceiptCashTransactions::create([
+            $bank_account = BankAccounts::where('chart_of_account_id', $request->cash_account->value)->first();
+            $deposit = null;
+
+            $rct = ReceiptCashTransactions::create([
                 'accounting_system_id' => session('accounting_system_id'),
+                'chart_of_account_id' => $request->cash_account->value,
                 'receipt_reference_id' => $reference->id,
                 'for_receipt_reference_id' => $reference->id,
                 'amount_received' => $request->total_amount_received,
             ]);
+
+            if($bank_account) {
+                $deposit = Deposits::create([
+                    'accounting_system_id' => session('accounting_system_id'),
+                    'chart_of_account_id' => $request->cash_account->value,
+                    'deposit_ticket_date' => date('Y-m-d'),
+                    'remark' => $request->remark,
+                    'reference_number' => $request->reference_number,
+                    'is_direct_deposit' => true,
+                ]);
+
+                $deposit_item = DepositItems::create([
+                    'deposit_id' => $deposit->id,
+                    'receipt_cash_transaction_id' => $rct->id,
+                ]);
+            }
         }
 
         $cash = $request->total_amount_received;
