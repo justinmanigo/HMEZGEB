@@ -33,16 +33,6 @@ class DepositsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -99,7 +89,7 @@ class DepositsController extends Controller
     }
 
     // Mail
-    public function mailDeposit($id)
+    public function mail($id)
     {
         // Mail
         $deposit = Deposits::find($id);
@@ -112,7 +102,7 @@ class DepositsController extends Controller
     }
 
     // Print
-    public function printDeposit($id)
+    public function print($id)
     {
         $deposits = Deposits::find($id);
         $pdf = PDF::loadView('customer.deposit.print', compact('deposits'));

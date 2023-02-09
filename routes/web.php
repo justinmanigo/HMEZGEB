@@ -392,16 +392,18 @@ Route::group([
                 'as'=>'deposits.',
                 'middleware' => 'acctsys.permission:3',
             ], function(){
-                Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
-                // RESOURCE
-                Route::resource('customers/deposits', DepositsController::class);
+                // HTML
+                Route::get('/customers/deposits', [DepositsController::class, 'index'])->name('index');
+                Route::post('/customers/deposits', [DepositsController::class, 'store'])->name('store');
+
                 // Mail
-                Route::get('/customers/deposits/mail/{id}', [DepositsController::class, 'mailDeposit'])->name('deposit.mail');
+                Route::get('/customers/deposits/mail/{id}', [DepositsController::class, 'mail'])->name('mail');
                 // Print
-                Route::get('/customers/deposits/print/{id}', [DepositsController::class, 'printDeposit'])->name('deposit.print');
+                Route::get('/customers/deposits/print/{id}', [DepositsController::class, 'print'])->name('print');
 
                 // AJAX
                 Route::get('/ajax/customer/deposit/receipts/undeposited/get', [DepositsController::class, 'ajaxGetUndepositedReceipts']);
+                Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
             });
         });
 

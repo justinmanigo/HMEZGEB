@@ -99,7 +99,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.deposits.store')}}" data-message="Successfully deposited receipts.">
+                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.store')}}" data-message="Successfully deposited receipts.">
                     @csrf
                     <div class="row">
                         <div class="col-12 col-lg-6">
@@ -238,13 +238,13 @@
         // Get id of transaction to mail confirmation modal
         function mailModal(id){
         // set attribute href of btn-send-mail
-            $('#btn-send-mail').attr('href', '{{ route("deposits.deposit.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("deposits.mail", ":id") }}'.replace(':id', id));
         }
 
         // Get id of transaction to print confirmation modal
         function printModal(id){
         // set attribute href of print-deposit
-            $('#print-deposit').attr('href', '{{ route("deposits.deposit.print", ":id") }}'.replace(':id', id));
+            $('#print-deposit').attr('href', '{{ route("deposits.print", ":id") }}'.replace(':id', id));
         }
 
 
