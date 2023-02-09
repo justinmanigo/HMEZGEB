@@ -49,6 +49,12 @@ class DepositItemController extends Controller
 
     public function void(DepositItems $item)
     {
+        // If the deposit is a direct deposit, mark the receipt reference as void.
+        if($item->deposit->is_direct_deposit == true) {
+            $item->receiptCashTransaction->receiptReference->is_void = true;
+            $item->receiptCashTransaction->receiptReference->save();
+        }
+
         $item->is_void = true;
         $item->save();
 
@@ -61,13 +67,22 @@ class DepositItemController extends Controller
     public function reactivate(DepositItems $item)
     {
         $item->receiptCashTransaction;
-        // TODO: Check if the receipt reference it originated was marked void.
-        // If so, return an error.
-        if($item->receiptCashTransaction->receiptReference->is_void) {
+        
+        // If the deposit is a direct deposit, reactivate the receipt reference.
+        if($item->deposit->is_direct_deposit == true) {
+            $item->receiptCashTransaction->receiptReference->is_void = false;
+            $item->receiptCashTransaction->receiptReference->save();
+        }
+
+        // Check if the receipt reference it originated was marked void.
+        // If so, return an error. Otherwise, reactive the deposit item.
+        else if($item->receiptCashTransaction->receiptReference->is_void) {
             return redirect()->back()->with('error', 'Cannot reactivate deposit item. The receipt reference it originated was marked void.');
         }
 
-        // Else, reactivate the deposit item.
+        
+        
+
         $item->is_void = false;
         $item->save();
         $item->journalEntry->is_void = false;

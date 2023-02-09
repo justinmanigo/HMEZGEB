@@ -223,6 +223,7 @@ class ReceiptController extends Controller
         $rr->receiptCashTransactions[0]->depositItem;
 
         // If the source receipt is already deposited, void the deposit item entry
+        // This is also effective for direct deposits
         if($rr->receiptCashTransactions[0]->depositItem) {
             $rr->receiptCashTransactions[0]->depositItem->is_void = true;
             $rr->receiptCashTransactions[0]->depositItem->save();
@@ -276,11 +277,22 @@ class ReceiptController extends Controller
 
     public function reactivate(ReceiptReferences $rr)
     {
+        // If the receipt is a direct deposit, reactivate the deposit item entry
+        $rr->receiptCashTransactions[0]->depositItem->deposit;
         $rr->journalEntry;
+
+        if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
+            $rr->receiptCashTransactions[0]->depositItem->is_void = false;
+            $rr->receiptCashTransactions[0]->depositItem->save();
+
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+        }
 
         $rr->is_void = false;
         $rr->journalEntry->is_void = false;
         $rr->push();
+
 
         return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }    
