@@ -88,6 +88,33 @@ class DepositsController extends Controller
         return $deposit;
     }
 
+    /**
+     * 
+     */
+    public function show(Deposits $deposit)
+    {
+        $total_amount = 0;
+        $total_void_amount = 0;
+
+        $deposit->depositItems;
+        $deposit->chartOfAccount;
+        for($i = 0; $i < count($deposit->depositItems); $i++) {
+            $deposit->depositItems[$i]->receiptCashTransaction->receiptReference->customer;
+            $total_amount += $deposit->depositItems[$i]->receiptCashTransaction->amount_received;
+
+            if($deposit->depositItems[$i]->is_void == true) {
+                $total_void_amount += $deposit->depositItems[$i]->receiptCashTransaction->amount_received;
+            }
+        }
+
+        // return $deposit;
+        return view('customer.deposit.show', [
+            'deposit' => $deposit,
+            'total_amount' => $total_amount,
+            'total_void_amount' => $total_void_amount,
+        ]);
+    }
+
     // Mail
     public function mail($id)
     {
