@@ -87,13 +87,17 @@ class CreditReceiptController extends Controller
     public function void(ReceiptReferences $rr)
     {
         $rr->journalEntry;
-        
-        // TODO: Iterate through all receipt cash transactions and check if it is already deposited.
-        // If it is already deposited, void the deposit first before voiding the receipt.
+        $rr->receiptCashTransactions[0]->depositItem;
 
-        // if($rr->is_deposited == "yes")
-        //     return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
-        
+        // If a deposit of this credit receipt is already made, void the deposit first before voiding the credit receipt.
+        if($rr->receiptCashTransactions[0]->depositItem) {
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = true;
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+            
+            $rr->receiptCashTransactions[0]->depositItem->is_void = true;
+            $rr->receiptCashTransactions[0]->depositItem->save();
+        }
+              
         // Get Receipt Cash Transaction & Source Receipt
         $rct = ReceiptCashTransactions::where('receipt_reference_id', $rr->id)->first();
         $rct->forReceiptReference->receipt;
