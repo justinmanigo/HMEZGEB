@@ -159,6 +159,9 @@ class SaleController extends Controller
 
         // If the source receipt is already deposited, void the deposit item entry
         if($rr->receiptCashTransactions[0]->depositItem) {
+            $rr->receiptCashTransactions[0]->depositItem->is_void = true;
+            $rr->receiptCashTransactions[0]->depositItem->save();
+
             $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = true;
             $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
         }

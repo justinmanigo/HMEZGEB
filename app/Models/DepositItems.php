@@ -28,8 +28,8 @@ class DepositItems extends Model
         return $this->belongsTo(Deposits::class);
     }
 
-    public function receiptReference()
+    public function receiptCashTransaction()
     {
-        return $this->belongsTo(ReceiptReferences::class);
+        return $this->belongsTo(ReceiptCashTransactions::class);
     }
 }

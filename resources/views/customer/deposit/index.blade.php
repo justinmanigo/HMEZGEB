@@ -28,14 +28,14 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="dataTables" cellspacing="0">
                 <thead>
-                    <th>Deposit Date</th>
+                    <th style="width:150px">Deposit Date</th>
                     <th>Deposit ID</th>
                     <th>Account</th>
-                    <th>Label</th>
-                    <th>Amount</th>
-                    <th id="thead-actions">Actions</th>
+                    <th>Status</th>
+                    <th class="text-right">Amount</th>
+                    <th style="width:180px">Actions</th>
 
                 </thead>
                 <tbody >
@@ -44,40 +44,47 @@
                             {{-- date format --}}
                             <td>{{ date('Y-m-d', strtotime($deposit->deposit_ticket_date)) }}</td>
                             <td>{{$deposit->id}}</td>
-                            <td>{{$deposit->chartOfAccount->account_name}}</td>
-                            <td><span class="badge badge-primary">Self</span></td>
+                            <td>{{ $deposit->chart_of_account_no }} - {{ $deposit->account_name }}</td>
+                            <td>
+                                @if($deposit->total_amount == $deposit->total_void_amount)
+                                    <span class="badge badge-danger">Void</span>
+                                @elseif($deposit->total_void_amount == 0)
+                                    <span class="badge badge-success">Active</span>
+                                @else
+                                    <span class="badge badge-warning">Partially Void</span>
+                                @endif
+                            </td>
                             <td>Birr {{ number_format($deposit->total_amount, 2) }}</td>
                             <td>
-                                {{-- <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
-                                    <!-- edit -->
+                                <a href="{{ route('deposits.show', $deposit->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
                                     <span class="icon text-white-50">
-                                        <i class="fas fa-pen"></i>
+                                        <i class="fas fa-eye"></i>
                                     </span>
-                                </a> --}}
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})">
+                                </a>
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})" disabled>
                                     <!-- email -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
                                     </span>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})">
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})" disabled>
                                     <!-- print -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-print"></i>
                                     </span>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                {{-- <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
                                     <!-- void -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-ban"></i>
                                     </span>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                </button> --}}
+                                {{-- <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
                                     <!-- delete -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-trash"></i>
                                     </span>
-                                </button>
+                                </button> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -99,7 +106,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.deposits.store')}}" data-message="Successfully deposited receipts.">
+                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.store')}}" data-message="Successfully deposited receipts.">
                     @csrf
                     <div class="row">
                         <div class="col-12 col-lg-6">
@@ -238,13 +245,13 @@
         // Get id of transaction to mail confirmation modal
         function mailModal(id){
         // set attribute href of btn-send-mail
-            $('#btn-send-mail').attr('href', '{{ route("deposits.deposit.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("deposits.mail", ":id") }}'.replace(':id', id));
         }
 
         // Get id of transaction to print confirmation modal
         function printModal(id){
         // set attribute href of print-deposit
-            $('#print-deposit').attr('href', '{{ route("deposits.deposit.print", ":id") }}'.replace(':id', id));
+            $('#print-deposit').attr('href', '{{ route("deposits.print", ":id") }}'.replace(':id', id));
         }
 
 

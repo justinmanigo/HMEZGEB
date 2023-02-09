@@ -21,7 +21,7 @@ class Deposits extends Model
 
     public function depositItems()
     {
-        return $this->hasMany(DepositItems::class);
+        return $this->hasMany(DepositItems::class, 'deposit_id', 'id');
     }
 
     public function chartOfAccount()
