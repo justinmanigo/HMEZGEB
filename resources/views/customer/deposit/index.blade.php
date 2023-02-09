@@ -48,10 +48,9 @@
                             <td><span class="badge badge-primary">Self</span></td>
                             <td>Birr {{ number_format($deposit->total_amount, 2) }}</td>
                             <td>
-                                {{-- <a role="button" class="btn btn-sm btn-icon btn-primary mb-1 disabled">
-                                    <!-- edit -->
+                                <a href="{{ route('deposits.show', $deposit->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
                                     <span class="icon text-white-50">
-                                        <i class="fas fa-pen"></i>
+                                        <i class="fas fa-eye"></i>
                                     </span>
                                 </a>
                                 <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})" disabled>
