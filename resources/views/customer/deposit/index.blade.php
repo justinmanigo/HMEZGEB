@@ -33,7 +33,7 @@
                     <th style="width:150px">Deposit Date</th>
                     <th>Deposit ID</th>
                     <th>Account</th>
-                    <th>Label</th>
+                    <th>Status</th>
                     <th class="text-right">Amount</th>
                     <th style="width:180px">Actions</th>
 
@@ -44,8 +44,16 @@
                             {{-- date format --}}
                             <td>{{ date('Y-m-d', strtotime($deposit->deposit_ticket_date)) }}</td>
                             <td>{{$deposit->id}}</td>
-                            <td>{{ $deposit->chartOfAccount->chart_of_account_no }} - {{ $deposit->chartOfAccount->account_name }}</td>
-                            <td><span class="badge badge-primary">Self</span></td>
+                            <td>{{ $deposit->chart_of_account_no }} - {{ $deposit->account_name }}</td>
+                            <td>
+                                @if($deposit->total_amount == $deposit->total_void_amount)
+                                    <span class="badge badge-danger">Void</span>
+                                @elseif($deposit->total_void_amount == 0)
+                                    <span class="badge badge-success">Active</span>
+                                @else
+                                    <span class="badge badge-warning">Partially Void</span>
+                                @endif
+                            </td>
                             <td>Birr {{ number_format($deposit->total_amount, 2) }}</td>
                             <td>
                                 <a href="{{ route('deposits.show', $deposit->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
