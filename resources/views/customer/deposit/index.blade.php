@@ -28,14 +28,14 @@
         @endif
 
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+            <table class="table table-bordered" id="dataTables" cellspacing="0">
                 <thead>
-                    <th>Deposit Date</th>
+                    <th style="width:150px">Deposit Date</th>
                     <th>Deposit ID</th>
                     <th>Account</th>
                     <th>Label</th>
-                    <th>Amount</th>
-                    <th id="thead-actions">Actions</th>
+                    <th class="text-right">Amount</th>
+                    <th style="width:180px">Actions</th>
 
                 </thead>
                 <tbody >
@@ -44,7 +44,7 @@
                             {{-- date format --}}
                             <td>{{ date('Y-m-d', strtotime($deposit->deposit_ticket_date)) }}</td>
                             <td>{{$deposit->id}}</td>
-                            <td>{{$deposit->chartOfAccount->account_name}}</td>
+                            <td>{{ $deposit->chartOfAccount->chart_of_account_no }} - {{ $deposit->chartOfAccount->account_name }}</td>
                             <td><span class="badge badge-primary">Self</span></td>
                             <td>Birr {{ number_format($deposit->total_amount, 2) }}</td>
                             <td>
