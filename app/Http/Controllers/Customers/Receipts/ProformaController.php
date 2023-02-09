@@ -15,6 +15,7 @@ use App\Models\Proformas;
 use App\Models\ReceiptCashTransactions;
 use App\Models\ReceiptItem;
 use App\Models\ReceiptReferences;
+use App\Models\Receipts;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -56,21 +57,20 @@ class ProformaController extends Controller
 
     public function void(Proformas $proforma)
     {
-        // TODO: This function must be voided right away since its a proforma, however, voided proformas, regardless
-        // of its due date shall not be displayed in the proforma selection UI of a customer when issuing a receipt.
+        // If the proforma is already linked to a receipt, return an error since it can no longer be voided.
+        if(Receipts::where('proforma_id', $proforma->receiptReference->id)->count()) {
+            return redirect()->back()->with('danger', "Can't void this proforma since it is already linked to a receipt.");
+        }
 
-        // if($proforma->receiptReference->is_deposited == "yes")
-        // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
-
-        $proforma->receiptReference->is_void = "yes";
+        $proforma->receiptReference->is_void = true;
         $proforma->receiptReference->save();
 
-        return redirect()->back()->with('success', "Successfully voided proforma.");
+        return redirect()->back()->with('success', "Successfully marked proforma as void.");
     }
 
     public function reactivate(Proformas $proforma)
     {
-        $proforma->receiptReference->is_void = "no";
+        $proforma->receiptReference->is_void = false;
         $proforma->receiptReference->save();
 
         return redirect()->back()->with('success', "Successfully reactivated proforma.");
