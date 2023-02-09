@@ -53,14 +53,14 @@
                                     <span class="icon text-white-50">
                                         <i class="fas fa-pen"></i>
                                     </span>
-                                </a> --}}
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})">
+                                </a>
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})" disabled>
                                     <!-- email -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-envelope"></i>
                                     </span>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})">
+                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})" disabled>
                                     <!-- print -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-print"></i>
@@ -72,12 +72,12 @@
                                         <i class="fas fa-ban"></i>
                                     </span>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                {{-- <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
                                     <!-- delete -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-trash"></i>
                                     </span>
-                                </button>
+                                </button> --}}
                             </td>
                         </tr>
                     @endforeach
