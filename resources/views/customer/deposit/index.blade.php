@@ -65,12 +65,12 @@
                                         <i class="fas fa-print"></i>
                                     </span>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
+                                {{-- <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
                                     <!-- void -->
                                     <span class="icon text-white-50">
                                         <i class="fas fa-ban"></i>
                                     </span>
-                                </button>
+                                </button> --}}
                                 {{-- <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
                                     <!-- delete -->
                                     <span class="icon text-white-50">
