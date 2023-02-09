@@ -34,6 +34,23 @@
         </table>
 
         <h2>Deposited Transactions</h2>
+
+        @if(session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session()->get('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif(session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session()->get('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
@@ -80,14 +97,14 @@
                             </button>
                             @if(!$item->is_void)
                                 <!-- void -->
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" disabled onclick="voidModal({{$item->id}}, 'depositItem')">
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$item->id}}, 'depositItem')">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-ban"></i>
                                     </span>
                                 </button>
                             @else
                                 <!-- make it active -->
-                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" disabled onclick="reactivateModal({{$item->id}}, 'depositItem')">
+                                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$item->id}}, 'depositItem')">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-check"></i>
                                     </span>
@@ -118,4 +135,21 @@
         </div>
     </div>
 </div>
+
+{{-- Modals: Actions --}}
+@include('customer.deposit.modals.actions.reactivate')
+@include('customer.deposit.modals.actions.void')
+
+<script>
+    function voidModal(id, type) {
+        if(type=="depositItem")
+            $('#void-deposit').attr('action', '{{ route("deposits.item.void", ":id") }}'.replace(':id', id));
+    }
+
+    function reactivateModal(id, type)
+    {
+        if(type=="depositItem")
+            $('#reactivate-deposit').attr('action', '{{ route("deposits.item.reactivate", ":id") }}'.replace(':id', id));
+    }
+</script>
 @endsection

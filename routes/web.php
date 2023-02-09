@@ -17,6 +17,7 @@ use App\Http\Controllers\Customers\Receipts\CreditReceiptController;
 use App\Http\Controllers\Customers\Receipts\ProformaController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DepositController;
+use App\Http\Controllers\Customers\Deposits\DepositItemController;
 // Banking module
 use App\Http\Controllers\BankAccountsController;
 use App\Http\Controllers\TransfersController;
@@ -396,6 +397,13 @@ Route::group([
                 Route::get('/customers/deposits', [DepositsController::class, 'index'])->name('index');
                 Route::post('/customers/deposits', [DepositsController::class, 'store'])->name('store');
                 Route::get('/customers/deposits/{deposit}', [DepositsController::class, 'show'])->name('show');
+
+                Route::group([
+                    'as' => 'item.',
+                ], function(){
+                    Route::post('/customers/deposit-item/{item}', [DepositItemController::class, 'void'])->name('void');
+                    Route::post('/customers/deposit-item/reactivate/{item}', [DepositItemController::class, 'reactivate'])->name('reactivate');
+                });
 
                 // Mail
                 Route::get('/customers/deposits/mail/{id}', [DepositsController::class, 'mail'])->name('mail');
