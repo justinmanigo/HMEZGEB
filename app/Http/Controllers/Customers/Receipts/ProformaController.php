@@ -106,9 +106,12 @@ class ProformaController extends Controller
                 'proformas.due_date',
             )
             ->leftJoin('proformas', 'proformas.receipt_reference_id', '=', 'receipt_references.id')
-            ->where('customer_id', $customer->id)
-            ->where('type', 'proforma')
-            ->where('status', 'unpaid')
+            ->where('receipt_references.customer_id', $customer->id)
+            ->where('receipt_references.type', 'proforma')
+            ->where('receipt_references.status', 'unpaid')
+            ->where('receipt_references.is_void', false)
+            ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+            ->where('proformas.due_date', '>=', date('Y-m-d'))
             ->get();
 
         return $proformas;
