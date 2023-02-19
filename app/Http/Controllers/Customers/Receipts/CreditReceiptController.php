@@ -115,15 +115,15 @@ class CreditReceiptController extends Controller
         if($rr->receiptCashTransactions[0]->depositItem) {
             $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = true;
             $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
-            
+
             $rr->receiptCashTransactions[0]->depositItem->is_void = true;
             $rr->receiptCashTransactions[0]->depositItem->save();
         }
-              
+
         // Get Receipt Cash Transaction & Source Receipt
         $rct = ReceiptCashTransactions::where('receipt_reference_id', $rr->id)->first();
         $rct->forReceiptReference->receipt;
-            
+
         // Deduct Source Receipt's Total Amount Received
         $rct->forReceiptReference->receipt->total_amount_received -= $rct->amount_received;
 
@@ -131,7 +131,7 @@ class CreditReceiptController extends Controller
         if($rct->forReceiptReference->receipt->total_amount_received >= $rct->forReceiptReference->receipt->grand_total) {
             UpdateReceiptStatus::run($rct->forReceiptReference->id, 'paid');
         }
-        else if($rct->forReceiptReference->status == 'unpaid' && 
+        else if($rct->forReceiptReference->status == 'unpaid' &&
             $rct->forReceiptReference->receipt->total_amount_received > 0) {
             UpdateReceiptStatus::run($rct->forReceiptReference->id, 'partially_paid');
         }
@@ -149,7 +149,8 @@ class CreditReceiptController extends Controller
 
     public function reactivate(ReceiptReferences $rr)
     {
-        $rr->journalEntry;
+        // If the receipt is a direct deposit, reactivate the deposit item entry
+        $rr->receiptCashTransactions[0]->depositItem->deposit;
 
         // Get Receipt Cash Transaction & Source Receipt
         $rct = ReceiptCashTransactions::where('receipt_reference_id', $rr->id)->first();
@@ -159,7 +160,16 @@ class CreditReceiptController extends Controller
         if($rct->forReceiptReference->is_void == true) {
             return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$rct->forReceiptReference->id} is currently voided.");
         }
-            
+
+        if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
+            $rr->receiptCashTransactions[0]->depositItem->is_void = false;
+            $rr->receiptCashTransactions[0]->depositItem->save();
+
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
+            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+        }
+
+
         // Add Source Receipt's Total Amount Received
         $rct->forReceiptReference->receipt->total_amount_received += $rct->amount_received;
 
@@ -167,7 +177,7 @@ class CreditReceiptController extends Controller
         if($rct->forReceiptReference->receipt->total_amount_received >= $rct->forReceiptReference->receipt->grand_total) {
             UpdateReceiptStatus::run($rct->forReceiptReference->id, 'paid');
         }
-        else if($rct->forReceiptReference->status == 'unpaid' && 
+        else if($rct->forReceiptReference->status == 'unpaid' &&
             $rct->forReceiptReference->receipt->total_amount_received > 0) {
             UpdateReceiptStatus::run($rct->forReceiptReference->id, 'partially_paid');
         }
@@ -182,15 +192,15 @@ class CreditReceiptController extends Controller
         $rr->push();
 
         return redirect()->back()->with('success', "Successfully voided credit receipt.");
-    }  
+    }
 
     public function send(CreditReceipts $cr)
     {
         // Mail
-        $emailAddress = $cr->receiptReference->customer->email; 
-        
+        $emailAddress = $cr->receiptReference->customer->email;
+
         Mail::to($emailAddress)->queue(new MailCustomerCreditReceipt($cr));
-        
+
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
@@ -200,3 +210,4 @@ class CreditReceiptController extends Controller
 
         return $pdf->stream('credit_receipt_'.$cr->id.'_'.date('Y-m-d').'.pdf');
     }
+}
