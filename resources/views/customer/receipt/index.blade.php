@@ -42,10 +42,38 @@
             <a class="btn btn-secondary" href="{{route('receipts.export.csv')}}">Export</a>
             </div>
 
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @elseif(session()->has('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session()->get('danger') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @elseif(isset($_GET['success']))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ $_GET['success'] }}
+                    {{-- {{ session()->get('success') }} --}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             {{-- Tab Navigation --}}
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab"
+                    <a class="nav-link active" id="receipts-tab" data-toggle="tab" href="#receipts" role="tab"
+                        aria-controls="receipts" aria-selected="true">Receipts</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab"
                         aria-controls="transactions" aria-selected="true">Transactions</a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -58,32 +86,55 @@
             <div class="card" class="content-card">
                 <div class="card-body tab-content" id="myTabContent">
                     {{-- Transaction Contents --}}
-                    <div class="tab-pane fade show active" id="transactions" role="tabpanel"
+                    <div class="tab-pane active fade show" id="receipts" role="tabpanel" aria-labelledby="receipts-tab">
+                        <!-- add search input group -->
+                        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                            <form id="receipts-search-form">
+                                <div class="input-group mr-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input id="receipts-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon">
+                                    <button id="receipts-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <span class="text">Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="btn-group" role="group" aria-label="Second group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="receipts-page-number-label">Page 0 of 0</span>
+                                </div>
+                                <button id="receipts-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                                <button id="receipts-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                            </div>
+                        </div>
+
+                        {{-- Transaction Contents --}}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody id="receipts-list">
+                                    <!-- JS will populate this -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="transactions" role="tabpanel"
                         aria-labelledby="transactions-tab">
 
-                        @if(session()->has('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session()->get('success') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @elseif(session()->has('danger'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session()->get('danger') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @elseif(isset($_GET['success']))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ $_GET['success'] }}
-                                {{-- {{ session()->get('success') }} --}}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                                 <thead>
@@ -473,6 +524,8 @@
         }
 
     </script>
+
+    <script src="/js/customer/receipt/receipt/receipts_table.js"></script>
 
     <script src="/js/customer/receipt/template_select_customer.js"></script>
     <script src="/js/customer/receipt/template_select_receipt.js"></script>

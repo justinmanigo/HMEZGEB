@@ -37,9 +37,49 @@ use App\Models\Inventory;
 use App\Models\Notification;
 use App\Models\Transactions;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ReceiptController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $receipts = ReceiptReferences::select(
+            'receipt_references.id',
+            'receipt_references.date',
+            'customers.name as customer_name',
+            'receipts.grand_total',
+            'receipt_cash_transactions.total_amount_received'
+        )
+        ->leftJoin('receipts', 'receipts.receipt_reference_id', 'receipt_references.id')
+        ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+        // left join sub to get sum of receipt_cash_transactions
+        // this will determine the status of the receipt (paid, partially_paid, unpaid)
+        ->leftJoinSub(
+            ReceiptCashTransactions::select(
+                'receipt_cash_transactions.for_receipt_reference_id',
+                DB::raw('SUM(receipt_cash_transactions.amount_received) as total_amount_received')
+            )
+            ->groupBy('receipt_cash_transactions.for_receipt_reference_id'),
+            'receipt_cash_transactions',
+            'receipt_cash_transactions.for_receipt_reference_id',
+            'receipt_references.id'
+        )
+        ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+        ->where(function($q) use ($query){
+            $q->where('receipt_references.id', 'like', "%{$query}%")
+            ->orWhere('customers.name', 'like', "%{$query}%")
+            ->orWhere('receipt_references.date', 'like', "%{$query}%")
+            ->orWhere('receipt_references.status', 'like', "%{$query}%");
+        })
+        ->where('receipt_references.type', 'receipt');
+
+
+        return response()->json([
+            'receipts' => $receipts->paginate(1),
+        ]);
+
+    }
+
     public function store(StoreReceiptRequest $request)
     {
         $accounting_system_id = session('accounting_system_id');

@@ -353,6 +353,7 @@ Route::group([
                     Route::get('/proforma/print/{proforma}', [ProformaController::class, 'print'])->name('print');
 
                     /** AJAX Calls */
+                    Route::get('/ajax/customer/receipt/receipt/search/{query?}', [ReceiptController::class, 'searchAjax']);
                     Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ProformaController::class, 'ajaxSearchCustomer']);
                     Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ProformaController::class, 'ajaxGet']);
                 });
@@ -361,7 +362,7 @@ Route::group([
                 Route::get('/receipt/csv',[ReceiptsController::class,'exportReceipts'])->name('export.csv');
                 // Route::delete('/receipt/{id}', [ReceiptsController::class, 'destroy']);
                 // Route::get('/receipt/{id}', [ReceiptsController::class, 'edit']);
-                // Route::put('/receipt/{id}', [ReceiptsController::class, 'update']);              
+                // Route::put('/receipt/{id}', [ReceiptsController::class, 'update']);
             });
 
             /**
