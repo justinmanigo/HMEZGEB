@@ -22,7 +22,7 @@ use App\Models\ReceiptItem;
 use App\Models\ReceiptReferences;
 use App\Models\AdvanceRevenues;
 use App\Models\Receipts;
-use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Customers\MailCustomerCreditReceipt;

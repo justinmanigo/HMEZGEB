@@ -12,7 +12,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="" id="print-receipt" class="btn btn-primary">Print</a>
+                <a href="" id="print-receipt" class="btn btn-primary" target="_blank">Print</a>
             </div>
         </div>
     </div>
