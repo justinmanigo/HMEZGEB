@@ -494,5 +494,6 @@
 
     <script src="/js/customer/receipt/modal_sales.js"></script>
     <script src="/js/customer/receipt/modal_receipt.js"></script>
+    <script src="/js/customer/receipt/modal_credit_receipt.js"></script>
     <script src="/js/customer/receipt/default_values.js"></script>
 @endsection
