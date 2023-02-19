@@ -36,6 +36,7 @@ use App\Models\Deposits;
 use App\Models\Inventory;
 use App\Models\Notification;
 use App\Models\Transactions;
+use Exception;
 
 class ReceiptController extends Controller
 {
@@ -54,7 +55,7 @@ class ReceiptController extends Controller
 
         // If request has attachment, store it to file storage.
         if($request->attachment) {
-            $fileAttachment = time().'.'.$request->attachment->extension();  
+            $fileAttachment = time().'.'.$request->attachment->extension();
             $request->attachment->storeAs('public/receipt-attachment'/'receipt', $fileAttachment);
         }
 
@@ -69,7 +70,7 @@ class ReceiptController extends Controller
                 Notification::create([
                     'accounting_system_id' => $accounting_system_id,
                     'reference_id' => $inventory->id,
-                    'source' => 'inventory',    
+                    'source' => 'inventory',
                     'message' => 'Inventory item '.$inventory->item_name.' has zero stocks. Please reorder.',
                     'title' => 'Inventory Zero Stocks',
                     'type' => 'danger',
@@ -124,7 +125,7 @@ class ReceiptController extends Controller
                 ]);
             }
         }
-        
+
         // Link Journal Entry to Receipt Reference
         $reference->journal_entry_id = $je->id;
         $reference->save();
@@ -165,12 +166,12 @@ class ReceiptController extends Controller
         $credit_accounts[] = CreateJournalPostings::encodeAccount($request->receipt_sales);
         $credit_amount[] = $request->sub_total;
 
-        CreateJournalPostings::run($je, 
+        CreateJournalPostings::run($je,
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
             $accounting_system_id);
-        
-        //  image upload and save to database 
+
+        //  image upload and save to database
         // if($request->hasFile('attachment'))
         // {
         //     $file = $request->file('attachment');
@@ -181,14 +182,14 @@ class ReceiptController extends Controller
         // }
 
         // // TODO: Refactor Attachment Upload
-        
+
         Receipts::create([
             'receipt_reference_id' => $reference->id,
             'due_date' => $request->due_date,
             'sub_total' => $request->sub_total,
             'discount' => $request->discount,
             'grand_total' => $request->grand_total,
-            'remark' => $request->remark,           
+            'remark' => $request->remark,
             'attachment' => isset($fileAttachment) ? $fileAttachment : null, // file upload and save to database
             'discount' => '0.00', // Temporary discount
             'withholding' => isset($request->withholding_check) ? $request->withholding : '0.00',
@@ -220,17 +221,19 @@ class ReceiptController extends Controller
         $rr->receipt;
 
         // Source Receipt Cash Transaction
-        $rr->receiptCashTransactions[0]->depositItem;
+        try {
+            $rr->receiptCashTransactions[0]->depositItem;
 
-        // If the source receipt is already deposited, void the deposit item entry
-        // This is also effective for direct deposits
-        if($rr->receiptCashTransactions[0]->depositItem) {
-            $rr->receiptCashTransactions[0]->depositItem->is_void = true;
-            $rr->receiptCashTransactions[0]->depositItem->save();
+            // If the source receipt is already deposited, void the deposit item entry
+            // This is also effective for direct deposits
+            if($rr->receiptCashTransactions[0]->depositItem) {
+                $rr->receiptCashTransactions[0]->depositItem->is_void = true;
+                $rr->receiptCashTransactions[0]->depositItem->save();
 
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = true;
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
-        }
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = true;
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+            }
+        } catch(Exception $e) {}
 
         // Voiding a source receipt will also affect the credit receipts that are linked to it.
         $rct_list = ReceiptCashTransactions::where('for_receipt_reference_id', '=', $rr->id)
@@ -250,7 +253,7 @@ class ReceiptController extends Controller
                     $rrl->depositItem->journalEntry->save();
 
                     $rr->receipt->total_amount_received -= $rrl->amount_received;
-    
+
                     $rrl->receiptReference->is_void = true;
                     $rrl->receiptReference->journalEntry->is_void = true;
                     $rrl->push();
@@ -271,23 +274,26 @@ class ReceiptController extends Controller
         $rr->is_void = true;
         $rr->journalEntry->is_void = true;
         $rr->push();
-            
+
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
     public function reactivate(ReceiptReferences $rr)
     {
         // If the receipt is a direct deposit, reactivate the deposit item entry
-        $rr->receiptCashTransactions[0]->depositItem->deposit;
-        $rr->journalEntry;
+        try {
+            $rr->receiptCashTransactions[0]->depositItem->deposit;
+            $rr->journalEntry;
 
-        if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
-            $rr->receiptCashTransactions[0]->depositItem->is_void = false;
-            $rr->receiptCashTransactions[0]->depositItem->save();
+            if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
+                $rr->receiptCashTransactions[0]->depositItem->is_void = false;
+                $rr->receiptCashTransactions[0]->depositItem->save();
 
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+            }
         }
+        catch(Exception $e) {}
 
         $rr->is_void = false;
         $rr->journalEntry->is_void = false;
@@ -295,15 +301,15 @@ class ReceiptController extends Controller
 
 
         return redirect()->back()->with('success', "Successfully reactivated receipt.");
-    }    
+    }
 
     public function mail(Receipts $r)
     {
         $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
         $emailAddress = $r->receiptReference->customer->email;
-        
+
         Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt_items));
-        
+
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
