@@ -27,6 +27,7 @@ class StoreCreditReceiptRequest extends FormRequest
     {
         return [
             'customer' => ['required'],
+            'cash_account' => ['required'],
             'date' => ['required', 'date'],
             'receipt' => ['required'],
             'amount_paid' => ['required', 'numeric', 'min:1'],
@@ -75,6 +76,7 @@ class StoreCreditReceiptRequest extends FormRequest
         ]);
 
         $this->merge([
+            'cash_account' => DecodeTagifyField::run($this->cash_account),
             'customer' => DecodeTagifyField::run($this->customer),
             'receipt' => DecodeTagifyField::run($this->receipt),
             'amount_paid' => floatval($this->amount_paid),

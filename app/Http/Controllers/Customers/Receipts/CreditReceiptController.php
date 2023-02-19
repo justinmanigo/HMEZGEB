@@ -23,14 +23,16 @@ use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Customers\MailCustomerCreditReceipt;
-
+use App\Models\BankAccounts;
+use App\Models\DepositItems;
+use App\Models\Deposits;
 
 class CreditReceiptController extends Controller
 {
     public function store(StoreCreditReceiptRequest $request)
     {
         $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', session('accounting_system_id'));
-        
+
         $receipt = Receipts::where('receipt_reference_id', $request->receipt->value)->first();
         $receipt->total_amount_received += $request->amount_paid;
 
@@ -42,13 +44,13 @@ class CreditReceiptController extends Controller
         }
         $receipt->save();
 
-        ReceiptCashTransactions::create([
+        $rct = ReceiptCashTransactions::create([
             'accounting_system_id' => session('accounting_system_id'),
             'receipt_reference_id' => $reference->id,
             'for_receipt_reference_id' => $request->receipt->value,
             'amount_received' => $request->amount_paid,
             'chart_of_account_id' => $request->credit_receipt_cash_on_hand,
-        ]);        
+        ]);
 
         // Create Journal Entry
         $je = CreateJournalEntry::run($request->date, $request->remark, session('accounting_system_id'));
@@ -56,17 +58,37 @@ class CreditReceiptController extends Controller
         $reference->save();
 
         // Create Debit Postings
-        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_cash_on_hand);
+        $debit_accounts[] = CreateJournalPostings::encodeAccount($request->cash_account->value);
         $debit_amount[] = $request->amount_paid;
 
         // Create Credit Postings
         $credit_accounts[] = CreateJournalPostings::encodeAccount($request->credit_receipt_account_receivable);
         $credit_amount[] = $request->amount_paid;
 
-        CreateJournalPostings::run($je, 
+        CreateJournalPostings::run($je,
             $debit_accounts, $debit_amount,
             $credit_accounts, $credit_amount,
             session('accounting_system_id'));
+
+        $bank_account = BankAccounts::where('chart_of_account_id',      $request->cash_account->value)->first();
+        $deposit = null;
+
+        if($bank_account) {
+            $deposit = Deposits::create([
+                'accounting_system_id' => session('accounting_system_id'),
+                'chart_of_account_id' => $request->cash_account->value,
+                'deposit_ticket_date' => date('Y-m-d'),
+                'remark' => $request->remark,
+                'reference_number' => $request->reference_number,
+                'is_direct_deposit' => true,
+            ]);
+
+            $deposit_item = DepositItems::create([
+                'deposit_id' => $deposit->id,
+                'receipt_cash_transaction_id' => $rct->id,
+                'journal_entry_id' => $je->id,
+            ]);
+        }
 
         CreditReceipts::create([
             'receipt_reference_id' => $reference->id,
@@ -178,4 +200,3 @@ class CreditReceiptController extends Controller
 
         return $pdf->stream('credit_receipt_'.$cr->id.'_'.date('Y-m-d').'.pdf');
     }
-}

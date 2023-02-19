@@ -48,6 +48,15 @@
                                 <h5 class="col-12">Select Receipt to Pay</h5>
                             </div>
                             <div class="form-group row">
+                                <label for="cr_cash_account" class="col-4 col-form-label">Cash Acct.<span class="text-danger ml-1">*</span> :</label>
+                                <div class="col-8">
+                                    <input id="cr_cash_account" class="col-12 form-control" name='cash_account'>
+                                    <p class="text-danger error-message error-message-cash_account" style="display:none"></p>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="cr_date" class="col-4 col-form-label">Date<span class="text-danger ml-1">*</span> :</label>
                                 <div class="col-8">
                                     <input type="date" class="form-control" id="cr_date" name="date" placeholder="" value="{{date('Y-m-d')}}" required>
