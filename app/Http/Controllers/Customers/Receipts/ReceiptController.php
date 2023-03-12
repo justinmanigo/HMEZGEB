@@ -75,7 +75,7 @@ class ReceiptController extends Controller
 
 
         return response()->json([
-            'receipts' => $receipts->paginate(1),
+            'receipts' => $receipts->paginate(10),
         ]);
 
     }
