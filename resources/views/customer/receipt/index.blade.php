@@ -134,7 +134,7 @@
                                     <th>Date</th>
                                     <th>Status</th>
                                     <th>Amount</th>
-                                    <th width="123x">Actions</th>
+                                    <th width="160px">Actions</th>
                                 </thead>
                                 <tbody id="sales-list">
                                     <!-- JS will populate this -->
@@ -180,7 +180,7 @@
                                     <th>Customer</th>
                                     <th>Status</th>
                                     <th>Amount</th>
-                                    <th width="123x">Actions</th>
+                                    <th width="160px">Actions</th>
                                 </thead>
                                 <tbody id="receipts-list">
                                     <!-- JS will populate this -->
@@ -226,7 +226,7 @@
                                     <th>Customer</th>
                                     <th>Status</th>
                                     <th>Amount</th>
-                                    <th width="123x">Actions</th>
+                                    <th width="160px">Actions</th>
                                 </thead>
                                 <tbody id="credit-receipts-list">
                                     <!-- JS will populate this -->
@@ -273,7 +273,7 @@
                                     <th>Status</th>
                                     <th>Due in</th>
                                     <th>Amount</th>
-                                    <th width="123x">Actions</th>
+                                    <th width="160px">Actions</th>
                                 </thead>
                                 <tbody id="proformas-list">
                                     <!-- JS will populate this -->
