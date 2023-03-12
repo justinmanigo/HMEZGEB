@@ -26,9 +26,51 @@ use App\Mail\Customers\MailCustomerCreditReceipt;
 use App\Models\BankAccounts;
 use App\Models\DepositItems;
 use App\Models\Deposits;
+use Illuminate\Support\Facades\DB;
 
 class CreditReceiptController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $credit_receipts = ReceiptReferences::select(
+            'receipt_references.id',
+            'receipt_cash_transactions.for_receipt_reference_id',
+            'receipt_references.date',
+            'customers.name as customer_name',
+            'credit_receipts.total_amount_received as grand_total',
+            'receipt_cash_transactions.total_amount_received'
+        )
+        ->leftJoin('credit_receipts', 'credit_receipts.receipt_reference_id', 'receipt_references.id')
+        ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+        // left join sub to get sum of receipt_cash_transactions
+        // this will determine the status of the receipt (paid, partially_paid, unpaid)
+        ->leftJoinSub(
+            ReceiptCashTransactions::select(
+                'receipt_cash_transactions.receipt_reference_id',
+                'receipt_cash_transactions.for_receipt_reference_id',
+                DB::raw('SUM(receipt_cash_transactions.amount_received) as total_amount_received')
+            )
+            ->groupBy('receipt_cash_transactions.receipt_reference_id', 'receipt_cash_transactions.for_receipt_reference_id'),
+            'receipt_cash_transactions',
+            'receipt_cash_transactions.receipt_reference_id',
+            'receipt_references.id'
+        )
+        ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+        ->where(function($q) use ($query){
+            $q->where('receipt_references.id', 'like', "%{$query}%")
+            ->orWhere('customers.name', 'like', "%{$query}%")
+            ->orWhere('receipt_references.date', 'like', "%{$query}%")
+            ->orWhere('receipt_references.status', 'like', "%{$query}%");
+        })
+        ->where('receipt_references.type', 'credit_receipt');
+
+
+        return response()->json([
+            'credit_receipts' => $credit_receipts->paginate(10),
+        ]);
+
+    }
+
     public function store(StoreCreditReceiptRequest $request)
     {
         $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', session('accounting_system_id'));

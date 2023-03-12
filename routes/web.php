@@ -353,7 +353,10 @@ Route::group([
                     Route::get('/proforma/print/{proforma}', [ProformaController::class, 'print'])->name('print');
 
                     /** AJAX Calls */
+                    Route::get('/ajax/customer/receipt/sale/search/{query?}', [SaleController::class, 'searchAjax']);
                     Route::get('/ajax/customer/receipt/receipt/search/{query?}', [ReceiptController::class, 'searchAjax']);
+                    Route::get('/ajax/customer/receipt/credit-receipt/search/{query?}', [CreditReceiptController::class, 'searchAjax']);
+                    Route::get('/ajax/customer/receipt/proforma/search/{query?}', [ProformaController::class, 'searchAjax']);
                     Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ProformaController::class, 'ajaxSearchCustomer']);
                     Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ProformaController::class, 'ajaxGet']);
                 });
