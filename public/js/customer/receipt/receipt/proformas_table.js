@@ -53,7 +53,7 @@ function proforma_search(query = "", page = 1)
         {
             let row = `
                 <tr>
-                    <td colspan="6" class="text-center">No proformas found.</td>
+                    <td colspan="7" class="text-center">No proformas found.</td>
                 </tr>
             `;
             proformas_list.append(row);
