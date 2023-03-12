@@ -27,10 +27,12 @@ class ProformaController extends Controller
     {
         $proformas = ReceiptReferences::select(
             'receipt_references.id',
+            'proformas.id as proforma_id',
             'receipt_references.date',
             'customers.name as customer_name',
             'proformas.grand_total',
             'proformas.due_date',
+            'receipt_references.is_void',
         )
         ->leftJoin('proformas', 'proformas.receipt_reference_id', 'receipt_references.id')
         ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
