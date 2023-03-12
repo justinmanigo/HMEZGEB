@@ -89,6 +89,20 @@ function sale_search(query = "", page = 1)
                                 <i class="fa fa-envelope"></i>
                             </a>
                         </td>
+                        ${!sale.is_void ? `
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal(${sale.id}, 'sale')">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-ban"></i>
+                            </span>
+                        </button>
+                        `
+                        : `
+                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal(${sale.id}, 'sale')">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </button>
+                        `}
                     </tr>
                 `;
                 sales_list.append(row);

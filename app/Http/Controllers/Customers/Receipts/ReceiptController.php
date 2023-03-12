@@ -48,7 +48,8 @@ class ReceiptController extends Controller
             'receipt_references.date',
             'customers.name as customer_name',
             'receipts.grand_total',
-            'receipt_cash_transactions.total_amount_received'
+            'receipt_cash_transactions.total_amount_received',
+            'receipt_references.is_void',
         )
         ->leftJoin('receipts', 'receipts.receipt_reference_id', 'receipt_references.id')
         ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')

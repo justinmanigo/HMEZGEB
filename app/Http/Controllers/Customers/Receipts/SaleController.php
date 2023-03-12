@@ -25,7 +25,8 @@ class SaleController extends Controller
             'receipt_references.id',
             'receipt_references.date',
             'sales.grand_total',
-            'receipt_cash_transactions.total_amount_received'
+            'receipt_cash_transactions.total_amount_received',
+            'receipt_references.is_void',
         )
         ->leftJoin('sales', 'sales.receipt_reference_id', 'receipt_references.id')
         // left join sub to get sum of receipt_cash_transactions

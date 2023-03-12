@@ -89,6 +89,20 @@ function receipt_search(query = "", page = 1)
                             <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-envelope"></i>
                             </a>
+                            ${!receipt.is_void ? `
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal(${receipt.id}, 'receipt')">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                            </button>
+                            `
+                            : `
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal(${receipt.id}, 'receipt')">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </button>
+                            `}
                         </td>
                     </tr>
                 `;
