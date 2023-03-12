@@ -115,14 +115,14 @@
 
                         {{-- Transaction Contents --}}
                         <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <table class="table table-striped">
                                 <thead>
                                     <th>ID</th>
                                     <th>Date</th>
                                     <th>Customer</th>
                                     <th>Status</th>
                                     <th>Amount</th>
-                                    <th>Actions</th>
+                                    <th width="123x">Actions</th>
                                 </thead>
                                 <tbody id="receipts-list">
                                     <!-- JS will populate this -->

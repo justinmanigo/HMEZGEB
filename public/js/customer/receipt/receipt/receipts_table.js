@@ -66,10 +66,10 @@ function receipt_search(query = "", page = 1)
                 /** to add later: partially void, fully void */
                 let receipt = res.receipts.data[i];
                 let row = `
-                    <tr>
+                    <tr class="hoverable" data-href="#">
                         <td>${receipt.id}</td>
                         <td>${receipt.date}</td>
-                        <td>${receipt.customer_name}</td>
+                        <td>${receipt.customer_name}</a></td>
                         <td>
                         ${receipt.grand_total >= receipt.total_amount_received
                             ? `<span class="badge badge-success">Paid</span>`
@@ -79,14 +79,14 @@ function receipt_search(query = "", page = 1)
                         }
                         </td>
                         <td class="text-right">${parseFloat(receipt.grand_total).toFixed(2)}</td>
-                        <td>
-                            <a href="" class="btn btn-sm btn-primary disabled">
+                        <td class="actions">
+                            <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a href="" class="btn btn-sm btn-primary disabled">
+                            <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-print"></i>
                             </a>
-                            <a href="" class="btn btn-sm btn-primary disabled">
+                            <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-envelope"></i>
                             </a>
                         </td>

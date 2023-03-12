@@ -39,6 +39,8 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     @endif
 
+    <script type="text/javascript" src="{{ URL::asset('js/hoverable.js') }}"></script>
+
     <!-- Custom fonts for this template-->
     @if (App::environment(['local']))
         <link rel="stylesheet" href="{{URL::asset('vendor/fontawesome-free/css/all.min.css')}}">
