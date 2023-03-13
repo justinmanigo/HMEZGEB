@@ -256,7 +256,7 @@ class ReceiptController extends Controller
         //
     }
 
-    public function void(ReceiptReferences $rr)
+    public function voidAjax(ReceiptReferences $rr)
     {
         $rr->journalEntry;
         $rr->receipt;
@@ -319,7 +319,7 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
-    public function reactivate(ReceiptReferences $rr)
+    public function reactivateAjax(ReceiptReferences $rr)
     {
         // If the receipt is a direct deposit, reactivate the deposit item entry
         try {
@@ -344,7 +344,7 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }
 
-    public function mail(Receipts $r)
+    public function mailAjax(ReceiptReferences $rr)
     {
         $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
         $emailAddress = $r->receiptReference->customer->email;
@@ -354,7 +354,7 @@ class ReceiptController extends Controller
         return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
-    public function print(Receipts $r)
+    public function print(ReceiptReferences $rr)
     {
         $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
 

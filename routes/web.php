@@ -314,10 +314,10 @@ Route::group([
                 ], function(){
                     Route::post('/receipt',[ReceiptController::class,'store'])->name('store');
                     // TODO: impklement show receipt
-                    Route::get('/receipt/void/{rr}', [ReceiptController::class, 'void'])->name('void');
-                    Route::get('/receipt/reactivate/{rr}', [ReceiptController::class, 'reactivate'])->name('reactivate');
-                    Route::get('/receipt/mail/{r}', [ReceiptController::class, 'mail'])->name('mail');
-                    Route::get('/receipt/print/{r}', [ReceiptController::class, 'print'])->name('print');
+                    Route::get('/receipt/void/{rr}', [ReceiptController::class, 'voidAjax'])->name('void');
+                    Route::get('/receipt/reactivate/{rr}', [ReceiptController::class, 'reactivateAjax'])->name('reactivate');
+                    Route::get('/receipt/mail/{rr}', [ReceiptController::class, 'mailAjax'])->name('mail');
+                    Route::get('/receipt/print/{rr}', [ReceiptController::class, 'print'])->name('print');
                 });
 
                 Route::group([
