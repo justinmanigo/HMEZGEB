@@ -16,10 +16,10 @@ use App\Models\ReceiptCashTransactions;
 use App\Models\ReceiptItem;
 use App\Models\ReceiptReferences;
 use App\Models\Receipts;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 class ProformaController extends Controller
 {
