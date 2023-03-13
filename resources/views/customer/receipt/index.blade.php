@@ -635,7 +635,7 @@
             if(type=="sale")
             $('#void-receipt').attr('data-href', '{{ route("receipts.sales.void", ":id") }}'.replace(':id', id));
 
-            $('#void-receipt').attr('data-id', id).attr('href', '#');
+            $('#void-receipt').attr('data-id', id).attr('href', '#').attr('data-type', type);
         }
 
         function reactivateModal(id, type)
@@ -651,7 +651,7 @@
             if(type=="sale")
             $('#reactivate-receipt').attr('data-href', '{{ route("receipts.sales.reactivate", ":id") }}'.replace(':id', id));
 
-            $('#reactivate-receipt').attr('data-id', id).attr('href', '#');
+            $('#reactivate-receipt').attr('data-id', id).attr('href', '#').attr('data-type', type);
         }
 
         $(document).on('click', '#void-receipt', function(e){
@@ -678,6 +678,14 @@
                         </span>
                     </button>
                     `)
+
+                    if($('#void-receipt').attr('data-type') == 'receipt') {
+                        credit_receipt_search("", credit_receipts_page_number_current);
+                    }
+                    else if($('#void-receipt').attr('data-type') == 'creditReceipt'){
+                        receipt_search("", credit_receipts_page_number_current);
+                    }
+
                 }
             });
         })
@@ -706,6 +714,13 @@
                         </span>
                     </button>
                     `)
+
+                    if($('#reactivate-receipt').attr('data-type') == 'receipt') {
+                        credit_receipt_search("", credit_receipts_page_number_current);
+                    }
+                    else if($('#reactivate-receipt').attr('data-type') == 'creditReceipt'){
+                        receipt_search("", credit_receipts_page_number_current);
+                    }
                 }
             });
         })
