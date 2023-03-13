@@ -14,6 +14,7 @@ $(document).on('click', '.actions button', function(e){
 
     console.log(`clicked .actions button: ${action} ${id} ${type}`);
 
+    // refer to receipt/index
     if(action == "void" && page == "receipts") {
         console.log("void");
         voidModal(id, type);
@@ -21,6 +22,14 @@ $(document).on('click', '.actions button', function(e){
     else if(action == "reactivate" && page == "receipts") {
         console.log("void");
         reactivateModal(id, type);
+    }
+    else if(action == "mail" && page == "receipts") {
+        console.log("mail");
+        mailModal(id, type);
+    }
+    else if(action == "print" && page == "receipts") {
+        console.log("print");
+        printModal(id, type);
     }
 });
 

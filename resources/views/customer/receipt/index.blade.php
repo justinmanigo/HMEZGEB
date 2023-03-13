@@ -540,32 +540,6 @@
     {{-- Scripts --}}
 
     <script>
-        // Get id of transaction to mail confirmation modal
-        function mailModal(id, type){
-            // set attribute href of btn-send-mail
-            if(type=="receipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.receipts.mail", ":id") }}'.replace(':id', id)));
-            if(type=="advanceRevenue")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.advance_revenues.mail", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.credit_receipts.mail", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.proformas.mail", ":id") }}'.replace(':id', id));
-        }
-
-        // Get id of transaction to print confirmation modal
-        function printModal(id, type){
-            // set attribute href of print-receipt
-            if(type=="receipt")
-            $('#print-receipt').attr('href', '{{ route("receipts.receipts.print", ":id") }}'.replace(':id', id));
-            if(type=="advanceRevenue")
-            $('#print-receipt').attr('href', '{{ route("receipts.advance_revenues.print", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#print-receipt').attr('href', '{{ route("receipts.credit_receipts.print", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#print-receipt').attr('href', '{{ route("receipts.proformas.print", ":id") }}'.replace(':id', id));
-        }
-
         $(document).ready(function () {
             $('#dataTables').DataTable();
             $('#dataTables2').DataTable();
@@ -621,6 +595,34 @@
     <script src="/js/customer/receipt/default_values.js"></script>
 
     <script>
+        // Get id of transaction to mail confirmation modal
+        function mailModal(id, type){
+            // set attribute href of btn-send-mail
+            if(type=="receipt")
+            $('#btn-send-mail').attr('data-href', '{{ route("receipts.receipts.mail", ":id") }}'.replace(':id', id));
+            if(type=="advanceRevenue")
+            $('#btn-send-mail').attr('data-href', '{{ route("receipts.advance_revenues.mail", ":id") }}'.replace(':id', id));
+            if(type=="creditReceipt")
+            $('#btn-send-mail').attr('data-href', '{{ route("receipts.credit_receipts.mail", ":id") }}'.replace(':id', id));
+            if(type=="proforma")
+            $('#btn-send-mail').attr('data-href', '{{ route("receipts.proformas.mail", ":id") }}'.replace(':id', id));
+
+            $('#btn-send-mail').attr('data-id', id).attr('href', '#').attr('data-type', type);
+        }
+
+        // Get id of transaction to print confirmation modal
+        function printModal(id, type){
+            // set attribute href of print-receipt
+            if(type=="receipt")
+            $('#print-receipt').attr('href', '{{ route("receipts.receipts.print", ":id") }}'.replace(':id', id));
+            if(type=="advanceRevenue")
+            $('#print-receipt').attr('href', '{{ route("receipts.advance_revenues.print", ":id") }}'.replace(':id', id));
+            if(type=="creditReceipt")
+            $('#print-receipt').attr('href', '{{ route("receipts.credit_receipts.print", ":id") }}'.replace(':id', id));
+            if(type=="proforma")
+            $('#print-receipt').attr('href', '{{ route("receipts.proformas.print", ":id") }}'.replace(':id', id));
+        }
+
         // Void record
 
         function voidModal(id, type) {
@@ -653,6 +655,23 @@
 
             $('#reactivate-receipt').attr('data-id', id).attr('href', '#').attr('data-type', type);
         }
+
+        $(document).on('click', '#btn-send-mail', function(e){
+            e.preventDefault();
+
+            var id = $(this).attr('data-id');
+            var href = $(this).attr('data-href');
+
+            // on success, close modal. nothing else.
+            $.ajax({
+                url: href,
+                type: 'GET',
+                success: function(result) {
+                    console.log(result);
+                    $('#modal-mail-confirmation').modal('hide');
+                }
+            });
+        })
 
         $(document).on('click', '#void-receipt', function(e){
             e.preventDefault();
