@@ -316,7 +316,11 @@ class ReceiptController extends Controller
         $rr->journalEntry->is_void = true;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully voided receipt.");
+        return response()->json([
+            'success' => true,
+        ]);
+
+        // return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
     public function reactivateAjax(ReceiptReferences $rr)
@@ -340,26 +344,36 @@ class ReceiptController extends Controller
         $rr->journalEntry->is_void = false;
         $rr->push();
 
-
-        return redirect()->back()->with('success', "Successfully reactivated receipt.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }
 
     public function mailAjax(ReceiptReferences $rr)
     {
-        $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
-        $emailAddress = $r->receiptReference->customer->email;
+        $rr->receipt;
+
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $rr->id)->get();
+        $emailAddress = $rr->customer->email;
 
         Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt_items));
 
-        return redirect()->back()->with('success', "Successfully sent email to customer.");
+        // return redirect()->back()->with('success', "Successfully sent email to customer.");
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function print(ReceiptReferences $rr)
     {
-        $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
+        $rr->receipt;
+
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $rr->id)->get();
 
         $pdf = PDF::loadView('customer.receipt.print', compact('receipt_items'));
 
-        return $pdf->stream('receipt_'.$r->id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('receipt_'.$rr->id.'_'.date('Y-m-d').'.pdf');
     }
 }
