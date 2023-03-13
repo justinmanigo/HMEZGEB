@@ -544,7 +544,7 @@
         function mailModal(id, type){
             // set attribute href of btn-send-mail
             if(type=="receipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.receipts.mail", ":id") }}'.replace(':id', id));
+            $('#btn-send-mail').attr('href', '{{ route("receipts.receipts.mail", ":id") }}'.replace(':id', id)));
             if(type=="advanceRevenue")
             $('#btn-send-mail').attr('href', '{{ route("receipts.advance_revenues.mail", ":id") }}'.replace(':id', id));
             if(type=="creditReceipt")
@@ -564,35 +564,6 @@
             $('#print-receipt').attr('href', '{{ route("receipts.credit_receipts.print", ":id") }}'.replace(':id', id));
             if(type=="proforma")
             $('#print-receipt').attr('href', '{{ route("receipts.proformas.print", ":id") }}'.replace(':id', id));
-        }
-
-        // Void record
-
-        function voidModal(id, type) {
-            if(type=="receipt")
-            $('#void-receipt').attr('href', '{{ route("receipts.receipts.void", ":id") }}'.replace(':id', id));
-            if(type=="advanceRevenue")
-            $('#void-receipt').attr('href', '{{ route("receipts.advance_revenues.void", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#void-receipt').attr('href', '{{ route("receipts.credit_receipts.void", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#void-receipt').attr('href', '{{ route("receipts.proformas.void", ":id") }}'.replace(':id', id));
-            if(type=="sale")
-            $('#void-receipt').attr('href', '{{ route("receipts.sales.void", ":id") }}'.replace(':id', id));
-        }
-
-        function reactivateModal(id, type)
-        {
-            if(type=="receipt")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.receipts.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="advanceRevenue")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.advance_revenues.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.credit_receipts.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.proformas.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="sale")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.sales.reactivate", ":id") }}'.replace(':id', id));
         }
 
         $(document).ready(function () {
@@ -648,4 +619,95 @@
     <script src="/js/customer/receipt/modal_receipt.js"></script>
     <script src="/js/customer/receipt/modal_credit_receipt.js"></script>
     <script src="/js/customer/receipt/default_values.js"></script>
+
+    <script>
+        // Void record
+
+        function voidModal(id, type) {
+            if(type=="receipt")
+            $('#void-receipt').attr('data-href', '{{ route("receipts.receipts.void", ":id") }}'.replace(':id', id));
+            if(type=="advanceRevenue")
+            $('#void-receipt').attr('data-href', '{{ route("receipts.advance_revenues.void", ":id") }}'.replace(':id', id));
+            if(type=="creditReceipt")
+            $('#void-receipt').attr('data-href', '{{ route("receipts.credit_receipts.void", ":id") }}'.replace(':id', id));
+            if(type=="proforma")
+            $('#void-receipt').attr('data-href', '{{ route("receipts.proformas.void", ":id") }}'.replace(':id', id));
+            if(type=="sale")
+            $('#void-receipt').attr('data-href', '{{ route("receipts.sales.void", ":id") }}'.replace(':id', id));
+
+            $('#void-receipt').attr('data-id', id).attr('href', '#');
+        }
+
+        function reactivateModal(id, type)
+        {
+            if(type=="receipt")
+            $('#reactivate-receipt').attr('data-href', '{{ route("receipts.receipts.reactivate", ":id") }}'.replace(':id', id));
+            if(type=="advanceRevenue")
+            $('#reactivate-receipt').attr('data-href', '{{ route("receipts.advance_revenues.reactivate", ":id") }}'.replace(':id', id));
+            if(type=="creditReceipt")
+            $('#reactivate-receipt').attr('data-href', '{{ route("receipts.credit_receipts.reactivate", ":id") }}'.replace(':id', id));
+            if(type=="proforma")
+            $('#reactivate-receipt').attr('data-href', '{{ route("receipts.proformas.reactivate", ":id") }}'.replace(':id', id));
+            if(type=="sale")
+            $('#reactivate-receipt').attr('data-href', '{{ route("receipts.sales.reactivate", ":id") }}'.replace(':id', id));
+
+            $('#reactivate-receipt').attr('data-id', id).attr('href', '#');
+        }
+
+        $(document).on('click', '#void-receipt', function(e){
+            e.preventDefault();
+
+            var id = $(this).attr('data-id');
+            var href = $(this).attr('data-href');
+
+            // on success, close modal, then toggle void button
+            $.ajax({
+                url: href,
+                type: 'GET',
+                success: function(result) {
+                    $('#modal-void-confirmation').modal('hide');
+                    // get parent of #vr-receipt-id
+                    let parent = $('#vr-receipt-'+id).parent();
+                    $('#vr-receipt-'+id).remove();
+
+                    // refer to receipts_table.js
+                    parent.append(`
+                    <button id="vr-receipt-${id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" data-type="receipt" data-id="${id}" data-action="reactivate" data-page="receipts")" >
+                        <span class="icon text-white-50">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </button>
+                    `)
+                }
+            });
+        })
+
+        $(document).on('click', '#reactivate-receipt', function(e){
+            e.preventDefault();
+
+            var id = $(this).attr('data-id');
+            var href = $(this).attr('data-href');
+
+            // on success, close modal, then toggle void button
+            $.ajax({
+                url: href,
+                type: 'GET',
+                success: function(result) {
+                    $('#modal-reactivate-confirmation').modal('hide');
+                    // get parent of #vr-receipt-id
+                    let parent = $('#vr-receipt-'+id).parent();
+                    $('#vr-receipt-'+id).remove();
+
+                     // refer to receipts_table.js
+                    parent.append(`
+                    <button id="vr-receipt-${id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation")" data-type="receipt" data-id="${id}" data-action="void" data-page="receipts">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-ban"></i>
+                        </span>
+                    </button>
+                    `)
+                }
+            });
+        })
+    </script>
 @endsection
