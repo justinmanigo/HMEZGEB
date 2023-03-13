@@ -80,30 +80,31 @@ function credit_receipt_search(query = "", page = 1)
                         </td>
                         <td class="text-right">${parseFloat(credit_receipt.grand_total).toFixed(2)}</td>
                         <td class="actions">
-                            <a href="#" class="btn btn-sm btn-primary disabled">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-primary disabled">
-                                <i class="fa fa-print"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-primary disabled">
-                                <i class="fa fa-envelope"></i>
-                            </a>
-                        </td>
-                        ${!credit_receipt.is_void ? `
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal(${credit_receipt.id}, 'credit_receipt')">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-ban"></i>
-                            </span>
-                        </button>
-                        `
-                        : `
-                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal(${credit_receipt.id}, 'credit_receipt')">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-check"></i>
-                            </span>
-                        </button>
+                            <button id="mail-creditReceipt-${credit_receipt.credit_receipt_id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation")" data-type="creditReceipt" data-id="${credit_receipt.credit_receipt_id}" data-action="print" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-print"></i>
+                                </span>
+                            </button>
+                            <button id="mail-creditReceipt-${credit_receipt.credit_receipt_id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation")" data-type="creditReceipt" data-id="${credit_receipt.credit_receipt_id}" data-action="mail" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </button>
+                            ${!credit_receipt.is_void ? `
+                            <button id="vr-creditReceipt-${credit_receipt.id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation")" data-type="creditReceipt" data-id="${credit_receipt.id}" data-action="void" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                            </button>
+                            `
+                            : `
+                            <button id="vr-creditReceipt-${credit_receipt.id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" data-type="creditReceipt" data-id="${credit_receipt.id}" data-action="reactivate" data-page="receipts")"}>
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </button>
                         `}
+                        </td>
                     </tr>
                 `;
                 credit_receipts_list.append(row);

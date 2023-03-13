@@ -336,9 +336,9 @@ Route::group([
                 ], function(){
                     Route::post('/credit-receipt',[CreditReceiptController::class,'store'])->name('store');
                     Route::get('/credit-receipt/{cr}',[CreditReceiptController::class,'show'])->name('show');
-                    Route::get('/credit-receipt/void/{rr}', [CreditReceiptController::class, 'void'])->name('void');
-                    Route::get('/credit-receipt/reactivate/{rr}', [CreditReceiptController::class, 'reactivate'])->name('reactivate');
-                    Route::get('/credit-receipt/mail/{cr}', [CreditReceiptController::class, 'mail'])->name('mail');
+                    Route::get('/credit-receipt/void/{rr}', [CreditReceiptController::class, 'voidAjax'])->name('void');
+                    Route::get('/credit-receipt/reactivate/{rr}', [CreditReceiptController::class, 'reactivateAjax'])->name('reactivate');
+                    Route::get('/credit-receipt/mail/{cr}', [CreditReceiptController::class, 'mailAjax'])->name('mail');
                     Route::get('/credit-receipt/print/{cr}', [CreditReceiptController::class, 'print'])->name('print');
                 });
 
