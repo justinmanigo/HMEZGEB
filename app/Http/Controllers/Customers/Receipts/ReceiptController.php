@@ -45,6 +45,7 @@ class ReceiptController extends Controller
     {
         $receipts = ReceiptReferences::select(
             'receipt_references.id',
+            'receipts.id as receipt_id',
             'receipt_references.date',
             'customers.name as customer_name',
             'receipts.grand_total',
@@ -350,12 +351,10 @@ class ReceiptController extends Controller
         // return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }
 
-    public function mailAjax(ReceiptReferences $rr)
+    public function mailAjax(Receipts $r)
     {
-        $rr->receipt;
-
-        $receipt_items = ReceiptItem::where('receipt_reference_id' , $rr->id)->get();
-        $emailAddress = $rr->customer->email;
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
+        $emailAddress = $r->receiptReference->customer->email;
 
         Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt_items));
 
@@ -366,14 +365,12 @@ class ReceiptController extends Controller
         ]);
     }
 
-    public function print(ReceiptReferences $rr)
+    public function print(Receipts $r)
     {
-        $rr->receipt;
-
-        $receipt_items = ReceiptItem::where('receipt_reference_id' , $rr->id)->get();
+        $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
 
         $pdf = PDF::loadView('customer.receipt.print', compact('receipt_items'));
 
-        return $pdf->stream('receipt_'.$rr->id.'_'.date('Y-m-d').'.pdf');
+        return $pdf->stream('receipt_'.$r->id.'_'.date('Y-m-d').'.pdf');
     }
 }

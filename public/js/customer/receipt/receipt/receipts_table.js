@@ -83,12 +83,12 @@ function receipt_search(query = "", page = 1)
                             <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <button id="mail-receipt-${receipt.id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation")" data-type="receipt" data-id="${receipt.id}" data-action="print" data-page="receipts">
+                            <button id="mail-receipt-${receipt.receipt_id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation")" data-type="receipt" data-id="${receipt.receipt_id}" data-action="print" data-page="receipts">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-print"></i>
                                 </span>
                             </button>
-                            <button id="mail-receipt-${receipt.id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation")" data-type="receipt" data-id="${receipt.id}" data-action="mail" data-page="receipts">
+                            <button id="mail-receipt-${receipt.receipt_id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation")" data-type="receipt" data-id="${receipt.receipt_id}" data-action="mail" data-page="receipts">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-envelope"></i>
                                 </span>
