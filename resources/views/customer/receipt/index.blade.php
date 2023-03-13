@@ -678,6 +678,7 @@
 
             var id = $(this).attr('data-id');
             var href = $(this).attr('data-href');
+            var type = $(this).attr('data-type');
 
             // on success, close modal, then toggle void button
             $.ajax({
@@ -686,12 +687,12 @@
                 success: function(result) {
                     $('#modal-void-confirmation').modal('hide');
                     // get parent of #vr-receipt-id
-                    let parent = $('#vr-receipt-'+id).parent();
-                    $('#vr-receipt-'+id).remove();
+                    let parent = $(`#vr-${type}-${id}`).parent();
+                    $(`#vr-${type}-${id}`).remove();
 
                     // refer to receipts_table.js
                     parent.append(`
-                    <button id="vr-receipt-${id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" data-type="receipt" data-id="${id}" data-action="reactivate" data-page="receipts")" >
+                    <button id="vr-${type}-${id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" data-type="${type}" data-id="${id}" data-action="reactivate" data-page="receipts")" >
                         <span class="icon text-white-50">
                             <i class="fas fa-check"></i>
                         </span>
@@ -714,6 +715,7 @@
 
             var id = $(this).attr('data-id');
             var href = $(this).attr('data-href');
+            var type = $(this).attr('data-type');
 
             // on success, close modal, then toggle void button
             $.ajax({
@@ -722,12 +724,12 @@
                 success: function(result) {
                     $('#modal-reactivate-confirmation').modal('hide');
                     // get parent of #vr-receipt-id
-                    let parent = $('#vr-receipt-'+id).parent();
-                    $('#vr-receipt-'+id).remove();
+                    let parent = $(`#vr-${type}-${id}`).parent();
+                    $(`#vr-${type}-${id}`).remove();
 
-                     // refer to receipts_table.js
+                    // refer to receipts_table.js
                     parent.append(`
-                    <button id="vr-receipt-${id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation")" data-type="receipt" data-id="${id}" data-action="void" data-page="receipts">
+                    <button id="vr-${type}-${id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation")" data-type="${type}" data-id="${id}" data-action="void" data-page="receipts">
                         <span class="icon text-white-50">
                             <i class="fas fa-ban"></i>
                         </span>
