@@ -87,7 +87,7 @@ class ProformaController extends Controller
         return view('customer.receipt.proforma.edit',compact('proforma'));
     }
 
-    public function void(Proformas $proforma)
+    public function voidAjax(Proformas $proforma)
     {
         // If the proforma is already linked to a receipt, return an error since it can no longer be voided.
         if(Receipts::where('proforma_id', $proforma->receiptReference->id)->count()) {
@@ -97,25 +97,34 @@ class ProformaController extends Controller
         $proforma->receiptReference->is_void = true;
         $proforma->receiptReference->save();
 
-        return redirect()->back()->with('success', "Successfully marked proforma as void.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully marked proforma as void.");
     }
 
-    public function reactivate(Proformas $proforma)
+    public function reactivateAjax(Proformas $proforma)
     {
         $proforma->receiptReference->is_void = false;
         $proforma->receiptReference->save();
 
-        return redirect()->back()->with('success', "Successfully reactivated proforma.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully reactivated proforma.");
     }
 
-    public function mail(Proformas $proforma)
+    public function mailAjax(Proformas $proforma)
     {
         $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
         $emailAddress = $proforma->receiptReference->customer->email;
 
         Mail::to($emailAddress)->queue(new MailCustomerProforma($proforma_items , $proforma));
 
-        return redirect()->back()->with('success', "Successfully sent email to customer.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
     public function print(Proformas $proforma)

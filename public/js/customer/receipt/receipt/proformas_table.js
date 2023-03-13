@@ -97,21 +97,25 @@ function proforma_search(query = "", page = 1)
                             <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a href="#" class="btn btn-sm btn-primary">
-                                <i class="fa fa-print"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-primary">
-                                <i class="fa fa-envelope"></i>
-                            </a>
+                            <button id="mail-proforma-${proforma.proforma_id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation")" data-type="proforma" data-id="${proforma.proforma_id}" data-action="print" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-print"></i>
+                                </span>
+                            </button>
+                            <button id="mail-proforma-${proforma.proforma_id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation")" data-type="proforma" data-id="${proforma.proforma_id}" data-action="mail" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </button>
                             ${!proforma.is_void ? `
-                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal(${proforma.proforma_id}, 'proforma')">
+                            <button id="vr-proforma-${proforma.proforma_id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation")" data-type="proforma" data-id="${proforma.proforma_id}" data-action="void" data-page="receipts">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-ban"></i>
                                 </span>
                             </button>
                             `
                             : `
-                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal(${proforma.proforma_id}, 'proforma')">
+                            <button id="vr-proforma-${proforma.proforma_id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" data-type="proforma" data-id="${proforma.proforma_id}" data-action="reactivate" data-page="receipts")"}>
                                 <span class="icon text-white-50">
                                     <i class="fas fa-check"></i>
                                 </span>

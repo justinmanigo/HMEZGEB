@@ -347,9 +347,9 @@ Route::group([
                 ], function(){
                     Route::post('/proforma',[ProformaController::class,'store'])->name('store');
                     Route::get('/proforma/{proforma}',[ProformaController::class,'show'])->name('show');
-                    Route::get('/proforma/void/{proforma}', [ProformaController::class, 'void'])->name('void');
-                    Route::get('/proforma/reactivate/{proforma}', [ProformaController::class, 'reactivate'])->name('reactivate');
-                    Route::get('/proforma/mail/{proforma}', [ProformaController::class, 'mail'])->name('mail');
+                    Route::get('/proforma/void/{proforma}', [ProformaController::class, 'voidAjax'])->name('void');
+                    Route::get('/proforma/reactivate/{proforma}', [ProformaController::class, 'reactivateAjax'])->name('reactivate');
+                    Route::get('/proforma/mail/{proforma}', [ProformaController::class, 'mailAjax'])->name('mail');
                     Route::get('/proforma/print/{proforma}', [ProformaController::class, 'print'])->name('print');
 
                     /** AJAX Calls */
