@@ -288,11 +288,13 @@ class ReceiptController extends Controller
             {
                 if($rrl->receiptReference->is_void != true) {
 
-                    $rrl->depositItem->is_void = true;
-                    $rrl->depositItem->save();
+                    try {
+                        $rrl->depositItem->is_void = true;
+                        $rrl->depositItem->save();
 
-                    $rrl->depositItem->journalEntry->is_void = true;
-                    $rrl->depositItem->journalEntry->save();
+                        $rrl->depositItem->journalEntry->is_void = true;
+                        $rrl->depositItem->journalEntry->save();
+                    } catch(\Exception $e) {}
 
                     $rr->receipt->total_amount_received -= $rrl->amount_received;
 
