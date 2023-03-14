@@ -1,6 +1,6 @@
 var toast_number = 0;
 
-function toast(message, type, duration = 5000) {
+function toast(message, type = null, duration = 5000) {
     var toast_container = document.getElementById("toast-container");
     var number = toast_number;
     window.toast_number++;

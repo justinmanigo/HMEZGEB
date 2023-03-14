@@ -88,6 +88,7 @@ $(document).on('click', '#btn-send-mail', function(e){
 
     var id = $(this).attr('data-id');
     var href = $(this).attr('data-href');
+    var type = $(this).attr('data-type');
 
     // on success, close modal. nothing else.
     $.ajax({
