@@ -196,9 +196,6 @@ class CreditReceiptController extends Controller
 
     public function reactivateAjax(ReceiptReferences $rr)
     {
-        // If the receipt is a direct deposit, reactivate the deposit item entry
-        $rr->receiptCashTransactions[0]->depositItem->deposit;
-
         // Get Receipt Cash Transaction & Source Receipt
         $rct = ReceiptCashTransactions::where('receipt_reference_id', $rr->id)->first();
         $rct->forReceiptReference->receipt;
@@ -209,14 +206,20 @@ class CreditReceiptController extends Controller
             // return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$rct->forReceiptReference->id} is currently voided.");
         }
 
-        if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
-            $rr->receiptCashTransactions[0]->depositItem->is_void = false;
-            $rr->receiptCashTransactions[0]->depositItem->save();
+        // If the receipt is a direct deposit, reactivate the deposit item entry
+        try {
+            $rr->receiptCashTransactions[0]->depositItem->deposit;
 
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+            if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
+                $rr->receiptCashTransactions[0]->depositItem->is_void = false;
+                $rr->receiptCashTransactions[0]->depositItem->save();
+
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+            }
+        } catch(\Exception $e) {
+            // Do nothing
         }
-
 
         // Add Source Receipt's Total Amount Received
         $rct->forReceiptReference->receipt->total_amount_received += $rct->amount_received;

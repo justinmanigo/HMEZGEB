@@ -742,6 +742,9 @@
                     else if($('#reactivate-receipt').attr('data-type') == 'creditReceipt'){
                         receipt_search("", credit_receipts_page_number_current);
                     }
+                },
+                error: function(result) {
+                    console.log(result);
                 }
             });
         })
