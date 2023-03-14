@@ -82,27 +82,31 @@ function sale_search(query = "", page = 1)
                             <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a href="#" class="btn btn-sm btn-primary disabled">
-                                <i class="fa fa-print"></i>
-                            </a>
-                            <a href="#" class="btn btn-sm btn-primary disabled">
-                                <i class="fa fa-envelope"></i>
-                            </a>
+                            <button id="mail-sale-${sale.id}" class="btn btn-primary btn-sm disabled" data-type="sale" data-id="${sale.id}" data-action="print" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-print"></i>
+                                </span>
+                            </button>
+                            <button id="mail-sale-${sale.id}" class="btn btn-primary btn-sm disabled" data-type="sale" data-id="${sale.id}" data-action="mail" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </button>
+                            ${!sale.is_void ? `
+                            <button id="vr-sale-${sale.id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" data-type="sale" data-id="${sale.id}" data-action="void" data-page="receipts">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-ban"></i>
+                                </span>
+                            </button>
+                            `
+                            : `
+                            <button id="vr-sale-${sale.id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" data-type="sale" data-id="${sale.id}" data-action="reactivate" data-page="receipts")"}>
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </button>
+                            `}
                         </td>
-                        ${!sale.is_void ? `
-                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal(${sale.id}, 'sale')">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-ban"></i>
-                            </span>
-                        </button>
-                        `
-                        : `
-                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal(${sale.id}, 'sale')">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-check"></i>
-                            </span>
-                        </button>
-                        `}
                     </tr>
                 `;
                 sales_list.append(row);

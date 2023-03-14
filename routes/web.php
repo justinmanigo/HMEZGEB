@@ -304,8 +304,8 @@ Route::group([
                     'as'=>'sales.',
                 ], function(){
                     Route::post('/customers/receipts/sales', [SaleController::class, 'store'])->name('store');
-                    Route::get('/customers/receipts/sales/void/{rr}', [SaleController::class, 'void'])->name('void');
-                    Route::get('/customers/receipts/sales/reactivate/{rr}', [SaleController::class, 'reactivate'])->name('reactivate');
+                    Route::get('/customers/receipts/sales/void/{rr}', [SaleController::class, 'voidAjax'])->name('void');
+                    Route::get('/customers/receipts/sales/reactivate/{rr}', [SaleController::class, 'reactivateAjax'])->name('reactivate');
 
                 });
 

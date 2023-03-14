@@ -187,7 +187,7 @@ class SaleController extends Controller
         //
     }
 
-    public function void(ReceiptReferences $rr)
+    public function voidAjax(ReceiptReferences $rr)
     {
         $rr->journalEntry;
         $rr->sale;
@@ -210,10 +210,14 @@ class SaleController extends Controller
         $rr->journalEntry->is_void = true;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully voided sale.");
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully voided sale.',
+        ]);
+        // return redirect()->back()->with('success', "Successfully voided sale.");
     }
 
-    public function reactivate(ReceiptReferences $rr)
+    public function reactivateAjax(ReceiptReferences $rr)
     {
         $rr->journalEntry;
 
@@ -221,6 +225,10 @@ class SaleController extends Controller
         $rr->journalEntry->is_void = false;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully reactivated sale.");
+        // return redirect()->back()->with('success', "Successfully reactivated sale.");
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully reactivated sale.',
+        ]);
     }
 }
