@@ -96,6 +96,8 @@ $(document).on('click', '#btn-send-mail', function(e){
         success: function(result) {
             console.log(result);
             $('#modal-mail-confirmation').modal('hide');
+
+            window.toast(`A request to send ${type} email is successfully made.`);
         }
     });
 })
@@ -133,6 +135,13 @@ $(document).on('click', '#void-receipt', function(e){
                 receipt_search("", credit_receipts_page_number_current);
             }
 
+            window.toast(`Successfully marked ${type} as void.`);
+
+        },
+        error: function(result) {
+            console.log(result);
+
+            window.toast(`An error occurred. See console for details.`);
         }
     });
 })
@@ -169,9 +178,13 @@ $(document).on('click', '#reactivate-receipt', function(e){
             else if($('#reactivate-receipt').attr('data-type') == 'creditReceipt'){
                 receipt_search("", credit_receipts_page_number_current);
             }
+
+            window.toast(`Successfully marked ${type} as reactivated.`);
         },
         error: function(result) {
             console.log(result);
+
+            window.toast(`An error occurred. See console for details.`);
         }
     });
 })
