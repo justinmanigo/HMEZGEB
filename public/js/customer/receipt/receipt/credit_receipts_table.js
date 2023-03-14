@@ -80,6 +80,9 @@ function credit_receipt_search(query = "", page = 1)
                         </td>
                         <td class="text-right">${parseFloat(credit_receipt.grand_total).toFixed(2)}</td>
                         <td class="actions">
+                            <a href="#" class="btn btn-sm btn-primary disabled">
+                                <i class="fa fa-eye"></i>
+                            </a>
                             <button id="mail-creditReceipt-${credit_receipt.credit_receipt_id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation")" data-type="creditReceipt" data-id="${credit_receipt.credit_receipt_id}" data-action="print" data-page="receipts">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-print"></i>
