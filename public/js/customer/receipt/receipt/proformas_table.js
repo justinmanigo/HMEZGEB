@@ -73,7 +73,7 @@ function proforma_search(query = "", page = 1)
                 const formattedDueDate = dueDate.toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'});
 
                 let row = `
-                    <tr class="hoverable" data-href="/customers/receipts/proformas/${proforma.id}">
+                    <tr class="hoverable" data-href="#">
                         <td>${proforma.id}</td>
                         <td>${proforma.date}</td>
                         <td>${proforma.customer_name}</a></td>
