@@ -248,7 +248,7 @@ class CreditReceiptController extends Controller
         // return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
-    public function sendAjax(CreditReceipts $cr)
+    public function mailAjax(CreditReceipts $cr)
     {
         // Mail
         $emailAddress = $cr->receiptReference->customer->email;
