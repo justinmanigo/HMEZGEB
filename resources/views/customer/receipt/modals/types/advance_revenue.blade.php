@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{route('receipts.advance_revenues.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data" data-message="Successfully created advance revenue.">
+<form class="ajax-submit-updated" action="{{route('receipts.advance_revenues.store')}}" id="form-advance-revenue" method="post" enctype="multipart/form-data" data-message="Successfully created advance revenue." data-noreload="true" data-onsuccess="advance_revenues_search" data-onsuccessparam="advance_revenues_page_number_current" data-modal="modal-advance-revenue">
     @csrf
     <div class="modal fade" id="modal-advance-revenue" tabindex="-1" role="dialog"
         aria-labelledby="modal-advance-revenue-label" aria-hidden="true">

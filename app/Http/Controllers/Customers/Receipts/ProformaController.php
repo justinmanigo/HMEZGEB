@@ -16,27 +16,59 @@ use App\Models\ReceiptCashTransactions;
 use App\Models\ReceiptItem;
 use App\Models\ReceiptReferences;
 use App\Models\Receipts;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use PDF;
 
 class ProformaController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $proformas = ReceiptReferences::select(
+            'receipt_references.id',
+            'proformas.id as proforma_id',
+            'receipt_references.date',
+            'customers.name as customer_name',
+            'proformas.grand_total',
+            'proformas.due_date',
+            'receipt_references.is_void',
+        )
+        ->leftJoin('proformas', 'proformas.receipt_reference_id', 'receipt_references.id')
+        ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+        // left join sub to get sum of receipt_cash_transactions
+        // this will determine the status of the receipt (paid, partially_paid, unpaid)
+        ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+        ->where(function($q) use ($query){
+            $q->where('receipt_references.id', 'like', "%{$query}%")
+            ->orWhere('customers.name', 'like', "%{$query}%")
+            ->orWhere('receipt_references.date', 'like', "%{$query}%")
+            ->orWhere('receipt_references.status', 'like', "%{$query}%");
+        })
+        ->where('receipt_references.type', 'proforma');
+
+
+        return response()->json([
+            'proformas' => $proformas->paginate(10),
+        ]);
+
+    }
+
     public function store(StoreProformaRequest $request)
     {
         $accounting_system_id = session('accounting_system_id');
         $reference = CreateReceiptReference::run($request->customer->value, $request->date, 'proforma', 'unpaid', $accounting_system_id);
 
-        // if($reference)        
+        // if($reference)
         // {
         //     if($request->attachment) {
-        //         $fileAttachment = time().'.'.$request->attachment->extension();  
+        //         $fileAttachment = time().'.'.$request->attachment->extension();
         //         $request->attachment->storeAs('public/receipt-attachment', $fileAttachment);
         //     }
         // }
 
         StoreReceiptItems::run($request->item, $request->quantity, $reference->id);
-        
+
         return Proformas::create([
             'receipt_reference_id' => $reference->id,
             'reference_number' => $request->reference_number,
@@ -55,7 +87,7 @@ class ProformaController extends Controller
         return view('customer.receipt.proforma.edit',compact('proforma'));
     }
 
-    public function void(Proformas $proforma)
+    public function voidAjax(Proformas $proforma)
     {
         // If the proforma is already linked to a receipt, return an error since it can no longer be voided.
         if(Receipts::where('proforma_id', $proforma->receiptReference->id)->count()) {
@@ -65,25 +97,34 @@ class ProformaController extends Controller
         $proforma->receiptReference->is_void = true;
         $proforma->receiptReference->save();
 
-        return redirect()->back()->with('success', "Successfully marked proforma as void.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully marked proforma as void.");
     }
 
-    public function reactivate(Proformas $proforma)
+    public function reactivateAjax(Proformas $proforma)
     {
         $proforma->receiptReference->is_void = false;
         $proforma->receiptReference->save();
 
-        return redirect()->back()->with('success', "Successfully reactivated proforma.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully reactivated proforma.");
     }
 
-    public function mail(Proformas $proforma)
+    public function mailAjax(Proformas $proforma)
     {
         $proforma_items = ReceiptItem::where('receipt_reference_id' , $proforma->receipt_reference_id)->get();
         $emailAddress = $proforma->receiptReference->customer->email;
-         
+
         Mail::to($emailAddress)->queue(new MailCustomerProforma($proforma_items , $proforma));
-        
-        return redirect()->back()->with('success', "Successfully sent email to customer.");
+
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
     public function print(Proformas $proforma)

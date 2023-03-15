@@ -36,7 +36,17 @@ $(".ajax-submit-updated").submit(function(e){
         // Redirect using currentLink with new query string
         if(e.target.dataset.noreload != undefined)
         {
-            $(`#${e.target.id}`).prepend(generateAlert(e.target.dataset.message, "success"));
+            window.toast(e.target.dataset.message);
+            enableSubmitButtonUpdated(submitButtonElement);
+            if(e.target.dataset.onsuccess != undefined && e.target.dataset.onsuccessparam != undefined) {
+                // call function based from dataset.table
+                window[e.target.dataset.onsuccess]("", e.target.dataset.onsuccessparam);
+            }
+
+            // close current modal
+            if(e.target.dataset.modal != undefined) {
+                $(`#${e.target.dataset.modal}`).modal('hide');
+            }
         }
         else if(e.originalEvent.submitter.dataset.new != undefined)
         {

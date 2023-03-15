@@ -15,9 +15,47 @@ use App\Models\DepositItems;
 use App\Models\Deposits;
 use App\Models\ReceiptReferences;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $sales = ReceiptReferences::select(
+            'receipt_references.id',
+            'receipt_references.date',
+            'sales.grand_total',
+            'receipt_cash_transactions.total_amount_received',
+            'receipt_references.is_void',
+        )
+        ->leftJoin('sales', 'sales.receipt_reference_id', 'receipt_references.id')
+        // left join sub to get sum of receipt_cash_transactions
+        // this will determine the status of the receipt (paid, partially_paid, unpaid)
+        ->leftJoinSub(
+            ReceiptCashTransactions::select(
+                'receipt_cash_transactions.for_receipt_reference_id',
+                DB::raw('SUM(receipt_cash_transactions.amount_received) as total_amount_received')
+            )
+            ->groupBy('receipt_cash_transactions.for_receipt_reference_id'),
+            'receipt_cash_transactions',
+            'receipt_cash_transactions.for_receipt_reference_id',
+            'receipt_references.id'
+        )
+        ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+        ->where(function($q) use ($query){
+            $q->where('receipt_references.id', 'like', "%{$query}%")
+            ->orWhere('receipt_references.date', 'like', "%{$query}%")
+            ->orWhere('receipt_references.status', 'like', "%{$query}%");
+        })
+        ->where('receipt_references.type', 'sale');
+
+
+        return response()->json([
+            'sales' => $sales->paginate(10),
+        ]);
+
+    }
+
     public function store(StoreSaleRequest $request)
     {
         // return $request;
@@ -149,7 +187,7 @@ class SaleController extends Controller
         //
     }
 
-    public function void(ReceiptReferences $rr)
+    public function voidAjax(ReceiptReferences $rr)
     {
         $rr->journalEntry;
         $rr->sale;
@@ -172,10 +210,14 @@ class SaleController extends Controller
         $rr->journalEntry->is_void = true;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully voided sale.");
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully voided sale.',
+        ]);
+        // return redirect()->back()->with('success', "Successfully voided sale.");
     }
 
-    public function reactivate(ReceiptReferences $rr)
+    public function reactivateAjax(ReceiptReferences $rr)
     {
         $rr->journalEntry;
 
@@ -183,6 +225,10 @@ class SaleController extends Controller
         $rr->journalEntry->is_void = false;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully reactivated sale.");
+        // return redirect()->back()->with('success', "Successfully reactivated sale.");
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully reactivated sale.',
+        ]);
     }
 }

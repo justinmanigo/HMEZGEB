@@ -95,3 +95,31 @@ label {
     /** Equivalent to pt-3 */
     padding-top:1rem!important;
 }
+
+/**
+ * Table
+ */
+.actions button, .actions a {
+    display: none;
+}
+
+tr:hover .actions button, tr:hover .actions a {
+    display: inline-block;
+}
+
+.actions {
+    padding:8px!important;
+}
+
+a:hover td {
+    color: #fff;
+    background-color: #007bff;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.hoverable:hover {
+    cursor: pointer;
+}

@@ -30,7 +30,7 @@ class StoreCreditReceiptRequest extends FormRequest
             'cash_account' => ['required'],
             'date' => ['required', 'date'],
             'receipt' => ['required'],
-            'amount_paid' => ['required', 'numeric', 'min:1'],
+            'amount_paid' => ['required', 'numeric', 'min:0'],
             // 'receipt_reference_id' => ['required', 'array'],
             // 'receipt_reference_id.*' => ['required'],
             // 'date_due' => ['required', 'array'],

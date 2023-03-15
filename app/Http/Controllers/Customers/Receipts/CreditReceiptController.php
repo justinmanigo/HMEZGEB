@@ -19,16 +19,60 @@ use App\Models\ReceiptCashTransactions;
 use App\Models\ReceiptItem;
 use App\Models\ReceiptReferences;
 use App\Models\Receipts;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Customers\MailCustomerCreditReceipt;
 use App\Models\BankAccounts;
 use App\Models\DepositItems;
 use App\Models\Deposits;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class CreditReceiptController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $credit_receipts = ReceiptReferences::select(
+            'receipt_references.id',
+            'receipt_cash_transactions.for_receipt_reference_id',
+            'credit_receipts.id as credit_receipt_id',
+            'receipt_references.date',
+            'customers.name as customer_name',
+            'credit_receipts.total_amount_received as grand_total',
+            'receipt_cash_transactions.total_amount_received',
+            'receipt_references.is_void',
+        )
+        ->leftJoin('credit_receipts', 'credit_receipts.receipt_reference_id', 'receipt_references.id')
+        ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+        // left join sub to get sum of receipt_cash_transactions
+        // this will determine the status of the receipt (paid, partially_paid, unpaid)
+        ->leftJoinSub(
+            ReceiptCashTransactions::select(
+                'receipt_cash_transactions.receipt_reference_id',
+                'receipt_cash_transactions.for_receipt_reference_id',
+                DB::raw('SUM(receipt_cash_transactions.amount_received) as total_amount_received')
+            )
+            ->groupBy('receipt_cash_transactions.receipt_reference_id', 'receipt_cash_transactions.for_receipt_reference_id'),
+            'receipt_cash_transactions',
+            'receipt_cash_transactions.receipt_reference_id',
+            'receipt_references.id'
+        )
+        ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+        ->where(function($q) use ($query){
+            $q->where('receipt_references.id', 'like', "%{$query}%")
+            ->orWhere('customers.name', 'like', "%{$query}%")
+            ->orWhere('receipt_references.date', 'like', "%{$query}%")
+            ->orWhere('receipt_references.status', 'like', "%{$query}%");
+        })
+        ->where('receipt_references.type', 'credit_receipt');
+
+
+        return response()->json([
+            'credit_receipts' => $credit_receipts->paginate(10),
+        ]);
+
+    }
+
     public function store(StoreCreditReceiptRequest $request)
     {
         $reference = CreateReceiptReference::run($request->customer_id, $request->date, 'credit_receipt', 'paid', session('accounting_system_id'));
@@ -106,7 +150,7 @@ class CreditReceiptController extends Controller
         ]);
     }
 
-    public function void(ReceiptReferences $rr)
+    public function voidAjax(ReceiptReferences $rr)
     {
         $rr->journalEntry;
         $rr->receiptCashTransactions[0]->depositItem;
@@ -144,31 +188,38 @@ class CreditReceiptController extends Controller
         $rr->journalEntry->is_void = true;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully voided credit receipt.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
-    public function reactivate(ReceiptReferences $rr)
+    public function reactivateAjax(ReceiptReferences $rr)
     {
-        // If the receipt is a direct deposit, reactivate the deposit item entry
-        $rr->receiptCashTransactions[0]->depositItem->deposit;
-
         // Get Receipt Cash Transaction & Source Receipt
         $rct = ReceiptCashTransactions::where('receipt_reference_id', $rr->id)->first();
         $rct->forReceiptReference->receipt;
 
         // Check if source receipt is voided, then return error.
         if($rct->forReceiptReference->is_void == true) {
-            return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$rct->forReceiptReference->id} is currently voided.");
+            throw new Exception("Can't reinstate credit receipt. Source receipt # {$rct->forReceiptReference->id} is currently voided.");
+            // return redirect()->back()->with('danger', "Can't reinstate credit receipt. Source receipt # {$rct->forReceiptReference->id} is currently voided.");
         }
 
-        if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
-            $rr->receiptCashTransactions[0]->depositItem->is_void = false;
-            $rr->receiptCashTransactions[0]->depositItem->save();
+        // If the receipt is a direct deposit, reactivate the deposit item entry
+        try {
+            $rr->receiptCashTransactions[0]->depositItem->deposit;
 
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
-            $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+            if($rr->receiptCashTransactions[0]->depositItem->deposit->is_direct_deposit == true) {
+                $rr->receiptCashTransactions[0]->depositItem->is_void = false;
+                $rr->receiptCashTransactions[0]->depositItem->save();
+
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->is_void = false;
+                $rr->receiptCashTransactions[0]->depositItem->journalEntry->save();
+            }
+        } catch(\Exception $e) {
+            // Do nothing
         }
-
 
         // Add Source Receipt's Total Amount Received
         $rct->forReceiptReference->receipt->total_amount_received += $rct->amount_received;
@@ -191,22 +242,31 @@ class CreditReceiptController extends Controller
         $rr->journalEntry->is_void = false;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully voided credit receipt.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully voided credit receipt.");
     }
 
-    public function send(CreditReceipts $cr)
+    public function mailAjax(CreditReceipts $cr)
     {
         // Mail
         $emailAddress = $cr->receiptReference->customer->email;
 
         Mail::to($emailAddress)->queue(new MailCustomerCreditReceipt($cr));
 
-        return redirect()->back()->with('success', "Successfully sent email to customer.");
+        return response()->json([
+            'success' => true,
+        ]);
+
+        // return redirect()->back()->with('success', "Successfully sent email to customer.");
     }
 
     public function print(CreditReceipts $cr)
     {
-        $pdf = PDF::loadView('customer.receipt.credit_receipt.print', compact('credit_receipt'));
+        $pdf = \PDF::loadView('customer.receipt.credit_receipt.print', [
+            'credit_receipt' => $cr,
+        ]);
 
         return $pdf->stream('credit_receipt_'.$cr->id.'_'.date('Y-m-d').'.pdf');
     }

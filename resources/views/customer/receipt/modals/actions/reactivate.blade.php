@@ -12,8 +12,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="" id="reactivate-receipt" class="btn btn-primary">Reactivate</a>
+                <a href="javascript:void(0)" id="reactivate-receipt" class="btn btn-primary">Reactivate</a>
             </div>
         </div>
     </div>
-</div>    
+</div>

@@ -42,48 +42,251 @@
             <a class="btn btn-secondary" href="{{route('receipts.export.csv')}}">Export</a>
             </div>
 
+            @if(session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session()->get('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @elseif(session()->has('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session()->get('danger') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @elseif(isset($_GET['success']))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ $_GET['success'] }}
+                    {{-- {{ session()->get('success') }} --}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             {{-- Tab Navigation --}}
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab"
-                        aria-controls="transactions" aria-selected="true">Transactions</a>
+                    <a class="nav-link" id="receipts-tab" data-toggle="tab" href="#sales" role="tab"
+                        aria-controls="receipts" aria-selected="true">Sales</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proforma" role="tab"
+                    <a class="nav-link active" id="receipts-tab" data-toggle="tab" href="#receipts" role="tab"
+                        aria-controls="receipts" aria-selected="true">Receipts</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link disabled" id="receipts-tab" data-toggle="tab" href="#advance-revenues" role="tab"
+                        aria-controls="receipts" aria-selected="true">Advance Revenues <span class="badge badge-danger">Soon</span></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="receipts-tab" data-toggle="tab" href="#credit-receipts" role="tab"
+                        aria-controls="receipts" aria-selected="true">Credit Receipts</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proformas" role="tab"
                         aria-controls="proforma" aria-selected="false">Proforma</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-muted" id="transactions-tab" data-toggle="tab" href="#transactions" role="tab"
+                        aria-controls="transactions" aria-selected="true">Transactions</a>
                 </li>
             </ul>
 
             {{-- Tab Contents --}}
             <div class="card" class="content-card">
                 <div class="card-body tab-content" id="myTabContent">
-                    {{-- Transaction Contents --}}
-                    <div class="tab-pane fade show active" id="transactions" role="tabpanel"
+
+                    {{-- Sales Contents --}}
+                    <div class="tab-pane fade show" id="sales" role="tabpanel" aria-labelledby="sales-tab">
+                        <!-- add search input group -->
+                        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                            <form id="sales-search-form">
+                                <div class="input-group mr-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input id="sales-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon">
+                                    <button id="sales-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <span class="text">Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="btn-group" role="group" aria-label="Second group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="sales-page-number-label">Page 0 of 0</span>
+                                </div>
+                                <button id="sales-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                                <button id="sales-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                            </div>
+                        </div>
+
+                        {{-- Transaction Contents --}}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th width="160px">Actions</th>
+                                </thead>
+                                <tbody id="sales-list">
+                                    <!-- JS will populate this -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- Receipts Contents --}}
+                    <div class="tab-pane active fade show" id="receipts" role="tabpanel" aria-labelledby="receipts-tab">
+                        <!-- add search input group -->
+                        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                            <form id="receipts-search-form">
+                                <div class="input-group mr-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input id="receipts-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon">
+                                    <button id="receipts-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <span class="text">Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="btn-group" role="group" aria-label="Second group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="receipts-page-number-label">Page 0 of 0</span>
+                                </div>
+                                <button id="receipts-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                                <button id="receipts-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                            </div>
+                        </div>
+
+                        {{-- Transaction Contents --}}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th width="160px">Actions</th>
+                                </thead>
+                                <tbody id="receipts-list">
+                                    <!-- JS will populate this -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- Credit Receipt Contents --}}
+                    <div class="tab-pane fade show" id="credit-receipts" role="tabpanel" aria-labelledby="credit-receipts-tab">
+                        <!-- add search input group -->
+                        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                            <form id="credit-receipts-search-form">
+                                <div class="input-group mr-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input id="credit-receipts-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon">
+                                    <button id="credit-receipts-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <span class="text">Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="btn-group" role="group" aria-label="Second group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="credit-receipts-page-number-label">Page 0 of 0</span>
+                                </div>
+                                <button id="credit-receipts-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                                <button id="credit-receipts-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                            </div>
+                        </div>
+
+                        {{-- Transaction Contents --}}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th width="160px">Actions</th>
+                                </thead>
+                                <tbody id="credit-receipts-list">
+                                    <!-- JS will populate this -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- Proforma Contents --}}
+                    <div class="tab-pane fade show" id="proformas" role="tabpanel" aria-labelledby="proformas-tab">
+                        <!-- add search input group -->
+                        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                            <form id="proformas-search-form">
+                                <div class="input-group mr-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                                    </div>
+                                    <input id="proformas-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                        aria-describedby="search-addon">
+                                    <button id="proformas-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-search"></i>
+                                        </span>
+                                        <span class="text">Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="btn-group" role="group" aria-label="Second group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="proformas-page-number-label">Page 0 of 0</span>
+                                </div>
+                                <button id="proformas-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                                <button id="proformas-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                            </div>
+                        </div>
+
+                        {{-- Transaction Contents --}}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Due in</th>
+                                    <th>Amount</th>
+                                    <th width="160px">Actions</th>
+                                </thead>
+                                <tbody id="proformas-list">
+                                    <!-- JS will populate this -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- Deprecated --}}
+                    <div class="tab-pane fade show" id="transactions" role="tabpanel"
                         aria-labelledby="transactions-tab">
 
-                        @if(session()->has('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session()->get('success') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @elseif(session()->has('danger'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session()->get('danger') }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @elseif(isset($_GET['success']))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ $_GET['success'] }}
-                                {{-- {{ session()->get('success') }} --}}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                                 <thead>
@@ -270,65 +473,9 @@
                             </table>
                         </div>
                     </div>
-                    {{-- Proforma Contents --}}
-                    <div class="tab-pane fade" id="proforma" role="tabpanel" aria-labelledby="proforma-tab">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTables2" width="100%" cellspacing="0">
-                                <thead>
-                                    <th>ID</th>
-                                    <th>Date</th>
-                                    <th>Customer Name</th>
-                                    <th>Amount</th>
-                                    <th id="thead-actions">Actions</th>
-                                </thead>
-                                <tbody>
-                                    @foreach($proformas as $proforma)
-                                    <tr>
-                                        <td class="table-item-content">{{$proforma->id}}</td>
-                                        <td class="table-item-content">{{$proforma->date}}</td>
-                                        <td class="table-item-content">{{$proforma->name}}</td>
-                                        <td class="table-item-content text-right">Birr {{ number_format($proforma->proforma_amount, 2) }}</td>
-                                        <td>
-                                            <a href="{{route('receipts.proformas.show', $proforma->proforma->id)}}" class="btn btn-primary btn-sm edit">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-edit"></i>
-                                                </span>
-                                            </a>
-                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$proforma->proforma->id}}, 'proforma')">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-envelope"></i>
-                                                </span>
-                                            </button>
-                                        <!-- print/pdf -->
-                                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$proforma->proforma->id}}, 'proforma')">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-print"></i>
-                                                </span>
-                                            </button>
-                                        <!-- void -->
-                                        @if(!$proforma->proforma->receiptReference->is_void)
-                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation" onclick="voidModal({{$proforma->proforma->id}}, 'proforma')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-ban"></i>
-                                            </span>
-                                        </button>
-                                        <!-- make it active -->
-                                        @else
-                                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation" onclick="reactivateModal({{$proforma->proforma->id}}, 'proforma')">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-check"></i>
-                                            </span>
-                                        </button>
-                                        @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
+
         </div>
 
         {{-- Sidebar Content --}}
@@ -393,61 +540,6 @@
     {{-- Scripts --}}
 
     <script>
-        // Get id of transaction to mail confirmation modal
-        function mailModal(id, type){
-            // set attribute href of btn-send-mail
-            if(type=="receipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.receipts.mail", ":id") }}'.replace(':id', id));
-            if(type=="advanceRevenue")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.advance_revenues.mail", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.credit_receipts.mail", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#btn-send-mail').attr('href', '{{ route("receipts.proformas.mail", ":id") }}'.replace(':id', id));
-        }
-
-        // Get id of transaction to print confirmation modal
-        function printModal(id, type){
-            // set attribute href of print-receipt
-            if(type=="receipt")
-            $('#print-receipt').attr('href', '{{ route("receipts.receipts.print", ":id") }}'.replace(':id', id));
-            if(type=="advanceRevenue")
-            $('#print-receipt').attr('href', '{{ route("receipts.advance_revenues.print", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#print-receipt').attr('href', '{{ route("receipts.credit_receipts.print", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#print-receipt').attr('href', '{{ route("receipts.proformas.print", ":id") }}'.replace(':id', id));
-        }
-
-        // Void record
-
-        function voidModal(id, type) {
-            if(type=="receipt")
-            $('#void-receipt').attr('href', '{{ route("receipts.receipts.void", ":id") }}'.replace(':id', id));
-            if(type=="advanceRevenue")
-            $('#void-receipt').attr('href', '{{ route("receipts.advance_revenues.void", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#void-receipt').attr('href', '{{ route("receipts.credit_receipts.void", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#void-receipt').attr('href', '{{ route("receipts.proformas.void", ":id") }}'.replace(':id', id));
-            if(type=="sale")
-            $('#void-receipt').attr('href', '{{ route("receipts.sales.void", ":id") }}'.replace(':id', id));
-        }
-
-        function reactivateModal(id, type)
-        {
-            if(type=="receipt")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.receipts.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="advanceRevenue")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.advance_revenues.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="creditReceipt")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.credit_receipts.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="proforma")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.proformas.reactivate", ":id") }}'.replace(':id', id));
-            if(type=="sale")
-            $('#reactivate-receipt').attr('href', '{{ route("receipts.sales.reactivate", ":id") }}'.replace(':id', id));
-        }
-
         $(document).ready(function () {
             $('#dataTables').DataTable();
             $('#dataTables2').DataTable();
@@ -473,6 +565,13 @@
         }
 
     </script>
+
+    <script src="/js/hoverable.js"></script>
+    <script src="/js/customer/receipt/receipt/receipts_table.js"></script>
+    <script src="/js/customer/receipt/receipt/sales_table.js"></script>
+    <script src="/js/customer/receipt/receipt/credit_receipts_table.js"></script>
+    <script src="/js/customer/receipt/receipt/proformas_table.js"></script>
+    <script src="/js/customer/receipt/receipt/table_actions.js"></script>
 
     <script src="/js/customer/receipt/template_select_customer.js"></script>
     <script src="/js/customer/receipt/template_select_receipt.js"></script>

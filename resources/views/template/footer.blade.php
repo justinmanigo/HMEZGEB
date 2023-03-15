@@ -15,6 +15,12 @@
     </div>
     <!-- End of Page Wrapper -->
 
+    <div aria-live="polite" aria-atomic="true" style="position: absolute; top:0; right: 0; min-height: 200px;min-width:300px;">
+        <!-- Position it -->
+        <div id="toast-container" style="position: absolute; top: 0; right: 0; z-index: 100000;min-width:300px;margin-right:16px;margin-top:84px;"></div>
+    </div>
+
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>

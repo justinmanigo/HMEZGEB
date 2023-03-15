@@ -304,8 +304,8 @@ Route::group([
                     'as'=>'sales.',
                 ], function(){
                     Route::post('/customers/receipts/sales', [SaleController::class, 'store'])->name('store');
-                    Route::get('/customers/receipts/sales/void/{rr}', [SaleController::class, 'void'])->name('void');
-                    Route::get('/customers/receipts/sales/reactivate/{rr}', [SaleController::class, 'reactivate'])->name('reactivate');
+                    Route::get('/customers/receipts/sales/void/{rr}', [SaleController::class, 'voidAjax'])->name('void');
+                    Route::get('/customers/receipts/sales/reactivate/{rr}', [SaleController::class, 'reactivateAjax'])->name('reactivate');
 
                 });
 
@@ -314,9 +314,9 @@ Route::group([
                 ], function(){
                     Route::post('/receipt',[ReceiptController::class,'store'])->name('store');
                     // TODO: impklement show receipt
-                    Route::get('/receipt/void/{rr}', [ReceiptController::class, 'void'])->name('void');
-                    Route::get('/receipt/reactivate/{rr}', [ReceiptController::class, 'reactivate'])->name('reactivate');
-                    Route::get('/receipt/mail/{r}', [ReceiptController::class, 'mail'])->name('mail');
+                    Route::get('/receipt/void/{rr}', [ReceiptController::class, 'voidAjax'])->name('void');
+                    Route::get('/receipt/reactivate/{rr}', [ReceiptController::class, 'reactivateAjax'])->name('reactivate');
+                    Route::get('/receipt/mail/{r}', [ReceiptController::class, 'mailAjax'])->name('mail');
                     Route::get('/receipt/print/{r}', [ReceiptController::class, 'print'])->name('print');
                 });
 
@@ -336,9 +336,9 @@ Route::group([
                 ], function(){
                     Route::post('/credit-receipt',[CreditReceiptController::class,'store'])->name('store');
                     Route::get('/credit-receipt/{cr}',[CreditReceiptController::class,'show'])->name('show');
-                    Route::get('/credit-receipt/void/{rr}', [CreditReceiptController::class, 'void'])->name('void');
-                    Route::get('/credit-receipt/reactivate/{rr}', [CreditReceiptController::class, 'reactivate'])->name('reactivate');
-                    Route::get('/credit-receipt/mail/{cr}', [CreditReceiptController::class, 'mail'])->name('mail');
+                    Route::get('/credit-receipt/void/{rr}', [CreditReceiptController::class, 'voidAjax'])->name('void');
+                    Route::get('/credit-receipt/reactivate/{rr}', [CreditReceiptController::class, 'reactivateAjax'])->name('reactivate');
+                    Route::get('/credit-receipt/mail/{cr}', [CreditReceiptController::class, 'mailAjax'])->name('mail');
                     Route::get('/credit-receipt/print/{cr}', [CreditReceiptController::class, 'print'])->name('print');
                 });
 
@@ -347,12 +347,16 @@ Route::group([
                 ], function(){
                     Route::post('/proforma',[ProformaController::class,'store'])->name('store');
                     Route::get('/proforma/{proforma}',[ProformaController::class,'show'])->name('show');
-                    Route::get('/proforma/void/{proforma}', [ProformaController::class, 'void'])->name('void');
-                    Route::get('/proforma/reactivate/{proforma}', [ProformaController::class, 'reactivate'])->name('reactivate');
-                    Route::get('/proforma/mail/{proforma}', [ProformaController::class, 'mail'])->name('mail');
+                    Route::get('/proforma/void/{proforma}', [ProformaController::class, 'voidAjax'])->name('void');
+                    Route::get('/proforma/reactivate/{proforma}', [ProformaController::class, 'reactivateAjax'])->name('reactivate');
+                    Route::get('/proforma/mail/{proforma}', [ProformaController::class, 'mailAjax'])->name('mail');
                     Route::get('/proforma/print/{proforma}', [ProformaController::class, 'print'])->name('print');
 
                     /** AJAX Calls */
+                    Route::get('/ajax/customer/receipt/sale/search/{query?}', [SaleController::class, 'searchAjax']);
+                    Route::get('/ajax/customer/receipt/receipt/search/{query?}', [ReceiptController::class, 'searchAjax']);
+                    Route::get('/ajax/customer/receipt/credit-receipt/search/{query?}', [CreditReceiptController::class, 'searchAjax']);
+                    Route::get('/ajax/customer/receipt/proforma/search/{query?}', [ProformaController::class, 'searchAjax']);
                     Route::get('/ajax/customer/receipt/proforma/search/{customer}/{value}', [ProformaController::class, 'ajaxSearchCustomer']);
                     Route::get('/ajax/customer/receipt/proforma/get/{proforma}', [ProformaController::class, 'ajaxGet']);
                 });
@@ -361,7 +365,7 @@ Route::group([
                 Route::get('/receipt/csv',[ReceiptsController::class,'exportReceipts'])->name('export.csv');
                 // Route::delete('/receipt/{id}', [ReceiptsController::class, 'destroy']);
                 // Route::get('/receipt/{id}', [ReceiptsController::class, 'edit']);
-                // Route::put('/receipt/{id}', [ReceiptsController::class, 'update']);              
+                // Route::put('/receipt/{id}', [ReceiptsController::class, 'update']);
             });
 
             /**

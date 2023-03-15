@@ -37,9 +37,51 @@ use App\Models\Inventory;
 use App\Models\Notification;
 use App\Models\Transactions;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ReceiptController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $receipts = ReceiptReferences::select(
+            'receipt_references.id',
+            'receipts.id as receipt_id',
+            'receipt_references.date',
+            'customers.name as customer_name',
+            'receipts.grand_total',
+            'receipt_cash_transactions.total_amount_received',
+            'receipt_references.is_void',
+        )
+        ->leftJoin('receipts', 'receipts.receipt_reference_id', 'receipt_references.id')
+        ->leftJoin('customers', 'customers.id', 'receipt_references.customer_id')
+        // left join sub to get sum of receipt_cash_transactions
+        // this will determine the status of the receipt (paid, partially_paid, unpaid)
+        ->leftJoinSub(
+            ReceiptCashTransactions::select(
+                'receipt_cash_transactions.for_receipt_reference_id',
+                DB::raw('SUM(receipt_cash_transactions.amount_received) as total_amount_received')
+            )
+            ->groupBy('receipt_cash_transactions.for_receipt_reference_id'),
+            'receipt_cash_transactions',
+            'receipt_cash_transactions.for_receipt_reference_id',
+            'receipt_references.id'
+        )
+        ->where('receipt_references.accounting_system_id', session('accounting_system_id'))
+        ->where(function($q) use ($query){
+            $q->where('receipt_references.id', 'like', "%{$query}%")
+            ->orWhere('customers.name', 'like', "%{$query}%")
+            ->orWhere('receipt_references.date', 'like', "%{$query}%")
+            ->orWhere('receipt_references.status', 'like', "%{$query}%");
+        })
+        ->where('receipt_references.type', 'receipt');
+
+
+        return response()->json([
+            'receipts' => $receipts->paginate(10),
+        ]);
+
+    }
+
     public function store(StoreReceiptRequest $request)
     {
         $accounting_system_id = session('accounting_system_id');
@@ -215,7 +257,7 @@ class ReceiptController extends Controller
         //
     }
 
-    public function void(ReceiptReferences $rr)
+    public function voidAjax(ReceiptReferences $rr)
     {
         $rr->journalEntry;
         $rr->receipt;
@@ -246,11 +288,13 @@ class ReceiptController extends Controller
             {
                 if($rrl->receiptReference->is_void != true) {
 
-                    $rrl->depositItem->is_void = true;
-                    $rrl->depositItem->save();
+                    try {
+                        $rrl->depositItem->is_void = true;
+                        $rrl->depositItem->save();
 
-                    $rrl->depositItem->journalEntry->is_void = true;
-                    $rrl->depositItem->journalEntry->save();
+                        $rrl->depositItem->journalEntry->is_void = true;
+                        $rrl->depositItem->journalEntry->save();
+                    } catch(\Exception $e) {}
 
                     $rr->receipt->total_amount_received -= $rrl->amount_received;
 
@@ -275,10 +319,14 @@ class ReceiptController extends Controller
         $rr->journalEntry->is_void = true;
         $rr->push();
 
-        return redirect()->back()->with('success', "Successfully voided receipt.");
+        return response()->json([
+            'success' => true,
+        ]);
+
+        // return redirect()->back()->with('success', "Successfully voided receipt.");
     }
 
-    public function reactivate(ReceiptReferences $rr)
+    public function reactivateAjax(ReceiptReferences $rr)
     {
         // If the receipt is a direct deposit, reactivate the deposit item entry
         try {
@@ -299,18 +347,24 @@ class ReceiptController extends Controller
         $rr->journalEntry->is_void = false;
         $rr->push();
 
-
-        return redirect()->back()->with('success', "Successfully reactivated receipt.");
+        return response()->json([
+            'success' => true,
+        ]);
+        // return redirect()->back()->with('success', "Successfully reactivated receipt.");
     }
 
-    public function mail(Receipts $r)
+    public function mailAjax(Receipts $r)
     {
         $receipt_items = ReceiptItem::where('receipt_reference_id' , $r->receipt_reference_id)->get();
         $emailAddress = $r->receiptReference->customer->email;
 
         Mail::to($emailAddress)->queue(new MailCustomerReceipt($receipt_items));
 
-        return redirect()->back()->with('success', "Successfully sent email to customer.");
+        // return redirect()->back()->with('success', "Successfully sent email to customer.");
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function print(Receipts $r)
