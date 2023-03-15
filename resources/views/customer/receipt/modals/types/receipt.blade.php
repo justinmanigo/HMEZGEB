@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{route('receipts.receipts.store') }}" id="form-receipt" method="post" enctype="multipart/form-data" data-message="Successfully created receipt.">
+<form class="ajax-submit-updated" action="{{route('receipts.receipts.store') }}" id="form-receipt" method="post" enctype="multipart/form-data" data-message="Successfully created receipt." data-noreload="true" data-onsuccess="receipt_search" data-onsuccessparam="receipts_page_number_current" data-modal="modal-receipt">
     @csrf
     <div class="modal fade" id="modal-receipt" tabindex="-1" role="dialog" aria-labelledby="modal-receipt-label"
         aria-hidden="true">
