@@ -27,67 +27,45 @@
             </div>
         @endif
 
+        <!-- add search input group -->
+        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+            <form id="deposits-search-form">
+                <div class="input-group mr-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input id="deposits-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                        aria-describedby="search-addon">
+                    <button id="deposits-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <span class="text">Submit</span>
+                    </button>
+                </div>
+            </form>
+            <div class="btn-group" role="group" aria-label="Second group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="deposits-page-number-label">Page 0 of 0</span>
+                </div>
+                <button id="deposits-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                <button id="deposits-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+            </div>
+        </div>
+
+        {{-- Transaction Contents --}}
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTables" cellspacing="0">
+            <table class="table table-striped">
                 <thead>
-                    <th style="width:150px">Deposit Date</th>
-                    <th>Deposit ID</th>
+                    <th>ID</th>
+                    <th>Date</th>
                     <th>Account</th>
                     <th>Status</th>
                     <th class="text-right">Amount</th>
-                    <th style="width:180px">Actions</th>
-
+                    <th width="160px">Actions</th>
                 </thead>
-                <tbody >
-                    @foreach($deposits as $deposit)
-                        <tr>
-                            {{-- date format --}}
-                            <td>{{ date('Y-m-d', strtotime($deposit->deposit_ticket_date)) }}</td>
-                            <td>{{$deposit->id}}</td>
-                            <td>{{ $deposit->chart_of_account_no }} - {{ $deposit->account_name }}</td>
-                            <td>
-                                @if($deposit->total_amount == $deposit->total_void_amount)
-                                    <span class="badge badge-danger">Void</span>
-                                @elseif($deposit->total_void_amount == 0)
-                                    <span class="badge badge-success">Active</span>
-                                @else
-                                    <span class="badge badge-warning">Partially Void</span>
-                                @endif
-                            </td>
-                            <td>Birr {{ number_format($deposit->total_amount, 2) }}</td>
-                            <td>
-                                <a href="{{ route('deposits.show', $deposit->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-eye"></i>
-                                    </span>
-                                </a>
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-mail-confirmation" onclick="mailModal({{$deposit->id}})" disabled>
-                                    <!-- email -->
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-envelope"></i>
-                                    </span>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-secondary mb-1"  data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$deposit->id}})" disabled>
-                                    <!-- print -->
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-print"></i>
-                                    </span>
-                                </button>
-                                {{-- <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
-                                    <!-- void -->
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-ban"></i>
-                                    </span>
-                                </button> --}}
-                                {{-- <button class="btn btn-sm btn-icon btn-danger mb-1" disabled>
-                                    <!-- delete -->
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-                                </button> --}}
-                            </td>
-                        </tr>
-                    @endforeach
+                <tbody id="deposits-list">
+                    <!-- JS will populate this -->
                 </tbody>
             </table>
         </div>
@@ -106,7 +84,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.store')}}" data-message="Successfully deposited receipts.">
+                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.store')}}" data-message="Successfully deposited receipts." data-noreload="true" data-onsuccess="deposits_search" data-onsuccessparam="deposits_page_number_current" data-modal="modal-deposit">
                     @csrf
                     <div class="row">
                         <div class="col-12 col-lg-6">
@@ -263,4 +241,8 @@
 </script>
 <script src="{{ asset('js/customer/deposit/template_select_bank.js') }}"></script>
 <script src="{{ asset('js/customer/deposit/customer_deposit.js') }}"></script>
+
+<script src="/js/hoverable.js"></script>
+<script src="/js/customer/deposit/deposits_table.js"></script>
+<script src="/js/customer/deposit/table_actions.js"></script>
 @endsection
