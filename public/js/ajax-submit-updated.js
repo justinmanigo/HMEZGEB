@@ -56,6 +56,8 @@ $(".ajax-submit-updated").submit(function(e){
             window.location.href = `${currentLink[0]}?success=${e.target.dataset.message}`;
         }
 
+        // reset form
+        $(`#${e.target.id}`)[0].reset();
     });
 
     // If request has errors (e.g. validation errors).
