@@ -84,7 +84,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.store')}}" data-message="Successfully deposited receipts.">
+                <form id="form-deposit" class="ajax-submit-updated" method="post" enctype="multipart/form-data" action="{{route('deposits.store')}}" data-message="Successfully deposited receipts." data-noreload="true" data-onsuccess="deposits_search" data-onsuccessparam="deposits_page_number_current" data-modal="modal-deposit">
                     @csrf
                     <div class="row">
                         <div class="col-12 col-lg-6">

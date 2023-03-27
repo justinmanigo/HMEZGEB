@@ -114,7 +114,11 @@ class DepositsController extends Controller
                 session('accounting_system_id'));
         }
 
-        return $deposit;
+        return response()->json([
+            'success' => true,
+            'message' => 'Deposit has been created.',
+            'deposit' => $deposit,
+        ]);
     }
 
     /**
