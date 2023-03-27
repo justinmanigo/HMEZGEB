@@ -411,13 +411,15 @@ Route::group([
                 });
 
                 // Mail
-                Route::get('/customers/deposits/mail/{id}', [DepositsController::class, 'mail'])->name('mail');
+                Route::get('/customers/deposits/mail/{deposit}', [DepositsController::class, 'mail'])->name('mail');
                 // Print
-                Route::get('/customers/deposits/print/{id}', [DepositsController::class, 'print'])->name('print');
+                Route::get('/customers/deposits/print/{deposit}', [DepositsController::class, 'print'])->name('print');
 
                 // AJAX
                 Route::get('/ajax/customer/deposit/receipts/undeposited/get', [DepositsController::class, 'ajaxGetUndepositedReceipts']);
                 Route::get('/ajax/customer/deposit/bank/search/{query}', [DepositsController::class, 'ajaxSearchBank']);
+                Route::get('/ajax/customer/deposit/search/{query?}', [DepositsController::class, 'searchAjax']);
+
             });
         });
 

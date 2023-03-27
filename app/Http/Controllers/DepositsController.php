@@ -20,6 +20,37 @@ use PDF;
 
 class DepositsController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $deposits = Deposits::select(
+            // 'deposits.*',
+            'deposits.id',
+            'chart_of_accounts.chart_of_account_no',
+            'chart_of_accounts.account_name',
+            'deposits.deposit_ticket_date as date',
+            'deposits.reference_number',
+            'deposits.is_direct_deposit',
+            DB::raw('IFNULL(deposit_items.total_amount, 0) as total_amount'),
+            DB::raw('IFNULL(deposit_items_void.total_void_amount, 0) as total_void_amount'),
+        )
+        ->leftJoin('chart_of_accounts', 'chart_of_accounts.id', '=', 'deposits.chart_of_account_id')
+        // left join by sum of deposit items' amount received
+        ->leftJoin(DB::raw('(SELECT deposit_id, SUM(receipt_cash_transactions.amount_received) as total_amount FROM deposit_items LEFT JOIN receipt_cash_transactions ON receipt_cash_transactions.id = deposit_items.receipt_cash_transaction_id GROUP BY deposit_id) as deposit_items'), 'deposit_items.deposit_id', '=', 'deposits.id')
+        // left join by sum of deposit items' amount received that are void
+        ->leftJoin(DB::raw('(SELECT deposit_id, SUM(receipt_cash_transactions.amount_received) as total_void_amount FROM deposit_items LEFT JOIN receipt_cash_transactions ON receipt_cash_transactions.id = deposit_items.receipt_cash_transaction_id WHERE deposit_items.is_void = 1 GROUP BY deposit_id) as deposit_items_void'), 'deposit_items_void.deposit_id', '=', 'deposits.id')
+        ->where('deposits.accounting_system_id', session('accounting_system_id'))
+        ->where(function($q) use ($query){
+            $q->where('deposits.deposit_ticket_date', 'like', '%'.$query.'%')
+                ->orWhere('deposits.reference_number', 'like', '%'.$query.'%')
+                ->orWhere('chart_of_accounts.chart_of_account_no', 'like', '%'.$query.'%')
+                ->orWhere('chart_of_accounts.account_name', 'like', '%'.$query.'%');
+        });
+
+        return response()->json([
+            'deposits' => $deposits->paginate(10),
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,27 +58,7 @@ class DepositsController extends Controller
      */
     public function index()
     {
-        // get deposits where accounting system id
-        $deposits = Deposits::select(
-                // 'deposits.*',
-                'deposits.id',
-                'chart_of_accounts.chart_of_account_no',
-                'chart_of_accounts.account_name',
-                'deposits.deposit_ticket_date',
-                'deposits.reference_number',
-                'deposits.is_direct_deposit',
-                DB::raw('IFNULL(deposit_items.total_amount, 0) as total_amount'),
-                DB::raw('IFNULL(deposit_items_void.total_void_amount, 0) as total_void_amount'),
-            )
-            ->where('deposits.accounting_system_id', session('accounting_system_id'))
-            ->leftJoin('chart_of_accounts', 'chart_of_accounts.id', '=', 'deposits.chart_of_account_id')
-            // left join by sum of deposit items' amount received
-            ->leftJoin(DB::raw('(SELECT deposit_id, SUM(receipt_cash_transactions.amount_received) as total_amount FROM deposit_items LEFT JOIN receipt_cash_transactions ON receipt_cash_transactions.id = deposit_items.receipt_cash_transaction_id GROUP BY deposit_id) as deposit_items'), 'deposit_items.deposit_id', '=', 'deposits.id')
-            // left join by sum of deposit items' amount received that are void
-            ->leftJoin(DB::raw('(SELECT deposit_id, SUM(receipt_cash_transactions.amount_received) as total_void_amount FROM deposit_items LEFT JOIN receipt_cash_transactions ON receipt_cash_transactions.id = deposit_items.receipt_cash_transaction_id WHERE deposit_items.is_void = 1 GROUP BY deposit_id) as deposit_items_void'), 'deposit_items_void.deposit_id', '=', 'deposits.id')
-            ->get();
-                
-        return view('customer.deposit.index',compact('deposits'));
+        return view('customer.deposit.index');
     }
 
     /**
@@ -64,7 +75,7 @@ class DepositsController extends Controller
             'deposit_ticket_date' => $request->deposit_ticket_date,
             'remark' => $request->remark,
             'reference_number' => $request->reference_number,
-        ]);        
+        ]);
 
         // Deposit Item = Journal Entry. It makes marking deposits as void flexible later on.
         for($i = 0; $i < count($request->is_deposited); $i++)
@@ -87,7 +98,7 @@ class DepositsController extends Controller
                 'receipt_cash_transaction_id' => $cash_transaction->id,
                 'journal_entry_id' => $je->id,
             ]);
-           
+
             // Deduct the balance of Source COA
             $credit_accounts[] = CreateJournalPostings::encodeAccount($cash_transaction->chart_of_account_id);
             $credit_amount[] = $cash_transaction->amount_received;
@@ -102,12 +113,12 @@ class DepositsController extends Controller
                 $credit_accounts, $credit_amount,
                 session('accounting_system_id'));
         }
-        
+
         return $deposit;
     }
 
     /**
-     * 
+     *
      */
     public function show(Deposits $deposit)
     {
@@ -134,23 +145,24 @@ class DepositsController extends Controller
     }
 
     // Mail
-    public function mail($id)
+    public function mail(Deposits $deposit)
     {
-        // Mail
-        $deposit = Deposits::find($id);
         $emailAddress = "test@test.com";
 
         Mail::to($emailAddress)->queue(new MailCustomerDeposit($deposit));
-        
-        return redirect()->route('deposits.deposits.index')->with('success', "Successfully sent email to customer.");
 
+        // return redirect()->route('deposits.deposits.index')->with('success', "Successfully sent email to customer.");
+
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully sent email to customer.",
+        ]);
     }
 
     // Print
-    public function print($id)
+    public function print(Deposits $deposit)
     {
-        $deposits = Deposits::find($id);
-        $pdf = PDF::loadView('customer.deposit.print', compact('deposits'));
+        $pdf = PDF::loadView('customer.deposit.print', compact('deposit'));
 
         return $pdf->stream('deposit_'.$id.'_'.date('Y-m-d').'.pdf');
     }
