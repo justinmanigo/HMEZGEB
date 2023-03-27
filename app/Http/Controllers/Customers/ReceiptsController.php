@@ -48,65 +48,8 @@ class ReceiptsController extends Controller
      */
     public function index()
     {
-        // $accounting_system_id = $this->request->session()->get('accounting_system_id');
-
-        // $transactions = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
-        //     ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
-        //     ->leftJoin('advance_revenues', 'receipt_references.id', '=', 'advance_revenues.receipt_reference_id')
-        //     ->leftJoin('credit_receipts', 'receipt_references.id', '=', 'credit_receipts.receipt_reference_id')
-        //     ->leftJoin('sales', 'receipt_references.id', '=', 'sales.receipt_reference_id')
-        //     ->select(
-        //         'customers.name',
-        //         'receipt_references.id',
-        //         'receipt_references.customer_id',
-        //         'receipt_references.date',
-        //         'receipt_references.type',
-        //         'receipt_references.status',
-        //         'receipt_references.is_void',
-        //         'receipts.total_amount_received as receipt_amount',
-        //         'advance_revenues.total_amount_received as advance_revenue_amount',
-        //         'credit_receipts.total_amount_received as credit_receipt_amount',
-        //         'sales.amount_received as sales_amount'
-        //     )
-        //     ->where('receipt_references.accounting_system_id', $accounting_system_id)
-        //     ->where('receipt_references.type', '!=', 'proforma')
-        //     ->get();
-
-        // $proformas = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
-        //     ->leftJoin('proformas', 'receipt_references.id', '=', 'proformas.receipt_reference_id')
-        //     ->select(
-        //         'customers.name',
-        //         'receipt_references.id',
-        //         'receipt_references.customer_id',
-        //         'receipt_references.date',
-        //         'receipt_references.type',
-        //         'receipt_references.status',
-        //         'receipt_references.is_void',
-        //         'proformas.amount as proforma_amount',
-        //     )
-        //     ->where('receipt_references.accounting_system_id', $accounting_system_id)
-        //     ->where('receipt_references.type', 'proforma')
-        //     ->get();
-
-        // // count advance revenues
-        // $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
-
-        // $total_balance = 0;
-        // $total_balance_overdue = 0;
-        // $count = 0;
-        // $count_overdue = 0;
-
-        // foreach($customers as $customer){
-        //     $total_balance += CalculateBalanceCustomer::run($customer->id)['total_balance'];
-        //     $total_balance_overdue += CalculateBalanceCustomer::run($customer->id)['total_balance_overdue'];
-        //     $count += CalculateBalanceCustomer::run($customer->id)['count'];
-        //     $count_overdue += CalculateBalanceCustomer::run($customer->id)['count_overdue'];
-        // }
-
         return view('customer.receipt.index', [
-            // 'transactions' => $transactions,
-            // 'proformas' => $proformas,
-            'total_balance' => 0,
+            'total_balance' => 0, // TODO: Rework this
             'total_balance_overdue' => 0,
             'count' => 0,
             'count_overdue' => 0,
