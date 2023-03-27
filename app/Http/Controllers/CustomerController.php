@@ -16,15 +16,43 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $customers = Customers::select(
+            'customers.id',
+            'customers.tin_number',
+            'customers.name',
+            'customers.label')
+            ->where('customers.accounting_system_id', session('accounting_system_id'))
+            ->where(function($q) use ($query){
+                $q->where('customers.id', 'like', "%{$query}%")
+                ->orWhere('customers.tin_number', 'like', "%{$query}%")
+                ->orWhere('customers.name', 'like', "%{$query}%")
+                ->orWhere('customers.label', 'like', "%{$query}%");
+            })
+            ->paginate(10);
+
+        $customers = $customers->toArray();
+
+        for($i = 0; $i < count($customers['data']); $i++){
+            $customers['data'][$i]['balance'] = CalculateBalanceCustomer::run($customers['data'][$i]['id']);
+        }
+
+        return response()->json([
+            'customers' => $customers,
+        ]);
+
+    }
+
     /**
      * Show the customers page of customers menu.
-     * 
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
         $customers = Customers::where('accounting_system_id', session('accounting_system_id'))->get();
-        
+
         $total_balance = 0;
         $total_balance_overdue = 0;
         $count = 0;
@@ -36,7 +64,7 @@ class CustomerController extends Controller
             $total_balance_overdue += $customer->balance['total_balance_overdue'];
             $count_overdue += $customer->balance['count_overdue'];
         }
-        
+
         return view('customer.customer.index',compact('customers', 'total_balance', 'count', 'total_balance_overdue', 'count_overdue'));
     }
     /**
@@ -56,12 +84,12 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         if($request->image) {
-            $imageName = time().'.'.$request->image->extension();  
+            $imageName = time().'.'.$request->image->extension();
             $request->image->storeAs('customers', $imageName);
         }
-        
+
         $customers = new Customers();
         $customers->accounting_system_id = session('accounting_system_id');
         $customers->name =  $request->name;
@@ -80,7 +108,12 @@ class CustomerController extends Controller
         $customers->image =  isset($imageName) ? $imageName : null;
         $customers->is_active = $request->is_active ? true : false;
         $customers->save();
-        return redirect()->back()->with('success', "Successfully added new customer.");
+        // return redirect()->back()->with('success', "Successfully added new customer.");
+
+        return response()->json([
+            'success' => true,
+            'message' => "Successfully added new customer.",
+        ]);
 
     }
 
@@ -106,7 +139,7 @@ class CustomerController extends Controller
     }
 
     public function update(Request $request, $id)
-    { 
+    {
         $customers = Customers::find($id);
 
         $customers->name =  $request->input('name');
@@ -169,42 +202,35 @@ class CustomerController extends Controller
     //         Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
     //     }
 
-    //     return redirect()->back()->with('success', "Successfully sent customer statements.");     
+    //     return redirect()->back()->with('success', "Successfully sent customer statements.");
     // }
 
     // Specific customer mail
-    public function mailCustomerStatement($id)
+    public function mailCustomerStatement(Customers $customer)
     {
-        $customer = Customers::where('accounting_system_id', session('accounting_system_id'))
-        ->where('id', $id)
-        ->whereHas('receiptReference', function($query) {
-            $query->where('type', 'receipt')
-            ->where(function ($query) {
-                $query->where('status', 'unpaid')
-                  ->orWhere('status', 'partially_paid');
-              });})->first();
-            
-        if(!$customer)
-            return redirect()->back()->with('danger', "No pending statements found.");
-
-        $receipt_references = ReceiptReferences::where('customer_id', $id)
+        $receipt_references = ReceiptReferences::where('customer_id', $customer->id)
         ->where('type', 'receipt')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
               ->orWhere('status', 'partially_paid');
-          })->get(); 
+          })->get();
 
         $receipts = [];
         foreach($receipt_references as $receipt) {
-            $receipts[] = $receipt->toArray() + $receipt->receipt->toArray();  
+            $receipts[] = $receipt->toArray() + $receipt->receipt->toArray();
         }
 
         Mail::to($customer->email)->queue(new MailCustomerStatement ($customer, $receipts));
 
-        return redirect()->back()->with('success', "Successfully sent customer statement.");     
+        // return redirect()->back()->with('success', "Successfully sent customer statement.");
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully sent customer statement.'
+        ]);
     }
 
-    
+
     // Import Export
     public function import(Request $request)
     {
@@ -218,10 +244,10 @@ class CustomerController extends Controller
             $failures = $e->failures();
             $message = $failures[0]->errors();
             return back()->with('error', $message[0].' Please check the file format');
-        }    
+        }
         catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error importing customer records.');
-        }  
+        }
         return redirect()->back()->with('success', 'Successfully imported customer records.');
 
     }
@@ -237,43 +263,31 @@ class CustomerController extends Controller
     }
 
     // print
-    public function print($id)
+    public function print(Customers $customer)
     {
-        $customer = Customers::where('accounting_system_id', session('accounting_system_id'))
-            ->where('id', $id)
-            ->whereHas('receiptReference', function($query) {
-                $query->where('type', 'receipt')
-                ->where(function ($query) {
-                    $query->where('status', 'unpaid')
-                    ->orWhere('status', 'partially_paid');
-                });})->first();
-
-        if(!$customer)
-            return redirect()->back()->with('danger', "No pending statements found.");
-
-        $receipt_references = ReceiptReferences::where('customer_id', $id)
+        $receipt_references = ReceiptReferences::where('customer_id', $customer->id)
             ->where('type', 'receipt')
             ->where(function ($query) {
                 $query->where('status', 'unpaid')
                 ->orWhere('status', 'partially_paid');
-            })->get(); 
-        
+            })->get();
+
         $total_balance = 0;
         foreach($receipt_references as $receipt_reference) {
             $total_balance += $receipt_reference->receipt->grand_total - $receipt_reference->receipt->total_amount_received;
         }
-        $pdf = \PDF::loadView('customer.customer.print', compact('receipt_references', 'total_balance'));
+        $pdf = \PDF::loadView('customer.customer.print', compact('receipt_references', 'total_balance', 'customer'));
         return $pdf->stream('customer_statement_'.date('Y_m_d').'.pdf');
     }
 
     /*=================================*/
 
     public function ajaxSearchActiveCustomers($query)
-    {   
+    {
         $customers = Customers::select(
                 'id as value',
-                'name', 
-                'tin_number', 
+                'name',
+                'tin_number',
                 'contact_person',
                 'mobile_number'
             )
@@ -281,7 +295,7 @@ class CustomerController extends Controller
             ->where('name', 'LIKE', '%' . $query . '%')
             ->where('is_active', '=', true)
             ->get();
-            
+
         return $customers;
     }
 
@@ -291,7 +305,7 @@ class CustomerController extends Controller
                 'receipt_references.id as value',
                 'receipt_references.date',
                 'receipts.due_date',
-                DB::raw('receipts.grand_total - receipts.total_amount_received as amount_to_pay')    
+                DB::raw('receipts.grand_total - receipts.total_amount_received as amount_to_pay')
             )
             ->leftJoin('receipts', 'receipts.receipt_reference_id', '=', 'receipt_references.id')
             ->where('receipt_references.type', '=', 'receipt')

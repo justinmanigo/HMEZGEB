@@ -61,56 +61,45 @@
                     </button>
                 </div>
             @endif
+                <!-- add search input group -->
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <form id="customers-search-form">
+                        <div class="input-group mr-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input id="customers-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                aria-describedby="search-addon">
+                            <button id="customers-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span class="text">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="btn-group" role="group" aria-label="Second group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="customers-page-number-label">Page 0 of 0</span>
+                        </div>
+                        <button id="customers-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                        <button id="customers-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                    </div>
+                </div>
+
+                {{-- Transaction Contents --}}
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
+                    <table class="table table-striped">
                         <thead>
+                            <th>ID</th>
                             <th>Customer Name</th>
                             <th>Tin #</th>
-                            <th>City</th>
-                            <th>Contact Person</th>
-                            <th>Mobile #</th>
                             <th>Label</th>
                             <th>Balance</th>
-                            <th>Actions</th>
+                            <th width="160px">Actions</th>
                         </thead>
-                        <tbody>
-                            @foreach ($customers as $customer)
-                            <tr>
-                                    <td> {{$customer->name}} </td>
-                                    <td> {{$customer->tin_number}}</td>
-                                    <td> {{$customer->city}}</td>
-                                    <td> {{$customer->contact_person}}</td>
-                                    <td> {{$customer->mobile_number}}</td>
-                                    <td><span class="badge badge-primary"> {{$customer->label}}</span></td>
-                                    <td>Birr {{number_format($customer->balance['balance'],2)}}</td>
-                                    <td>
-                                        <a href="{{ route('customers.customers.edit', $customer->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
-                                            <!-- edit -->
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-pen"></i>
-                                            </span>
-                                        </a>
-                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-print" onclick="printCustomerStatement({{$customer->id}})">
-                                            <!-- print -->
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-print"></i>
-                                            </span>
-                                        </button>
-                                        <button class="btn btn-sm btn-icon btn-secondary mb-1" id="individualMailStatement" data-toggle="modal" data-target="#modal-statement" onclick="addCustomerIdModal({{$customer->id}})">
-                                            <!-- email -->
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-envelope"></i>
-                                            </span>
-                                        </button>
-                                        <button class="btn btn-sm btn-icon btn-danger mb-1"  data-toggle="modal" data-target="#deleteConfirmationModel" onclick="deleteCustomer({{$customer->id}})">
-                                            <!-- delete -->
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-trash"></i>
-                                            </span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
+                        <tbody id="customers-list">
+                            <!-- JS will populate this -->
                         </tbody>
                     </table>
                 </div>
@@ -159,6 +148,8 @@
     </div>
 </div>
 
+{{-- <form class="ajax-submit-updated" action="{{ url('/customers/receipts/sales') }}" id="form-sale" method="post" enctype="multipart/form-data" data-message="Successfully created sale." data-noreload="true" data-onsuccess="sale_search" data-onsuccessparam="sales_page_number_current" data-modal="modal-sale"> --}}
+
 {{-- Customer new Modal --}}
 <div class="modal fade" id="modal-customer" tabindex="-1" role="dialog" aria-labelledby="modal-customer-label" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -170,100 +161,100 @@
                 </button>
             </div>
 
-                <form id="form-customer" action="{{route('customers.customers.store')}}" method="post" enctype="multipart/form-data">
+                <form class="ajax-submit-updated" id="form-customer" action="{{route('customers.customers.store')}}" method="post" enctype="multipart/form-data" data-message="Successfully created customer." data-noreload="true" data-onsuccess="customers_search" data-onsuccessparam="customers_page_number_current" data-modal="modal-customer">
                     @csrf
-                <div class="modal-body">
-                    <h5>Customer</h5>
-                    <div class="form-group row">
-                        <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name:</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
-                        </div>
-
-                        <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number :</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="" >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_address" name="address" placeholder="" required>
-                        </div>
-                        <label for="c_city" class="col-sm-3 col-lg-2 col-form-label">City :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_city" name="city" placeholder="" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_country" class="col-sm-3 col-lg-2 col-form-label">Country :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_country" name="country" placeholder="" required>
-                        </div>
-                        <label for="c_fax" class="col-sm-3 col-lg-2 col-form-label">Fax :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_fax" name="fax" placeholder="">
-                        </div>
-
-                    </div>
-                    <div class="form-group row">
-                        <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone # 1 :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_phone_1" name="telephone_one" placeholder="" required>
-                        </div>
-
-                        <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone # 2 :</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_phone_2" name="telephone_two" placeholder="">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        {{-- <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="file" name="image">
-                                <label class="custom-file-label" for="file">Choose file</label>
+                    <div class="modal-body">
+                        <h5>Customer</h5>
+                        <div class="form-group row">
+                            <label for="c_name" class="col-sm-3 col-lg-2 col-form-label">Name:</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_name" name="name" placeholder="" required>
                             </div>
-                        </div> --}}
 
-                        <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
-                        <div class="col-sm-9 col-lg-4">
-                            <input type="text" class="form-control" id="c_label" name="label" required>
+                            <label for="c_tin_number" class="col-sm-3 col-lg-2 col-form-label">Tin Number :</label>
+                            <div class="col-sm-9 col-lg-4">
+                                <input type="text" class="form-control" id="c_tin_number" name="tin_number" placeholder="" >
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group row">
+                            <label for="c_address" class="col-sm-3 col-lg-2 col-form-label">Address :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_address" name="address" placeholder="" required>
+                            </div>
+                            <label for="c_city" class="col-sm-3 col-lg-2 col-form-label">City :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_city" name="city" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="c_country" class="col-sm-3 col-lg-2 col-form-label">Country :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_country" name="country" placeholder="" required>
+                            </div>
+                            <label for="c_fax" class="col-sm-3 col-lg-2 col-form-label">Fax :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_fax" name="fax" placeholder="">
+                            </div>
 
-                    <div class="form-group row">
-                        <label for="c_email" class="col-sm-3 col-lg-2 col-form-label">E-mail :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_email" name="email" placeholder="" required>
                         </div>
-                        <label for="c_website" class="col-sm-3 col-lg-2 col-form-label">Website :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_website" name="website" placeholder="">
-                        </div>
-                    </div>
+                        <div class="form-group row">
+                            <label for="c_phone_1" class="col-sm-3 col-lg-2 col-form-label">Phone # 1 :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_phone_1" name="telephone_one" placeholder="" required>
+                            </div>
 
-                    <h5>Contact Person</h5>
-                    <div class="form-group row">
-                        <label for="c_contact_person" class="col-sm-3 col-lg-2 col-form-label">Name :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder=" " required>
+                            <label for="c_phone_2" class="col-sm-3 col-lg-2 col-form-label">Phone # 2 :</label>
+                            <div class="col-sm-9 col-lg-4">
+                                <input type="text" class="form-control" id="c_phone_2" name="telephone_two" placeholder="">
+                            </div>
                         </div>
-                        <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile # :</label>
-                        <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
-                            <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="" required>
+
+                        <div class="form-group row">
+                            {{-- <label for="c_picture" class="col-sm-3 col-lg-2 col-form-label">Picture :</label>
+                            <div class="col-sm-9 col-lg-4">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="file" name="image">
+                                    <label class="custom-file-label" for="file">Choose file</label>
+                                </div>
+                            </div> --}}
+
+                            <label for="c_label" class="col-sm-3 col-lg-2 col-form-label">Label :</label>
+                            <div class="col-sm-9 col-lg-4">
+                                <input type="text" class="form-control" id="c_label" name="label" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="c_email" class="col-sm-3 col-lg-2 col-form-label">E-mail :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_email" name="email" placeholder="" required>
+                            </div>
+                            <label for="c_website" class="col-sm-3 col-lg-2 col-form-label">Website :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_website" name="website" placeholder="">
+                            </div>
+                        </div>
+
+                        <h5>Contact Person</h5>
+                        <div class="form-group row">
+                            <label for="c_contact_person" class="col-sm-3 col-lg-2 col-form-label">Name :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_contact_person" name="contact_person" placeholder=" " required>
+                            </div>
+                            <label for="c_mobile_number" class="col-sm-3 col-lg-2 col-form-label">Mobile # :</label>
+                            <div class="col-sm-9 col-lg-4 mb-3 mb-lg-0">
+                                <input type="text" class="form-control" id="c_mobile_number" name="mobile_number" placeholder="" required>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="form-check mr-3">
-                        <input class="form-check-input" id="c_is_active" type="checkbox" name="is_active">
-                        <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
+                    <div class="modal-footer">
+                        <div class="form-check mr-3">
+                            <input class="form-check-input" id="c_is_active" type="checkbox" name="is_active">
+                            <label class="form-check-label" for="c_is_active">Mark Customer as Active</label>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" >Save Customer</button>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" >Save Customer</button>
-                </div>
                 </form>
         </div>
     </div>
@@ -330,28 +321,6 @@
     </div>
 </div>
 
-{{-- statement confirmation modal
-
-<div class="modal fade" id="modal-statements" tabindex="-1" role="dialog" aria-labelledby="modal-statements-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modal-statements-label">Confirm</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to mail statements to customers?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="{{route('customers.statements.mail')}}" class="btn btn-primary">Send Mail</a>
-            </div>
-        </div>
-    </div>
-</div> --}}
-
 {{-- Print confirmation Modal --}}
 <div class="modal fade" id="modal-print" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -367,7 +336,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a  id="print-statement" class="btn btn-primary">Print</a>
+                <a id="print-statement" class="btn btn-primary" target="_blank">Print</a>
             </div>
         </div>
     </div>
@@ -425,14 +394,6 @@
  <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
  <script>
-        function printCustomerStatement(id){
-            $('#print-statement').attr('href', "/customers/print/statement/" + id);
-        }
-
-        function addCustomerIdModal(id) {
-            $('#specificStatement').attr('href', "/customers/mail/statement/" + id);
-        }
-
         function deleteCustomer(id) {
 
             $('#delete-frm').attr('action', "/customers/customers/" + id);
@@ -450,11 +411,9 @@
         var fileName = $(this).val().split('\\').pop();
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
-
-
-      $(document).ready(function () {
-            $('#dataTables').DataTable();
-            $('.dataTables_filter').addClass('pull-right');
-        });
     </script>
+
+    <script src="/js/hoverable.js"></script>
+    <script src="/js/customer/customer/customers_table.js"></script>
+    <script src="/js/customer/customer/table_actions.js"></script>
 @endsection

@@ -379,15 +379,16 @@ Route::group([
                 Route::resource('/customers/customers', CustomerController::class);
                 // Mail
                 // Route::get('/customers/mail/statements', [CustomerController::class, 'mailCustomerStatements'])->name('statements.mail');
-                Route::get('/customers/mail/statement/{id}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');
+                Route::get('/customers/mail/statement/{customer}', [CustomerController::class, 'mailCustomerStatement'])->name('statement.mail');
                 // Print
-                Route::get('/customers/print/statement/{id}', [CustomerController::class, 'print'])->name('statement.print');
+                Route::get('/customers/print/statement/{customer}', [CustomerController::class, 'print'])->name('statement.print');
                 // Import Export
                 Route::post('/customers/import', [CustomerController::class, 'import'])->name('import');
                 Route::post('/customers/export', [CustomerController::class, 'export'])->name('export');
                 // AJAX
                 Route::get('/ajax/customer/customer/search/active/{query}', [CustomerController::class, 'ajaxSearchActiveCustomers']);
                 Route::get('/ajax/customer/receipts/topay/{customer}', [CustomerController::class, 'ajaxGetReceiptsToPay']);
+                Route::get('/ajax/customer/customer/search/{query?}', [CustomerController::class, 'searchAjax']);
             });
 
             /**

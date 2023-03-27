@@ -23,7 +23,7 @@
             border-collapse: collapse;
             width: 100%;
         }
-  
+
         table, th, td {
             border: 1px solid lightgray;
         }
@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-    <h3>Customer Statement: {{$receipt_references[0]->customer->name}}</h3>
+    <h3>Customer Statement: {{$customer->name}}</h3>
     <table class="text-center">
         <thead>
             <tr>
@@ -58,7 +58,7 @@
                 {{-- total balance --}}
                 <th colspan="4" class="text-right">Total Balance:</th>
                 <td class="text-right">{{number_format($total_balance,2)}}</td>
-            </tr>  
+            </tr>
         </tfoot>
     </table>
 </body>

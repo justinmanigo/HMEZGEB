@@ -19,6 +19,9 @@ $(document).on('click', '.actions button', function(e){
         // require public/js/customer/receipt/receipt/table_actions.js
         window.receipts_table_actions(id, type, action);
     }
+    else if(page == "customers") {
+        window.customers_table_actions(id, type, action);
+    }
 });
 
 $(document).on('click', '.actions a', function(e){
