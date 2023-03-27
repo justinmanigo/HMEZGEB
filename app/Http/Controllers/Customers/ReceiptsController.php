@@ -43,79 +43,79 @@ class ReceiptsController extends Controller
 {
     /**
      * Show the receipts page of customers menu.
-     * 
+     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        $accounting_system_id = $this->request->session()->get('accounting_system_id');
+        // $accounting_system_id = $this->request->session()->get('accounting_system_id');
 
-        $transactions = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
-            ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
-            ->leftJoin('advance_revenues', 'receipt_references.id', '=', 'advance_revenues.receipt_reference_id')
-            ->leftJoin('credit_receipts', 'receipt_references.id', '=', 'credit_receipts.receipt_reference_id')
-            ->leftJoin('sales', 'receipt_references.id', '=', 'sales.receipt_reference_id')
-            ->select(
-                'customers.name',
-                'receipt_references.id',
-                'receipt_references.customer_id',
-                'receipt_references.date',
-                'receipt_references.type',
-                'receipt_references.status',
-                'receipt_references.is_void',
-                'receipts.total_amount_received as receipt_amount',
-                'advance_revenues.total_amount_received as advance_revenue_amount',
-                'credit_receipts.total_amount_received as credit_receipt_amount',
-                'sales.amount_received as sales_amount'
-            )
-            ->where('receipt_references.accounting_system_id', $accounting_system_id)
-            ->where('receipt_references.type', '!=', 'proforma')
-            ->get();
+        // $transactions = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+        //     ->leftJoin('receipts', 'receipt_references.id', '=', 'receipts.receipt_reference_id')
+        //     ->leftJoin('advance_revenues', 'receipt_references.id', '=', 'advance_revenues.receipt_reference_id')
+        //     ->leftJoin('credit_receipts', 'receipt_references.id', '=', 'credit_receipts.receipt_reference_id')
+        //     ->leftJoin('sales', 'receipt_references.id', '=', 'sales.receipt_reference_id')
+        //     ->select(
+        //         'customers.name',
+        //         'receipt_references.id',
+        //         'receipt_references.customer_id',
+        //         'receipt_references.date',
+        //         'receipt_references.type',
+        //         'receipt_references.status',
+        //         'receipt_references.is_void',
+        //         'receipts.total_amount_received as receipt_amount',
+        //         'advance_revenues.total_amount_received as advance_revenue_amount',
+        //         'credit_receipts.total_amount_received as credit_receipt_amount',
+        //         'sales.amount_received as sales_amount'
+        //     )
+        //     ->where('receipt_references.accounting_system_id', $accounting_system_id)
+        //     ->where('receipt_references.type', '!=', 'proforma')
+        //     ->get();
 
-        $proformas = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
-            ->leftJoin('proformas', 'receipt_references.id', '=', 'proformas.receipt_reference_id')
-            ->select(
-                'customers.name',
-                'receipt_references.id',
-                'receipt_references.customer_id',
-                'receipt_references.date',
-                'receipt_references.type',
-                'receipt_references.status',
-                'receipt_references.is_void',
-                'proformas.amount as proforma_amount',
-            )
-            ->where('receipt_references.accounting_system_id', $accounting_system_id)
-            ->where('receipt_references.type', 'proforma')
-            ->get();
+        // $proformas = ReceiptReferences::leftJoin('customers', 'customers.id', '=', 'receipt_references.customer_id')
+        //     ->leftJoin('proformas', 'receipt_references.id', '=', 'proformas.receipt_reference_id')
+        //     ->select(
+        //         'customers.name',
+        //         'receipt_references.id',
+        //         'receipt_references.customer_id',
+        //         'receipt_references.date',
+        //         'receipt_references.type',
+        //         'receipt_references.status',
+        //         'receipt_references.is_void',
+        //         'proformas.amount as proforma_amount',
+        //     )
+        //     ->where('receipt_references.accounting_system_id', $accounting_system_id)
+        //     ->where('receipt_references.type', 'proforma')
+        //     ->get();
 
-        // count advance revenues
-        $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
+        // // count advance revenues
+        // $customers = Customers::where('accounting_system_id', $accounting_system_id)->get();
 
-        $total_balance = 0;
-        $total_balance_overdue = 0;
-        $count = 0;
-        $count_overdue = 0;
+        // $total_balance = 0;
+        // $total_balance_overdue = 0;
+        // $count = 0;
+        // $count_overdue = 0;
 
-        foreach($customers as $customer){
-            $total_balance += CalculateBalanceCustomer::run($customer->id)['total_balance'];
-            $total_balance_overdue += CalculateBalanceCustomer::run($customer->id)['total_balance_overdue'];
-            $count += CalculateBalanceCustomer::run($customer->id)['count'];
-            $count_overdue += CalculateBalanceCustomer::run($customer->id)['count_overdue'];
-        }
+        // foreach($customers as $customer){
+        //     $total_balance += CalculateBalanceCustomer::run($customer->id)['total_balance'];
+        //     $total_balance_overdue += CalculateBalanceCustomer::run($customer->id)['total_balance_overdue'];
+        //     $count += CalculateBalanceCustomer::run($customer->id)['count'];
+        //     $count_overdue += CalculateBalanceCustomer::run($customer->id)['count_overdue'];
+        // }
 
         return view('customer.receipt.index', [
-            'transactions' => $transactions,
-            'proformas' => $proformas,
-            'total_balance' => $total_balance,
-            'total_balance_overdue' => $total_balance_overdue,
-            'count' => $count,
-            'count_overdue' => $count_overdue,
+            // 'transactions' => $transactions,
+            // 'proformas' => $proformas,
+            'total_balance' => 0,
+            'total_balance_overdue' => 0,
+            'count' => 0,
+            'count_overdue' => 0,
         ]);
     }
 
     /** === STORE RECEIPTS === */
 
-    
+
 
     /**
      * TODO: Need to refactor this
@@ -136,7 +136,7 @@ class ReceiptsController extends Controller
      * TODO: Need to refactor this
      */
     public function update(Request $request, $id)
-    { 
+    {
         $receipts = Receipts::find($id);
 
         $receipts->receipt_reference_id =  $request->input('receipt_reference_id');
@@ -159,11 +159,11 @@ class ReceiptsController extends Controller
     }
     // SHOW
     public function show(Receipts $receipt)
-    {   
+    {
         return view('customer.receipt.edit',compact('receipt'));
     }
 
-    
+
     /**
      * TODO: Need to refactor this
      */
@@ -209,16 +209,16 @@ class ReceiptsController extends Controller
             $receipt->proforma()->delete();
         }
         $receipt->delete();
-  
+
         return redirect('receipt/')->with('success', "Successfully deleted customer");
     }
 
     // VOID
-    
 
-     
 
-    
+
+
+
 
     // export
     public function exportReceipts()
@@ -239,11 +239,11 @@ class ReceiptsController extends Controller
             $receipt = $receipt->toArray();
             fputcsv($file, $receipt);
         }
-        
+
         // write header
         fputcsv($file, array('Proforma'));
         fputcsv($file, array('id','receipt_reference_id','due_date','amount','tax','terms_and_condition','attachment','created_at','updated_by'));
-        
+
         foreach ($proforma as $proforma) {
             // add the data to the file
             $proforma = $proforma->toArray();
@@ -253,7 +253,7 @@ class ReceiptsController extends Controller
         // write header
         fputcsv($file, array('Credit Receipts'));
         fputcsv($file, array('id','receipt_reference_id','credit_receipt_number','total_amount_received','description','remark','attachment','created_at','updated_by'));
-        
+
         foreach ($credit_receipts as $credit_receipt) {
             // add the data to the file
             $credit_receipt = $credit_receipt->toArray();
