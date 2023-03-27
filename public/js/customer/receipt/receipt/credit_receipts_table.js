@@ -53,7 +53,7 @@ function credit_receipt_search(query = "", page = 1)
         {
             let row = `
                 <tr>
-                    <td colspan="6" class="text-center">No credit_receipts found.</td>
+                    <td colspan="6" class="text-center">No credit receipts found.</td>
                 </tr>
             `;
             credit_receipts_list.append(row);
