@@ -6,7 +6,6 @@
 
         {{-- Main Content Section --}}
         <div class="col-12">
-            {{-- Button Group Navigation --}}
             <div class="d-flex justify-content-between mb-3">
                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                     <div class="btn-group" role="group">
@@ -51,7 +50,6 @@
                         <span class="badge badge-danger pb-1">{{number_format($total_balance_overdue,2)}}</span>
                     </h5>
                 </div>
-                {{-- <h1 class="h3 text-gray-800">Customers</h1> --}}
             </div>
 
             {{-- Tab Contents --}}

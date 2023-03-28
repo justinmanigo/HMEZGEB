@@ -6,7 +6,6 @@
 
     {{-- Main Content Section --}}
     <div class="col-12">
-        <!-- create flex that allows two columns that aligns against each other -->
         <div class="d-flex justify-content-between mb-3">
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                 <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-customer">
@@ -43,7 +42,6 @@
                     <span class="badge badge-danger pb-1">0.00 </span>
                 </h5>
             </div>
-            {{-- <h1 class="h3 text-gray-800">Customers</h1> --}}
         </div>
 
         {{-- Page Content --}}
@@ -56,63 +54,64 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-            @endif
-            @if(session()->has('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session()->get('error') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-            @if(session()->has('danger'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session()->get('danger') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-            <!-- add search input group -->
-            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-                <form id="customers-search-form">
-                    <div class="input-group mr-2">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
-                        </div>
-                        <input id="customers-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
-                            aria-describedby="search-addon">
-                        <button id="customers-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-search"></i>
-                            </span>
-                            <span class="text">Submit</span>
+                @endif
+                @if(session()->has('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session()->get('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                </form>
-                <div class="btn-group" role="group" aria-label="Second group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="customers-page-number-label">Page 0 of 0</span>
+                @endif
+                @if(session()->has('danger'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session()->get('danger') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <button id="customers-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
-                    <button id="customers-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                @endif
+                <!-- add search input group -->
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <form id="customers-search-form">
+                        <div class="input-group mr-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input id="customers-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                aria-describedby="search-addon">
+                            <button id="customers-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span class="text">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="btn-group" role="group" aria-label="Second group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="customers-page-number-label">Page 0 of 0</span>
+                        </div>
+                        <button id="customers-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                        <button id="customers-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                    </div>
                 </div>
-            </div>
 
-            {{-- Transaction Contents --}}
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <th>ID</th>
-                        <th>Customer Name</th>
-                        <th>Tin #</th>
-                        <th class="text-right">Balance</th>
-                        <th width="160px">Actions</th>
-                    </thead>
-                    <tbody id="customers-list">
-                        <!-- JS will populate this -->
-                    </tbody>
-                </table>
+                {{-- Transaction Contents --}}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>ID</th>
+                            <th>Customer Name</th>
+                            <th>Tin #</th>
+                            <th class="text-right">Balance</th>
+                            <th width="160px">Actions</th>
+                        </thead>
+                        <tbody id="customers-list">
+                            <!-- JS will populate this -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
