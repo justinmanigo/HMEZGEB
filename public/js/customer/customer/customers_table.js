@@ -75,7 +75,7 @@ function customers_search(query = "", page = 1)
                             <!--<a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
                             </a>-->
-                            <a href="#" class="btn btn-sm btn-primary disabled">
+                            <a href="/customers/customers/${customer.id}/edit " class="btn btn-sm btn-primary">
                                 <i class="fa fa-pen"></i>
                             </a>
                             <button id="mail-customers-${customer.id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print" data-type="customers" data-id="${customer.id}" data-action="print" data-page="customers">
