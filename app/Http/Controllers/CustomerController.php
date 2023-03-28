@@ -168,42 +168,23 @@ class CustomerController extends Controller
      * @param  \App\Models\Customers  $customers
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy(Customers $customer)
     {
-        try{
-        $customers = Customers::find($id);
-        $customers->delete();
-        }
-        catch(\Exception $e){
-            return redirect()->back()->with('danger', "You are not authorized to delete this customer.");
-        }
-        return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
+        $rr_count = ReceiptReferences::where('customer_id', $customer->id)->count();
 
+        if($rr_count > 0) {
+            throw new \Exception("Cannot delete customer. Customer has receipts.");
+        }
+
+        $customer->delete();
+
+        // return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted customer.'
+        ]);
     }
-    // Mail
-    // public function mailCustomerStatements()
-    // {
-    //     $accounting_system_id = $this->request->session()->get('accounting_system_id');
-    //     $customers = Customers::where('accounting_system_id', $accounting_system_id)
-    //     ->whereHas('receiptReference', function($query) {
-    //         $query->Where('status', 'unpaid')
-    //         ->orWhere('status', 'partially_paid')
-    //         ->where('type', 'receipt');
-    //     })->get();
-
-    //     if($customers->isEmpty())
-    //         return redirect()->back()->with('danger', "No pending statements found.");
-    //     foreach($customers as $customer) {
-    //         $data = $customer->toArray();
-    //         // add receipt reference in data
-    //         $receipts = $customer->receiptReference->toArray();
-    //         $receipts += $customer->receiptReference->receipt->toArray();
-
-    //         Mail::to($customer->email)->queue(new MailCustomerStatement ($data, $receipts));
-    //     }
-
-    //     return redirect()->back()->with('success', "Successfully sent customer statements.");
-    // }
 
     // Specific customer mail
     public function mailCustomerStatement(Customers $customer)

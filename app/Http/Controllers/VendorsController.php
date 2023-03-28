@@ -72,16 +72,6 @@ class VendorsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -139,13 +129,11 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Vendors $vendor)
     {
 
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         //view edit vendor info
-        $vendor = Vendors::where('id',$id)->first();
-        if(!$vendor) return abort(404);
         if($vendor->accounting_system_id != $accounting_system_id) {
             return redirect()->route('vendors.vendors.index')->with('danger', "You are not authorized to edit this vendor.");
         }
@@ -160,11 +148,8 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Vendors $vendor)
     {
-        // Update the form
-
-        $vendor = Vendors::where('id',$id)->first();
         // if not null then update the image
         if($request->image)
         {
@@ -198,17 +183,22 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Vendors $vendor)
     {
-        try{
-        $vendor = Vendors::where('id',$id)->first();
+        $pr_count = PaymentReferences::where('vendor_id', $vendor->id)->count();
+
+        if($pr_count > 0) {
+            throw new \Exception("Cannot delete vendor. Vendor has transactions.");
+        }
+
         $vendor->delete();
-        }
-        catch(\Exception $e)
-        {
-            return back()->with('error', 'Make sure there are no related transactions with vendor.');
-        }
-        return redirect('/vendors')->withSuccess('Successfully Deleted');;
+
+        // return redirect('/vendors')->withSuccess('Successfully Deleted');;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Deleted Vendor.'
+        ], 200);
 
     }
 
