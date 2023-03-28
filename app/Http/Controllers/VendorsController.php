@@ -19,6 +19,33 @@ use PDF;
 
 class VendorsController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $vendors = Vendors::select(
+            'vendors.id',
+            'vendors.tin_number',
+            'vendors.name',
+            'vendors.label')
+            ->where('vendors.accounting_system_id', session('accounting_system_id'))
+            ->where(function($q) use ($query){
+                $q->where('vendors.id', 'like', "%{$query}%")
+                ->orWhere('vendors.tin_number', 'like', "%{$query}%")
+                ->orWhere('vendors.name', 'like', "%{$query}%")
+                ->orWhere('vendors.label', 'like', "%{$query}%");
+            })
+            ->paginate(10);
+
+        $vendors = $vendors->toArray();
+
+        for($i = 0; $i < count($vendors['data']); $i++){
+            $vendors['data'][$i]['balance'] = CalculateBalanceVendor::run($vendors['data'][$i]['id']);
+        }
+
+        return response()->json([
+            'vendors' => $vendors,
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +68,7 @@ class VendorsController extends Controller
             $count_overdue += $vendor->balance['count_overdue'];
         }
 
-        return view('vendors.vendors.index',compact('vendors', 'total_balance', 'count', 'total_balance_overdue', 'count_overdue'));
+        return view('vendors.vendors.index',compact('total_balance', 'count', 'total_balance_overdue', 'count_overdue'));
     }
 
     /**
@@ -186,22 +213,11 @@ class VendorsController extends Controller
     }
 
     // Mail Statetment
-    public function mail($id)
+    public function mail(Vendors $vendor)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
-        ->where('id', $id)
-        ->whereHas('PaymentReferences', function($query) {
-            $query->where('type', 'bill')
-            ->where(function ($query) {
-                $query->where('status', 'unpaid')
-                  ->orWhere('status', 'partially_paid');
-              });})->first();
 
-        if(!$vendors)
-            return redirect()->back()->with('error', "No pending statements found.");
-
-        $payment_reference = PaymentReferences::where('vendor_id', $vendors->id)
+        $payment_reference = PaymentReferences::where('vendor_id', $vendor->id)
         ->where('type', 'bill')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
@@ -215,30 +231,22 @@ class VendorsController extends Controller
             $bills[] = $payment->toArray() + $payment->bills->toArray();
         }
 
-        Mail::to($vendors->email)->queue(new MailVendorStatement ($vendors, $bills));
+        Mail::to($vendor->email)->queue(new MailVendorStatement ($vendor, $bills));
 
+        // return redirect()->back()->with('success', "Successfully sent vendor statement.");
 
-        return redirect()->back()->with('success', "Successfully sent vendor statement.");
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully sent vendor statement.'
+        ]);
     }
 
     // Print Statement
-    public function print($id)
+    public function print(Vendors $vendor)
     {
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
-        $vendors = Vendors::where('accounting_system_id', $accounting_system_id)
-        ->where('id', $id)
-        ->whereHas('PaymentReferences', function($query) {
-            $query->where('type', 'bill')
-            ->where(function ($query) {
-                $query->where('status', 'unpaid')
-                  ->orWhere('status', 'partially_paid');
-              });})->first();
 
-
-        if(!$vendors)
-            return redirect()->back()->with('error', "No pending statements found.");
-
-        $payment_references = PaymentReferences::where('vendor_id', $vendors->id)
+        $payment_references = PaymentReferences::where('vendor_id', $vendor->id)
         ->where('type', 'bill')
         ->where(function ($query) {
             $query->where('status', 'unpaid')
@@ -250,8 +258,8 @@ class VendorsController extends Controller
             $total_balance += $payment_reference->bills->grand_total - $payment_reference->bills->amount_received;
         }
 
-        $pdf = PDF::loadView('vendors.vendors.print', compact('payment_references','total_balance'));
-        return $pdf->stream('vendor_statement_'.$id.'_'.date('Y-m-d').'.pdf');
+        $pdf = PDF::loadView('vendors.vendors.print', compact('vendor', 'payment_references','total_balance'));
+        return $pdf->stream('vendor_statement_'.$vendor->id.'_'.date('Y-m-d').'.pdf');
     }
 
     // Import Export

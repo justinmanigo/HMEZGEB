@@ -39,24 +39,49 @@
 
         <div class="card mb-4">
             <div class="card-body">
-                {{-- success error --}}
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Success!</strong> {{ session('success') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                <!-- add search input group -->
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <form id="vendors-search-form">
+                        <div class="input-group mr-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input id="vendors-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                aria-describedby="search-addon">
+                            <button id="vendors-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span class="text">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="btn-group" role="group" aria-label="Second group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="vendors-page-number-label">Page 0 of 0</span>
+                        </div>
+                        <button id="vendors-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                        <button id="vendors-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
                     </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error!</strong> {{ session('error') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
+                </div>
+
+                {{-- Transaction Contents --}}
                 <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>ID</th>
+                            <th>Vendor Name</th>
+                            <th>Tin #</th>
+                            <th class="text-right">Balance</th>
+                            <th width="160px">Actions</th>
+                        </thead>
+                        <tbody id="vendors-list">
+                            <!-- JS will populate this -->
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- <div class="table-responsive">
                     <table class="table table-bordered" width="100%" id="dataTables" cellspacing="100">
                         <thead>
                             <tr>
@@ -139,7 +164,7 @@
                         </tr> -->
                         </tbody>
                     </table>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -290,7 +315,7 @@
 </div>
 
 {{-- Print confirmation modal --}}
-<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+<div class="modal fade" id="modal-print" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -304,7 +329,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="" id="print-deposit" class="btn btn-primary">Print</a>
+                <a href="" id="print-deposit" class="btn btn-primary" target="_blank">Print</a>
             </div>
         </div>
     </div>
@@ -312,25 +337,10 @@
 
 
 <script>
-        function addVendorIdModal(id) {
-            $('#specificStatement').attr('href', '{{ route("vendors.statement.mail", ":id") }}'.replace(':id', id));
-        }
+    function deleteVendor(id) {
 
-        function printModal(id){
-            $('#print-deposit').attr('href', '{{ route("vendors.statement.print", ":id") }}'.replace(':id', id));
-        }
-
-
-
-        function deleteVendor(id) {
-
-            $('#delete-frm').attr('action', "/vendors/vendors/" + id);
-        }
-
-    $(document).ready(function () {
-            $('#dataTables').DataTable();
-            $('.dataTables_filter').addClass('pull-right');
-        });
+        $('#delete-frm').attr('action', "/vendors/vendors/" + id);
+    }
 
     // add the file name only in file input field
     $('.custom-file-input').on('change', function() {
@@ -338,8 +348,8 @@
     $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
 
-        //$('#details').trumbowyg();
-        //$('#features').trumbowyg();
-
 </script>
+<script src="/js/hoverable.js"></script>
+<script src="/js/vendors/vendor/vendors_table.js"></script>
+<script src="/js/vendors/vendor/table_actions.js"></script>
 @endsection

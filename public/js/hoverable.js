@@ -22,6 +22,9 @@ $(document).on('click', '.actions button', function(e){
     else if(page == "customers") {
         window.customers_table_actions(id, type, action);
     }
+    else if(page == "vendors") {
+        window.vendors_table_actions(id, type, action);
+    }
 });
 
 $(document).on('click', '.actions a', function(e){
