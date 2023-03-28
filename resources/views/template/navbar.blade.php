@@ -159,7 +159,7 @@
                     <div class="dropdown">
                         <button class="btn btn-primary mr-3 dropdown-toggle" type="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-fw fa-pen"></i>
+                            <i class="fas fa-fw fa-plus"></i>
                             <span class="text">Quick New</span>
                         </button>
                             <!-- Dropdown - User Information -->
@@ -170,32 +170,32 @@
                                     <div class="col-12 col-md-6 col-lg-4">
                                         <h6>Customers</h6>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/customers?new=modal-customer') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Customer
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/deposits?new=modal-deposit') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Deposit
                                         </a>
-                                        <p class="my-2"><strong>Receipt</strong></p>
+                                        <p class="my-2">Receipt</p>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-sale') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Sale <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-receipt') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Receipt
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/customers/receipts?new=modal-advance-revenue') --}}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Advance Revenue <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-credit-receipt') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Credit Receipt
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/customers/receipts?new=modal-proforma') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Proforma
                                         </a>
 
@@ -203,82 +203,82 @@
                                     <div class="col-12 col-md-6 col-lg-4">
                                         <h6>Vendors</h6>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/vendors?new=new_vendor_modal') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Vendor
                                         </a>
-                                        <p class="my-2"><strong>Bills</strong></p>
+                                        <p class="my-2">Bills</p>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-cogs') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             COGS <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-expense') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Expense <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-bill') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Bill
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/bills?new=modal-purchase-order') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Purchase Order
                                         </a>
-                                        <p class="my-2"><strong>Payment</strong></p>
+                                        <p class="my-2">Payment</p>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-bill-payment') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Bill
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-vat-payment') --}}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             VAT <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-withholding-payment') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Withholding <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-payroll-payment') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Payroll <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/vendors/payments?new=modal-income-tax-payment') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Income Tax <span class="badge badge-success">New</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-pension-payment') --}}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Pension <span class="badge badge-danger">Soon</span>
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link disabled" href="#{{-- url('/vendors/payments?new=modal-commission-payment') --}}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Commission <span class="badge badge-danger">Soon</span>
                                         </a>
                                     </div>
                                     <div class="col-12 col-md-6 col-lg-4">
                                         <h6>Journal Vouchers</h6>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/jv?new=modal-jv') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Journal Voucher
                                         </a>
                                         <h6 class="mt-2">Human Resource</h6>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/hr/addition?new=modal-addition') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Addition
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/hr/deduction?new=modal-deduction') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Deduction
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/hr/loan?new=modal-loan') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Loan
                                         </a>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/hr/overtime?new=modal-overtime') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Overtime
                                         </a>
                                         <h6 class="mt-2">Inventory</h6>
                                         <a class="dropdown-item rounded px-2 quick-new-link" href="{{ url('/inventory?new=modal-new-item') }}">
-                                            <i class="fas fa-fw fa-pen fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            <i class="fas fa-fw fa-plus fa-sm fa-fw mr-2 text-gray-400"></i>
                                             Item
                                         </a>
                                     </div>
@@ -319,7 +319,7 @@
                                         <input type="text" class="form-control bg-light border-0 small"
                                             placeholder="Search for..." aria-label="Search"
                                             aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
+                                        <div class="input-group-applusd">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>
                                             </button>

@@ -9,9 +9,9 @@
                 <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal"
                     data-target="#new_vendor_modal">
                     <span class="icon text-white-50">
-                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-plus"></i>
                     </span>
-                    <span class="text">New</span>
+                    <span class="text">New Vendor</span>
                 </button>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
                     <span class="icon text-white-50">

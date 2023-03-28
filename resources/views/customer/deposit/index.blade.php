@@ -5,9 +5,9 @@
 <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
     <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-deposit" id="modal-deposit-button">
         <span class="icon text-white-50">
-            <i class="fas fa-pen"></i>
+            <i class="fas fa-plus"></i>
         </span>
-        <span class="text">New</span>
+        <span class="text">New Deposit</span>
     </button>
 </div>
 

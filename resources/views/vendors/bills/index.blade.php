@@ -11,9 +11,9 @@
                     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <span class="icon text-white-50">
-                            <i class="fas fa-pen"></i>
+                            <i class="fas fa-plus"></i>
                         </span>
-                        <span class="text">New</span>
+                        <span class="text">New Bill</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                         <a role="button" class="dropdown-item" data-toggle="modal"
