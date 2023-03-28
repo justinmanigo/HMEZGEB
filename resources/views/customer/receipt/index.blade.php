@@ -5,94 +5,82 @@
     <div class="row">
 
         {{-- Main Content Section --}}
-        <div class="col-xl-10 col-lg-9 col-12">
+        <div class="col-12">
             {{-- Button Group Navigation --}}
-            <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-                <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-pen"></i>
-                        </span>
-                        <span class="text">New</span>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-sale">Sale <span class="badge badge-success">New</span></a>
-                        <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Receipt</a>
-                        <a role="button" class="dropdown-item disabled" data-toggle="modal"
-                            {{-- data-target="#modal-advance-revenue" --}}>Advance Revenue <span class="badge badge-danger">Soon</span></a>
-                        <a role="button" class="dropdown-item" data-toggle="modal"
-                            data-target="#modal-credit-receipt">Credit Receipt</a>
-                        <a role="button" class="dropdown-item" data-toggle="modal"
-                            data-target="#modal-proforma">Proforma</a>
+            <div class="d-flex justify-content-between mb-3">
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-plus"></i>
+                            </span>
+                            <span class="text">New Receipt</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-sale">Sale <span class="badge badge-success">New</span></a>
+                            <a role="button" class="dropdown-item" data-toggle="modal" data-target="#modal-receipt">Receipt</a>
+                            <a role="button" class="dropdown-item disabled" data-toggle="modal"
+                                {{-- data-target="#modal-advance-revenue" --}}>Advance Revenue <span class="badge badge-danger">Soon</span></a>
+                            <a role="button" class="dropdown-item" data-toggle="modal"
+                                data-target="#modal-credit-receipt">Credit Receipt</a>
+                            <a role="button" class="dropdown-item" data-toggle="modal"
+                                data-target="#modal-proforma">Proforma</a>
+                        </div>
                     </div>
+                    {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-file-import"></i>
+                        </span>
+                        <span class="text">Import</span>
+                    </button> --}}
+                    {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-download"></i>
+                        </span>
+                        <span class="text">Export</span>
+                    </button> --}}
+                    <a class="btn btn-secondary" href="{{route('receipts.export.csv')}}">Export</a>
                 </div>
-                {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-file-import"></i>
-                    </span>
-                    <span class="text">Import</span>
-                </button> --}}
-                {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-download"></i>
-                    </span>
-                    <span class="text">Export</span>
-                </button> --}}
-            <a class="btn btn-secondary" href="{{route('receipts.export.csv')}}">Export</a>
+                <div class="mt-2 mb-0 pb-0">
+                    <h5 class="pb-0 mb-0">
+                        Account Receivable:
+                        <span class="badge badge-warning pb-1">Active: {{$count}}</span>
+                        <span class="badge badge-warning mr-2 pb-1">{{number_format($total_balance,2)}}</span>
+                        <span class="badge badge-danger pb-1">Overdue: {{$count_overdue}}</span>
+                        <span class="badge badge-danger pb-1">{{number_format($total_balance_overdue,2)}}</span>
+                    </h5>
+                </div>
+                {{-- <h1 class="h3 text-gray-800">Customers</h1> --}}
             </div>
-
-            @if(session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session()->get('success') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @elseif(session()->has('danger'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session()->get('danger') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @elseif(isset($_GET['success']))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ $_GET['success'] }}
-                    {{-- {{ session()->get('success') }} --}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-
-            {{-- Tab Navigation --}}
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="receipts-tab" data-toggle="tab" href="#sales" role="tab"
-                        aria-controls="receipts" aria-selected="true">Sales</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="receipts-tab" data-toggle="tab" href="#receipts" role="tab"
-                        aria-controls="receipts" aria-selected="true">Receipts</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link disabled" id="receipts-tab" data-toggle="tab" href="#advance-revenues" role="tab"
-                        aria-controls="receipts" aria-selected="true">Advance Revenues <span class="badge badge-danger">Soon</span></a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="receipts-tab" data-toggle="tab" href="#credit-receipts" role="tab"
-                        aria-controls="receipts" aria-selected="true">Credit Receipts</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proformas" role="tab"
-                        aria-controls="proforma" aria-selected="false">Proforma</a>
-                </li>
-            </ul>
 
             {{-- Tab Contents --}}
             <div class="card" class="content-card">
                 <div class="card-body tab-content" id="myTabContent">
+
+                    {{-- Tab Navigation --}}
+                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="receipts-tab" data-toggle="tab" href="#sales" role="tab"
+                                aria-controls="receipts" aria-selected="true">Sales</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="receipts-tab" data-toggle="tab" href="#receipts" role="tab"
+                                aria-controls="receipts" aria-selected="true">Receipts</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link disabled" id="receipts-tab" data-toggle="tab" href="#advance-revenues" role="tab"
+                                aria-controls="receipts" aria-selected="true">Advance Revenues <span class="badge badge-danger">Soon</span></a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="receipts-tab" data-toggle="tab" href="#credit-receipts" role="tab"
+                                aria-controls="receipts" aria-selected="true">Credit Receipts</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="proforma-tab" data-toggle="tab" href="#proformas" role="tab"
+                                aria-controls="proforma" aria-selected="false">Proforma</a>
+                        </li>
+                    </ul>
 
                     {{-- Sales Contents --}}
                     <div class="tab-pane fade show" id="sales" role="tabpanel" aria-labelledby="sales-tab">
@@ -280,46 +268,6 @@
                 </div>
             </div>
 
-        </div>
-
-        {{-- Sidebar Content --}}
-        <div class="col-xl-2 col-lg-3 d-none d-lg-block">
-            <h4 class="">Account Receivable</h4>
-            {{-- Account Receivable Active --}}
-            <div class="mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance,2)}}</div>
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    {{$count}} Active</div>
-                            </div>
-                            <div class="col-auto">
-                                {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Account Receivable Overdue --}}
-            <div class="mb-4">
-                <div class="card border-left-danger shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue,2)}}</div>
-                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                    {{$count_overdue}} Over Due</div>
-                            </div>
-                            <div class="col-auto">
-                                {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>

@@ -5,39 +5,51 @@
 <div class="row">
 
     {{-- Main Content Section --}}
-    <div class="col-xl-10 col-lg-9 col-12">
-        {{-- Button Group Navigation --}}
-        <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-customer">
-                <span class="icon text-white-50">
-                    <i class="fas fa-pen"></i>
-                </span>
-                <span class="text">New</span>
-            </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
-                <span class="icon text-white-50">
-                    <i class="fas fa-file-import"></i>
-                </span>
-                <span class="text">Import</span>
-            </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
-                <span class="icon text-white-50">
-                    <i class="fas fa-download"></i>
-                </span>
-                <span class="text">Export</span>
-            </button>
-            {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-statements" >
-                <span class="icon text-white-50">
-                    <i class="fas fa-envelope"></i>
-                </span>
-                <span class="text">Mail Statements</span>
-            </button> --}}
+    <div class="col-12">
+        <!-- create flex that allows two columns that aligns against each other -->
+        <div class="d-flex justify-content-between mb-3">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal" data-target="#modal-customer">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="text">New Customer</span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-file-import"></i>
+                    </span>
+                    <span class="text">Import</span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-download"></i>
+                    </span>
+                    <span class="text">Export</span>
+                </button>
+                {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-statements" >
+                    <span class="icon text-white-50">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    <span class="text">Mail Statements</span>
+                </button> --}}
+            </div>
+            <div class="mt-2 mb-0 pb-0">
+                <h5 class="pb-0 mb-0">
+                    Account Receivable:
+                    <span class="badge badge-warning pb-1">Active: 0</span>
+                    <span class="badge badge-warning mr-2 pb-1">0.00</span>
+                    <span class="badge badge-danger pb-1">Overdue: 0</span>
+                    <span class="badge badge-danger pb-1">0.00 </span>
+                </h5>
+            </div>
+            {{-- <h1 class="h3 text-gray-800">Customers</h1> --}}
         </div>
 
-            {{-- Page Content --}}
-            <div class="card shadow mb-4">
-                <div class="card-body">
-                    @if(session()->has('success'))
+        {{-- Page Content --}}
+        <div class="card mb-4">
+            <div class="card-body">
+                @if(session()->has('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session()->get('success') }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -61,88 +73,46 @@
                     </button>
                 </div>
             @endif
-                <!-- add search input group -->
-                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-                    <form id="customers-search-form">
-                        <div class="input-group mr-2">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
-                            </div>
-                            <input id="customers-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
-                                aria-describedby="search-addon">
-                            <button id="customers-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-search"></i>
-                                </span>
-                                <span class="text">Submit</span>
-                            </button>
-                        </div>
-                    </form>
-                    <div class="btn-group" role="group" aria-label="Second group">
+            <!-- add search input group -->
+            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                <form id="customers-search-form">
+                    <div class="input-group mr-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="customers-page-number-label">Page 0 of 0</span>
+                            <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
                         </div>
-                        <button id="customers-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
-                        <button id="customers-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                        <input id="customers-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                            aria-describedby="search-addon">
+                        <button id="customers-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <span class="text">Submit</span>
+                        </button>
                     </div>
-                </div>
-
-                {{-- Transaction Contents --}}
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <th>ID</th>
-                            <th>Customer Name</th>
-                            <th>Tin #</th>
-                            <th>Label</th>
-                            <th>Balance</th>
-                            <th width="160px">Actions</th>
-                        </thead>
-                        <tbody id="customers-list">
-                            <!-- JS will populate this -->
-                        </tbody>
-                    </table>
+                </form>
+                <div class="btn-group" role="group" aria-label="Second group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="customers-page-number-label">Page 0 of 0</span>
+                    </div>
+                    <button id="customers-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                    <button id="customers-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
                 </div>
             </div>
-        </div>
-    </div>
 
-    {{-- Sidebar Content Section --}}
-    <div class="col-xl-2 col-lg-3 d-none d-lg-block">
-        <h4 class="">Account Receivable</h4>
-        {{-- Account Receivable Active --}}
-        <div class="mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance,2)}}</div>
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                {{$count}} Active</div>
-                        </div>
-                        <div class="col-auto">
-                            {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Account Receivable Overdue --}}
-        <div class="mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue, 2)}}</div>
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                {{$count_overdue}} Over Due</div>
-                        </div>
-                        <div class="col-auto">
-                            {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
-                        </div>
-                    </div>
-                </div>
+            {{-- Transaction Contents --}}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th>ID</th>
+                        <th>Customer Name</th>
+                        <th>Tin #</th>
+                        <th class="text-right">Balance</th>
+                        <th width="160px">Actions</th>
+                    </thead>
+                    <tbody id="customers-list">
+                        <!-- JS will populate this -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -53,7 +53,7 @@ function customers_search(query = "", page = 1)
         {
             let row = `
                 <tr>
-                    <td colspan="6" class="text-center">No customers found.</td>
+                    <td colspan="5" class="text-center">No customers found.</td>
                 </tr>
             `;
             customers_list.append(row);
@@ -68,14 +68,13 @@ function customers_search(query = "", page = 1)
                 let row = `
                     <tr class="hoverable" data-href="#">
                         <td>${customer.id}</td>
-                        <td>${customer.name}</td>
+                        <td>${customer.name}<small class="badge badge-primary ml-2" style="font-weight:400!important">${customer.label}</small></td>
                         <td>${customer.tin_number}</td>
-                        <td><span class="badge badge-primary">${customer.label}</span></td>
                         <td class="text-right">${parseFloat(customer.balance.balance).toFixed(2)}</td>
                         <td class="actions">
-                            <a href="#" class="btn btn-sm btn-primary disabled">
+                            <!--<a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
-                            </a>
+                            </a>-->
                             <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-pen"></i>
                             </a>
