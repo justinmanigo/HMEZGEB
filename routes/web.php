@@ -567,12 +567,17 @@ Route::group([
                 'middleware' => 'acctsys.permission:4',
             ], function(){
                 // Resource
-                Route::get('/vendors/vendors', [VendorsController::class, 'index'])->name('index');
-                Route::post('/vendors/vendors', [VendorsController::class, 'store'])->name('store');
-                Route::get('/vendors/vendors/{vendor}', [VendorsController::class, 'show'])->name('show');
-                Route::get('/vendors/vendors/{vendor}/edit', [VendorsController::class, 'edit'])->name('edit');
-                Route::put('/vendors/vendors/{vendor}', [VendorsController::class, 'update'])->name('update');
-                Route::delete('/vendors/vendors/{vendor}', [VendorsController::class, 'destroy'])->name('destroy');
+
+                Route::group([
+                    'as' => 'vendors.',
+                ], function(){
+                    Route::get('/vendors/vendors', [VendorsController::class, 'index'])->name('index');
+                    Route::post('/vendors/vendors', [VendorsController::class, 'store'])->name('store');
+                    Route::get('/vendors/vendors/{vendor}', [VendorsController::class, 'show'])->name('show');
+                    Route::get('/vendors/vendors/{vendor}/edit', [VendorsController::class, 'edit'])->name('edit');
+                    Route::put('/vendors/vendors/{vendor}', [VendorsController::class, 'update'])->name('update');
+                    Route::delete('/vendors/vendors/{vendor}', [VendorsController::class, 'destroy'])->name('destroy');
+                });
 
                 // Mail
                 Route::get('/vendors/mail/statement/{vendor}', [VendorsController::class, 'mail'])->name('statement.mail');
