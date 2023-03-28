@@ -80,91 +80,6 @@
                         </tbody>
                     </table>
                 </div>
-
-                {{-- <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" id="dataTables" cellspacing="100">
-                        <thead>
-                            <tr>
-                                <th>Vendor Name</th>
-                                <th>TIN#</th>
-                                <th>City</th>
-                                <th>Contact Person</th>
-                                <th>Mobile#</th>
-                                <th>Label</th>
-                                <th>Balance</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach($vendors as $vendor)
-                            <tr>
-                                <td>{{$vendor->name}}</td>
-                                <td>{{$vendor->tin_number}}</td>
-                                <td>{{$vendor->city}}</td>
-                                <td>{{$vendor->contact_person}}</td>
-                                <td>{{$vendor->mobile_number}}</td>
-                                <td>
-                                    @if($vendor->label=='VIP')
-                                    <span class="badge badge-primary">{{$vendor->label}}</span>
-                                    @endif
-                                    @if($vendor->label=='ISP')
-                                    <span class="badge badge-info">{{$vendor->label}}</span>
-                                    @endif
-                                    @if($vendor->label=='New')
-                                    <span class="badge badge-secondary">{{$vendor->label}}</span>
-                                    @endif
-                                </td>
-                                <td>Birr {{number_format($vendor->balance['balance'],2)}}</td>
-                                <td>
-                                    <a href="{{ route('vendors.vendors.edit', $vendor->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
-                                        <!-- edit -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
-                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$vendor->id}})">
-                                        <!-- print -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-print"></i>
-                                        </span>
-                                    </button>
-                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-statement" onclick="addVendorIdModal({{$vendor->id}})">
-                                        <!-- email -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                    </button>
-                                    <button class="btn btn-sm btn-icon btn-danger mb-1"  data-toggle="modal" data-target="#deleteConfirmationModel" onclick="deleteVendor({{$vendor->id}})">
-                                        <!-- delete -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                            <!-- <tr onclick="window.location='/individualVendor'">
-                            <td>Pocketteams</td>
-                            <td>362162217</td>
-                            <td>Cebu</td>
-                            <td>John Doe</td>
-                            <td>09208642910</td>
-                            <td><span class="badge badge-info">ISP</span></td>
-                            <td>1,000.00</td>
-                        </tr>
-                        <tr onclick="window.location='/individualVendor'">
-                            <td>IKEA</td>
-                            <td>521677826</td>
-                            <td>Manila</td>
-                            <td>Jane Doe</td>
-                            <td>09084378189</td>
-                            <td><span class="badge badge-secondary">New</span></td>
-                            <td>8,000.00</td>
-                        </tr> -->
-                        </tbody>
-                    </table>
-                </div> --}}
             </div>
         </div>
     </div>
@@ -185,7 +100,7 @@
                     <p class="h3 pl-4 m-auto">Add New Vendor</p>
                     <a class="close" data-dismiss="modal">×</a>
                 </div>
-                <form action="{{ route('vendors.vendors.store') }}" method="POST" enctype="multipart/form-data">
+                <form  class="ajax-submit-updated" id="form-vendor" action="{{ route('vendors.vendors.store') }}" method="POST" enctype="multipart/form-data" data-message="Successfully created vendor." data-noreload="true" data-onsuccess="vendors_search" data-onsuccessparam="vendors_page_number_current" data-modal="new_vendor_modal">
                     @csrf
                     @include('vendors.vendors.forms.addVendorModal')
                     <div class="modal-footer">
