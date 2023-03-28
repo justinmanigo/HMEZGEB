@@ -47,30 +47,6 @@
         {{-- Page Content --}}
         <div class="card mb-4">
             <div class="card-body">
-                @if(session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session()->get('success') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                @endif
-                @if(session()->has('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session()->get('error') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
-                @if(session()->has('danger'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session()->get('danger') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
                 <!-- add search input group -->
                 <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
                     <form id="customers-search-form">
