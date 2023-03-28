@@ -168,17 +168,22 @@ class CustomerController extends Controller
      * @param  \App\Models\Customers  $customers
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id)
+    public function destroy(Customers $customer)
     {
-        try{
-        $customers = Customers::find($id);
-        $customers->delete();
-        }
-        catch(\Exception $e){
-            return redirect()->back()->with('danger', "You are not authorized to delete this customer.");
-        }
-        return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
+        $rr_count = ReceiptReferences::where('customer_id', $customer->id)->count();
 
+        if($rr_count > 0) {
+            throw new \Exception("Cannot delete customer. Customer has receipts.");
+        }
+
+        $customer->delete();
+
+        // return redirect()->route('customers.customers.index')->with('success', "Successfully deleted customer");
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully deleted customer.'
+        ]);
     }
     // Mail
     // public function mailCustomerStatements()

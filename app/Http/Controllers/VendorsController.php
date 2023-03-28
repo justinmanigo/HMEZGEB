@@ -198,17 +198,22 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Vendors $vendor)
     {
-        try{
-        $vendor = Vendors::where('id',$id)->first();
+        $pr_count = PaymentReferences::where('vendor_id', $vendor->id)->count();
+
+        if($pr_count > 0) {
+            throw new \Exception("Cannot delete vendor. Vendor has transactions.");
+        }
+
         $vendor->delete();
-        }
-        catch(\Exception $e)
-        {
-            return back()->with('error', 'Make sure there are no related transactions with vendor.');
-        }
-        return redirect('/vendors')->withSuccess('Successfully Deleted');;
+
+        // return redirect('/vendors')->withSuccess('Successfully Deleted');;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Deleted Vendor.'
+        ], 200);
 
     }
 
