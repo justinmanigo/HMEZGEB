@@ -39,104 +39,44 @@
 
         <div class="card mb-4">
             <div class="card-body">
-                {{-- success error --}}
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Success!</strong> {{ session('success') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                <!-- add search input group -->
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <form id="vendors-search-form">
+                        <div class="input-group mr-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input id="vendors-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                aria-describedby="search-addon">
+                            <button id="vendors-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span class="text">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="btn-group" role="group" aria-label="Second group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="vendors-page-number-label">Page 0 of 0</span>
+                        </div>
+                        <button id="vendors-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                        <button id="vendors-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
                     </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Error!</strong> {{ session('error') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
-                <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" id="dataTables" cellspacing="100">
-                        <thead>
-                            <tr>
-                                <th>Vendor Name</th>
-                                <th>TIN#</th>
-                                <th>City</th>
-                                <th>Contact Person</th>
-                                <th>Mobile#</th>
-                                <th>Label</th>
-                                <th>Balance</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                </div>
 
-                        <tbody>
-                            @foreach($vendors as $vendor)
-                            <tr>
-                                <td>{{$vendor->name}}</td>
-                                <td>{{$vendor->tin_number}}</td>
-                                <td>{{$vendor->city}}</td>
-                                <td>{{$vendor->contact_person}}</td>
-                                <td>{{$vendor->mobile_number}}</td>
-                                <td>
-                                    @if($vendor->label=='VIP')
-                                    <span class="badge badge-primary">{{$vendor->label}}</span>
-                                    @endif
-                                    @if($vendor->label=='ISP')
-                                    <span class="badge badge-info">{{$vendor->label}}</span>
-                                    @endif
-                                    @if($vendor->label=='New')
-                                    <span class="badge badge-secondary">{{$vendor->label}}</span>
-                                    @endif
-                                </td>
-                                <td>Birr {{number_format($vendor->balance['balance'],2)}}</td>
-                                <td>
-                                    <a href="{{ route('vendors.vendors.edit', $vendor->id) }}" class="btn btn-sm btn-icon btn-primary mb-1">
-                                        <!-- edit -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-pen"></i>
-                                        </span>
-                                    </a>
-                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-print-confirmation" onclick="printModal({{$vendor->id}})">
-                                        <!-- print -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-print"></i>
-                                        </span>
-                                    </button>
-                                    <button class="btn btn-sm btn-icon btn-secondary mb-1" data-toggle="modal" data-target="#modal-statement" onclick="addVendorIdModal({{$vendor->id}})">
-                                        <!-- email -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-envelope"></i>
-                                        </span>
-                                    </button>
-                                    <button class="btn btn-sm btn-icon btn-danger mb-1"  data-toggle="modal" data-target="#deleteConfirmationModel" onclick="deleteVendor({{$vendor->id}})">
-                                        <!-- delete -->
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                            <!-- <tr onclick="window.location='/individualVendor'">
-                            <td>Pocketteams</td>
-                            <td>362162217</td>
-                            <td>Cebu</td>
-                            <td>John Doe</td>
-                            <td>09208642910</td>
-                            <td><span class="badge badge-info">ISP</span></td>
-                            <td>1,000.00</td>
-                        </tr>
-                        <tr onclick="window.location='/individualVendor'">
-                            <td>IKEA</td>
-                            <td>521677826</td>
-                            <td>Manila</td>
-                            <td>Jane Doe</td>
-                            <td>09084378189</td>
-                            <td><span class="badge badge-secondary">New</span></td>
-                            <td>8,000.00</td>
-                        </tr> -->
+                {{-- Transaction Contents --}}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>ID</th>
+                            <th>Vendor Name</th>
+                            <th>Tin #</th>
+                            <th class="text-right">Balance</th>
+                            <th width="160px">Actions</th>
+                        </thead>
+                        <tbody id="vendors-list">
+                            <!-- JS will populate this -->
                         </tbody>
                     </table>
                 </div>
@@ -160,7 +100,7 @@
                     <p class="h3 pl-4 m-auto">Add New Vendor</p>
                     <a class="close" data-dismiss="modal">×</a>
                 </div>
-                <form action="{{ route('vendors.vendors.store') }}" method="POST" enctype="multipart/form-data">
+                <form  class="ajax-submit-updated" id="form-vendor" action="{{ route('vendors.vendors.store') }}" method="POST" enctype="multipart/form-data" data-message="Successfully created vendor." data-noreload="true" data-onsuccess="vendors_search" data-onsuccessparam="vendors_page_number_current" data-modal="new_vendor_modal">
                     @csrf
                     @include('vendors.vendors.forms.addVendorModal')
                     <div class="modal-footer">
@@ -290,7 +230,7 @@
 </div>
 
 {{-- Print confirmation modal --}}
-<div class="modal fade" id="modal-print-confirmation" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
+<div class="modal fade" id="modal-print" tabindex="-1" role="dialog" aria-labelledby="modal-print-label" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -304,7 +244,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="" id="print-deposit" class="btn btn-primary">Print</a>
+                <a href="" id="print-deposit" class="btn btn-primary" target="_blank">Print</a>
             </div>
         </div>
     </div>
@@ -312,25 +252,10 @@
 
 
 <script>
-        function addVendorIdModal(id) {
-            $('#specificStatement').attr('href', '{{ route("vendors.statement.mail", ":id") }}'.replace(':id', id));
-        }
+    function deleteVendor(id) {
 
-        function printModal(id){
-            $('#print-deposit').attr('href', '{{ route("vendors.statement.print", ":id") }}'.replace(':id', id));
-        }
-
-
-
-        function deleteVendor(id) {
-
-            $('#delete-frm').attr('action', "/vendors/vendors/" + id);
-        }
-
-    $(document).ready(function () {
-            $('#dataTables').DataTable();
-            $('.dataTables_filter').addClass('pull-right');
-        });
+        $('#delete-frm').attr('action', "/vendors/vendors/" + id);
+    }
 
     // add the file name only in file input field
     $('.custom-file-input').on('change', function() {
@@ -338,8 +263,8 @@
     $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
 
-        //$('#details').trumbowyg();
-        //$('#features').trumbowyg();
-
 </script>
+<script src="/js/hoverable.js"></script>
+<script src="/js/vendors/vendor/vendors_table.js"></script>
+<script src="/js/vendors/vendor/table_actions.js"></script>
 @endsection
