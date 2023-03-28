@@ -139,13 +139,11 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Vendors $vendor)
     {
 
         $accounting_system_id = $this->request->session()->get('accounting_system_id');
         //view edit vendor info
-        $vendor = Vendors::where('id',$id)->first();
-        if(!$vendor) return abort(404);
         if($vendor->accounting_system_id != $accounting_system_id) {
             return redirect()->route('vendors.vendors.index')->with('danger', "You are not authorized to edit this vendor.");
         }
@@ -160,11 +158,8 @@ class VendorsController extends Controller
      * @param  \App\Models\Vendors  $vendors
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Vendors $vendor)
     {
-        // Update the form
-
-        $vendor = Vendors::where('id',$id)->first();
         // if not null then update the image
         if($request->image)
         {
