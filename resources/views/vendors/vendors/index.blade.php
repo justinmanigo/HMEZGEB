@@ -3,30 +3,41 @@
 @section('content')
 
 <div class="row">
-    <div class="col-xl-10 col-lg-9 col-12">
-        <div class="btn-group mb-3" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal"
-                data-target="#new_vendor_modal">
-                <span class="icon text-white-50">
-                    <i class="fas fa-pen"></i>
-                </span>
-                <span class="text">New</span>
-            </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
-                <span class="icon text-white-50">
-                    <i class="fas fa-file-import"></i>
-                </span>
-                <span class="text">Import</span>
-            </button>
-            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
-                <span class="icon text-white-50">
-                    <i class="fas fa-download"></i>
-                </span>
-                <span class="text">Export</span>
-            </button>
+    <div class="col-12">
+        <div class="d-flex justify-content-between mb-3">
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" class="btn btn-primary" href="javascript:void(0)" data-toggle="modal"
+                    data-target="#new_vendor_modal">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-pen"></i>
+                    </span>
+                    <span class="text">New</span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-import">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-file-import"></i>
+                    </span>
+                    <span class="text">Import</span>
+                </button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-export">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-download"></i>
+                    </span>
+                    <span class="text">Export</span>
+                </button>
+            </div>
+            <div class="mt-2 mb-0 pb-0">
+                <h5 class="pb-0 mb-0">
+                    Account Payable:
+                    <span class="badge badge-warning pb-1">Active: {{$count}}</span>
+                    <span class="badge badge-warning mr-2 pb-1">{{number_format($total_balance,2)}}</span>
+                    <span class="badge badge-danger pb-1">Overdue: {{$count_overdue}}</span>
+                    <span class="badge badge-danger pb-1">{{number_format($total_balance_overdue,2)}}</span>
+                </h5>
+            </div>
         </div>
 
-        <div class="card shadow mb-4">
+        <div class="card mb-4">
             <div class="card-body">
                 {{-- success error --}}
                 @if (session('success'))
@@ -128,46 +139,6 @@
                         </tr> -->
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Sidebar Content Section --}}
-    <div class="col-xl-2 col-lg-3 d-none d-lg-block">
-        <h4 class="">Account Receivable</h4>
-        {{-- Account Receivable Active --}}
-        <div class="mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance,2)}}</div>
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                {{$count}} Active</div>
-                        </div>
-                        <div class="col-auto">
-                            {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Account Receivable Overdue --}}
-        <div class="mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">Birr {{number_format($total_balance_overdue,2)}}</div>
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                {{$count_overdue}} Over Due</div>
-                        </div>
-                        <div class="col-auto">
-                            {{-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> --}}
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
