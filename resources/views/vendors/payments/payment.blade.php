@@ -362,6 +362,10 @@
 <script src="/js/vendors/template_select_vendor.js"></script>
 
 <script src="/js/vendors/payment/modal_bill_payment.js"></script>
+<script src="/js/vendors/payment/modal_withholding_payment.js"></script>
+<script src="/js/vendors/payment/modal_payroll_payment.js"></script>
+<script src="/js/vendors/payment/modal_income_tax_payment.js"></script>
+
 <script src="/js/vendors/payment/default_values.js"></script>
 <script src="/js/vendors/payment/select_vendor_billpayment_updated.js"></script>
 <script src="/js/vendors/payment/select_vendor_payroll.js"></script>
@@ -375,11 +379,6 @@
 <!-- Select bill -->
 <script src="/js/vendors/payment/select_payment_bill.js"></script>
 <script src="/js/vendors/payment/select_payment_withholding.js"></script>
-
-<!-- Payroll Payment -->
-<script src="/js/vendors/payment/modal_withholding_payment.js"></script>
-<script src="/js/vendors/payment/modal_payroll_payment.js"></script>
-<script src="/js/vendors/payment/modal_income_tax_payment.js"></script>
 
 
 <!-- Items -->

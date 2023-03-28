@@ -36,7 +36,7 @@ var pension_select_vendor_tagify = new Tagify(pension_select_vendor_elm, {
 pension_select_vendor_tagify.on('dropdown:show dropdown:updated', onDropdownShow)
 pension_select_vendor_tagify.on('dropdown:select', onPensionVendorSelectSuggestion)
 pension_select_vendor_tagify.on('input', onPensionVendorInput)
-pension_select_vendor__vendortagify.on('remove', onPensionVendorRemove)
+pension_select_vendor_tagify.on('remove', onPensionVendorRemove)
 
 var addAllSuggestionsElm;
 

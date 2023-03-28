@@ -2,41 +2,6 @@ var itp_current_account_balance = 0.00
 var itp_income_tax_amount = 0.00
 var itp_balance_after_transaction = 0.00
 
-/**
- * This is for Payroll Payment Cash Account Field
- */
-
-var income_tax_payment_select_cash_account_elm = document.querySelector('#itp_cash_account');
-
-// initialize Tagify on the above input node reference
-
-var income_tax_payment_select_cash_account_tagify = new Tagify(income_tax_payment_select_cash_account_elm, {
-    tagTextProp: 'label', // very important since a custom template is used with this property as text
-    enforceWhitelist: true,
-    mode : "select",
-    skipInvalid: false, // do not remporarily add invalid tags
-    dropdown: {
-        closeOnSelect: true,
-        enabled: 0,
-        classname: 'customer-list',
-        searchKeys: ['label'] // very important to set by which keys to search for suggesttions when typing
-    },
-    templates: {
-        tag: cashAccountTagTemplate,
-        dropdownItem: cashAccountSuggestionItemTemplate
-    },
-    whitelist: [],
-}
-)
-
-
-income_tax_payment_select_cash_account_tagify.on('dropdown:show dropdown:updated', onIncomeTaxPaymentCashAccountDropdownShow)
-income_tax_payment_select_cash_account_tagify.on('dropdown:select', onIncomeTaxPaymentCashAccountSelectSuggestion)
-income_tax_payment_select_cash_account_tagify.on('input', onIncomeTaxPaymentCashAccountInput)
-income_tax_payment_select_cash_account_tagify.on('remove', onIncomeTaxPaymentCashAccountRemove)
-
-var addAllSuggestionsElm;
-
 function onIncomeTaxPaymentCashAccountDropdownShow(e){
     var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
 }

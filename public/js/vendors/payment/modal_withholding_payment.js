@@ -1,38 +1,3 @@
-/**
- * This is for Withholding Payment - Cash Account Field
- */
-
-var withholding_payment_select_cash_account_elm = document.querySelector('#wp_cash_account');
-
-// initialize Tagify on the above input node reference
-
-var withholding_payment_select_cash_account_tagify = new Tagify(withholding_payment_select_cash_account_elm, {
-    tagTextProp: 'label', // very important since a custom template is used with this property as text
-    enforceWhitelist: true,
-    mode : "select",
-    skipInvalid: false, // do not remporarily add invalid tags
-    dropdown: {
-        closeOnSelect: true,
-        enabled: 0,
-        classname: 'customer-list',
-        searchKeys: ['label'] // very important to set by which keys to search for suggesttions when typing
-    },
-    templates: {
-        tag: cashAccountTagTemplate,
-        dropdownItem: cashAccountSuggestionItemTemplate
-    },
-    whitelist: [],
-}
-)
-
-
-withholding_payment_select_cash_account_tagify.on('dropdown:show dropdown:updated', onWithholdingPaymentCashAccountDropdownShow)
-withholding_payment_select_cash_account_tagify.on('dropdown:select', onWithholdingPaymentCashAccountSelectSuggestion)
-withholding_payment_select_cash_account_tagify.on('input', onWithholdingPaymentCashAccountInput)
-withholding_payment_select_cash_account_tagify.on('remove', onWithholdingPaymentCashAccountRemove)
-
-var addAllSuggestionsElm;
-
 function onWithholdingPaymentCashAccountDropdownShow(e){
     var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
 }
