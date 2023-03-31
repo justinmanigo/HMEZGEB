@@ -71,6 +71,8 @@ class PaymentsController extends Controller
             ->where('payment_references.type', '!=', 'bill_payment')
             ->where('payment_references.type', '!=', 'bill')
             ->where('payment_references.type', '!=', 'purchase_order')
+            ->where('payment_references.type', '!=', 'cogs')
+            ->where('payment_references.type', '!=', 'expense')
             ->where(function($q) use ($query) {
                 $q->where('vendors.name', 'like', "%{$query}%")
                     ->orWhere('payment_references.id', 'like', "%{$query}%")
