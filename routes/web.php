@@ -441,6 +441,8 @@ Route::group([
                 Route::get('/vendors/bills', [BillsController::class, 'index'])->name('index');
                 Route::get('/vendors/bills/{bills}', [BillsController::class, 'show'])->name('show');
 
+                Route::get('/ajax/vendor/bills/search/{query?}', [BillsController::class, 'searchAjax']);
+
                 // Bill
                 Route::group([
                     'as' => 'bill.',

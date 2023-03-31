@@ -86,6 +86,51 @@
                         </button>
                     </div>
                 @endif
+
+                <!-- add search input group -->
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <form id="bills-search-form">
+                        <div class="input-group mr-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+                            </div>
+                            <input id="bills-search-input" type="text" class="form-control" placeholder="Search" aria-label="Search"
+                                aria-describedby="search-addon">
+                            <button id="bills-search-submit" type="submit" class="btn btn-primary" disabled style="border-radius:0px 5px 5px 0px">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <span class="text">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="btn-group" role="group" aria-label="Second group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="bills-page-number-label">Page 0 of 0</span>
+                        </div>
+                        <button id="bills-prev" type="button" class="btn btn-secondary" disabled=true>Prev</button>
+                        <button id="bills-next" type="button" class="btn btn-secondary" disabled=true>Next</button>
+                    </div>
+                </div>
+
+                {{-- Transaction Contents --}}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Vendor/Description</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th width="160px">Actions</th>
+                        </thead>
+                        <tbody id="bills-list">
+                            <!-- JS will populate this -->
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                         <thead>
@@ -460,6 +505,10 @@ $(document).ready(function() {
 </script>
 
 <!-- Vendors -->
+<script src="/js/hoverable.js"></script>
+<script src="/js/vendors/bill/bills_table.js"></script>
+<script src="/js/vendors/bill/table_actions.js"></script>
+
 <script src="/js/vendors/template_select_tax.js"></script>
 <script src="/js/vendors/template_select_vendor.js"></script>
 <script src="/js/vendors/template_select_purchase_order.js"></script>
