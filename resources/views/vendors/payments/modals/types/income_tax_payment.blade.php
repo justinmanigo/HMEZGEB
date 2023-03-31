@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{ url('/vendors/payments/incometax') }}" id="form-income-tax-payment" method="post" enctype="multipart/form-data" data-message="Successfully saved income tax payment.">
+<form class="ajax-submit-updated" action="{{ url('/vendors/payments/incometax') }}" id="form-income-tax-payment" method="post" enctype="multipart/form-data" data-message="Successfully saved income tax payment."  data-noreload="true" data-onsuccess="other_payment_search" data-onsuccessparam="other_payments_page_number_current" data-modal="modal-income-tax-payment">
     @csrf
     <div class="modal fade income-tax-payment-modal" id="modal-income-tax-payment" tabindex="-1" role="dialog"
         aria-labelledby="modal-income-tax-payment-label" aria-hidden="true">

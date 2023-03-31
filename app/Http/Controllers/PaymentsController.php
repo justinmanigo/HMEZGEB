@@ -83,4 +83,14 @@ class PaymentsController extends Controller
             'other_payments' => $otherPayments->paginate(10),
         ]);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('vendors.payments.payment');
+    }
 }
