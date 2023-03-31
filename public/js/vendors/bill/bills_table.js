@@ -85,16 +85,35 @@ async function bill_search(query = "", page = 1)
                             <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
                             </a>
+                            ${bill.type == 'cogs' ? `
+                            <button id="print-bill-${bill.id}" class="btn btn-primary btn-sm" disabled>
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-print"></i>
+                                </span>
+                            </button>
+                            `
+                            : `
                             <button id="print-bill-${bill.id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation")" data-type="${bill.type}" data-id="${parsed.id}" data-action="print" data-page="bills">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-print"></i>
                                 </span>
                             </button>
+                            `}
+                            ${bill.type == 'expense' || bill.type == 'cogs' ? `
+                            <button id="mail-bill-${bill.id}" class="btn btn-primary btn-sm" disabled>
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </button>
+                            `
+                            : `
                             <button id="mail-bill-${bill.id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" data-type="${bill.type}" data-id="${parsed.id}" data-action="mail" data-page="bills">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-envelope"></i>
                                 </span>
                             </button>
+                            `}
+
                             ${bill.is_void == "no" ? `
                             <button id="vr-${bill.type}-${bill.id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation")" data-type="${bill.type}" data-id="${parsed.id}" data-action="void" data-page="bills">
                                 <span class="icon text-white-50">
