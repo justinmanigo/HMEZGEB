@@ -133,4 +133,14 @@ class CostOfGoodsSoldController extends Controller
             'success' => true,
         ]);
     }
+
+    public function mail(CostOfGoodsSold $cogs)
+    {
+        // TODO: In frontend, ask user to enter email address to send to.
+    }
+
+    public function print(CostOfGoodsSold $cogs)
+    {
+        // TODO: Create PDF layout that does not have the items table.
+    }
 }

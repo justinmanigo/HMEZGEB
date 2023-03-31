@@ -156,6 +156,12 @@ class ExpenseController extends Controller
         ]);
 
     }
+
+    public function mail(Expense $expense)
+    {
+        // TODO: In frontend, ask user to enter email address to send to.
+    }
+
     public function print(Expense $expense)
     {
         $expense->expenseItems;

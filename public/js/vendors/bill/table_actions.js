@@ -25,6 +25,10 @@ function bills_table_actions(id, type, action)
 // Get id of transaction to mail confirmation modal
 function mailModal(id,type){
     // set attribute href of btn-send-mail
+    // if(type == 'cogs')
+    // $('#modal-mail-confirmation-btn').attr('data-href', `/vendors/bills/cogs/mail/${id}`);
+    // else if(type == 'expense')
+    // $('#modal-mail-confirmation-btn').attr('data-href', `/vendors/bills/expense/mail/${id}`);
     if(type == 'bill')
     $('#modal-mail-confirmation-btn').attr('data-href', `/bill/mail/${id}`);
     else if(type == 'purchase_order')
@@ -37,6 +41,8 @@ function mailModal(id,type){
 // Get id of transaction to print confirmation modal
 function printModal(id,type){
     // set attribute href of btn-send-mail
+    // if(type == 'cogs')
+    // $('#modal-print-confirmation-btn').attr('href', `/vendors/bills/cogs/print/${id}`);
     if(type == 'expense')
     $('#modal-print-confirmation-btn').attr('href', `/vendors/bills/expense/print/${id}`);
     else if(type == 'bill')
