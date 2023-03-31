@@ -519,6 +519,8 @@ Route::group([
                 Route::get('/vendors/payments',[PaymentsController::class,'index']);
                 Route::post('/payment/pension',[PaymentsController::class,'storePensionPayment'])->name('pension.store');
 
+                Route::get('/ajax/vendor/payments/other/search/{query?}', [PaymentsController::class, 'searchOtherPaymentsAjax']);
+
                 Route::group([
                     'as' => 'bill.',
                 ], function(){

@@ -7,12 +7,7 @@ use App\Models\PaymentReferences;
 
 class PaymentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function searchOtherPaymentsAjax($query = null)
     {
         $otherPayments = PaymentReferences::select(
                 'vendors.name',
@@ -76,12 +71,16 @@ class PaymentsController extends Controller
             ->where('payment_references.type', '!=', 'bill_payment')
             ->where('payment_references.type', '!=', 'bill')
             ->where('payment_references.type', '!=', 'purchase_order')
-            ->get();
+            ->where(function($q) use ($query) {
+                $q->where('vendors.name', 'like', "%{$query}%")
+                    ->orWhere('payment_references.id', 'like', "%{$query}%")
+                    ->orWhere('payment_references.type', 'like', "%{$query}%")
+                    ->orWhere('payment_references.date', 'like', "%{$query}%")
+                    ->orWhere('payment_references.status', 'like', "%{$query}%");
+            });
 
-        // return $otherPayments;
-
-        return view('vendors.payments.payment', [
-            'otherPayments' => $otherPayments,
+        return response()->json([
+            'other_payments' => $otherPayments->paginate(10),
         ]);
     }
 }
