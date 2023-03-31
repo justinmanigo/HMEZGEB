@@ -10,6 +10,8 @@ class CostOfGoodsSold extends Model
 {
     use HasFactory;
 
+    protected $table = 'cost_of_goods_sold';
+
     protected $fillable = [
         'payment_reference_id',
         'reference_number',
