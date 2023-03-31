@@ -151,7 +151,6 @@ class BillController extends Controller
     }
 
     /**
-     * TODO: Test this function.
      * Marks an entry as void.
      */
     public function void(Bills $bill)
@@ -171,7 +170,6 @@ class BillController extends Controller
     }
 
     /**
-     * TODO: Test this function.
      * Reverses a voided entry.
      */
     public function revalidate(Bills $bill)
@@ -189,7 +187,6 @@ class BillController extends Controller
     }
 
     /**
-     * TODO: Test this function.
      * Sends an email of the entry.
      */
     public function mail(Bills $bill)
@@ -208,7 +205,6 @@ class BillController extends Controller
     }
 
     /**
-     * TODO: Test this function.
      * Prints the entry.
      */
     public function print(Bills $bill)
