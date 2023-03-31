@@ -34,7 +34,11 @@ class BillsController extends Controller
                 'bills.amount_received as bill_amount',
                 'purchase_orders.grand_total as purchase_order_amount',
                 'cost_of_goods_sold.amount_received as cost_of_goods_sold_amount',
-                'expenses.total_amount_received as expenses_amount'
+                'expenses.total_amount_received as expenses_amount',
+                'bills.id as bill_id',
+                'purchase_orders.id as purchase_order_id',
+                'cost_of_goods_sold.id as cost_of_goods_sold_id',
+                'expenses.id as expenses_id'
             )
             ->leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
             ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
