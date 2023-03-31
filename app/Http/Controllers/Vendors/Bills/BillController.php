@@ -192,7 +192,7 @@ class BillController extends Controller
      * TODO: Test this function.
      * Sends an email of the entry.
      */
-    public function mail(Bill $bill)
+    public function mail(Bills $bill)
     {
         $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
         $emailAddress = $bill->paymentReference->vendor->email;
@@ -211,7 +211,7 @@ class BillController extends Controller
      * TODO: Test this function.
      * Prints the entry.
      */
-    public function print(Bill $bill)
+    public function print(Bills $bill)
     {
         $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
 
