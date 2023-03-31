@@ -146,12 +146,12 @@ function parseBill(bill)
     let description, type, amount;
 
     if(bill.type == 'cogs') {
-        description = "A Cost of Goods";
+        description = "A COGS Entry";
         type = `<span class="badge badge-info">COGS</span>`;
         amount = bill.cost_of_goods_sold_amount;
     }
     else if(bill.type == 'expense') {
-        description = `An Expense`;
+        description = `An Expense Entry`;
         type = `<span class="badge badge-warning">Expense</span>`;
         amount = bill.expenses_amount;
     }
