@@ -132,4 +132,27 @@ class ExpenseController extends Controller
             'credit_amount' => $credit_amount
         ];
     }
+
+    public function void(Expense $expense)
+    {
+        $expense->paymentReference->is_void = "yes";
+        $expense->paymentReference->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully voided expense.'
+        ]);
+    }
+
+    public function reactivate(Expense $expense)
+    {
+        $expense->paymentReference->is_void = "no";
+        $expense->paymentReference->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully reactivated expense.'
+        ]);
+
+    }
 }
