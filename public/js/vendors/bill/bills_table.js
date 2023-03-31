@@ -148,7 +148,7 @@ function parseBill(bill)
     if(bill.type == 'cogs') {
         description = "A Cost of Goods";
         type = `<span class="badge badge-info">COGS</span>`;
-        amount = bill.cost_of_goods_amount;
+        amount = bill.cost_of_goods_sold_amount;
     }
     else if(bill.type == 'expense') {
         description = `An Expense`;
