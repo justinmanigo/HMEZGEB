@@ -73,34 +73,6 @@ class BillsController extends Controller
      */
     public function index()
     {
-        $transactions = PaymentReferences::leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
-            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
-            ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
-            ->leftJoin('cost_of_goods_sold', 'cost_of_goods_sold.payment_reference_id', '=', 'payment_references.id')
-            ->leftJoin('expenses', 'expenses.payment_reference_id', '=', 'payment_references.id')
-            // where subquery
-            ->where(function ($query) {
-                $query->where('payment_references.type', '=', 'bill')
-                    ->orWhere('payment_references.type', '=', 'purchase_order')
-                    ->orWhere('payment_references.type', '=', 'cogs')
-                    ->orWhere('payment_references.type', '=', 'expense');
-            })
-            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
-            ->select(
-                'vendors.name',
-                'payment_references.id',
-                'payment_references.vendor_id',
-                'payment_references.type',
-                'payment_references.date',
-                'payment_references.status',
-                'payment_references.is_void',
-                'bills.amount_received as bill_amount',
-                'purchase_orders.grand_total as purchase_order_amount',
-                'cost_of_goods_sold.amount_received as cost_of_goods_sold_amount',
-                'expenses.total_amount_received as expenses_amount'
-            )
-            ->get();
-
         // count advance revenues
         $vendors = Vendors::where('accounting_system_id', session('accounting_system_id'))->get();
 
@@ -117,7 +89,6 @@ class BillsController extends Controller
         }
 
         return view('vendors.bills.index', [
-            'transactions' => $transactions,
             'total_balance' => $total_balance,
             'total_balance_overdue' => $total_balance_overdue,
             'count' => $count,
