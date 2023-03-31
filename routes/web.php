@@ -450,10 +450,10 @@ Route::group([
                     // HTML
                     Route::post('/vendors/bills/bill', [BillController::class, 'store'])->name('store');
                     // TODO: Convert to POST
-                    Route::get('/bill/void/{id}', [BillController::class, 'void'])->name('void');
-                    Route::get('/bill/reactivate/{id}', [BillController::class, 'revalidate'])->name('revalidate');
-                    Route::get('/bill/mail/{id}', [BillController::class, 'mail'])->name('mail');
-                    Route::get('/bill/print/{id}', [BillController::class, 'print'])->name('print');
+                    Route::get('/bill/void/{bill}', [BillController::class, 'void'])->name('void');
+                    Route::get('/bill/reactivate/{bill}', [BillController::class, 'revalidate'])->name('revalidate');
+                    Route::get('/bill/mail/{bill}', [BillController::class, 'mail'])->name('mail');
+                    Route::get('/bill/print/{bill}', [BillController::class, 'print'])->name('print');
 
                     // AJAX
                     Route::get('/ajax/vendor/bill/purchase-order/search/{vendor}/{value}', [BillController::class, 'ajaxGetVendorPurchaseOrders']);
