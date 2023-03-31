@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{ url('/vendors/payments/withholding') }}" id="form-withholding-payment" method="post" enctype="multipart/form-data" data-message="Successfully saved Withholding payment.">
+<form class="ajax-submit-updated" action="{{ url('/vendors/payments/withholding') }}" id="form-withholding-payment" method="post" enctype="multipart/form-data" data-message="Successfully saved Withholding payment."  data-noreload="true" data-onsuccess="other_payment_search" data-onsuccessparam="other_payments_page_number_current" data-modal="modal-withholding-payment">
     @csrf
     <div class="modal fade withholding-payment-modal" id="modal-withholding-payment" tabindex="-1" role="dialog"
         aria-labelledby="modal-withholding-payment-label" aria-hidden="true">

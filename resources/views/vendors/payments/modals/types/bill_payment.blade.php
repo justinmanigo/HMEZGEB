@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{ url('/vendors/payments/bill') }}" id="form-bill-payment" method="post" enctype="multipart/form-data" data-message="Successfully saved bill payment.">
+<form class="ajax-submit-updated" action="{{ url('/vendors/payments/bill') }}" id="form-bill-payment" method="post" enctype="multipart/form-data" data-message="Successfully saved bill payment." data-noreload="true" data-onsuccess="bill_payment_search" data-onsuccessparam="bill_payments_page_number_current" data-modal="modal-bill-payment">
     @csrf
     <div class="modal fade bill-payment-modal" id="modal-bill-payment" tabindex="-1" role="dialog"
         aria-labelledby="modal-bill-payment-label" aria-hidden="true">

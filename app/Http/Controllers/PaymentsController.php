@@ -7,30 +7,8 @@ use App\Models\PaymentReferences;
 
 class PaymentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function searchOtherPaymentsAjax($query = null)
     {
-        $billPayments = PaymentReferences::select(
-                'vendors.name',
-                'payment_references.id',
-                'payment_references.vendor_id',
-                'payment_references.date',
-                'payment_references.status',
-                // 'payment_references.is_void', // TODO: to implement
-                'bill_payments.amount_paid',
-            )
-            ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
-            ->leftJoin('bill_payments', 'payment_references.id', '=', 'bill_payments.payment_reference_id')
-            ->where('type', 'bill_payment')
-            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
-            ->get();
-
-        // return $billPayments;
-
         $otherPayments = PaymentReferences::select(
                 'vendors.name',
                 'payment_references.id',
@@ -93,13 +71,28 @@ class PaymentsController extends Controller
             ->where('payment_references.type', '!=', 'bill_payment')
             ->where('payment_references.type', '!=', 'bill')
             ->where('payment_references.type', '!=', 'purchase_order')
-            ->get();
+            ->where('payment_references.type', '!=', 'cogs')
+            ->where('payment_references.type', '!=', 'expense')
+            ->where(function($q) use ($query) {
+                $q->where('vendors.name', 'like', "%{$query}%")
+                    ->orWhere('payment_references.id', 'like', "%{$query}%")
+                    ->orWhere('payment_references.type', 'like', "%{$query}%")
+                    ->orWhere('payment_references.date', 'like', "%{$query}%")
+                    ->orWhere('payment_references.status', 'like', "%{$query}%");
+            });
 
-        // return $otherPayments;
-
-        return view('vendors.payments.payment', [
-            'billPayments' => $billPayments,
-            'otherPayments' => $otherPayments,
+        return response()->json([
+            'other_payments' => $otherPayments->paginate(10),
         ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('vendors.payments.payment');
     }
 }
