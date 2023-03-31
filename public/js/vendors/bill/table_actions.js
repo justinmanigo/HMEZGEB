@@ -25,6 +25,10 @@ function bills_table_actions(id, type, action)
 // Get id of transaction to mail confirmation modal
 function mailModal(id,type){
     // set attribute href of btn-send-mail
+    // if(type == 'cogs')
+    // $('#modal-mail-confirmation-btn').attr('data-href', `/vendors/bills/cogs/mail/${id}`);
+    // else if(type == 'expense')
+    // $('#modal-mail-confirmation-btn').attr('data-href', `/vendors/bills/expense/mail/${id}`);
     if(type == 'bill')
     $('#modal-mail-confirmation-btn').attr('data-href', `/bill/mail/${id}`);
     else if(type == 'purchase_order')
@@ -37,7 +41,11 @@ function mailModal(id,type){
 // Get id of transaction to print confirmation modal
 function printModal(id,type){
     // set attribute href of btn-send-mail
-    if(type == 'bill')
+    // if(type == 'cogs')
+    // $('#modal-print-confirmation-btn').attr('href', `/vendors/bills/cogs/print/${id}`);
+    if(type == 'expense')
+    $('#modal-print-confirmation-btn').attr('href', `/vendors/bills/expense/print/${id}`);
+    else if(type == 'bill')
     $('#modal-print-confirmation-btn').attr('href', `/bill/print/${id}`);
     else if(type == 'purchase_order')
     $('#modal-print-confirmation-btn').attr('href', `/purchaseOrder/print/${id}`);
@@ -46,7 +54,11 @@ function printModal(id,type){
 // VOID
 function voidModal(id,type){
     // set attribute href of btn-send-mail
-    if(type == 'bill')
+    if(type == 'cogs')
+    $('#modal-void-confirmation-btn').attr('data-href', `/vendors/bills/cogs/void/${id}`);
+    else if(type == 'expense')
+    $('#modal-void-confirmation-btn').attr('data-href', `/vendors/bills/expense/void/${id}`);
+    else if(type == 'bill')
     $('#modal-void-confirmation-btn').attr('data-href', `/bill/void/${id}`);
     else if(type == 'purchase_order')
     $('#modal-void-confirmation-btn').attr('data-href', `/purchaseOrder/void/${id}`);
@@ -57,7 +69,11 @@ function voidModal(id,type){
 //  Reactivate
 function reactivateModal(id,type){
     // set attribute href of btn-send-mail
-    if(type == 'bill')
+    if(type == 'cogs')
+    $('#modal-reactivate-confirmation-btn').attr('data-href', `/vendors/bills/cogs/reactivate/${id}`);
+    else if(type == 'expense')
+    $('#modal-reactivate-confirmation-btn').attr('data-href', `/vendors/bills/expense/reactivate/${id}`);
+    else if(type == 'bill')
     $('#modal-reactivate-confirmation-btn').attr('data-href', `/bill/reactivate/${id}`);
     else if(type == 'purchase_order')
     $('#modal-reactivate-confirmation-btn').attr('data-href', `/purchaseOrder/reactivate/${id}`);

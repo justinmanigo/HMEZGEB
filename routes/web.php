@@ -482,6 +482,10 @@ Route::group([
                     'as' => 'cogs.',
                 ], function(){
                     Route::post('/vendors/bills/cogs', [CostOfGoodsSoldController::class, 'store'])->name('store');
+                    // Route::get('/vendors/bills/cogs/mail/{cogs}', [CostOfGoodsSoldController::class, 'mail'])->name('mail');
+                    // Route::get('/vendors/bills/cogs/print/{cogs}', [CostOfGoodsSoldController::class, 'print'])->name('print');
+                    Route::get('/vendors/bills/cogs/void/{cogs}', [CostOfGoodsSoldController::class, 'void'])->name('void');
+                    Route::get('/vendors/bills/cogs/reactivate/{cogs}', [CostOfGoodsSoldController::class, 'reactivate'])->name('reactivate');
                 });
 
                 // Expense
@@ -489,6 +493,10 @@ Route::group([
                     'as' => 'expense',
                 ], function(){
                     Route::post('/vendors/bills/expense', [ExpenseController::class, 'store'])->name('store');
+                    // Route::get('/vendors/bills/expense/mail/{expense}', [ExpenseController::class, 'mail'])->name('mail');
+                    Route::get('/vendors/bills/expense/print/{expense}', [ExpenseController::class, 'print'])->name('print');
+                    Route::get('/vendors/bills/expense/void/{expense}', [ExpenseController::class, 'void'])->name('void');
+                    Route::get('/vendors/bills/expense/reactivate/{expense}', [ExpenseController::class, 'reactivate'])->name('reactivate');
                 });
 
                 // Route::get('/vendors/bills/', [BillsController::class, 'index'])->name('bill.index');

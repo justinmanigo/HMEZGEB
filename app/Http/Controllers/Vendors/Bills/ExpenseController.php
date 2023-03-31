@@ -11,6 +11,7 @@ use App\Models\PaymentReferences;
 use App\Models\Vendors\Bills\Expense;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use PDF;
 
 class ExpenseController extends Controller
 {
@@ -131,5 +132,46 @@ class ExpenseController extends Controller
             'credit_accounts' => $credit_accounts,
             'credit_amount' => $credit_amount
         ];
+    }
+
+    public function void(Expense $expense)
+    {
+        $expense->paymentReference->is_void = "yes";
+        $expense->paymentReference->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully voided expense.'
+        ]);
+    }
+
+    public function reactivate(Expense $expense)
+    {
+        $expense->paymentReference->is_void = "no";
+        $expense->paymentReference->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully reactivated expense.'
+        ]);
+
+    }
+
+    public function mail(Expense $expense)
+    {
+        // TODO: In frontend, ask user to enter email address to send to.
+    }
+
+    public function print(Expense $expense)
+    {
+        $expense->expenseItems;
+        for($i = 0; $i < count($expense->expenseItems); $i++) {
+            $expense->expenseItems[$i]->chartOfAccount;
+
+        }
+        $expense->paymentReference;
+
+        $pdf = PDF::loadView('vendors.bills.expenses.print', compact('expense'));
+        return $pdf->stream('expense.pdf');
     }
 }

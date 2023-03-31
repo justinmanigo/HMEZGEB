@@ -10,6 +10,7 @@ use App\Http\Requests\Vendors\Bills\StoreCostOfGoodsSoldRequest;
 use App\Models\PaymentReferences;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\Vendors\Bills\CostOfGoodsSold;
 
 
 class CostOfGoodsSoldController extends Controller
@@ -109,5 +110,37 @@ class CostOfGoodsSoldController extends Controller
             'credit_accounts' => $credit_accounts,
             'credit_amount' => $credit_amount
         ];
+    }
+
+    public function void(CostOfGoodsSold $cogs)
+    {
+        $cogs->paymentReference->is_void = "yes";
+        $cogs->paymentReference->save();
+
+        return response()->json([
+            'message' => 'Successfully voided COGS.',
+            'success' => true,
+        ]);
+    }
+
+    public function reactivate(CostOfGoodsSold $cogs)
+    {
+        $cogs->paymentReference->is_void = "no";
+        $cogs->paymentReference->save();
+
+        return response()->json([
+            'message' => 'Successfully reactivated COGS.',
+            'success' => true,
+        ]);
+    }
+
+    public function mail(CostOfGoodsSold $cogs)
+    {
+        // TODO: In frontend, ask user to enter email address to send to.
+    }
+
+    public function print(CostOfGoodsSold $cogs)
+    {
+        // TODO: Create PDF layout that does not have the items table.
     }
 }
