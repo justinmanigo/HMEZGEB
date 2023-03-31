@@ -151,12 +151,10 @@ class BillController extends Controller
     }
 
     /**
-     * TODO: Test this function.
      * Marks an entry as void.
      */
-    public function void($id)
+    public function void(Bills $bill)
     {
-        $bill = Bills::find($id);
         // if($bill->paymentReference->is_deposited == "yes")
         // return redirect()->back()->with('danger', "Error voiding! This transaction is already deposited.");
 
@@ -164,45 +162,53 @@ class BillController extends Controller
         $bill->paymentReference->is_void = "yes";
         $bill->paymentReference->save();
 
-        return redirect()->back()->with('success', "Successfully voided bill.");
+        // return redirect()->back()->with('success', "Successfully voided bill.");
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully voided bill.'
+        ]);
     }
 
     /**
-     * TODO: Test this function.
      * Reverses a voided entry.
      */
-    public function revalidate($id)
+    public function revalidate(Bills $bill)
     {
-        $bill = Bills::find($id);
         // TODO: Revalidate connected modules (Deduct inventory, adjust Journal entry/postings).
         $bill->paymentReference->is_void = "no";
         $bill->paymentReference->save();
 
-        return redirect()->back()->with('success', "Successfully revalidated bill.");
+        // return redirect()->back()->with('success', "Successfully revalidated bill.");
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully revalidated bill.'
+        ]);
     }
 
     /**
-     * TODO: Test this function.
      * Sends an email of the entry.
      */
-    public function mail($id)
+    public function mail(Bills $bill)
     {
-        $bill = Bills::find($id);
         $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
         $emailAddress = $bill->paymentReference->vendor->email;
 
         Mail::to($emailAddress)->queue(new MailVendorBill ($bill_items));
 
-        return redirect('/vendors/bills')->with('success', 'Email has been sent!');
+        // return redirect('/vendors/bills')->with('success', 'Email has been sent!');
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Email has been sent!'
+        ]);
     }
 
     /**
-     * TODO: Test this function.
      * Prints the entry.
      */
-    public function print($id)
+    public function print(Bills $bill)
     {
-        $bill = Bills::find($id);
         $bill_items = BillItem::where('payment_reference_id', $bill->payment_reference_id)->get();
 
         $pdf = PDF::loadView('vendors.bills.print', compact('bill_items'));

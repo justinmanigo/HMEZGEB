@@ -1,4 +1,4 @@
-<form class="ajax-submit-updated" action="{{ url('/vendors/bills/bill') }}" id="form-bill" method="post" enctype="multipart/form-data" data-message="Successfully created bill.">
+<form class="ajax-submit-updated" action="{{ url('/vendors/bills/bill') }}" id="form-bill" method="post" enctype="multipart/form-data" data-message="Successfully created bill." data-noreload="true" data-onsuccess="bill_search" data-onsuccessparam="bills_page_number_current" data-modal="modal-bill">
     @csrf
     <div class="modal fade" id="modal-bill" tabindex="-1" role="dialog" aria-labelledby="modal-bill-label"
         aria-hidden="true">

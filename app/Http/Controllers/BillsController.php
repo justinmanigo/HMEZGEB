@@ -21,27 +21,9 @@ use Illuminate\Http\Request;
 
 class BillsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function searchAjax($query = null)
     {
-        $transactions = PaymentReferences::leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
-            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
-            ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
-            ->leftJoin('cost_of_goods_sold', 'cost_of_goods_sold.payment_reference_id', '=', 'payment_references.id')
-            ->leftJoin('expenses', 'expenses.payment_reference_id', '=', 'payment_references.id')
-            // where subquery
-            ->where(function ($query) {
-                $query->where('payment_references.type', '=', 'bill')
-                    ->orWhere('payment_references.type', '=', 'purchase_order')
-                    ->orWhere('payment_references.type', '=', 'cogs')
-                    ->orWhere('payment_references.type', '=', 'expense');
-            })
-            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
-            ->select(
+        $transactions = PaymentReferences::select(
                 'vendors.name',
                 'payment_references.id',
                 'payment_references.vendor_id',
@@ -52,10 +34,45 @@ class BillsController extends Controller
                 'bills.amount_received as bill_amount',
                 'purchase_orders.grand_total as purchase_order_amount',
                 'cost_of_goods_sold.amount_received as cost_of_goods_sold_amount',
-                'expenses.total_amount_received as expenses_amount'
+                'expenses.total_amount_received as expenses_amount',
+                'bills.id as bill_id',
+                'purchase_orders.id as purchase_order_id',
+                'cost_of_goods_sold.id as cost_of_goods_sold_id',
+                'expenses.id as expenses_id'
             )
-            ->get();
+            ->leftJoin('vendors', 'vendors.id', '=', 'payment_references.vendor_id')
+            ->leftJoin('bills', 'bills.payment_reference_id', '=', 'payment_references.id')
+            ->leftJoin('purchase_orders', 'purchase_orders.payment_reference_id', '=', 'payment_references.id')
+            ->leftJoin('cost_of_goods_sold', 'cost_of_goods_sold.payment_reference_id', '=', 'payment_references.id')
+            ->leftJoin('expenses', 'expenses.payment_reference_id', '=', 'payment_references.id')
+            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
+            // where subquery
+            ->where(function ($query) {
+                $query->where('payment_references.type', '=', 'bill')
+                    ->orWhere('payment_references.type', '=', 'purchase_order')
+                    ->orWhere('payment_references.type', '=', 'cogs')
+                    ->orWhere('payment_references.type', '=', 'expense');
+            })
+            ->where(function($q) use ($query) {
+                $q->where('vendors.name', 'like', '%'.$query.'%')
+                    ->orWhere('payment_references.id', 'like', '%'.$query.'%')
+                    ->orWhere('payment_references.type', 'like', '%'.$query.'%')
+                    ->orWhere('payment_references.date', 'like', '%'.$query.'%')
+                    ->orWhere('payment_references.status', 'like', '%'.$query.'%');
+            });
 
+        return response()->json([
+            'bills' => $transactions->paginate(10),
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
         // count advance revenues
         $vendors = Vendors::where('accounting_system_id', session('accounting_system_id'))->get();
 
@@ -72,7 +89,6 @@ class BillsController extends Controller
         }
 
         return view('vendors.bills.index', [
-            'transactions' => $transactions,
             'total_balance' => $total_balance,
             'total_balance_overdue' => $total_balance_overdue,
             'count' => $count,
