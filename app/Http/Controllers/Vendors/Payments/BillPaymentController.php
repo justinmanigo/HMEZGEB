@@ -15,6 +15,32 @@ use Illuminate\Support\Facades\DB;
 
 class BillPaymentController extends Controller
 {
+    public function searchAjax($query = null)
+    {
+        $payments = PaymentReferences::select([
+            'payment_references.id',
+            'payment_references.date',
+            'payment_references.status',
+            'vendors.name',
+            // 'payment_references.is_void',
+            'bill_payments.amount_paid',
+        ])
+        ->leftJoin('bill_payments', 'bill_payments.payment_reference_id', 'payment_references.id')
+        ->leftJoin('vendors', 'vendors.id', 'payment_references.vendor_id')
+        ->where('payment_references.accounting_system_id', session('accounting_system_id'))
+        ->where('payment_references.type', 'bill_payment')
+        ->where(function($q) use ($query) {
+            $q->where('payment_references.id', 'like', "%{$query}%")
+            ->orWhere('payment_references.date', 'like', "%{$query}%")
+            ->orWhere('payment_references.status', 'like', "%{$query}%")
+            ->orWhere('vendors.name', 'like', "%{$query}%");
+        });
+
+        return response()->json([
+            'bill_payments' => $payments->paginate(10),
+        ]);
+    }
+
     public function store(StoreBillPaymentRequest $request)
     {
         // return $request;

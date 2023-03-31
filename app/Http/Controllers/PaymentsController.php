@@ -14,23 +14,6 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        $billPayments = PaymentReferences::select(
-                'vendors.name',
-                'payment_references.id',
-                'payment_references.vendor_id',
-                'payment_references.date',
-                'payment_references.status',
-                // 'payment_references.is_void', // TODO: to implement
-                'bill_payments.amount_paid',
-            )
-            ->leftJoin('vendors', 'payment_references.vendor_id', '=', 'vendors.id')
-            ->leftJoin('bill_payments', 'payment_references.id', '=', 'bill_payments.payment_reference_id')
-            ->where('type', 'bill_payment')
-            ->where('payment_references.accounting_system_id', session('accounting_system_id'))
-            ->get();
-
-        // return $billPayments;
-
         $otherPayments = PaymentReferences::select(
                 'vendors.name',
                 'payment_references.id',
@@ -98,7 +81,6 @@ class PaymentsController extends Controller
         // return $otherPayments;
 
         return view('vendors.payments.payment', [
-            'billPayments' => $billPayments,
             'otherPayments' => $otherPayments,
         ]);
     }

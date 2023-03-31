@@ -526,6 +526,8 @@ Route::group([
                     Route::post('/vendors/payments/bill', [BillPaymentController::class, 'store'])->name('store');
 
                     // AJAX
+                    Route::get('/ajax/vendor/payments/bill/search/{query?}', [BillPaymentController::class, 'searchAjax']);
+
                     Route::get('/ajax/vendor/bills/topay/{vendor}', [BillPaymentController::class, 'ajaxGetEntriesToPay']);
                 });
 
