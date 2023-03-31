@@ -62,7 +62,7 @@ function reactivateModal(id,type){
     else if(type == 'purchase_order')
     $('#modal-reactivate-confirmation-btn').attr('data-href', `/purchaseOrder/reactivate/${id}`);
 
-    $('#reactivate-receipt').attr('data-id', id).attr('href', '#').attr('data-type', type);
+    $('#modal-reactivate-confirmation-btn').attr('data-id', id).attr('href', '#').attr('data-type', type);
 }
 
 $(document).on('click', '#modal-mail-confirmation-btn', function(e){
