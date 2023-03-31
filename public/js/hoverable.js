@@ -25,6 +25,9 @@ $(document).on('click', '.actions button', function(e){
     else if(page == "vendors") {
         window.vendors_table_actions(id, type, action);
     }
+    else if(page == "bills") {
+        window.bills_table_actions(id, type, action);
+    }
 });
 
 $(document).on('click', '.actions a', function(e){

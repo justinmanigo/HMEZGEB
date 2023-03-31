@@ -455,46 +455,7 @@
 <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
 
 <script>
-    // Get id of transaction to mail confirmation modal
-    function mailModal(id,type){
-        // set attribute href of btn-send-mail
-        if(type == 'bill')
-        $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.bill.mail", ":id") }}'.replace(':id', id));
-        else if(type == 'purchaseOrder')
-        $('#modal-mail-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.mail", ":id") }}'.replace(':id', id));
-
-    }
-
-    // Get id of transaction to print confirmation modal
-    function printModal(id,type){
-        // set attribute href of btn-send-mail
-        if(type == 'bill')
-        $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.bill.print", ":id") }}'.replace(':id', id));
-        else if(type == 'purchaseOrder')
-        $('#modal-print-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.print", ":id") }}'.replace(':id', id));
-    }
-
-    // VOID
-    function voidModal(id,type){
-        // set attribute href of btn-send-mail
-        if(type == 'bill')
-        $('#modal-void-confirmation-btn').attr('href', '{{ route("bills.bill.void", ":id") }}'.replace(':id', id));
-        else if(type == 'purchaseOrder')
-        $('#modal-void-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.void", ":id") }}'.replace(':id', id));
-    }
-
-    //  Reactivate
-    function reactivateModal(id,type){
-        // set attribute href of btn-send-mail
-        if(type == 'bill')
-        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.bill.revalidate", ":id") }}'.replace(':id', id));
-        else if(type == 'purchaseOrder')
-        $('#modal-reactivate-confirmation-btn').attr('href', '{{ route("bills.purchaseOrder.revalidate", ":id") }}'.replace(':id', id));
-    }
-
-
-
-    var controller;
+var controller;
 $(document).ready(function() {
     $('#dataTables').DataTable();
     $('.dataTables_filter').addClass('pull-right');

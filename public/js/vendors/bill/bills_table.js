@@ -95,15 +95,15 @@ async function bill_search(query = "", page = 1)
                                     <i class="fas fa-envelope"></i>
                                 </span>
                             </button>
-                            ${!bill.is_void ? `
-                            <button id="vr-bill-${bill.id}" class="btn btn-danger btn-sm" disabled >
+                            ${bill.is_void == "no" ? `
+                            <button id="vr-${bill.type}-${bill.id}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-void-confirmation")" data-type="${bill.type}" data-id="${parsed.id}" data-action="void" data-page="bills">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-ban"></i>
                                 </span>
                             </button>
                             `
                             : `
-                            <button id="vr-bill-${bill.id}" class="btn btn-success btn-sm" disabled>
+                            <button id="vr-${bill.type}-${bill.id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-reactivate-confirmation")" data-type="${bill.type}" data-id="${parsed.id}" data-action="reactivate" data-page="bills">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-check"></i>
                                 </span>
@@ -146,31 +146,37 @@ function parseBill(bill)
     let description, type, amount;
 
     if(bill.type == 'cogs') {
+        id = bill.cost_of_goods_sold_id;
         description = "A COGS Entry";
         type = `<span class="badge badge-info">COGS</span>`;
         amount = bill.cost_of_goods_sold_amount;
     }
     else if(bill.type == 'expense') {
+        id = bill.expenses_id;
         description = `An Expense Entry`;
         type = `<span class="badge badge-warning">Expense</span>`;
         amount = bill.expenses_amount;
     }
     else if(bill.type == 'bill') {
+        id = bill.bill_id;
         description = `For ${bill.name}`;
         type = `<span class="badge badge-success">Bill</span>`;
         amount = bill.bill_amount;
     }
     else if(bill.type == 'purchase_order') {
+        id = bill.purchase_order_id;
         description = `For ${bill.name}`;
         type = `<span class="badge badge-danger">Purchase Order</span>`;
         amount = bill.purchase_order_amount;
     }
     else {
+        id = bill.id;
         description = `For ${bill.name}`;
         type = `<span class="badge badge-light">Other</span>`;
     }
 
     return {
+        id: id,
         description: description,
         type: type,
         amount: amount
