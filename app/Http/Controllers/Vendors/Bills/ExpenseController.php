@@ -11,6 +11,7 @@ use App\Models\PaymentReferences;
 use App\Models\Vendors\Bills\Expense;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use PDF;
 
 class ExpenseController extends Controller
 {
@@ -154,5 +155,17 @@ class ExpenseController extends Controller
             'message' => 'Successfully reactivated expense.'
         ]);
 
+    }
+    public function print(Expense $expense)
+    {
+        $expense->expenseItems;
+        for($i = 0; $i < count($expense->expenseItems); $i++) {
+            $expense->expenseItems[$i]->chartOfAccount;
+
+        }
+        $expense->paymentReference;
+
+        $pdf = PDF::loadView('vendors.bills.expenses.print', compact('expense'));
+        return $pdf->stream('expense.pdf');
     }
 }

@@ -37,7 +37,9 @@ function mailModal(id,type){
 // Get id of transaction to print confirmation modal
 function printModal(id,type){
     // set attribute href of btn-send-mail
-    if(type == 'bill')
+    if(type == 'expense')
+    $('#modal-print-confirmation-btn').attr('href', `/vendors/bills/expense/print/${id}`);
+    else if(type == 'bill')
     $('#modal-print-confirmation-btn').attr('href', `/bill/print/${id}`);
     else if(type == 'purchase_order')
     $('#modal-print-confirmation-btn').attr('href', `/purchaseOrder/print/${id}`);

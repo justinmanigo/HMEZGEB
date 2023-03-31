@@ -491,6 +491,7 @@ Route::group([
                     'as' => 'expense',
                 ], function(){
                     Route::post('/vendors/bills/expense', [ExpenseController::class, 'store'])->name('store');
+                    Route::get('/vendors/bills/expense/print/{expense}', [ExpenseController::class, 'print'])->name('print');
                     Route::get('/vendors/bills/expense/void/{expense}', [ExpenseController::class, 'void'])->name('void');
                     Route::get('/vendors/bills/expense/reactivate/{expense}', [ExpenseController::class, 'reactivate'])->name('reactivate');
                 });
