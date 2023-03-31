@@ -10,14 +10,14 @@ function bills_table_actions(id, type, action)
         console.log("void");
         reactivateModal(id, type);
     }
-    // else if(action == "mail") {
-    //     console.log("mail");
-    //     mailModal(id, type);
-    // }
-    // else if(action == "print") {
-    //     console.log("print");
-    //     printModal(id, type);
-    // }
+    else if(action == "mail") {
+        console.log("mail");
+        mailModal(id, type);
+    }
+    else if(action == "print") {
+        console.log("print");
+        printModal(id, type);
+    }
 }
 
 /** ACTIONS */

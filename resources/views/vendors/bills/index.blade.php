@@ -402,7 +402,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="" class="btn btn-primary" id="modal-print-confirmation-btn">Send</a>
+                <a href="" class="btn btn-primary" id="modal-print-confirmation-btn" target="_blank">Send</a>
             </div>
         </div>
     </div>

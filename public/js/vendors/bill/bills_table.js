@@ -85,12 +85,12 @@ async function bill_search(query = "", page = 1)
                             <a href="#" class="btn btn-sm btn-primary disabled">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <button id="print-bill-${bill.id}" class="btn btn-primary btn-sm" disabled>
+                            <button id="print-bill-${bill.id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-print-confirmation")" data-type="${bill.type}" data-id="${parsed.id}" data-action="print" data-page="bills">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-print"></i>
                                 </span>
                             </button>
-                            <button id="mail-bill-${bill.id}" class="btn btn-primary btn-sm" disabled data-action="mail" data-page="receipts">
+                            <button id="mail-bill-${bill.id}" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-mail-confirmation" data-type="${bill.type}" data-id="${parsed.id}" data-action="mail" data-page="bills">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-envelope"></i>
                                 </span>
