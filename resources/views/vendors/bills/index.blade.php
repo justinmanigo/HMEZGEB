@@ -356,7 +356,7 @@
                 <a class="close" data-dismiss="modal">×</a>
             </div>
             <form class="ajax-submit-updated" id="form-purchase-order" action="{{ url('/vendors/bills/purchaseorder') }}"
-                method="post" data-message="Successfully created a purchase order.">
+                method="post" data-message="Successfully created a purchase order." data-noreload="true" data-onsuccess="bill_search" data-onsuccessparam="bills_page_number_current" data-modal="modal-purchase-order">
                 @csrf
                 @include('vendors.bills.forms.purchaseOrderModal')
             </form>
