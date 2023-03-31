@@ -39,17 +39,6 @@
                 <span class="text">Export</span>
             </button>
         </div>
-        {{-- Tab Navigation --}}
-        <ul class="nav nav-tabs d-flex" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="bill_payment-tab" data-toggle="tab" href=".bill_payment" role="tab"
-                    aria-controls="bill-payment" aria-selected="true">Bill Payment</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="other_payment-tab" data-toggle="tab" href=".other_payment" role="tab"
-                    aria-controls="other-payment" aria-selected="false">Other Payment</a>
-            </li>
-        </ul>
 
     {{-- Modals --}}
 
@@ -177,6 +166,19 @@
                 </button>
             </div>
             @endif
+
+            {{-- Tab Navigation --}}
+            <ul class="nav nav-tabs d-flex" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="bill_payment-tab" data-toggle="tab" href=".bill_payment" role="tab"
+                        aria-controls="bill-payment" aria-selected="true">Bill Payment</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="other_payment-tab" data-toggle="tab" href=".other_payment" role="tab"
+                        aria-controls="other-payment" aria-selected="false">Other Payment</a>
+                </li>
+            </ul>
+
             <!--Bill Payment content--->
             <div class="table-responsive tab-pane fade show active bill_payment">
                 <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
